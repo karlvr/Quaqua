@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rules>
+  <!--
+    each rule tag defines one rule. You can have multiple
+    rules. Each <rule> has a role attribute, which determines
+    which role request this rule applies to, and an action
+    attribute, which determines what to do with it.
+  -->
+  
+  
+  <!--
+    The following rule says automatically approve an observer
+    request role to the project.
+  -->
+  <rule role="Observer" action="approve" />
+  
+  <!--
+    The following rule says automatically deny a project owner
+    role request.
+    
+    The text in the tag will be sent to the requester,
+    as a part of the e-mail from the java.net system.
+    
+    You can use macro expansions here (explained below.)
+  -->
+  <rule role="Project Owner" action="deny"><![CDATA[
+I'm sorry, but we can't accept your project owner request.
+]]></rule>
+  
+  <rule role="Developer" action="deny"><![CDATA[
+I'm sorry, the developer role is reserved for long-time contributors to this project.
+To contribute to this project, please e-mail your content to the project owner.
+]]></rule>
+
+  <rule role="Content Developer" action="deny"><![CDATA[
+I'm sorry, the content developer role is reserved for long-time contributors to this project.
+To contribute to this project, please e-mail your content to the project owner.
+]]></rule>
+</rules>
