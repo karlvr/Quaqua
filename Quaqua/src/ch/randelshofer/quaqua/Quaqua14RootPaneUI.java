@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua14RootPaneUI.java  2.0  2008-05-10
+ * @(#)Quaqua14RootPaneUI.java  2.0.1  2008-07-07
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -10,10 +10,8 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.AlphaColorUIResource;
 import ch.randelshofer.quaqua.util.PaintableColor;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,12 +26,14 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalRootPaneUI;
+
 /**
  * Quaqua14RootPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-05-10 Added support for client property "Window.documentModified".
+ * @version 2.0.1 2008-07-07 Don't process mouse dragged events when 
+ * the root pane is not showing on screen. 
+ * <br>2.0 2008-05-10 Added support for client property "Window.documentModified".
  * <br>1.1.4 2008-03-30 Fixed memory leak in allRootPanes has map, by putting
  * a null value into the weak hash map, instead of the RootPane object.
  * <br>1.1.3 2007-09-29 Fixed NPE in Window snapping behavior code. 
@@ -57,18 +57,17 @@ import javax.swing.plaf.metal.MetalRootPaneUI;
  * <br>1.0  06 February 2005  Created.
  */
 public class Quaqua14RootPaneUI extends BasicRootPaneUI {
+
     /**
      * Keys to lookup borders in defaults table.
      */
-    private static final String[] borderKeys = new String[] {
+    private static final String[] borderKeys = new String[]{
         null, "RootPane.frameBorder", "RootPane.plainDialogBorder",
         "RootPane.informationDialogBorder",
         "RootPane.errorDialogBorder", "RootPane.colorChooserDialogBorder",
         "RootPane.fileChooserDialogBorder", "RootPane.questionDialogBorder",
         "RootPane.warningDialogBorder"
-             
     };
-    
     /**
      * Height and width of resize handle on the lower right corner of the window.
      * FIXME - This value depends on font size.
@@ -78,7 +77,6 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      * Window the <code>JRootPane</code> is in.
      */
     private Window window;
-    
     /**
      * <code>JComponent</code> providing window decorations. This will be
      * null if not providing window decorations.
@@ -89,20 +87,16 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      * <code>Window</code> the <code>JRootPane</code> is contained in.
      */
     private MouseInputListener mouseInputListener;
-    
     /**
      * The <code>LayoutManager</code> that is set on the
      * <code>JRootPane</code>.
      */
     private LayoutManager layoutManager;
-    
     /**
      * <code>LayoutManager</code> of the <code>JRootPane</code> before we
      * replaced it.
      */
     private LayoutManager savedOldLayout;
-    
-    
     private AncestorListener ancestorListener;
     private ComponentListener componentListener;
     /**
@@ -119,7 +113,6 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      * <code>JRootPane</code> providing the look and feel for.
      */
     private JRootPane root;
-    
     /**
      * Since method Window.getWindows() is only available since Java 1.6,
      * we indirectly keep track of all windows by ourselves by storing
@@ -128,24 +121,21 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      * from this upoin deinstallUI.
      */
     private static WeakHashMap allRootPanes = new WeakHashMap();
-    
-    
     /**
      * <code>Cursor</code> used to track the cursor set by the user.
      * This is initially <code>Cursor.DEFAULT_CURSOR</code>.
      */
     private Cursor lastCursor =
             Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    
-    
+
     public static ComponentUI createUI(JComponent c) {
         return new Quaqua14RootPaneUI();
     }
-    
+
     /** Creates a new instance. */
     public Quaqua14RootPaneUI() {
     }
-    
+
     /**
      * Invokes supers implementation of <code>installUI</code> to install
      * the necessary state onto the passed in <code>JRootPane</code>
@@ -162,24 +152,22 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      */
     public void installUI(JComponent c) {
         super.installUI(c);
-        root = (JRootPane)c;
+        root = (JRootPane) c;
         c.putClientProperty(
                 "apple.awt.draggableWindowBackground",
-                UIManager.get("RootPane.draggableWindowBackground")
-                );
+                UIManager.get("RootPane.draggableWindowBackground"));
         c.putClientProperty(
                 "apple.awt.windowShadow",
-                UIManager.get("RootPane.windowShadow")
-                );
+                UIManager.get("RootPane.windowShadow"));
         Window window = SwingUtilities.getWindowAncestor(c);
-        
+
         int style = root.getWindowDecorationStyle();
         if (style != JRootPane.NONE) {
             installClientDecorations(root);
         }
         allRootPanes.put(c, null);
     }
-    
+
     public void paint(Graphics g, JComponent c) {
         int style = getRootPane().getWindowDecorationStyle();
         if (style != JRootPane.NONE) {
@@ -191,7 +179,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 Dialog dialog = (Dialog) window;
                 needsResizeIcon = dialog.isResizable();
             }
-            
+
             if (needsResizeIcon) {
                 Icon resizeIcon = UIManager.getIcon("InternalFrame.resizeIcon");
                 int w = c.getWidth();
@@ -199,12 +187,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 Insets insets = c.getInsets();
                 resizeIcon.paintIcon(c, g,
                         w - resizeIcon.getIconWidth() - insets.right,
-                        h - resizeIcon.getIconHeight() - insets.bottom
-                        );
+                        h - resizeIcon.getIconHeight() - insets.bottom);
             }
         }
     }
-    
+
     /**
      * Invokes supers implementation to uninstall any of its state. This will
      * also reset the <code>LayoutManager</code> of the <code>JRootPane</code>.
@@ -219,47 +206,49 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     public void uninstallUI(JComponent c) {
         super.uninstallUI(c);
         uninstallClientDecorations(root);
-        
+
         layoutManager = null;
         mouseInputListener = null;
         root = null;
         allRootPanes.remove(c);
     }
-    protected void installDefaults(JRootPane c){
+
+    protected void installDefaults(JRootPane c) {
         super.installDefaults(c);
         LookAndFeel.installColorsAndFont(c,
                 "RootPane.background",
                 "RootPane.foreground",
                 "RootPane.font");
-        LookAndFeel.installBorder(c,"RootPane.border");
+        LookAndFeel.installBorder(c, "RootPane.border");
         // Root Pane must always be opaque
         //LookAndFeel.installProperty(c, "opaque", UIManager.get("RootPane.opaque"));
-        
+
         // By default, we should delay window ordering, but
         // it does not seem to work as expected. It appears that we need to
         // at more code.
         // c.putClientProperty("apple.awt.delayWindowOrdering", Boolean.TRUE);
 
-        
+
         c.setOpaque(true);
     }
+
     public void update(Graphics gr, final JComponent c) {
         if (c.isOpaque()) {
             Graphics2D g = (Graphics2D) gr;
             g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-            g.fillRect(0, 0, c.getWidth(),c.getHeight());
+            g.fillRect(0, 0, c.getWidth(), c.getHeight());
         }
         /*
-            root.putClientProperty(
-                "apple.awt.windowShadow.revalidateNow", Boolean.TRUE
-            );
+        root.putClientProperty(
+        "apple.awt.windowShadow.revalidateNow", Boolean.TRUE
+        );
          */
         paint(gr, c);
     }
-    
+
     protected void installListeners(JRootPane root) {
         super.installListeners(root);
-        
+
         ancestorListener = createAncestorListener();
         if (ancestorListener != null) {
             root.addAncestorListener(ancestorListener);
@@ -269,9 +258,10 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             root.addComponentListener(componentListener);
         }
     }
+
     protected void uninstallListeners(JRootPane root) {
         super.uninstallListeners(root);
-        
+
         if (ancestorListener != null) {
             root.removeAncestorListener(ancestorListener);
         }
@@ -279,11 +269,13 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             root.removeComponentListener(componentListener);
         }
     }
-    
+
     protected ComponentListener createComponentListener() {
         return new ComponentAdapter() {
+
             public void componentResized(final ComponentEvent e) {
                 Timer t = new Timer(200, new ActionListener() {
+
                     public void actionPerformed(ActionEvent evt) {
                         e.getComponent().repaint();
                     }
@@ -293,10 +285,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             }
         };
     }
-    
+
     protected AncestorListener createAncestorListener() {
         return new RootPaneAncestorListener();
     }
+
     /**
      * Returns the <code>JComponent</code> to render the window decoration
      * style.
@@ -304,6 +297,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private JComponent createTitlePane(JRootPane root) {
         return new Quaqua14TitlePane(root, this);
     }
+
     /**
      * Returns a <code>MouseListener</code> that will be added to the
      * <code>Window</code> containing the <code>JRootPane</code>.
@@ -311,7 +305,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private MouseInputListener createWindowMouseInputListener(JRootPane root) {
         return new MouseInputHandler();
     }
-    
+
     /**
      * Returns a <code>LayoutManager</code> that will be set on the
      * <code>JRootPane</code>.
@@ -319,8 +313,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private LayoutManager createLayoutManager() {
         return new QuaquaRootLayout();
     }
-    
-    
+
     private static void updateWindowModified(JRootPane rootpane) {
         if (isWindowModifiedSupported) {
             Container parent = rootpane.getParent();
@@ -329,62 +322,63 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 if (peer != null) {
                     if (setWindowModifiedMethod == null) {
                         try {
-                            setWindowModifiedMethod = peer.getClass().getMethod("setDocumentEdited", new Class[] { Boolean.TYPE });
+                            setWindowModifiedMethod = peer.getClass().getMethod("setDocumentEdited", new Class[]{Boolean.TYPE});
                         } catch (NoSuchMethodException ex1) {
                             try {
-                                setWindowModifiedMethod = peer.getClass().getMethod("setModified", new Class[] { Boolean.TYPE });
+                                setWindowModifiedMethod = peer.getClass().getMethod("setModified", new Class[]{Boolean.TYPE});
                             } catch (NoSuchMethodException ex2) {
                                 isWindowModifiedSupported = false;
-                                //ex2.printStackTrace();
+                            //ex2.printStackTrace();
                             }
                         } catch (AccessControlException ex1) {
                             isWindowModifiedSupported = false;
-                            //System.err.println("Sorry. Quaqua14RootPaneUI can not access the native window modified API");
+                        //System.err.println("Sorry. Quaqua14RootPaneUI can not access the native window modified API");
                         }
                     }
                     if (setWindowModifiedMethod != null) {
                         try {
                             Object value = rootpane.getClientProperty("Window.documentModified");
                             if (value == null) {
-                             value = rootpane.getClientProperty("windowModified");
+                                value = rootpane.getClientProperty("windowModified");
                             }
                             if (value == null) {
                                 value = Boolean.FALSE;
                             }
-                            setWindowModifiedMethod.invoke(peer, new Object[] {value});
+                            setWindowModifiedMethod.invoke(peer, new Object[]{value});
                         } catch (IllegalAccessException ex) {
                             isWindowModifiedSupported = false;
-                            //ex.printStackTrace();
+                        //ex.printStackTrace();
                         } catch (InvocationTargetException ex) {
                             isWindowModifiedSupported = false;
-                            //ex.printStackTrace();
+                        //ex.printStackTrace();
                         }
                     }
                 }
             }
         }
     }
-    
+
     /**
      * Installs the appropriate <code>Border</code> onto the
      * <code>JRootPane</code>.
      */
     void installBorder(JRootPane root) {
         int style = root.getWindowDecorationStyle();
-        
+
         if (style == JRootPane.NONE) {
             LookAndFeel.uninstallBorder(root);
         } else {
             LookAndFeel.installBorder(root, borderKeys[style]);
         }
     }
-    
+
     /**
      * Removes any border that may have been installed.
      */
     private void uninstallBorder(JRootPane root) {
         LookAndFeel.uninstallBorder(root);
     }
+
     /**
      * Installs the necessary state onto the JRootPane to render client
      * decorations. This is ONLY invoked if the <code>JRootPane</code>
@@ -392,22 +386,20 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      */
     private void installClientDecorations(JRootPane root) {
         installBorder(root);
-        
+
         /*
         window = SwingUtilities.getWindowAncestor(root);
         if (window != null) {
-            window.setBackground(new Color(0, true));
+        window.setBackground(new Color(0, true));
         }*/
-        
+
         root.putClientProperty(
-                "apple.awt.draggableWindowBackground", Boolean.FALSE
-                );
+                "apple.awt.draggableWindowBackground", Boolean.FALSE);
         root.putClientProperty(
-                "apple.awt.windowShadow", Boolean.TRUE
-                );
-        
+                "apple.awt.windowShadow", Boolean.TRUE);
+
         JComponent titlePane = createTitlePane(root);
-        
+
         setTitlePane(root, titlePane);
         installWindowListeners(root, root.getParent());
         installLayout(root);
@@ -415,12 +407,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             root.revalidate();
             root.repaint();
         }
-        
+
         root.putClientProperty(
-                "apple.awt.windowShadow.revalidateNow", new Object()
-                );
+                "apple.awt.windowShadow.revalidateNow", new Object());
     }
-    
+
     /**
      * Installs the necessary Listeners on the parent <code>Window</code>,
      * if there is one.
@@ -433,7 +424,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
      */
     private void installWindowListeners(JRootPane root, Component parent) {
         if (parent instanceof Window) {
-            window = (Window)parent;
+            window = (Window) parent;
         } else {
             window = SwingUtilities.getWindowAncestor(parent);
         }
@@ -445,6 +436,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             window.addMouseMotionListener(mouseInputListener);
         }
     }
+
     /**
      * Uninstalls the necessary Listeners on the <code>Window</code> the
      * Listeners were last installed on.
@@ -455,7 +447,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             window.removeMouseMotionListener(mouseInputListener);
         }
     }
-    
+
     /**
      * Installs the appropriate LayoutManager on the <code>JRootPane</code>
      * to render the window decorations.
@@ -467,7 +459,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         savedOldLayout = root.getLayout();
         root.setLayout(layoutManager);
     }
-    
+
     /**
      * Uninstalls the previously installed <code>LayoutManager</code>.
      */
@@ -477,10 +469,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             savedOldLayout = null;
         }
     }
+
     private boolean isVertical(JRootPane root) {
         return root.getClientProperty("Quaqua.RootPane.isVertical") == Boolean.TRUE;
     }
-    
+
     /**
      * Sets the window title pane -- the JComponent used to provide a plaf a
      * way to override the native operating system's window title pane with
@@ -493,7 +486,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private void setTitlePane(JRootPane root, JComponent titlePane) {
         JLayeredPane layeredPane = root.getLayeredPane();
         JComponent oldTitlePane = getTitlePane();
-        
+
         if (oldTitlePane != null) {
             oldTitlePane.setVisible(false);
             layeredPane.remove(oldTitlePane);
@@ -504,6 +497,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         }
         this.titlePane = titlePane;
     }
+
     /**
      * Returns the <code>JComponent</code> rendering the title pane. If this
      * returns null, it implies there is no need to render window decorations.
@@ -514,6 +508,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private JComponent getTitlePane() {
         return titlePane;
     }
+
     /**
      * Returns the <code>JRootPane</code> we're providing the look and
      * feel for.
@@ -521,8 +516,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private JRootPane getRootPane() {
         return root;
     }
-    
-    
+
     /**
      * Uninstalls any state that <code>installClientDecorations</code> has
      * installed.
@@ -547,11 +541,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         }
         // Reset the cursor, as we may have changed it to a resize cursor
         if (window != null) {
-            window.setCursor(Cursor.getPredefinedCursor
-                    (Cursor.DEFAULT_CURSOR));
+            window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
         window = null;
     }
+
     /**
      * Invoked when a property changes on the root pane. If the event
      * indicates the <code>defaultButton</code> has changed, this will
@@ -561,12 +555,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         super.propertyChange(e);
         String name = e.getPropertyName();
 
-            JRootPane rootpane = (JRootPane) e.getSource();
+        JRootPane rootpane = (JRootPane) e.getSource();
         if (name.equals("Window.windowModified") || name.equals("windowModified")) {
             updateWindowModified(rootpane);
-        } else  if(name.equals("windowDecorationStyle")) {
+        } else if (name.equals("windowDecorationStyle")) {
             int style = root.getWindowDecorationStyle();
-            
+
             // This is potentially more than needs to be done,
             // but it rarely happens and makes the install/uninstall process
             // simpler. MetalTitlePane also assumes it will be recreated if
@@ -575,32 +569,32 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             if (style != JRootPane.NONE) {
                 installClientDecorations(root);
             }
-       } else if (name.equals("JComponent.sizeVariant")) {
+        } else if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant(rootpane);
         }
     }
-    
+
     private static class RootPaneAncestorListener implements AncestorListener, WindowListener {
-        
+
         public void ancestorAdded(AncestorEvent evt) {
             Container ancestor = evt.getAncestor();
             Window window = (ancestor instanceof Window)
-            ? (Window) ancestor
+                    ? (Window) ancestor
                     : SwingUtilities.getWindowAncestor(ancestor);
             if (window != null) {
                 window.addWindowListener(this);
                 updateWindowModified((JRootPane) evt.getSource());
             }
         }
-        
+
         public void ancestorMoved(AncestorEvent evt) {
         }
-        
+
         public void ancestorRemoved(AncestorEvent evt) {
             Container ancestorParent = evt.getAncestorParent();
             if (ancestorParent != null) {
                 Window window = (ancestorParent instanceof Window)
-                ? (Window) ancestorParent
+                        ? (Window) ancestorParent
                         : SwingUtilities.getWindowAncestor(ancestorParent);
                 //Window window = SwingUtilities.getWindowAncestor(ancestorParent);
                 if (window != null) {
@@ -608,47 +602,48 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 }
             }
         }
-        
+
         public void windowActivated(WindowEvent e) {
             updateComponentTreeUIActivation(e.getComponent(), Boolean.TRUE);
         }
-        
+
         public void windowClosed(WindowEvent e) {
         }
-        
+
         public void windowClosing(WindowEvent e) {
         }
-        
+
         public void windowDeactivated(WindowEvent e) {
             updateComponentTreeUIActivation(e.getComponent(), Boolean.FALSE);
         }
-        
+
         public void windowDeiconified(WindowEvent e) {
         }
-        
+
         public void windowIconified(WindowEvent e) {
         }
-        
+
         public void windowOpened(WindowEvent e) {
         }
-        
+
         private static void updateComponentTreeUIActivation(Component c, Boolean isActive) {
             if (c instanceof JComponent) {
                 ((JComponent) c).putClientProperty("Frame.active", isActive);
             }
             Component[] children = null;
             if (c instanceof JMenu) {
-                children = ((JMenu)c).getMenuComponents();
+                children = ((JMenu) c).getMenuComponents();
             } else if (c instanceof Container) {
-                children = ((Container)c).getComponents();
+                children = ((Container) c).getComponents();
             }
             if (children != null) {
-                for(int i = 0; i < children.length; i++) {
+                for (int i = 0; i < children.length; i++) {
                     updateComponentTreeUIActivation(children[i], isActive);
                 }
             }
         }
     }
+
     /**
      * A custom layout manager that is responsible for the layout of
      * layeredPane, glassPane, menuBar and titlePane, if one has been
@@ -657,14 +652,14 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
 // NOTE: Ideally this would extends JRootPane.RootLayout, but that
 //       would force this to be non-static.
     private static class QuaquaRootLayout implements LayoutManager2 {
+
         private boolean isVertical(Container parent) {
             if (parent instanceof JComponent) {
                 return ((JComponent) parent).getClientProperty("Quaqua.RootPane.isVertical") == Boolean.TRUE;
             }
             return false;
         }
-        
-        
+
         /**
          * Returns the amount of space the layout would like to have.
          *
@@ -673,7 +668,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
          */
         public Dimension preferredLayoutSize(Container parent) {
             boolean isVertical = isVertical(parent);
-            
+
             Dimension cpd, mbd, tpd;
             int cpWidth = 0;
             int cpHeight = 0;
@@ -683,8 +678,8 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             int tpHeight = 0;
             Insets i = parent.getInsets();
             JRootPane root = (JRootPane) parent;
-            
-            if(root.getContentPane() != null) {
+
+            if (root.getContentPane() != null) {
                 cpd = root.getContentPane().getPreferredSize();
             } else {
                 cpd = root.getSize();
@@ -693,19 +688,18 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 cpWidth = cpd.width;
                 cpHeight = cpd.height;
             }
-            
-            if(root.getJMenuBar() != null) {
+
+            if (root.getJMenuBar() != null) {
                 mbd = root.getJMenuBar().getPreferredSize();
                 if (mbd != null) {
                     mbWidth = mbd.width;
                     mbHeight = mbd.height;
                 }
             }
-            
+
             if (root.getWindowDecorationStyle() != JRootPane.NONE &&
                     (root.getUI() instanceof Quaqua14RootPaneUI)) {
-                JComponent titlePane = ((Quaqua14RootPaneUI)root.getUI()).
-                        getTitlePane();
+                JComponent titlePane = ((Quaqua14RootPaneUI) root.getUI()).getTitlePane();
                 if (titlePane != null) {
                     tpd = titlePane.getPreferredSize();
                     if (tpd != null) {
@@ -714,18 +708,17 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                     }
                 }
             }
-            
+
             if (isVertical) {
                 return new Dimension(
                         Math.max(cpWidth, mbWidth) + tpWidth + i.left + i.right,
-                        Math.max(cpHeight + mbHeight, tpHeight) + i.top + i.bottom
-                        );
+                        Math.max(cpHeight + mbHeight, tpHeight) + i.top + i.bottom);
             } else {
                 return new Dimension(Math.max(Math.max(cpWidth, mbWidth), tpWidth) + i.left + i.right,
                         cpHeight + mbHeight + tpWidth + i.top + i.bottom);
             }
         }
-        
+
         /**
          * Returns the minimum amount of space the layout needs.
          *
@@ -734,7 +727,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
          */
         public Dimension minimumLayoutSize(Container parent) {
             boolean isVertical = isVertical(parent);
-            
+
             Dimension cpd, mbd, tpd;
             int cpWidth = 0;
             int cpHeight = 0;
@@ -744,8 +737,8 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             int tpHeight = 0;
             Insets i = parent.getInsets();
             JRootPane root = (JRootPane) parent;
-            
-            if(root.getContentPane() != null) {
+
+            if (root.getContentPane() != null) {
                 cpd = root.getContentPane().getMinimumSize();
             } else {
                 cpd = root.getSize();
@@ -754,8 +747,8 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 cpWidth = cpd.width;
                 cpHeight = cpd.height;
             }
-            
-            if(root.getJMenuBar() != null) {
+
+            if (root.getJMenuBar() != null) {
                 mbd = root.getJMenuBar().getMinimumSize();
                 if (mbd != null) {
                     mbWidth = mbd.width;
@@ -764,8 +757,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             }
             if (root.getWindowDecorationStyle() != JRootPane.NONE &&
                     (root.getUI() instanceof Quaqua14RootPaneUI)) {
-                JComponent titlePane = ((Quaqua14RootPaneUI)root.getUI()).
-                        getTitlePane();
+                JComponent titlePane = ((Quaqua14RootPaneUI) root.getUI()).getTitlePane();
                 if (titlePane != null) {
                     tpd = titlePane.getMinimumSize();
                     if (tpd != null) {
@@ -774,18 +766,17 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                     }
                 }
             }
-            
+
             if (isVertical) {
                 return new Dimension(
                         Math.max(cpWidth, mbWidth) + tpWidth + i.left + i.right,
-                        Math.max(cpHeight + mbHeight, tpHeight) + i.top + i.bottom
-                        );
+                        Math.max(cpHeight + mbHeight, tpHeight) + i.top + i.bottom);
             } else {
                 return new Dimension(Math.max(Math.max(cpWidth, mbWidth), tpWidth) + i.left + i.right,
                         cpHeight + mbHeight + tpWidth + i.top + i.bottom);
             }
         }
-        
+
         /**
          * Returns the maximum amount of space the layout can use.
          *
@@ -794,7 +785,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
          */
         public Dimension maximumLayoutSize(Container target) {
             boolean isVertical = isVertical(target);
-            
+
             Dimension cpd, mbd, tpd;
             int cpWidth = Integer.MAX_VALUE;
             int cpHeight = Integer.MAX_VALUE;
@@ -804,27 +795,26 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             int tpHeight = Integer.MAX_VALUE;
             Insets i = target.getInsets();
             JRootPane root = (JRootPane) target;
-            
-            if(root.getContentPane() != null) {
+
+            if (root.getContentPane() != null) {
                 cpd = root.getContentPane().getMaximumSize();
                 if (cpd != null) {
                     cpWidth = cpd.width;
                     cpHeight = cpd.height;
                 }
             }
-            
-            if(root.getJMenuBar() != null) {
+
+            if (root.getJMenuBar() != null) {
                 mbd = root.getJMenuBar().getMaximumSize();
                 if (mbd != null) {
                     mbWidth = mbd.width;
                     mbHeight = mbd.height;
                 }
             }
-            
+
             if (root.getWindowDecorationStyle() != JRootPane.NONE &&
                     (root.getUI() instanceof Quaqua14RootPaneUI)) {
-                JComponent titlePane = ((Quaqua14RootPaneUI)root.getUI()).
-                        getTitlePane();
+                JComponent titlePane = ((Quaqua14RootPaneUI) root.getUI()).getTitlePane();
                 if (titlePane != null) {
                     tpd = titlePane.getMaximumSize();
                     if (tpd != null) {
@@ -833,24 +823,24 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                     }
                 }
             }
-            
+
             int maxHeight = Math.max(Math.max(cpHeight, mbHeight), tpHeight);
-            
+
             // Only overflows if 3 real non-MAX_VALUE heights, sum to > MAX_VALUE
             // Only will happen if sums to more than 2 billion units.  Not likely.
             if (maxHeight != Integer.MAX_VALUE) {
                 maxHeight = cpHeight + mbHeight + tpHeight + i.top + i.bottom;
             }
-            
+
             int maxWidth = Math.max(Math.max(cpWidth, mbWidth), tpWidth);
             // Similar overflow comment as above
             if (maxWidth != Integer.MAX_VALUE) {
                 maxWidth += i.left + i.right;
             }
-            
+
             return new Dimension(maxWidth, maxHeight);
         }
-        
+
         /**
          * Instructs the layout manager to perform the layout for the specified
          * container.
@@ -859,7 +849,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
          */
         public void layoutContainer(Container parent) {
             boolean isVertical = isVertical(parent);
-            
+
             JRootPane root = (JRootPane) parent;
             Rectangle b = root.getBounds();
             Insets i = root.getInsets();
@@ -867,19 +857,18 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             int nextX = 0;
             int w = b.width - i.right - i.left;
             int h = b.height - i.top - i.bottom;
-            
-            if(root.getLayeredPane() != null) {
+
+            if (root.getLayeredPane() != null) {
                 root.getLayeredPane().setBounds(i.left, i.top, w, h);
             }
-            if(root.getGlassPane() != null) {
+            if (root.getGlassPane() != null) {
                 root.getGlassPane().setBounds(i.left, i.top, w, h);
             }
             // Note: This is laying out the children in the layeredPane,
             // technically, these are not our children.
             if (root.getWindowDecorationStyle() != JRootPane.NONE &&
                     (root.getUI() instanceof Quaqua14RootPaneUI)) {
-                JComponent titlePane = ((Quaqua14RootPaneUI)root.getUI()).
-                        getTitlePane();
+                JComponent titlePane = ((Quaqua14RootPaneUI) root.getUI()).getTitlePane();
                 if (titlePane != null) {
                     Dimension tpd = titlePane.getPreferredSize();
                     if (tpd != null) {
@@ -895,117 +884,119 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                     }
                 }
             }
-            if(root.getJMenuBar() != null) {
+            if (root.getJMenuBar() != null) {
                 Dimension mbd = root.getJMenuBar().getPreferredSize();
                 root.getJMenuBar().setBounds(nextX, nextY, w - nextX, mbd.height);
                 nextY += mbd.height;
             }
-            if(root.getContentPane() != null) {
+            if (root.getContentPane() != null) {
                 Dimension cpd = root.getContentPane().getPreferredSize();
                 root.getContentPane().setBounds(nextX, nextY, w - nextX,
                         h < nextY ? 0 : h - nextY);
             }
         }
-        
-        public void addLayoutComponent(String name, Component comp) {}
-        public void removeLayoutComponent(Component comp) {}
-        public void addLayoutComponent(Component comp, Object constraints) {}
-        public float getLayoutAlignmentX(Container target) { return 0.0f; }
-        public float getLayoutAlignmentY(Container target) { return 0.0f; }
-        public void invalidateLayout(Container target) {}
+
+        public void addLayoutComponent(String name, Component comp) {
+        }
+
+        public void removeLayoutComponent(Component comp) {
+        }
+
+        public void addLayoutComponent(Component comp, Object constraints) {
+        }
+
+        public float getLayoutAlignmentX(Container target) {
+            return 0.0f;
+        }
+
+        public float getLayoutAlignmentY(Container target) {
+            return 0.0f;
+        }
+
+        public void invalidateLayout(Container target) {
+        }
     }
-    
-    
+
     /**
      * MouseInputHandler is responsible for handling resize/moving of
      * the Window. It sets the cursor directly on the Window when then
      * mouse moves over a hot spot.
      */
     private class MouseInputHandler implements MouseInputListener {
+
         /**
          * Set to true if the drag operation is moving the window.
          */
         private boolean isMovingWindow;
-        
         /**
          * Used to determine the corner the resize is occuring from.
          */
         private int dragCursor;
-        
         /**
          * X location the mouse went down on for a drag operation.
          */
         private int dragOffsetX;
-        
         /**
          * Y location the mouse went down on for a drag operation.
          */
         private int dragOffsetY;
-        
         /**
          * Width of the window when the drag started.
          */
         private int dragWidth;
-        
         /**
          * Height of the window when the drag started.
          */
         private int dragHeight;
-        
         /**
          * We cache the screen bounds here, so that we don't have to retrieve
          * them for each mouseDragged event. We clear the cache on mouseReleased.
          */
         private Rectangle cachedScreenBounds;
-        
-        
+
         public void mousePressed(MouseEvent ev) {
             JRootPane rootPane = getRootPane();
-            
+
             if (rootPane.getWindowDecorationStyle() == JRootPane.NONE) {
                 return;
             }
             Point dragWindowOffset = ev.getPoint();
-            Window w = (Window)ev.getSource();
+            Window w = (Window) ev.getSource();
             if (w != null) {
                 w.toFront();
             }
             Point convertedDragWindowOffset = SwingUtilities.convertPoint(
                     w, dragWindowOffset, getTitlePane());
-            
+
             Frame f = null;
             Dialog d = null;
-            
+
             if (w instanceof Frame) {
-                f = (Frame)w;
+                f = (Frame) w;
             } else if (w instanceof Dialog) {
-                d = (Dialog)w;
+                d = (Dialog) w;
             }
-            
+
             int frameState = (f != null) ? f.getExtendedState() : 0;
-            
+
             if (getTitlePane() != null &&
                     getTitlePane().contains(convertedDragWindowOffset)) {
-                if (f != null && ((frameState & Frame.MAXIMIZED_BOTH) == 0)
-                || (d != null)) {
+                if (f != null && ((frameState & Frame.MAXIMIZED_BOTH) == 0) || (d != null)) {
                     isMovingWindow = true;
                     dragOffsetX = dragWindowOffset.x;
                     dragOffsetY = dragWindowOffset.y;
                 }
-            } else if (f != null && f.isResizable()
-            && ((frameState & Frame.MAXIMIZED_BOTH) == 0)
-            || (d != null && d.isResizable())) {
+            } else if (f != null && f.isResizable() && ((frameState & Frame.MAXIMIZED_BOTH) == 0) || (d != null && d.isResizable())) {
                 dragOffsetX = dragWindowOffset.x;
                 dragOffsetY = dragWindowOffset.y;
                 dragWidth = w.getWidth();
                 dragHeight = w.getHeight();
                 dragCursor =
                         (dragWindowOffset.x >= dragWidth - BORDER_DRAG_THICKNESS &&
-                        dragWindowOffset.y >= dragHeight - BORDER_DRAG_THICKNESS) ?
-                            Cursor.SE_RESIZE_CURSOR : 0;
+                        dragWindowOffset.y >= dragHeight - BORDER_DRAG_THICKNESS) ? Cursor.SE_RESIZE_CURSOR : 0;
             }
         }
-        
+
         public void mouseReleased(MouseEvent ev) {
             if (dragCursor != 0 && window != null && !window.isValid()) {
                 // Some Window systems validate as you resize, others won't,
@@ -1017,10 +1008,10 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             dragCursor = 0;
             cachedScreenBounds = null;
         }
-        
+
         public void mouseMoved(MouseEvent ev) {
         }
-        
+
         private void adjust(Rectangle bounds, Dimension min, int deltaX,
                 int deltaY, int deltaWidth, int deltaHeight) {
             bounds.x += deltaX;
@@ -1044,138 +1035,142 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 }
             }
         }
-        
+
         public void mouseDragged(MouseEvent ev) {
-            Window w = (Window)ev.getSource();
+            Window w = (Window) ev.getSource();
             Point pt = ev.getPoint();
-            
+
             if (isMovingWindow) {
-                Point windowPt = w.getLocationOnScreen();
-                
-                windowPt.x += pt.x - dragOffsetX;
-                windowPt.y += pt.y - dragOffsetY;
-                
-                boolean isOnDefaultScreen =
-                        w.getGraphicsConfiguration().getDevice() ==
-                        GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
-                
-                // If an edge of the window is within the snap distance of the
-                // edge of another window, then align it to it.
-                // ----------------------------------------------------------
-                int snap = UIManager.getInt("RootPane.windowSnapDistance");
-                if (snap > 0 && (ev.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == 0) {
-                    // Collects all bounds to which we want to snap to
-                    LinkedList snapBounds = new LinkedList();
-                    // Collect window bounds
-                    for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext(); ) {
-                        JRootPane otherRootPane = (JRootPane) i.next();
-                        Window other = SwingUtilities.getWindowAncestor(otherRootPane);
-                        if (other != null && other.isShowing() && other != w) {
-                            snapBounds.add(other.getBounds());
+                // Sometimes we get mouse dragged events even when we are not
+                // showing on screen (?)
+                if (w.isShowing()) {
+                    Point windowPt = w.getLocationOnScreen();
+
+                    windowPt.x += pt.x - dragOffsetX;
+                    windowPt.y += pt.y - dragOffsetY;
+
+                    boolean isOnDefaultScreen =
+                            w.getGraphicsConfiguration().getDevice() ==
+                            GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice();
+
+                    // If an edge of the window is within the snap distance of the
+                    // edge of another window, then align it to it.
+                    // ----------------------------------------------------------
+                    int snap = UIManager.getInt("RootPane.windowSnapDistance");
+                    if (snap > 0 && (ev.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == 0) {
+                        // Collects all bounds to which we want to snap to
+                        LinkedList snapBounds = new LinkedList();
+                        // Collect window bounds
+                        for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext();) {
+                            JRootPane otherRootPane = (JRootPane) i.next();
+                            Window other = SwingUtilities.getWindowAncestor(otherRootPane);
+                            if (other != null && other.isShowing() && other != w) {
+                                snapBounds.add(other.getBounds());
+                            }
+                        }
+
+                        // Collect screen bounds
+                        snapBounds.add(w.getGraphicsConfiguration().getBounds());
+                        if (isOnDefaultScreen) {
+                            Rectangle r = w.getGraphicsConfiguration().getBounds();
+                            Insets insets = w.getToolkit().getScreenInsets(w.getGraphicsConfiguration());
+                            r.x += insets.left;
+                            r.y += insets.top;
+                            r.width -= insets.left + insets.right;
+                            r.height -= insets.top + insets.bottom;
+                            snapBounds.add(r);
+                        }
+
+                        Dimension windowDim = w.getSize();
+                        Rectangle windowRect = new Rectangle(windowPt.x, windowPt.y, windowDim.width, windowDim.height);
+                        Rectangle snapper = new Rectangle();
+                        for (Iterator i = snapBounds.iterator(); i.hasNext();) {
+                            Rectangle r = (Rectangle) i.next();
+
+                            snapper.setBounds(r);
+                            snapper.grow(snap, snap);
+                            if (snapper.intersects(windowRect)) {
+
+                                if (windowPt.x > r.x - snap &&
+                                        windowPt.x < r.x + snap) {
+                                    // align my left edge to frame left edge
+                                    windowPt.x = r.x;
+                                } else if (windowPt.x > r.x + r.width - snap &&
+                                        windowPt.x < r.x + r.width + snap) {
+                                    // align my left edge to frame right edge
+                                    windowPt.x = r.x + r.width;
+                                } else if (windowPt.x + windowDim.width > r.x - snap &&
+                                        windowPt.x + windowDim.width < r.x + snap) {
+                                    // align my right edge to frame left edge
+                                    windowPt.x = r.x - windowDim.width;
+                                } else if (windowPt.x + windowDim.width > r.x + r.width - snap &&
+                                        windowPt.x + windowDim.width < r.x + r.width + snap) {
+                                    // align my right edge to frame right edge
+                                    windowPt.x = r.x + r.width - windowDim.width;
+                                }
+                                if (windowPt.y > r.y - snap && windowPt.y < r.y + snap) {
+                                    // align my top edge to frame top edge
+                                    windowPt.y = r.y;
+                                } else if (windowPt.y > r.y + r.height - snap &&
+                                        windowPt.y < r.y + r.height + snap) {
+                                    // align my top edge to frame bottom edge
+                                    windowPt.y = r.y + r.height;
+                                } else if (windowPt.y + windowDim.height > r.y - snap &&
+                                        windowPt.y + windowDim.height < r.y + snap) {
+                                    // align my bottom edge to frame top edge
+                                    windowPt.y = r.y - windowDim.height;
+                                } else if (windowPt.y + windowDim.height > r.y + r.height - snap &&
+                                        windowPt.y + windowDim.height < r.y + r.height + snap) {
+                                    // align my bottom edge to frame bottom edge
+                                    windowPt.y = r.y + r.height - windowDim.height;
+                                }
+                            }
                         }
                     }
-                    
-                    // Collect screen bounds
-                    snapBounds.add(w.getGraphicsConfiguration().getBounds());
+                    // Constrain windowPt in order to ensure that a portion of the
+                    // title pane is always visible on screen
+                    // ----------------------------------------------------------
+                    // Get usable screen bounds
                     if (isOnDefaultScreen) {
-                        Rectangle r = w.getGraphicsConfiguration().getBounds();
-                        Insets insets = w.getToolkit().getScreenInsets(w.getGraphicsConfiguration());
-                        r.x += insets.left;
-                        r.y += insets.top;
-                        r.width -= insets.left + insets.right;
-                        r.height -= insets.top + insets.bottom;
-                        snapBounds.add(r);
-                    }
-                    
-                    Dimension windowDim = w.getSize();
-                    Rectangle windowRect = new Rectangle(windowPt.x, windowPt.y, windowDim.width, windowDim.height);
-                    Rectangle snapper = new Rectangle();
-                    for (Iterator i = snapBounds.iterator(); i.hasNext(); ) {
-                        Rectangle r = (Rectangle) i.next();
-                        
-                        snapper.setBounds(r);
-                        snapper.grow(snap, snap);
-                        if (snapper.intersects(windowRect)) {
-                            
-                            if (windowPt.x > r.x - snap &&
-                                    windowPt.x < r.x + snap) {
-                                // align my left edge to frame left edge
-                                windowPt.x = r.x;
-                            } else if (windowPt.x > r.x + r.width - snap &&
-                                    windowPt.x < r.x + r.width + snap) {
-                                // align my left edge to frame right edge
-                                windowPt.x = r.x + r.width;
-                            } else if (windowPt.x + windowDim.width > r.x - snap &&
-                                    windowPt.x + windowDim.width < r.x + snap) {
-                                // align my right edge to frame left edge
-                                windowPt.x = r.x - windowDim.width;
-                            } else if (windowPt.x + windowDim.width > r.x + r.width - snap &&
-                                    windowPt.x + windowDim.width < r.x + r.width + snap) {
-                                // align my right edge to frame right edge
-                                windowPt.x = r.x + r.width - windowDim.width;
-                            }
-                            if (windowPt.y > r.y - snap && windowPt.y < r.y + snap) {
-                                // align my top edge to frame top edge
-                                windowPt.y = r.y;
-                            } else if (windowPt.y > r.y + r.height - snap &&
-                                    windowPt.y < r.y + r.height + snap) {
-                                // align my top edge to frame bottom edge
-                                windowPt.y = r.y + r.height;
-                            } else if (windowPt.y + windowDim.height > r.y - snap &&
-                                    windowPt.y + windowDim.height < r.y + snap) {
-                                // align my bottom edge to frame top edge
-                                windowPt.y = r.y - windowDim.height;
-                            } else if (windowPt.y + windowDim.height > r.y + r.height - snap &&
-                                    windowPt.y + windowDim.height < r.y + r.height + snap) {
-                                // align my bottom edge to frame bottom edge
-                                windowPt.y = r.y + r.height - windowDim.height;
-                            }
+                        if (cachedScreenBounds == null) {
+                            cachedScreenBounds = w.getGraphicsConfiguration().getBounds();
+                            Insets screenInsets = w.getToolkit().getScreenInsets(w.getGraphicsConfiguration());
+                            cachedScreenBounds.x += screenInsets.left;
+                            cachedScreenBounds.y += screenInsets.top;
+                            cachedScreenBounds.width -= screenInsets.left + screenInsets.right;
+                            cachedScreenBounds.height -= screenInsets.top + screenInsets.bottom;
+                        }
+                        Rectangle titlePaneBounds = getTitlePane().getBounds();
+                        Dimension windowSize = window.getSize();
+
+                        if (isVertical(getRootPane())) {
+                            // For vertical title bar, title pane must be fully visible
+                            // on x-axis, and at least 20 pixel on y-axis.
+                            windowPt.x = Math.max(cachedScreenBounds.x + titlePaneBounds.x, windowPt.x);
+                            windowPt.x = Math.min(cachedScreenBounds.x + cachedScreenBounds.width -
+                                    titlePaneBounds.x - titlePaneBounds.width, windowPt.x);
+
+                            windowPt.y = Math.max(cachedScreenBounds.y - windowSize.height + 20, windowPt.y);
+                            windowPt.y = Math.min(cachedScreenBounds.y + cachedScreenBounds.height - 20, windowPt.y);
+
+                        } else {
+                            // For horizontal title bar, title pane must be fully visible
+                            // on y-axis, and at least 20 pixel on x-axis.
+                            windowPt.y = Math.max(cachedScreenBounds.y + titlePaneBounds.y, windowPt.y);
+                            windowPt.y = Math.min(cachedScreenBounds.y + cachedScreenBounds.height -
+                                    titlePaneBounds.y - titlePaneBounds.height, windowPt.y);
+
+                            windowPt.x = Math.max(cachedScreenBounds.x - windowSize.width + 20, windowPt.x);
+                            windowPt.x = Math.min(cachedScreenBounds.x + cachedScreenBounds.width - 20, windowPt.x);
                         }
                     }
+                    w.setLocation(windowPt);
                 }
-                // Constrain windowPt in order to ensure that a portion of the
-                // title pane is always visible on screen
-                // ----------------------------------------------------------
-                // Get usable screen bounds
-                if (isOnDefaultScreen) {
-                    if (cachedScreenBounds == null) {
-                        cachedScreenBounds = w.getGraphicsConfiguration().getBounds();
-                        Insets screenInsets =  w.getToolkit().getScreenInsets(w.getGraphicsConfiguration());
-                        cachedScreenBounds.x += screenInsets.left;
-                        cachedScreenBounds.y += screenInsets.top;
-                        cachedScreenBounds.width -= screenInsets.left + screenInsets.right;
-                        cachedScreenBounds.height -= screenInsets.top + screenInsets.bottom;
-                    }
-                    Rectangle titlePaneBounds = getTitlePane().getBounds();
-                    Dimension windowSize = window.getSize();
-                    
-                    if (isVertical(getRootPane())) {
-                        // For vertical title bar, title pane must be fully visible
-                        // on x-axis, and at least 20 pixel on y-axis.
-                        windowPt.x = Math.max(cachedScreenBounds.x + titlePaneBounds.x, windowPt.x);
-                        windowPt.x = Math.min(cachedScreenBounds.x + cachedScreenBounds.width -
-                                titlePaneBounds.x - titlePaneBounds.width, windowPt.x);
-                        
-                        windowPt.y = Math.max(cachedScreenBounds.y - windowSize.height + 20, windowPt.y);
-                        windowPt.y = Math.min(cachedScreenBounds.y + cachedScreenBounds.height - 20, windowPt.y);
-                        
-                    } else {
-                        // For horizontal title bar, title pane must be fully visible
-                        // on y-axis, and at least 20 pixel on x-axis.
-                        windowPt.y = Math.max(cachedScreenBounds.y + titlePaneBounds.y, windowPt.y);
-                        windowPt.y = Math.min(cachedScreenBounds.y + cachedScreenBounds.height -
-                                titlePaneBounds.y - titlePaneBounds.height, windowPt.y);
-                        
-                        windowPt.x = Math.max(cachedScreenBounds.x - windowSize.width + 20, windowPt.x);
-                        windowPt.x = Math.min(cachedScreenBounds.x + cachedScreenBounds.width - 20, windowPt.x);
-                    }
-                }
-                w.setLocation(windowPt);
             } else if (dragCursor != 0) {
                 Rectangle r = w.getBounds();
                 Rectangle startBounds = new Rectangle(r);
                 Dimension min = w.getMinimumSize();
-                
+
                 switch (dragCursor) {
                     case Cursor.E_RESIZE_CURSOR:
                         adjust(r, min, 0, 0, pt.x + (dragWidth - dragOffsetX) -
@@ -1186,7 +1181,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                                 r.height);
                         break;
                     case Cursor.N_RESIZE_CURSOR:
-                        adjust(r, min, 0, pt.y -dragOffsetY, 0,
+                        adjust(r, min, 0, pt.y - dragOffsetY, 0,
                                 -(pt.y - dragOffsetY));
                         break;
                     case Cursor.W_RESIZE_CURSOR:
@@ -1229,31 +1224,31 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 }
             }
         }
-        
+
         public void mouseEntered(MouseEvent ev) {
-            Window w = (Window)ev.getSource();
+            Window w = (Window) ev.getSource();
             lastCursor = w.getCursor();
             mouseMoved(ev);
         }
-        
+
         public void mouseExited(MouseEvent ev) {
-            Window w = (Window)ev.getSource();
+            Window w = (Window) ev.getSource();
             w.setCursor(lastCursor);
         }
-        
+
         public void mouseClicked(MouseEvent ev) {
-            Window w = (Window)ev.getSource();
+            Window w = (Window) ev.getSource();
             Frame f = null;
-            
+
             if (w instanceof Frame) {
-                f = (Frame)w;
+                f = (Frame) w;
             } else {
                 return;
             }
-            
+
             Point convertedPoint = SwingUtilities.convertPoint(
                     w, ev.getPoint(), getTitlePane());
-            
+
             int state = f.getExtendedState();
             if (getTitlePane() != null &&
                     getTitlePane().contains(convertedPoint)) {
@@ -1270,6 +1265,5 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 }
             }
         }
-        
     }
 }
