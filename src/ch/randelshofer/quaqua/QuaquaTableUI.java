@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTableUI.java  1.9.2  2008-06-22
+ * @(#)QuaquaTableUI.java  1.9.3  2008-07-06
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -33,7 +33,9 @@ import javax.swing.text.*;
  * QuaquaTableUI.
  *
  * @author  Werner Randelshofer
- * @version 1.9.2 2008-06-22 Selection foreground color must be set to 
+ * @version 1.9.3 2008-07-06 Java 1.4 incorrectly reports button 3 pressed when
+ * the user presses the meta key.
+ * <br>1.9.2 2008-06-22 Selection foreground color must be set to 
  * inactive (=black) when the current cell is not selected, otherwise we get
  * white text on white background.
  * <br>1.9.1 2008-05-31 Moved all code related to InactivateableColorUIResource
@@ -490,12 +492,15 @@ public class QuaquaTableUI extends BasicTableUI
         Color background = UIManager.getColor("Table.selectionBackground");
         Color foreground = UIManager.getColor("Table.selectionForeground");
         if (background instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) background).setActive(isFocused && table.getRowSelectionAllowed());
+            ((InactivatableColorUIResource) background).setActive(isFocused && 
+                    (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
         }
         if (foreground instanceof InactivatableColorUIResource) {
             // Note: We must draw with inactive color, if the current cell is not selected
             //       Otherwise, we get white text on white background.
-            ((InactivatableColorUIResource) foreground).setActive(isFocused && table.getRowSelectionAllowed() && table.isCellSelected(row, column));
+            ((InactivatableColorUIResource) foreground).setActive(isFocused && 
+                    (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()) &&
+                    table.isCellSelected(row, column));
         }
 
         Dimension spacing = table.getIntercellSpacing();
@@ -829,8 +834,10 @@ public class QuaquaTableUI extends BasicTableUI
                     // selected, and the user triggers the popup menu.
                 } else {
                     int anchorIndex = table.getSelectionModel().getAnchorSelectionIndex();
-
-                    if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
+                    // Workaround: Java 1.4 incorrectly reports mouse button 3 down when the Meta-Key is pressed
+                    String javaVersion = System.getProperty("java.version");
+                    if (javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK)) == MouseEvent.META_DOWN_MASK
+                    || ! javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
                         // toggle the selection
                         table.changeSelection(row, column, true, false);
                         toggledRow = row;

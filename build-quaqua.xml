@@ -11,11 +11,10 @@
         <property name="author" value="Werner Randelshofer"/>
         <property name="version" value="5.0.0alpha 2008-05-10"/>
         <property name="lib" value="lib"/>
-        <property name="exampleslib" value="examples"/>
-        <property name="docdir" value="javadoc"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
+        <property name="docdir" value="${distdir}/javadoc"/>
         <property name="swinglayout" value="${distdir}/swing-layout.jar"/>
         <property name="classpath" value="${builddir}:/System/Library/Java/"/>
         <!-- To use e.g. Jikes, uncomment this line. -->

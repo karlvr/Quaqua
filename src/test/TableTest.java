@@ -13,6 +13,7 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -48,11 +49,11 @@ public class TableTest extends javax.swing.JPanel {
             data = new Object[6][columnClasses.length];
             for (int i = 0; i < data.length; i++) {
                 data[i][0] = Boolean.TRUE;
-                data[i][1] = "Fooing In The Wind";
-                data[i][2] = "3:51";
-                data[i][3] = "Foo Guy";
-                data[i][4] = "Pop";
-                data[i][5] = new Integer(2007);
+                data[i][1] = (i%2==0) ? "Fooing In The Wind" : "Baring The Sea";
+                data[i][2] = (i%2==0) ? "3:51" : "3:42";
+                data[i][3] = (i%2==0) ? "Foo Guy" : "Bar Girl";
+                data[i][4] = (i%2==0) ? "Pop" : "Rock";
+                data[i][5] = (i%2==0) ? new Integer(2007) : new Integer(2008);
             }
         }
 
@@ -160,6 +161,9 @@ plainTable.setRowSelectionAllowed(true);
 
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
         showVerticalLinesCheckBox.setSelected(plainTable.getShowVerticalLines());
+        
+        // J2SE6 only
+        Methods.invokeIfExists(plainTable, "setAutoCreateRowSorter", true);
     }
 
     public static void main(String args[]) {
