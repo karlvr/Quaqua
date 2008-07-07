@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaSliderUI.java  2.0  2007-12-02
+ * @(#)QuaquaSliderUI.java  2.0.1  2008-07-07
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -27,7 +27,9 @@ import javax.swing.plaf.basic.*;
  * QuaquaSliderUI.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2007-12-02 Rewritten.
+ * @version 2.0.1 2008-07-07 Determine whether to request focus on mouse pressed
+ * from the UIManager. 
+ * <br>2.0 2007-12-02 Rewritten.
  * <br>1.0 December 9, 2005 Created.
  */
 public class QuaquaSliderUI extends BasicSliderUI
@@ -54,6 +56,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         super.installDefaults(slider);
                 
         focusInsets = getVisualMargin(slider);
+        slider.setRequestFocusEnabled(QuaquaManager.getBoolean("Slider.requestFocusEnabled"));
     }
 
     protected void uninstallListeners(JSlider slider) {
@@ -636,7 +639,7 @@ public class QuaquaSliderUI extends BasicSliderUI
 
             currentMouseX = e.getX();
             currentMouseY = e.getY();
-
+            
             if (slider.isRequestFocusEnabled()) {
                 slider.requestFocus();
             }

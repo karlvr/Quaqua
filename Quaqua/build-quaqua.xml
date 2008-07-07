@@ -101,6 +101,7 @@
         </copy>
      </target>
     <target depends="init" name="jnilib-32">
+        <mkdir dir="${distdir}"/>
         <exec executable="cc" failonerror="true" >
         <!-- Overall Options. 
              For a full description see:
@@ -186,6 +187,7 @@
         </exec>
     </target>
     <target depends="init" name="jnilib-64">
+        <mkdir dir="${distdir}"/>
         <exec executable="cc" failonerror="true" >
         <!-- Overall Options. 
              For a full description see:
