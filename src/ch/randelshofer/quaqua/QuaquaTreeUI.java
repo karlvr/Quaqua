@@ -14,15 +14,12 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
-import java.awt.datatransfer.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.beans.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.tree.*;
@@ -670,7 +667,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             Rectangle bounds = null;
             Rectangle boundsBuffer = new Rectangle();
             boolean rootVisible = isRootVisible();
-            int rwidth = width - insets.left - insets.left;
+            int rwidth = width - insets.right - insets.left;
 
             // Draw the alternating row colors
             //*****
