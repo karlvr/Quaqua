@@ -36,7 +36,7 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
         if (QuaquaUtilities.isFocused(c)) {
             // top line: 0x4580c8
             g.setColor(new Color(0x4580c8));
-            g.fillRect(0, y, width, 1);
+            g.fillRect(x, y, width, 1);
             g.setPaint(new GradientPaint(
                     x, y + 1, new Color(0x5c93d5),
                     x, y + height - 1, new Color(0x1a58ad),
@@ -46,7 +46,7 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
             if (QuaquaUtilities.isOnActiveWindow(c)) {
                 // top line: 0x91a0c0
             g.setColor(new Color(0x91a0c0));
-            g.fillRect(0, y, width, 1);
+            g.fillRect(x, y, width, 1);
                 g.setPaint(new GradientPaint(
                         x, y + 1,new Color(0xa9b1d0),
                         x, y + height - 1,new Color(0x6e81a9),
@@ -56,7 +56,7 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
             } else {
                 // top line: 0x979797
             g.setColor(new Color(0x979797));
-            g.fillRect(0, y, width, 1);
+            g.fillRect(x, y, width, 1);
                 g.setPaint(new GradientPaint(
                         x, y + 1,new Color(0xb4b4b4),
                         x, y + height - 1,new Color(0x8a8a8a)
