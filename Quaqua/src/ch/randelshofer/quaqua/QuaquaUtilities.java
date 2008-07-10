@@ -114,7 +114,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @since 1.4
      */
     public static void drawStringUnderlineCharAt(Graphics g, String text,
-            int underlinedIndex, int x, int y) {
+            int underlinedIndex, int x, int y) {        
         g.drawString(text, x, y);
         if (underlinedIndex >= 0 && underlinedIndex < text.length()) {
             FontMetrics fm = g.getFontMetrics();

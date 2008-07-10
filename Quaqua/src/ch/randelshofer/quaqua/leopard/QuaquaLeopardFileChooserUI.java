@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.2.7  2008-05-01
+ * @(#)QuaquaLeopardFileChooserUI.java  1.2.8  2008-07-10
  *
  * Copyright (c) 2007-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -42,7 +42,8 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.2.7 2008-05-01 Fixed NullPointerException in maybeApproveSelection
+ * @version 1.2.8 2007-07-10 Sidebar was not rendered with the correct font. 
+ * <br>1.2.7 2008-05-01 Fixed NullPointerException in maybeApproveSelection
  * method and doDirectoryChanged method.
  * <br>1.2.6 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
  * with null arguments. 
@@ -1423,7 +1424,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
         public void setFont(Font newValue) {
             font = newValue;
-        }
+            
+            // we still need to call super, in order to ensure that
+            // all instance variables of the label are updated properly
+            super.setFont(newValue);
+        }        
 
         public Font getFont() {
             return font;
@@ -1511,7 +1516,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }*/
             super.paintComponent(g);
         }
-
+        
         public Component getTreeCellRendererComponent(
                 JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,

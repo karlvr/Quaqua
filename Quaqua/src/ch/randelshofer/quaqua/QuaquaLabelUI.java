@@ -110,6 +110,8 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
     protected void paintDisabledText(JLabel l, Graphics g, String s, int textX, int textY) {
         Color c = UIManager.getColor("Label.disabledForeground");
         g.setColor((c != null) ? c : l.getForeground());
+        // Make sure we render with the font of the JLabel
+        g.setFont(l.getFont());
 
         int accChar = -1; //l.getDisplayedMnemonicIndex();
 
@@ -120,6 +122,9 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
     protected void paintEnabledText(JLabel l, Graphics g, String s, int textX, int textY) {
         int mnemIndex = l.getDisplayedMnemonicIndex();
 
+        // Make sure we render with the font of the JLabel
+        g.setFont(l.getFont());
+        
         String style = (String) l.getClientProperty("Quaqua.Label.style");
         if (style != null) {
             if (style.equals("emboss") &&
@@ -133,7 +138,6 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY + 1);
             }
         }
-
         g.setColor(l.getForeground());
         QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY);
     //SwingUtilities2.drawStringUnderlineCharAt(l, g, s, mnemIndex,

@@ -1,5 +1,5 @@
 /*
- * @(#)AliasFileSystemTreeModel.java  1.21.5 2008-06-01
+ * @(#)AliasFileSystemTreeModel.java  1.21.6 2008-07-10
  *
  * Copyright (c) 2003-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -31,7 +31,10 @@ import javax.swing.filechooser.*;
  * asynchronously to the AWT Event Dispatcher thread.
  *
  * @author Werner Randelshofer
- * @version 1.21.5 2008-06-01 Don't fire treeChanged events for nodes which
+ * @version 1.21.6 2008-07-10 DirectoryValidator must determine indices of
+ * new/changed/deleted nodes on the event dispatcher thread, otherwise the
+ * indices may become obsolete before the tree events are fired.
+ * <br>1.21.5 2008-06-01 Don't fire treeChanged events for nodes which
  * are not part of the tree. 
  * <br>1.21.4 2008-05-01 Fixed NPE in method toPath. 
  * <br>1.21.3 2008-04-27 Fixed NPE in method invalidatePath. 
@@ -1231,12 +1234,14 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 final boolean exists = file != null && file.exists();
 
                 // The updating algorithm is split up into two steps.
-                // Step 1 does the I/O intensive part. It is done on the worker
+                // Phase 1 does the I/O intensive part. It is done on the worker
                 // thread.
-                // Step 2 updates the contents of the tree and informs the listeners.
+                // Phase 2 updates the contents of the tree and informs the listeners.
                 // It is done on the AWT event dispatcher thread.
 
-                // Step 1: I/O intensive part of reading a directory and merging
+                // Phase 1: I/O intensive part.
+
+                // Step 1.1: I/O intensive part of reading a directory and merging
                 //         the freshly read list of files with the existing
                 //         children of the tree.
                 //         The result of this step are as follows:
@@ -1254,7 +1259,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 //                          (instance variable "children").
 
                 // Step 1.1 Fetch fresh files
-                File[] freshFiles;
+                final File[] freshFiles;
                 if (exists) {
                     freshFiles = getFiles();
                 } else {
@@ -1319,7 +1324,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         }
                     }
                 }
-                Node[] freshNodes = (Node[]) freshNodeList.toArray(new Node[freshNodeList.size()]);
+                final Node[] freshNodes = (Node[]) freshNodeList.toArray(new Node[freshNodeList.size()]);
                 if (this != validator) {
                     return;
                 }
@@ -1330,73 +1335,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
                     return;
                 }
 
-                // Step 1.4 Merge the fresh nodes with the old nodes
-                final ArrayList mergedChildren = new ArrayList(freshFiles.length);
-                final LinkedList newChildren = new LinkedList();
-                final int[] newChildIndices = new int[freshFiles.length];
-                final LinkedList deletedChildren = new LinkedList();
-                final int[] deletedChildIndices = new int[getChildCount()];
 
-                int freshIndex, oldIndex, mergeIndex, comparison;
-                Node[] oldNodes = (children == null) ? new Node[0] : (Node[]) children.toArray(new Node[children.size()]);
-
-                int count = freshNodes.length + oldNodes.length;
-                freshIndex = 0;
-                oldIndex = 0;
-                mergeIndex = 0;
-                int lastFreshIndex = -1;
-                File resolvedFreshFile = null;
-                Comparator comparator = getNodeComparator();
-                for (int i = 0; i < count; i++) {
-                    if (freshIndex >= freshNodes.length) {
-                        comparison = (oldIndex >= oldNodes.length) ? 0 : 1;
-                    } else if (oldIndex >= oldNodes.length) {
-                        comparison = -1;
-                    } else {
-                        //comparison = freshNodes[freshIndex].getCollationKey()
-                        //.compareTo(oldNodes[oldIndex].getCollationKey());
-                        comparison = comparator.compare(freshNodes[freshIndex], oldNodes[oldIndex]);
-
-                        // This little trick is necessary to handle the special case,
-                        // when a file gets replaced by a directory of the same name
-                        // or vice versa.
-                        if (comparison == 0) {
-                            if (freshNodes[freshIndex].isLeaf() != oldNodes[oldIndex].isLeaf()) {
-                                comparison = -1;
-                            }
-                        }
-                    }
-
-                    if (comparison < 0) {
-                        newChildIndices[newChildren.size()] = mergeIndex;
-                        Node newNode = freshNodes[freshIndex];
-                        newNode.parent = DirectoryNode.this; // Link new child, this saves a loop in STEP 2
-                        newChildren.add(newNode);
-                        mergedChildren.add(newNode);
-                        freshIndex++;
-                        mergeIndex++;
-                    } else if (comparison == 0) {
-                        if (oldIndex < oldNodes.length) {
-                            Node oldNode = oldNodes[oldIndex];
-                            if (!doItFast) {
-                                oldNode.invalidateInfo();
-                            }
-                            mergedChildren.add(oldNode);
-                        }
-                        oldIndex++;
-                        freshIndex++;
-                        mergeIndex++;
-                    } else {
-                        deletedChildIndices[deletedChildren.size()] = mergeIndex + deletedChildren.size() - newChildren.size();
-                        deletedChildren.add(oldNodes[oldIndex]);
-                        oldIndex++;
-                    }
-                }
-                if (this != validator) {
-                    return;
-                }
-
-                // Step 2: Thread sensitive part of the merging.
+                // Phase 2: Thread sensitive part of the merging.
                 //         We update the contents of the tree model and inform our
                 //         listeners. This has to be done on the AWT thread.
                 //         Since we do some part of the updating in a worker thread,
@@ -1411,6 +1351,70 @@ public class AliasFileSystemTreeModel implements TreeModel {
                             return;
                         }
 
+                        // Step 2.1 Merge the fresh nodes with the old nodes
+                        ArrayList mergedChildren = new ArrayList(freshFiles.length);
+                        LinkedList newChildren = new LinkedList();
+                        int[] newChildIndices = new int[freshFiles.length];
+                        LinkedList deletedChildren = new LinkedList();
+                        int[] deletedChildIndices = new int[getChildCount()];
+
+                        int freshIndex, oldIndex, mergeIndex, comparison;
+                        Node[] oldNodes = (children == null) ? new Node[0] : (Node[]) children.toArray(new Node[children.size()]);
+
+                        int count = freshNodes.length + oldNodes.length;
+                        freshIndex = 0;
+                        oldIndex = 0;
+                        mergeIndex = 0;
+                        int lastFreshIndex = -1;
+                        File resolvedFreshFile = null;
+                        Comparator comparator = getNodeComparator();
+                        for (int i = 0; i < count; i++) {
+                            if (freshIndex >= freshNodes.length) {
+                                comparison = (oldIndex >= oldNodes.length) ? 0 : 1;
+                            } else if (oldIndex >= oldNodes.length) {
+                                comparison = -1;
+                            } else {
+                                //comparison = freshNodes[freshIndex].getCollationKey()
+                                //.compareTo(oldNodes[oldIndex].getCollationKey());
+                                comparison = comparator.compare(freshNodes[freshIndex], oldNodes[oldIndex]);
+
+                                // This little trick is necessary to handle the special case,
+                                // when a file gets replaced by a directory of the same name
+                                // or vice versa.
+                                if (comparison == 0) {
+                                    if (freshNodes[freshIndex].isLeaf() != oldNodes[oldIndex].isLeaf()) {
+                                        comparison = -1;
+                                    }
+                                }
+                            }
+
+                            if (comparison < 0) {
+                                newChildIndices[newChildren.size()] = mergeIndex;
+                                Node newNode = freshNodes[freshIndex];
+                                newNode.parent = DirectoryNode.this; // Link new child, this saves a loop in STEP 2
+                                newChildren.add(newNode);
+                                mergedChildren.add(newNode);
+                                freshIndex++;
+                                mergeIndex++;
+                            } else if (comparison == 0) {
+                                if (oldIndex < oldNodes.length) {
+                                    Node oldNode = oldNodes[oldIndex];
+                                    if (!doItFast) {
+                                        oldNode.invalidateInfo();
+                                    }
+                                    mergedChildren.add(oldNode);
+                                }
+                                oldIndex++;
+                                freshIndex++;
+                                mergeIndex++;
+                            } else {
+                                deletedChildIndices[deletedChildren.size()] = mergeIndex + deletedChildren.size() - newChildren.size();
+                                deletedChildren.add(oldNodes[oldIndex]);
+                                oldIndex++;
+                            }
+                        }
+
+                        // Step 2.2:
                         // If the directory denoted by this Node does not exist,
                         // we lazily refresh our parent node.
                         if (!exists) {
@@ -1848,7 +1852,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         resolver = null;
                         // only fire events, if we are still part of the tree
                         if (getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
-                        fireTreeNodeChanged(AliasDirectoryNode.this);
+                            fireTreeNodeChanged(AliasDirectoryNode.this);
                         }
                     }
                 };
