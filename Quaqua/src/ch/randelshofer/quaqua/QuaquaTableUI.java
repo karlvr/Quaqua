@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTableUI.java  1.9.3  2008-07-06
+ * @(#)QuaquaTableUI.java  1.10  2008-07-15
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -33,7 +33,9 @@ import javax.swing.text.*;
  * QuaquaTableUI.
  *
  * @author  Werner Randelshofer
- * @version 1.9.3 2008-07-06 Java 1.4 incorrectly reports button 3 pressed when
+ * @version 1.10 2008-07-15 System property "Quaqua.Table.useJ2SE5MouseHandler"
+ * enforces use of J2SE5 mouse handler for J2SE6.
+ * <br>1.9.3 2008-07-06 Java 1.4 incorrectly reports button 3 pressed when
  * the user presses the meta key.
  * <br>1.9.2 2008-06-22 Selection foreground color must be set to 
  * inactive (=black) when the current cell is not selected, otherwise we get
@@ -565,11 +567,12 @@ public class QuaquaTableUI extends BasicTableUI
      * Creates the mouse listener for the JTable.
      */
     protected MouseInputListener createMouseInputListener() {
-        // Compatibility with SoyLatte: 
+        // FIXME - We haven't yet implemented a mouse handler for J2SE6. 
         // Only use our own mouse listener on Java 1.4 and 1.5,
         // it does not work with J2SE6.
-        if (System.getProperty("java.version").startsWith("1.4") ||
-                System.getProperty("java.version").startsWith("1.5")) {
+        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler","false").equals("true") ||
+                QuaquaManager.getProperty("java.version").startsWith("1.4") ||
+                QuaquaManager.getProperty("java.version").startsWith("1.5")) {
             return new MouseHandler();
         } else {
             return super.createMouseInputListener();
