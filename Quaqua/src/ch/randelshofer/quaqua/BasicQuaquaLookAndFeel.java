@@ -1,5 +1,5 @@
 /*
- * @(#)BasicQuaquaLookAndFeel.java  2.1  2008-05-31
+ * @(#)BasicQuaquaLookAndFeel.java  2.2  2008-07-18
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -31,7 +31,8 @@ import java.security.*;
  * commonly uses by all the specific QuaquaLookAndFeel incarnations.
  *
  * @author  Werner Randelshofer
- * @version 2.1 2008-05-31 Use InactivatableColorUIResource for Tree and
+ * @version 2.2 2008-07-18 Added size handle icon for Browser. 
+ * <br>2.1 2008-05-31 Use InactivatableColorUIResource for Tree and
  * Table selection colors just like for List selection color.
  * <br>2.0 2008-08-10 Renamed font properties from logicalFontName to 
  * Component.logicalFontName.
@@ -1568,6 +1569,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Browser.selectedExpandingIcon", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{commonDir + "Browser.disclosureIcons.png", four, Boolean.TRUE, three}),
+            "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue(
+            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+            new Object[]{commonDir + "Browser.sizeHandleIcon.png", one, Boolean.TRUE, one}),
             //"Button.actionMap", ...,
             "Button.border", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder", new Object[]{"push"}),

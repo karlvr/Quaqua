@@ -1,7 +1,7 @@
 /*
- * @(#)BrowserUI.java  1.0  August 25, 2005
+ * @(#)BrowserUI.java  2.0  2008-07-18
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -20,7 +20,8 @@ import javax.swing.plaf.*;
  * BrowserUI.
  *
  * @author  Werner Randelshofer
- * @version 1.0 August 25, 2005 Created.
+ * @version 2.0 2008-07-18 Added size handle icon. 
+ * <br>1.0 August 25, 2005 Created.
  */
 public class BrowserUI extends ComponentUI {
     
@@ -30,4 +31,8 @@ public class BrowserUI extends ComponentUI {
     public BrowserUI() {
     }
     
+    public Icon getSizeHandleIcon() {
+        return null;
+    }
+
 }

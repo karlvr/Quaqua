@@ -1,5 +1,5 @@
 /*
- * @(#)BasicBrowserUI.java  2.0  2008-03-21
+ * @(#)BasicBrowserUI.java  3.0  2008-07-18
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -25,12 +25,14 @@ import javax.swing.tree.*;
  * BasicBrowserUI.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-03-21 Support for datatransfer added. 
+ * @version 3.0 2008-07-18 Added size handle icon. 
+ * <br>2.0 2008-03-21 Support for datatransfer added. 
  * <br>1.0 August 27, 2005 Created.
  */
 public class BasicBrowserUI extends BrowserUI {
 
     protected JBrowser browser;
+    public Icon sizeHandleIcon;
 
     /**
      * Creates a new instance.
@@ -43,6 +45,7 @@ public class BasicBrowserUI extends BrowserUI {
     //
     public void installUI(JComponent c) {
         c.setBackground(UIManager.getColor("List.background"));
+        sizeHandleIcon = new ImageIcon(getClass().getResource("images/Browser.sizeHandleIcon.png"));
 
         browser = (JBrowser) c;
         installDefaults();
@@ -69,6 +72,10 @@ public class BasicBrowserUI extends BrowserUI {
 	if (browser.getTransferHandler() instanceof UIResource) {
 	    browser.setTransferHandler(null);
 	}
+    }
+    
+    public Icon getSizeHandleIcon() {
+        return sizeHandleIcon;
     }
 
     protected ListCellRenderer createCellRenderer() {
