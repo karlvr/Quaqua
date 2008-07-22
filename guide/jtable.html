@@ -31,17 +31,31 @@ MM_reloadPage(true);
   <h5 class="semiparagraph">Client properties:</h5>
   <table  width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
     <tr>
-      <th><p>Property</p>
-      </th>
+      <th><p>Property</p></th>
       <th>Type</th>
       <th>Notes</th>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><p><code>Quaqua.Table<br />
-        .style</code> </p>
-      </td>
+        .style</code> </p></td>
       <td><code>java.lang.String</code></td>
       <td>Values: &quot;plain&quot;, &quot;striped&quot;</td>
+    </tr>
+  </table>
+  <h5 class="doubleparagraph"></h5>
+  <h5 class="semiparagraph">System properties:</h5>
+  <table  width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
+    <tr>
+      <th><p>Property</p>      </th>
+      <th>Default value</th>
+      <th>Notes</th>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+      <td><p><code>Quaqua.Table<br />
+        .useJ2SE5MouseHandler</code></p></td>
+      <td><code>false</code></td>
+      <td><p>Uses the Quaqua mouse handler for J2SE5 on J2SE6.</p>
+          <p>This fixes selection using the Meta-key on J2SE6, but breaks the drag and drop functionality and the sorting functionality.</p></td>
     </tr>
   </table>
   <h5 class="doubleparagraph">Size styles:</h5>

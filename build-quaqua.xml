@@ -9,7 +9,7 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="version" value="4.4.6 2008-06-22"/>
+        <property name="version" value="4.4.7 2008-07-16"/>
         <property name="lib" value="lib"/>
         <property name="exampleslib" value="examples"/>
         <property name="docdir" value="javadoc"/>
