@@ -9,7 +9,7 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="version" value="5.0.0alpha 2008-05-10"/>
+        <property name="version" value="5.0 2008-07-22"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -426,7 +426,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         <delete dir="${distdir}/signed"/>
         
         <!-- create signed version of the quaqua.jar and quaqua.jar.pack.gz file -->
-        <copy file="${lib}/quaqua.jar"
+        <copy file="${distdir}/quaqua.jar"
             tofile="${distdir}/signed/quaqua.jar"  
             />
         <exec executable="pack200">
@@ -444,7 +444,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         </exec>
         
         <!-- create signed version of the quaqua-test.jar file -->
-        <copy file="${lib}/quaqua-test.jar"
+        <copy file="${distdir}/quaqua-test.jar"
             tofile="${distdir}/signed/quaqua-test.jar" 
             />
         <exec executable="pack200">
@@ -462,7 +462,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         </exec>
         
         <!-- create signed version of the libquaqua.jnilib.jar file -->
-        <jar basedir="${lib}" compress="true"
+        <jar basedir="${distdir}" compress="true"
              jarfile="${distdir}/signed/libquaqua.jnilib.jar" 
         >
             <include name="libquaqua.jnilib"/>
@@ -470,6 +470,18 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
                 jar="${distdir}/signed/libquaqua.jnilib.jar"
+                >
+        </signjar>        
+        
+        <!-- create signed version of the libquaqua64.jnilib.jar file -->
+        <jar basedir="${distdir}" compress="true"
+             jarfile="${distdir}/signed/libquaqua64.jnilib.jar" 
+        >
+            <include name="libquaqua64.jnilib"/>
+        </jar>
+        <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
+                keystore="${keystore.file}" 
+                jar="${distdir}/signed/libquaqua64.jnilib.jar"
                 >
         </signjar>        
     </target>

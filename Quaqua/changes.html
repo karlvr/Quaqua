@@ -19,23 +19,40 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
-  <h3>Version 5.x<br />
-    <font size="-1">2008-?</font></h3>
+  <h3>Version 5.0<br />
+    <font size="-1">2008-07-22</font></h3>
   <p> </p>
   <p>Enhancements</p>
   <ul>
+    <li>General: Quaqua can be selectively applied to Apple's Aqua Look and Feel.</li>
     <li>JBrowser: Added support for resizable columns contributed by 'fedr'.</li>
     <li>ComboBoxUI: Implemented Leopard-design gradient for selection background color.</li>
     <li>FileChooserUI does now fall back to javax.swing.FileSystemView rather than falling back to package private FileView objects of Apple's Aqua L&amp;F. Added missing translations for 'devices' and 'places' in sidebar. Fixed issue #48 (race condition in the file chooser tree model).</li>
     <li>Files: Added more native methods to Files class.</li>
     <li>MenuUI: Draw menu selection with blue gradient for Leopard design.</li>
     <li>ToolBarUI: Paint toolbar on drag window.</li>
+    <li>TreeUI: Selection  border did not honor insets of the JTree.</li>
     <li>Added libquaqua64.jnilib for use with 64-bit J2SE6 on Mac OS X 10.5.</li>
   </ul>
   <p>Fixes</p>
   <ul>
     <li>TableUI: Set selection foreground color to inactive (=black) when the current cell is not selected to avoid white text on white background. Fixed row and column selection using Meta-key for Java 1.4.</li>
     <li>LeopardCrossPlattformLookAndFeel: Fixed list selection colors (they are now dark blue instead of bright blue).</li>
+  </ul>
+  <h3>Version 4.4.7<br />
+    <font size="-1">2008-07-16</font></h3>
+  <p> </p>
+  <p>Fixes</p>
+  <ul>
+    <li>TableUI: Fixed row and column selection using Meta-Key in Java 1.4 and J2SE5. Not fixed for J2SE6! For J2SE6 a system property &quot;Quaqua.Table.useJ2SE5MouseHandler&quot; can be set to &quot;true&quot;, to use the fix for J2SE5 on J2SE6. This breaks drag and drop functionality and sorting functionality on J2SE6 though.</li>
+    <li>LeopardFileChooserUI - Issue #48: Fixed a race condition in AliasFileSystemTreeModel, and fixed a problem in SidebarTreeModel which caused the sidebar to fail, when the /Volumes folder contained items which weren't directories.</li>
+  </ul>
+  <h3>Version 4.4.6<br />
+      <font size="-1">2008-06-22</font></h3>
+  <p> </p>
+  <p>Fixes</p>
+  <ul>
+    <li>LeopardFileChooserUI - Issue #47: AliasFileSystemTreeModel fired events for nodes which were not in the tree anymore.</li>
   </ul>
   <h3>Version 4.4.5<br />
     <font size="-1">2008-05-10</font></h3>
