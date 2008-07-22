@@ -1,0 +1,170 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!-- InstanceBegin template="/Templates/page.dwt" codeOutsideHTMLIsLocked="false" -->
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<!-- InstanceBeginEditable name="doctitle" -->
+<title>Quaqua Look and Feel - User Guide</title>
+<!-- InstanceEndEditable -->
+<!-- InstanceBeginEditable name="head" -->
+
+
+<script type="text/javascript">
+<!--
+function MM_reloadPage(init) {  //reloads the window if Nav4 resized
+  if (init==true) with (navigator) {if ((appName=="Netscape")&&(parseInt(appVersion)==4)) {
+    document.MM_pgW=innerWidth; document.MM_pgH=innerHeight; onresize=MM_reloadPage; }}
+  else if (innerWidth!=document.MM_pgW || innerHeight!=document.MM_pgH) location.reload();
+}
+MM_reloadPage(true);
+//-->
+</script>
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+
+<!-- InstanceEndEditable -->
+<link href="stylesheet.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body>
+<!-- InstanceBeginEditable name="body" -->
+<div id="Spalte5" style="position:absolute; left:10px; top:10px; width:460px; height:450px; z-index:7">
+  <h3>JToolBar</h3>
+  <h5 class="semiparagraph">Client properties:</h5>
+  <ul>
+    <li>None</li>
+  </ul>
+  <h5 class="doubleparagraph">Size styles:</h5>
+  <ul>
+    <li>Regular</li>
+  </ul>
+  <h4 class="doubleparagraph">General</h4>
+  <p class="semiparagraph">The Quaqua Look and Feel supports toolbars with borderless
+    buttons. <a href="jbutton.html">JButton's</a> and <a href="jtogglebutton.html">JToggleButton's</a> can
+    be represented using their various styles.
+    In addition, JToggleButton's on JToolBar's support the style <code>toolBarTab</code>.
+    This style is useful, when an application  provides multiple views.</p>
+  <p class="semiparagraph">The picture and code snippets below shows a variety
+    of styles for JToolBar's and how to achieve them.</p>
+  <h4 class="doubleparagraph">Example 1</h4>
+  <p class="semiparagraph">A floatable <code>JToolBar</code> on the left, containing three
+    <code>JButton</code>s, a <code>JSeparator</code> and three <code>JToggleButton</code>s. All buttons have an icon,
+    but no text. The <code>JSeparator</code> was created using method <code>addSeparator</code> of the
+    <code>JToolBar</code>.</p>
+  <p class="semiparagraph"><strong>Design Notice:</strong>  Mac OS X applications
+    usually do not use floatable tool bars, but use <a href="jrootpane.html">floating
+    palette windows</a> instead.</p>
+  <p class="doubleparagraph"><img src="images/jtoolbar.png" alt="Quaqua Look and Feel - JToolBar" width="460" height="414" border="0" /><br />
+&nbsp;  </p>
+  <table width="460" border="0" cellpadding="0" cellspacing="10" bgcolor="#F0F0F0">
+    <tr>
+      <td class="listing"><p>JToolBar toolBar = new JToolBar();</p>
+        <p>toolBar.setFloatable(true);</p>
+        <p></p>
+        <p>...</p>
+        <p>toolBar.addSeparator();</p>
+        <p>&nbsp;</p>
+        <p>JToggleButton videoButton = new JToggleButton();</p>
+        <p>videoButton.setIcon(anIcon);</p>
+        <p>videoButton.setText(null);</p>
+        <p>toolBar.add(videoButton);</p>
+      </td>
+    </tr>
+  </table>
+  <h4 class="doubleparagraph">Example 2</h4>
+  <p class="semiparagraph">A non-floatable <code>JToolBar</code> placed on the
+    top, containing three <code>JButton</code>s, a <code>JSeparator</code> and
+    three <code>JToggleButton</code>s. All buttons have text only. </p>
+  <p class="doubleparagraph"><img src="images/jtoolbar-text.png" alt="Quaqua Look and Feel - JToolBar" width="460" height="79" border="0" /><br />
+&nbsp; </p>
+  <table width="460" border="0" cellpadding="0" cellspacing="10" bgcolor="#F0F0F0">
+    <tr>
+      <td class="listing"><p>JToolBar toolBar = new JToolBar();</p>
+          <p>...</p>
+          <p>toolBar.addSeparator();</p>
+          <p>&nbsp;</p>
+          <p>JToggleButton videoButton = new JToggleButton();</p>
+          <p>videoButton.setIcon(null);</p>
+          <p>videoButton.setText(&quot;Video&quot;);</p>
+          <p>toolBar.add(videoButton);</p>
+          <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+  <h4 class="doubleparagraph">Example 3</h4>
+  <p class="semiparagraph">A non-floatable <code>JToolBar</code> placed on the
+    top, containing three <code>JButton</code>s, a <code>JSeparator</code> and
+    three <code>JToggleButton</code>s.
+    All buttons have an icon and  text placed below the icon. The <code>JToggleButton</code>s
+    use the client property <code><a href="jtogglebutton.html">Quaqua.Button.style</a></code> set to <code>toolBarTab</code>.</p>
+  <p class="doubleparagraph"><img src="images/jtoolbar-toolBarTab.png" alt="Quaqua Look and Feel - JToolBar" width="460" height="92" border="0" /><br />
+&nbsp; </p>
+  <table width="460" border="0" cellpadding="0" cellspacing="10" bgcolor="#F0F0F0">
+    <tr>
+      <td class="listing"><p>JToolBar toolBar = new JToolBar();</p>
+        <p>toolBar.setFloatable(false);</p>
+        <p>...</p>
+          <p>toolBar.addSeparator();</p>
+          <p>&nbsp;</p>
+          <p>JToggleButton videoButton = new JToggleButton();</p>
+          <p>videoButton.setIcon(anIcon);</p>
+          <p>videoButton.setText(&quot;Video&quot;);</p>
+          <p><strong>videoButton.setVerticalTextPosition(SwingConstants.BOTTOM);</strong></p>
+          <p><strong>videoButton.setHorizontalTextPosition(SwingConstants.CENTER);</strong></p>
+          <p><strong>videoButton.putClientProperty(</strong></p>
+          <p><strong>&nbsp;&nbsp;&nbsp;&quot;Quaqua.Button.style&quot;, &quot;toolBarTab&quot;</strong></p>
+          <p><strong>);</strong></p>        
+        <p>toolBar.add(videoButton);</p>
+          <p>&nbsp;</p>
+      </td>
+    </tr>
+  </table>
+  <h4 class="doubleparagraph">Example 4</h4>
+  <p class="semiparagraph">A non-floatable <code>JToolBar</code> placed on the
+    top, containing three <code>JButton</code>s, a <code>JSeparator</code> and
+    three <code>JToggleButton</code>s. All buttons have  text only, the font
+    is set to Lucida Grande 11 (the <a href="http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGText/chapter_13_section_2.html#//apple_ref/doc/uid/TP30000365-TPXREF113" target="_blank">AHIG
+    &quot;Small system font&quot;</a>). The <code>JToggleButton</code>s
+    use the client property <code><a href="jtogglebutton.html">Quaqua.Button.style</a></code> to
+    create a &quot;segmented control&quot; look<code></code>.</p>
+  <p class="doubleparagraph"><img src="images/jtoolbar-segmented.png" alt="Quaqua Look and Feel - JToolBar" width="460" height="79" border="0" /><br />
+&nbsp; </p>
+  <table width="460" border="0" cellpadding="0" cellspacing="10" bgcolor="#F0F0F0">
+    <tr>
+      <td class="listing"><p>JToolBar toolBar = new JToolBar();</p>
+          <p>toolBar.setFloatable(false);</p>
+          <p>...</p>
+          <p>toolBar.addSeparator();</p>
+          <p>&nbsp;</p>
+          <p>Font smallSystemFont = new Font(&quot;Lucide Grande&quot;, Font.PLAIN, 11);</p>
+          <p>&nbsp;</p>
+          <p>JToggleButton videoButton = new JToggleButton();</p>
+          <p>videoButton.setText(&quot;Video&quot;);</p>
+          <p>videoButton.setFont(smallSystemFont);</p>
+          <p><strong>videoButton.putClientProperty(</strong></p>
+          <p><strong>&nbsp;&nbsp;&nbsp;&quot;Quaqua.Button.style&quot;, &quot;toggleWest&quot;</strong></p>
+          <p><strong>);</strong></p>
+          <p>toolBar.add(videoButton);</p>
+          <p>&nbsp;</p>
+          <p>JToggleButton structButton = new JToggleButton();</p>
+          <p>structButton.setText(&quot;Struct&quot;);</p>
+          <p>structButton.setFont(smallSystemFont);</p>
+          <p><strong>structButton.putClientProperty(</strong></p>
+          <p><strong>&nbsp;&nbsp;&nbsp;&quot;Quaqua.Button.style&quot;, &quot;toggleCenter&quot;</strong></p>
+          <p><strong>);</strong></p>
+          <p>toolBar.add(structButton);</p>
+          <p>&nbsp;</p>
+          <p>JToggleButton binaryButton = new JToggleButton();</p>
+          <p>binaryButton.setText(&quot;Binary&quot;);</p>
+          <p>binaryButton.setFont(smallSystemFont);</p>
+          <p><strong>binaryButton.putClientProperty(</strong></p>
+          <p><strong>&nbsp;&nbsp;&nbsp;&quot;Quaqua.Button.style&quot;, &quot;toggleEast&quot;</strong></p>
+          <p><strong>);</strong></p>
+          <p>toolBar.add(binaryButton);</p>
+          <p>&nbsp;</p></td>
+    </tr>
+  </table>
+  <h4 class="doubleparagraph">&nbsp;</h4>
+  <p>&nbsp;</p>
+</div>
+<!-- InstanceEndEditable -->
+</body>
+<!-- InstanceEnd --></html>
