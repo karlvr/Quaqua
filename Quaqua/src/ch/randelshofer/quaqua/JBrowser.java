@@ -1,5 +1,5 @@
 /*
- * @(#)JBrowser.java  2.0  2008-04-18
+ * @(#)JBrowser.java  2.1  2008-09-08
  *
  * Copyright (c) 2003-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -63,8 +63,10 @@ import javax.swing.border.EmptyBorder;
  *
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-07-18 Added support for resizable columns contributed by 
- * 'fedr'.
+ * @version 2.1 2008-09-08 Added support for resizable preview column contributed by 
+ * Felix Draxler.
+ * <br>2.0 2008-07-18 Added support for resizable columns contributed by 
+ * Felix Draxler.
  * <br>1.9.1 2008-04-17 Fixed NPE in method getSelectionPath, when nothing
  * is selected. 
  * <br>1.9 2008-04-04 Reworked BrowserCellRendererWrapper.
@@ -226,6 +228,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     public final static String FIXED_CELL_WIDTH_PROPERTY = "fixedCellWidth";
     /** Bound property name for minimumCellWidth. */
     public final static String MINIMUM_CELL_WIDTH_PROPERTY = "minimumCellWidth";
+    /** Bound property name for columnsResizable. */
+    public final static String COLUMNS_RESIZABLE_PROPERTY = "columnsResizable";
     private Object prototypeCellValue;
     /**
      * If this is set to true, JBrowser shows tooltips with the cell value
@@ -240,6 +244,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Holds the value of the dragEnabled property.
      */
     private boolean dragEnabled;
+    /**
+     * Should columns should be resizable?
+     **/
+    private boolean columnsResizable = true;
 
     /**
      * Creates a <code>JBrowser</code> with a sample model.
@@ -828,6 +836,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     public int getFixedCellWidth() {
         return fixedCellWidth;
     }
+
     /**
      * Sets the minimum width of cells in the browser. 
      * This width affects the minimum width of columns, when the user
@@ -850,6 +859,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     public int getMinimumCellWidth() {
         return minimumCellWidth;
     }
+
     /**
      * Sets the width of a column.
      * 
@@ -873,6 +883,72 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     public int getColumnWidth(int column) {
         return getColumnList(column).getFixedCellWidth();
+    }
+
+    /**
+     * Sets the width of the preview column.
+     * 
+     * @param width
+     *            The width.
+     **/
+    public void setPreviewColumnWidth(int width) {
+        if (previewColumn == null) {
+            return;
+        }
+        SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
+        p.setPreferredWidth(width);
+
+        if (getParent() != null) {
+            // Apparantly you have to call these methods in this order to get
+            // the resizing effect correctly painted
+            p.getParent().invalidate();
+            getParent().validate();
+            // The J(Browser)Viewport needs to be repainted (to draw empty
+            // columns at the right)
+            getParent().repaint();
+        }
+    }
+
+    /**
+     * Gets the width of the preview column.
+     */
+    public int getPreviewColumnWidth() {
+        if (previewColumn == null) {
+            return getFixedCellWidth();
+        }
+        SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
+        return p.getPreferredSize().width;
+    }
+
+    /**
+     * Sets whether columns should be resizable.
+     * 
+     * @param newValue
+     *            The new value.
+     **/
+    public void setColumnsResizable(boolean newValue) {
+        boolean oldValue = columnsResizable;
+        columnsResizable = newValue;
+
+        for (int i = 0; i < getComponentCount(); i++) {
+            Component c = getComponent(i);
+            Component handle;
+            if (c instanceof JScrollPane && ((handle = ((JScrollPane) c).getCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER)) instanceof SizeHandle)) {
+                handle.setVisible(newValue);
+            }
+        }
+
+
+        firePropertyChange(COLUMNS_RESIZABLE_PROPERTY, oldValue, newValue);
+    }
+
+    /**
+     * Returns true, if the columns are resizable by the uesr.
+     * 
+     * @return The columnsResizable-property.
+     **/
+    public boolean isColumnsResizable() {
+        return columnsResizable;
     }
 
     /**
@@ -991,6 +1067,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                         JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
                 previewColumn.setBorder(null);
+
+                SizeHandle sizeHandle = new SizeHandle(-1);
+                sizeHandle.setVisible(isColumnsResizable());
+                previewColumn.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER,
+                        sizeHandle);
+                previewColumn.setLayout(new BrowserScrollPaneLayout());
+
                 Methods.invokeIfExists(previewColumn, "setFocusable", false);
                 Methods.invokeIfExists(previewColumn.getHorizontalScrollBar(), "setFocusable", false);
                 Methods.invokeIfExists(previewColumn.getVerticalScrollBar(), "setFocusable", false);
@@ -1200,6 +1283,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     if (treeModel.isLeaf(paths[0].getLastPathComponent())) {
                         p.removeAll();
                         p.add(previewRenderer.getPreviewRendererComponent(this, paths));
+                        setPreviewColumnWidth(getPreviewColumnWidth());
                         add(previewColumn);
                     } else {
                         remove(previewColumn);
@@ -1208,6 +1292,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 default:
                     p.removeAll();
                     p.add(previewRenderer.getPreviewRendererComponent(this, paths));
+                    setPreviewColumnWidth(getFixedCellWidth());
                     add(previewColumn);
                     break;
             }
@@ -1374,7 +1459,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     protected void addColumn(final TreePath path) {
         JList l;
-        l = new JList(new ColumnListModel(path, treeModel)) {
+        l = new JList(
+                new ColumnListModel(path, treeModel)) {
 
             public String getToolTipText(
                     MouseEvent event) {
@@ -1459,11 +1545,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
                 JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         sp.setBorder(null);
-        //BEGIN EDIT
-        //sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+        SizeHandle sizeHandle = new SizeHandle(path.getPathCount() - 1);
+        sizeHandle.setVisible(isColumnsResizable());
         sp.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, new SizeHandle(path.getPathCount() - 1));
         sp.setLayout(new BrowserScrollPaneLayout());
-        //END EDIT
+
         Methods.invokeIfExists(sp, "setFocusable", false);
         Methods.invokeIfExists(sp.getVerticalScrollBar(), "setFocusable", false);
         Methods.invokeIfExists(sp.getHorizontalScrollBar(), "setFocusable", false);
@@ -1500,7 +1587,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         ((ColumnListModel) l.getModel()).dispose();
     }
 
-    //BEGIN EDIT
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -1512,7 +1598,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         //setLayout(new java.awt.GridLayout(1, 0));
 
     }//GEN-END:initComponents
-    //END EDIT
+
     /**
      * Returns the preferred display size of a <code>JBrowser</code>.
      * The height is determined from <code>getVisibleRowCount</code> and
@@ -1809,7 +1895,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         return "";
     }
-    //BEGIN EDIT
+
     protected class SizeHandle extends JComponent implements MouseListener, MouseMotionListener {
 
         protected int column;
@@ -1836,10 +1922,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             if (startMouseX >= 0) {
                 int mouseX = toScreenX(e.getPoint());
                 int difX = mouseX - startMouseX;
-                setColumnWidth(column, Math.max(startWidth + difX, JBrowser.this.getMinimumCellWidth()));
+                if (column < 0) {
+                    setPreviewColumnWidth(Math.max(startWidth + difX,
+                            JBrowser.this.getMinimumCellWidth()));
+                } else {
+                    setColumnWidth(column, Math.max(startWidth + difX,
+                            JBrowser.this.getMinimumCellWidth()));
+                }
             }
-
-        //startMouseX = toScreenX(e.getPoint());
         }
 
         public void mouseMoved(MouseEvent e) {
@@ -1856,14 +1946,24 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         public void mousePressed(MouseEvent e) {
             startMouseX = toScreenX(e.getPoint());
-            startWidth = getColumnWidth(column);
+            if (column < 0) {
+                startWidth = getPreviewColumnWidth();
+            } else {
+                startWidth = getColumnWidth(column);
+            }
         }
 
         public void mouseReleased(MouseEvent e) {
             if (startMouseX >= 0) {
                 int mouseX = toScreenX(e.getPoint());
                 int difX = mouseX - startMouseX;
-                setColumnWidth(column, Math.max(startWidth + difX, JBrowser.this.getMinimumCellWidth()));
+                if (column < 0) {
+                    setPreviewColumnWidth(Math.max(startWidth + difX,
+                            JBrowser.this.getMinimumCellWidth()));
+                } else {
+                    setColumnWidth(column, Math.max(startWidth + difX,
+                            JBrowser.this.getMinimumCellWidth()));
+                }
             }
 
             startMouseX = -1;
@@ -1899,7 +1999,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     protected class BrowserLayout implements LayoutManager {
 
-        private int preferredWidth = 0,  preferredHeight = 0;
+        private  int preferredWidth = 0,    preferredHeight = 0;
         private boolean sizeUnknown = true;
 
         /* Required by LayoutManager. */
@@ -1961,9 +2061,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             int maxWidth = parent.getWidth() - (insets.left + insets.right);
             int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
             int nComps = parent.getComponentCount();
-            int previousWidth = 0, previousHeight = 0;
-            int x = insets.left, y = insets.top;
-            int rowh = 0, start = 0;
+            int previousWidth = 0,  previousHeight = 0;
+
+
+
+
+            int x = insets.left,  y = insets.top;
+            int rowh = 0,  start = 0;
 
             // Go through the components' sizes, if neither
             // preferredLayoutSize nor minimumLayoutSize has
@@ -1989,7 +2093,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             }
         }
     }
-    //END EDIT
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     /**
@@ -2010,7 +2113,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         public String toString() {
             StringBuffer buf = new StringBuffer();
             buf.append('{');
-            for (int i = 0, n = getSize(); i < n; i++) {
+            for (int i = 0,  n = getSize(); i < n; i++) {
                 if (i != 0) {
                     buf.append(',');
                 }
@@ -3212,7 +3315,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 public void revalidate() {
                 }
 
-                public void repaint(long tm, int x, int y, int width, int height) {
+                public void repaint(
+                        long tm, int x, int y, int width, int height) {
                 }
 
                 public void repaint(Rectangle r) {
@@ -3277,7 +3381,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             arrowLabel.setVisible(!getModel().isLeaf(value));
 
             boolean isExpanded = false;
-            for (int i = 0, n = expandedPath.getPathCount(); i < n; i++) {
+            for (int i = 0,  n = expandedPath.getPathCount(); i < n; i++) {
                 if (expandedPath.getPathComponent(i) == value) {
                     isExpanded = true;
                     break;
