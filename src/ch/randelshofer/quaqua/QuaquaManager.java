@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaManager.java 4.1  2007-12-09
+ * @(#)QuaquaManager.java 4.2  2008-09-08
  *
  * Copyright (c) 2003-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,13 +14,8 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.jaguar.filechooser.*;
-import ch.randelshofer.quaqua.panther.filechooser.*;
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.filechooser.*;
-import java.security.*;
 import java.util.*;
 import java.io.*;
 /**
@@ -109,7 +104,8 @@ import java.io.*;
  *
  *
  * @author  Werner Randelshofer
- * @version 4.1 2007-12-09 Make a distinction between cross-platform designs,
+ * @version 4.2 2008-09-08 Added support for J2SE6. 
+ * <br>4.1 2007-12-09 Make a distinction between cross-platform designs,
  * instead of providing a single cross-platform design depending on the J2SE
  * version. 
  * <br>4.0 2007-11-24 Support for Darwin 9.1 added. 
@@ -354,16 +350,22 @@ public class QuaquaManager {
             // Fall back to default values
             lafs.put("Jaguar.14","ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel");
             lafs.put("Jaguar.15","ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
+            lafs.put("Jaguar.16","ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
             lafs.put("Panther.14","ch.randelshofer.quaqua.panther.Quaqua14PantherLookAndFeel");
             lafs.put("Panther.15","ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
+            lafs.put("Panther.16","ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
             lafs.put("Tiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerLookAndFeel");
             lafs.put("Tiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
+            lafs.put("Tiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
             lafs.put("Leopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("Leopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
+            lafs.put("Leopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("CrossTiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
+            lafs.put("CrossTiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
+            lafs.put("CrossLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
         }
     }
     
@@ -454,7 +456,7 @@ public class QuaquaManager {
                         lafKey = "Leopard.14";
                         break;
                 }
-            } else {
+            } else if (javaVersion.startsWith("1.5")) {
                 switch (design) {
                     case JAGUAR :
                         lafKey = "Jaguar.15";
@@ -468,6 +470,22 @@ public class QuaquaManager {
                     case LEOPARD :
                     default :
                         lafKey = "Leopard.15";
+                        break;
+                }
+            } else {
+                switch (design) {
+                    case JAGUAR :
+                        lafKey = "Jaguar.16";
+                        break;
+                    case PANTHER :
+                        lafKey = "Panther.16";
+                        break;
+                    case TIGER :
+                        lafKey = "Tiger.16";
+                        break;
+                    case LEOPARD :
+                    default :
+                        lafKey = "Leopard.16";
                         break;
                 }
             }

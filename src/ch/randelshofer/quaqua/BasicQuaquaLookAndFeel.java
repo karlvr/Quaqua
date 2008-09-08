@@ -1958,7 +1958,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     };
         } else {
             uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua16LayoutStyle"),
+                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
                     };
         }
         putDefaults(table, uiDefaults);
