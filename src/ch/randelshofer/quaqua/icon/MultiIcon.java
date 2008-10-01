@@ -11,8 +11,9 @@
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-package ch.randelshofer.quaqua.util;
+package ch.randelshofer.quaqua.icon;
 
+import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;

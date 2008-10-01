@@ -1,5 +1,5 @@
 /*
- * @(#)MatteBevelBorder.java  1.0.1  2005-06-25
+ * @(#)OverlayBorder.java  1.0.1  2005-06-25
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -11,31 +11,28 @@
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-package ch.randelshofer.quaqua;
+package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
- * MatteBevelBorder.
+ * OverlayBorder.
  *
  * @author  Werner Randelshofer
  * @version 1.0.1 2005-06-25 Return a new insets instance in method getBorderInsets.
- * <br>1.0  29 December 2004  Created.
+ * <br>1.0  21 March 2005  Created.
  */
-public class MatteBevelBorder implements Border {
-    private Insets borderInsets;
-    private Border bevelBorder;
+public class OverlayBorder implements Border {
+    private Border[] borders;
     
     /** Creates a new instance. */
-    public MatteBevelBorder(Insets borderInsets, Border bevelBorder) {
-        this.borderInsets = borderInsets;
-        this.bevelBorder = bevelBorder;
+    public OverlayBorder(Border first, Border second) {
+        borders = new Border[] { first, second };
     }
     
-
     public Insets getBorderInsets(Component c) {
-        return (Insets) borderInsets.clone();
+        return (Insets) borders[0].getBorderInsets(c).clone();
     }
     
     public boolean isBorderOpaque() {
@@ -43,7 +40,8 @@ public class MatteBevelBorder implements Border {
     }
     
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        bevelBorder.paintBorder(c, g, x, y, width, height);
-    }
-    
+        for (int i=0; i < borders.length; i++) {
+            borders[i].paintBorder(c, g, x, y, width, height);
+        }
+    }    
 }

@@ -13,7 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.BackgroundBorder;
+import ch.randelshofer.quaqua.border.BackgroundBorder;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;

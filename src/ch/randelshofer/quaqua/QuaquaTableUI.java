@@ -12,7 +12,7 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 import java.awt.*;
 import java.awt.datatransfer.*;

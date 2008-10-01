@@ -5,11 +5,10 @@
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
- * This software is the confidential and proprietary information of
- * Werner Randelshofer. ("Confidential Information").  You shall not
- * disclose such Confidential Information and shall use it only in
- * accordance with the terms of the license agreement you entered into
- * with Werner Randelshofer.
+ * The copyright of this software is owned by Werner Randelshofer. 
+ * You may not use, copy or modify this software, except in  
+ * accordance with the license agreement you entered into with  
+ * Werner Randelshofer. For details see accompanying license terms. 
  */
 package test;
 

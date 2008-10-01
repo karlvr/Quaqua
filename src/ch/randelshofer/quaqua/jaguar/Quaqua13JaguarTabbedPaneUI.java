@@ -16,8 +16,8 @@ import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.util.NavigatableTabbedPaneUI;
-import ch.randelshofer.quaqua.util.PaintableColor;
-import ch.randelshofer.quaqua.util.TextureColor;
+import ch.randelshofer.quaqua.color.PaintableColor;
+import ch.randelshofer.quaqua.color.TextureColor;
 
 import javax.swing.*;
 import javax.swing.border.*;

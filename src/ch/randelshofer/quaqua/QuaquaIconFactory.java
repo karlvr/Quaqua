@@ -13,13 +13,14 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.icon.ShiftedIcon;
 import ch.randelshofer.quaqua.osx.Application;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.util.ButtonFocusIcon;
-import ch.randelshofer.quaqua.util.ButtonStateIcon;
-import ch.randelshofer.quaqua.util.FrameButtonStateIcon;
-import ch.randelshofer.quaqua.util.OverlayIcon;
-import ch.randelshofer.quaqua.util.SliderThumbIcon;
+import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
+import ch.randelshofer.quaqua.icon.ButtonStateIcon;
+import ch.randelshofer.quaqua.icon.FrameButtonStateIcon;
+import ch.randelshofer.quaqua.icon.OverlayIcon;
+import ch.randelshofer.quaqua.icon.SliderThumbIcon;
 import java.net.*;
 import java.awt.*;
 import java.awt.image.*;

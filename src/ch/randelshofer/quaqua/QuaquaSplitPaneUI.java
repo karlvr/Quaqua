@@ -14,7 +14,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.util.Methods;
-import ch.randelshofer.quaqua.util.PaintableColor;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;

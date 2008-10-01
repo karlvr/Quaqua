@@ -1,7 +1,7 @@
 /*
- * @(#)ImageBevelBorder13.java  1.0.1 2005-10-15
+ * @(#)CachedImageBevelBorder14.java  1.1.1  2007-01-11
  *
- * Copyright (c) 2001-2005 Werner Randelshofer
+ * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -11,8 +11,9 @@
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-package ch.randelshofer.quaqua.util;
+package ch.randelshofer.quaqua.border;
 
+import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -21,11 +22,9 @@ import javax.swing.plaf.basic.*;
 import javax.swing.plaf.*;
 
 /**
- * A fast, but somewhat inacurate version of class ImageBevelBorder14 optimized
- * for Apples MRJ for Java 1.3.
- *
  * Draws a filled bevel border using an image and insets.
  * The image must consist of a bevel and a fill area.
+ * Volatile images of the border are cached to speed up drawing.
  * <p>
  * The insets and the size of the image are
  * used do determine which parts of the image shall be
@@ -39,11 +38,12 @@ import javax.swing.plaf.*;
  * The inner area of the image is used to fill the inner area.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2005-10-15 Convert image to buffered image when painting
- * (instead of in the constructor).
- * <br>1.0 2005-04-25 Refactored from class ImageBevelBorder14.
+ * @version 1.1.1 2007-01-11 Don't create subimages with widths or
+ * heights smaller than 1 pixel. 
+ * <br>1.1 2005-11-30 Convert image to buffered image lazily.
+ * <br>1.0 September 7, 2005 Created.
  */
-public class ImageBevelBorder13 implements Border, UIResource {
+public class CachedImageBevelBorder14 extends CachedPainter14 implements Border {
     private final static boolean VERBOSE = false;
     /**
      * The image to be used for drawing.
@@ -66,10 +66,16 @@ public class ImageBevelBorder13 implements Border, UIResource {
     private boolean fillContentArea;
     
     /**
+     * We don't need arguments. Instead of creating an array all the time,
+     * we cache one.
+     */
+    private Object[] args = {this};
+    
+    /**
      * Creates a new instance with the given image and insets.
      * The image has the same insets as the border.
      */
-    public ImageBevelBorder13(Image img, Insets borderInsets) {
+    public CachedImageBevelBorder14(Image img, Insets borderInsets) {
         this(img, borderInsets, borderInsets, true);
     }
     
@@ -77,14 +83,15 @@ public class ImageBevelBorder13 implements Border, UIResource {
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.
      */
-    public ImageBevelBorder13(Image img, Insets imageInsets, Insets borderInsets) {
+    public CachedImageBevelBorder14(Image img, Insets imageInsets, Insets borderInsets) {
         this(img, imageInsets, borderInsets, true);
     }
     /**
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.
      */
-    public ImageBevelBorder13(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
+    public CachedImageBevelBorder14(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
+        super(32);
         this.image = img;
         this.imageInsets = imageInsets;
         this.borderInsets = borderInsets;
@@ -119,30 +126,55 @@ public class ImageBevelBorder13 implements Border, UIResource {
      * @param height the height of the painted border
      */
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
-        if (this.image == null) return;
-        
-        BufferedImage image = Images.toBufferedImage(this.image);
-        
+        if (image == null) return;
         if (! gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
-        
+        paint(c, gr, x, y, width, height, args); 
+    }
+    
+    /**
+     * Creates the image to cache.  This returns a translucent image.
+     *
+     * @param c Component painting to
+     * @param w Width of image to create
+     * @param h Height to image to create
+     * @param config GraphicsConfiguration that will be
+     *        rendered to, this may be null.
+     */
+    protected Image createImage(Component c, int w, int h,
+                                GraphicsConfiguration config) {
+        if (config == null) {
+            return new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
+        }
+        return config.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
+    }
+
+    protected void paintToImage(Component c, Graphics gr, int width, int height, Object[] args) {
         // Cast Graphics to Graphics2D
-        Graphics2D g = (Graphics2D) gr;
+        // Workaround for Java 1.4 and 1.4 on Mac OS X 10.4. We create a new
+        // Graphics object instead of just casting the provided one. This is
+        // because drawing texture paints appears to confuse the Graphics object.
+        Graphics2D g = (Graphics2D) gr.create();
+        
+        // Convert image to buffered image (and keep the buffered image).
+        image = Images.toBufferedImage(image);
+        BufferedImage img = (BufferedImage) image;
         
         // Set some variables for easy access of insets and image size
         int top = imageInsets.top;
         int left = imageInsets.left;
         int bottom = imageInsets.bottom;
         int right = imageInsets.right;
-        int imgWidth = image.getWidth();
-        int imgHeight = image.getHeight();
+        int imgWidth = img.getWidth();
+        int imgHeight = img.getHeight();
         
         
         // Optimisation: Draw image directly if it fits into the component
         if (fillContentArea) {
             if (width == imgWidth && height == imgHeight) {
-                g.drawImage(image, x, y, c);
+                g.drawImage(img, 0, 0, c);
+                g.dispose();
                 return;
             }
         }
@@ -170,8 +202,8 @@ public class ImageBevelBorder13 implements Border, UIResource {
         // Draw the Corners
         if (top > 0 && left > 0) {
             g.drawImage(
-            image,
-            x, y, x + left, y + top,
+            img,
+            0, 0, left, top,
             0, 0, left, top,
             c
             );
@@ -179,67 +211,79 @@ public class ImageBevelBorder13 implements Border, UIResource {
         if (top > 0 && right > 0) {
             //g.fillRect(x+width-right, y, x+width, y+top);
             g.drawImage(
-            image,
-            x + width - right, y, x + width, y + top,
+            img,
+            width - right, 0, width, top,
             imgWidth - right, 0, imgWidth, top,
             c
             );
         }
         if (bottom > 0 && left > 0) {
             g.drawImage(
-            image,
-            x, y + height - bottom, x + left, y + height,
+            img,
+            0, height - bottom, left, height,
             0, imgHeight - bottom, left, imgHeight,
             c
             );
         }
         if (bottom > 0 && right > 0) {
             g.drawImage(
-            image,
-            x + width - right, y + height - bottom, x + width, y + height,
+            img,
+            width - right, height - bottom, width, height,
             imgWidth - right, imgHeight - bottom, imgWidth, imgHeight,
             c
             );
         }
         
         // Draw the edges
-        // Note: We stretch the images to fill the edges. Strangely with Apple's
-        // Java 1.3 VM this is by factor 10 faster then creating a Paint object 
-        // and filling it using a replication fill. Also note, that the 
-        // Graphics2D objects interpolates the pixels using a bilinear algorithm.
-        // Setting the rendering hints has no effect, so we just live with it.
         BufferedImage subImg = null;
-        
+        TexturePaint paint;
+
         // North
         if (top > 0 && left + right < width) {
-            subImg = image.getSubimage(left, 0, imgWidth - right - left, top);
-            g.drawImage(subImg, x+left, y, width - left - right, top, c);
+            if (imgWidth > right + left) {
+            subImg = img.getSubimage(left, 0, imgWidth - right - left, top);
+            paint = new TexturePaint(subImg, new Rectangle(left, 0, imgWidth - left - right, top));
+            g.setPaint(paint);
+            g.fillRect(left, 0, width - left - right, top);
+            }
         }
         // South
         if (bottom > 0 && left + right < width) {
-            subImg = image.getSubimage(left, imgHeight - bottom, imgWidth - right - left, bottom);
-            g.drawImage(subImg, x+left, y + height - bottom, width - left - right, bottom, c);
+            if (imgHeight > bottom && imgWidth > right + left) {
+            subImg = img.getSubimage(left, imgHeight - bottom, imgWidth - right - left, bottom);
+            paint = new TexturePaint(subImg, new Rectangle(left, height - bottom, imgWidth - left - right, bottom));
+            g.setPaint(paint);
+            g.fillRect(left, height - bottom, width - left - right, bottom);
+            }
         }
         // West
         if (left > 0 && top + bottom < height) {
-            subImg = image.getSubimage(0, top, left, imgHeight - top - bottom);
-            g.drawImage(subImg, x, y+top, left, height - top - bottom, c);
+            if (imgHeight > top + bottom) {
+            subImg = img.getSubimage(0, top, left, imgHeight - top - bottom);
+            paint = new TexturePaint(subImg, new Rectangle(0, top, left, imgHeight - top - bottom));
+            g.setPaint(paint);
+            g.fillRect(0, top, left, height - top - bottom);
+            }
         }
         // East
         if (right > 0 && top + bottom < height) {
-            subImg = image.getSubimage(imgWidth - right, top, right, imgHeight - top - bottom);
-            g.drawImage(subImg, x+width-right, y + top, right, height - top - bottom, c);
+            if (imgWidth > right && imgHeight > top + bottom) {
+            subImg = img.getSubimage(imgWidth - right, top, right, imgHeight - top - bottom);
+            paint = new TexturePaint(subImg, new Rectangle(width - right, top, right, imgHeight - top - bottom));
+            g.setPaint(paint);
+            g.fillRect(width - right, top, right, height - top - bottom);
+            }
         }
         
         // Fill the center
-        // Note: We extract a pixel at the top left corner of the content area 
-        // and use it for painting. This isn't very accurate, but speeds up
-        // drawing a lot for Java 1.3 quite considerably.
         if (fillContentArea) {
-            if (left + right < width && top + bottom < height) {
-                g.setColor(new Color(image.getRGB(left, top), true));
-                g.fillRect(x+left, y + top, width - right - left, height - top - bottom);
+            if (left + right < imgWidth && top + bottom < imgHeight) {
+                subImg = img.getSubimage(left, top, imgWidth - right - left, imgHeight - top - bottom);
+                paint = new TexturePaint(subImg, new Rectangle(left, top, imgWidth - right - left, imgHeight - top - bottom));
+                g.setPaint(paint);
+                g.fillRect(left, top, width - right - left, height - top - bottom);
             }
         }
+        g.dispose();
     }
 }

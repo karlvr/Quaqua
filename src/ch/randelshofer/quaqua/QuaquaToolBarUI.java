@@ -15,8 +15,8 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.QuaquaButtonBorder;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.BackgroundBorderUIResource;
-import ch.randelshofer.quaqua.util.PaintableColor;
+import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;

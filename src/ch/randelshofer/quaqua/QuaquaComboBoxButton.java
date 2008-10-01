@@ -13,7 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.ButtonStateBorder;
+import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import java.awt.*;
 
 import javax.swing.CellRendererPane;
