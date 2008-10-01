@@ -12,8 +12,8 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.util.MutableColorUIResource;
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.MutableColorUIResource;
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.awt.dnd.*;

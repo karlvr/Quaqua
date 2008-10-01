@@ -14,7 +14,7 @@
 package ch.randelshofer.quaqua.util;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.BackgroundBorder;
+import ch.randelshofer.quaqua.border.BackgroundBorder;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;

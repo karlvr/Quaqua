@@ -15,7 +15,7 @@ package ch.randelshofer.quaqua.jaguar;
 
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.PaintableColor;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;

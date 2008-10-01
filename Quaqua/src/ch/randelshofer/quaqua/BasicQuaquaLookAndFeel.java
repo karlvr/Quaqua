@@ -12,8 +12,9 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.util.AlphaColorUIResource;
+import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import java.io.*;
 import java.net.*;
 import javax.swing.*;

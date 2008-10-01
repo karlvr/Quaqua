@@ -1,7 +1,7 @@
 /*
- * @(#)ButtonStateIcon.java  3.1  2005-12-08
+ * @(#)ButtonStateIcon.java  1.0  2006-02-13
  *
- * Copyright (c) 2003-2005 Werner Randelshofer
+ * Copyright (c) 2006 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -11,8 +11,9 @@
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-package ch.randelshofer.quaqua.util;
+package ch.randelshofer.quaqua.icon;
 
+import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
@@ -22,16 +23,9 @@ import javax.swing.plaf.*;
  * on which it draws on.
  *
  * @author  Werner Randelshofer
- * @version 3.1 2005-12-08 Draw pressed state if model is armed, instead of
- * drawing pressed state if model is armed and pressed.
- * <br>3.0 2005-10-17 Changed superclass to MultiIcon.
- * <br>2.0.1 2005-10-02 Used Enabled image for Pressed-Unarmed state.
- * <br>2.0.1 2005-09-11 generateMissing icons can now deal with only one
- * provided icon image.
- * <br>2.0 2005-03-19 Reworked.
- * <br>1.0 October 5, 2003 Create..
+ * @version 1.0 2006-02-13 Created.
  */
-public class ButtonStateIcon extends MultiIcon {
+public class FrameButtonStateIcon extends MultiIcon {
     private final static int E = 0;
     private final static int EP = 1;
     private final static int ES = 2;
@@ -42,36 +36,27 @@ public class ButtonStateIcon extends MultiIcon {
     private final static int IS = 7;
     private final static int DI = 8;
     private final static int DIS = 9;
+    private final static int R = 10;
+    private final static int RS = 11;
     
-    /**
-     * Creates a new instance.
-     * All icons must have the same dimensions.
-     * If an icon is null, an icon is derived for the state from the
-     * other icons.
-     */
-    public ButtonStateIcon(Icon e, Icon ep, Icon es, Icon eps, Icon d, Icon ds) {
-        super(new Icon[] {e, ep, es, eps, d, ds});
-    }
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
      *
      * The array indices are used to represente the following states:
      * [0] Enabled
-     * [1] Enabled Pressed
-     * [2] Enabled Selected
-     * [3] Enabled Pressed Selected
-     * [4] Disabled
-     * [5] Disabled Selected
-     * [6] Enabled Inactive
-     * [7] Enabled Inactive Selected
-     * [8] Disabled Inactive
-     * [9] Disabled Inactive Selected
+     * [1] Armed
+     * [2] Pressed
+     * [3] Disabled
+     * [4] Enabled Selected
+     * [5] Armed Selected
+     * [6] Pressend Selected
+     * [7] Disabled Selected
      *
      * If an array element is null, an icon is derived for the state from the
      * other icons.
      */
-    public ButtonStateIcon(Image[] images) {
+    public FrameButtonStateIcon(Image[] images) {
         super(images);
     }
     /**
@@ -79,7 +64,7 @@ public class ButtonStateIcon extends MultiIcon {
      * All icons must have the same dimensions.
      * If an icon is null, nothing is drawn for this state.
      */
-    public ButtonStateIcon(Icon[] icons) {
+    public FrameButtonStateIcon(Icon[] icons) {
         super(icons);
     }
     
@@ -87,13 +72,21 @@ public class ButtonStateIcon extends MultiIcon {
      * Creates a new instance.
      * The icon representations are created lazily from the image.
      */
-    public ButtonStateIcon(Image tiledImage, int tileCount, boolean isTiledHorizontally) {
+    public FrameButtonStateIcon(Image tiledImage, int tileCount, boolean isTiledHorizontally) {
         super(tiledImage, tileCount, isTiledHorizontally);
+    }
+    
+    private boolean isRollover(Component c) {
+        if (c instanceof JComponent) {
+            return ((JComponent) c).getClientProperty("paintRollover") == Boolean.TRUE;
+        }
+        return false;
     }
     
     
     protected Icon getIcon(Component c) {
         Icon icon;
+        boolean isRollover = isRollover(c);
         boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
         
         if (c instanceof AbstractButton) {
@@ -107,9 +100,9 @@ public class ButtonStateIcon extends MultiIcon {
                             icon = icons[EP];
                         }
                     } else if (model.isSelected()) {
-                        icon = icons[ES];
+                        icon =  (isRollover) ? icons[RS] : icons[ES];
                     } else {
-                        icon = icons[E];
+                        icon = (isRollover) ? icons[R] : icons[E];
                     }
                 } else {
                     if (model.isSelected()) {
@@ -121,9 +114,9 @@ public class ButtonStateIcon extends MultiIcon {
             } else {
                 if (model.isEnabled()) {
                     if (model.isSelected()) {
-                        icon = icons[IS];
+                        icon = (isRollover) ? icons[RS] : icons[IS];
                     } else {
-                        icon = icons[I];
+                        icon = (isRollover) ? icons[R] : icons[I];
                     }
                 } else {
                     if (model.isSelected()) {
@@ -136,7 +129,7 @@ public class ButtonStateIcon extends MultiIcon {
         } else {
             if (isActive) {
                 if (c.isEnabled()) {
-                    icon = icons[E];
+                    icon = (isRollover) ? icons[R] : icons[E];
                 } else {
                     icon = icons[D];
                 }
@@ -151,10 +144,10 @@ public class ButtonStateIcon extends MultiIcon {
         return icon;
     }
     
-    protected void generateMissingIcons() {
-        if (icons.length != 10) {
+    protected void generateMissingIcons() {        
+        if (icons.length != 12) {
             Icon[] helper = icons;
-            icons = new Icon[10];
+            icons = new Icon[12];
             System.arraycopy(helper, 0, icons, 0, Math.min(helper.length, icons.length));
         }
         
@@ -184,6 +177,12 @@ public class ButtonStateIcon extends MultiIcon {
         }
         if (icons[DIS] == null) {
             icons[DIS] = icons[DS];
+        }
+        if (icons[R] == null) {
+            icons[R] = icons[E];
+        }
+        if (icons[RS] == null) {
+            icons[RS] = icons[ES];
         }
     }
 }

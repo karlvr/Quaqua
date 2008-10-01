@@ -13,12 +13,12 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.CachedImageBevelBorder14;
+import ch.randelshofer.quaqua.border.CachedImageBevelBorder14;
 import ch.randelshofer.quaqua.QuaquaButtonBorder;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.BackgroundBorderUIResource;
-import ch.randelshofer.quaqua.util.ImageBevelBorder13;
-import ch.randelshofer.quaqua.util.ImageBevelBorder14;
+import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
+import ch.randelshofer.quaqua.border.ImageBevelBorder13;
+import ch.randelshofer.quaqua.border.ImageBevelBorder14;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;

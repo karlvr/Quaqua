@@ -13,8 +13,8 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.BackgroundBorder;
-import ch.randelshofer.quaqua.util.PaintableColor;
+import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;

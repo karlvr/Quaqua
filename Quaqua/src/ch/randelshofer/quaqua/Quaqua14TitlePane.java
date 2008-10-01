@@ -13,7 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.TextureColor;
+import ch.randelshofer.quaqua.color.TextureColor;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;

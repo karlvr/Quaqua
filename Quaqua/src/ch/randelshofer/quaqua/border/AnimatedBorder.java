@@ -11,7 +11,7 @@
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-package ch.randelshofer.quaqua;
+package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
 import java.awt.event.*;

@@ -12,6 +12,10 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.OverlayBorder;
+import ch.randelshofer.quaqua.border.FocusBorder;
+import ch.randelshofer.quaqua.border.ButtonStateBorder;
+import ch.randelshofer.quaqua.border.AnimatedBorder;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
