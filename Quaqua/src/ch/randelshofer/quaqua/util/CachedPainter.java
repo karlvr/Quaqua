@@ -1,5 +1,5 @@
 /*
- * @(#)CachedPainter14.java  1.1  2008-04-21
+ * @(#)CachedPainter.java  1.1  2008-04-21
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -30,13 +30,13 @@ import java.util.*;
  *     lives here is equivalent to what previously would go in
  *     <code>paintIcon</code>, for an <code>Icon</code>.
  * </ol>
- * This class has been derived from javax.swing.plaf.metal.CachedPainter14 1.2 04/02/15 
+ * This class has been derived from javax.swing.plaf.metal.CachedPainter 1.2 04/02/15 
  * 
  * @author Werner Randelshofer
  * @version 2.0 2008-04-21 Only cache small images. 
  * <br>1.0 September 7, 2005 Created.
  */
-public abstract class CachedPainter14 {
+public abstract class CachedPainter {
     // CacheMap maps from class to Cache.
     private static final Map cacheMap = new HashMap();
 
@@ -52,12 +52,12 @@ public abstract class CachedPainter14 {
     }
 
     /**
-     * Creates an instance of <code>CachedPainter14</code> that will cache up
+     * Creates an instance of <code>CachedPainter</code> that will cache up
      * to <code>cacheCount</code> images of this class.
      * 
      * @param cacheCount Max number of images to cache
      */
-    public CachedPainter14(int cacheCount) {
+    public CachedPainter(int cacheCount) {
         getCache(getClass()).setMaxCount(cacheCount);
     }
 

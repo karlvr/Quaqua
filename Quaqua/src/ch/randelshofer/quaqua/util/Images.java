@@ -51,6 +51,9 @@ public class Images {
         return graphiteFilter;
     }
     
+    public static Image createImage(Class baseClass, String location) {
+        return createImage(baseClass.getResource(location));
+    }
     public static Image createImage(URL resource) {
         Image image = Toolkit.getDefaultToolkit().createImage(resource);
         if (Preferences.getString("AppleAquaColorVariant").equals("6")) {

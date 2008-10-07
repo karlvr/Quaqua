@@ -1,7 +1,7 @@
 /*
- * @(#)BorderFactory.java  2.0  2007-10-30
+ * @(#)QuaquaBorderFactory.java  2.1  2008-10-04
  *
- * Copyright (c) 2005-2007 Werner Randelshofer
+ * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,24 +13,20 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.border.CachedImageBevelBorder14;
-import ch.randelshofer.quaqua.QuaquaButtonBorder;
+import ch.randelshofer.quaqua.border.CachedImageBevelBorder;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
-import ch.randelshofer.quaqua.border.ImageBevelBorder13;
-import ch.randelshofer.quaqua.border.ImageBevelBorder14;
+import ch.randelshofer.quaqua.border.ImageBevelBorder;
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.image.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.plaf.*;
-import java.lang.reflect.*;
 /**
  * Creates an ImageBevelBorder instance optimized for this JVM.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2007-10-30 Dropped support for Java 1.3.
+ * @version 2.1 2008-10-04 The factory didn't always create a border which 
+ * is an instance of UIResource.
+ * <br>2.0 2007-10-30 Dropped support for Java 1.3.
  * <br>1.3 2005-01-04 Method createSmallSquareBorder added.
  * <br>1.2 2005-11-30 Fixed broken creation of CachedImageBevelBorder.
  * <br>1.1 2005-09-07 Support for caching image bevel borders added.
@@ -77,9 +73,9 @@ public class QuaquaBorderFactory {
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea, boolean isCaching) {
         if (isCaching) {
-            return new CachedImageBevelBorder14(img, imageInsets, borderInsets, fillContentArea);
+            return new CachedImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea);
         } else {
-            return new ImageBevelBorder14(img, imageInsets, borderInsets, fillContentArea);
+            return new ImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea);
         }
     }
     /**

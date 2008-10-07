@@ -125,10 +125,10 @@ public class QuaquaIconFactory {
     }
     
     public static Image createImage(String location) {
-        return createImage(QuaquaIconFactory.class, location);
+        return Images.createImage(QuaquaIconFactory.class, location);
     }
     public static Image createImage(Class baseClass, String location) {
-        return Images.createImage(baseClass.getResource(location));
+        return Images.createImage(baseClass, location);
     }
     public static Image createBufferedImage(String location) {
         return Images.toBufferedImage(createImage(location));

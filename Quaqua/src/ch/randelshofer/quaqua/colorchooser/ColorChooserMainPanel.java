@@ -71,7 +71,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
             Icon displayIcon = ccp.getLargeDisplayIcon();
             JToggleButton tb = new JToggleButton(null, displayIcon);
             tb.setToolTipText(displayName);
-            Methods.invokeIfExists(tb, "setFocusable", false);
+            tb.setFocusable(false);
             tb.setHorizontalTextPosition(SwingConstants.CENTER);
             tb.setVerticalTextPosition(SwingConstants.BOTTOM);
             tb.setFont(UIManager.getFont("ColorChooser.font"));

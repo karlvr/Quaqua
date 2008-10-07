@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTextFieldBorder.java  3.1.1  2008-01-04
+ * @(#)QuaquaTextFieldBorder.java  4.2  2008-10-02
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -26,7 +26,9 @@ import javax.swing.plaf.*;
  * QuaquaTextFieldBorder.
  *
  * @author  Werner Randelshofer
- * @version 4.1 2008-01-04 Don't draw focus border when component is disabled. 
+ * @version 4.2 2008-10-02 Made imageInsets a parameter, instead of using
+ * hardcoded values.
+ * <br>4.1 2008-01-04 Don't draw focus border when component is disabled. 
  * <br>4.0 2007-07-26 Add support for client property "Quaqua.TextField.style"
  * "search", "plain".
  * <br>3.1 2007-04-12 Honour margin of JTextComponent.
@@ -45,6 +47,9 @@ import javax.swing.plaf.*;
 public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBorder {
     /** Location of the border images. */
     private String imagesLocation;
+    private Insets imageInsets;
+    private Insets searchImageInsets;
+    private Insets smallSearchImageInsets;
     private String searchImagesLocation;
     private String smallSearchImagesLocation;
     /** Array with image bevel plainBorders.
@@ -95,10 +100,13 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     
     
     /** Creates a new instance. */
-    public QuaquaTextFieldBorder(String imagesLocation,
-            String searchImagesLocation,
-            String smallSearchImagesLocation) {
+    public QuaquaTextFieldBorder(String imagesLocation, Insets imageInsets,
+            String searchImagesLocation, Insets searchImageInsets,
+            String smallSearchImagesLocation, Insets smallSearchImageInsets) {
         super(3,3,2,3);
+        this.imageInsets = imageInsets;
+        this.searchImageInsets = searchImageInsets;
+        this.smallSearchImageInsets = smallSearchImageInsets;
         this.imagesLocation = imagesLocation;
         this.searchImagesLocation = searchImagesLocation;
         this.smallSearchImagesLocation = smallSearchImagesLocation;
@@ -160,18 +168,18 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
         if (isSearchField(c)) {
             if (isSmall(c)) {
                 if (smallSearchBorders == null) {
-                    smallSearchBorders = (Border[]) QuaquaBorderFactory.create(smallSearchImagesLocation, new Insets(11,13,11,13), 3, true);
+                    smallSearchBorders = (Border[]) QuaquaBorderFactory.create(smallSearchImagesLocation, smallSearchImageInsets, 3, true);
                 }
                 borders = smallSearchBorders;
             } else {
                 if (searchBorders == null) {
-                    searchBorders = (Border[]) QuaquaBorderFactory.create(searchImagesLocation, new Insets(13,13,13,13), 3, true);
+                    searchBorders = (Border[]) QuaquaBorderFactory.create(searchImagesLocation, searchImageInsets, 3, true);
                 }
                 borders = searchBorders;
             }
         } else {
             if (plainBorders == null) {
-                plainBorders = (Border[]) QuaquaBorderFactory.create(imagesLocation, new Insets(6,6,5,6), 3, true);
+                plainBorders = (Border[]) QuaquaBorderFactory.create(imagesLocation, imageInsets, 3, true);
             }
             borders = plainBorders;
         }
@@ -194,9 +202,19 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     
     
     public static class UIResource extends QuaquaTextFieldBorder implements javax.swing.plaf.UIResource {
-        public UIResource(String imagesLocation, String searchImagesLocation,
+        public UIResource(String imagesLocation, 
+                String searchImagesLocation,
                 String smallSearchImagesLocation) {
-            super(imagesLocation, searchImagesLocation, smallSearchImagesLocation);
+            this(imagesLocation, new Insets(6,6,5,6), 
+                    searchImagesLocation, new Insets(13,13,13,13),
+                    smallSearchImagesLocation, new Insets(11,13,11,13));
+        }
+        public UIResource(String imagesLocation, Insets imageInsets,
+                String searchImagesLocation, Insets searchImageInsets,
+                String smallSearchImagesLocation, Insets smallSearchImageInsets) {
+            super(imagesLocation, imageInsets,
+                    searchImagesLocation, searchImageInsets,
+                    smallSearchImagesLocation, smallSearchImageInsets);
         }
     }
 }

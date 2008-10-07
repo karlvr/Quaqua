@@ -13,7 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.CachedPainter14;
+import ch.randelshofer.quaqua.util.CachedPainter;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -24,7 +24,7 @@ import javax.swing.border.*;
  * @author  Werner Randelshofer
  * @version 1.0 2006-01-04 Created.
  */
-public class Quaqua14PlacardButtonBorder extends CachedPainter14 implements Border {
+public class Quaqua14PlacardButtonBorder extends CachedPainter implements Border {
     private final static Color[] defaultColors = {
         new Color(0xd8d8d8), // border top 1
         new Color(0x7d7d7d), // border top 2
