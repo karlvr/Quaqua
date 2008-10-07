@@ -352,7 +352,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         // setFocusCycleRoot(true);
         updateUI();
         setModel(newModel);
-        Methods.invokeIfExists(this, "setFocusable", false);
+        setFocusable(false);
     }
 
     /**
@@ -1074,9 +1074,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         sizeHandle);
                 previewColumn.setLayout(new BrowserScrollPaneLayout());
 
-                Methods.invokeIfExists(previewColumn, "setFocusable", false);
-                Methods.invokeIfExists(previewColumn.getHorizontalScrollBar(), "setFocusable", false);
-                Methods.invokeIfExists(previewColumn.getVerticalScrollBar(), "setFocusable", false);
+                previewColumn.setFocusable(false);
+                previewColumn.getHorizontalScrollBar().setFocusable(false);
+                previewColumn.getVerticalScrollBar().setFocusable(false);
                 if (getDropTarget() != null) {
                     new DropTarget(previewColumn, getDropTarget().getDefaultActions(), getDropTarget());
                     new DropTarget(p, getDropTarget().getDefaultActions(), getDropTarget());
@@ -1551,9 +1551,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         sp.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, new SizeHandle(path.getPathCount() - 1));
         sp.setLayout(new BrowserScrollPaneLayout());
 
-        Methods.invokeIfExists(sp, "setFocusable", false);
-        Methods.invokeIfExists(sp.getVerticalScrollBar(), "setFocusable", false);
-        Methods.invokeIfExists(sp.getHorizontalScrollBar(), "setFocusable", false);
+        sp.setFocusable(false);
+        sp.getVerticalScrollBar().setFocusable(false);
+        sp.getHorizontalScrollBar().setFocusable(false);
 
         add(sp, getListColumnCount());
     }

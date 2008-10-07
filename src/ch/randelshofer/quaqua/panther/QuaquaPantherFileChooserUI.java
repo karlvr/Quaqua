@@ -646,12 +646,12 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         // End of listener assignment
 
         // Focus traversal
-        Methods.invokeIfExists(browserScrollPane, "setFocusable", false);
-        Methods.invokeIfExists(browserScrollPane.getVerticalScrollBar(), "setFocusable", false);
-        Methods.invokeIfExists(browserScrollPane.getHorizontalScrollBar(), "setFocusable", false);
-        Methods.invokeIfExists(sidebarScrollPane, "setFocusable", false);
-        Methods.invokeIfExists(sidebarScrollPane.getVerticalScrollBar(), "setFocusable", false);
-        Methods.invokeIfExists(sidebarScrollPane.getHorizontalScrollBar(), "setFocusable", false);
+        browserScrollPane.setFocusable(false);
+        browserScrollPane.setFocusable(false);
+        browserScrollPane.setFocusable(false);
+        sidebarScrollPane.setFocusable(false);
+        sidebarScrollPane.getVerticalScrollBar().setFocusable(false);
+        sidebarScrollPane.getHorizontalScrollBar().setFocusable(false);
 
         // Drag and drop assignment
         fileTransferHandler = new FileTransferHandler(fc);

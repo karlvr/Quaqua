@@ -13,7 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.CachedPainter14;
+import ch.randelshofer.quaqua.util.CachedPainter;
 import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
@@ -30,7 +30,7 @@ import javax.swing.border.*;
  * Java 1.4 and above.
  * <br>1.0  2005-04-09  Created.
  */
-public class Quaqua14SquareButtonBorder extends CachedPainter14 implements Border {
+public class Quaqua14SquareButtonBorder extends CachedPainter implements Border {
     private final static Color[] defaultColors = {
         new Color(0x828282), // border
         new Color(0xfdfdfd), // first highlight line at top

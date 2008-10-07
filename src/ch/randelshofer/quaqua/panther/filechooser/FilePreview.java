@@ -126,12 +126,12 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         whereLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
         
         // Disable focus traversability
-       Methods.invokeIfExists(kindText, "setFocusable", false);
-       Methods.invokeIfExists(modifiedText, "setFocusable", false);
-       Methods.invokeIfExists(nameText, "setFocusable", false);
-       Methods.invokeIfExists(originalText, "setFocusable", false);
-       Methods.invokeIfExists(sizeText, "setFocusable", false);
-       Methods.invokeIfExists(whereText, "setFocusable", false);
+       kindText.setFocusable(false);
+       modifiedText.setFocusable(false);
+       nameText.setFocusable(false);
+       originalText.setFocusable(false);
+       sizeText.setFocusable(false);
+       whereText.setFocusable(false);
         
         setBackground(bg);
         northPanel.setBackground(bg);
