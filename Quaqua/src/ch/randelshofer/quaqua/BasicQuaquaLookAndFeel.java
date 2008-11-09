@@ -1,5 +1,5 @@
 /*
- * @(#)BasicQuaquaLookAndFeel.java  2.2  2008-07-18
+ * @(#)BasicQuaquaLookAndFeel.java  2.2.1  2008-11-09
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -12,18 +12,12 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.color.AlphaColorUIResource;
-import java.io.*;
-import java.net.*;
+import ch.randelshofer.quaqua.color.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 import java.awt.*;
-import java.awt.image.*;
 import java.util.*;
 import java.security.*;
 
@@ -32,7 +26,9 @@ import java.security.*;
  * commonly uses by all the specific QuaquaLookAndFeel incarnations.
  *
  * @author  Werner Randelshofer
- * @version 2.2 2008-07-18 Added size handle icon for Browser. 
+ * @version 2.2.1 2008-11-09 Define our own EditorPane.focusInputMap, because
+ * the one provided by Apple's AquaLookAndFeel contains non-standard action names. 
+ * <br>2.2 2008-07-18 Added size handle icon for Browser. 
  * <br>2.1 2008-05-31 Use InactivatableColorUIResource for Tree and
  * Table selection colors just like for List selection color.
  * <br>2.0 2008-08-10 Renamed font properties from logicalFontName to 
@@ -1221,6 +1217,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ComboBox.editorInputMap", comboEditorInputMap,
             //"Desktop.ancestorInputMap", ...,
 
+            "EditorPane.focusInputMap", multilineInputMap,
             "FormattedTextField.focusInputMap", fieldInputMap,
             "FormattedTextField.keyBindings", null,
             "PasswordField.focusInputMap", passwordFieldInputMap,
