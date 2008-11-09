@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTableUI.java  1.10  2008-07-15
+ * @(#)QuaquaTableUI.java  1.10.1  2008-11-05
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -33,7 +33,9 @@ import javax.swing.text.*;
  * QuaquaTableUI.
  *
  * @author  Werner Randelshofer
- * @version 1.10 2008-07-15 System property "Quaqua.Table.useJ2SE5MouseHandler"
+ * @version 1.10.1 2008-11-05 Included fix by laurie_int regarding performance 
+ * issue #72 "Table renders slow with very large tables".
+ * <br>1.10 2008-07-15 System property "Quaqua.Table.useJ2SE5MouseHandler"
  * enforces use of J2SE5 mouse handler for J2SE6.
  * <br>1.9.3 2008-07-06 Java 1.4 incorrectly reports button 3 pressed when
  * the user presses the meta key.
@@ -232,12 +234,10 @@ public class QuaquaTableUI extends BasicTableUI
 
             // Paint empty rows at the right to fill the viewport
             if (ts.width < vs.width) {
-                int y = p.y + row * rh;
-                while (y < th) {
+                for (int y = p.y + row * rh, ymax = Math.min(th, vs.height); y < ymax; y+=rh) {
                     if (row % 2 == 0) {
                         g.fillRect(0, y, vs.width, rh);
                     }
-                    y += rh;
                     row++;
                 }
             }
