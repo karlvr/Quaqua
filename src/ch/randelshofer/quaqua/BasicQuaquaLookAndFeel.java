@@ -1097,9 +1097,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
 
         UIDefaults.LazyInputMap tableAncestorInputMap =
                 new UIDefaults.LazyInputMap(new Object[]{
-                    "ctrl C", "copy",
-                    "ctrl V", "paste",
-                    "ctrl X", "cut",
+                    "meta C", "copy",
+                    "meta V", "paste",
+                    "meta X", "cut",
                     "COPY", "copy",
                     "PASTE", "paste",
                     "CUT", "cut",
@@ -1155,7 +1155,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "shift TAB", "selectPreviousColumnCell",
                     "ENTER", "selectNextRowCell",
                     "shift ENTER", "selectPreviousRowCell",
-                    "ctrl A", "selectAll",
+                    "meta A", "selectAll",
                     "ctrl SLASH", "selectAll",
                     "ctrl BACK_SLASH", "clearSelection",
                     "ESCAPE", "cancel",

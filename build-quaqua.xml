@@ -1099,6 +1099,19 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
             <arg value="apple.laf.AquaLookAndFeel"/>
         </java>
     </target>
+   <target depends="init" name="run Basic 1.5">
+        <java classname="test.Main" classpath="${classpath}"
+                failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
+        >
+            <jvmarg value="-Dswing.aatext=true"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="test.BasicLookAndFeelImpl"/>
+            <arg value="-decoration"/>
+            <arg value="true"/>
+        </java>
+    </target>
     <target depends="init" name="run Metal 1.5">
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true" 

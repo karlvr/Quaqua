@@ -22,7 +22,18 @@ p {
 	margin: 0px;
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
+	padding-top: 8px;
+	padding-right: 0px;
+	padding-bottom: 0px;
+	padding-left: 0px;
+	line-height: 16px;
+}
+hr {
 	padding: 0px;
+	margin-top: 24px;
+}
+li {
+	margin-top: 16px;
 }
 h2 {
 	font-family: Tahoma, "Trebuchet MS", Arial, Helvetica, sans-serif;
