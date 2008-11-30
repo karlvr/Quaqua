@@ -251,6 +251,7 @@ public class Main extends javax.swing.JFrame {
                     try {
                         //UIManager.setLookAndFeel(lafName);
                         System.out.println("   CREATING LAF   "+lafName);
+
                         LookAndFeel laf = (LookAndFeel) Class.forName(lafName).newInstance();
                         lafCreate = System.currentTimeMillis();
                         System.out.println("   LAF CREATED   ");
