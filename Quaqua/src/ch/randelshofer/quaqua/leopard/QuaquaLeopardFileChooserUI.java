@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.2.8  2008-07-10
+ * @(#)QuaquaLeopardFileChooserUI.java  1.3  2009-01-21
  *
- * Copyright (c) 2007-2008 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -42,7 +42,8 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.2.8 2007-07-10 Sidebar was not rendered with the correct font. 
+ * @version 1.3 2009-01-21 Handle a change of the FileSystemView in JFileChooser.
+ * <br>1.2.8 2007-07-10 Sidebar was not rendered with the correct font.
  * <br>1.2.7 2008-05-01 Fixed NullPointerException in maybeApproveSelection
  * method and doDirectoryChanged method.
  * <br>1.2.6 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
@@ -66,6 +67,7 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
 public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // Implementation derived from MetalFileChooserUI
     /* Models. */
+
     private DirectoryComboBoxModel directoryComboBoxModel;
     private Action directoryComboBoxAction = new DirectoryComboBoxAction();
     private FileView fileView;
@@ -125,6 +127,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     };
     private AbstractAction keyListenerAction = new AbstractAction() {
         // XXX - This should be rewritten using an ActionMap
+
         public void actionPerformed(ActionEvent ae) {
             File file = null;
             switch (ae.getActionCommand().charAt(0)) {
@@ -219,6 +222,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     //
     // ComponentUI Interface Implementation methods
     //
+
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaLeopardFileChooserUI((JFileChooser) c);
     }
@@ -1245,6 +1249,15 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    private void doFileSystemViewChanged(PropertyChangeEvent e) {
+        JFileChooser fc = getFileChooser();
+
+        model = new AliasFileSystemTreeModel(fc);
+        subtreeModel = new SubtreeTreeModel(model);
+
+        browser.setModel(getTreeModel());
+        sidebarTree.setModel(sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+    }
     /*
      * Listen for filechooser property changes, such as
      * the selected dir changing, or the type of the dialog changing.
@@ -1264,6 +1277,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     doDirectoryChanged(e);
                 } else if (s.equals(JFileChooser.FILE_FILTER_CHANGED_PROPERTY)) {
                     doFilterChanged(e);
+                } else if (s.equals(JFileChooser.FILE_SYSTEM_VIEW_CHANGED_PROPERTY)) {
+                    doFileSystemViewChanged(e);
                 } else if (s.equals(JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY)) {
                     doFileSelectionModeChanged(e);
                 } else if (s.equals(JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY)) {
@@ -1424,11 +1439,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
         public void setFont(Font newValue) {
             font = newValue;
-            
+
             // we still need to call super, in order to ensure that
             // all instance variables of the label are updated properly
             super.setFont(newValue);
-        }        
+        }
 
         public Font getFont() {
             return font;
@@ -1478,8 +1493,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
         public void paint(Graphics gr) {
             paintComponent(gr);
-            
+
         }
+
         protected void paintComponent(Graphics gr) {
 
             Graphics2D g = (Graphics2D) gr;
@@ -1516,7 +1532,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }*/
             super.paintComponent(g);
         }
-        
+
         public Component getTreeCellRendererComponent(
                 JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,
@@ -2087,6 +2103,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // *******************************************************
     // ************ FileChooserUI PLAF methods ***************
     // *******************************************************
+
     /**
      * API method of FileChooserUI.
      */
@@ -2157,6 +2174,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // *******************************************************
     // ********** BasicFileChooserUI PLAF methods ************
     // *******************************************************
+
     public void clearIconCache() {
         try {
             fileView.getClass().getMethod("clearIconCache", new Class[0]).invoke(fileView, new Object[0]);
