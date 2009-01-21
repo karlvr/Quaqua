@@ -13,11 +13,13 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import java.awt.*;
 import java.awt.event.PaintEvent;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.filechooser.FileSystemView;
 import javax.swing.plaf.FileChooserUI;
 
 /**
@@ -30,6 +32,7 @@ public class FileChooserTest extends javax.swing.JPanel {
 
     private FileDialog fileDialog;
     private JFileChooser fileChooser;
+    private boolean isUseCustomFileSystemView;
 
     private static class MyFilenameFilter extends javax.swing.filechooser.FileFilter implements FilenameFilter {
 
@@ -121,6 +124,15 @@ public class FileChooserTest extends javax.swing.JPanel {
                 selectFilesOnlyItem.isSelected() ? JFileChooser.FILES_ONLY : (selectDirectoriesOnlyItem.isSelected() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_AND_DIRECTORIES));
         fileChooser.setFileHidingEnabled(!hiddenFilesItem.isSelected());
         fileChooser.setMultiSelectionEnabled(multiSelectionItem.isSelected());
+
+        if (customFileSystemViewItem.isSelected() != isUseCustomFileSystemView) {
+            isUseCustomFileSystemView = customFileSystemViewItem.isSelected();
+            if (customFileSystemViewItem.isSelected()) {
+                fileChooser.setFileSystemView(FileSystemView.getFileSystemView());
+            } else {
+                fileChooser.setFileSystemView(QuaquaFileSystemView.getQuaquaFileSystemView());
+            }
+        }
     }
 
     private void updateButtons() {
@@ -163,6 +175,29 @@ public class FileChooserTest extends javax.swing.JPanel {
         outputField.setText(buf.toString());
     }
 
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                JFrame f = new JFrame("FileChooserTest");
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.getContentPane().add(new FileChooserTest());
+                f.pack();
+                f.setVisible(true);
+            }
+        });
+    }
+    // TODO code application logic here
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -183,6 +218,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         customApproveField = new javax.swing.JTextField();
         filterFilesItem = new javax.swing.JCheckBox();
         filterFilesField = new javax.swing.JTextField();
+        customFileSystemViewItem = new javax.swing.JCheckBox();
         actionPanel = new javax.swing.JPanel();
         openFileDialogButton = new javax.swing.JButton();
         saveFileDialogButton = new javax.swing.JButton();
@@ -299,6 +335,14 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 22, 0, 0);
         settingsPanel.add(filterFilesField, gridBagConstraints);
+
+        customFileSystemViewItem.setText("Use custom FileSystemView");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        settingsPanel.add(customFileSystemViewItem, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -453,7 +497,7 @@ public class FileChooserTest extends javax.swing.JPanel {
     private void createWith(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWith
         reset(evt);
         fileChooser = new JFileChooser(setSelectedFileField.getText());
-        
+
     }//GEN-LAST:event_createWith
 
     private void hiddenFilesItemChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_hiddenFilesItemChanged
@@ -483,7 +527,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileChooser.setSelectedFile(new File(setSelectedFileField.getText()));
         configureFileDialog();
         fileDialog.setFile(setSelectedFileField.getText());
-        
+
     }//GEN-LAST:event_setTo
 
     private void reset(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reset
@@ -496,14 +540,14 @@ public class FileChooserTest extends javax.swing.JPanel {
         configureFileChooser();
         int option = fileChooser.showSaveDialog(this);
         analyzeOption(fileChooser, option);
-        
+
     }//GEN-LAST:event_saveFileChooser
 
     private void openFileChooser(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileChooser
         configureFileChooser();
         int option = fileChooser.showOpenDialog(this);
         analyzeOption(fileChooser, option);
-        
+
     }//GEN-LAST:event_openFileChooser
 
     private void saveFileDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveFileDialog
@@ -511,7 +555,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileDialog.setMode(FileDialog.SAVE);
         fileDialog.setVisible(true);
         analyzeOption(fileDialog);
-        
+
     }//GEN-LAST:event_saveFileDialog
 
     private void openFileDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileDialog
@@ -531,6 +575,7 @@ public class FileChooserTest extends javax.swing.JPanel {
     private javax.swing.JButton createWithButton;
     private javax.swing.JTextField customApproveField;
     private javax.swing.JCheckBox customApproveItem;
+    private javax.swing.JCheckBox customFileSystemViewItem;
     private javax.swing.JTextField filterFilesField;
     private javax.swing.JCheckBox filterFilesItem;
     private javax.swing.JCheckBox hiddenFilesItem;

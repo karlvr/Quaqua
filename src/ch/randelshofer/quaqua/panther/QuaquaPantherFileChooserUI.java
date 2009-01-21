@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaPantherFileChooserUI.java  2.3.6  2008-05-01
+ * @(#)QuaquaPantherFileChooserUI.java  2.4  2009-05-21
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -39,7 +39,8 @@ import java.util.*;
  * (Panther).
  *
  * @author Werner Randelshofer
- * @version 2.3.6 2008-05-01 Fixed NullPointerException in maybeApproveSelection
+ * @version 2.4 2009-01-21 Handle change of FileSystemView.
+ * <br>2.3.6 2008-05-01 Fixed NullPointerException in maybeApproveSelection
  * method and doDirectoryChanged method.
  * <br>2.3.5 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
  * with null arguments. 
@@ -1204,6 +1205,15 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             browser.updatePreviewColumn();
         }
     }
+    private void doFileSystemViewChanged(PropertyChangeEvent e) {
+        JFileChooser fc = getFileChooser();
+
+        model = new AliasFileSystemTreeModel(fc);
+        subtreeModel = new SubtreeTreeModel(model);
+
+        browser.setModel(getTreeModel());
+        sidebarList.setModel(sidebarListModel = new SidebarListModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
+    }
 
     private void doFileSelectionModeChanged(PropertyChangeEvent e) {
         //Commented out, because there is no reason for clearing the icon cache
@@ -1308,6 +1318,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                     doFilterChanged(e);
                 } else if (s.equals(JFileChooser.FILE_SELECTION_MODE_CHANGED_PROPERTY)) {
                     doFileSelectionModeChanged(e);
+                } else if (s.equals(JFileChooser.FILE_SYSTEM_VIEW_CHANGED_PROPERTY)) {
+                    doFileSystemViewChanged(e);
                 } else if (s.equals(JFileChooser.MULTI_SELECTION_ENABLED_CHANGED_PROPERTY)) {
                     doMultiSelectionChanged(e);
                 } else if (s.equals(JFileChooser.ACCESSORY_CHANGED_PROPERTY)) {
