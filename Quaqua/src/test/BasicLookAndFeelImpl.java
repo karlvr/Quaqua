@@ -18,32 +18,34 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
 /**
  * BasicLookAndFeelImpl.
  *
+ * Note: This class must be Java 1.4 compatible.
+ *
  * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee
  * @version 1.0 2008-11-17 Created.
  */
 public class BasicLookAndFeelImpl extends BasicLookAndFeel {
 
-    @Override
+    //@Override
     public String getName() {
         return "Basic";
     }
 
-    @Override
+    //@Override
     public String getID() {
         return "Basic";
     }
 
-    @Override
+    //@Override
     public String getDescription() {
         return "A basic look and feel";
     }
 
-    @Override
+    //@Override
     public boolean isNativeLookAndFeel() {
         return false;
     }
 
-    @Override
+    //@Override
     public boolean isSupportedLookAndFeel() {
         return true;
     }

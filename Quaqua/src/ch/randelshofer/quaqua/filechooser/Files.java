@@ -1,7 +1,7 @@
 /*
- * @(#)Files.java  5.2  2008-06-22
+ * @(#)Files.java  5.3  2009-01-19
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -27,7 +27,8 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * The current implementation only works on Mac OS X.
  *
  * @author Werner Randelshofer
- * @version 5.2 2008-06-22 Use quaqua64 JNI-lib on x86_64 processors on Mac 
+ * @version 5.3 2009-01-19 Handle UnsatisfiedLinkError's.
+ * <br>5.2 2008-06-22 Use quaqua64 JNI-lib on x86_64 processors on Mac
  * OS X 10.5 and higher.
  * <br>5.1 2008-05-31 Removed explicit 64 bit support for JNILib. This
  * is now handled by universal build of the native library.
@@ -96,17 +97,17 @@ public class Files {
                 if (isNativeCodeAvailable == null) {
                     boolean success = false;
                     try {
-
                         String value = QuaquaManager.getProperty("Quaqua.jniIsPreloaded");
                         if (value == null) {
                             value = QuaquaManager.getProperty("Quaqua.JNI.isPreloaded");
                         }
+                        String libraryName = null;
                         if (value != null && value.equals("true")) {
                             success = true;
                         } else {
 
                             // Use quaqua64 JNI-lib on x86_64 processors on Mac OS X 10.5 and higher
-                            String libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) &&
+                            libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) &&
                                     QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
 
                             try {
@@ -126,9 +127,14 @@ public class Files {
                         }
 
                         if (success) {
-                            int nativeCodeVersion = getNativeCodeVersion();
-                            if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                System.err.println("Warning: " + Files.class + " can't use library libquaqua.jnilib. It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
+                            try {
+                                int nativeCodeVersion = getNativeCodeVersion();
+                                if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
+                                    System.err.println("Warning: " + Files.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
+                                    success = false;
+                                }
+                            } catch (UnsatisfiedLinkError e) {
+                                System.err.println("Warning: " + Files.class + " could load library " + libraryName + " but can't use it. " + e);
                                 success = false;
                             }
                         }
