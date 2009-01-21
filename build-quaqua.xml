@@ -9,7 +9,7 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="version" value="5.0.1 2008-11-16"/>
+        <property name="version" value="5.0.2a 2009-01-19"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
