@@ -42,7 +42,9 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.3 2009-01-21 Handle a change of the FileSystemView in JFileChooser.
+ * @version 1.3.1 2009-02-01 Use client property "Quaqua.Tree.style"="sideBar" and "sourceList"
+ * to simplify SideBarRenderer.
+ * <b>1.3 2009-01-21 Handle a change of the FileSystemView in JFileChooser.
  * <br>1.2.8 2007-07-10 Sidebar was not rendered with the correct font.
  * <br>1.2.7 2008-05-01 Fixed NullPointerException in maybeApproveSelection
  * method and doDirectoryChanged method.
@@ -1429,168 +1431,21 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     //
     // Renderer for Volumes list
     //
+    // CHANGE This class is rewritten after adding support for the Quaqua.Tree.style property
+    // CHANGE All methods except the getTreeCellRendererComponent(...) were
+    // deleted and are no longer needed
     class SidebarRenderer extends DefaultTreeCellRenderer {
-
-        /**
-         * Implement our own font handling, because we need to
-         * work with fonts which are UIResources.
-         */
-        private Font font;
-
-        public void setFont(Font newValue) {
-            font = newValue;
-
-            // we still need to call super, in order to ensure that
-            // all instance variables of the label are updated properly
-            super.setFont(newValue);
-        }
-
-        public Font getFont() {
-            return font;
-        }
-        /*
-        private final  Border selectedBorder = new MatteBorder(1,0,1,0, new Color(7,131,216));
-        private final  Border selectedBorderI = new MatteBorder(1,0,1,0, new Color(130,129,129));
-        private final  Border normalBorder = new EmptyBorder(1,0,1,0);
-        private final ColorPaint selectedBackground = new ColorPaint(0,96,255, new GradientPaint(0f,0f,new Color(62,155,228),0f,22f,new Color(0,96,255)));
-        private final ColorPaint selectedBackgroundI = new ColorPaint(102,102,102, new GradientPaint(0f,0f,new Color(151,151,151),0f,22f,new Color(102,102,102)));
-         */
-        private Border border = new EmptyBorder(1, 3, 2, 0);
-        private JComponent separator = new JComponent() {
-
-            public void paintComponent(Graphics g) {
-                Dimension s = getSize();
-                g.setColor(UIManager.getColor("List.background"));
-                g.fillRect(0, 0, s.width, s.height);
-                g.setColor(new Color(179, 179, 179)); // FIXME get this color from UIManager
-
-                g.fillRect(3, s.height / 2, s.width - 6, 2);
-            }
-        };
-        private int backgroundIndex;
-
-        public SidebarRenderer() {
-            separator.setPreferredSize(new Dimension(9, 9));
-        }
-
-        public Dimension getPreferredSize() {
-            // return a wider width, so that bold fonts are rendered properly
-            Dimension dim = super.getPreferredSize();
-            if (getFont() == null || !getFont().isBold()) {
-                dim.width += dim.width / 10;
-            }
-            return dim;
-        }
-        /*
-        public boolean isOpaque() {
-        return false;
-        }
-         */
-
-        protected void paintBorder(Graphics g) {
-            // empty
-        }
-
-        public void paint(Graphics gr) {
-            paintComponent(gr);
-
-        }
-
-        protected void paintComponent(Graphics gr) {
-
-            Graphics2D g = (Graphics2D) gr;
-            /*
-            // Note: We draw here over the border insets
-            //       This saves having borders for all three possible states
-            int width = getWidth();
-            int height = getHeight();
-            switch (backgroundIndex) {
-            case 0 :
-            break;
-            case 1 :
-            g.setColor(new Color(7,131,216));
-            g.fillRect(0,0, width, 1);
-            g.setPaint(
-            new GradientPaint(
-            0f,1f,new Color(62,155,228),
-            0f,height - 2,new Color(0,96,255)
-            )
-            );
-            g.fillRect(0,1,width,height - 1);
-            break;
-            case 2 :
-            g.setColor(new Color(130,129,129));
-            g.fillRect(0,0, width, 1);
-            g.setPaint(
-            new GradientPaint(
-            0f,1f,new Color(151,151,151),
-            0f,height - 2,new Color(102,102,102)
-            )
-            );
-            g.fillRect(0,1,width,height - 1);
-            break;
-            }*/
-            super.paintComponent(g);
-        }
-
-        public Component getTreeCellRendererComponent(
-                JTree tree, Object value,
+         public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,
-                int row,
-                boolean cellHasFocus) {
+                int row, boolean cellHasFocus) {
+             super.getTreeCellRendererComponent(tree, value, isSelected,
+                     isExpanded, isLeaf, row, false);
 
-            if (value instanceof File) {
-                super.getTreeCellRendererComponent(
-                        tree, value,
-                        isSelected, isExpanded, isLeaf,
-                        row, false);
-                setFont(UIManager.getFont("EmphasizedSmallSystemFont"));
-
-            } else if (value instanceof FileInfo) {
+            if (value != null && value instanceof FileInfo) {
                 FileInfo info = (FileInfo) value;
-                if (info == null) {
-                    return separator;
-                } else {
-                    super.getTreeCellRendererComponent(
-                            tree, value,
-                            isSelected, isExpanded, isLeaf,
-                            row, false);
-                    setText(info.getUserName());
-                    if (isSelected) {
-                        if (QuaquaUtilities.isFocused(tree)) {
-                            backgroundIndex = 1;
-                        } else {
-                            backgroundIndex = 2;
-                        }
-                        setForeground(Color.white);
-                    } else {
-                        backgroundIndex = 3;
-                    }
-                    setIcon(info.getIcon());
-                    setBorder(border);
-                }
-                setFont(UIManager.getFont((isSelected) ? "EmphasizedSmallSystemFont" : "SmallSystemFont"));
-
-            } else {
-                super.getTreeCellRendererComponent(
-                        tree, value,
-                        isSelected, isExpanded, isLeaf,
-                        row, false);
-                setIcon(null);
-
-                if (!isSelected) {
-                    if (QuaquaUtilities.isOnActiveWindow(tree)) {
-                        setForeground(new Color(0x5e6e80));
-                    } else {
-                        setForeground(new Color(0x5c5c5c));
-                    }
-                }
-
-                setFont(UIManager.getFont("EmphasizedSmallSystemFont"));
+                setText(info.getUserName());
+                setIcon(info.getIcon());
             }
-            setBackground(new Color(0x0, true));
-
-            putClientProperty("Quaqua.Label.style", isSelected ? "shadow" : null);
             return this;
         }
     }
