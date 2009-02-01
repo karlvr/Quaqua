@@ -34,8 +34,7 @@ public class TreeTest extends javax.swing.JPanel {
         
         tree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree2.putClientProperty("Quaqua.Tree.style","striped");
-        tree3.setModel(new DefaultTreeModel(new DefaultMutableTreeNode("Root")));
-        tree3.putClientProperty("Quaqua.Tree.style","striped");
+        tree3.putClientProperty("Quaqua.Tree.style","sideBar");
         tree4.setSelectionRow(3);
         tree4.setEnabled(false);
     }
@@ -85,6 +84,7 @@ public class TreeTest extends javax.swing.JPanel {
         add(scrollPane2);
 
         tree3.setRootVisible(false);
+        tree3.setShowsRootHandles(true);
         scrollPane3.setViewportView(tree3);
 
         add(scrollPane3);
