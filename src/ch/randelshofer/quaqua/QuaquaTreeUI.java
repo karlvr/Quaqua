@@ -21,6 +21,7 @@ import java.beans.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.tree.*;
@@ -450,7 +451,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         } else {
             Object property = tree.getClientProperty("Quaqua.Tree.style");
             boolean isSideBar = property != null && (property.equals("sideBar")
-                                                     ||Êproperty.equals("sourceList"));
+                                                     ||property.equals("sourceList"));
 
             int index = (isExpanded) ? 3 : 0;
             if (!isSideBar && !QuaquaUtilities.isOnActiveWindow(tree)) {
