@@ -1262,7 +1262,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
                 failonerror="true" fork="true"
         >
-            <jvmarg value="-verbose"/>
+            <!--jvmarg value="-verbose"/-->
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-DQuaqua.design=panther"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>

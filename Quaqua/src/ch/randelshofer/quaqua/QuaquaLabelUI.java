@@ -14,6 +14,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
