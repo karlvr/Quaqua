@@ -306,7 +306,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         // Shared Colors
         Object controlForeground = table.get("controlText");
         Object controlBackground = table.get("control");
-
+System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
         Object textBackground = table.get("text");
         Object textForeground = table.get("textText");
         Object textSelectionBackground = table.get("textHighlight");
@@ -2071,7 +2071,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
 
     protected Object makeTextureColor(int rgb, String location) {
         return new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.util.TextureColor$UIResource",
+                "ch.randelshofer.quaqua.color.TextureColor$UIResource",
                 new Object[]{new Integer(rgb), location});
     }
 
