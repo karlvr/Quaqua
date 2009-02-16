@@ -1898,7 +1898,7 @@ System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
             "TextField.border", textFieldBorder,
-            "TextField.opaque", Boolean.FALSE,
+            "TextField.opaque", opaque,
             "TextField.popupHandler", textComponentPopupHandler,
             "TextField.autoSelect", autoselect,
             "TextPane.margin", new InsetsUIResource(1, 3, 1, 3),

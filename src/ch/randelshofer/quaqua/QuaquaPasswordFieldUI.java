@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaPasswordFieldUI.java  1.6  2007-08-06
+ * @(#)QuaquaPasswordFieldUI.java  1.6.1  2009-02-16
  *
- * Copyright (c) 2005-2007 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -29,7 +29,9 @@ import javax.swing.border.*;
  * QuaquaPasswordFieldUI.
  *
  * @author  Werner Randelshofer
- * @version 1.6 2007-08-06 Select all text when the user tabs into the field. 
+ * @version 1.6.1 2009-02-16 Override method paintBackground to make it do
+ * nothing.
+ * <br>1.6 2007-08-06 Select all text when the user tabs into the field.
  * <br>1.5 2007-07-27 Added 2 pixels to the preferred width.
  * <br>1.4 2006-04-24 Added support for .popupHandler UIManager property.
  * <br>1.3 2005-10-01 Tweaked due to changes in QuaquaTreeUI. Non-opaque
@@ -139,6 +141,18 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         super.paintSafely(g);
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
+    }
+    /**
+     * Paints a background for the view.  This will only be
+     * called if isOpaque() on the associated component is
+     * true.  The default is to paint the background color
+     * of the component.
+     *
+     * @param g the graphics context
+     */
+    protected void paintBackground(Graphics g) {
+        // This method is overriden here, to make it do nothing.
+        // We already paint the background in method paintSafely();
     }
     
     public void propertyChange(PropertyChangeEvent event) {
