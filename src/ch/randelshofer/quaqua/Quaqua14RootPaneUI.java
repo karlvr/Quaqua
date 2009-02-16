@@ -1,7 +1,7 @@
 /*
- * @(#)Quaqua14RootPaneUI.java  2.0.1  2008-07-07
+ * @(#)Quaqua14RootPaneUI.java  2.0.2  2009-03-16
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -19,6 +19,7 @@ import java.awt.peer.*;
 import java.beans.*;
 import java.lang.reflect.*;
 import java.security.*;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
@@ -31,7 +32,9 @@ import javax.swing.plaf.basic.*;
  * Quaqua14RootPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 2.0.1 2008-07-07 Don't process mouse dragged events when 
+ * @version 2.0.9 2009-03-16 Handle ConcurrentModificationException in
+ * allRootPanes WeakHashMap.
+ * <br>2.0.1 2008-07-07 Don't process mouse dragged events when
  * the root pane is not showing on screen. 
  * <br>2.0 2008-05-10 Added support for client property "Window.documentModified".
  * <br>1.1.4 2008-03-30 Fixed memory leak in allRootPanes has map, by putting
@@ -1059,15 +1062,25 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                     int snap = UIManager.getInt("RootPane.windowSnapDistance");
                     if (snap > 0 && (ev.getModifiersEx() & InputEvent.ALT_DOWN_MASK) == 0) {
                         // Collects all bounds to which we want to snap to
-                        LinkedList snapBounds = new LinkedList();
+                        LinkedList snapBounds;
                         // Collect window bounds
-                        for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext();) {
-                            JRootPane otherRootPane = (JRootPane) i.next();
-                            Window other = SwingUtilities.getWindowAncestor(otherRootPane);
-                            if (other != null && other.isShowing() && other != w) {
-                                snapBounds.add(other.getBounds());
+                        do {
+                            snapBounds = new LinkedList();
+                            try {
+                                for (Iterator i = allRootPanes.keySet().iterator(); i.hasNext();) {
+                                    JRootPane otherRootPane = (JRootPane) i.next();
+                                    Window other = SwingUtilities.getWindowAncestor(otherRootPane);
+                                    if (other != null && other.isShowing() && other != w) {
+                                        snapBounds.add(other.getBounds());
+                                    }
+                                }
+                            } catch (ConcurrentModificationException e) {
+                                // allRootPanes is a WeakHashMap, thus iterating over
+                                // it may fail sometimes because the garbage collector
+                                // removes items in a worker thread.
+                                snapBounds = null;
                             }
-                        }
+                        } while (snapBounds == null);
 
                         // Collect screen bounds
                         snapBounds.add(w.getGraphicsConfiguration().getBounds());
