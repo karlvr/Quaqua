@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaJaguarFileChooserUI.java  1.7.4  2008-02-13
+ * @(#)QuaquaJaguarFileChooserUI.java  1.8  2009-03-13
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -16,8 +16,6 @@ package ch.randelshofer.quaqua.jaguar;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.jaguar.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
 
 //import ch.randelshofer.gui.*;
 import javax.swing.*;
@@ -39,7 +37,9 @@ import java.util.*;
  * (Jaguar).
  *
  * @author Werner Randelshofer
- * @version 1.7.4 2008-02-13 Use JFileChooser.getCurrentDirectory to make
+ * @version 1.8 2009-03-13 Resolve aliases when used as "save" dialog type as
+ * well (not just only when used as "open" dialog type).
+ * <br>1.7.4 2008-02-13 Use JFileChooser.getCurrentDirectory to make
  * relative paths absolute. 
  * <br>1.7.3 2006-04-23 Labels are now retrieved directly from UIManager. 
  * <br>1.7.2 2005-11-07 Get "Labels" resource bundle from UIManager.
@@ -1016,7 +1016,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         separatorPanel2.setVisible(isSave);
         separatorPanel1.setVisible(isSave);
         newFolderButton.setVisible(isSave);
-        model.setResolveAliasesToFiles(! isSave);
+        //model.setResolveAliasesToFiles(! isSave);
     }
     
     private void doApproveButtonMnemonicChanged(PropertyChangeEvent e) {

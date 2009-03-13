@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.3  2009-01-21
+ * @(#)QuaquaLeopardFileChooserUI.java  1.4  2009-03-13
  *
  * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -42,7 +42,9 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.3.1 2009-02-01 Use client property "Quaqua.Tree.style"="sideBar" and "sourceList"
+ * @version 1.4 2009-03-13 Resolve aliases when used as "save" dialog type as
+ * well (not just only when used as "open" dialog type).
+ * <br>1.3.1 2009-02-01 Use client property "Quaqua.Tree.style"="sideBar" and "sourceList"
  * to simplify SideBarRenderer.
  * <b>1.3 2009-01-21 Handle a change of the FileSystemView in JFileChooser.
  * <br>1.2.8 2007-07-10 Sidebar was not rendered with the correct font.
@@ -1233,7 +1235,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         boolean isSave = isFileNameFieldVisible();
         fileNameTextField.setEnabled(isSave);
         fileNamePanel.setVisible(isSave);
-        model.setResolveAliasesToFiles(!isSave);
+        //model.setResolveAliasesToFiles(!isSave);
         // ResourceBundleUtil bundle = (ResourceBundleUtil) UIManager.get("Labels");
         // boolean isLocalized = bundle.getLocale().getLanguage().equals(getLocale().getLanguage());
         browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));

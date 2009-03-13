@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaPantherFileChooserUI.java  2.4  2009-05-21
+ * @(#)QuaquaPantherFileChooserUI.java  2.5  2009-03-13
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -39,7 +39,9 @@ import java.util.*;
  * (Panther).
  *
  * @author Werner Randelshofer
- * @version 2.4 2009-01-21 Handle change of FileSystemView.
+ * @version 2.5 2009-03-13 Resolve aliases when used as "save" dialog type as
+ * well (not just only when used as "open" dialog type).
+ * <br>2.4 2009-01-21 Handle change of FileSystemView.
  * <br>2.3.6 2008-05-01 Fixed NullPointerException in maybeApproveSelection
  * method and doDirectoryChanged method.
  * <br>2.3.5 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
@@ -1279,7 +1281,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         boolean isSave = isFileNameFieldVisible();
         fileNameTextField.setEnabled(isSave);
         fileNamePanel.setVisible(isSave);
-        model.setResolveAliasesToFiles(!isSave);
+        //model.setResolveAliasesToFiles(!isSave);
         // ResourceBundleUtil bundle = (ResourceBundleUtil) UIManager.get("Labels");
         // boolean isLocalized = bundle.getLocale().getLanguage().equals(getLocale().getLanguage());
         browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
