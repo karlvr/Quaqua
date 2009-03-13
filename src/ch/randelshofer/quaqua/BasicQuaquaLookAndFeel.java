@@ -2158,7 +2158,7 @@ System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
                 table.put(keyValueList[i], keyValueList[i + 1]);
             }
         } else {
-            // something is explicitlly included, something is explicitly excluded
+            // something is explicitly included, something is explicitly excluded
             for (int i = 0; i < keyValueList.length; i += 2) {
                 table.put(keyValueList[i], keyValueList[i + 1]);
             }

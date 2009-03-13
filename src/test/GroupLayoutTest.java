@@ -12,9 +12,9 @@ package test;
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-import ch.randelshofer.quaqua.*;
+import org.jdesktop.layout.GroupLayout;
+import org.jdesktop.layout.LayoutStyle;
 import javax.swing.*;
-import org.jdesktop.layout.*;
 /**
  * GroupLayoutTest.
  * 

@@ -424,12 +424,12 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         iconLabel.setVisible(isFileIconAvailable);
         iconLabel.setIcon(placeholderIcon);
         if (file != null) {
-        new SwingWorker() {
+        new Worker() {
             public Object construct() {
                 return Files.getIconImage(file, 128);
             }
-            public void finished() {
-                Image fileIconImage = (Image) getValue();
+            public void finished(Object value) {
+                Image fileIconImage = (Image) value;
                 isFileIconAvailable = fileIconImage != null;
                 if (isFileIconAvailable) {
                     iconLabel.setIcon(new ImageIcon(fileIconImage));

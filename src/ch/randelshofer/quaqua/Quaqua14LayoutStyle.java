@@ -33,7 +33,7 @@ import java.util.*;
  * INDENT values.
  * <br>1.0 June 12, 2005 Created.
  */
-public class Quaqua14LayoutStyle extends LayoutStyle {
+public class Quaqua14LayoutStyle extends org.jdesktop.layout.LayoutStyle {
     private final static boolean DEBUG = false;
     
     /** Mini size style. */
