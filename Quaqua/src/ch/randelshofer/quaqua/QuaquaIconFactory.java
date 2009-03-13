@@ -68,11 +68,11 @@ public class QuaquaIconFactory {
     private static class LazyOptionPaneIcon implements Icon {
         private ImageIcon realIcon;
         private int messageType;
-        private SwingWorker worker;
+        private ch.randelshofer.quaqua.util.SwingWorker worker;
         
         public LazyOptionPaneIcon(final int messageType) {
             this.messageType = messageType;
-            worker = new SwingWorker() {
+            worker = new ch.randelshofer.quaqua.util.SwingWorker() {
                 public Object construct() {
                     try {
                         switch (messageType) {

@@ -9,7 +9,7 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="version" value="5.0.2a 2009-01-19"/>
+        <property name="version" value="5.1a 2009-03-12"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -81,14 +81,14 @@
             <include name="**/*15*.java"/>
         </javac>
         <!-- Compile classes which require Java 1.6 -->
-        <!--javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar" 
+        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar" 
                 debug="true" deprecation="true" 
                 destdir="${builddir}" 
                 encoding="UTF8"
                 executable="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/javac" 
                 fork="yes" optimize="true" source="1.6" srcdir="${srcdir}" target="1.6">
             <include name="**/*16*.java"/>
-        </javac-->
+        </javac>
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
             <fileset dir="${srcdir}">
@@ -537,6 +537,16 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-Dapple.awt.brushMetalLook=true"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 Auto">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
         </java>

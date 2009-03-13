@@ -14,8 +14,9 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
+import org.jdesktop.layout.GroupLayout;
+import org.jdesktop.layout.LayoutStyle;
 import javax.swing.*;
-import org.jdesktop.layout.*;
 
 /**
  * LayoutAHIG15_1Test: "A Simple Preferences Dialog".

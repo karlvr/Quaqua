@@ -13,14 +13,9 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
-import com.sun.java.swing.SwingUtilities2;
-import java.applet.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.font.*;
 import java.awt.image.*;
-import java.awt.peer.*;
-import java.awt.geom.*;
 import java.net.*;
 import javax.swing.*;
 import javax.swing.text.*;

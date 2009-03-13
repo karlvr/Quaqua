@@ -1,7 +1,7 @@
 /*
- * @(#)OSXLeopardFileSystemView.java  4.0  2008-05-09
+ * @(#)OSXLeopardFileSystemView.java  4.1  2009-03-12
  *
- * Copyright (c) 2007-2008 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -13,18 +13,15 @@
 package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
 import java.io.*;
-import java.lang.reflect.*;
 import java.util.*;
 
 /**
  * OSXLeopardFileSystemView.
  *
  * @author Werner Randelshofer
- * @version 4.0 2008-05-09 If native code is available, use native methods from
+ * @version 4.1 2009-03-12 Added $RECYCLE.BIN to list of hidden files.
+ * <br>4.0 2008-05-09 If native code is available, use native methods from
  * Files class to retrieve file infos. If native code is not available fall back
  * to FileSystemView.getFileSystemView() rather than relying on Apple's FileView
  * class.
@@ -88,6 +85,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      * hide them 'manually'.
      */
     private final static HashSet hiddenTopLevelNames = new HashSet();
+    private final static HashSet hiddenDirectoryNames = new HashSet();
     
 
     static {
@@ -121,6 +119,11 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
         };
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
+        names = new String[] {
+            "$RECYCLE.BIN"
+        };
+
+        hiddenDirectoryNames.addAll(Arrays.asList(names));
     }
     ;
 
@@ -182,6 +185,8 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
                 // hidden
                 return true;
             } else if (hiddenTopLevelNames.contains(name) && (f.getParent() == null || isRoot(f.getParentFile()))) {
+                return true;
+            } else if (hiddenDirectoryNames.contains(name)) {
                 return true;
             } else {
                 return false;

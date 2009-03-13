@@ -109,7 +109,6 @@ public class Files {
                             // Use quaqua64 JNI-lib on x86_64 processors on Mac OS X 10.5 and higher
                             libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) &&
                                     QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
-
                             try {
                                 System.loadLibrary(libraryName);
                                 success = true;
