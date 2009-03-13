@@ -9,7 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="version" value="5.1a 2009-03-12"/>
+        <property name="versionNumber" value="5.1"/>
+        <property name="version" value="${versionNumber} 2009-03-13"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -498,6 +499,21 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
                 <include name="**/*.java~"/>
             </fileset>
         </delete>
+        <zip destfile="${distdir}/quaqua-${versionNumber}.zip" compress="false">
+            <fileset dir="..">
+                <include name="Quaqua/**"/>
+                <exclude name="Quaqua/dist/Quaqua/**"/>
+                <exclude name="Quaqua/dist/signed/**"/>
+                <exclude name="Quaqua/dist/*.zip"/>
+                <exclude name="Quaqua/build/**"/>
+                <exclude name="**/.*"/>
+            </fileset>
+        </zip>
+        <zip destfile="${distdir}/quaqua-${versionNumber}.nested.zip" compress="true">
+            <fileset dir="${distdir}">
+                <include name="quaqua-${versionNumber}.zip"/>
+            </fileset>
+        </zip>
     </target>
 
     <target depends="init" description="Javadoc for my API." name="javadoc">
