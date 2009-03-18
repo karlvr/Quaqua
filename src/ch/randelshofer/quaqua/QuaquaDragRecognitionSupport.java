@@ -192,6 +192,9 @@ class QuaquaDragRecognitionSupport {
             }
         } else {
             dropAction = DnDConstants.ACTION_MOVE & sourceActions;
+            if (dropAction == DnDConstants.ACTION_NONE) {
+            dropAction = DnDConstants.ACTION_COPY & sourceActions;
+            }
         }
         return dropAction;
     }
