@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTreeUI.java  5.1  2009-03-13
+ * @(#)QuaquaTreeUI.java  5.2  2009-03-18
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -35,7 +35,8 @@ import javax.swing.text.*;
  * we can't implement the proper selection behavior for a JTree.
  *
  * @author  Werner Randelshofer
- * @version 5.1 2009-03-13 Cancel start editing when the user moves the
+ * @version 5.2 2009-03-18 Added drag and drop support.
+ * <br>5.1 2009-03-13 Cancel start editing when the user moves the
  * mouse after he clicked. Use our own Handler for mouse events.
  * <br>5.0.2 2009-02-01 Complete support for client property
  * "Quaqua.Tree.style"="sideBar" and "Quaqua.Tree.style"="sourceList".
@@ -98,6 +99,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     private static DropTargetListener defaultDropTargetListener = null;
     /** This is set to true, if the editor may start editing. */
     private boolean isStartEditingOnReleaseCancelled;
+    private boolean isDragRecognitionOngoing;
 
     /** Creates a new instance. */
     public QuaquaTreeUI() {
@@ -544,7 +546,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     }
 
     protected MouseListener createMouseListener() {
-            return getHandler();
+        return getHandler();
     }
 
     /**
@@ -1311,15 +1313,17 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 mouseDragSelects = false;
                 mouseReleaseDeselects = false;
                 isStartEditingOnReleaseCancelled = false;
+                isDragRecognitionOngoing = false;
                 if (index != -1) {
-                    if (tree.isRowSelected(index) && e.isPopupTrigger()) {
+                    boolean isRowAtIndexSelected = tree.isRowSelected(index);
+                    if (isRowAtIndexSelected && e.isPopupTrigger()) {
                         // Do not change the selection, if the item is already
                         // selected, and the user triggers the popup menu.
                     } else {
                         int anchorIndex = tree.getRowForPath(tree.getAnchorSelectionPath());
 
                         if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
-                            if (tree.isRowSelected(index)) {
+                            if (isRowAtIndexSelected) {
                                 tree.removeSelectionInterval(index, index);
                             } else {
                                 tree.addSelectionInterval(index, index);
@@ -1331,11 +1335,22 @@ public class QuaquaTreeUI extends BasicTreeUI {
                             setLeadSelectionPath(path);
                             mouseDragSelects = true;
                         } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
-                            if (tree.isRowSelected(index)) {
-                                mouseReleaseDeselects = tree.isFocusOwner();
+                            if (isRowAtIndexSelected) {
+                                if (tree.getDragEnabled()) {
+                                    isDragRecognitionOngoing = QuaquaDragRecognitionSupport.mousePressed(e);
+                                    mouseDragSelects = mouseReleaseDeselects = false;
+                                } else {
+                                    mouseReleaseDeselects = tree.isFocusOwner();
+                                }
                             } else {
                                 tree.setSelectionInterval(index, index);
-                                mouseDragSelects = true;
+                                if (tree.getDragEnabled() &&
+                                        getPathBounds(tree, path).contains(e.getPoint())) {
+                                    isDragRecognitionOngoing = QuaquaDragRecognitionSupport.mousePressed(e);
+                                    mouseDragSelects = mouseReleaseDeselects = false;
+                                } else {
+                                    mouseDragSelects = true;
+                                }
                             }
                             setAnchorSelectionPath(path);
                             setLeadSelectionPath(path);
@@ -1383,11 +1398,11 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
         }*/
         public void mouseDragged(MouseEvent e) {
-            if (tree.getDragEnabled()) {
-                QuaquaDragRecognitionSupport.mouseDragged(e, this);
-            }
-
             if (tree.isEnabled()) {
+                if (tree.getDragEnabled() && isDragRecognitionOngoing) {
+                    QuaquaDragRecognitionSupport.mouseDragged(e, this);
+                }
+
                 // Do nothing if we can't stop editing.
                 if (isEditing(tree) && tree.getInvokesStopCellEditing() &&
                         !stopEditing(tree)) {
