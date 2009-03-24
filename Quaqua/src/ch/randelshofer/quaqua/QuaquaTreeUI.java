@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaTreeUI.java  5.2  2009-03-18
+ * @(#)QuaquaTreeUI.java  5.2.1  2009-03-24
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,7 +13,6 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
@@ -35,7 +34,9 @@ import javax.swing.text.*;
  * we can't implement the proper selection behavior for a JTree.
  *
  * @author  Werner Randelshofer
- * @version 5.2 2009-03-18 Added drag and drop support.
+ * @version 5.2.1 2009-03-23 Don't start editing if a row is clicked which
+ * is not selected yet.
+ * <br>5.2 2009-03-18 Added drag and drop support.
  * <br>5.1 2009-03-13 Cancel start editing when the user moves the
  * mouse after he clicked. Use our own Handler for mouse events.
  * <br>5.0.2 2009-02-01 Complete support for client property
@@ -98,7 +99,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     private int leadRow;
     private static DropTargetListener defaultDropTargetListener = null;
     /** This is set to true, if the editor may start editing. */
-    private boolean isStartEditingOnReleaseCancelled;
+    private boolean isMouseReleaseStartsEditing;
     private boolean isDragRecognitionOngoing;
 
     /** Creates a new instance. */
@@ -505,18 +506,18 @@ public class QuaquaTreeUI extends BasicTreeUI {
             MouseEvent releaseEvent) {
         this.releaseEvent = releaseEvent;
         try {
-            return startEditing(path, event);
+            if (isMouseReleaseStartsEditing) {
+                return startEditing(path, event);
+            } else {
+                return false;
+            }
         } finally {
             this.releaseEvent = null;
         }
     }
 
     protected boolean startEditing(TreePath path, MouseEvent event) {
-        if (!isStartEditingOnReleaseCancelled) {
-            return super.startEditing(path, event);
-        } else {
-            return false;
-        }
+        return super.startEditing(path, event);
     }
 
     InputMap getInputMap(int condition) {
@@ -1297,9 +1298,10 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 TreePath path = getClosestPathForLocation(tree, e.getX(), e.getY());
 
+                /*
                 if (startEditing(path, e)) {
                     return;
-                }
+                }*/
 
                 // Check for clicks in expand control
                 if (isLocationInExpandControl(path, e.getX(), e.getY())) {
@@ -1312,7 +1314,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 mouseDragSelects = false;
                 mouseReleaseDeselects = false;
-                isStartEditingOnReleaseCancelled = false;
+                isMouseReleaseStartsEditing = true;
                 isDragRecognitionOngoing = false;
                 if (index != -1) {
                     boolean isRowAtIndexSelected = tree.isRowSelected(index);
@@ -1328,12 +1330,14 @@ public class QuaquaTreeUI extends BasicTreeUI {
                             } else {
                                 tree.addSelectionInterval(index, index);
                                 mouseDragSelects = true;
+                                isMouseReleaseStartsEditing = false;
                             }
                         } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
                                 anchorIndex != -1) {
                             tree.setSelectionInterval(anchorIndex, index);
                             setLeadSelectionPath(path);
                             mouseDragSelects = true;
+                            isMouseReleaseStartsEditing = false;
                         } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
                             if (isRowAtIndexSelected) {
                                 if (tree.getDragEnabled()) {
@@ -1348,8 +1352,10 @@ public class QuaquaTreeUI extends BasicTreeUI {
                                         getPathBounds(tree, path).contains(e.getPoint())) {
                                     isDragRecognitionOngoing = QuaquaDragRecognitionSupport.mousePressed(e);
                                     mouseDragSelects = mouseReleaseDeselects = false;
+                                    isMouseReleaseStartsEditing = false;
                                 } else {
                                     mouseDragSelects = true;
+                                    isMouseReleaseStartsEditing = false;
                                 }
                             }
                             setAnchorSelectionPath(path);
@@ -1419,6 +1425,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 }
 
                 mouseReleaseDeselects = false;
+                isMouseReleaseStartsEditing = false;
                 if (mouseDragSelects) {
                     int index = tree.getRowForPath(leadPath);
                     if (index != -1) {
@@ -1447,7 +1454,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
          * (with no buttons down).
          */
         public void mouseMoved(MouseEvent e) {
-            isStartEditingOnReleaseCancelled = true;
+            isMouseReleaseStartsEditing = false;
         }
 
         public void mouseReleased(MouseEvent e) {
@@ -1458,8 +1465,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 }
                 TreePath path = getClosestPathForLocation(tree, e.getX(),
                         e.getY());
-                if (!mouseDragSelects && startEditingOnRelease(path, e, e)) {
-                    isStartEditingOnReleaseCancelled = false;
+                if (startEditingOnRelease(path, e, e)) {
                     return;
                 }
 
