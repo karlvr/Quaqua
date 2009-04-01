@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="5.1.1a"/>
-        <property name="version" value="${versionNumber} 2009-03-13"/>
+        <property name="versionNumber" value="5.2"/>
+        <property name="version" value="${versionNumber} 2009-04-01"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -295,10 +295,13 @@
                 srcdir="${srcdir}" source="1.4" target="1.4"
             >
             <include name="**/Quaqua14FileChooserLAF.java"/>
-            <include name="**/Quaqua13FileChooserLAF.java"/>
+            <include name="**/QuaquaLeopardFileChooserLAF.java"/>
             <include name="**/QuaquaLookAndFeel.java"/>
             <include name="**/QuaquaBrowserUI.java"/>
+            <include name="**/DefaultBrowserCellRenderer.java"/>
+            <include name="**/QuaquaTreeUI.java"/>
             <include name="**/QuaquaPantherFileChooserUI.java"/>
+            <include name="**/QuaquaLeopardFileChooserUI.java"/>
             <include name="**/filechooser/*FileSystemView.java"/>
         </javac>
         <copy todir="${builddir}">
@@ -307,6 +310,7 @@
                 <include name="**/Browser*.png"/>
                 <include name="**/FileChooser.*.png"/>
                 <include name="**/FileView.*.png"/>
+                <include name="**/Tree.icons.png"/>
                 <include name="**/*.txt"/>
             </fileset>
         </copy>
@@ -328,9 +332,9 @@
                 Jaguar.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF; 
                 Panther.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
                 Tiger.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Leopard.14=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Leopard.15=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Leopard.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
+                Leopard.14=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 "
             />
         <jar basedir="${builddir}" compress="true" 
@@ -1367,14 +1371,14 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
             <arg value="ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF"/>
         </java>
     </target>
-    <target depends="init" name="run Quaqua 1.5 FileChooser">
+    <target depends="init" name="run Quaqua 1.5 LeopardFileChooser">
         <java classname="test.Main" classpath="${classpath}" 
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
         failonerror="true" fork="true">
             <jvmarg value="-DQuaqua.design=jaguar"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF"/>
+            <arg value="ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF"/>
         </java>
     </target>
     <target depends="init" name="run Quaqua 1.4 ColorChooser">

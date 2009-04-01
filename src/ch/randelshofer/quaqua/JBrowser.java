@@ -1,7 +1,7 @@
 /*
- * @(#)JBrowser.java  2.1  2008-09-08
+ * @(#)JBrowser.java  2.1.1  2009-04-01
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -63,7 +63,10 @@ import javax.swing.border.EmptyBorder;
  *
  *
  * @author  Werner Randelshofer
- * @version 2.1 2008-09-08 Added support for resizable preview column contributed by 
+ * @version 2.1.1 2009-04-01 Double clicking the resize button sets the column to
+ * its preferred width. Revalidate was not called after a column was resized
+ * causing problems with the horizontal scrollbar of the parent JScrollPane.
+ * <br>2.1 2008-09-08 Added support for resizable preview column contributed by
  * Felix Draxler.
  * <br>2.0 2008-07-18 Added support for resizable columns contributed by 
  * Felix Draxler.
@@ -867,13 +870,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @param width The width.
      */
     public void setColumnWidth(int column, int width) {
-        getColumnList(column).setFixedCellWidth(width);
-
-        if (getParent() != null) {
-            getParent().validate();
-            //The (Browser)Viewport needs to be repainted
-            getParent().repaint();
-        }
+        JList l = getColumnList(column);
+        l.setFixedCellWidth(width);
+        l.revalidate();
+        revalidate();
     }
 
     /**
@@ -883,6 +883,21 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     public int getColumnWidth(int column) {
         return getColumnList(column).getFixedCellWidth();
+    }
+
+    /**
+     * Gets the preferred width of a column, which usually is the width
+     * of the largest cell.
+     *
+     * @param column Index of the column.
+     */
+    public int getPreferredColumnWidth(int column) {
+        JList l = getColumnList(column);
+        l.setFixedCellWidth(-1);
+        //int width = l.getPreferredScrollableViewportSize().width;
+        int width = l.getPreferredSize().width;
+        l.setFixedCellWidth(fixedCellWidth);
+        return width;
     }
 
     /**
@@ -898,15 +913,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
         p.setPreferredWidth(width);
 
-        if (getParent() != null) {
-            // Apparantly you have to call these methods in this order to get
-            // the resizing effect correctly painted
-            p.getParent().invalidate();
-            getParent().validate();
-            // The J(Browser)Viewport needs to be repainted (to draw empty
-            // columns at the right)
-            getParent().repaint();
-        }
+        revalidate();
     }
 
     /**
@@ -1616,8 +1623,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             size.setSize(dummyColumn.getPreferredSize());
             size.width *= 2;
         } else {
-            for (int i = 0; i <
-                    2 && i < getComponentCount(); i++) {
+            for (int i = 0; i < getComponentCount(); i++) {
                 Dimension componentSize = getComponent(i).getPreferredSize();
                 size.height = Math.max(size.height, componentSize.height);
                 size.width += componentSize.width;
@@ -1740,17 +1746,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         if (direction > 0) {
             switch (orientation) {
                 case SwingConstants.HORIZONTAL:
-                    for (int i = components.length - 1; i >=
-                            0; i--) {
+                    for (int i = components.length - 1; i >= 0; i--) {
                         Rectangle cbounds = components[i].getBounds();
-                        /*
-                        if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
-                        increment = cbounds.x + cbounds.width - visibleRect.x - visibleRect.width;
-                        }*/
-                        if (cbounds.x > visibleRect.x + visibleRect.width) {
+                        
+                        if (cbounds.x > visibleRect.x) {
+                            increment = cbounds.x - visibleRect.x;
+                        } else if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
                             increment = cbounds.x - visibleRect.x;
                         }
-
                     }
                     break;
                 case SwingConstants.VERTICAL:
@@ -1772,7 +1775,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     if (increment == 0) {
                         increment = visibleRect.x - components[0].getBounds().x;
                     }
-
+                    System.out.println("JBrowser Scroll by block horizontal " + increment);
                     break;
                 case SwingConstants.VERTICAL:
                     increment = 10;
@@ -1936,6 +1939,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         public void mouseClicked(MouseEvent e) {
+            if (e.getClickCount() == 2 && column >= 0) {
+                setColumnWidth(column, Math.max(minimumCellWidth, getPreferredColumnWidth(column)));
+            }
         }
 
         public void mouseEntered(MouseEvent e) {
@@ -1999,7 +2005,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     protected class BrowserLayout implements LayoutManager {
 
-        private  int preferredWidth = 0,    preferredHeight = 0;
+        private int preferredWidth = 0,  preferredHeight = 0;
         private boolean sizeUnknown = true;
 
         /* Required by LayoutManager. */
@@ -2061,13 +2067,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             int maxWidth = parent.getWidth() - (insets.left + insets.right);
             int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
             int nComps = parent.getComponentCount();
-            int previousWidth = 0,  previousHeight = 0;
+            int previousWidth = 0, previousHeight = 0;
 
 
 
 
-            int x = insets.left,  y = insets.top;
-            int rowh = 0,  start = 0;
+            int x = insets.left, y = insets.top;
+            int rowh = 0, start = 0;
 
             // Go through the components' sizes, if neither
             // preferredLayoutSize nor minimumLayoutSize has
@@ -2095,6 +2101,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
+
     /**
      * This is the list model used to map a tree node of the <code>treeModel</code>
      * to a JList displaying its children.
@@ -2113,7 +2120,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         public String toString() {
             StringBuffer buf = new StringBuffer();
             buf.append('{');
-            for (int i = 0,  n = getSize(); i < n; i++) {
+            for (int i = 0, n = getSize(); i < n; i++) {
                 if (i != 0) {
                     buf.append(',');
                 }
@@ -3309,6 +3316,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
             arrowLabel = new JLabel() {
                 // Overridden for performance reasons.
+
                 public void validate() {
                 }
 
@@ -3381,7 +3389,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             arrowLabel.setVisible(!getModel().isLeaf(value));
 
             boolean isExpanded = false;
-            for (int i = 0,  n = expandedPath.getPathCount(); i < n; i++) {
+            for (int i = 0, n = expandedPath.getPathCount(); i < n; i++) {
                 if (expandedPath.getPathComponent(i) == value) {
                     isExpanded = true;
                     break;
@@ -3408,6 +3416,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         // Overridden for performance reasons.
         //public void validate() {}
+
         public void revalidate() {
         }
 

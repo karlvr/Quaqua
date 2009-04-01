@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.4  2009-03-13
+ * @(#)QuaquaLeopardFileChooserUI.java  1.5  2009-04-01
  *
  * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -42,7 +42,9 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.4 2009-03-13 Resolve aliases when used as "save" dialog type as
+ * @version 1.5 2009-04-01 Use QuaquaTreeUI when UIManager-property 
+ * "FileChooser.useQuaquaTreeUI" has the value Boolean.TRUE.
+ * <br>1.4 2009-03-13 Resolve aliases when used as "save" dialog type as
  * well (not just only when used as "open" dialog type).
  * <br>1.3.1 2009-02-01 Use client property "Quaqua.Tree.style"="sideBar" and "sourceList"
  * to simplify SideBarRenderer.
@@ -378,6 +380,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         splitPane.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
         splitPane.setDividerLocation(134);
         splitPane.setDividerSize(1);
+        splitPane.setContinuousLayout(true);
         sidebarScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sidebarTree.setRootVisible(false);
@@ -470,7 +473,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
         splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
         separator.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 0, 3, 0));
+        if (QuaquaManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
+            sidebarTree.setUI((TreeUI) QuaquaTreeUI.createUI(sidebarTree));
+        }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
+
         sidebarTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
         int h;
@@ -1266,6 +1273,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      * Listen for filechooser property changes, such as
      * the selected dir changing, or the type of the dialog changing.
      */
+
     public PropertyChangeListener createPropertyChangeListener(final JFileChooser fc) {
         return new PropertyChangeListener() {
 
@@ -1437,11 +1445,18 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // CHANGE All methods except the getTreeCellRendererComponent(...) were
     // deleted and are no longer needed
     class SidebarRenderer extends DefaultTreeCellRenderer {
-         public Component getTreeCellRendererComponent(JTree tree, Object value,
+
+        public SidebarRenderer() {
+            if (QuaquaManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
+                setUI((LabelUI) QuaquaLabelUI.createUI(this));
+            }
+        }
+
+        public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,
                 int row, boolean cellHasFocus) {
-             super.getTreeCellRendererComponent(tree, value, isSelected,
-                     isExpanded, isLeaf, row, false);
+            super.getTreeCellRendererComponent(tree, value, isSelected,
+                    isExpanded, isLeaf, row, false);
 
             if (value != null && value instanceof FileInfo) {
                 FileInfo info = (FileInfo) value;

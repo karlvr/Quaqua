@@ -1421,9 +1421,6 @@ System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
             "LabelFont", labelFont,
             "ViewFont", viewFont,
             "MenuFont", menuFont,
-            // This must be set to false to make default button on option panes
-            // work as expected when running Java 1.5.
-            "Button.defaultButtonFollowsFocus", Boolean.FALSE,
             "Browser.font", viewFont,
             "Button.font", systemFont,
             "Button.smallFont", smallSystemFont, // Maybe we should use Component.smallFont instead?
@@ -1574,7 +1571,11 @@ System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
             "Button.border", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder", new Object[]{"push"}),
             //"Button.border", new BorderUIResource.LineBorderUIResource(Color.black),
+            //
+            // This must be set to false to make default button on option panes
+            // work as expected when running Java 1.5.
             "Button.defaultButtonFollowsFocus", Boolean.FALSE,
+            
             // The values for this margin are ignored. We dynamically compute a margin
             // for the various button styles that we support, if we encounter a
             // a margin that is an instanceof a UIResource.
