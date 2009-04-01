@@ -1,7 +1,7 @@
 /*
- * @(#)LeopardFileRenderer.java  1.0  2007-11-18
+ * @(#)LeopardFileRenderer.java  1.0.1  2009-04-01
  *
- * Copyright (c) 2007 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -26,7 +26,9 @@ import javax.swing.plaf.BorderUIResource.LineBorderUIResource;
  * Quaqua FileChooserUI's.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2007-11-18 Created.
+ * @version 2.1 2009-04-01 Preferred width did not include textIconGap between
+ * text and arrow icon.
+ * <br>2.0 2007-11-18 Created.
  */
 public class LeopardFileRenderer extends JComponent implements ListCellRenderer  {
     private Color labelForeground, labelDisabledForeground;
@@ -258,9 +260,9 @@ public class LeopardFileRenderer extends JComponent implements ListCellRenderer 
         
         boolean isUseArrow = arrowIcon != null;
         if (isUseArrow) {
-            r.width += arrowIconRect.width;
+            r.width += arrowIconRect.width + textIconGap;
         }
-        
+
         Insets insets = getInsets();
         if (insets != null) {
             r.width += insets.left + insets.right;
