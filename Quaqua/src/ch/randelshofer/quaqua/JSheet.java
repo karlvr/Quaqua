@@ -1,7 +1,7 @@
 /*
- * @(#)JSheet.java  3.0.1  2008-03-24
+ * @(#)JSheet.java  3.1  2009-04-02
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -15,9 +15,7 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.peer.*;
 import java.beans.*;
-import java.lang.reflect.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.*;
@@ -41,7 +39,9 @@ import ch.randelshofer.quaqua.osx.*;
  * In such a case, we (hopefully) just end up with a non-opaque sheet.
  *
  * @author  Werner Randelshofer
- * @version 3.0.1 2008-03-24 Fixed NPE in method hide0. 
+ * @version 3.1 2009-04-02 Document modal JSheet locked GUI up, because JSheet
+ * attempted to start the animation Timer after the JSheet was made visible.
+ * <br>3.0.1 2008-03-24 Fixed NPE in method hide0.
  * <br>3.0 2008-03-15 Display the glass pane while the JSheet is showing.
  * Call toFront on the owning window before showing the sheet.
  * <br>2.1.1 2007-11-24 Don't call toFront() on parent window when running
@@ -411,7 +411,6 @@ public class JSheet extends JDialog {
             if (!isDocumentModalitySupported()) {
                 ((Window) getParent()).toFront();
             }
-            show0();
             final Timer timer = new Timer(20, null);
             timer.addActionListener(new ActionListener() {
 
@@ -448,6 +447,7 @@ public class JSheet extends JDialog {
             timer.setRepeats(true);
             timer.setInitialDelay(5);
             timer.start();
+            show0();
         } else {
             installSheet();
             show0();
