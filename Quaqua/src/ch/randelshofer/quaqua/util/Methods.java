@@ -496,10 +496,10 @@ public class Methods {
             invoke(obj, methodName, enumClass, enumValue);
         } catch (ClassNotFoundException e) {
             // ignore
-            //e.printStackTrace();
+            e.printStackTrace();
         } catch (NoSuchMethodException e) {
             // ignore
-            //e.printStackTrace();
+            e.printStackTrace();
         }
     }
     
