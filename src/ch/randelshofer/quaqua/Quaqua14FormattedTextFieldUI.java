@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua14FormattedTextFieldUI.java  1.6.1  2009-02-16
+ * @(#)Quaqua14FormattedTextFieldUI.java  1.6.2  2009-04-03
  *
  * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -29,7 +29,9 @@ import javax.swing.border.*;
  * Quaqua14FormattedTextFieldUI.
  * 
  * @author Werner Randelshofer
- * @version 1.6.1 2009-02-16 Override method paintBackground to make it do
+ * @version 1.6.2 2009-04-03  Paint the background color if no background
+ * border is present.
+ * <br>1.6.1 2009-02-16 Override method paintBackground to make it do
  * nothing.
  * <br>1.6 2007-08-06 Select all text when the user tabs into the field.
  * <br>1.5 2007-07-27 Added 2 pixels to the preferred width.
@@ -137,14 +139,17 @@ public class Quaqua14FormattedTextFieldUI extends BasicFormattedTextFieldUI impl
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
         
-        // Fill the background
+        // Paint the background with the background border or the background color
         Border border = editor.getBorder();
         if (border != null && border instanceof BackgroundBorder) {
             Border bb = ((BackgroundBorder) border).getBackgroundBorder();
             bb.paintBorder(editor, g, 0, 0, editor.getWidth(), editor.getHeight());
-             
+        } else {
+            if (editor.isOpaque()) {
+                super.paintBackground(g);
+            }
         }
-        
+
         super.paintSafely(g);
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
