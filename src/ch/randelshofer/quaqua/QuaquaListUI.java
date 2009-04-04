@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaListUI.java  1.5  2008-05-31
+ * @(#)QuaquaListUI.java  1.5.1  2009-04-03
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,27 +13,21 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.color.MutableColorUIResource;
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.beans.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 import java.lang.reflect.*;
 
 /**
  * QuaquaListUI for Java 1.4.
  * 
  * @author Werner Randelshofer
- * @version 1.5 2008-05-31 Use InactivatableColorUIResource for Tree selection
+ * @version 1.5.1 2009-04-03 The selection of disabled lists could be changed.
+ * <br>1.5 2008-05-31 Use InactivatableColorUIResource for Tree selection
  * colors.
  * <br>1.4 2008-04-22 On mousePressed, requestFocusInWindow.
  * <br>1.3 2008-03-21 Made selection behavior more consistent with native
@@ -70,6 +64,7 @@ public class QuaquaListUI extends BasicListUI {
      */
     private final static int VERTICAL;
 
+
     static {
         int value = 0;
         try {
@@ -79,6 +74,7 @@ public class QuaquaListUI extends BasicListUI {
         VERTICAL = value;
     }
     private final static Method getLayoutOrientation;
+
 
     static {
         Method value = null;
@@ -281,37 +277,38 @@ public class QuaquaListUI extends BasicListUI {
     }
     /*
     protected void installListeners() {
-        list.addMouseListener(defaultDragRecognizer);
-        list.addMouseMotionListener(defaultDragRecognizer);
-        super.installListeners();
+    list.addMouseListener(defaultDragRecognizer);
+    list.addMouseMotionListener(defaultDragRecognizer);
+    super.installListeners();
 
-        // Remove the dreaded BasicDragGestureRecognizer from the list
-        boolean removalSuccessful = false;
-        MouseListener[] ml = list.getMouseListeners();
-        for (int i = 0; i < ml.length; i++) {
-            if (ml[i].getClass().getName().equals("javax.swing.plaf.basic.BasicListUI$ListDragGestureRecognizer")) {
-                list.removeMouseListener(ml[i]);
-                removalSuccessful = true;
-            }
-        }
-        MouseMotionListener[] mml = list.getMouseMotionListeners();
-        for (int i = 0; i < mml.length; i++) {
-            if (mml[i].getClass().getName().equals("javax.swing.plaf.basic.BasicListUI$ListDragGestureRecognizer")) {
-                list.removeMouseMotionListener(mml[i]);
-            }
-        }
-        if (!removalSuccessful) {
-            list.removeMouseListener(defaultDragRecognizer);
-            list.removeMouseMotionListener(defaultDragRecognizer);
-        }
+    // Remove the dreaded BasicDragGestureRecognizer from the list
+    boolean removalSuccessful = false;
+    MouseListener[] ml = list.getMouseListeners();
+    for (int i = 0; i < ml.length; i++) {
+    if (ml[i].getClass().getName().equals("javax.swing.plaf.basic.BasicListUI$ListDragGestureRecognizer")) {
+    list.removeMouseListener(ml[i]);
+    removalSuccessful = true;
+    }
+    }
+    MouseMotionListener[] mml = list.getMouseMotionListeners();
+    for (int i = 0; i < mml.length; i++) {
+    if (mml[i].getClass().getName().equals("javax.swing.plaf.basic.BasicListUI$ListDragGestureRecognizer")) {
+    list.removeMouseMotionListener(mml[i]);
+    }
+    }
+    if (!removalSuccessful) {
+    list.removeMouseListener(defaultDragRecognizer);
+    list.removeMouseMotionListener(defaultDragRecognizer);
+    }
     }
 
     protected void uninstallListeners() {
-        super.uninstallListeners();
-        list.removeMouseListener(defaultDragRecognizer);
-        list.removeMouseMotionListener(defaultDragRecognizer);
+    super.uninstallListeners();
+    list.removeMouseListener(defaultDragRecognizer);
+    list.removeMouseMotionListener(defaultDragRecognizer);
     }
-*/
+     */
+
     /**
      * Returns a new instance of QuaquaListUI.  QuaquaListUI delegates are
      * allocated one per JList.
@@ -371,15 +368,16 @@ public class QuaquaListUI extends BasicListUI {
             // Note: Some applications depend on selection changes only occuring
             // on focused components. Maybe we must not do any changes to the
             // selection changes at all, when the compnent is not focused?
-            list.requestFocusInWindow(); 
+            list.requestFocusInWindow();
 
             mouseDragSelects = false;
             mouseReleaseDeselects = false;
             if (index != -1) {
-                if (list.isSelectedIndex(index) && e.isPopupTrigger()) {
-                // Do not change the selection, if the item is already
-                // selected, and the user triggers the popup menu.
-                } else {
+                if (!list.isEnabled() || list.isSelectedIndex(index) && e.isPopupTrigger()) {
+                    // Do not change the selection, if the list is disabled
+                    // or the item is already
+                    // selected, and the user triggers the popup menu.
+                    } else {
                     int anchorIndex = list.getAnchorSelectionIndex();
 
                     if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
@@ -540,8 +538,8 @@ public class QuaquaListUI extends BasicListUI {
             } else if ("layoutOrientation".equals(name)) {
                 layoutOrientation = ((Integer) e.getNewValue()).intValue();
                 updateStriped();
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(list);
+            } else if (name.equals("JComponent.sizeVariant")) {
+                QuaquaUtilities.applySizeVariant(list);
             }
             super.propertyChange(e);
         }
@@ -578,6 +576,7 @@ public class QuaquaListUI extends BasicListUI {
         //
         // ListDataListener
         //
+
         public void intervalAdded(ListDataEvent e) {
             updateLayoutStateNeeded = modelChanged;
 
@@ -638,42 +637,41 @@ public class QuaquaListUI extends BasicListUI {
         list.revalidate();
         list.repaint();
     }
-    
     /*
     private static final ListDragGestureRecognizer defaultDragRecognizer =
-            new ListDragGestureRecognizer();
+    new ListDragGestureRecognizer();
 
     /**
      * Drag gesture recognizer for JList components
      * /
     static class ListDragGestureRecognizer extends QuaquaDragGestureRecognizer {
 
-        /**
-         * Determines if the following are true:
-         * <ul>
-         * <li>the press event is located over a selection
-         * <li>the dragEnabled property is true
-         * <li>A TranferHandler is installed
-         * </ul>
-         * <p>
-         * This is implemented to perform the superclass behavior
-         * followed by a check if the dragEnabled 
-         * property is set and if the location picked is selected.
-         * /
-        protected boolean isDragPossible(MouseEvent e) {
-            if (super.isDragPossible(e)) {
-                JList list = (JList) this.getComponent(e);
-                if (list.getDragEnabled()) {
-                    QuaquaListUI ui = (QuaquaListUI) list.getUI();
-                    int row = ui.locationToIndex(list, e.getPoint());
-                    if ((row != -1) && list.isSelectedIndex(row)) {
-                        return true;
-                    /*		    } else if (row != -1 && list.getCellBounds(row, row).contains(e.getPoint())) {
-                    return true;         * /
-                    }
-                }
-            }
-            return false;
-        }
+    /**
+     * Determines if the following are true:
+     * <ul>
+     * <li>the press event is located over a selection
+     * <li>the dragEnabled property is true
+     * <li>A TranferHandler is installed
+     * </ul>
+     * <p>
+     * This is implemented to perform the superclass behavior
+     * followed by a check if the dragEnabled
+     * property is set and if the location picked is selected.
+     * /
+    protected boolean isDragPossible(MouseEvent e) {
+    if (super.isDragPossible(e)) {
+    JList list = (JList) this.getComponent(e);
+    if (list.getDragEnabled()) {
+    QuaquaListUI ui = (QuaquaListUI) list.getUI();
+    int row = ui.locationToIndex(list, e.getPoint());
+    if ((row != -1) && list.isSelectedIndex(row)) {
+    return true;
+    /*		    } else if (row != -1 && list.getCellBounds(row, row).contains(e.getPoint())) {
+    return true;         * /
+    }
+    }
+    }
+    return false;
+    }
     }*/
 }
