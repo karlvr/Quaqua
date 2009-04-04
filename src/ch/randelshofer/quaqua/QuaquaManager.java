@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaManager.java 4.2  2008-09-08
+ * @(#)QuaquaManager.java 4.3  2009-04-04
  *
- * Copyright (c) 2003-2007 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -104,7 +104,8 @@ import java.io.*;
  *
  *
  * @author  Werner Randelshofer
- * @version 4.2 2008-09-08 Added support for J2SE6. 
+ * @version 4.3 2009-04-04 Added support for generic linux.
+ * <br>4.2 2008-09-08 Added support for J2SE6.
  * <br>4.1 2007-12-09 Make a distinction between cross-platform designs,
  * instead of providing a single cross-platform design depending on the J2SE
  * version. 
@@ -196,6 +197,10 @@ public class QuaquaManager {
      */
     public final static int LEOPARD = 5;
     /**
+     * Generic Linux.
+     */
+    public final static int LINUX = -4;
+    /**
      * Darwin.
      */
     public final static int DARWIN = -3;
@@ -255,6 +260,8 @@ public class QuaquaManager {
             }
         } else if (osName.startsWith("Darwin")) {
             OS = DARWIN;
+        } else if (osName.startsWith("Linux")) {
+            OS = LINUX;
         } else if (osName.startsWith("Windows")) {
             OS = WINDOWS;
         } else {

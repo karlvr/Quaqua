@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaFileSystemView.java  4.0  2008-05-10
+ * @(#)QuaquaFileSystemView.java  4.1  2009-04-04
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -14,7 +14,6 @@
 package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.QuaquaManager;
-import ch.randelshofer.quaqua.panther.filechooser.*;
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
@@ -25,7 +24,8 @@ import javax.swing.filechooser.*;
  * The resulting view is an Aqua-style view on the file system.
  *
  * @author  Werner Randelshofer
- * @version 4.0 2008-05-10 Moved common methods from subclasses into this
+ * @version 4.1 2009-04-04 Added support for LinuxFileSystemView.
+ * <br>4.0 2008-05-10 Moved common methods from subclasses into this
  * class.
  * <br>2.1 2006-05-07 Use a specialized file system view for Mac OS X Tiger. 
  * <br>2.0 2005-09-10 Moved file system related methods from QuaquaManager
@@ -68,9 +68,6 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         if (fileSystemView == null) {
             String className;
             int os = QuaquaManager.getOS();
-            if (os == QuaquaManager.WINDOWS) {
-                className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
-            } else {
                 switch (os) {
                     case QuaquaManager.JAGUAR :
                         className = "ch.randelshofer.quaqua.jaguar.filechooser.OSXJaguarFileSystemView";
@@ -93,11 +90,14 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         //}
                         break;
                     case QuaquaManager.TIGER :
+                    case QuaquaManager.WINDOWS :
+                className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
+                    case QuaquaManager.LINUX :
+                className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
                     default :
                         className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
                         break;
                 }
-            }
             try {
                 fileSystemView = (QuaquaFileSystemView) Class.forName(className).newInstance();
             } catch (Exception e) {
