@@ -13,6 +13,9 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
+import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
+import ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;

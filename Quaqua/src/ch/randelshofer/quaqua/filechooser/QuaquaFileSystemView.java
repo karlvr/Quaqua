@@ -1,14 +1,14 @@
 /*
- * @(#)QuaquaFileSystemView.java  4.1  2009-04-04
+ * @(#)QuaquaFileSystemView.java  4.2  2009-04-05
  *
  * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 
 package ch.randelshofer.quaqua.filechooser;
@@ -24,34 +24,36 @@ import javax.swing.filechooser.*;
  * The resulting view is an Aqua-style view on the file system.
  *
  * @author  Werner Randelshofer
- * @version 4.1 2009-04-04 Added support for LinuxFileSystemView.
+ * @version 4.2  2009-04-05 Fixed support for LinuxFileSystemView. Added
+ * setFileSystemView method.
+ * <br>4.1 2009-04-04 Added support for LinuxFileSystemView.
  * <br>4.0 2008-05-10 Moved common methods from subclasses into this
  * class.
- * <br>2.1 2006-05-07 Use a specialized file system view for Mac OS X Tiger. 
+ * <br>2.1 2006-05-07 Use a specialized file system view for Mac OS X Tiger.
  * <br>2.0 2005-09-10 Moved file system related methods from QuaquaManager
  * into this class.
  * <br>1.0 August 26, 2005 Created.
  */
 public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
     private static QuaquaFileSystemView instance;
-    
+
     /**
      * Creates a new instance.
      */
     public QuaquaFileSystemView() {
     }
-    
+
     /**
      * Returns the file that represents this computer node.
      */
     public abstract File getComputer();
-    
+
     /**
      * Returns the file that represents the system (boot) volume of this
      * computer.
      */
     public abstract File getSystemVolume();
-    
+
     /**
      * Creates a system specific file view for the specified JFileChooser.
      */
@@ -60,7 +62,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
     }
 
     private static QuaquaFileSystemView fileSystemView;
-    
+
     /**
      * Returns a FileSystemView that can be cast into QuaquaFileSystemView.
      */
@@ -90,10 +92,14 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         //}
                         break;
                     case QuaquaManager.TIGER :
+                        className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
+                        break;
                     case QuaquaManager.WINDOWS :
-                className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
+                    	className = "ch.randelshofer.quaqua.filechooser.WindowsFileSystemView";
+                    	break;
                     case QuaquaManager.LINUX :
-                className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
+                    	className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
+                    	break;
                     default :
                         className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
                         break;
@@ -107,6 +113,17 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         }
         return fileSystemView;
     }
+
+    /**
+     * Sets the QuaquaFileSystemView.
+     * Set this to null, if you want Quaqua determine which file system view to use.
+     */
+    public static void setQuaquaFileSystemView(QuaquaFileSystemView newValue) {
+        fileSystemView = newValue;
+    }
+
+
+
     /**
      * Icon for a file, directory, or folder as it would be displayed in
      * a system file browser. Example from Windows: the "M:\" directory

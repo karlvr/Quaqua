@@ -267,7 +267,7 @@ public class QuaquaManager {
         } else {
             OS = UNKNOWN;
         }
-        
+
         String osDesign = getProperty("Quaqua.design", "auto").toLowerCase();
         if (osDesign.equals("cheetah")) {
             design = JAGUAR;
