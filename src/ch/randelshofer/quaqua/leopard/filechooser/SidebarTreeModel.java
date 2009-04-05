@@ -1,14 +1,14 @@
 /*
- * @(#)SidebarTreeModel.java  4.0  2008-07-15
+ * @(#)SidebarTreeModel.java  4.1  2009-04-05
  *
- * Copyright (c) 2007-2008 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
@@ -27,14 +27,15 @@ import ch.randelshofer.quaqua.ext.nanoxml.*;
  * SidebarTreeModel.
  *
  * @author Werner Randelshofer
- * @version 4.0 2008-07-15 Rewrote updating of devices node. 
- * <br>3.1 2008-05-09 FileNode reads value of variable userName lazily. 
- * <br>3.0.1 2008-04-17 Method FileNode.getIcon fired wrong event. 
+ * @version 4.1 2009-04-05 Added defaultUserItems for Linux.
+ * <br>4.0 2008-07-15 Rewrote updating of devices node.
+ * <br>3.1 2008-05-09 FileNode reads value of variable userName lazily.
+ * <br>3.0.1 2008-04-17 Method FileNode.getIcon fired wrong event.
  * <br>3.0 2008-03-26 Method treeNodesChanged() must map model viewIndices
- * to view viewIndices for the change event that it fires on its own. Method 
+ * to view viewIndices for the change event that it fires on its own. Method
  * updateSystemItem must attempt to merge existing view nodes, because the JTree
  * might have stored selection paths to the nodes.
- * <br>2.0 2007-11-24 Added support for Darwin. 
+ * <br>2.0 2007-11-24 Added support for Darwin.
  * <br>1.0 November 10, 2007 Created.
  */
 public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListener {
@@ -83,8 +84,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private HashMap systemItemsMap = new HashMap();
 
+    /**
+     * The defaultUserItems are used when we fail to read the user items from
+     * the sidebarFile.
+     */
     private final static File[] defaultUserItems;
-    
+
 
     static {
         if (QuaquaManager.isOSX() ||
@@ -100,6 +105,13 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                         // Japanese ideographs for Desktop:
                         new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
                         new File(QuaquaManager.getProperty("user.home"), "My Documents"),
+                        new File(QuaquaManager.getProperty("user.home"))
+                    };
+        } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
+            defaultUserItems = new File[]{
+                        new File(QuaquaManager.getProperty("user.home"),"Desktop"),
+                        new File("/media"),
+                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
                         new File(QuaquaManager.getProperty("user.home"))
                     };
         } else {

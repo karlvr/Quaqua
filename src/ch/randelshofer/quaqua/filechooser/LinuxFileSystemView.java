@@ -1,13 +1,13 @@
 /*
- * @(#)LinuxFileSystemView.java  1.0  2009-04-04
- * 
+ * @(#)LinuxFileSystemView.java  1.1  2009-04-05
+ *
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
- * 
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
+ *
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
  * Werner Randelshofer. For details see accompanying license terms
  */
 
@@ -18,18 +18,23 @@ import java.io.File;
 /**
  * LinuxFileSystemView.
  *
- * @author Werner Randelshofer
- * @version 1.0 2009-04-04 Created based on code contributed by stefanmd.
+ * @author Werner Randelshofer, stefanmd
+ * @version 1.1 2009-04-05 stefanmd Tweaked for Gnome and KDE.
+ * <br>1.0 2009-04-04 stefanmd Created.
  */
 public class LinuxFileSystemView extends QuaquaFileSystemView {
-    /** XXX - This needs more work. */
-    private File computer = new File("/");
-    /** XXX - This needs more work. */
+    /** XXX - The computer mount does only exist in Gnome */
+    private File computer = new File("computer:///");
+
+    /** XXX - There is no volumes folder, only root. */
     private File volumesFolder = new File("/");
-    /** XXX - This needs more work. */
+
+    /** XXX - This works on Gnome and KDE */
     private File desktop = new File(System.getProperty("user.home")+"/Desktop");
-    /** XXX - This needs more work. */
+
+    /** The system volume is "/" for all Linux distributions. */
     private File systemVolume = new File("/");
+
     private final static boolean DEBUG = false;
 
     /**
@@ -51,13 +56,7 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
      * XXX - This needs more work.
      */
     public File[] getRoots() {
-        return getFiles(volumesFolder, true);
-        /*
-        File[] roots1 = getFiles(volumesFolder, true);
-        File[] roots2 = new File[roots1.length + 1];
-        roots2[0] = volumesFolder;
-        System.arraycopy(roots1, 0, roots2, 1, roots1.length);
-        return roots2;*/
+        return new File[] {volumesFolder};
     }
 
 
@@ -165,5 +164,17 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
      */
     public File getDefaultDirectory() {
         return getHomeDirectory();
+    }
+    public String getSystemDisplayName(File f) {
+        // FIXME - Determine display name
+        if (f.equals(systemVolume)) {
+            return "/";
+        } else {
+            if (Files.canWorkWithAliases()) {
+                return Files.getDisplayName(f);
+            } else {
+                return target.getSystemDisplayName(f);
+            }
+        }
     }
 }
