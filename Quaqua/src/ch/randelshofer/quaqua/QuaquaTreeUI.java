@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTreeUI.java  5.2.1  2009-03-24
+ * @(#)QuaquaTreeUI.java  5.2.2  2009-04-13
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -34,7 +34,9 @@ import javax.swing.text.*;
  * we can't implement the proper selection behavior for a JTree.
  *
  * @author  Werner Randelshofer
- * @version 5.2.1 2009-03-23 Don't start editing if a row is clicked which
+ * @version 5.2.2 2009-04-13 Don't render disabled icon in first column of
+ * a sideBar-tree or sourceList-tree.
+ * <br>5.2.1 2009-03-23 Don't start editing if a row is clicked which
  * is not selected yet.
  * <br>5.2 2009-03-18 Added drag and drop support.
  * <br>5.1 2009-03-13 Cancel start editing when the user moves the
@@ -1045,9 +1047,10 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
             if (isTopLevel) {
                 label.setIcon(null);
+                label.setDisabledIcon(null);
             }
         }
-
+        
         rendererPane.paintComponent(g, component, tree, bounds.x, bounds.y,
                 bounds.width, bounds.height, true);
     }

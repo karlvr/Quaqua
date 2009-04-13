@@ -306,7 +306,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         // Shared Colors
         Object controlForeground = table.get("controlText");
         Object controlBackground = table.get("control");
-System.out.println("BasicQuaquaLookAndFeel controlBG:"+controlBackground);
+
         Object textBackground = table.get("text");
         Object textForeground = table.get("textText");
         Object textSelectionBackground = table.get("textHighlight");
