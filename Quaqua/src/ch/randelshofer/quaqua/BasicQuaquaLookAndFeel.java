@@ -26,7 +26,8 @@ import java.security.*;
  * commonly uses by all the specific QuaquaLookAndFeel incarnations.
  *
  * @author  Werner Randelshofer
- * @version 2.2.1 2008-11-09 Define our own EditorPane.focusInputMap, because
+ * @version 2.2.2 2009-04-19 Fixed selective exclusion of UIs.
+ * <br>2.2.1 2008-11-09 Define our own EditorPane.focusInputMap, because
  * the one provided by Apple's AquaLookAndFeel contains non-standard action names. 
  * <br>2.2 2008-07-18 Added size handle icon for Browser. 
  * <br>2.1 2008-05-31 Use InactivatableColorUIResource for Tree and
@@ -2156,7 +2157,21 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         } else if (included == null) {
             // something is explicitly excluded, nothing is explicitly included
             for (int i = 0; i < keyValueList.length; i += 2) {
-                table.put(keyValueList[i], keyValueList[i + 1]);
+                if (keyValueList[i] instanceof String) {
+                    String name = (String) keyValueList[i];
+                    int p = name.indexOf('.');
+                    if (p == -1 && name.endsWith("UI")) {
+                        name = name.substring(0, name.length() - 2);
+                        p = 1;
+                    } else if (p != -1) {
+                        name = name.substring(0, p);
+                    }
+                    if (p == -1 || !excluded.contains(name)) {
+                        table.put(keyValueList[i], keyValueList[i + 1]);
+                    }
+                } else {
+                    table.put(keyValueList[i], keyValueList[i + 1]);
+                }
             }
         } else {
             // something is explicitly included, something is explicitly excluded
