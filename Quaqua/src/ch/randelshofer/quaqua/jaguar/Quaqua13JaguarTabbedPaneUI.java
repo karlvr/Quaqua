@@ -1,7 +1,7 @@
 /*
- * @(#)Quaqua13JaguarTabbedPaneUI.java 4.0  2007-11-03
+ * @(#)Quaqua13JaguarTabbedPaneUI.java  4.1  2009-04-27
  *
- * Copyright (c) 2001-2007 Werner Randelshofer
+ * Copyright (c) 2001-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -21,13 +21,11 @@ import ch.randelshofer.quaqua.color.TextureColor;
 
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.text.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.plaf.*;
-import java.io.Serializable;
 import javax.swing.plaf.basic.*;
 import java.util.*;
 
@@ -43,7 +41,8 @@ import java.util.*;
  * to be used to lay out the child component inside the JTabbedPane.
  *
  * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
- * @version 4.0 2007-11-03 Retrieving (some) border resources now from UIManager. 
+ * @version 4.1 2009-04-27 Added support for client property Quaqua.TabbedPane.tabAlignment.
+ * <br>4.0 2007-11-03 Retrieving (some) border resources now from UIManager.
  * <br>3.2 2006-12-24 by Karl von Randow: Use Images class to create artwork.
  * <br>3.1 2006-09-04 Fixed keybord navigation problems.
  * <br>3.0 2006-02-07 Reworked for QuaquaPantherJaguarTabbedPaneUI.
@@ -158,8 +157,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
                         createNonCachedImageBorder("images/TabbedPane.tabTop.S.png", insets),
                         createNonCachedImageBorder("images/TabbedPane.tabTop.I.png", insets),
                         createNonCachedImageBorder("images/TabbedPane.tabTop.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.DS.png", insets),
-                    };
+                        createNonCachedImageBorder("images/TabbedPane.tabTop.DS.png", insets),};
         }
         return tabTopBorder[i];
     }
@@ -178,8 +176,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
                         createNonCachedImageBorder("images/TabbedPane.tabBottom.S.png", insets),
                         createNonCachedImageBorder("images/TabbedPane.tabBottom.I.png", insets),
                         createNonCachedImageBorder("images/TabbedPane.tabBottom.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.DS.png", insets),
-                    };
+                        createNonCachedImageBorder("images/TabbedPane.tabBottom.DS.png", insets),};
         }
         return tabBottomBorder[i];
     }
@@ -197,8 +194,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
                         createNonCachedImageBorder("images/TabbedPane.tabRight.S.png", insetsS),
                         createNonCachedImageBorder("images/TabbedPane.tabRight.I.png", insetsS),
                         createNonCachedImageBorder("images/TabbedPane.tabRight.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.DS.png", insetsS),
-                    };
+                        createNonCachedImageBorder("images/TabbedPane.tabRight.DS.png", insetsS),};
         }
         return tabRightBorder[i];
     }
@@ -216,8 +212,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
                         createNonCachedImageBorder("images/TabbedPane.tabLeft.S.png", insetsS),
                         createNonCachedImageBorder("images/TabbedPane.tabLeft.I.png", insetsS),
                         createNonCachedImageBorder("images/TabbedPane.tabLeft.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.DS.png", insetsS),
-                    };
+                        createNonCachedImageBorder("images/TabbedPane.tabLeft.DS.png", insetsS),};
         }
         return tabLeftBorder[i];
     }
@@ -1369,46 +1364,50 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
             // Center tabs vertically or horizontally
             // If centered horizontally ensure that all tab runs have
             // the same width.
-            switch (tabPlacement) {
-                case LEFT:
-                case RIGHT: {
-                    int availableTabAreaHeight = size.height - insets.top - insets.bottom - tabAreaInsets.top - tabAreaInsets.bottom;
-                    int usedTabAreaHeight = 0;
-                    int pad = 0;
-                    for (int run = 0; run < runCount; run++) {
-                        int firstIndex = tabRuns[run];
-                        int lastIndex = lastTabInRun(tabCount, run);
-                        if (run == 0) {
-                            usedTabAreaHeight = 0;
-                            for (i = firstIndex; i <= lastIndex; i++) {
-                                usedTabAreaHeight += rects[i].height;
+            Integer propertyValue = (Integer) tabPane.getClientProperty("Quaqua.TabbedPane.tabAlignment");
+            int tabAlignment = (propertyValue != null && propertyValue.intValue() == SwingConstants.LEADING) ? SwingConstants.LEADING : SwingConstants.CENTER;
+            if (tabAlignment == SwingConstants.CENTER) {
+                switch (tabPlacement) {
+                    case LEFT:
+                    case RIGHT: {
+                        int availableTabAreaHeight = size.height - insets.top - insets.bottom - tabAreaInsets.top - tabAreaInsets.bottom;
+                        int usedTabAreaHeight = 0;
+                        int pad = 0;
+                        for (int run = 0; run < runCount; run++) {
+                            int firstIndex = tabRuns[run];
+                            int lastIndex = lastTabInRun(tabCount, run);
+                            if (run == 0) {
+                                usedTabAreaHeight = 0;
+                                for (i = firstIndex; i <= lastIndex; i++) {
+                                    usedTabAreaHeight += rects[i].height;
+                                }
+                                pad = (availableTabAreaHeight - usedTabAreaHeight) / 2;
                             }
-                            pad = (availableTabAreaHeight - usedTabAreaHeight) / 2;
+                            for (i = firstIndex; i <= lastIndex; i++) {
+                                rects[i].y += pad;
+                            }
                         }
-                        for (i = firstIndex; i <= lastIndex; i++) {
-                            rects[i].y += pad;
-                        }
+                        break;
                     }
-                    break;
-                }
-                case BOTTOM:
-                case TOP:
-                default: {
-                    int availableTabAreaWidth = size.width - insets.left - insets.right - tabAreaInsets.left - tabAreaInsets.right;
-                    for (int run = 0; run < runCount; run++) {
-                        int firstIndex = tabRuns[run];
-                        int lastIndex = lastTabInRun(tabCount, run);
-                        int usedTabAreaWidth = 0;
-                        for (i = firstIndex; i <= lastIndex; i++) {
-                            usedTabAreaWidth += rects[i].width;
+                    case BOTTOM:
+                    case TOP:
+                    default: {
+                        int availableTabAreaWidth = size.width - insets.left - insets.right - tabAreaInsets.left - tabAreaInsets.right;
+                        for (int run = 0; run < runCount; run++) {
+                            int firstIndex = tabRuns[run];
+                            int lastIndex = lastTabInRun(tabCount, run);
+                            int usedTabAreaWidth = 0;
+                            for (i = firstIndex; i <= lastIndex; i++) {
+                                usedTabAreaWidth += rects[i].width;
+                            }
+                            int pad = (availableTabAreaWidth - usedTabAreaWidth) / 2;
+                            for (i = firstIndex; i <= lastIndex; i++) {
+                                rects[i].x += pad;
+                            }
                         }
-                        int pad = (availableTabAreaWidth - usedTabAreaWidth) / 2;
-                        for (i = firstIndex; i <= lastIndex; i++) {
-                            rects[i].x += pad;
-                        }
-                    }
 
-                    break;
+                        break;
+                    }
                 }
             }
         }
@@ -1527,7 +1526,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
             }
             // Forward everyhting except tabLayoutPolicy change to super class.
             // tabLayoutPolicy must not be forward, because it would break
-            // the functionality of class 
+            // the functionality of class
             // ch.randelshofer.quaqua.panther.QuaquaPantherJaguarTabbedPaneUI.
             if (!name.equals("tabLayoutPolicy")) {
                 super.propertyChange(evt);
@@ -1535,7 +1534,8 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
-    public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
+    public Rectangle getVisualBounds(
+            JComponent c, int type, int width, int height) {
         Rectangle rect = new Rectangle(0, 0, width, height);
         InsetsUtil.subtractInto(c.getInsets(), rect);
         if (type != VisuallyLayoutable.CLIP_BOUNDS) {
@@ -1547,22 +1547,29 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
                 case LEFT:
                     InsetsUtil.addTo(1, 2, 5, 3, margin);
                     break;
+
                 case BOTTOM:
                     InsetsUtil.addTo(1, 3, 5, 3, margin);
                     break;
+
                 case RIGHT:
                     InsetsUtil.addTo(1, 3, 5, 2, margin);
                     break;
+
                 case TOP:
                 default:
                     InsetsUtil.addTo(3, 3, 5, 3, margin);
                     break;
+
             }
+
+
             rect.x += margin.left;
             rect.y += margin.top;
             rect.width -= margin.left + margin.right;
             rect.height -= margin.top + margin.bottom;
         }
+
         return rect;
     }
 
@@ -1576,10 +1583,12 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         ensureCurrentLayout();
 
         int tabCount = tabPane.getTabCount();
-        for (int i = 0; i < tabCount; i++) {
+        for (int i = 0; i <
+                tabCount; i++) {
             if (rects[i].contains(x, y)) {
                 return i;
             }
+
         }
         return -1;
     }
@@ -1592,7 +1601,8 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         super.navigateSelectedTab(direction);
     }
 
-    public Integer getIndexForMnemonic(int mnemonic) {
+    public Integer getIndexForMnemonic(
+            int mnemonic) {
         return (Integer) mnemonicToIndexMap.get(new Integer(mnemonic));
     }
 
@@ -1605,6 +1615,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
             if (((JComponent) visibleComponent).requestDefaultFocus()) {
                 return true;
             }
+
         }
         return false;
     }

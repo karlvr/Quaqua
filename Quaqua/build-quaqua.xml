@@ -28,6 +28,11 @@
         <property name="keystore.file" value="../../../_Keystore/JavaKeystore"/>
         <property name="keystore.alias" value="werner"/>
         <property name="keystore.storepass" value="werner"/>
+
+        <!-- Compilation properties -->
+        <property name="j2se4" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" />
+        <property name="j2se5" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/ui.jar" />
+        <property name="j2se6" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar" />
     </target>
    
     <target depends="init" name="compile">
@@ -37,7 +42,7 @@
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
         <!-- Compile swing-layout Java 1.4 -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" 
+        <javac bootclasspath="${j2se4}"
                 debug="true" deprecation="true" destdir="${builddir}" 
                 optimize="true" srcdir="${srcdir}" 
                 encoding="UTF-8"
@@ -61,7 +66,7 @@
             <exclude name="com/**"/>
         </javac-->
         <!-- Compile classes which require Java 1.4 -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" 
+        <javac bootclasspath="${j2se4}"
                 debug="true" deprecation="true" destdir="${builddir}" optimize="true" srcdir="${srcdir}" 
                 encoding="UTF-8"
                 source="1.4" target="1.4">
@@ -73,7 +78,7 @@
             <exclude name="com/**"/>
         </javac>
         <!-- Compile classes which require Java 1.5 -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/ui.jar" 
+        <javac bootclasspath="${j2se5}"
                 debug="true" deprecation="true" 
                 destdir="${builddir}" 
                 encoding="UTF-8"
@@ -82,7 +87,7 @@
             <include name="**/*15*.java"/>
         </javac>
         <!-- Compile classes which require Java 1.6 -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar" 
+        <javac bootclasspath="${j2se6}"
                 debug="true" deprecation="true" 
                 destdir="${builddir}" 
                 encoding="UTF8"
@@ -1176,6 +1181,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         >
             <jvmarg value="-Dswing.aatext=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Dswing.aatext=true"/>
             <arg value="-laf"/>
             <arg value="javax.swing.plaf.metal.MetalLookAndFeel"/>
             <arg value="-decoration"/>
