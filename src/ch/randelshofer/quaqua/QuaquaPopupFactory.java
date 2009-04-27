@@ -92,11 +92,11 @@ public class QuaquaPopupFactory {
                 return getLightWeightPopup(owner, contents, ownerX, ownerY);
             case MEDIUM_WEIGHT_POPUP:
                 return getMediumWeightPopup(owner, contents, ownerX, ownerY);
- //           case HEAVY_WEIGHT_POPUP:
- //               return getMediumWeightPopup(owner, contents, ownerX, ownerY);
+            //           case HEAVY_WEIGHT_POPUP:
+            //               return getMediumWeightPopup(owner, contents, ownerX, ownerY);
 //                return getHeavyWeightPopup(owner, contents, ownerX, ownerY);
         }
-                return getLightWeightPopup(owner, contents, ownerX, ownerY);
+        return getLightWeightPopup(owner, contents, ownerX, ownerY);
 //       return null;
     }
 
@@ -108,16 +108,15 @@ public class QuaquaPopupFactory {
         return LightWeightPopup.getLightWeightPopup(owner, contents, ownerX,
                 ownerY);
     }
+
     /**
      * Creates a medium weight popup.
      */
     private Popup getMediumWeightPopup(Component owner, Component contents,
-                                          int ownerX, int ownerY) {
+            int ownerX, int ownerY) {
         return MediumWeightPopup.getMediumWeightPopup(owner, contents,
-                                                      ownerX, ownerY);
+                ownerX, ownerY);
     }
-
-
     /**
      * Max number of items to store in any one particular cache.
      */
@@ -259,11 +258,12 @@ public class QuaquaPopupFactory {
             return false;
         }
     }
+
     /**
      * Converts the location <code>x</code> <code>y</code> to the
      * parents coordinate system, returning the location.
      */
-    static Point convertScreenLocationToParent(Container parent,int x, int y) {
+    static Point convertScreenLocationToParent(Container parent, int x, int y) {
         for (Container p = parent; p != null; p = p.getParent()) {
             if (p instanceof Window) {
                 Point point = new Point(x, y);
@@ -279,6 +279,7 @@ public class QuaquaPopupFactory {
      * Popup implementation that uses a JPanel as the popup.
      */
     private static class LightWeightPopup extends ContainerPopup {
+
         /**
          * Returns a light weight <code>Popup</code> implementation. If
          * the <code>Popup</code> needs more space that in available in
@@ -290,9 +291,9 @@ public class QuaquaPopupFactory {
             popup.reset(owner, contents, ownerX, ownerY);
             /*
             if (!popup.fitsOnScreen() ||
-                    popup.overlappedByOwnedWindow()) {
-                popup.hide();
-                return null;
+            popup.overlappedByOwnedWindow()) {
+            popup.hide();
+            return null;
             }*/
             return popup;
         }
@@ -352,7 +353,7 @@ public class QuaquaPopupFactory {
 
         Component createComponent(Component owner) {
             JComponent component = new JPanel(new BorderLayout(), true);
-component.setBorder(new LineBorder(new Color(0xb2b2b2)));
+            component.setBorder(new LineBorder(new Color(0xb2b2b2)));
             component.setOpaque(true);
             return component;
         }
@@ -380,12 +381,11 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
      * Popup implementation that uses a Panel as the popup.
      */
     private static class MediumWeightPopup extends ContainerPopup {
-        private static final Object mediumWeightPopupCacheKey = 
-                             new StringBuffer("PopupFactory.mediumPopupCache");
 
+        private static final Object mediumWeightPopupCacheKey =
+                new StringBuffer("PopupFactory.mediumPopupCache");
         /** Child of the panel. The contents are added to this. */
-	private JRootPane rootPane;
-
+        private JRootPane rootPane;
 
         /**
          * Returns a medium weight <code>Popup</code> implementation. If
@@ -393,7 +393,7 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
          * <code>owner</code>, this will return null.
          */
         static Popup getMediumWeightPopup(Component owner, Component contents,
-                                          int ownerX, int ownerY) {
+                int ownerX, int ownerY) {
             MediumWeightPopup popup = new MediumWeightPopup();
 
             if (popup == null) {
@@ -402,9 +402,9 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
             popup.reset(owner, contents, ownerX, ownerY);
             /*
             if (!popup.fitsOnScreen() ||
-                 popup.overlappedByOwnedWindow()) {
-                popup.hide();
-                return null;
+            popup.overlappedByOwnedWindow()) {
+            popup.hide();
+            return null;
             }*/
             return popup;
         }
@@ -413,25 +413,25 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
         //
         // Popup
         //
-
         public void hide() {
             super.hide();
             rootPane.getContentPane().removeAll();
         }
+
         public void show() {
             Component component = getComponent();
             Container parent = null;
 
             if (owner != null) {
-		parent = owner.getParent();
+                parent = owner.getParent();
             }
             /*
-              Find the top level window,  
-              if it has a layered pane,
-              add to that, otherwise
-              add to the window. */
+            Find the top level window,
+            if it has a layered pane,
+            add to that, otherwise
+            add to the window. */
             while (!(parent instanceof Window || parent instanceof Applet) &&
-                   (parent!=null)) {
+                    (parent != null)) {
                 parent = parent.getParent();
             }
             // Set the visibility to false before adding to workaround a
@@ -439,16 +439,16 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
             // location, which will result in a mouseExit, which will then
             // result in the ToolTip being removed.
             if (parent instanceof RootPaneContainer) {
-                parent = ((RootPaneContainer)parent).getLayeredPane();
+                parent = ((RootPaneContainer) parent).getLayeredPane();
                 Point p = convertScreenLocationToParent(parent,
-                                                                       x, y);
+                        x, y);
                 component.setVisible(false);
                 component.setLocation(p.x, p.y);
-                ((JLayeredPane)parent).add(component, JLayeredPane.POPUP_LAYER,
-                                           0);
+                ((JLayeredPane) parent).add(component, JLayeredPane.POPUP_LAYER,
+                        0);
             } else {
                 Point p = convertScreenLocationToParent(parent,
-                                                                       x, y);
+                        x, y);
 
                 component.setLocation(p.x, p.y);
                 component.setVisible(false);
@@ -460,14 +460,14 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
         Component createComponent(Component owner) {
             Panel component = new Panel(new BorderLayout());
 
-	    rootPane = new JRootPane();
+            rootPane = new JRootPane();
             // NOTE: this uses setOpaque vs LookAndFeel.installProperty as
             // there is NO reason for the RootPane not to be opaque. For
             // painting to work the contentPane must be opaque, therefor the
             // RootPane can also be opaque.
             // MacOSX back this change out because it causes problems
             // rootPane.setOpaque(true);
-	    component.add(rootPane, BorderLayout.CENTER);
+            component.add(rootPane, BorderLayout.CENTER);
             return component;
         }
 
@@ -475,7 +475,7 @@ component.setBorder(new LineBorder(new Color(0xb2b2b2)));
          * Resets the <code>Popup</code> to an initial state.
          */
         void reset(Component owner, Component contents, int ownerX,
-                   int ownerY) {
+                int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
             Component component = getComponent();

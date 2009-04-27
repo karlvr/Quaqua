@@ -1775,7 +1775,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     if (increment == 0) {
                         increment = visibleRect.x - components[0].getBounds().x;
                     }
-                    System.out.println("JBrowser Scroll by block horizontal " + increment);
                     break;
                 case SwingConstants.VERTICAL:
                     increment = 10;
