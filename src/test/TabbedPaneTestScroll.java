@@ -50,6 +50,8 @@ public class TabbedPaneTestScroll extends javax.swing.JPanel {
             Methods.invokeIfExists(panes[i],"setTabLayoutPolicy", 1);
            // panes[i].setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
         }
+
+        //tabbedPane1.putClientProperty("Quaqua.TabbedPane.tabAlignment", new Integer(SwingConstants.LEADING));
         
         tabbedPane1.setIconAt(0, new ImageIcon(getClass().getResource("/ch/randelshofer/quaqua/images/FileView.computerIcon.png")));
        tabbedPane1.setIconAt(1, new ImageIcon(getClass().getResource("/ch/randelshofer/quaqua/images/FileView.hardDriveIcon.png")));

@@ -1,7 +1,7 @@
 /**
- * @(#)QuaquaPopupFactory.java  1.0  Jan 7, 2008
+ * @(#)QuaquaPopupFactory.java  1.1  2009-05-23
  *
- * Copyright (c) 1996-2007 by the original authors of JHotDraw
+ * Copyright (c) 1996-2009 by the original authors of JHotDraw
  * and all its contributors ("JHotDraw.org")
  * All rights reserved.
  *
@@ -24,7 +24,8 @@ import javax.swing.border.LineBorder;
  * on Java 1.4 in full screen mode.
  *
  * @author Werner Randelshofer
- * @version 1.0 Jan 7, 2008 Created.
+ * @version 1.1 2009-05-23 Added support for heavy weight popup.
+ * <br>1.0 Jan 7, 2008 Created.
  */
 public class QuaquaPopupFactory {
 
@@ -44,13 +45,21 @@ public class QuaquaPopupFactory {
     /**
      * Default type of Popup to create.
      */
-    private int popupType = LIGHT_WEIGHT_POPUP;
+    private int popupType = HEAVY_WEIGHT_POPUP;
 
     /**
      * Returns the preferred type of Popup to create.
      */
-    int getPopupType() {
-        return popupType;
+    int getPopupType(Component owner) {
+        if (owner instanceof JComponent) {
+            JComponent c = (JComponent) owner;
+            Float alpha = (Float) c.getClientProperty("Quaqua.PopupMenu.alpha");
+            if (alpha == null) alpha = new Float(0.75f);
+            if (alpha.floatValue() == 1f) {
+                return HEAVY_WEIGHT_POPUP;
+            }
+        }
+        return QuaquaManager.getBoolean("PopupMenu.enableHeavyWeightPopup") ? HEAVY_WEIGHT_POPUP : MEDIUM_WEIGHT_POPUP;
     }
 
     /**
@@ -58,7 +67,7 @@ public class QuaquaPopupFactory {
      */
     private int getPopupType(Component owner, Component contents,
             int ownerX, int ownerY) {
-        return getPopupType();
+        return getPopupType(owner);
     }
 
     public Popup getPopup(Component owner, Component contents,
@@ -92,9 +101,8 @@ public class QuaquaPopupFactory {
                 return getLightWeightPopup(owner, contents, ownerX, ownerY);
             case MEDIUM_WEIGHT_POPUP:
                 return getMediumWeightPopup(owner, contents, ownerX, ownerY);
-            //           case HEAVY_WEIGHT_POPUP:
-            //               return getMediumWeightPopup(owner, contents, ownerX, ownerY);
-//                return getHeavyWeightPopup(owner, contents, ownerX, ownerY);
+            case HEAVY_WEIGHT_POPUP:
+                return getHeavyWeightPopup(owner, contents, ownerX, ownerY);
         }
         return getLightWeightPopup(owner, contents, ownerX, ownerY);
 //       return null;
@@ -116,6 +124,15 @@ public class QuaquaPopupFactory {
             int ownerX, int ownerY) {
         return MediumWeightPopup.getMediumWeightPopup(owner, contents,
                 ownerX, ownerY);
+    }
+
+    /**
+     * Creates a heavy weight popup.
+     */
+    private Popup getHeavyWeightPopup(Component owner, Component contents,
+            int ownerX, int ownerY) {
+        return HeavyWeightPopup.getHeavyWeightPopup(owner, contents, ownerX,
+                ownerY);
     }
     /**
      * Max number of items to store in any one particular cache.
@@ -485,6 +502,115 @@ public class QuaquaPopupFactory {
             contents.invalidate();
             component.validate();
             pack();
+        }
+    }
+
+    /**
+     * Popup implementation that uses a Window as the popup.
+     */
+    private static class HeavyWeightPopup extends ContainerPopup {
+
+        /**
+         * Returns either a new or recycled <code>Popup</code> containing
+         * the specified children.
+         */
+        static Popup getHeavyWeightPopup(Component owner, Component contents,
+                int ownerX, int ownerY) {
+            HeavyWeightPopup popup = new HeavyWeightPopup();
+            /*
+            if (!popup.fitsOnScreen() ||
+            popup.overlappedByOwnedWindow()) {
+            popup.hide();
+            return null;
+            }*/
+            boolean focusPopup = false;
+            if (contents != null && contents.isFocusable()) {
+                if (contents instanceof JPopupMenu) {
+                    JPopupMenu jpm = (JPopupMenu) contents;
+                    Component popComps[] = jpm.getComponents();
+                    for (int i = 0; i < popComps.length; i++) {
+                        if (!(popComps[i] instanceof MenuElement) &&
+                                !(popComps[i] instanceof JSeparator)) {
+                            focusPopup = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            popup.reset(owner, contents, ownerX, ownerY);
+
+            if (focusPopup) {
+                JWindow wnd = (JWindow) ((HeavyWeightPopup) popup).getComponent();
+                wnd.setFocusableWindowState(true);
+                // Set window name. We need this in BasicPopupMenuUI
+                // to identify focusable popup window.
+                wnd.setName("###focusableSwingPopup###");
+            }
+
+
+            return popup;
+        }
+
+        Component createComponent(Component owner) {
+            Component component = new JWindow(SwingUtilities.getWindowAncestor(owner));
+            return component;
+        }
+
+        void reset(Component owner, Component contents, int ownerX,
+                int ownerY) {
+            super.reset(owner, contents, ownerX, ownerY);
+
+            JWindow component = (JWindow) getComponent();
+
+            component.setLocation(ownerX, ownerY);
+            component.add(contents, BorderLayout.CENTER);
+            contents.invalidate();
+            pack();
+        }
+
+        /**
+         * Makes the <code>Popup</code> visible. If the <code>Popup</code> is
+         * currently visible, this has no effect.
+         */
+        public void show() {
+            Component component = getComponent();
+
+            if (component != null) {
+                component.show();
+            }
+        }
+
+        /**
+         * Hides and disposes of the <code>Popup</code>. Once a <code>Popup</code>
+         * has been disposed you should no longer invoke methods on it. A
+         * <code>dispose</code>d <code>Popup</code> may be reclaimed and later used
+         * based on the <code>PopupFactory</code>. As such, if you invoke methods
+         * on a <code>disposed</code> <code>Popup</code>, indeterminate
+         * behavior will result.
+         */
+        public void hide() {
+            Component component = getComponent();
+
+            if (component instanceof JWindow) {
+                component.hide();
+                ((JWindow) component).getContentPane().removeAll();
+
+            }
+            dispose();
+        }
+
+        /**
+         * Frees any resources the <code>Popup</code> may be holding onto.
+         */
+        void dispose() {
+            Component component = getComponent();
+            Window window = SwingUtilities.getWindowAncestor(component);
+
+            if (component instanceof JWindow) {
+                ((Window) component).dispose();
+                component = null;
+            }
         }
     }
 }

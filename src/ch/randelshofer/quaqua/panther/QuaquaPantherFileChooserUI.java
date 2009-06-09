@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaPantherFileChooserUI.java  2.5  2009-03-13
+ * @(#)QuaquaPantherFileChooserUI.java  2.5.1  2009-06-01
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -39,7 +39,9 @@ import java.util.*;
  * (Panther).
  *
  * @author Werner Randelshofer
- * @version 2.5 2009-03-13 Resolve aliases when used as "save" dialog type as
+ * @version 2.5.1 2009-06-01 Dispose model when uninstalling UI. Update
+ * approve button state when ancestor is added.
+ * <br>2.5 2009-03-13 Resolve aliases when used as "save" dialog type as
  * well (not just only when used as "open" dialog type).
  * <br>2.4 2009-01-21 Handle change of FileSystemView.
  * <br>2.3.6 2008-05-01 Fixed NullPointerException in maybeApproveSelection
@@ -726,10 +728,17 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         fileNamePanel.setActionMap(am);
         fileNamePanel.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, im);
 
+        // Enforce layout, so that the selected file is visible when the
+        // file chooser is opened with its preferred size.
+        Dimension ps = fc.getPreferredSize();
+        fc.setBounds(0, 0, ps.width, ps.height);
+        fc.doLayout();
     }
 
     public void uninstallComponents(JFileChooser fc) {
         fc.removeAll();
+
+        model.dispose();
 
         // Remove listeners on UI components
         cancelButton.removeActionListener(getCancelSelectionAction());
@@ -998,6 +1007,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
 
 
+        if (files.length == 1) {
+            ensureFileIsVisible(fc, files[0]);
+        }
         updateApproveButtonState();
     }
 
@@ -2057,6 +2069,10 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                     sidebarListModel.lazyValidate();
                 }
             }
+            // We update the approve button state here, because the approve
+            // button can only be made the default button, if it has a root pane
+            // ancestor.
+            updateApproveButtonState();
         //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
         }
 
