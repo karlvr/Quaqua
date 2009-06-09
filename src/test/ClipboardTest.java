@@ -232,7 +232,6 @@ public class ClipboardTest extends javax.swing.JPanel {
     }
 
     private String toHexDump(byte[] b) {
-        System.out.println("toHexDump " + b.length);
         StringBuffer sb = new StringBuffer();
         for (int line = 0; line < b.length; line += 16) {
             String hex = Integer.toHexString(line);
