@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.5  2009-04-01
+ * @(#)QuaquaLeopardFileChooserUI.java  1.5.1  2009-06-01
  *
  * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -42,7 +42,9 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.5 2009-04-01 Use QuaquaTreeUI when UIManager-property 
+ * @version 1.5.1 2009-06-01 Dispose model when uninstalling UI. Update approve
+ * button state when an ancestor is added.
+ * <br>1.5 2009-04-01 Use QuaquaTreeUI when UIManager-property
  * "FileChooser.useQuaquaTreeUI" has the value Boolean.TRUE.
  * <br>1.4 2009-03-13 Resolve aliases when used as "save" dialog type as
  * well (not just only when used as "open" dialog type).
@@ -689,10 +691,19 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         controlsPanel.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, im);
         fileNamePanel.setActionMap(am);
         fileNamePanel.setInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW, im);
+
+        // Enforce layout, so that the selected file is visible when the
+        // file chooser is opened with its preferred size.
+        Dimension ps = fc.getPreferredSize();
+        fc.setBounds(0, 0, ps.width, ps.height);
+        fc.doLayout();
     }
 
     public void uninstallComponents(JFileChooser fc) {
         fc.removeAll();
+
+        // Dispose model
+        model.dispose();
 
         // Remove listeners on UI components
         cancelButton.removeActionListener(getCancelSelectionAction());
@@ -961,6 +972,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
 
 
+        if (files.length == 1) {
+            ensureFileIsVisible(fc, files[0]);
+        }
         updateApproveButtonState();
     }
 
@@ -998,6 +1012,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                         isFileSelected = true;
                     }
                     isEnabled &= isSaveDialog || fc.accept(files[i]);
+                    if (!isEnabled) {
+    System.err.println("ACCEPT? "+fc.accept(files[i])+" "+files[i]);
+                    }
                 }
             }
 
@@ -1955,6 +1972,14 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     sidebarTreeModel.lazyValidate();
                 }
             }
+            // We update the approve button state here, because the approve 
+            // button can only be made the default button, if it has a root pane
+            // ancestor.
+            updateApproveButtonState();
+            JFileChooser fc = getFileChooser();
+            if (fc.getSelectedFile() !=null) {
+            ensureFileIsVisible(fc, fc.getSelectedFile());
+            }
         //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
         }
 
@@ -1983,7 +2008,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         if (browser.getSelectionPaths() != null) {
             TreePath[] paths = browser.getSelectionPaths();
             for (int i = 0; i < paths.length; i++) {
-                if (paths[i].getLastPathComponent().equals(f)) {
+                if (((AliasFileSystemTreeModel.Node) paths[i].getLastPathComponent()).getFile().equals(f)) {
                     browser.ensurePathIsVisible(paths[i]);
                     return;
                 }

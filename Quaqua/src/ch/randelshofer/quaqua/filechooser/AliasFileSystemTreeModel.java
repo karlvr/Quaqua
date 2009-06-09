@@ -1,7 +1,7 @@
 /*
- * @(#)AliasFileSystemTreeModel.java  1.21.6 2008-07-10
+ * @(#)AliasFileSystemTreeModel.java  1.22 2009-06-01
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -31,7 +31,8 @@ import javax.swing.filechooser.*;
  * asynchronously to the AWT Event Dispatcher thread.
  *
  * @author Werner Randelshofer
- * @version 1.21.6 2008-07-10 DirectoryValidator must determine indices of
+ * @version 1.22 2009-06-01 Added dispose method.
+ * <br>1.21.6 2008-07-10 DirectoryValidator must determine indices of
  * new/changed/deleted nodes on the event dispatcher thread, otherwise the
  * indices may become obsolete before the tree events are fired.
  * <br>1.21.5 2008-06-01 Don't fire treeChanged events for nodes which
@@ -227,6 +228,11 @@ public class AliasFileSystemTreeModel implements TreeModel {
             root.remove(0);
         }
         fireTreeNodesRemoved(AliasFileSystemTreeModel.this, new Object[]{root}, removedIndices, removedChildren);
+    }
+
+    public void dispose() {
+        stopValidation();
+        clear();
     }
 
     public Node getPrototypeValue() {
@@ -591,6 +597,9 @@ public class AliasFileSystemTreeModel implements TreeModel {
      */
     public void stopValidation() {
         root.stopValidationSubtree();
+        aliasResolutionDispatcher.stop();
+        fileInfoDispatcher.stop();
+        directoryDispatcher.stop();
     }
 
     /**
@@ -1455,7 +1464,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                                 // split the insertion and removal into two steps.
                                 // This is needed, to update the selection in the
                                 // JBrower properly.
-                                children.removeAll(deletedChildren);
+                                removeAll(deletedChildren);
                                 fireTreeNodesRemoved(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(deletedChildIndices, 0, deletedChildren.size()), deletedChildren.toArray());
                                 children = mergedChildren;
                                 fireTreeNodesInserted(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(newChildIndices, 0, newChildren.size()), newChildren.toArray());
@@ -1624,6 +1633,14 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 return DefaultMutableTreeNode.EMPTY_ENUMERATION;
             } else {
                 return new IteratorEnumeration(children.iterator());
+            }
+        }
+
+        private void removeAll(LinkedList deletedChildren) {
+            children.removeAll(deletedChildren);
+            for (Iterator i = deletedChildren.iterator(); i.hasNext();) {
+                Node n = (Node) i.next();
+                n.parent = null;
             }
         }
 

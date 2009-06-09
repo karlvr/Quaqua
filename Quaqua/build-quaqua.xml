@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="5.3alpha1"/>
-        <property name="version" value="${versionNumber} 2009-04-05"/>
+        <property name="versionNumber" value="5.3alpha5"/>
+        <property name="version" value="${versionNumber} 2009-06-09"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -188,6 +188,7 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_Application.m"/>
         </exec>
@@ -281,6 +282,7 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_Application.m"/>
         </exec>
@@ -431,6 +433,12 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
         </jar>
     </target>
     <target depends="init, jnilib-32, jnilib-64" name="jnilib">
+    </target>
+    <target depends="init,compile" name="jni javah">
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.datatransfer.NSPasteboardTransferable"
+                destdir="${srcdir}/native"
+                />
     </target>
     <target depends="init, jar, jnilib" name="jar-signed">
         <delete dir="${distdir}/signed"/>
@@ -1380,6 +1388,16 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
     <target depends="init" name="run Quaqua 1.5 LeopardFileChooser">
         <java classname="test.Main" classpath="${classpath}" 
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
+        failonerror="true" fork="true">
+            <jvmarg value="-DQuaqua.design=jaguar"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 LeopardFileChooser">
+        <java classname="test.Main" classpath="${classpath}"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
         failonerror="true" fork="true">
             <jvmarg value="-DQuaqua.design=jaguar"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
