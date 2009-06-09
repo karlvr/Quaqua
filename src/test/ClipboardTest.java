@@ -17,18 +17,13 @@ import ch.randelshofer.quaqua.util.Fonts;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Image;
-import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
@@ -84,6 +79,7 @@ public class ClipboardTest extends javax.swing.JPanel {
             }
         });
 
+        readNativeClipboardButton.setEnabled(NSPasteboardTransferable.isNativeCodeAvailable());
     }
 
     /** This method is called from within the constructor to
@@ -194,7 +190,7 @@ public class ClipboardTest extends javax.swing.JPanel {
                     view = new JTextArea((String) data);
                 } else if (data instanceof Reader) {
                     // Create a string from the reader
-                    StringBuilder sb = new StringBuilder();
+                    StringBuffer sb = new StringBuffer();
                     Reader r = (Reader) data;
                     char[] cbuf = new char[512];
                     for (int count = 0; count != -1; count = r.read(cbuf, 0, cbuf.length)) {
@@ -219,9 +215,8 @@ public class ClipboardTest extends javax.swing.JPanel {
                         sb.write(cbuf, 0, count);
                     }
                     view = new JTextArea(toHexDump(sb.toByteArray()));
-                    System.out.println("HEY " + sb.toByteArray());
+                    view.setFont(Fonts.getMonospaceFont());
                 } else {
-                    System.out.println("DATA IST Kein Input stream? " + data + " instanceof:" + (data instanceof InputStream));
                     view = new JTextArea(data.toString());
                 }
             } catch (Throwable ex) {
@@ -238,7 +233,7 @@ public class ClipboardTest extends javax.swing.JPanel {
 
     private String toHexDump(byte[] b) {
         System.out.println("toHexDump " + b.length);
-        StringBuilder sb = new StringBuilder();
+        StringBuffer sb = new StringBuffer();
         for (int line = 0; line < b.length; line += 16) {
             String hex = Integer.toHexString(line);
             for (int i = hex.length(); i < 8; i++) {

@@ -17,18 +17,21 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.security.AccessControlException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * NSPasteboardTransferable provides read access to the raw contents
  * of the  "General clipboard" Cocoa NSPasteboard.
  * <p>
- * All data flavors have the mime type application/octet-stream, and the
- * data is always delivered in a Java byte array.
+ * All data flavors have the mime type {@code application/octet-stream; type=...}
+ * whereas {@code ...} stands for the UTF-8 URLEncoded NSPasteboard type.
  * <p>
- * The actual NSPasteboard type is stored in the human presentable name.
- * So, you have to look at this value, if you want to make sense of the
- * clipboard data.
+ * The NSPasteboard type is stored without encoding in the human presentable name.
  * <p>
  * While this class might not be immediately usable on its own, it
  * can be wrapped by a Transferable object of your own, which can convert
@@ -142,7 +145,14 @@ public class NSPasteboardTransferable implements Transferable {
             DataFlavor[] flavors = new DataFlavor[types.length];
 
             for (int i = 0; i < types.length; i++) {
-                flavors[i] = new DataFlavor("application/octet-stream", types[i]);
+                try {
+System.err.println(this+" "+"application/octet-stream; type=" + URLEncoder.encode(types[i], "UTF-8"));
+                    flavors[i] = new DataFlavor("application/octet-stream; type=" + URLEncoder.encode(types[i], "UTF-8"), types[i]);
+                } catch (UnsupportedEncodingException ex) {
+                    InternalError ie = new InternalError("URLEncoder does not support UTF-8");
+                    ie.initCause(ex);
+                    throw ie;
+                }
             }
             return flavors;
         }
@@ -168,11 +178,14 @@ public class NSPasteboardTransferable implements Transferable {
             throw new NullPointerException("flavor");
         }
 
-        byte[] data = getDataForType(flavor.getHumanPresentableName());
+        String type = URLDecoder.decode(flavor.getParameter("type"), "UTF-8");
+
+        byte[] data = getDataForType(type);
 
         if (data == null) {
             throw new UnsupportedFlavorException(flavor);
         }
         return data;
     }
+
 }
