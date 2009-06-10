@@ -26,7 +26,8 @@ import java.security.*;
  * commonly uses by all the specific QuaquaLookAndFeel incarnations.
  *
  * @author  Werner Randelshofer
- * @version 2.2.2 2009-04-19 Fixed selective exclusion of UIs.
+ * @version 2.3 2009-06-10 Added support for fetching native images.
+ * <br>2.2.2 2009-04-19 Fixed selective exclusion of UIs.
  * <br>2.2.1 2008-11-09 Define our own EditorPane.focusInputMap, because
  * the one provided by Apple's AquaLookAndFeel contains non-standard action names. 
  * <br>2.2 2008-07-18 Added size handle icon for Browser. 
@@ -1999,7 +2000,19 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
                 new Object[]{location, new Integer(states), new Boolean(horizontal)});
     }
-
+    
+    public static Object makeNativeIcon(String path, int size) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
+                new Object[]{path, new Integer(size)});
+    }
+    
+    public static Object makeNativeIcon(String path, int width, int height) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
+                new Object[]{path, new Integer(width), new Integer(height)});
+    }
+    
     protected static Object makeButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",

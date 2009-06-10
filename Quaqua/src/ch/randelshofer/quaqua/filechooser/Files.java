@@ -27,7 +27,8 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * The current implementation only works on Mac OS X.
  *
  * @author Werner Randelshofer
- * @version 5.3 2009-01-19 Handle UnsatisfiedLinkError's.
+ * @version 5.4 2009-06-10 Added support for loading images with JNI.
+ * <br>5.3 2009-01-19 Handle UnsatisfiedLinkError's.
  * <br>5.2 2008-06-22 Use quaqua64 JNI-lib on x86_64 processors on Mac
  * OS X 10.5 and higher.
  * <br>5.1 2008-05-31 Removed explicit 64 bit support for JNILib. This
@@ -64,7 +65,7 @@ public class Files {
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 2;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 3;
     /**
      * This array holds the colors used for drawing the gradients of a file
      * label.
@@ -555,6 +556,66 @@ public class Files {
      * @return
      */
     private static native String getDisplayName(String path);
+	
+	/**
+	 * JNI method for {@link #getImageFromFile(File, int, int)}.
+	**/
+	private static native byte[] nativeGetImageFromFile(String path, int width, int height);
+
+    /**
+     * Uses JNI to fetch the image data in the specified file.
+     * <p>
+     * A preferred size is used if it is stored in the image file, but you
+     * cannot expect the resulting Image to have these dimensions.<br>
+     * If your application needs a specific size, you should check the
+     * dimension.
+     * <p>
+     * If JNI fails to load the image (e.g. the native code could not be
+     * loaded), <code>null</code> is returned.
+     * 
+     * @param file
+     *            The file containing the image.
+     * @param width
+     *            The preferred width.
+     * @param height
+     *            The preferred height.
+     * @return The image loaded. <code>null</code>, if no image could be loaded
+     *         by JNI.
+     */
+    public static Image getImageFromFile(File file, int width, int height) {
+        if (!isNativeCodeAvailable())
+            return null;
+
+        try {
+            byte[] tiffData = nativeGetImageFromFile(file.getAbsolutePath(), width, height);
+            TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(
+                    new ByteArrayInputStream(tiffData)), new TIFFDecodeParam());
+
+            RenderedImage rImg = decoder.decodeAsRenderedImage(0);
+            return Images.toBufferedImage(rImg);
+        } catch (UnsatisfiedLinkError e) {
+        	// TODO Maybe add a warning to update the libraries.
+            e.printStackTrace();
+            return null;
+        } catch (IOException e) {
+            return null;
+        }
+    }
+
+    /**
+     * Same as {@link #getImageFromFile(File, int, int)}, only with a square
+     * size.
+     * 
+     * @param file
+     *            The file containing the image.
+     * @param size
+     *            The preferred width and height.
+     * @return The image loaded. <code>null</code>, if no image could be loaded
+     *         by JNI.
+     */
+    public static Image getImageFromFile(File file, int size) {
+        return getImageFromFile(file, size, size);
+    }
 
     /**
      * Returns the version of the native code library. If the version

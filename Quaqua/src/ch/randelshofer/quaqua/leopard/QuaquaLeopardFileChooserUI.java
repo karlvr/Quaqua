@@ -42,7 +42,9 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.5.1 2009-06-01 Dispose model when uninstalling UI. Update approve
+ * @version 1.6 2009-06-10 Added support for native side bar icons for
+ * special folders on the file system.
+ * <br>1.5.1 2009-06-01 Dispose model when uninstalling UI. Update approve
  * button state when an ancestor is added.
  * <br>1.5 2009-04-01 Use QuaquaTreeUI when UIManager-property
  * "FileChooser.useQuaquaTreeUI" has the value Boolean.TRUE.
@@ -1478,10 +1480,76 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             if (value != null && value instanceof FileInfo) {
                 FileInfo info = (FileInfo) value;
                 setText(info.getUserName());
-                setIcon(info.getIcon());
+
+                if (isSpecialFolder(info))
+                    setIcon(getSpecialFolderIcon(info));
+                else
+                    setIcon(info.getIcon());
             }
             return this;
         }
+        
+        /**
+         * Gets the special icon for the folder.
+         * 
+         * @param info The {@link FileInfo}.
+         * @return The icon.
+        **/
+        private Icon getSpecialFolderIcon(FileInfo info) {
+            // Load the icon from the UIDefaults table
+            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + info.getFile().getName());
+            
+            // If we somehow fail to load the icon, fall back to standard way
+            if (icon == null)
+                icon = info.getIcon();
+            
+            return icon;
+        }
+
+        /**
+         * Gets whether the the {@link FileInfo} represents a "special" folder - a folder which
+         * is visually different in the side bar than in the browser view of a file chooser.
+         * 
+         * @param info The {@link FileInfo}.
+         * @return <code>true</code> if the OS is Mac OS X and the 
+         */
+        private boolean isSpecialFolder(FileInfo info) {
+            // Only allow this for Mac OS X as directory structures are different on other OSs.
+            if (!QuaquaManager.isOSX())
+                return false;
+            
+            File file = info.getFile();
+            // Only directories can hava special icons.
+            if (file.isFile())
+                return false;
+
+            String parentFile = file.getParentFile().getAbsolutePath();
+            if (parentFile.equals(System.getProperty("user.home"))) {
+                // Look for user's home special folders
+                String name = file.getName();
+                return name.equals("Applications")
+                        || name.equals("Desktop")
+                        || name.equals("Documents")
+                        || name.equals("Downloads")
+                        || name.equals("Library")
+                        || name.equals("Movies")
+                        || name.equals("Music")
+                        || name.equals("Pictures")
+                        || name.equals("Public")
+                        || name.equals("Sites");
+            } else if (parentFile.equals(computer.getAbsolutePath())) {
+                // Look for computer's special folders
+                String name = file.getName();
+                return name.equals("Applications")
+                        || name.equals("Library");
+            } else if (!parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
+                // Look for Utility folder in the /Applications folder
+                return file.getName().equals("Utilities");
+            }
+            // Nothing found - return null
+            return false;
+        }
+
     }
     final static int space = 10;
 

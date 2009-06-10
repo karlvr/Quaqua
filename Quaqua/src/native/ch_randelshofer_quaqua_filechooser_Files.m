@@ -14,7 +14,8 @@
 /**
  * Native code for class ch.randelshofer.quaqua.filechooser.Files.
  *
- * @version 4.0 2008-03-26 Added version check. 
+ * @version 4.1 2009-06-10 Added support for loading native images.
+ * <br>4.0 2008-03-26 Added version check. 
  * <br>3.1.1 2007-12-21 Fixed crash when attempting to retrieve the kind
  * of a file which does not exist.
  * <br>3.1 2007-11-25 Scale icon images down if they are too big. 
@@ -553,6 +554,60 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getDispl
     return displayNameJ;
 }
 
+/*
+ * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Method:    nativeGetImageFromFile
+ * Signature: (Ljava/lang/String;II)[B
+ */
+JNIEXPORT jobject JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetImageFromFile (JNIEnv *env, jclass javaClass, jstring file, jint width, jint height) {
+    if(file == NULL) return NULL;
+
+    jbyteArray result = NULL;
+    
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+
+    NSSize iconSize = { width, height };
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, file, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
+                                               length:(*env)->GetStringLength(env, file)];
+    // Release the C char array
+    (*env)->ReleaseStringChars(env, file, pathC);
+    
+    // Get the icon image
+    NSImage* image = [[[NSImage alloc] autorelease] initWithContentsOfFile:pathNS];
+    if (image != NULL) {
+        // Set the desired size of the image
+        [image setSize:iconSize];
+        
+        // Unfortunately, setting the desired size does not always have an effect,
+        // we need to choose the best image representation by ourselves.
+        NSArray* reps = [image representations];
+        NSEnumerator *enumerator = [reps objectEnumerator];
+        NSImageRep* imageRep;
+        while (imageRep = [enumerator nextObject]) {
+            if ([imageRep pixelsWide] == width && [imageRep pixelsHigh] == height) {
+                image = imageRep;
+                break;
+            }
+        }
+        
+        NSData* data = [image TIFFRepresentation];
+        unsigned len = [data length];
+        void* bytes = malloc(len);
+        [data getBytes:bytes];
+        
+        result = (*env)->NewByteArray(env, len);
+        (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+        free(bytes);
+    }
+    
+    // Release memory pool
+	[pool release];
+    
+	return result;
+}
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
@@ -561,7 +616,7 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getDispl
  */
 JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
-    return 2;
+    return 3;
 }
 
 
