@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.filechooser.Files;
 import ch.randelshofer.quaqua.icon.ShiftedIcon;
 import ch.randelshofer.quaqua.osx.Application;
 import ch.randelshofer.quaqua.util.*;
@@ -37,7 +38,8 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * QuaquaIconFactory.
  *
  * @author  Werner Randelshofer, Christopher Atlan
- * @version 4.0.1 2007-09-08 Option pane icons were empty when Quaqua ran
+ * @version 4.1 2009-06-10 Added support to create ImageIcons from native image files.
+ * <br>4.0.1 2007-09-08 Option pane icons were empty when Quaqua ran
  * in a restriced Java WebStart sandbox. 
  * <br>4.0 2007-04-28 Removed Java-Cocoa code.
  * <br>3.2.1 2007-02-23 Don't pop an autorelease pool if its identifier is 0.
@@ -226,6 +228,20 @@ public class QuaquaIconFactory {
                 new ImageIcon(createImage(baseClass, location)),
                 shiftAndSize
                 );
+    }
+    
+    public static Icon createNativeIcon(String path, int size) {
+        Image img = Files.getImageFromFile(new File(path), size);
+        if (img == null)
+            return null;
+        return new ImageIcon(img);
+    }
+    
+    public static Icon createNativeIcon(String path, int width, int height) {
+        Image img = Files.getImageFromFile(new File(path), width, height);
+        if (img == null)
+            return null;
+        return new ImageIcon(img);
     }
     
     public static Icon createOptionPaneIcon(int messageType) {

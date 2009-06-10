@@ -107,6 +107,14 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getDispl
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Method:    nativeGetImageFromFile
+ * Signature: (Ljava/lang/String;II)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetImageFromFile
+  (JNIEnv *, jclass, jstring, jint, jint);
+
+/*
+ * Class:     ch_randelshofer_quaqua_filechooser_Files
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
