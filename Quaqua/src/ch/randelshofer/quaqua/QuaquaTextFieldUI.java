@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTextFieldUI.java  1.6.2  2009-04-03
+ * @(#)QuaquaTextFieldUI.java
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -29,20 +29,7 @@ import javax.swing.border.*;
  * QuaquaTextFieldUI.
  *
  * @author  Werner Randelshofer
- * @version 1.6.2 2009-04-03  Paint the background color if no background
- * border is present.
- * <br>1.6.1 2009-02-16 Override method paintBackground to make it do
- * nothing.
- * <br>1.6 2007-08-06 Select all text when the user tabs into the field.
- * <br>1.5 2007-07-27 Added 2 pixels to the preferred width.
- * <br>1.4 2006-04-24 Fixed .opaque UIManager property. Added support for
- * .popupHandler UIManager property.
- * <br>1.3 2005-10-01 Tweaked due to changes in QuaquaTreeUI. Non-opaque
- * background painting delegated to QuaquaTextFieldBorder.
- * <br>1.2 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.1.1 2005-06-26 Fixed NullPointerException in method getVisualBounds.
- * <br>1.1 2005-02-27 Set to non-opaque. Support for margin added.
- * <br>1.0  December 1, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayoutable {
 
@@ -162,18 +149,6 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         Debug.paint(g, editor, this);
     }
 
-    /**
-     * Paints a background for the view.  This will only be
-     * called if isOpaque() on the associated component is
-     * true.  The default is to paint the background color
-     * of the component.
-     *
-     * @param g the graphics context
-     */
-    /*protected void paintBackground(Graphics g) {
-    // This method is overriden here, to make it do nothing.
-    // We already paint the background in method paintSafely();
-    }*/
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {

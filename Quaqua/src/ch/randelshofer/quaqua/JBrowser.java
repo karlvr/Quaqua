@@ -1,5 +1,5 @@
 /*
- * @(#)JBrowser.java  2.1.1  2009-04-01
+ * @(#)JBrowser.java 
  *
  * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -63,68 +63,7 @@ import javax.swing.border.EmptyBorder;
  *
  *
  * @author  Werner Randelshofer
- * @version 2.1.1 2009-04-01 Double clicking the resize button sets the column to
- * its preferred width. Revalidate was not called after a column was resized
- * causing problems with the horizontal scrollbar of the parent JScrollPane.
- * <br>2.1 2008-09-08 Added support for resizable preview column contributed by
- * Felix Draxler.
- * <br>2.0 2008-07-18 Added support for resizable columns contributed by 
- * Felix Draxler.
- * <br>1.9.1 2008-04-17 Fixed NPE in method getSelectionPath, when nothing
- * is selected. 
- * <br>1.9 2008-04-04 Reworked BrowserCellRendererWrapper.
- * <br>1.8 2008-03-21 Added support for dragging using a TransferHandler. 
- * <br>1.7.1 2008-03-19 Fixed ArrayIndexOutOfBoundsException in 
- * JBrowser.TreeSelectionUpdater.valueChanged() method. 
- * <br>1.7 2007-07-30 Registered KeyListener's receive key events which 
- * occur on the column lists. 
- * <br>1.6 2007-07-06 Support for ActionListener added. 
- * <br>1.5 2007-01-08 Added TreeRootHandler to detect tree structure
- * changes in the root of the tree. Lead selection of lists was not updated
- * correctly when nodes in tree were inserted/removed.
- * <br>1.4.1 2006-09-23 Made method updatePreviewColumn public.
- * <br>1.4 2005-11-26 Code for configuring enclosing scroll pane added.
- * <br>1.3.1 2005-09-17 Fixed scollable block increment.
- * <br>1.3 2005-09-07 Support for cell tips added.
- * <br>1.2 2005-08-25 JBrowser has now its own pluggable BrowserUI.
- * <br>1.1 2005-01-24 Support for a preview column added.
- * " <br>1.0.12 2004-10-22 If a node is removed from the tree model, which
- * is on the selection path, we truncate the selection path to the parent of
- * the node. Truncating is done only, if only one node is selected.
- * If a drop target is set, set it to all columns of the browser.
- * <br>1.0.11 2004-10-21 Forward mouse clicked events to MouseListeners of
- * the JBrowser.
- * <br>1.0.10 2004-10-16 Update expanded state on mouse released only.
- * Before we did update it on mouse pressed as well, but that's not consistent
- * with the behaviour of the native file chooser on OS X. Nodes that have been
- * removed from the tree model must be removed from the selection model.
- * <br>1.0.9 2004-07-27 Mouse listener fired mouseClicked event on
- * * mousePressed instead of refiring mousePressed. Tree structure changes in
- * underlying tree model caused inconsistent state in ColumnSelectionModel.
- * <br>1.0.8 2004-05-02 Request focus after mouse release on a column.
- * <br>1.0.7 2004-04-03 Method getPreferredScrollableViewPortSize returns
- * now a value based on the preferred size of the JLists in the JBrowser.
- * Fixed a NullPointerException which was thrown when on a multi-selection enabled
- * JFileChooser, a file was deselected.
- * 1.0.6 2004-03-20 Method getSelectionPath() does not throw an
- * IndexOutOfBoundsException, when no item is selected in the last column of
- * the browser.
- * <br>1.0.5 2004-03-14 Fixed a minor bug in ColumnKeyListener.
- * <br>1.0.4 2004-02-14 Mouse locations did not take the relative position
- * of a JList in its parent JViewport into account. Removed all calls to
- * getLocationOnScreen(). The changes for version 1.0.4 obsolete the changes
- * for version 1.0.3.
- * <br>1.0.3 2004-02-06 Only process mouse events when the JBrowser is
- * displayable.
- * <br>1.0.2 2003-10-09 Mouse listener on columns changes expanded already
- * state on mouse down instead of on mouse up only. This way we get a snappier
- * user experience.
- * <br>1.0.1 2003-10-09 Fixed a potential NPE caused by method
- * ensurePathIsVisible.
- * <br>1.0 2003-10-04 Heavy redesign of JBrowser. It's API is now similar to
- * the one of javax.swing.JTree. Also it supports now a TreeModel instead of
- * a specialized BrowserModel class.
- * <br>0.1 2003-07-23 Copied from Steve Roy's JBrowser.
+ * @version $Id$
  */
 public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
@@ -448,9 +387,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @see #setTransferHandler
      * @see TransferHandler
      *
-     * @beaninfo
-     *  description: determines whether automatic drag handling is enabled
-     *        bound: false
      */
     public void setDragEnabled(boolean b) {
         if (b && GraphicsEnvironment.isHeadless()) {
@@ -849,7 +785,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param width   the width, in pixels.
+     * @param newValue   the width, in pixels.
      * @see #setFixedCellWidth
      * @see JComponent#addPropertyChangeListener
      */
@@ -1012,7 +948,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *
      * @param cellRenderer the <code>ListCellRenderer</code>
      * 				that paints browser cells
-     * @see #getBrowserCellRenderer
+     * @see #getCellRenderer
      * @see #setColumnCellRenderer
      */
     public void setCellRenderer(BrowserCellRenderer cellRenderer) {

@@ -1,7 +1,7 @@
 /*
- * @(#)BrowserPreviewRenderer.java  1.0  25 January 2005
+ * @(#)BrowserPreviewRenderer.java 
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -41,7 +41,7 @@ import javax.swing.tree.*;
  * </pre>
  *
  * @author  Werner Randelshofer
- * @version 1.0  25 January 2005  Created.
+ * @version $Id$
  */
 public interface BrowserPreviewRenderer {
     /**

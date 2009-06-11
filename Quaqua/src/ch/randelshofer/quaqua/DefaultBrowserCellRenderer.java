@@ -1,7 +1,6 @@
 /**
- * @(#)DefaultBrowserCellRenderer.java  1.0  Mar 22, 2008
- *
- * Copyright (c) 2008 Werner Randelshofer
+ * @(#)DefaultBrowserCellRenderer.java 
+ * Copyright (c) 2008-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -18,15 +17,11 @@ import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import java.io.*;
-import java.util.*;
 /**
  * DefaultBrowserCellRenderer.
  *
  * @author Werner Randelshofer
- * @version 1.0 Mar 22, 2008 Created.
+ * @version $Id$
  */
 public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRenderer
 {

@@ -1,7 +1,7 @@
 /*
- * @(#)BinaryPListParser.java  1.0  2005-11-06
+ * @(#)BinaryPListParser.java
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -46,7 +46,7 @@ import java.text.*;
  * @see ch.randelshofer.quaqua.ext.nanoxml.XMLElement
  *
  * @author  Werner Randelshofer
- * @version 0.1 June 18, 2005 Created.
+ * @version $Id$
  */
 public class BinaryPListParser {
     private final static boolean DEBUG = false;
