@@ -1,5 +1,5 @@
 /*
- * @(#)ArrayUtil.java  1.3  2004-09-12
+ * @(#)ArrayUtil.java  
  *
  * Copyright (c) 2003 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland
@@ -17,11 +17,8 @@ import java.util.*;
 /**
  * ArrayUtil.
  *
- * @author  Werner Randelshofer, Staldenmattweg 2, Immensee, CH-6405, Switzerland
- * @version 1.3 2003-09-12 Removed unused methods.
- * <br>1.2 2003-09-27 Method toString added.
- * <br>1.1 2003-08-24 Methods asVector and toHexString added.
- * <br>1.0 2003-07-18 Created.
+ * @author  Werner Randelshofer
+ * @version $Id$
  */
 public class ArrayUtil {
     

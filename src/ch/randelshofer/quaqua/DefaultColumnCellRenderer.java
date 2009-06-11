@@ -1,7 +1,7 @@
 /*
- * @(#)DefaultColumnCellRenderer.java  2.0  2008-03-21
+ * @(#)DefaultColumnCellRenderer.java 
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -24,12 +24,7 @@ import javax.swing.border.*;
  * DefaultColumnCellRenderer.
  *
  * @author Werner Randelshofer
- * @version 2.0 2008-03-21 Renamed from DefaultBrowserCellRenderer to
- * DefaultColumnCellRenderer. 
- * <br>1.1.1 2005-03-19 All icon images are read from a single PNG file.
- * <br>1.1 2004-06-26 Draws a different disclosure icon when a cell is
- * selected.
- * <br>1.0 September 14, 2003  Created.
+ * @version $Id$
  */
 public class DefaultColumnCellRenderer implements ListCellRenderer  {
     private JPanel panel;

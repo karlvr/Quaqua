@@ -1,7 +1,7 @@
 /*
- * @(#)LookAndFeelProxy.java  1.2  2006-02-17
+ * @(#)LookAndFeelProxy.java  
  *
- * Copyright (c) 2003-2006 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -15,9 +15,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 /**
  * A proxy for LookAndFeel objects. This class enables us to override
@@ -28,10 +26,7 @@ import javax.swing.plaf.basic.*;
  * don't work if they can't cast the current LookAndFeel to BasicLookAndFeel.
  *
  * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
- * @version 1.2 2006-02-17 Improved support for Java 1.4. 
- * <br>1.1 2005-04-05 Temporarily moved make...() methods from subclasses 
- * into this class.
- * <br>1.0 2003-07-20 Created.
+ * @version $Id$
  */
 public class LookAndFeelProxy extends BasicLookAndFeel {
     /**

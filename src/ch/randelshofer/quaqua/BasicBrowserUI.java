@@ -1,5 +1,5 @@
 /*
- * @(#)BasicBrowserUI.java  3.0  2008-07-18
+ * @(#)BasicBrowserUI.java  
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,10 +13,8 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.datatransfer.*;
-import java.awt.*;
 import java.awt.datatransfer.*;
 import java.util.ArrayList;
-import java.util.Comparator;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.tree.*;
@@ -25,9 +23,7 @@ import javax.swing.tree.*;
  * BasicBrowserUI.
  *
  * @author  Werner Randelshofer
- * @version 3.0 2008-07-18 Added size handle icon. 
- * <br>2.0 2008-03-21 Support for datatransfer added. 
- * <br>1.0 August 27, 2005 Created.
+ * @version $Id$
  */
 public class BasicBrowserUI extends BrowserUI {
 

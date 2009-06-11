@@ -1,5 +1,5 @@
 /**
- * @(#)BrowserCellRenderer.java  1.0  Mar 22, 2008
+ * @(#)BrowserCellRenderer.java
  *
  * Copyright (c) 2008 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -19,7 +19,7 @@ import java.awt.*;
  * Defines the requirements for an object that displays a tree node in a JBrowser.
  *
  * @author Werner Randelshofer
- * @version 1.0 Mar 22, 2008 Created.
+ * @version $Id$
  */
 public interface BrowserCellRenderer {
 

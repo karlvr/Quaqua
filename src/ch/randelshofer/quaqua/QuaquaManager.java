@@ -716,7 +716,7 @@ public class QuaquaManager {
      * QuaquaManager.setExcludeUIs(excludes);
      * </pre>
      * 
-     * @param includes Set<String> Exclude UI delegates, which are in
+     * @param excludes Set<String> Exclude UI delegates, which are in
      * this list. Specify null to exclude all UIs.
      */
     public static void setExcludedUIs(Set excludes) {

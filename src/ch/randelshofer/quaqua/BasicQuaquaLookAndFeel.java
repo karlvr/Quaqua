@@ -1,5 +1,5 @@
 /*
- * @(#)BasicQuaquaLookAndFeel.java  2.2.1  2008-11-09
+ * @(#)BasicQuaquaLookAndFeel.java
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -26,72 +26,7 @@ import java.security.*;
  * commonly uses by all the specific QuaquaLookAndFeel incarnations.
  *
  * @author  Werner Randelshofer
- * @version 2.3 2009-06-10 Added support for fetching native images.
- * <br>2.2.2 2009-04-19 Fixed selective exclusion of UIs.
- * <br>2.2.1 2008-11-09 Define our own EditorPane.focusInputMap, because
- * the one provided by Apple's AquaLookAndFeel contains non-standard action names. 
- * <br>2.2 2008-07-18 Added size handle icon for Browser. 
- * <br>2.1 2008-05-31 Use InactivatableColorUIResource for Tree and
- * Table selection colors just like for List selection color.
- * <br>2.0 2008-08-10 Renamed font properties from logicalFontName to 
- * Component.logicalFontName.
- * <br>1.27 2008-03-21 Added table input map. 
- * <br>1.26 2008-02-05 Explicitly defined TabbedPane.textIconGap = 4. 
- * <br>1.23 2007-12-23 Set "ClassLoader" property to class loader of
- * this LookAndFeel class. 
- * <br>1.23 2007-12-01 Streamlined property names for Slider.
- * <br>1.22 2007-11-25 Support for Darwin added.
- * <br>1.21 2007-10-30 Support for Mac OS X 10.5 (Leopard) added.
- * <br>1.20.1 2007-07-25 Use "BACK_SPACE" instead of "typed \010" to
- * specify the input map for the backspace key.
- * <br>1.20 2007-07-23 Use Quaqua16LayoutStyle and Quaqua16Baseline,
- * when running under Java 1.6.
- * <br>1.19.1 2007-02-17 Don't load ResourceBundle using Reflection because
- * we are not allowed to use Reflection when running as an unsigned Java
- * Webstart application.
- * <br>1.19 2007-02-09 Fixed combo box background and opaqueness.
- * <br>1.18 2007-01-17 Reimplemented fix for issue #6 in a different way.
- * <br>1.17 2007-01-07 Property "ComboBox.maximumRowCount" added.
- * Issue #6: colors for inactive selections in lists and trees added.
- * Support for "requestFocusEnabled" added.
- * <br>1.16 2006-12-24 Support for Aqua Graphite Appearance added.
- * <br>1.15 2006-09-04 Fixed input map problems of JTabbedPane.
- * <br>1.14 2006-05-07 Table.focusCellHighlightBorder set back to the
- * same color as for list selection highlight border. Shift-Enter and
- * Alt-Enter inserts a line break into a multiline text field.
- * FileChooser.previewLabelDelimiter added.
- * <br>1.13 2006-04-23 Property "popupHandler" for all the various text
- * component UI's added.
- * <br>1.12.2 2006-04-15 Table.focusCellHighlightBorder set to black.
- * <br>1.12.1 2006-04-08 TableHeaderBorder must be an UIResource. Set
- * values for Table.focusCellBackground and Table.focusCellForeground.
- * <br>1.12 2006-03-29 InputMap for combo box editor must contain
- * a binding for the ENTER key.
- * <br>1.11 2006-02-06 TabbedPane.opaque property added. Support for
- * the following system properties added: Quaqua.FileChooser.speed,
- * Quaqua.FileChooser.orderByType.
- * <br>1.10 2005-12-19 Fixed separator colors. Fixed tree icons.
- * <br>2.0 2005-12-04 Reduced start up latency by using ProxyLazyValue
- * instead of referring classes directly.
- * <br>1.9 2005-11-27 FileView.directoryIcon and FileView.fileIcon added.
- * <br>1.8 2005-11-07 Resource bundle "Labels" added.
- * <br>1.7 2005-10-17 Further reduce startup latency.
- * <br>1.6 2005-09-25 Make use of UIDefaults.LazyValue to reduce startup
- * latency. ColorChooser.crayonsFont property added. Read Mac OS X Preferences
- * to derive selection colors and ScrollBar properties. Properties for
- * OptionPane extended.
- * <br>1.5 2005-09-04 Support for GroupLayout added.
- * <br>1.4 2005-08-30 Added "ColorChooser.crayonsImage".
- * <br>1.3 2005-08-25 Explicitly set "Viewport.background" to white,
- * Explicitly setting more colors.
- * <br>1.2.2 2005-07-06 Readded input map entry for ENTER key on text fields.
- * <br>1.2.1 2005-06-22 Beep when cutting/copying from password field. Micro-alignment
- * for text components improved. Do not set Button.margin and ToolBar.separatorSize to
- * to null, even if we don't use these values, because they make the Java 1.3 VM crash.
- * <br>1.2 2005-05-28 Added support for new system properties.
- * <br>1.1 2005-05-21 Fixed tool tip font. Moved common ui properties
- * from subclasses into this class.
- * <br>1.0  15 April 2005  Created.
+ * @version $Id$
  */
 public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
 
