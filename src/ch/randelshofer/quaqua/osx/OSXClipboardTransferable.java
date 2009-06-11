@@ -24,19 +24,17 @@ import java.security.AccessControlException;
 
 /**
  * OSXClipboardTransferable provides read access to the raw contents
- * of the  "General clipboard" of the Cocoa NSPasteboard API.
+ * of the Mac OS X system clipboard.
  * <p>
- * All data flavors have the mime type {@code application/octet-stream; type=...}
- * whereas {@code ...} stands for the UTF-8 URLEncoded NSPasteboard type.
+ * All data flavors have the mime type {@code application/octet-stream; type=...}.
  * <p>
- * The NSPasteboard type is stored without encoding in the human presentable name.
+ * The type parameter of the data flavor holds the UTF-8 URL_encoded native type
+ * identifier. The human presentable name field of the data flavor holds the
+ * non-encoded native type identifier.
  * <p>
- * While this class might not be immediately usable on its own, it
- * can be wrapped by a Transferable object of your own, which can convert
- * the raw data into a format that can be used by Java.
- *
- * See <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSPasteboard_Class/Reference/Reference.html#//apple_ref/occ/instm/NSPasteboard/dataForType:"
- * >Apple NSPasteboard Class Reference</a>
+ * The system clipboard data is retrieved using the Cocoa class
+ * <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSPasteboard_Class/Reference/Reference.html#//apple_ref/occ/instm/NSPasteboard/dataForType:"
+ * >NSPasteboard</a>.
  *
  * @author Werner Randelshofer
  * @version $Id: OSXClipboardTransferable.java 82 2009-06-11 08:57:33Z wrandelshofer $
@@ -50,7 +48,8 @@ public class OSXClipboardTransferable implements Transferable {
     private static int EXPECTED_NATIVE_CODE_VERSION = 2;
 
     /**
-     * Load the native code.
+     * Returns true if native code is available.
+     * This method also loads the native code.
      */
     public static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {

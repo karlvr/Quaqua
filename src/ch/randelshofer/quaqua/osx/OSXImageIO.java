@@ -23,7 +23,6 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.AccessControlException;
-import javax.imageio.ImageIO;
 
 /**
  * Utility methods for reading images using the Mac OS X Cocoa NSImage API.
@@ -34,6 +33,10 @@ import javax.imageio.ImageIO;
 public class OSXImageIO {
 
     private static int EXPECTED_NATIVE_CODE_VERSION = 1;
+
+    /** Prevent instance creation. */
+    private OSXImageIO() {
+    }
 
     /**
      * Reads a <code>BufferedImage</code> from the supplied <code>File</code>
@@ -164,7 +167,7 @@ public class OSXImageIO {
      * @return The image loaded. <code>null</code>, if no image could be loaded
      *         from the system clipboard.
      */
-    public native static byte[] nativeReadSystemClipboard();
+    private native static byte[] nativeReadSystemClipboard();
 
 
     //---
@@ -181,7 +184,8 @@ public class OSXImageIO {
     private static Boolean isNativeCodeAvailable;
 
     /**
-     * Load the native code.
+     * Returns true if native code is available.
+     * This method also loads the native code.
      */
     public static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
