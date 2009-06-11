@@ -1,5 +1,5 @@
 /*
- * @(#)ch_randelshofer_quaqua_filechooser_Files.m  
+ * @(#)ch_randelshofer_quaqua_osx_OSXFile.m
  *
  * Copyright (c) 2004-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -8,18 +8,18 @@
  * The copyright of this software is owned by Werner Randelshofer. 
  * You may not use, copy or modify this software, except in  
  * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 
 /**
- * Native code for class ch.randelshofer.quaqua.filechooser.Files.
+ * Native code for class ch.randelshofer.quaqua.osx.OSXFile.
  *
  * @version $Id$
  */
 
 #include <stdio.h>
 #include <jni.h>
-#include "ch_randelshofer_quaqua_filechooser_Files.h"
+#include "ch_randelshofer_quaqua_osx_OSXFile.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
 
@@ -33,11 +33,11 @@
 
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getFileType
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetFileType
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetFileType
   (JNIEnv *env, jclass instance, jstring pathJ) {
 
     // Assert arguments
@@ -65,11 +65,11 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetFi
 		-1;
 }
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    resolveAlias
  * Signature: (Ljava/lang/String;Z)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAlias__Ljava_lang_String_2Z
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAlias__Ljava_lang_String_2Z
  (JNIEnv *env, jclass instance, jstring aliasPathJ, jboolean noUI)
 {
     // Assert arguments
@@ -113,11 +113,11 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeRe
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    resolveAliasType
  * Signature: (Ljava/lang/String;Z)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAliasType__Ljava_lang_String_2Z
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType__Ljava_lang_String_2Z
    (JNIEnv *env, jclass instance, jstring aliasPathJ, jboolean noUI)
 {
     // Assert arguments
@@ -161,11 +161,11 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResol
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    toSerializedAlias
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeToSerializedAlias
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSerializedAlias
   (JNIEnv *env, jclass instance, jstring aliasPathJ)
 {
     // Assert arguments
@@ -220,11 +220,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativ
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    jniResolveAlias
  * Signature: ([BZ)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAlias___3BZ
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAlias___3BZ
   (JNIEnv *env, jclass instance, jbyteArray serializedAlias, jboolean noUI) 
 {
     // Assert arguments
@@ -282,11 +282,11 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeRe
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    jniResolveAliasType
  * Signature: ([BZ)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAliasType___3BZ
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType___3BZ
   (JNIEnv *env, jclass instance, jbyteArray serializedAlias, jboolean noUI) 
 {
     // Assert arguments
@@ -345,11 +345,11 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResol
   
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getLabel
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetLabel
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLabel
   (JNIEnv *env, jclass instance, jstring pathJ) {
 
     // Assert arguments
@@ -381,11 +381,11 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetLa
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getKindString
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetKindString
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetKindString
   (JNIEnv *env, jclass instance, jstring pathJ) {
 
     // Assert arguments
@@ -423,11 +423,11 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGe
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getIconImage
  * Signature: (Ljava/lang/String;I)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetIconImage
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIconImage
   (JNIEnv *env, jclass javaClass, jstring pathJ, jint size) {
 
     // Assert arguments
@@ -487,11 +487,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativ
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getBasicItemInfoFlags
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetBasicItemInfoFlags
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetBasicItemInfoFlags
   (JNIEnv *env, jclass javaClass, jstring pathJ) {
     // Assert arguments
     if (pathJ == NULL) return -1;
@@ -515,7 +515,7 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetBa
     return (err == 0) ? itemInfoRecord.flags : 0;
 }
 
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetDisplayName
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDisplayName
   (JNIEnv *env, jclass javaClass, jstring pathJ) {
 
     // Assert arguments
@@ -546,70 +546,14 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGe
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
     return 4;
 }
-
-/*
- * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    nativeGetImageFromFile
- * Signature: (Ljava/lang/String;II)[B
- */
-JNIEXPORT jobject JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetImageFromFile (JNIEnv *env, jclass javaClass, jstring file, jint width, jint height) {
-    if(file == NULL) return NULL;
-
-    jbyteArray result = NULL;
-    
-    // Allocate a memory pool
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
-
-    NSSize iconSize = { width, height };
-    // Convert Java String to NS String
-    const jchar *pathC = (*env)->GetStringChars(env, file, NULL);
-    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
-                                               length:(*env)->GetStringLength(env, file)];
-    // Release the C char array
-    (*env)->ReleaseStringChars(env, file, pathC);
-    
-    // Get the icon image
-    NSImage* image = [[[NSImage alloc] autorelease] initWithContentsOfFile:pathNS];
-    if (image != NULL) {
-        // Set the desired size of the image
-        [image setSize:iconSize];
-        
-        // Unfortunately, setting the desired size does not always have an effect,
-        // we need to choose the best image representation by ourselves.
-        NSArray* reps = [image representations];
-        NSEnumerator *enumerator = [reps objectEnumerator];
-        NSImageRep* imageRep;
-        while (imageRep = [enumerator nextObject]) {
-            if ([imageRep pixelsWide] == width && [imageRep pixelsHigh] == height) {
-                image = imageRep;
-                break;
-            }
-        }
-        
-        NSData* data = [image TIFFRepresentation];
-        unsigned len = [data length];
-        void* bytes = malloc(len);
-        [data getBytes:bytes];
-        
-        result = (*env)->NewByteArray(env, len);
-        (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
-        free(bytes);
-    }
-    
-    // Release memory pool
-	[pool release];
-    
-	return result;
-}
-
 
 
 /*JNI function definitions end*/

@@ -1,5 +1,5 @@
 /*
- * @(#)OSXCollator.java  1.1  2007-02-10
+ * @(#)OSXCollator.java  
  *
  * Copyright (c) 2004-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -38,10 +38,7 @@ import java.text.*;
  * 
  *
  * @author  Werner Randelshofer
- * @version 1.1 2007-02-10 Improved performance of method expandNumbers. 
- * <br>1.0.1 2005-02-09 Changed the code to make it compilable with 
- * Java 1.3.
- * <br>1.0  23 January 2005  Created.
+ * @version $Id$
  */
 public class OSXCollator extends Collator {
     private Collator collator;

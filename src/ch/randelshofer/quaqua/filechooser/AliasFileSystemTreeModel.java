@@ -1,5 +1,5 @@
 /*
- * @(#)AliasFileSystemTreeModel.java  1.22 2009-06-01
+ * @(#)AliasFileSystemTreeModel.java 
  *
  * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,6 +13,8 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.filechooser.OSXCollator;
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
 import java.util.*;
@@ -31,88 +33,7 @@ import javax.swing.filechooser.*;
  * asynchronously to the AWT Event Dispatcher thread.
  *
  * @author Werner Randelshofer
- * @version 1.22 2009-06-01 Added dispose method.
- * <br>1.21.6 2008-07-10 DirectoryValidator must determine indices of
- * new/changed/deleted nodes on the event dispatcher thread, otherwise the
- * indices may become obsolete before the tree events are fired.
- * <br>1.21.5 2008-06-01 Don't fire treeChanged events for nodes which
- * are not part of the tree. 
- * <br>1.21.4 2008-05-01 Fixed NPE in method toPath. 
- * <br>1.21.3 2008-04-27 Fixed NPE in method invalidatePath. 
- * <br>1.21.2 2008-03-26 Only fire a node changed event on a node
- * which has been asynchronously updated, if the node is a child of
- * the root node.
- * <br>1.21.1 2008-03-25 Fixed method signatures of fire… methods.  
- * <br>1.21 2007-11-16 RootNode returns computer icon, if no icon
- * is available. 
- * <br>1.20 2007-04-29 Resolve file aliases without user interaction
- * when they are displayed in the chooser. Resolve file aliases with user
- * interaction, when the user clicks on an alias.
- * <br>1.19.1 2007-02-10 Use a static instance for OSXCollator, because
- * creating a OSXCollator is very expensive.
- * <br>1.19 2007-01-29 Only fire tree node changed, when something changed.
- * <br>1.18 2006-09-23 Invalidate the user name of a file when invalidateInfo
- * is called.
- * <br>1.17.2 2006-06-13 Really be less lazy.
- * <br>1.17.1 2006-06-07 Be less lazy in method lazyInvalidatePath.
- * <br>1.17 2006-05-17 Removed short-circuit. We must explicitly check
- * whether a file is a directory.
- * <br>1.16 2006-04-07 Use a thread pool for reading directory listings.
- * New directories listings are validated in LIFO order, old directory listings
- * are validated in FIFO order. Reduced number of IO operations in
- * DirectoryValidator.
- * <br>1.15 2006-02-06 Moved COMPUTER constant from QuaquaPantherFileChooserUI
- * to here.
- * <br>1.14 2005-11-26 Lazily validate file infos in worker thread.
- * Renamed validation code for children to validateChildren to make the
- * difference between info validation and child validation clear.
- * Implemented FileInfo interface.
- * <br>1.13 2005-09-24 Support ordering by type.
- * <br>1.12 2005-09-06 Node.toString returns user name of file object.
- * This is needed to make cell tips on the JBrowser work properly.
- * <br>1.11 2005-08-26 Replaced aFile.getParentFile() invocations with
- * aFileSystemView.getParentDirectory() invocations where applicable.
- * <br>1.10 2005-07-28 Reduced the number of File.exists() and
- * FileChooser.isTraversable() method invocations to improve performance.
- * <br>1.9 2005-06-18 Added file kind "widget" for directories with a
- * ".wdgt" suffix in their name.
- * <br>1.8.3 2005-06-07 Renamed "enum" variables, because "enum" is a
- * reserved word in Java 1.5.
- * <br>1.8.2 2005-03-23 Normalize a file object before attempting to create
- * a path in method toPath().
- * <br>1.8.1 2005-03-14 Fixed an IllegalStateException which occured in
- * method toPath(), when attempting to create a path using an invalid File
- * object.
- * <br>1.8 2005.01-23 Support for file labels added. CollationKey's are
- * now used to improve the performance of file sorting and merging.
- * <br>1.7.1 2004-12-28 Renamed class QuaquaFileSystemView to
- * QuaquaFileSystemView.
- * <br>1.7 2004-11-28 Fixed class cast exception which occured, when a
- * JFileChooser did not use an instance of QuaquaFileSystemView.
- * <br>1.6 2004-11-21 Check the modification time of a directory to decide
- * whether we need to validateChildren its contents.
- * <br>1.5 2004-10-31 Require a QuaquaFileSystemView. Treat the computer
- * folder system differently than other folders.
- * <br>1.4.1 2004-09-11 Replaced all method invocations to method QuaquaManager.getProperty
- * to QuaquaManager.getProperty.
- * <br>1.4 2004-04-23 Method stopValidation() added. Fixed a bug in method
- * Node.run(), which caused application bundles being constantly added and
- * removed from the tree.
- * <br>1.3 2004-03-13 Up to now, retrieving a directory from a remote
- * computer took way too long. This version contains an all new update strategy
- * for the tree nodes, and a new two step merging algorithm. There are now two
- * different strategies to invalidateChildren the tree model: lazyInvalidateChildren and
- * invalidateChildren. Lazy Invalidation should be used to refresh the tree model when
- * the user selects a path in the JFileChooser. (Non-Lazy)-Invalidation should
- * be used to refresh the tree model when the JFileChooser changes its visible
- * state and when the FileFilter's used by the JFileChooser change.
- * Method setAutoValidate can be used to turn Lazy Invalidation off.
- * <br>1.2 2004-02-14 Don't read hidden files if file hiding is switched
- * on in the JFileChooser. Reduced the number of method calls to
- * JFileChooser.getName(). This greatly improves the performance of file
- * choosers.
- * <br>1.0.1 2004-02-06 Fixed some Javadoc warnings.
- * <br>1.0 September 5, 2003  Created.
+ * @version $Id$
  */
 public class AliasFileSystemTreeModel implements TreeModel {
 
@@ -338,12 +259,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
     protected Node createNode(File f) {
         // Determine file type
         File resolvedFile = null;
-        int fileType = Files.getFileType(f);
+        int fileType = OSXFile.getFileType(f);
         boolean isDirectory = false;
-        boolean isAlias = fileType == Files.FILE_TYPE_ALIAS;
+        boolean isAlias = fileType == OSXFile.FILE_TYPE_ALIAS;
         if (isAlias) {
             // XXX - Fixme !!!
-            resolvedFile = Files.resolveAlias(f, false);
+            resolvedFile = OSXFile.resolveAlias(f, false);
             isDirectory = resolvedFile.isDirectory();
             if (!isResolveAliasesToFiles() && !isDirectory) {
                 isAlias = false;
@@ -351,7 +272,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             }
         } else {
             resolvedFile = f;
-            isDirectory = fileType == Files.FILE_TYPE_DIRECTORY;
+            isDirectory = fileType == OSXFile.FILE_TYPE_DIRECTORY;
         }
         boolean isTraversable;
         if (QuaquaManager.getBoolean("FileChooser.speed")) {
@@ -381,7 +302,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
     public TreePath toPath(File file, TreePath templatePath) {
         // Make sure the file does not contain any relative path components
         // before we work with it.
-        file = Files.getAbsoluteFile(file);
+        file = OSXFile.getAbsoluteFile(file);
         QuaquaFileSystemView fsv = getFileSystemView();
 
         // Short circuit for the computer folder.
@@ -463,7 +384,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
     public TreePath toPath0(File file) {
         // Make sure the file does not contain any relative path components
         // before we work with it.
-        file = Files.getAbsoluteFile(file);
+        file = OSXFile.getAbsoluteFile(file);
 
         // Decompose file into a list of path components
         LinkedList list = new LinkedList();
@@ -1004,7 +925,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                             icon = fileChooser.getIcon(file);
 
                             if (isResolveFileLabels) {
-                                fileLabel = Files.getLabel(file);
+                                fileLabel = OSXFile.getLabel(file);
                             }
 
                             return (oldIcon != icon || oldFileLabel != fileLabel) ? Boolean.TRUE : Boolean.FALSE;
@@ -1290,17 +1211,17 @@ public class AliasFileSystemTreeModel implements TreeModel {
                     // Resolve alias and determine if fresh file is traversable
                     // and if it is a directory.
                     boolean freshIsTraversable;
-                    int freshFileType = Files.getFileType(freshFiles[i]);
-                    boolean freshIsDirectory = freshFileType == Files.FILE_TYPE_DIRECTORY;
+                    int freshFileType = OSXFile.getFileType(freshFiles[i]);
+                    boolean freshIsDirectory = freshFileType == OSXFile.FILE_TYPE_DIRECTORY;
                     File resolvedFreshFile = null;
                     boolean freshIsAlias;
                     if (isResolveAliasesToFiles()) {
-                        freshIsAlias = freshFileType == Files.FILE_TYPE_ALIAS;
+                        freshIsAlias = freshFileType == OSXFile.FILE_TYPE_ALIAS;
                     } else {
                         freshIsAlias = false;
                     }
                     if (freshIsAlias) {
-                        resolvedFreshFile = Files.resolveAlias(freshFiles[i], true);
+                        resolvedFreshFile = OSXFile.resolveAlias(freshFiles[i], true);
                         if (resolvedFreshFile == null) {
                             freshIsTraversable = freshIsDirectory = false;
                         } else {
@@ -1796,7 +1717,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 resolver = new Worker() {
 
                     public Object construct() {
-                        return Files.resolveAlias(file, false);
+                        return OSXFile.resolveAlias(file, false);
                     }
 
                     public void finished(Object value) {
@@ -1819,7 +1740,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public File getResolvedFile() {
             if (resolvedFile == null) {
-                resolvedFile = Files.resolveAlias(file, false);
+                resolvedFile = OSXFile.resolveAlias(file, false);
             }
             return (resolvedFile == null) ? file : resolvedFile;
         }
@@ -1859,7 +1780,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 resolver = new Worker() {
 
                     public Object construct() {
-                        return Files.resolveAlias(file, false);
+                        return OSXFile.resolveAlias(file, false);
                     }
 
                     public void finished(Object value) {
@@ -1880,7 +1801,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public File getResolvedFile() {
             if (resolvedFile == null) {
-                resolvedFile = Files.resolveAlias(file, false);
+                resolvedFile = OSXFile.resolveAlias(file, false);
             }
             return (resolvedFile == null) ? file : resolvedFile;
         }

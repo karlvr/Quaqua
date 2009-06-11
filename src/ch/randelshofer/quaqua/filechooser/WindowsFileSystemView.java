@@ -1,5 +1,5 @@
 /*
- * @(#)WindowsFileSystemView.java  1.1  2005-12-09
+ * @(#)WindowsFileSystemView.java 
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -23,9 +23,7 @@ import java.util.*;
  * 
  * 
  * @author Werner Randelshofer
- * @version 1.1 2005-12-09 Moved from ch.randelshofer.quaqua.metal.filechooser
- * package into ch.randelshofer.quaqua.filechooser package.
- * <br>1.0 August 26, 2005 Created.
+ * @version $Id$
  */
 public class WindowsFileSystemView extends QuaquaFileSystemView {
     private File computer = new File("\\");

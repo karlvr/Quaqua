@@ -1,5 +1,5 @@
 /*
- * @(#)FileRenderer.java  2.3  2005-11-26
+ * @(#)FileRenderer.java 
  *
  * Copyright (c) 2004-2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
@@ -23,16 +24,7 @@ import ch.randelshofer.quaqua.*;
  * Quaqua FileChooserUI's.
  *
  * @author  Werner Randelshofer
- * @version 2.3 2007-11-10 Cell border is read from UIManager.
- * <br>2.2.1 2005-11-26 Retrieve file icon from model instead of getting
- * it from the file chooser directly.
- * <br>2.2 2005-07-28 Option "Quaqua.FileChooser.speed" added.
- * <br>2.1 2005-06-19 Paint text antialiased.
- * <br>2.0.1 2005-04-21 Don't change background to label color.
- * <br>2.0 2005-01-23 Redesigned. Support for file labels added. If the
- * file name does not fit, ellipsis is added at the middle of the name instead
- * of at the end.
- * <br>1.0  October 31, 2004  Created.
+ * @version $Id$
  */
 public class FileRenderer extends JComponent implements ListCellRenderer  {
     private Color labelForeground, labelDisabledForeground;
@@ -104,8 +96,8 @@ public class FileRenderer extends JComponent implements ListCellRenderer  {
                 (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG && ! info.isTraversable()) ||
                 ! info.isAcceptable();
         
-        labelColor = Files.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
-        labelBrightColor = Files.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
+        labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
+        labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
         
         this.isSelected = isSelected && ! isGrayed;
         if (this.isSelected) {

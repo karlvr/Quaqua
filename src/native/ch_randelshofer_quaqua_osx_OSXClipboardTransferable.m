@@ -1,5 +1,5 @@
 /*
- * @(#)ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m  
+ * @(#)ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m
  *
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -12,14 +12,14 @@
  */
 
 /**
- * Native code for class ch.randelshofer.quaqua.datatransfer.NSPasteboardTransferable.
+ * Native code for class ch.randelshofer.quaqua.osx.OSXClipboardTransferable.
  *
  * @version $Id$
  */
 
 #include <stdio.h>
 #include <jni.h>
-#include "ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.h"
+#include "ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h"
 #import <Cocoa/Cocoa.h>
 #import <CoreServices/CoreServices.h>
 
@@ -32,11 +32,11 @@
 
 
 /*
- * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
+ * Class:     ch_randelshofer_quaqua_osx_OSXClipboardTransferable
  * Method:    getTypes
  * Signature: ()[Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetTypes
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransferable_nativeGetTypes
   (JNIEnv *env, jclass javaClass) {
 
     jobjectArray *typesJ = NULL;
@@ -46,8 +46,6 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteb
 
     // Get the NSPasteboard
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
-
-    //fprintf(stdout, "Hello\n");
 
     if (pb != NULL) {
         NSArray *types = [pb types];
@@ -83,11 +81,11 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteb
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
+ * Class:     ch_randelshofer_quaqua_osx_OSXClipboardTransferable
  * Method:    getDataForType
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetDataForType
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransferable_nativeGetDataForType
   (JNIEnv *env, jclass javaClass, jstring typeJ) {
 
     jbyteArray *dataJ = NULL;
@@ -126,11 +124,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboa
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
+ * Class:     ch_randelshofer_quaqua_osx_OSXClipboardTransferable
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransferable_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
 
     return 2;

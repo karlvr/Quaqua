@@ -1,5 +1,5 @@
 /*
- * @(#)NSPasteboardTransferable.java 
+ * @(#)OSXClipboardTransferable.java
  * 
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -10,7 +10,7 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms.
  */
-package ch.randelshofer.quaqua.datatransfer;
+package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.datatransfer.DataFlavor;
@@ -23,8 +23,8 @@ import java.net.URLEncoder;
 import java.security.AccessControlException;
 
 /**
- * NSPasteboardTransferable provides read access to the raw contents
- * of the  "General clipboard" Cocoa NSPasteboard.
+ * OSXClipboardTransferable provides read access to the raw contents
+ * of the  "General clipboard" of the Cocoa NSPasteboard API.
  * <p>
  * All data flavors have the mime type {@code application/octet-stream; type=...}
  * whereas {@code ...} stands for the UTF-8 URLEncoded NSPasteboard type.
@@ -39,9 +39,9 @@ import java.security.AccessControlException;
  * >Apple NSPasteboard Class Reference</a>
  *
  * @author Werner Randelshofer
- * @version $Id$
+ * @version $Id: OSXClipboardTransferable.java 82 2009-06-11 08:57:33Z wrandelshofer $
  */
-public class NSPasteboardTransferable implements Transferable {
+public class OSXClipboardTransferable implements Transferable {
 
     /**
      * This variable is set to true, if native code is available.
@@ -54,7 +54,7 @@ public class NSPasteboardTransferable implements Transferable {
      */
     public static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
-            synchronized (NSPasteboardTransferable.class) {
+            synchronized (OSXClipboardTransferable.class) {
                 if (isNativeCodeAvailable == null) {
                     boolean success = false;
                     try {
@@ -74,14 +74,14 @@ public class NSPasteboardTransferable implements Transferable {
                                 System.loadLibrary(libraryName);
                                 success = true;
                             } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + NSPasteboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (AccessControlException e) {
-                                System.err.println("Warning: " + NSPasteboardTransferable.class + " access controller denied loading library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXClipboardTransferable.class + " access controller denied loading library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (Throwable e) {
                                 e.printStackTrace();
-                                System.err.println("Warning: " + NSPasteboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             }
                         }
@@ -90,11 +90,11 @@ public class NSPasteboardTransferable implements Transferable {
                             try {
                                 int nativeCodeVersion = nativeGetNativeCodeVersion();
                                 if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                    System.err.println("Warning: " + NSPasteboardTransferable.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
+                                    System.err.println("Warning: " + OSXClipboardTransferable.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                     success = false;
                                 }
                             } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + NSPasteboardTransferable.class + " could load library " + libraryName + " but can't use it. " + e);
+                                System.err.println("Warning: " + OSXClipboardTransferable.class + " could load library " + libraryName + " but can't use it. " + e);
                                 success = false;
                             }
                         }
@@ -134,7 +134,7 @@ public class NSPasteboardTransferable implements Transferable {
      * type information is in the human presentable name!
      */
     public DataFlavor[] getTransferDataFlavors() {
-        String[] types = NSPasteboardTransferable.nativeGetTypes();
+        String[] types = OSXClipboardTransferable.nativeGetTypes();
 
         if (types == null) {
 

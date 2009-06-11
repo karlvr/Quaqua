@@ -1,5 +1,5 @@
 /*
- * @(#)LinuxFileSystemView.java  1.1  2009-04-05
+ * @(#)LinuxFileSystemView.java  
  *
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,14 +13,14 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import java.io.File;
 
 /**
  * LinuxFileSystemView.
  *
  * @author Werner Randelshofer, stefanmd
- * @version 1.1 2009-04-05 stefanmd Tweaked for Gnome and KDE.
- * <br>1.0 2009-04-04 stefanmd Created.
+ * @version $Id$
  */
 public class LinuxFileSystemView extends QuaquaFileSystemView {
     /** XXX - The computer mount does only exist in Gnome */
@@ -170,8 +170,8 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
         if (f.equals(systemVolume)) {
             return "/";
         } else {
-            if (Files.canWorkWithAliases()) {
-                return Files.getDisplayName(f);
+            if (OSXFile.canWorkWithAliases()) {
+                return OSXFile.getDisplayName(f);
             } else {
                 return target.getSystemDisplayName(f);
             }

@@ -1,5 +1,5 @@
 /*
- * @(#)FileTransferHandler.java  1.0  October 31, 2004
+ * @(#)FileTransferHandler.java 
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -22,7 +22,7 @@ import javax.swing.*;
  * FileTransferHandler.
  *
  * @author  Werner Randelshofer
- * @version 1.0  October 31, 2004  Created.
+ * @version $Id$
  */
 public class FileTransferHandler implements DropTargetListener {
     private JFileChooser fileChooser;

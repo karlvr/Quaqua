@@ -1,5 +1,5 @@
 /*
- * @(#)SubtreeTreeModel.java  1.2  2007-10-03
+ * @(#)SubtreeTreeModel.java 
  *
  * Copyright (c) 2004-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -23,12 +23,7 @@ import javax.swing.tree.*;
  * SubtreeTreeModel.
  * 
  * @author Werner Randelshofer
- * @version 1.2 2007-10-03 Added method isDescendant(TreePath);
- * <br>1.1.1 2007-01-29 Removed stack trace dump that was in the code
- * for debugging.
- * <br>1.1 2004-10-13 Method getPathToRoot() added. Operation
- * setSubtreePath() renamed to setPathToRoot().
- * <br>1.0  July 7, 2004  Created.
+ * @version $Id$
  */
 public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     /** We store all our listeners here. */

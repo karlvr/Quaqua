@@ -10,10 +10,8 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.filechooser.Files;
 import ch.randelshofer.quaqua.icon.ShiftedIcon;
 import ch.randelshofer.quaqua.app.Application;
 import ch.randelshofer.quaqua.util.*;
@@ -27,12 +25,8 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
-//import javax.imageio.*;
-//import javax.imageio.stream.*;
 import java.io.*;
-import java.util.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
+import ch.randelshofer.quaqua.osx.OSXImageIO;
 
 /**
  * QuaquaIconFactory.
@@ -41,9 +35,10 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * @version $Id$
  */
 public class QuaquaIconFactory {
+
     private static BufferedImage applicationImage64;
     private static BufferedImage applicationImage32;
-    
+
     /**
      * Lazy option pane icon.
      * The creation of an option pane icon is a potentially slow operation.
@@ -51,21 +46,23 @@ public class QuaquaIconFactory {
      * when it is ready.
      */
     private static class LazyOptionPaneIcon implements Icon {
+
         private ImageIcon realIcon;
         private int messageType;
         private ch.randelshofer.quaqua.util.SwingWorker worker;
-        
+
         public LazyOptionPaneIcon(final int messageType) {
             this.messageType = messageType;
             worker = new ch.randelshofer.quaqua.util.SwingWorker() {
+
                 public Object construct() {
                     try {
                         switch (messageType) {
-                            case JOptionPane.WARNING_MESSAGE :
+                            case JOptionPane.WARNING_MESSAGE:
                                 return createWarningIcon();
-                            case JOptionPane.ERROR_MESSAGE :
+                            case JOptionPane.ERROR_MESSAGE:
                                 return createErrorIcon();
-                            default :
+                            default:
                                 return createApplicationIcon();
                         }
                     } catch (Throwable t) {
@@ -76,15 +73,15 @@ public class QuaquaIconFactory {
             };
             worker.start();
         }
-        
+
         public int getIconHeight() {
             return 64;
         }
-        
+
         public int getIconWidth() {
             return 64;
         }
-        
+
         public void paintIcon(final Component c, Graphics g, int x, int y) {
             if (realIcon == null) {
                 realIcon = (ImageIcon) worker.get();
@@ -94,148 +91,153 @@ public class QuaquaIconFactory {
             }
         }
     }
-    
+
     /**
      * Prevent instance creation.
      */
     private QuaquaIconFactory() {
     }
-    
+
     public static URL getResource(String location) {
         URL url = QuaquaIconFactory.class.getResource(location);
         if (url == null) {
-            throw new InternalError("image resource missing: "+location);
+            throw new InternalError("image resource missing: " + location);
         }
         return url;
     }
-    
+
     public static Image createImage(String location) {
         return Images.createImage(QuaquaIconFactory.class, location);
     }
+
     public static Image createImage(Class baseClass, String location) {
         return Images.createImage(baseClass, location);
     }
+
     public static Image createBufferedImage(String location) {
         return Images.toBufferedImage(createImage(location));
     }
-    
+
     public static Icon[] createIcons(String location, int count, boolean horizontal) {
         Icon[] icons = new Icon[count];
-        
+
         BufferedImage[] images = Images.split(
                 (Image) createImage(location),
-                count, horizontal
-                );
-        
-        for (int i=0; i < count; i++) {
+                count, horizontal);
+
+        for (int i = 0; i < count; i++) {
             icons[i] = new IconUIResource(new ImageIcon(images[i]));
         }
         return icons;
     }
-    
+
     public static Icon createIcon(String location, int count, boolean horizontal, int index) {
         return createIcons(location, count, horizontal)[index];
     }
-    
-    
+
     public static Icon createButtonStateIcon(String location, int states) {
         return new ButtonStateIcon(
                 (Image) createImage(location),
-                states, true
-                );
+                states, true);
     }
+
     public static Icon createButtonStateIcon(String location, int states, Point shift) {
         return new ShiftedIcon(
                 new ButtonStateIcon(
                 (Image) createImage(location),
-                states, true
-                ),
-                shift
-                );
+                states, true),
+                shift);
     }
+
     public static Icon createButtonStateIcon(String location, int states, Rectangle shift) {
         return new ShiftedIcon(
                 new ButtonStateIcon(
                 (Image) createImage(location),
-                states, true
-                ),
-                shift
-                );
+                states, true),
+                shift);
     }
+
     public static Icon createFrameButtonStateIcon(String location, int states) {
         return new FrameButtonStateIcon(
                 (Image) createImage(location),
-                states, true
-                );
+                states, true);
     }
-    
+
     /**
      * Creates a button state icon overlaid with a button focus icon.
      */
     public static Icon createOverlaidButtonStateIcon(
             String location1, int states1,
             String location2, int states2,
-            Rectangle layoutRect
-            ) {
+            Rectangle layoutRect) {
         return new IconUIResource(
                 new VisuallyLayoutableIcon(
                 new OverlayIcon(
                 createButtonStateIcon(location1, states1),
-                createButtonFocusIcon(location2, states2)
-                ), layoutRect)
-                );
+                createButtonFocusIcon(location2, states2)), layoutRect));
     }
-    
+
     public static Icon createButtonFocusIcon(String location, int states) {
         return new ButtonFocusIcon(
                 (Image) createImage(location),
-                states, true
-                );
+                states, true);
     }
-    
+
     public static Icon createSliderThumbIcon(String location) {
         return new SliderThumbIcon(createImage(location), 6, true);
     }
-    
+
     public static Icon createIcon(Class baseClass, String location) {
         return new ImageIcon(createImage(baseClass, location));
     }
+
     public static Icon createIcon(Class baseClass, String location, Point shift) {
         return new ShiftedIcon(
                 new ImageIcon(createImage(baseClass, location)),
-                shift
-                );
+                shift);
     }
+
     public static Icon createIcon(Class baseClass, String location, Rectangle shiftAndSize) {
         return new ShiftedIcon(
                 new ImageIcon(createImage(baseClass, location)),
-                shiftAndSize
-                );
+                shiftAndSize);
     }
-    
+
     public static Icon createNativeIcon(String path, int size) {
-        Image img = Files.getImageFromFile(new File(path), size);
-        if (img == null)
+        try {
+            Image img;
+            img = OSXImageIO.read(new File(path), size, size);
+            if (img == null) {
+                return null;
+            }
+            return new ImageIcon(img);
+        } catch (IOException ex) {
             return null;
-        return new ImageIcon(img);
+        }
     }
-    
+
     public static Icon createNativeIcon(String path, int width, int height) {
-        Image img = Files.getImageFromFile(new File(path), width, height);
-        if (img == null)
+        try {
+            Image img;
+            img = OSXImageIO.read(new File(path), width, height);
+            if (img == null) {
+                return null;
+            }
+            return new ImageIcon(img);
+        } catch (IOException ex) {
             return null;
-        return new ImageIcon(img);
+        }
     }
-    
+
     public static Icon createOptionPaneIcon(int messageType) {
         return new LazyOptionPaneIcon(messageType);
     }
-    
+
     private static ImageIcon createApplicationIcon() {
         // Workaround for a bug in method getScaledInstance() in Apple's Java VM.
         // Instead of using getScaledInstance(), we create a temporary image
         // and do the scaling using drawImage().
-        
+
         /*
         BufferedImage image = getApplicationIconImage();
         return new ImageIcon(image.getScaledInstance(64, 64, Image.SCALE_SMOOTH));
@@ -249,34 +251,34 @@ public class QuaquaIconFactory {
          */
         return new ImageIcon(getApplicationIconImage());
     }
-    
+
     private static ImageIcon createWarningIcon() {
         return composeOptionPaneIcon(UIManager.getString("OptionPane.warningIconResource"));
     }
+
     private static ImageIcon createErrorIcon() {
         return composeOptionPaneIcon(UIManager.getString("OptionPane.errorIconResource"));
     }
+
     private static ImageIcon composeOptionPaneIcon(String resource) {
         BufferedImage result = new BufferedImage(64, 64, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = result.createGraphics();
         g.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC);
-        
-        
+
+
         BufferedImage warningImage = Images.toBufferedImage(
                 Images.createImage(
-                QuaquaIconFactory.class.getResource(resource)
-                )
-                );
+                QuaquaIconFactory.class.getResource(resource)));
         g.drawImage(warningImage, 0, 0, 58, 58, null);
-        
+
         BufferedImage appImage = Application.getIconImage(32);
         g.drawImage(appImage, 32, 32, 32, 32, null);
-        
-        
+
+
         g.dispose();
         return new ImageIcon(result);
     }
-    
+
     /**
      * Gets the application image. This is a buffered image of size 128x128.
      * If the Cocoa Java bridge and the ImageIO API is present, this will get

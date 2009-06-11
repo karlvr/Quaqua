@@ -12,6 +12,7 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
@@ -274,7 +275,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      * Reads the sidebar preferences file.
      */
     private Object[] read() throws IOException {
-        if (!Files.canWorkWithAliases()) {
+        if (!OSXFile.canWorkWithAliases()) {
             throw new IOException("Unable to work with aliases");
         }
 
@@ -358,7 +359,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                 }
                                 if (serializedAlias != null && aliasName != null) {
                                     // Try to resolve the alias without user interaction
-                                    File f = Files.resolveAlias(serializedAlias, true);
+                                    File f = OSXFile.resolveAlias(serializedAlias, true);
                                     if (f != null) {
                                         userItems.add(new FileNode(f));
                                     } else {
@@ -538,7 +539,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public File getResolvedFile() {
             if (file == null) {
                 icon = null; // clear cached icon!
-                file = Files.resolveAlias(serializedAlias, false);
+                file = OSXFile.resolveAlias(serializedAlias, false);
             }
             return file;
         }

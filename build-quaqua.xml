@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="5.3alpha5"/>
-        <property name="version" value="${versionNumber} 2009-06-09"/>
+        <property name="versionNumber" value="5.3alpha6"/>
+        <property name="version" value="${versionNumber} 2009-06-11"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -188,9 +188,10 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_app_Application.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
         </exec>
     </target>
     <target depends="init" name="jnilib-64">
@@ -282,9 +283,10 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_app_Application.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
         </exec>
     </target>
 
@@ -436,15 +438,19 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
     </target>
     <target depends="init,compile" name="jni javah">
         <javah classpath="${builddir}"
-                class="ch.randelshofer.quaqua.datatransfer.NSPasteboardTransferable"
+                class="ch.randelshofer.quaqua.osx.OSXClipboardTransferable"
                 destdir="${srcdir}/native"
                 />
         <javah classpath="${builddir}"
-                class="ch.randelshofer.quaqua.filechooser.Files"
+                class="ch.randelshofer.quaqua.osx.OSXFile"
                 destdir="${srcdir}/native"
                 />
         <javah classpath="${builddir}"
-                class="ch.randelshofer.quaqua.app.Application"
+                class="ch.randelshofer.quaqua.osx.OSXApplication"
+                destdir="${srcdir}/native"
+                />
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.osx.OSXImageIO"
                 destdir="${srcdir}/native"
                 />
     </target>

@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaFileSystemView.java  4.2  2009-04-05
+ * @(#)QuaquaFileSystemView.java 
  *
  * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.QuaquaManager;
 import java.io.*;
 import javax.swing.*;
@@ -24,15 +25,7 @@ import javax.swing.filechooser.*;
  * The resulting view is an Aqua-style view on the file system.
  *
  * @author  Werner Randelshofer
- * @version 4.2  2009-04-05 Fixed support for LinuxFileSystemView. Added
- * setFileSystemView method.
- * <br>4.1 2009-04-04 Added support for LinuxFileSystemView.
- * <br>4.0 2008-05-10 Moved common methods from subclasses into this
- * class.
- * <br>2.1 2006-05-07 Use a specialized file system view for Mac OS X Tiger.
- * <br>2.0 2005-09-10 Moved file system related methods from QuaquaManager
- * into this class.
- * <br>1.0 August 26, 2005 Created.
+ * @version $Id$
  */
 public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
     private static QuaquaFileSystemView instance;
@@ -84,8 +77,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         // In theory, we could use the DarwinLeopardFileSystemView
                         // if native code is available for Quaqua. But it turns
                         // out, that Apple's FileView implementation can read
-                        // icons much faster than our Files class does.
-                        /*if (Files.canWorkWithAliases()) {
+                        // icons much faster than our OSXFile class does.
+                        /*if (OSXFile.canWorkWithAliases()) {
                         className = "ch.randelshofer.quaqua.leopard.filechooser.DarwinLeopardFileSystemView";
                         } else {*/
                         className = "ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView";
@@ -139,8 +132,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         if (f.equals(getComputer())) {
             return UIManager.getIcon("FileView.computerIcon");
         } else {
-            if (Files.canWorkWithAliases()) {
-                return Files.getIcon(f, 16);
+            if (OSXFile.canWorkWithAliases()) {
+                return OSXFile.getIcon(f, 16);
             } else {
                 return target.getSystemIcon(f);
             }
@@ -159,8 +152,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
      * @see JFileChooser#getTypeDescription
      */
     public String getSystemTypeDescription(File f) {
-        if (Files.canWorkWithAliases()) {
-            return Files.getKindString(f);
+        if (OSXFile.canWorkWithAliases()) {
+            return OSXFile.getKindString(f);
         } else {
         return target.getSystemTypeDescription(f);
         }
@@ -176,8 +169,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
      * @see FileView#isTraversable
      */
     public Boolean isTraversable(File f) {
-        if (Files.canWorkWithAliases()) {
-            return Boolean.valueOf(Files.isTraversable(f));
+        if (OSXFile.canWorkWithAliases()) {
+            return Boolean.valueOf(OSXFile.isTraversable(f));
         } else {
             return target.isTraversable(f);
         }
@@ -210,8 +203,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
         if (f.equals(getComputer())) {
             return getSystemVolume().getName();
         } else {
-            if (Files.canWorkWithAliases()) {
-                return Files.getDisplayName(f);
+            if (OSXFile.canWorkWithAliases()) {
+                return OSXFile.getDisplayName(f);
             } else {
                 return target.getSystemDisplayName(f);
             }
