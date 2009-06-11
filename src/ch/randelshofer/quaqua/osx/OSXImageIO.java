@@ -25,7 +25,11 @@ import java.io.IOException;
 import java.security.AccessControlException;
 
 /**
- * Utility methods for reading images using the Mac OS X Cocoa NSImage API.
+ * {@code OSXImageIO} can read images using the Mac OS X Cocoa NSImage API.
+ * <p>
+ * Images are read using the Cocoa class
+ * <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSImage_Class/Reference/Reference.html"
+ * >NSImage</a>.
  *
  * @author Werner Randelshofer
  * @version $Id$

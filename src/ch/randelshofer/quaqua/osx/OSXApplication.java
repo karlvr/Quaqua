@@ -14,8 +14,6 @@ package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.*;
 import java.io.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
@@ -23,8 +21,12 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
 import java.security.AccessControlException;
 
 /**
- * OSXApplication can create a BufferedImage from the Mac OS X application
- * icon image, and can make the application icon bounce in the Dock.
+ * {@code OSXApplication} can get the native Mac OS X icon image of the
+ * application, and it can make the application icon bounce in the Dock.
+ * <p>
+ * The functionality is performed using the Cocoa class
+ * <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSApplication_Class/Reference/Reference.html"
+ * >NSApplication</a>.
  *
  * @author Werner Randelshofer
  * @version $Id: OSXApplication.java 82 2009-06-11 08:57:33Z wrandelshofer $

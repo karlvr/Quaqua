@@ -23,7 +23,8 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
 
 /**
- * Provides access to Mac OS X file meta data and can resolve file aliases.
+ * {@code OSXFile} provides access to Mac OS X file meta data and can resolve
+ * file aliases.
  *
  * @author Werner Randelshofer
  * @version $Id: OSXFile.java 82 2009-06-11 08:57:33Z wrandelshofer $
