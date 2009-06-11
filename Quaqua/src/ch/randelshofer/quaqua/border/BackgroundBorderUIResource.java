@@ -1,5 +1,5 @@
 /*
- * @(#)BackgroundBorderUIResource.java  2.0  2005-09-25
+ * @(#)BackgroundBorderUIResource.java 
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,9 +13,7 @@
 
 package ch.randelshofer.quaqua.border;
 
-import ch.randelshofer.quaqua.border.BackgroundBorder;
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 /**
@@ -28,8 +26,7 @@ import javax.swing.plaf.*;
  * used to draw on the background of a JComponent.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2005-09-25 Interface BackgroundBorder added.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class BackgroundBorderUIResource implements Border, BackgroundBorder, UIResource {
     private Border backgroundBorder;

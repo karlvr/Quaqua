@@ -9,28 +9,29 @@ extern "C" {
 #endif
 /* Inaccessible static: isNativeCodeAvailable */
 /* Inaccessible static: EXPECTED_NATIVE_CODE_VERSION */
+/* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024datatransfer_00024NSPasteboardTransferable */
 /*
  * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
- * Method:    getTypes
+ * Method:    nativeGetTypes
  * Signature: ()[Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getTypes
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetTypes
   (JNIEnv *, jclass);
 
 /*
  * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
- * Method:    getDataForType
+ * Method:    nativeGetDataForType
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getDataForType
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetDataForType
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable
- * Method:    getNativeCodeVersion
+ * Method:    nativeGetNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetNativeCodeVersion
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

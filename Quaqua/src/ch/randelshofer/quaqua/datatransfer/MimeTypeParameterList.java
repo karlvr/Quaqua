@@ -1,5 +1,5 @@
 /*
- * @(#)MimeTypeParameterList.java  1.0  November 2, 2003
+ * @(#)MimeTypeParameterList.java 
  *
  * Copyright (c) 2003 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -19,13 +19,13 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 /**
- * An object that encapsualtes the parameter list of a MimeType
+ * An object that encapsulates the parameter list of a MimeType
  * as defined in RFC 2045 and 2046.
  * <p>
  * Implementation taken from java.awt.datatransfer.MimeTypeParameterList.java 1.12 01/12/03
  *
  * @author  Werner Randelshofer
- * @version 1.0 November 2, 2003 Created.
+ * @version $Id$
  */
 class MimeTypeParameterList implements Cloneable {
 

@@ -1,5 +1,5 @@
 /*
- * @(#)AnimatedBorder.java  1.0.1  2005-06-25
+ * @(#)AnimatedBorder.java 
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -15,7 +15,6 @@ package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
 import java.awt.event.*;
-import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
 /**
@@ -23,8 +22,7 @@ import java.util.*;
  * animated border.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2005-06-25 Return a new instance of Insets in method getBorderInsets.
- * <br>1.0  13 March 2005  Created.
+ * @version $Id$
  */
 public class AnimatedBorder implements Border {
     private final static java.util.Timer timer = new java.util.Timer(true);

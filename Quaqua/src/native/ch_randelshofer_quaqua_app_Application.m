@@ -1,5 +1,5 @@
 /*
- * @(#)ch_randelshofer_quaqua_osx_Application.c  1.0  2007-01-15
+ * @(#)ch_randelshofer_quaqua_app_Application.c 
  *
  * Copyright (c) 2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,19 +14,19 @@
 /**
  * Native code for class ch.randelshofer.quaqua.osx.Application.
  *
- * @version 1.0 2007-01-15 Created.
+ * @version $Id$
  */
 
 #include <stdio.h>
 #include <jni.h>
-#include "ch_randelshofer_quaqua_osx_Application.h"
+#include "ch_randelshofer_quaqua_app_Application.h"
 #import <Cocoa/Cocoa.h>
 /*
- * Class:     ch_randelshofer_quaqua_osx_Application
+ * Class:     ch_randelshofer_quaqua_app_Application
  * Method:    requestUserAttention
  * Signature: (Z)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_Application_jniRequestUserAttention
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeRequestUserAttention
   (JNIEnv * env, jclass javaClass, jboolean isCritical) 
 {
     if (isCritical) {
@@ -37,11 +37,11 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_Application_jniRequestUse
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_osx_Application
+ * Class:     ch_randelshofer_quaqua_app_Application
  * Method:    jniGetIconImage
  * Signature: (I)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_Application_jniGetIconImage
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeGetIconImage
   (JNIEnv * env, jclass javaClass, jint size)
 {
     // Allocate a memory pool
@@ -74,11 +74,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_Application_jniGetI
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_osx_Application
+ * Class:     ch_randelshofer_quaqua_app_Application
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_Application_getNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
-    return 1;
+    return 2;
 }

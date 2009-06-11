@@ -1,5 +1,5 @@
 /*
- * @(#)PaintableColor.java  1.0.1  2006-02-12
+ * @(#)PaintableColor.java 
  *
  * Copyright (c) 2005-2006 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -24,8 +24,7 @@ import javax.swing.*;
  * Color.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2006-02-12 Fixed getRootPaneOffset when component is a Window.
- * <br>1.0 December 10, 2005 Created.
+ * @version $Id$
  */
 public abstract class PaintableColor extends Color {
     /**

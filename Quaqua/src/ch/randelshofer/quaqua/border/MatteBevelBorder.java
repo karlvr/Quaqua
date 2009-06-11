@@ -1,5 +1,5 @@
 /*
- * @(#)MatteBevelBorder.java  1.0.1  2005-06-25
+ * @(#)MatteBevelBorder.java  
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,14 +14,12 @@
 package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 /**
  * MatteBevelBorder.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2005-06-25 Return a new insets instance in method getBorderInsets.
- * <br>1.0  29 December 2004  Created.
+ * @version $Id$
  */
 public class MatteBevelBorder implements Border {
     private Insets borderInsets;

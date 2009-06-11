@@ -1,5 +1,5 @@
 /*
- * @(#)MimeTypeParseException.java  1.0  November 2, 2003
+ * @(#)MimeTypeParseException.java 
  *
  * Copyright (c) 2003 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -20,7 +20,7 @@ package ch.randelshofer.quaqua.datatransfer;
  *
  * @serial exclude
  * @author  Werner Randelshofer
- * @version 1.0 November 2, 2003 Created.
+ * @version $Id$
  */
 public class MimeTypeParseException extends Exception {
     

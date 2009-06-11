@@ -1,5 +1,5 @@
 /*
- * @(#)CachedImageBevelBorder.java  2.0  2008-10-04
+ * @(#)CachedImageBevelBorder.java  
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -35,11 +35,7 @@ import java.awt.image.*;
  * The inner area of the image is used to fill the inner area.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-10-04 Added inner class UIResource. 
- * <br>1.1.1 2007-01-11 Don't create subimages with widths or
- * heights smaller than 1 pixel. 
- * <br>1.1 2005-11-30 Convert image to buffered image lazily.
- * <br>1.0 September 7, 2005 Created.
+ * @version $Id$
  */
 public class CachedImageBevelBorder extends CachedPainter implements Border {
     private final static boolean VERBOSE = false;

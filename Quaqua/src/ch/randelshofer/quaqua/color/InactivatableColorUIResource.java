@@ -1,5 +1,5 @@
 /*
- * @(#)InactivatableColorUIResource.java  2.0  2008-05-31
+ * @(#)InactivatableColorUIResource.java  
  *
  * Copyright (c) 2007-2008 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -22,9 +22,7 @@ import java.awt.image.*;
  * an active state and an inactive state.
  *
  * @author Werner Randelshofer
- * @version 2.0 2008-05-31 Addes isTransparent property. 
- * <br>1.0.1 2007-11-11 We need to override method createContext as well.
- * <br>1.0 January 16, 2007 Created.
+ * @version $Id$
  */
 public class InactivatableColorUIResource extends Color {
     private boolean isActive;

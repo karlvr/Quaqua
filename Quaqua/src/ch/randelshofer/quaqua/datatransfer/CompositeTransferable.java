@@ -1,5 +1,5 @@
 /*
- * @(#)CompositeTransferable.java  1.0  2002-04-07
+ * @(#)CompositeTransferable.java  
  *
  * Copyright (c) 2001 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -17,9 +17,10 @@ import java.awt.datatransfer.*;
 import java.util.*;
 import java.io.*;
 /**
- *
+ * CompositeTransferable.
  *
  * @author  Werner Randelshofer
+ * @version $Id$
  */
 public class CompositeTransferable implements java.awt.datatransfer.Transferable {
     private HashMap transferables = new HashMap();

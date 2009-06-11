@@ -1,5 +1,5 @@
 /*
- * @(#)TextureColor.java  2.0  2005-12-10
+ * @(#)TextureColor.java 
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,11 +14,9 @@
 package ch.randelshofer.quaqua.color;
 
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.awt.image.*;
-import javax.swing.*;
 /**
  * This class used to pass TexturePaint's 'through' the Swing API, so that users
  * of our Look and Feel can work with TexturePaint's like with regular colors,
@@ -26,9 +24,7 @@ import javax.swing.*;
  * color.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2005-12-10 Reworked.
- * <br>1.1 2005-09-10 Method getTexture() added.
- * <br>1.0  08 February 2005  Created.
+ * @version $Id$
  */
 public class TextureColor extends PaintableColor {
     protected Image texture;
