@@ -1,5 +1,5 @@
 /*
- * @(#)Application.java  2.3  2008-06-22
+ * @(#)Application.java 
  *
  * Copyright (c) 2007-2008 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -10,7 +10,7 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-package ch.randelshofer.quaqua.osx;
+package ch.randelshofer.quaqua.app;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
@@ -26,21 +26,7 @@ import java.security.AccessControlException;
  * Application.
  *
  * @author Werner Randelshofer
- * @version 5.2 2008-06-22 Use quaqua64 JNI-lib on x86_64 processors on Mac 
- * OS X 10.5 and higher.
- * <br>2.3 2008-06-22 Use libquaqua105.jnilib on Mac OS X 10.5 and higher. 
- * <br>2.2 2008-05-31 Removed explicit 64 bit support for JNILib. This
- * is now handled by universal build of the native library.
- * <br>2.1.1 2008-03-16 Improved scaling quality of application icon. 
- * <br>2.1 2007-11-24 Only use Java to Cocoa Bridge when running on 
- * Mac OS X. On UnsatisfiedLinkError retry with absolute
- * path to load libquaqua.jnilib.
- * <br>2.0.8 2007-09-08 Security exception in static initalizer of this
- * class caused that option pane icons were not displayed.
- * <br>2.0.1 2007-07-25 Method getIconImage returned icon with wrong
- * size, when no native code was available.
- * <br>2.0 2007-04-28 Added methods getIconImage, jniGetIconImage.
- * <br>1.0 January 15, 2007 Created.
+ * @version $Id$
  */
 public class Application {
 
@@ -52,7 +38,7 @@ public class Application {
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 1;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 2;
 
     /**
      * Load the native code.
@@ -91,7 +77,7 @@ public class Application {
                         }
 
                         if (success) {
-                            int nativeCodeVersion = getNativeCodeVersion();
+                            int nativeCodeVersion = nativeGetNativeCodeVersion();
                             if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
                                 System.err.println("Warning: " + Application.class + " can't use library libquaqua.jnilib. It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                 success = false;
@@ -120,7 +106,7 @@ public class Application {
      */
     public static void requestUserAttention(boolean requestCritical) {
         if (isNativeCodeAvailable()) {
-            jniRequestUserAttention(true);
+            nativeRequestUserAttention(true);
         } else {
             // We may only use the Java to Cocoa Bridge when we run on OS X.
             // If we run on Darwin unter OS X, this will crash our application
@@ -149,7 +135,7 @@ public class Application {
      * a modal dialog. Set this to false, in all other cases.
      * @exception java.lang.UnsatisfiedLinkError if JNI is not available.
      */
-    private static native void jniRequestUserAttention(boolean requestCritical);
+    private static native void nativeRequestUserAttention(boolean requestCritical);
 
     /**
      * Returns the icon image of the application.
@@ -162,7 +148,7 @@ public class Application {
         BufferedImage image = null;
         if (isNativeCodeAvailable()) {
             try {
-                byte[] tiffData = jniGetIconImage(size);
+                byte[] tiffData = nativeGetIconImage(size);
 
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
                         new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
@@ -212,7 +198,7 @@ public class Application {
      * @param size the desired size of the icon in pixels (width and height)
      * @return Byte array with TIFF image data or null in case of failure.
      */
-    private static native byte[] jniGetIconImage(int size);
+    private static native byte[] nativeGetIconImage(int size);
 
     /**
      * Returns the version of the native code library. If the version
@@ -220,5 +206,5 @@ public class Application {
      * it.
      * @return The version number of the native code.
      */
-    private static native int getNativeCodeVersion();
+    private static native int nativeGetNativeCodeVersion();
 }

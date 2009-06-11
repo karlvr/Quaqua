@@ -190,7 +190,7 @@
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_Application.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_app_Application.m"/>
         </exec>
     </target>
     <target depends="init" name="jnilib-64">
@@ -284,7 +284,7 @@
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_filechooser_Files.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_Application.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_app_Application.m"/>
         </exec>
     </target>
 
@@ -437,6 +437,14 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
     <target depends="init,compile" name="jni javah">
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.datatransfer.NSPasteboardTransferable"
+                destdir="${srcdir}/native"
+                />
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.filechooser.Files"
+                destdir="${srcdir}/native"
+                />
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.app.Application"
                 destdir="${srcdir}/native"
                 />
     </target>

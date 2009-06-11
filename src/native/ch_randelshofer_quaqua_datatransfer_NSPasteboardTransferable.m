@@ -1,5 +1,5 @@
 /*
- * @(#)ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m  1.0  2009-06-09
+ * @(#)ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable.m  
  *
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,7 +14,7 @@
 /**
  * Native code for class ch.randelshofer.quaqua.datatransfer.NSPasteboardTransferable.
  *
- * @version 1.0 2009-06-09 Created.
+ * @version $Id$
  */
 
 #include <stdio.h>
@@ -36,7 +36,7 @@
  * Method:    getTypes
  * Signature: ()[Ljava/lang/String;
  */
-JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getTypes
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetTypes
   (JNIEnv *env, jclass javaClass) {
 
     jobjectArray *typesJ = NULL;
@@ -87,7 +87,7 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteb
  * Method:    getDataForType
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getDataForType
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetDataForType
   (JNIEnv *env, jclass javaClass, jstring typeJ) {
 
     jbyteArray *dataJ = NULL;
@@ -130,10 +130,10 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboa
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_getNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_datatransfer_NSPasteboardTransferable_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
 
-    return 1;
+    return 2;
 }
 
 

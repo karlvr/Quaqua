@@ -1,5 +1,5 @@
 /*
- * @(#)ButtonFocusBorder.java  1.1.1  2008-01-13
+ * @(#)ButtonFocusBorder.java
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,10 +21,7 @@ import javax.swing.border.*;
  * A Border which only draws if the component has focus.
  *
  * @author  Werner Randelshofer
- * @version 1.1.1 2008-01-13 Only paint focus border, if component is enabled. 
- * <br>1.1 2005-06-30 Only paint focus rings for abstract buttons, if its
- * isFocusPainted method returns true.
- * <br>1.0  21 March 2005  Created.
+ * @version $Id$
  */
 public class FocusBorder implements Border {
     private Border focusRing;

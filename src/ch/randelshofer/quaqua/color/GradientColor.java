@@ -1,5 +1,5 @@
 /**
- * @(#)GradientColor.java  1.0  10.05.2008
+ * @(#)GradientColor.java 
  *
  * Copyright (c) 2008 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -20,7 +20,7 @@ import java.awt.*;
  * GradientColor.
  *
  * @author Werner Randelshofer
- * @version 1.0 10.05.2008 Created.
+ * @version $Id$
  */
 public class GradientColor extends PaintableColor {
     protected Color color1;

@@ -16,93 +16,96 @@ extern "C" {
 #undef ch_randelshofer_quaqua_filechooser_Files_FILE_TYPE_UNKOWN
 #define ch_randelshofer_quaqua_filechooser_Files_FILE_TYPE_UNKOWN -1L
 #undef ch_randelshofer_quaqua_filechooser_Files_EXPECTED_NATIVE_CODE_VERSION
-#define ch_randelshofer_quaqua_filechooser_Files_EXPECTED_NATIVE_CODE_VERSION 2L
+#define ch_randelshofer_quaqua_filechooser_Files_EXPECTED_NATIVE_CODE_VERSION 4L
+/* Inaccessible static: labelColors */
+/* Inaccessible static: isNativeCodeAvailable */
+/* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024filechooser_00024Files */
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getFileType
+ * Method:    nativeGetFileType
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getFileType
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetFileType
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    resolveAlias
+ * Method:    nativeResolveAlias
  * Signature: (Ljava/lang/String;Z)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_resolveAlias
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAlias__Ljava_lang_String_2Z
   (JNIEnv *, jclass, jstring, jboolean);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    resolveAliasType
+ * Method:    nativeResolveAliasType
  * Signature: (Ljava/lang/String;Z)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_resolveAliasType
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAliasType__Ljava_lang_String_2Z
   (JNIEnv *, jclass, jstring, jboolean);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    toSerializedAlias
+ * Method:    nativeToSerializedAlias
  * Signature: (Ljava/lang/String;)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_toSerializedAlias
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeToSerializedAlias
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    jniResolveAlias
+ * Method:    nativeResolveAlias
  * Signature: ([BZ)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_jniResolveAlias
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAlias___3BZ
   (JNIEnv *, jclass, jbyteArray, jboolean);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    jniResolveAliasType
+ * Method:    nativeResolveAliasType
  * Signature: ([BZ)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_jniResolveAliasType
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeResolveAliasType___3BZ
   (JNIEnv *, jclass, jbyteArray, jboolean);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getLabel
+ * Method:    nativeGetLabel
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getLabel
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetLabel
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getKindString
+ * Method:    nativeGetKindString
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getKindString
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetKindString
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getIconImage
+ * Method:    nativeGetIconImage
  * Signature: (Ljava/lang/String;I)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getIconImage
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetIconImage
   (JNIEnv *, jclass, jstring, jint);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getBasicItemInfoFlags
+ * Method:    nativeGetBasicItemInfoFlags
  * Signature: (Ljava/lang/String;)I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getBasicItemInfoFlags
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetBasicItemInfoFlags
   (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getDisplayName
+ * Method:    nativeGetDisplayName
  * Signature: (Ljava/lang/String;)Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getDisplayName
+JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetDisplayName
   (JNIEnv *, jclass, jstring);
 
 /*
@@ -115,10 +118,10 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativ
 
 /*
  * Class:     ch_randelshofer_quaqua_filechooser_Files
- * Method:    getNativeCodeVersion
+ * Method:    nativeGetNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_getNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_filechooser_Files_nativeGetNativeCodeVersion
   (JNIEnv *, jclass);
 
 #ifdef __cplusplus

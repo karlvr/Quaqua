@@ -1,5 +1,5 @@
 /*
- * @(#)NSPasteboardTransferable.java  1.0  2009-06-09
+ * @(#)NSPasteboardTransferable.java 
  * 
  * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,8 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.AccessControlException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * NSPasteboardTransferable provides read access to the raw contents
@@ -41,7 +39,7 @@ import java.util.logging.Logger;
  * >Apple NSPasteboard Class Reference</a>
  *
  * @author Werner Randelshofer
- * @version 1.0 2009-06-09 Created.
+ * @version $Id$
  */
 public class NSPasteboardTransferable implements Transferable {
 
@@ -49,7 +47,7 @@ public class NSPasteboardTransferable implements Transferable {
      * This variable is set to true, if native code is available.
      */
     private static Boolean isNativeCodeAvailable;
-    private static int EXPECTED_NATIVE_CODE_VERSION = 1;
+    private static int EXPECTED_NATIVE_CODE_VERSION = 2;
 
     /**
      * Load the native code.
@@ -90,7 +88,7 @@ public class NSPasteboardTransferable implements Transferable {
 
                         if (success) {
                             try {
-                                int nativeCodeVersion = getNativeCodeVersion();
+                                int nativeCodeVersion = nativeGetNativeCodeVersion();
                                 if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
                                     System.err.println("Warning: " + NSPasteboardTransferable.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                     success = false;
@@ -114,14 +112,14 @@ public class NSPasteboardTransferable implements Transferable {
      * current contents of the clipboard. The returned types are listed in the
      * order they were declared.
      */
-    private native static String[] getTypes();
+    private native static String[] nativeGetTypes();
 
     /** Returns the data for the specified type.
      *
      * @param dataType The type of data you want to read from the pasteboard.
      * This value should be one of the types returned by #getTypes.
      */
-    private native static byte[] getDataForType(String dataType);
+    private native static byte[] nativeGetDataForType(String dataType);
 
     /**
      * Returns the version of the native code library. If the version
@@ -129,14 +127,14 @@ public class NSPasteboardTransferable implements Transferable {
      * it.
      * @return The version number of the native code.
      */
-    private static native int getNativeCodeVersion();
+    private static native int nativeGetNativeCodeVersion();
 
     /** Returns the data flavors which are currently in the NSPasteboard.
      * The mime type of all flavors is application/octet-stream. The actual
      * type information is in the human presentable name!
      */
     public DataFlavor[] getTransferDataFlavors() {
-        String[] types = NSPasteboardTransferable.getTypes();
+        String[] types = NSPasteboardTransferable.nativeGetTypes();
 
         if (types == null) {
 
@@ -146,7 +144,6 @@ public class NSPasteboardTransferable implements Transferable {
 
             for (int i = 0; i < types.length; i++) {
                 try {
-System.err.println(this+" "+"application/octet-stream; type=" + URLEncoder.encode(types[i], "UTF-8"));
                     flavors[i] = new DataFlavor("application/octet-stream; type=" + URLEncoder.encode(types[i], "UTF-8"), types[i]);
                 } catch (UnsupportedEncodingException ex) {
                     InternalError ie = new InternalError("URLEncoder does not support UTF-8");
@@ -180,7 +177,7 @@ System.err.println(this+" "+"application/octet-stream; type=" + URLEncoder.encod
 
         String type = URLDecoder.decode(flavor.getParameter("type"), "UTF-8");
 
-        byte[] data = getDataForType(type);
+        byte[] data = nativeGetDataForType(type);
 
         if (data == null) {
             throw new UnsupportedFlavorException(flavor);

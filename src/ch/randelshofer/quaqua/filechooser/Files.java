@@ -1,5 +1,5 @@
 /*
- * @(#)Files.java  5.3  2009-01-19
+ * @(#)Files.java
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -27,34 +27,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * The current implementation only works on Mac OS X.
  *
  * @author Werner Randelshofer
- * @version 5.4 2009-06-10 Added support for loading images with JNI.
- * <br>5.3 2009-01-19 Handle UnsatisfiedLinkError's.
- * <br>5.2 2008-06-22 Use quaqua64 JNI-lib on x86_64 processors on Mac
- * OS X 10.5 and higher.
- * <br>5.1 2008-05-31 Removed explicit 64 bit support for JNILib. This
- * is now handled by universal build of the native library.
- * <br>5.0 2008-05-09 Added method getBasicItemInfo.
- * <br>4.1 2008-05-01 Added support for 64 bit JNILib.
- * <br>4.0 2008-03-26 Added version check to native library. 
- * <br>3.1 2007-11-24 On UnsatisfiedLinkError retry with absolute
- * path to load libquaqua.jnilib. 
- * <br>3.0 2007-10-30 On Mac OS X Leopard method getIconImage(File, size)
- * may return icons which are too big.
- * <br>2.0 2007-04-18 Added methods getKind(), getIconImage(), getIcon(),
- * based on code contributed by Rolf Howarth.
- * <br>1.6 2006-09-17 Deprecated "Quaqua.JNI.isPreloaded". The new
- * system property name is "Quaqua.jniIsPreloaded".
- * <br>1.5 2006-03-12 Quaqua.JNI.isPreloaded can be set to true to
- * prevent Quaqua from loading the JNI library on its own.
- * <br>1.4.1 2006-02-13 Print a warning on System.err, if JNI library is not
- * available.
- * <br>1.4 205-08-26 Method getAbsoluteFile supports now Windows paths.
- * <br>1.3 2005-06-30 Methods canWorkWithAliases and canWorkWithLabels added.
- * <br>1.2.1 2005-06-5 Moved calls to System.getProperty into QuaquaManager.
- * <br>1.1 2005-01-22 Method getLabel added.
- * <br>1.0.1 2004-11-01 Renamed JNI Library from "QuaquaFiles"
- * to "quaqua".
- * <br>1.0  October 8, 2004  Created.
+ * @version $Id$
  */
 public class Files {
 
@@ -65,7 +38,7 @@ public class Files {
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 3;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 4;
     /**
      * This array holds the colors used for drawing the gradients of a file
      * label.
@@ -128,7 +101,7 @@ public class Files {
 
                         if (success) {
                             try {
-                                int nativeCodeVersion = getNativeCodeVersion();
+                                int nativeCodeVersion = nativeGetNativeCodeVersion();
                                 if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
                                     System.err.println("Warning: " + Files.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                     success = false;
@@ -210,7 +183,7 @@ public class Files {
      */
     public static int getFileType(File f) {
         if (isNativeCodeAvailable()) {
-            return getFileType(f.getPath());
+            return nativeGetFileType(f.getPath());
         } else {
             return (f.isDirectory()) ? 1 : ((f.isFile()) ? 0 : -1);
         }
@@ -226,7 +199,7 @@ public class Files {
      */
     public static File resolveAlias(File alias, boolean noUI) {
         if (isNativeCodeAvailable()) {
-            String path = resolveAlias(alias.getPath(), noUI);
+            String path = nativeResolveAlias(alias.getPath(), noUI);
             return path == null ? null : new File(path);
         } else {
             return alias;
@@ -245,7 +218,7 @@ public class Files {
      */
     public static int resolveAliasType(File alias, boolean noUI) {
         if (isNativeCodeAvailable()) {
-            return resolveAliasType(alias.getPath(), noUI);
+            return nativeResolveAliasType(alias.getPath(), noUI);
         } else {
             return (alias.isFile()) ? 0 : ((alias.isDirectory()) ? 1 : -1);
         }
@@ -258,7 +231,7 @@ public class Files {
      */
     public static byte[] toSerializedAlias(File f) {
         if (isNativeCodeAvailable()) {
-            return toSerializedAlias(f.getPath());
+            return nativeToSerializedAlias(f.getPath());
         } else {
             return null;
         }
@@ -273,7 +246,7 @@ public class Files {
      */
     public static File resolveAlias(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
-            String path = jniResolveAlias(serializedAlias, noUI);
+            String path = nativeResolveAlias(serializedAlias, noUI);
             return (path == null) ? null : new File(path);
         } else {
             return null;
@@ -292,7 +265,7 @@ public class Files {
      */
     public static int resolveAliasType(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
-            return jniResolveAliasType(serializedAlias, noUI);
+            return nativeResolveAliasType(serializedAlias, noUI);
         } else {
             return -1;
         }
@@ -313,7 +286,7 @@ public class Files {
      */
     public static int getLabel(File f) {
         if (isNativeCodeAvailable() && f != null) {
-            return getLabel(f.getPath());
+            return nativeGetLabel(f.getPath());
         } else {
             return -1;
         }
@@ -340,7 +313,7 @@ public class Files {
     public static BufferedImage getIconImage(File file, int size) {
         if (isNativeCodeAvailable() && file != null) {
             try {
-                byte[] tiffData = getIconImage(file.getPath(), size);
+                byte[] tiffData = nativeGetIconImage(file.getPath(), size);
 
                 if (tiffData == null) {
                     return null;
@@ -396,7 +369,7 @@ public class Files {
      */
     public static String getKindString(File file) {
         if (isNativeCodeAvailable() && file != null) {
-            return getKindString(file.getPath());
+            return nativeGetKindString(file.getPath());
         } else {
             return null;
         }
@@ -404,7 +377,7 @@ public class Files {
 
     public static boolean isTraversable(File file) {
         if (isNativeCodeAvailable() && file != null) {
-            int flags = getBasicItemInfoFlags(file.getPath());
+            int flags = nativeGetBasicItemInfoFlags(file.getPath());
             //   kLSItemInfoIsPlainFile = 0x00000001,
             //   kLSItemInfoIsPackage = 0x00000002,
             //   kLSItemInfoIsContainer = 0x00000008
@@ -417,7 +390,7 @@ public class Files {
     /**
      * Returns the file type: 0=file, 1=directory, 2=alias, -1=unknown.
      */
-    private static native int getFileType(String path);
+    private static native int nativeGetFileType(String path);
 
     /**
      * Resolves an alias to a path String.
@@ -428,7 +401,7 @@ public class Files {
      * be resolved without user interaction.
      * @return Returns the resolved path. Returns null, if the resolution failed.
      */
-    private static native String resolveAlias(String aliasPath, boolean noUI);
+    private static native String nativeResolveAlias(String aliasPath, boolean noUI);
 
     /**
      * Resolves an alias to a type info.
@@ -440,13 +413,13 @@ public class Files {
      * @return Returns the resolved path.
      * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
      */
-    private static native int resolveAliasType(String aliasPath, boolean noUI);
+    private static native int nativeResolveAliasType(String aliasPath, boolean noUI);
 
     /**
      * Converts a path into a serialized alias.
      * Returns null if the conversion failed.
      */
-    private static native byte[] toSerializedAlias(String path);
+    private static native byte[] nativeToSerializedAlias(String path);
 
     /**
      * Resolves a serialized Alias to a path String.
@@ -457,7 +430,7 @@ public class Files {
      * be resolved without user interaction.
      * @return Returns the resolved path.
      */
-    private static native String jniResolveAlias(byte[] serializedAlias, boolean noUI);
+    private static native String nativeResolveAlias(byte[] serializedAlias, boolean noUI);
 
     /**
      * Resolves a serialized Alias to a type.
@@ -468,7 +441,7 @@ public class Files {
      * be resolved without user interaction.
      * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
      */
-    private static native int jniResolveAliasType(byte[] serializedAlias, boolean noUI);
+    private static native int nativeResolveAliasType(byte[] serializedAlias, boolean noUI);
 
     /**
      * Returns the label of the file specified by the given path.
@@ -478,7 +451,7 @@ public class Files {
      *
      * @param path the path to the file.
      */
-    private static native int getLabel(String path);
+    private static native int nativeGetLabel(String path);
 
     /**
      * Returns the kind of the file specified by the given path.
@@ -486,7 +459,7 @@ public class Files {
      *
      * @param path the path to the file.
      */
-    private static native String getKindString(String path);
+    private static native String nativeGetKindString(String path);
 
     /**
      * Returns the icon image of a file as a byte array containing TIFF image 
@@ -497,7 +470,7 @@ public class Files {
      * @param size the desired size of the icon in pixels (width and height).
      * @return Byte array with TIFF image data or null in case of failure.
      */
-    private static native byte[] getIconImage(String path, int size);
+    private static native byte[] nativeGetIconImage(String path, int size);
 
     /**
      * Returns the basic item-information flags of the file specified by the given path.
@@ -535,14 +508,14 @@ public class Files {
      *
      * @param path the path to the file.
      */
-    private static native int getBasicItemInfoFlags(String path);
+    private static native int nativeGetBasicItemInfoFlags(String path);
 
     /**
      * Returns the localized display name of the specified file.
      */
     public static String getDisplayName(File f) {
         if (isNativeCodeAvailable()) {
-            return getDisplayName(f.getPath());
+            return nativeGetDisplayName(f.getPath());
         } else {
             return f.getName();
         }
@@ -555,7 +528,7 @@ public class Files {
      * @param path
      * @return
      */
-    private static native String getDisplayName(String path);
+    private static native String nativeGetDisplayName(String path);
 	
 	/**
 	 * JNI method for {@link #getImageFromFile(File, int, int)}.
@@ -623,5 +596,5 @@ public class Files {
      * it.
      * @return The version number of the native code.
      */
-    private static native int getNativeCodeVersion();
+    private static native int nativeGetNativeCodeVersion();
 }

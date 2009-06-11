@@ -1,5 +1,5 @@
 /*
- * @(#)BackgroundBorder.java  1.0  September 25, 2005
+ * @(#)BackgroundBorder.java  
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -19,7 +19,7 @@ import javax.swing.border.*;
  * border which partially needs to be drawn on to the background of a JComponent.
  *
  * @author  Werner Randelshofer
- * @version 1.0 September 25, 2005 Created.
+ * @version $Id$
  */
 public interface BackgroundBorder extends Border {
     

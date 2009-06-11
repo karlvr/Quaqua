@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaIconFactory.java  4.0.1 2007-09-08
+ * @(#)QuaquaIconFactory.java 
  *
  * Copyright (c) 2005-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -15,7 +15,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.filechooser.Files;
 import ch.randelshofer.quaqua.icon.ShiftedIcon;
-import ch.randelshofer.quaqua.osx.Application;
+import ch.randelshofer.quaqua.app.Application;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
 import ch.randelshofer.quaqua.icon.ButtonStateIcon;
@@ -38,24 +38,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * QuaquaIconFactory.
  *
  * @author  Werner Randelshofer, Christopher Atlan
- * @version 4.1 2009-06-10 Added support to create ImageIcons from native image files.
- * <br>4.0.1 2007-09-08 Option pane icons were empty when Quaqua ran
- * in a restriced Java WebStart sandbox. 
- * <br>4.0 2007-04-28 Removed Java-Cocoa code.
- * <br>3.2.1 2007-02-23 Don't pop an autorelease pool if its identifier is 0.
- * <br>3.2 2007-01-05 Issue #1: Changed LazyOptionPaneIcon to load image
- * asynchronously before paintIcon is invoked.
- * <br>3.1 2006-12-24 by Karl von Randow: Use Images class to create artwork.
- * <br>3.0.2 2006-11-01 Use Graphics2D.drawImage() to scale application
- * image icon instead of using Image.getScaledInstance().
- * <br>3.0.1 2006-05-14 Application icon was unnecessarily created multiple
- * times.
- * <br>3.0 2006-05-12 Added support for file icon images. Renamed some
- * methods.
- * <br>2.1 2006-02-14 Added method createFrameButtonStateIcon.
- * <br>2.0 2006-02-12 Added methods createApplicationIcon, compose,
- * createOptionPaneIcon. These methods were contributed by Christopher Atlan.
- * <br>1.0 December 4, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaIconFactory {
     private static BufferedImage applicationImage64;

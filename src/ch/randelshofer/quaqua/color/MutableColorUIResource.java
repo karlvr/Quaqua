@@ -1,5 +1,5 @@
 /*
- * @(#)MutableColorUIResource.java  1.0  November 10, 2007
+ * @(#)MutableColorUIResource.java 
  *
  * Copyright (c) 2007 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -22,7 +22,7 @@ import javax.swing.plaf.UIResource;
  * A ColorUIResource which can change its color.
  *
  * @author Werner Randelshofer
- * @version 1.0 November 10, 2007 Created.
+ * @version $Id$
  */
 public class MutableColorUIResource extends Color implements UIResource {
     private int argb;

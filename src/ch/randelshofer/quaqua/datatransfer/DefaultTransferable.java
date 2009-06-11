@@ -1,5 +1,5 @@
 /*
- * @(#)DefaultTransferable.java  2.1  2008-03-21
+ * @(#)DefaultTransferable.java  
  *
  * Copyright (c) 2002-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -19,11 +19,7 @@ import java.awt.datatransfer.*;
  * A Transferable which uses a char array or a byte array as its data source.
  *
  * @author  Werner Randelshofer
- * @version 2.1 2008-03-21 String constructor added.
- * <br>2.0 2003-11-02 Data representation is binary. Uset the charset
- * parameter of the mimetype for conversion or add our own charset parameter
- * (utf-8).
- * <br>1.0 2002-04-07 Created.
+ * @version $Id$
  */
 public class DefaultTransferable implements Transferable {
     private byte[] data;

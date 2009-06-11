@@ -1,5 +1,5 @@
 /*
- * @(#)AlphaColorUIResource.java  1.0  06 February 2005
+ * @(#)AlphaColorUIResource.java 
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -19,7 +19,7 @@ import javax.swing.plaf.*;
  * A ColorUIResource whith an alpha channel.
  *
  * @author  Werner Randelshofer
- * @version 1.0  06 February 2005  Created.
+ * @version $Id$
  */
 public class AlphaColorUIResource extends Color implements UIResource {
     public AlphaColorUIResource(int r, int g, int b, int a) {
