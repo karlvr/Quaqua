@@ -23,14 +23,19 @@ import java.net.URLEncoder;
 import java.security.AccessControlException;
 
 /**
- * OSXClipboardTransferable provides read access to the raw contents
- * of the Mac OS X system clipboard.
+ * {@code OSXClipboardTransferable} provides read access to the Mac OS X system
+ * clipboard.
  * <p>
- * All data flavors have the mime type {@code application/octet-stream; type=...}.
+ * All data flavors returned by this object have the mime type
+ * {@code application/octet-stream; type=...}.
  * <p>
- * The type parameter of the data flavor holds the UTF-8 URL_encoded native type
- * identifier. The human presentable name field of the data flavor holds the
- * non-encoded native type identifier.
+ * The following code snippet shows how to determine the native data type
+ * a flavor:
+ * <pre>
+ * import java.net.URLDecoder;
+ *
+ * String nativeDataType = URLDecoder.decode(dataFlavor.getParameter("type"),"UTF-8");
+ * </pre>
  * <p>
  * The system clipboard data is retrieved using the Cocoa class
  * <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSPasteboard_Class/Reference/Reference.html#//apple_ref/occ/instm/NSPasteboard/dataForType:"
