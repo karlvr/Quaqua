@@ -62,7 +62,8 @@ public class OSXFile {
     private static Boolean isNativeCodeAvailable;
 
     /**
-     * Load the native code.
+     * Returns true if native code is available.
+     * This method also loads the native code.
      */
     private final static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
