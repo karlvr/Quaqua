@@ -1,5 +1,5 @@
 /*
- * @(#)FileInfo.java  1.3  2007-08-28
+ * @(#)FileInfo.java 
  *
  * Copyright (c) 2005-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,10 +21,7 @@ import javax.swing.*;
  * returned increases over time.
  * 
  * @author Werner Randelshofer
- * @version 1.3 2007-08-28 Added method lazyGetResolvedFile.
- * <br>1.2 2007-04-18 Added method getFile.
- * <br>1.1 2006-09-23 Method isAcceptable added. 
- * <br>1.0 November 26, 2005 Created.
+ * @version $Id$
  */
 public interface FileInfo {
     /**

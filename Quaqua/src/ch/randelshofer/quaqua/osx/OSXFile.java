@@ -1,5 +1,5 @@
 /*
- * @(#)Files.java
+ * @(#)OSXFile.java
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -10,7 +10,7 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-package ch.randelshofer.quaqua.filechooser;
+package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Images;
@@ -23,13 +23,12 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
 
 /**
- * This class contains various methods for manipulating Files.
- * The current implementation only works on Mac OS X.
+ * Provides access to Mac OS X file meta data and can resolve file aliases.
  *
  * @author Werner Randelshofer
- * @version $Id$
+ * @version $Id: OSXFile.java 82 2009-06-11 08:57:33Z wrandelshofer $
  */
-public class Files {
+public class OSXFile {
 
     public final static int FILE_TYPE_ALIAS = 2;
     public final static int FILE_TYPE_DIRECTORY = 1;
@@ -67,7 +66,7 @@ public class Files {
      */
     private final static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
-            synchronized (Files.class) {
+            synchronized (OSXFile.class) {
                 if (isNativeCodeAvailable == null) {
                     boolean success = false;
                     try {
@@ -87,14 +86,14 @@ public class Files {
                                 System.loadLibrary(libraryName);
                                 success = true;
                             } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + Files.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (AccessControlException e) {
-                                System.err.println("Warning: " + Files.class + " access controller denied loading library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXFile.class + " access controller denied loading library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (Throwable e) {
                                 e.printStackTrace();
-                                System.err.println("Warning: " + Files.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             }
                         }
@@ -103,11 +102,11 @@ public class Files {
                             try {
                                 int nativeCodeVersion = nativeGetNativeCodeVersion();
                                 if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                    System.err.println("Warning: " + Files.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
+                                    System.err.println("Warning: " + OSXFile.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                     success = false;
                                 }
                             } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + Files.class + " could load library " + libraryName + " but can't use it. " + e);
+                                System.err.println("Warning: " + OSXFile.class + " could load library " + libraryName + " but can't use it. " + e);
                                 success = false;
                             }
                         }
@@ -122,7 +121,7 @@ public class Files {
     }
 
     /** Prevent instance creation. */
-    private Files() {
+    private OSXFile() {
     }
 
     /**
@@ -530,66 +529,6 @@ public class Files {
      */
     private static native String nativeGetDisplayName(String path);
 	
-	/**
-	 * JNI method for {@link #getImageFromFile(File, int, int)}.
-	**/
-	private static native byte[] nativeGetImageFromFile(String path, int width, int height);
-
-    /**
-     * Uses JNI to fetch the image data in the specified file.
-     * <p>
-     * A preferred size is used if it is stored in the image file, but you
-     * cannot expect the resulting Image to have these dimensions.<br>
-     * If your application needs a specific size, you should check the
-     * dimension.
-     * <p>
-     * If JNI fails to load the image (e.g. the native code could not be
-     * loaded), <code>null</code> is returned.
-     * 
-     * @param file
-     *            The file containing the image.
-     * @param width
-     *            The preferred width.
-     * @param height
-     *            The preferred height.
-     * @return The image loaded. <code>null</code>, if no image could be loaded
-     *         by JNI.
-     */
-    public static Image getImageFromFile(File file, int width, int height) {
-        if (!isNativeCodeAvailable())
-            return null;
-
-        try {
-            byte[] tiffData = nativeGetImageFromFile(file.getAbsolutePath(), width, height);
-            TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(
-                    new ByteArrayInputStream(tiffData)), new TIFFDecodeParam());
-
-            RenderedImage rImg = decoder.decodeAsRenderedImage(0);
-            return Images.toBufferedImage(rImg);
-        } catch (UnsatisfiedLinkError e) {
-        	// TODO Maybe add a warning to update the libraries.
-            e.printStackTrace();
-            return null;
-        } catch (IOException e) {
-            return null;
-        }
-    }
-
-    /**
-     * Same as {@link #getImageFromFile(File, int, int)}, only with a square
-     * size.
-     * 
-     * @param file
-     *            The file containing the image.
-     * @param size
-     *            The preferred width and height.
-     * @return The image loaded. <code>null</code>, if no image could be loaded
-     *         by JNI.
-     */
-    public static Image getImageFromFile(File file, int size) {
-        return getImageFromFile(file, size, size);
-    }
-
     /**
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use

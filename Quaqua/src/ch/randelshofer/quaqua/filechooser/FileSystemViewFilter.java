@@ -1,5 +1,5 @@
 /*
- * @(#)FileSystemViewFilter.java  2.0  2008-05-10
+ * @(#)FileSystemViewFilter.java
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,8 +21,7 @@ import java.io.*;
  * The filter can change some of the behaviour of its target FileSystemView.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-05-10 Added more concrete implementations of methods. 
- * <br>1.0 August 26, 2005 Created.
+ * @version $Id$
  */
 public abstract class FileSystemViewFilter extends FileSystemView {
     protected FileSystemView target;

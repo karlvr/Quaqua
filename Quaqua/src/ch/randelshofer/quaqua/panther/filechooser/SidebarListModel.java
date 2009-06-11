@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.panther.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
@@ -51,7 +52,7 @@ import ch.randelshofer.quaqua.ext.nanoxml.*;
  * <br>1.0.6 2005-07-07 Suppress error message when we aren't able to
  * build a sidebar because native support for the File object is not available.
  * <br>1.0.5 2005-06-20 Throw an exception, if alias resolution is not supported by
- * class Files. In this case, we are unable to create a sidebar list based on user preferences,
+ * class OSXFile. In this case, we are unable to create a sidebar list based on user preferences,
  * and we have to fall back to a predefined list.
  * <br>1.0.4 2005-06-20 Don't throw an exception when we can't resolve an alias.
  * <br>1.0.3 2005-06-05 Moved System.getProperty calls into QuaquaManager.
@@ -388,7 +389,7 @@ public class SidebarListModel
         public File getResolvedFile() {
             if (file == null) {
                 icon = null; // clear cached icon!
-                file = Files.resolveAlias(serializedAlias, false);
+                file = OSXFile.resolveAlias(serializedAlias, false);
             }
             return file;
         }
@@ -522,7 +523,7 @@ public class SidebarListModel
      * Reads the sidebar preferences file.
      */
     private Object[] read() throws IOException {
-        if (! Files.canWorkWithAliases()) {
+        if (! OSXFile.canWorkWithAliases()) {
             throw new IOException("Unable to work with aliases");
         }
         
@@ -606,7 +607,7 @@ public class SidebarListModel
                                 }
                                 if (serializedAlias != null && aliasName != null) {
                                     // Try to resolve the alias without user interaction
-                                    File f = Files.resolveAlias(serializedAlias, true);
+                                    File f = OSXFile.resolveAlias(serializedAlias, true);
                                     if (f != null) {
                                         userItems.add(new FileItem(f));
                                     } else {

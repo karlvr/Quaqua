@@ -1,5 +1,5 @@
 /*
- * @(#)Application.java
+ * @(#)OSXApplication.java
  *
  * Copyright (c) 2007-2008 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
@@ -23,12 +23,13 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
 import java.security.AccessControlException;
 
 /**
- * Application.
+ * OSXApplication can create a BufferedImage from the Mac OS X application
+ * icon image, and can make the application icon bounce in the Dock.
  *
  * @author Werner Randelshofer
- * @version $Id: Application.java 82 2009-06-11 08:57:33Z wrandelshofer $
+ * @version $Id: OSXApplication.java 82 2009-06-11 08:57:33Z wrandelshofer $
  */
-public class Application {
+public class OSXApplication {
 
     private final static boolean DEBUG = true;
     /**
@@ -45,7 +46,7 @@ public class Application {
      */
     private final static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
-            synchronized (Application.class) {
+            synchronized (OSXApplication.class) {
                 if (isNativeCodeAvailable == null) {
                     boolean success = false;
                     try {
@@ -64,14 +65,14 @@ public class Application {
                                 System.loadLibrary(libraryName);
                                 success = true;
                             } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + Application.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXApplication.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (AccessControlException e) {
-                                System.err.println("Warning: " + Application.class + " access controller denied loading library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXApplication.class + " access controller denied loading library \"" + libraryName + "\". " + e);
                                 success = false;
                             } catch (Throwable e) {
                                 e.printStackTrace();
-                                System.err.println("Warning: " + Application.class + " couldn't load library \"" + libraryName + "\". " + e);
+                                System.err.println("Warning: " + OSXApplication.class + " couldn't load library \"" + libraryName + "\". " + e);
                                 success = false;
                             }
                         }
@@ -79,7 +80,7 @@ public class Application {
                         if (success) {
                             int nativeCodeVersion = nativeGetNativeCodeVersion();
                             if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                System.err.println("Warning: " + Application.class + " can't use library libquaqua.jnilib. It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
+                                System.err.println("Warning: " + OSXApplication.class + " can't use library libquaqua.jnilib. It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
                                 success = false;
                             }
                         }
@@ -94,7 +95,7 @@ public class Application {
     }
 
     /** Prevent instance creation. */
-    private Application() {
+    private OSXApplication() {
     }
 
     /**

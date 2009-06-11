@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.panther.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
@@ -340,7 +341,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
                 modifiedText.setText(UIManager.getString("FileChooser.modifiedUnknown"));
             }
             String kind = info.getFileKind();
-            kindText.setText(Files.getKindString(file));
+            kindText.setText(OSXFile.getKindString(file));
             if (kind == "alias") {
                 originalText.setText(toOSXPath(info.lazyGetResolvedFile()));
                 originalLabel.setVisible(true);
@@ -426,7 +427,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         if (file != null) {
         new Worker() {
             public Object construct() {
-                return Files.getIconImage(file, 128);
+                return OSXFile.getIconImage(file, 128);
             }
             public void finished(Object value) {
                 Image fileIconImage = (Image) value;

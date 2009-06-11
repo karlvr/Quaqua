@@ -1,5 +1,5 @@
 /*
- * @(#)ch_randelshofer_quaqua_app_Application.c 
+ * @(#)ch_randelshofer_quaqua_osx_OSXApplication.c
  *
  * Copyright (c) 2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -12,21 +12,21 @@
  */
 
 /**
- * Native code for class ch.randelshofer.quaqua.osx.Application.
+ * Native code for class ch.randelshofer.quaqua.osx.OSXApplication.
  *
  * @version $Id$
  */
 
 #include <stdio.h>
 #include <jni.h>
-#include "ch_randelshofer_quaqua_app_Application.h"
+#include "ch_randelshofer_quaqua_osx_OSXApplication.h"
 #import <Cocoa/Cocoa.h>
 /*
- * Class:     ch_randelshofer_quaqua_app_Application
+ * Class:     ch_randelshofer_quaqua_osx_OSXApplication
  * Method:    requestUserAttention
  * Signature: (Z)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeRequestUserAttention
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeRequestUserAttention
   (JNIEnv * env, jclass javaClass, jboolean isCritical) 
 {
     if (isCritical) {
@@ -37,11 +37,11 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeRequest
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_app_Application
+ * Class:     ch_randelshofer_quaqua_osx_OSXApplication
  * Method:    jniGetIconImage
  * Signature: (I)[B
  */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeGetIconImage
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeGetIconImage
   (JNIEnv * env, jclass javaClass, jint size)
 {
     // Allocate a memory pool
@@ -74,11 +74,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeG
 }
 
 /*
- * Class:     ch_randelshofer_quaqua_app_Application
+ * Class:     ch_randelshofer_quaqua_osx_OSXApplication
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_app_Application_nativeGetNativeCodeVersion
+JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
     return 2;
 }

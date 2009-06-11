@@ -13,6 +13,7 @@
 
 package test;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.Color;
 import java.io.*;
 import javax.swing.*;
@@ -39,7 +40,7 @@ public class FileSystemTest extends javax.swing.JPanel {
         // StringBuffer buf = new StringBuffer();
         DefaultStyledDocument buf = new DefaultStyledDocument();
         try {
-            boolean canWorkWithAliases = Files.canWorkWithAliases();
+            boolean canWorkWithAliases = OSXFile.canWorkWithAliases();
             buf.insertString(buf.getLength(), "can work with aliases="+canWorkWithAliases, null);
             SimpleAttributeSet a;
             if (canWorkWithAliases) {
@@ -51,31 +52,31 @@ public class FileSystemTest extends javax.swing.JPanel {
                     buf.insertString(buf.getLength(),"\n",null);
                     buf.insertString(buf.getLength(),"\n",null);
                     a = new SimpleAttributeSet();
-                    StyleConstants.setIcon(a, new ImageIcon(Files.getIconImage(f, 32)));
+                    StyleConstants.setIcon(a, new ImageIcon(OSXFile.getIconImage(f, 32)));
                     buf.insertString(buf.getLength(),"icon",a);
                     a = new SimpleAttributeSet();
                     StyleConstants.setBold(a, true);
                     buf.insertString(buf.getLength(),"\t"+f.toString(),a);
                     buf.insertString(buf.getLength(),"\n\tlabel=",null);
-                    buf.insertString(buf.getLength(),Integer.toString(Files.getLabel(f)),null);
+                    buf.insertString(buf.getLength(),Integer.toString(OSXFile.getLabel(f)),null);
                     buf.insertString(buf.getLength(),", is alias=",null);
-                    int fileType = Files.getFileType(f);
-                    boolean isAlias = fileType == Files.FILE_TYPE_ALIAS;
+                    int fileType = OSXFile.getFileType(f);
+                    boolean isAlias = fileType == OSXFile.FILE_TYPE_ALIAS;
                     buf.insertString(buf.getLength(),""+isAlias,null);
                     if (isAlias) {
-                        File resolved = Files.resolveAlias(f, true);
+                        File resolved = OSXFile.resolveAlias(f, true);
                         if (resolved == null) {
                             buf.insertString(buf.getLength(),", can't resolve this alias without user interaction",null);
                         } else {
                             buf.insertString(buf.getLength(),", resolved=",null);
                             buf.insertString(buf.getLength(),resolved.toString(),null);
                             buf.insertString(buf.getLength(),", type=",null);
-                            buf.insertString(buf.getLength(),Integer.toString(Files.resolveAliasType(f, true)),null);
+                            buf.insertString(buf.getLength(),Integer.toString(OSXFile.resolveAliasType(f, true)),null);
                         }
                     }
                     
                     buf.insertString(buf.getLength(),"\n\tkind=",null);
-                    buf.insertString(buf.getLength(),Files.getKindString(f),null);
+                    buf.insertString(buf.getLength(),OSXFile.getKindString(f),null);
                 }
             }
         } catch (Throwable t) {

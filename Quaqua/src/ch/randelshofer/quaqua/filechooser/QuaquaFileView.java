@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaFileView.java  1.0  August 26, 2005
+ * @(#)QuaquaFileView.java  
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,7 @@ import java.util.*;
  * A FileView for the Quaqua Look and Feel. 
  *
  * @author  Werner Randelshofer
- * @version 1.0 August 26, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaFileView extends FileView {
     private QuaquaFileSystemView fsv;

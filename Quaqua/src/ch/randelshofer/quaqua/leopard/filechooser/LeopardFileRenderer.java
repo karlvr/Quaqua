@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.leopard.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
@@ -100,8 +101,8 @@ public class LeopardFileRenderer extends JComponent implements ListCellRenderer 
                 (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG && ! info.isTraversable()) ||
                 ! info.isAcceptable();
         
-        labelColor = Files.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
-        labelBrightColor = Files.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
+        labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
+        labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
         
         this.isSelected = isSelected && ! isGrayed;
         if (this.isSelected) {

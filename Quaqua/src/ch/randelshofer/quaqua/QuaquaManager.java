@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaManager.java 4.3  2009-04-04
+ * @(#)QuaquaManager.java 
  *
  * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -104,43 +105,7 @@ import java.io.*;
  *
  *
  * @author  Werner Randelshofer
- * @version 4.3 2009-04-04 Added support for generic linux.
- * <br>4.2 2008-09-08 Added support for J2SE6.
- * <br>4.1 2007-12-09 Make a distinction between cross-platform designs,
- * instead of providing a single cross-platform design depending on the J2SE
- * version. 
- * <br>4.0 2007-11-24 Support for Darwin 9.1 added. 
- * <br>3.0 2007-10-30 Support for Mac OS X 10.5 Leopard added.
- * <br>2.2 2006-03-12 Method getVersion added.
- * <br>2.1.2 2006-02-13 Print warning message, when file "laf.txt" is missing.
- * <br>2.1.1 2005-12-09 Reorganized some packages and class names.
- * <br>2.1 2005-12-01 Method getLookAndFellClassName does not use
- * UIManager.getDefaultLookAndFeel anymore to decide which Quaqua look and feel
- * implementation to use.
- * <br>2.0 2005-09-10 Read L&F class names from file laf.txt. Moved
- * FileSystemView related methods out into class QuaquaFileSystemView.
- * Added method getOS(), and made OS Constants public.
- * <br>1.8.3 2005-08-03 Fall back to FileSystemView.getFileSystemView
- * when creating one of the Quaqua FileSystemView's fails.
- * <br>1.8.2 2005-06-20 Fixed bug in code that determines the OS.
- * <br>1.8.1 2005-06-19 OS and Design property are now updated each time
- * when a look and feel class name is requested.
- * <br>1.8 2005-05-29 Added method getProperty(String, int[]).
- * Fixed missing break statement which caused that
- * Quaqua13PantherLookAndFeel was never used.
- * <br>1.7 2005-05-16 System Property "Quaqua.Debug.crossPlatform" added.
- * <br>1.6 2005-05-15 Support for Mac OS X 10.4 Tiger added.
- * <br>1.5 2005-05-08 Method boolean get(String) added.
- * <br>1.4.1 2004-10-31 The file system view must be chosen on the OS in use,
- * and not on the Quaqua design in use.
- * <br>1.4 2004-09-10 Catched security exception caused by static
- * initializer. Method setProperty, getProperty and removeProperty added.
- * <br>1.3 2004-06-30 Revised.
- * <br>1.2.2 2004-02-06 Support for Java 1.4.2 added.
- * <br>1.2.1 2003-10-29 Support for Mac OS X 10.3 added.
- * <br>1.2 2003-09-28 Method getLookAndFeel added.
- * <br>1.1 2003-09-11 Workarounds for Java 1.4.1 Update 1 added.
- * <br>1.0 2003-07-20 Created.
+ * @version $Id$
  */
 public class QuaquaManager {
     private static Properties properties;
@@ -718,7 +683,7 @@ public class QuaquaManager {
      * Returns true, if Quaqua uses native code for some of its functionality.
      */
     public static boolean isNativeCodeAvailable() {
-        return Files.canWorkWithAliases();
+        return OSXFile.canWorkWithAliases();
     }
     
     /**
