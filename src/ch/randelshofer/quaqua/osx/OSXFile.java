@@ -530,7 +530,7 @@ public class OSXFile {
      * @return
      */
     private static native String nativeGetDisplayName(String path);
-	
+
     /**
      * Returns the version of the native code library. If the version
      * does not match with the version that we expect, we can not use

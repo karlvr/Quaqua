@@ -79,7 +79,6 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     // Allocate a memory pool
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
-    NSSize iconSize = { width, height };
     // Convert Java String to NS String
     const jchar *pathC = (*env)->GetStringChars(env, file, NULL);
     NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
@@ -91,21 +90,27 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     NSImage* image = [[NSImage alloc] initWithContentsOfFile:pathNS];
     if (image != NULL) {
         // Set the desired size of the image
-        [image setSize:iconSize];
+        NSSize desiredSize = { width, height };
+        [image setSize:desiredSize];
 
         // Unfortunately, setting the desired size does not always have an effect,
         // we need to choose the best image representation by ourselves.
+        NSImageRep* imageRep;
+        NSData* data = NULL;
         NSArray* reps = [image representations];
         NSEnumerator *enumerator = [reps objectEnumerator];
-        NSImageRep* imageRep;
         while (imageRep = [enumerator nextObject]) {
-            if ([imageRep pixelsWide] == width && [imageRep pixelsHigh] == height) {
-                image = imageRep;
+            if ([imageRep pixelsWide] == width &&
+                [imageRep pixelsHigh] == height &&
+                [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
+                NSBitmapImageRep* bitmapRep = imageRep;
+                data = [bitmapRep TIFFRepresentation];
                 break;
             }
         }
-
-        NSData* data = [image TIFFRepresentation];
+        if (data == NULL) {
+            data = [image TIFFRepresentation];
+        }
         if (data != NULL) {
             unsigned len = [data length];
             void* bytes = malloc(len);

@@ -9,6 +9,7 @@ extern "C" {
 #endif
 /* Inaccessible static: EXPECTED_NATIVE_CODE_VERSION */
 /* Inaccessible static: isNativeCodeAvailable */
+/* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024osx_00024OSXImageIO */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXImageIO
  * Method:    nativeRead
