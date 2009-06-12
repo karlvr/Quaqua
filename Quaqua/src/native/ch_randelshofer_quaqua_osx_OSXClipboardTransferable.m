@@ -39,7 +39,7 @@
 JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransferable_nativeGetTypes
   (JNIEnv *env, jclass javaClass) {
 
-    jobjectArray *typesJ = NULL;
+    jobjectArray typesJ = NULL;
 
     // Allocate a memory pool
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
@@ -65,7 +65,7 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTrans
             NSString *typeNameNS = [types objectAtIndex: i];
 
             // Convert NSString to jstring
-            jstring *typeNameJ = (*env)->NewStringUTF(env, [typeNameNS UTF8String]);
+            jstring typeNameJ = (*env)->NewStringUTF(env, [typeNameNS UTF8String]);
 
             // Store in array
             (*env)->SetObjectArrayElement(env, typesJ, i, typeNameJ);
@@ -88,7 +88,7 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTrans
 JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransferable_nativeGetDataForType
   (JNIEnv *env, jclass javaClass, jstring typeJ) {
 
-    jbyteArray *dataJ = NULL;
+    jbyteArray dataJ = NULL;
 
     // Allocate a memory pool
     NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];

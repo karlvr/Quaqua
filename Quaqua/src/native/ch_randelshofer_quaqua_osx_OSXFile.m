@@ -44,7 +44,7 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetFileType
     if (pathJ == NULL) return false;
 
     // Convert Java String to C char array
-    const char *pathC;
+    const char* pathC;
     pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
 
     // Do the API calls
@@ -389,7 +389,7 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetKindS
   (JNIEnv *env, jclass instance, jstring pathJ) {
 
     // Assert arguments
-    if (pathJ == NULL) return -1;
+    if (pathJ == NULL) return NULL;
 
     // Convert Java String to C char array
     const char *pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
@@ -433,6 +433,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     // Assert arguments
     if (pathJ == NULL) return NULL;
 
+    // Prepare result
     jbyteArray result = NULL;
     
     // Allocate a memory pool
@@ -442,43 +443,44 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
     NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
         length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Get the icon image
     NSWorkspace* workspace = [NSWorkspace sharedWorkspace];
-    NSSize iconSize = { size, size };
     NSImage* image = [workspace iconForFile:pathNS];
+    //NSLog (@"%@", image);
     if (image != NULL) {
 
         // Set the desired size of the image
-        [image setSize:iconSize];
+        NSSize desiredSize = { size, size };
+        [image setSize:desiredSize];
 
         // Unfortunately, setting the desired size does not always have an effect,
         // we need to choose the best image representation by ourselves.
+        NSImageRep* imageRep;
+        NSData* data = NULL;
         NSArray* reps = [image representations];
         NSEnumerator *enumerator = [reps objectEnumerator];
-        NSImageRep* imageRep;
         while (imageRep = [enumerator nextObject]) {
-            if ([imageRep pixelsWide] == size) {
-                image = imageRep;
+            if ([imageRep pixelsWide] == size && 
+                [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
+                NSBitmapImageRep* bitmapRep = imageRep;
+                data = [bitmapRep TIFFRepresentation];
                 break;
             }
         }
-        //NSLog (@"%@", image);
+        if (data == NULL) {
+            data = [image TIFFRepresentation];
+        }
 
-
-        NSData* data = [image TIFFRepresentation];
         unsigned len = [data length];
         void* bytes = malloc(len);
-        [data getBytes:bytes];
-
+        [data getBytes: bytes];
         result = (*env)->NewByteArray(env, len);
         (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
         free(bytes);
     }
 
-
-    // Release the C char array
-    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Release memory pool
     [pool release];
