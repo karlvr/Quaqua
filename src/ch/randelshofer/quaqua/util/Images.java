@@ -1,5 +1,5 @@
 /*
- * @(#)Images.java  2.2  2008-04-19
+ * @(#)Images.java  
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,20 +21,11 @@ import java.util.*;
 
 import javax.swing.*;
 
-import ch.randelshofer.quaqua.*;
 /**
  * Image processing methods.
  *
  * @author  Werner Randelshofer, Karl von Randow
- * @version 2.2 2008-04-19 Create graphiteFilter lazily. 
- * <br>2.1 2007-07-25 Added method toBufferedImage(RenderedImage).
- * <br>2.0 2006-12-24 by Karl von Randow: On the fly conversion from Aqua
- * Blue to Aqua Graphite appearance added.
- * <br>1.0.2 2005-09-12 Brought my work-around for Java 1.4.1 back to
- * live.
- * <br>1.0.1 2005-05-21 Accidentaly used bitmask transparency
- * instead of translucent transparency.
- * <br>1.0  13 March 2005  Created.
+ * @version $Id$
  */
 public class Images {
     
@@ -283,8 +274,10 @@ public class Images {
         }
         
         // Get the image's color model
+        // We must check for null here, because the pixel grabber
+        // may not have been able to retrieve the color model.
         ColorModel cm = pg.getColorModel();
-        return cm.hasAlpha();
+        return (cm != null) ? cm.hasAlpha() : false;
     }
     
     /**
