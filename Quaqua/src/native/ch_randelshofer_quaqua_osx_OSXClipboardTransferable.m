@@ -42,40 +42,38 @@ JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTrans
     jobjectArray typesJ = NULL;
 
     // Allocate a memory pool
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
     // Get the NSPasteboard
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
 
-    if (pb != NULL) {
+    if (pb != nil) {
         NSArray *types = [pb types];
+        if (types != nil) {
+            typesJ = (*env)->NewObjectArray(
+                        env,
+                        [types count],
+                        (*env)->FindClass(env, "java/lang/String"),
+                        NULL
+                    );
 
-        typesJ = (*env)->NewObjectArray(
-                    env,
-                    [types count],
-                    (*env)->FindClass(env, "java/lang/String"),
-                    NULL
-                );
+            int len = [types count];
+            int i;
+            for (i=0; i < len; i++) {
+                NSString *typeNameNS = [types objectAtIndex: i];
+                if (typeNameNS != nil) {
+                    // Convert NSString to jstring
+                    jstring typeNameJ = (*env)->NewStringUTF(env, [typeNameNS UTF8String]);
 
-        //fprintf(stdout, "NSClipboard type count: %d\n", [types count]);
-
-        int len = [types count];
-        int i;
-        for (i=0; i < len; i++) {
-            NSString *typeNameNS = [types objectAtIndex: i];
-
-            // Convert NSString to jstring
-            jstring typeNameJ = (*env)->NewStringUTF(env, [typeNameNS UTF8String]);
-
-            // Store in array
-            (*env)->SetObjectArrayElement(env, typesJ, i, typeNameJ);
+                    // Store in array
+                    (*env)->SetObjectArrayElement(env, typesJ, i, typeNameJ);
+                }
+            }
         }
     }
 
-
     // Release memory pool
     [pool release];
-
 
     return typesJ;
 }
@@ -95,26 +93,25 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransfe
 
     // Get the NSPasteboard
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
+    if (pb != nil) {
+        // Convert Java String to NS String
+        const jchar *typeC = (*env)->GetStringChars(env, typeJ, NULL);
+        NSString *typeNS = [NSString stringWithCharacters:(UniChar *)typeC
+            length:(*env)->GetStringLength(env, typeJ)];
+        (*env)->ReleaseStringChars(env, typeJ, typeC);
 
-    // Convert Java String to NS String
-    const jchar *typeC = (*env)->GetStringChars(env, typeJ, NULL);
-    NSString *typeNS = [NSString stringWithCharacters:(UniChar *)typeC
-        length:(*env)->GetStringLength(env, typeJ)];
-    (*env)->ReleaseStringChars(env, typeJ, typeC);
+        // Get the data
+        NSData *dataNS = [pb dataForType: typeNS];
+        if (dataNS != nil) {
 
-
-    // Get the data
-    NSData *dataNS = [pb dataForType: typeNS];
-
-    if (dataNS != NULL) {
-        // Copy data into Java byte array
-        int len = [dataNS length];
-        void* dataC = malloc(len);
-        [dataNS getBytes:dataC];
-        dataJ = (*env)->NewByteArray(env, len);
-        (*env)->SetByteArrayRegion(env, dataJ, 0, len, (jbyte*)dataC);
-        free(dataC);
-
+            // Copy data into Java byte array
+            int len = [dataNS length];
+            void* dataC = malloc(len);
+            [dataNS getBytes:dataC];
+            dataJ = (*env)->NewByteArray(env, len);
+            (*env)->SetByteArrayRegion(env, dataJ, 0, len, (jbyte*)dataC);
+            free(dataC);
+        }
     }
 
     // Release memory pool
