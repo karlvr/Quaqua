@@ -44,8 +44,10 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeRequ
 JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeGetIconImage
   (JNIEnv * env, jclass javaClass, jint size)
 {
+    jbyteArray result = NULL;
+
     // Allocate a memory pool
-	NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+	NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
     // Get the icon image
 	NSApplication* application = [NSApplication sharedApplication];
@@ -57,15 +59,17 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nati
 	[image setScalesWhenResized:true];
 	[image setSize:iconSize];
     */
-	NSData* data = [image TIFFRepresentation];
-	unsigned len = [data length];
-	void* bytes = malloc(len);
-	[data getBytes:bytes];
+	NSData* dataNS = [image TIFFRepresentation];
+    if (dataNS != NULL) {
+    
+        unsigned len = [dataNS length];
+        void* bytes = malloc(len);
+        [dataNS getBytes:bytes];
 
-	jbyteArray result = (*env)->NewByteArray(env, len);
-	(*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
-	free(bytes);
-
+        result = (*env)->NewByteArray(env, len);
+        (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+        free(bytes);
+    }
 
     // Release memory pool
 	[pool release];

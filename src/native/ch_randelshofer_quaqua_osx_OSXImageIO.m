@@ -41,17 +41,17 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     const jchar *pathC = (*env)->GetStringChars(env, file, NULL);
     NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
                                                length:(*env)->GetStringLength(env, file)];
-    // Release the C char array
     (*env)->ReleaseStringChars(env, file, pathC);
 
     // Get the image
-    NSImage* image = [[NSImage alloc] initWithContentsOfFile:pathNS];
-    if (image != NULL) {
-        NSData* data = [image TIFFRepresentation];
-        if (data != NULL) {
-            unsigned len = [data length];
+    NSImage* imageNS = [[NSImage alloc] initWithContentsOfFile:pathNS];
+    if (imageNS != NULL) {
+        [imageNS autorelease];
+        NSData* dataNS = [imageNS TIFFRepresentation];
+        if (dataNS != NULL) {
+            unsigned len = [dataNS length];
             void* bytes = malloc(len);
-            [data getBytes:bytes];
+            [dataNS getBytes:bytes];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
@@ -83,38 +83,39 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     const jchar *pathC = (*env)->GetStringChars(env, file, NULL);
     NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
                                                length:(*env)->GetStringLength(env, file)];
-    // Release the C char array
     (*env)->ReleaseStringChars(env, file, pathC);
 
     // Get the icon image
-    NSImage* image = [[NSImage alloc] initWithContentsOfFile:pathNS];
-    if (image != NULL) {
+    NSImage* imageNS = [[NSImage alloc] initWithContentsOfFile:pathNS];
+    if (imageNS != NULL) {
+        [imageNS autorelease];
+
         // Set the desired size of the image
         NSSize desiredSize = { width, height };
-        [image setSize:desiredSize];
+        [imageNS setSize:desiredSize];
 
         // Unfortunately, setting the desired size does not always have an effect,
         // we need to choose the best image representation by ourselves.
         NSImageRep* imageRep;
-        NSData* data = NULL;
-        NSArray* reps = [image representations];
+        NSData* dataNS = NULL;
+        NSArray* reps = [imageNS representations];
         NSEnumerator *enumerator = [reps objectEnumerator];
         while (imageRep = [enumerator nextObject]) {
             if ([imageRep pixelsWide] == width &&
                 [imageRep pixelsHigh] == height &&
                 [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
                 NSBitmapImageRep* bitmapRep = imageRep;
-                data = [bitmapRep TIFFRepresentation];
+                dataNS = [bitmapRep TIFFRepresentation];
                 break;
             }
         }
-        if (data == NULL) {
-            data = [image TIFFRepresentation];
+        if (dataNS == NULL) {
+            dataNS = [imageNS TIFFRepresentation];
         }
-        if (data != NULL) {
-            unsigned len = [data length];
+        if (dataNS != NULL) {
+            unsigned len = [dataNS length];
             void* bytes = malloc(len);
-            [data getBytes:bytes];
+            [dataNS getBytes:bytes];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
@@ -160,6 +161,8 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     // Get the image and convert it to a TIFF data array
     NSImage* imageNS = [[NSImage alloc] initWithData: dataNS];
     if (imageNS != NULL) {
+        [imageNS autorelease];
+
         NSData* tiffNS = [imageNS TIFFRepresentation];
         if (tiffNS != NULL) {
             unsigned len = [tiffNS length];
@@ -194,9 +197,10 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     NSPasteboard *pb = [NSPasteboard generalPasteboard];
 
     // Get the image
-    NSImage* image = [[NSImage alloc] initWithPasteboard: pb];
-    if (image != NULL) {
-        NSData* data = [image TIFFRepresentation];
+    NSImage* imageNS = [[NSImage alloc] initWithPasteboard: pb];
+    if (imageNS != NULL) {
+        [imageNS autorelease];
+        NSData* data = [imageNS TIFFRepresentation];
         if (data != NULL) {
             unsigned len = [data length];
             void* bytes = malloc(len);

@@ -229,7 +229,6 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveA
 {
     // Assert arguments
     if (serializedAlias == NULL) return false;
-
     
     //
     FSRef fileRef;
@@ -291,7 +290,6 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAlia
 {
     // Assert arguments
     if (serializedAlias == NULL) return false;
-
     
     //
     OSErr err;
@@ -437,7 +435,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     jbyteArray result = NULL;
     
     // Allocate a memory pool
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
     // Convert Java String to NS String
     const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
@@ -450,7 +448,6 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     NSImage* image = [workspace iconForFile:pathNS];
     //NSLog (@"%@", image);
     if (image != NULL) {
-
         // Set the desired size of the image
         NSSize desiredSize = { size, size };
         [image setSize:desiredSize];
@@ -458,24 +455,24 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
         // Unfortunately, setting the desired size does not always have an effect,
         // we need to choose the best image representation by ourselves.
         NSImageRep* imageRep;
-        NSData* data = NULL;
+        NSData* dataNS = NULL;
         NSArray* reps = [image representations];
         NSEnumerator *enumerator = [reps objectEnumerator];
         while (imageRep = [enumerator nextObject]) {
             if ([imageRep pixelsWide] == size && 
                 [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
                 NSBitmapImageRep* bitmapRep = imageRep;
-                data = [bitmapRep TIFFRepresentation];
+                dataNS = [bitmapRep TIFFRepresentation];
                 break;
             }
         }
-        if (data == NULL) {
-            data = [image TIFFRepresentation];
+        if (dataNS == NULL) {
+            dataNS = [image TIFFRepresentation];
         }
 
-        unsigned len = [data length];
+        unsigned len = [dataNS length];
         void* bytes = malloc(len);
-        [data getBytes: bytes];
+        [dataNS getBytes: bytes];
         result = (*env)->NewByteArray(env, len);
         (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
         free(bytes);
@@ -524,7 +521,7 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDispl
     if (pathJ == NULL) return NULL;
 
     // Allocate a memory pool
-    NSAutoreleasePool* pool = [[NSAutoreleasePool alloc] init];
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
     // Convert Java String to NS String
     const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
@@ -532,13 +529,12 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDispl
         length:(*env)->GetStringLength(env, pathJ)];
     (*env)->ReleaseStringChars(env, pathJ, pathC);
 
-
     // Do the API calls
-    NSFileManager *fileManager = [NSFileManager defaultManager];
-    NSString *displayNameNS = [fileManager displayNameAtPath: pathNS];
+    NSFileManager *fileManagerNS = [NSFileManager defaultManager];
+    NSString *displayNameNS = [fileManagerNS displayNameAtPath: pathNS];
 
     // Convert NSString to jstring
-    jstring *displayNameJ = (*env)->NewStringUTF(env, [displayNameNS UTF8String]);
+    jstring displayNameJ = (*env)->NewStringUTF(env, [displayNameNS UTF8String]);
 
     // Release memory pool
     [pool release];
