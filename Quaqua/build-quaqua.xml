@@ -537,6 +537,7 @@ CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookA
                 <exclude name="Quaqua/dist/signed/**"/>
                 <exclude name="Quaqua/dist/*.zip"/>
                 <exclude name="Quaqua/build/**"/>
+                <exclude name="Quaqua/nbproject/private/**"/>
                 <exclude name="**/.*"/>
             </fileset>
         </zip>
