@@ -16,6 +16,7 @@ import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.lang.reflect.Method;
 import java.net.*;
 import javax.swing.*;
 import javax.swing.text.*;
@@ -109,7 +110,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @since 1.4
      */
     public static void drawStringUnderlineCharAt(Graphics g, String text,
-            int underlinedIndex, int x, int y) {        
+            int underlinedIndex, int x, int y) {
         g.drawString(text, x, y);
         if (underlinedIndex >= 0 && underlinedIndex < text.length()) {
             FontMetrics fm = g.getFontMetrics();
@@ -361,7 +362,6 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
         toolkit.beep();
     } // provideErrorFeedback()
-
 
     public static BufferedImage createBufferedImage(URL location) {
         Image image = Toolkit.getDefaultToolkit().createImage(location);
@@ -726,30 +726,69 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             return;
         }
 
-        // Java 1.4.2_05 does not support window alpha.
-        // Setting window alpha only sets the background color of the window
-        // to white.
 
-        if (w.getPeer() == null) {
-            w.pack();
+        if (w instanceof RootPaneContainer) {
+            JRootPane rp = ((RootPaneContainer) w).getRootPane();
+
+                // Window alpha is for J2SE 5 on Mac OS X 10.5
+                // See: http://developer.apple.com/technotes/tn2007/tn2196.html#WINDOW_ALPHA
+                rp.putClientProperty("Window.alpha", new Float(value / 255f));
+
         }
-        java.awt.peer.ComponentPeer peer = w.getPeer();
-        try {
-            // Alpha API for Apple's Java 1.4 + 1.5 on Mac OS X 10.4 Tiger.
-            Methods.invoke(peer, "setAlpha", (float) (value / 255f));
-        } catch (Throwable e) {
-            // Alpha API for Apple's Java 1.3.
-            if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
-                try {
-                    Methods.invoke(peer, "_setAlpha", value);
-                } catch (Throwable e2) {
-                    // Platform neutral API
-                    w.setBackground(new Color(255, 255, 255, value));
-                    if (w instanceof RootPaneContainer) {
-                        ((RootPaneContainer) w).getContentPane().setBackground(new Color(255, 255, 255, 0));
+    }
+
+    static final void setWindowAlphaOld(Window w, int value) {
+        if (w == null) {
+            return;
+        }
+
+        if (QuaquaManager.isOSX()) {
+            // Try Mac API
+            /*
+            // Platform neutral API
+            w.setBackground(new Color(0, 0, 0, value));
+             */
+
+            // Java 1.4.2_05 does not support window alpha.
+            // Setting window alpha only sets the background color of the window
+            // to white.
+
+            if (w.getPeer() == null) {
+                w.pack();
+            }
+            java.awt.peer.ComponentPeer peer = w.getPeer();
+            try {
+                // Alpha API for Apple's Java 1.4 + 1.5 on Mac OS X 10.4 Tiger.
+                Methods.invoke(peer, "setAlpha", (float) (value / 255f));
+                // Platform neutral API
+                w.setBackground(new Color(255, 255, 255, value));
+                if (w instanceof RootPaneContainer) {
+                    ((RootPaneContainer) w).getContentPane().setBackground(new Color(255, 255, 255, 0));
+                }
+            } catch (Throwable e) {
+                // Alpha API for Apple's Java 1.3.
+                if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
+                    try {
+                        Methods.invoke(peer, "_setAlpha", value);
+                    } catch (Throwable e2) {
+                        // Platform neutral API
+                        w.setBackground(new Color(255, 255, 255, value));
+                        if (w instanceof RootPaneContainer) {
+                            ((RootPaneContainer) w).getContentPane().setBackground(new Color(255, 255, 255, 0));
+                        }
                     }
                 }
             }
+        } else {
+            // Try J2SE 6 Update 10 API on Windows
+            try {
+                Class clazz = Class.forName("com.sun.awt.AWTUtilities");
+                Method method =
+                        clazz.getMethod("setWindowOpaque", new Class[]{java.awt.Window.class, Boolean.TYPE});
+                method.invoke(clazz, new Object[]{w, Boolean.FALSE});
+            } catch (Throwable e2) {
+                // silently ignore this exception.
+                }
         }
     }
 

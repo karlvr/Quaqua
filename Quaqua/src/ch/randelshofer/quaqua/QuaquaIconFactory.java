@@ -13,7 +13,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.icon.ShiftedIcon;
-import ch.randelshofer.quaqua.app.Application;
+import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
 import ch.randelshofer.quaqua.icon.ButtonStateIcon;
@@ -271,7 +271,7 @@ public class QuaquaIconFactory {
                 QuaquaIconFactory.class.getResource(resource)));
         g.drawImage(warningImage, 0, 0, 58, 58, null);
 
-        BufferedImage appImage = Application.getIconImage(32);
+        BufferedImage appImage = OSXApplication.getIconImage(32);
         g.drawImage(appImage, 32, 32, 32, 32, null);
 
 
@@ -287,7 +287,7 @@ public class QuaquaIconFactory {
      */
     public static BufferedImage getApplicationIconImage() {
         if (applicationImage64 == null) {
-            applicationImage64 = Application.getIconImage(64);
+            applicationImage64 = OSXApplication.getIconImage(64);
         }
         return applicationImage64;
     }

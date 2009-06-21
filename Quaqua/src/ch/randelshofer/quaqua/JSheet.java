@@ -20,7 +20,7 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
-import ch.randelshofer.quaqua.app.*;
+import ch.randelshofer.quaqua.osx.*;
 //import com.apple.cocoa.application.*;
 /**
  * JSheet is a document modal dialog which is displayed below the title bar
@@ -436,7 +436,7 @@ public class JSheet extends JDialog {
             installSheet();
             show0();
         }
-        Application.requestUserAttention(true);
+        OSXApplication.requestUserAttention(true);
     }
 
     /**
