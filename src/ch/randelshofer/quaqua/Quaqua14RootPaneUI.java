@@ -172,6 +172,28 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     }
 
     public void paint(Graphics g, JComponent c) {
+        // Erase background. This is needed for semi-transparent windows.
+        if (root.getClientProperty("Window.alpha") instanceof Float) {
+            float alpha = ((Float) root.getClientProperty("Window.alpha")).floatValue();
+            if (alpha < 1f) {
+                Graphics2D gr = (Graphics2D) g;
+                if (System.getProperty("java.version").startsWith("1.6")) {
+                    if (PaintableColor.getPaint(c.getBackground(), c) instanceof Color) {
+                        Color bg = c.getBackground();
+                        gr.setPaint(new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), (int) (alpha * 255f)));
+                    } else {
+                        gr.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                    }
+                } else {
+                    gr.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                }
+                Composite comp = gr.getComposite();
+                gr.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+                gr.fillRect(0, 0, c.getWidth(), c.getHeight());
+                gr.setComposite(comp);
+            }
+        }
+        // Paint decorations
         int style = getRootPane().getWindowDecorationStyle();
         if (style != JRootPane.NONE) {
             boolean needsResizeIcon = false;
@@ -210,9 +232,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         super.uninstallUI(c);
         uninstallClientDecorations(root);
 
-        layoutManager = null;
-        mouseInputListener = null;
-        root = null;
+        layoutManager =
+                null;
+        mouseInputListener =
+                null;
+        root =
+                null;
         allRootPanes.remove(c);
     }
 
@@ -246,20 +271,24 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         "apple.awt.windowShadow.revalidateNow", Boolean.TRUE
         );
          */
+
         paint(gr, c);
     }
 
     protected void installListeners(JRootPane root) {
         super.installListeners(root);
 
-        ancestorListener = createAncestorListener();
+        ancestorListener =
+                createAncestorListener();
         if (ancestorListener != null) {
             root.addAncestorListener(ancestorListener);
         }
+
         componentListener = createComponentListener();
         if (componentListener != null) {
             root.addComponentListener(componentListener);
         }
+
     }
 
     protected void uninstallListeners(JRootPane root) {
@@ -268,9 +297,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         if (ancestorListener != null) {
             root.removeAncestorListener(ancestorListener);
         }
+
         if (componentListener != null) {
             root.removeComponentListener(componentListener);
         }
+
     }
 
     protected ComponentListener createComponentListener() {
@@ -333,10 +364,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                                 isWindowModifiedSupported = false;
                             //ex2.printStackTrace();
                             }
+
                         } catch (AccessControlException ex1) {
                             isWindowModifiedSupported = false;
                         //System.err.println("Sorry. Quaqua14RootPaneUI can not access the native window modified API");
                         }
+
                     }
                     if (setWindowModifiedMethod != null) {
                         try {
@@ -344,9 +377,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                             if (value == null) {
                                 value = rootpane.getClientProperty("windowModified");
                             }
+
                             if (value == null) {
                                 value = Boolean.FALSE;
                             }
+
                             setWindowModifiedMethod.invoke(peer, new Object[]{value});
                         } catch (IllegalAccessException ex) {
                             isWindowModifiedSupported = false;
@@ -355,6 +390,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                             isWindowModifiedSupported = false;
                         //ex.printStackTrace();
                         }
+
                     }
                 }
             }
@@ -373,6 +409,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         } else {
             LookAndFeel.installBorder(root, borderKeys[style]);
         }
+
     }
 
     /**
@@ -431,13 +468,16 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         } else {
             window = SwingUtilities.getWindowAncestor(parent);
         }
+
         if (window != null) {
             if (mouseInputListener == null) {
                 mouseInputListener = createWindowMouseInputListener(root);
             }
+
             window.addMouseListener(mouseInputListener);
             window.addMouseMotionListener(mouseInputListener);
         }
+
     }
 
     /**
@@ -449,6 +489,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             window.removeMouseListener(mouseInputListener);
             window.removeMouseMotionListener(mouseInputListener);
         }
+
     }
 
     /**
@@ -459,6 +500,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
         if (layoutManager == null) {
             layoutManager = createLayoutManager();
         }
+
         savedOldLayout = root.getLayout();
         root.setLayout(layoutManager);
     }
@@ -469,8 +511,10 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     private void uninstallLayout(JRootPane root) {
         if (savedOldLayout != null) {
             root.setLayout(savedOldLayout);
-            savedOldLayout = null;
+            savedOldLayout =
+                    null;
         }
+
     }
 
     private boolean isVertical(JRootPane root) {
@@ -494,10 +538,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             oldTitlePane.setVisible(false);
             layeredPane.remove(oldTitlePane);
         }
+
         if (titlePane != null) {
             layeredPane.add(titlePane, JLayeredPane.FRAME_CONTENT_LAYER);
             titlePane.setVisible(true);
         }
+
         this.titlePane = titlePane;
     }
 
@@ -542,10 +588,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             root.repaint();
             root.revalidate();
         }
-        // Reset the cursor, as we may have changed it to a resize cursor
+// Reset the cursor, as we may have changed it to a resize cursor
+
         if (window != null) {
             window.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
         }
+
         window = null;
     }
 
@@ -572,9 +620,16 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             if (style != JRootPane.NONE) {
                 installClientDecorations(root);
             }
+
         } else if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant(rootpane);
         }
+
+
+
+
+
+
     }
 
     private static class RootPaneAncestorListener implements AncestorListener, WindowListener {
