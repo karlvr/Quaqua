@@ -1,5 +1,5 @@
 /*
- * @(#)TreeTest.java  1.0  13 February 2005
+ * @(#)TreeTest.java 
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,17 +14,14 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.table.*;
-import java.util.*;
 import javax.swing.tree.*;
 /**
  * TreeTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class TreeTest extends javax.swing.JPanel {
     
@@ -81,7 +78,6 @@ public class TreeTest extends javax.swing.JPanel {
         add(scrollPane1);
 
         tree2.setRootVisible(false);
-        tree2.setShowsRootHandles(true);
         scrollPane2.setViewportView(tree2);
 
         add(scrollPane2);
