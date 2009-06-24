@@ -38,7 +38,6 @@
         <Component class="javax.swing.JTree" name="tree2">
           <Properties>
             <Property name="rootVisible" type="boolean" value="false"/>
-            <Property name="showsRootHandles" type="boolean" value="true"/>
           </Properties>
         </Component>
       </SubComponents>

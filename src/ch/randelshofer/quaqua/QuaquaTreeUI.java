@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTreeUI.java  5.2.2  2009-04-13
+ * @(#)QuaquaTreeUI.java  
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -34,45 +34,7 @@ import javax.swing.text.*;
  * we can't implement the proper selection behavior for a JTree.
  *
  * @author  Werner Randelshofer
- * @version 5.2.2 2009-04-13 Don't render disabled icon in first column of
- * a sideBar-tree or sourceList-tree.
- * <br>5.2.1 2009-03-23 Don't start editing if a row is clicked which
- * is not selected yet.
- * <br>5.2 2009-03-18 Added drag and drop support.
- * <br>5.1 2009-03-13 Cancel start editing when the user moves the
- * mouse after he clicked. Use our own Handler for mouse events.
- * <br>5.0.2 2009-02-01 Complete support for client property
- * "Quaqua.Tree.style"="sideBar" and "Quaqua.Tree.style"="sourceList".
- * <br>4.1 2008-04-22 On mousePressed, requestFocusInWindow. 
- * <br>4.0.1 2008-03-26 Fixed repainting on selection changes. 
- * <br>4.0 2008-03-21 Reimplemented selection handling.
- * <br> 3.0.1 2008-02-10 Draw with inactive selection colors when tree 
- * is disabled.
- * <br>3.0 2008-01-25 To fix tree traversal, copied BasicTreeUI$Actions
- * class and all Action classes that access it. 
- * <br>2.2 2007-12-02 Paint expand control differently if tree is disabled.
- * Made selection behavior more mac like.
- * <br>2.1 2007-11-18 Paint tree icons differently if tree uses sideBar style.
- * <br>2.0 2007-11-10 Copied Handler and DragFixHandler from BasicTreeUI into
- * this class along with all the other code that got dragged in.
- * Support for client property "Quaqua.Tree.style"="sideBar" added.
- * <br>1.3 2007-08-04 Don't change selection, if a popup trigger
- * occurs on an already selected row. Don't change selection on mouse pressed
- * on a selected row. Change selection on mouse released on a selected row.
- * <br>1.2.4 2007-01-16 Focus border repainting factored out into
- * QuaquaViewportUI.
- * <br>1.2.3 2007-01-15 Change foreground color of cell renderer even if
- * it is not an UIResource.
- * <br>1.2.2 2007-01-11 Selection was not completely repainted on
- * focusLost/focusGained.
- * <br>1.2.1 2007-01-05 Issue #2: Tree stripes need to be drawn when tree
- * is empty. Issue #6: Selection needs to be drawn differently when tree hasn't
- * focus or is disabled or is on an inactive window.
- * <br>1.2 2005-09-28 List cells can now be selected on the whole cell
- * line. Inspired by 'FittsLawMouseListener' by Adam Walker.
- * http://www.walkersoftware.net
- * <br>1.1 2005-07-11 Support for striped style added.
- * <br>1.0  15 December 2004  Created.
+ * @version $Id$
  */
 public class QuaquaTreeUI extends BasicTreeUI {
     // Old actions forward to an instance of this. ??
@@ -403,6 +365,19 @@ public class QuaquaTreeUI extends BasicTreeUI {
     private int getLeadSelectionRow() {
         return tree.getLeadSelectionRow();
 //        return leadRow;
+    }
+
+    /**
+     * Determines whether the node handles are to be displayed.
+     * Regardless of what value you specify here, the Quaqua look and feel
+     * always shows the root handles.
+     */
+    protected void setShowsRootHandles(boolean newValue) {
+        super.setShowsRootHandles(true);
+    }
+
+    protected boolean getShowsRootHandles() {
+        return true;
     }
     /*
     private int getLeadSelectionRow() {
@@ -1050,7 +1025,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 label.setDisabledIcon(null);
             }
         }
-        
+
         rendererPane.paintComponent(g, component, tree, bounds.x, bounds.y,
                 bounds.width, bounds.height, true);
     }
@@ -1303,7 +1278,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 /*
                 if (startEditing(path, e)) {
-                    return;
+                return;
                 }*/
 
                 // Check for clicks in expand control

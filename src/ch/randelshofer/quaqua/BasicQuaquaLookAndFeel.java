@@ -1870,6 +1870,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Tree.leafIcon", makeIcon(getClass(), commonDir + "Tree.leafIcon.png"),
             "Tree.openIcon", makeIcon(getClass(), commonDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), commonDir + "Tree.closedIcon.png"),
+            "Tree.showsRootHandles", Boolean.TRUE,
             //"Tree.editorBorder", new VisualMargin(3,3,3,3),
 
             "Viewport.opaque", Boolean.TRUE,
