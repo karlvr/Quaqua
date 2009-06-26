@@ -1,7 +1,7 @@
 /*
- * @(#)EditableComboBoxTest.java  1.0  13 February 2005
+ * @(#)EditableComboBoxTest.java 
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -21,7 +21,7 @@ import javax.swing.border.*;
  * EditableComboBoxTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class EditableComboBoxTest extends javax.swing.JPanel {
     private static class ColorIcon implements Icon {
@@ -271,7 +271,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
-        System.out.println("comboBoxActionPerformed:"+evt);
+        System.out.println("EditableComboBoxTest.comboBoxActionPerformed:"+evt);
     }//GEN-LAST:event_comboBoxActionPerformed
     
     

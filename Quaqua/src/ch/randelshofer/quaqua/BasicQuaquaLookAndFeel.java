@@ -130,8 +130,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         // Green
         {0xffc3f991, 0x66c547},
         // Purple
-        {0xffe9b8ff, 0x8c4eb8},
-    };
+        {0xffe9b8ff, 0x8c4eb8},};
 
     /**
      * Load the SystemColors into the defaults table.  The keys
@@ -233,9 +232,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "listInactiveHighlight", inactiveSelectionBackground, /* List color when selected */
             "listInactiveText", new ColorUIResource(0x808080), /* List color when disabled */
             "menuHighlightText", new ColorUIResource(0xffffff), /* Menu text color when selected */
-            "menuHighlight", table.get("Menu.selectionBackground"), /* Menu background color when selected */
-
-        };
+            "menuHighlight", table.get("Menu.selectionBackground"), /* Menu background color when selected */};
         putDefaults(table, uiDefaults);
     }
 
@@ -554,8 +551,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Tree.textBackground", translucentColor,
             "Tree.textForeground", listForeground,
             "Viewport.background", listBackground,
-            "Viewport.foreground", listForeground,
-        };
+            "Viewport.foreground", listForeground,};
         putDefaults(table, uiDefaults);
     }
 
@@ -650,8 +646,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
-                    "ENTER", JTextField.notifyAction,
-                });
+                    "ENTER", JTextField.notifyAction,});
         // Input map for password fields
         Object passwordFieldInputMap = new UIDefaults.LazyInputMap(new String[]{
                     //, DefaultEditorKit.insertContentAction,
@@ -742,8 +737,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
-                    "ENTER", JTextField.notifyAction,
-                });
+                    "ENTER", JTextField.notifyAction,});
         // Input map for spinner editors
         Object spinnerInputMap = new UIDefaults.LazyInputMap(new String[]{
                     //, DefaultEditorKit.insertContentAction,
@@ -838,8 +832,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
-                    "ENTER", JTextField.notifyAction,
-                });
+                    "ENTER", JTextField.notifyAction,});
         // Input map for multiline text fields
         Object multilineInputMap = new UIDefaults.LazyInputMap(new String[]{
                     //, DefaultEditorKit.insertContentAction,
@@ -931,8 +924,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
-                    "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
-                });
+                    "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,});
 
         // Input map for the editors of combo boxes
         Object comboEditorInputMap = new UIDefaults.LazyInputMap(new String[]{
@@ -1022,15 +1014,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "DOWN", "navigateDown",
                     "KP_DOWN", "navigateDown",
                     "ctrl DOWN", "requestFocusForVisibleComponent",
-                    "ctrl KP_DOWN", "requestFocusForVisibleComponent",
-                });
+                    "ctrl KP_DOWN", "requestFocusForVisibleComponent",});
         UIDefaults.LazyInputMap tabbedPaneAncestorInputMap =
                 new UIDefaults.LazyInputMap(new Object[]{
                     "ctrl PAGE_DOWN", "navigatePageDown",
                     "ctrl PAGE_UP", "navigatePageUp",
                     "ctrl UP", "requestFocus",
-                    "ctrl KP_UP", "requestFocus",
-                });
+                    "ctrl KP_UP", "requestFocus",});
 
         UIDefaults.LazyInputMap tableAncestorInputMap =
                 new UIDefaults.LazyInputMap(new Object[]{
@@ -1096,6 +1086,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "ctrl SLASH", "selectAll",
                     "ctrl BACK_SLASH", "clearSelection",
                     "ESCAPE", "cancel",
+                    "meta PERIOD", "cancel",
                     "F2", "startEditing",
                     "SPACE", "addToSelection",
                     "ctrl SPACE", "toggleAndAnchor",
@@ -1124,8 +1115,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "ctrl PAGE_UP", "scrollRightChangeSelection",
                     "ctrl PAGE_DOWN", "scrollLeftChangeSelection",
                     "ctrl shift PAGE_UP", "scrollRightExtendSelection",
-                    "ctrl shift PAGE_DOWN", "scrollLeftExtendSelection",
-                });
+                    "ctrl shift PAGE_DOWN", "scrollLeftExtendSelection",});
 
         // Assign the defaults
         Object[] uiDefaults = {
@@ -1136,6 +1126,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             //"ComboBox.actionMap", ...,
             "ComboBox.ancestorInputMap", new UIDefaults.LazyInputMap(new Object[]{
                 "ESCAPE", "hidePopup",
+                "meta PERIOD", "hidePopup",
                 "PAGE_UP", "pageUpPassThrough",
                 "PAGE_DOWN", "pageDownPassThrough",
                 "HOME", "homePassThrough",
@@ -1155,8 +1146,20 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             //"Desktop.ancestorInputMap", ...,
 
             "EditorPane.focusInputMap", multilineInputMap,
+            //
+            "FileChooser.ancestorInputMap",
+            new UIDefaults.LazyInputMap(new Object[]{
+                "ESCAPE", "cancelSelection",
+                "meta PERIOD", "cancelSelection",
+                "F5", "refresh",}),
+            //
             "FormattedTextField.focusInputMap", fieldInputMap,
             "FormattedTextField.keyBindings", null,
+            //
+            "OptionPane.windowBindings", new Object[]{
+                "ESCAPE", "close",
+                "meta PERIOD", "close"},
+            //
             "PasswordField.focusInputMap", passwordFieldInputMap,
             "PasswordField.keyBindings", null,
             // These bindings are only enabled when there is a default
@@ -1172,8 +1175,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "UP", "increment",
                 "KP_UP", "increment",
                 "DOWN", "decrement",
-                "KP_DOWN", "decrement",
-            }),
+                "KP_DOWN", "decrement",}),
             "Spinner.focusInputMap", spinnerInputMap,
             "TabbedPane.focusInputMap", tabbedPaneFocusInputMap,
             "TabbedPane.ancestorInputMap", tabbedPaneAncestorInputMap,
@@ -1242,9 +1244,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ctrl KP_LEFT", "scrollLeft",
                 "ctrl RIGHT", "scrollRight",
                 "ctrl KP_RIGHT", "scrollRight",
-                "SPACE", "toggleSelectionPreserveAnchor",
-            }),
-        };
+                "SPACE", "toggleSelectionPreserveAnchor",}),};
 
         putDefaults(table, uiDefaults);
     }
@@ -1422,8 +1422,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolBar.titleFont", miniSystemFont,
             "ToolTip.font", smallSystemFont,
             "Tree.font", viewFont,
-            "Viewport.font", systemFont,
-        };
+            "Viewport.font", systemFont,};
 
         putDefaults(table, uiDefaults);
     }
@@ -1476,8 +1475,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaTextFieldBorder$UIResource",
                 new Object[]{commonDir + "TextField.borders.png",
                     commonDir + "TextField.searchBorders.png",
-                    commonDir + "TextField.small.searchBorders.png",
-                });
+                    commonDir + "TextField.small.searchBorders.png",});
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1512,7 +1510,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             // This must be set to false to make default button on option panes
             // work as expected when running Java 1.5.
             "Button.defaultButtonFollowsFocus", Boolean.FALSE,
-            
             // The values for this margin are ignored. We dynamically compute a margin
             // for the various button styles that we support, if we encounter a
             // a margin that is an instanceof a UIResource.
@@ -1549,8 +1546,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.colorchooser.ColorPalettesChooser",
                 "ch.randelshofer.quaqua.colorchooser.SwatchesChooser",
                 "ch.randelshofer.quaqua.colorchooser.CrayonsChooser",
-                "ch.randelshofer.quaqua.colorchooser.Quaqua15ColorPicker",
-            },
+                "ch.randelshofer.quaqua.colorchooser.Quaqua15ColorPicker",},
             //"ColorChooser.swatchesDefaultRecentColor", ...,
             //"ColorChooser.swatchesRecentSwatchSize", ...,
             "ColorChooser.swatchesSwatchSize", new DimensionUIResource(5, 5),
@@ -1580,13 +1576,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{new Integer(4), new Integer(4), new Integer(25), new Integer(25)}),
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
-            
             "ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,
             "ComboBox.popupIcon", makeButtonStateIcon(commonDir + "ComboBox.popupIcons.png", 6),
             "ComboBox.smallPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
             "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
+            "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
             //"ComboBox.timeFactor", ...
             "ComboBox.maximumRowCount", new Integer(8),
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
@@ -1880,8 +1876,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Quaqua.Debug.clipBoundsForeground", new AlphaColorUIResource(0, 0, 255, 128),
             "Quaqua.Debug.componentBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
             "Quaqua.Debug.textBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
-            "ClassLoader", getClass().getClassLoader(),
-        };
+            "ClassLoader", getClass().getClassLoader(),};
         putDefaults(table, uiDefaults);
 
         // Support for GroupLayout
@@ -1891,12 +1886,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 javaVersion.startsWith("1.5")) {
             uiDefaults = new Object[]{
                         "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
-                        "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),
-                    };
+                        "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
         } else {
             uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
-                    };
+                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),};
         }
         putDefaults(table, uiDefaults);
     }
@@ -1936,19 +1929,19 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
                 new Object[]{location, new Integer(states), new Boolean(horizontal)});
     }
-    
+
     public static Object makeNativeIcon(String path, int size) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, new Integer(size)});
     }
-    
+
     public static Object makeNativeIcon(String path, int width, int height) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, new Integer(width), new Integer(height)});
     }
-    
+
     protected static Object makeButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",

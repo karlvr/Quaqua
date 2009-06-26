@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuBorder.java  1.1  2005-12-10
+ * @(#)QuaquaMenuBorder.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
@@ -27,15 +27,13 @@ import javax.swing.border.*;
  * </ul>
  *
  * @author Werner Randelshofer
- * @version 1.1 2005-12-10 getBorderInsets does now an instanceof test.
- * <br>1.0.1 2005-06-25 Return a new instance of Insets in method getBorderInsets.
- * <br>1.0 August 31, 2003  Created.
+ * @version $Id$
  */
 public class QuaquaMenuBorder implements Border {    
     protected static Insets popupBorderInsets;
     protected static Insets itemBorderInsets;
     
-    public void paintBorder(Component component, Graphics graphics, int x,
+    public void paintBorder(Component component, Graphics g, int x,
     int y, int width, int height) {
         /* empty */
     }

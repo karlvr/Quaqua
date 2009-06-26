@@ -1,7 +1,7 @@
 /*
- * @(#)Quaqua14TextFieldFocusHandler.java  1.0.1  2007-08-13
+ * @(#)Quaqua14TextFieldFocusHandler.java 
  *
- * Copyright (c) 2004-2007 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -25,9 +25,7 @@ import javax.swing.text.JTextComponent;
  * JTextComponent.
  *
  * @author Werner Randelshofer
- * @version 1.0.1 2007-08-13 Clear lastKeyboardTraversingComponent in keyboard
- * manager after having gained focus.
- * <br>1.0 2007-08-06 reated.
+ * @version $Id$
  */
 public class Quaqua14TextFieldFocusHandler implements FocusListener {
     private static Quaqua14TextFieldFocusHandler instance;
@@ -64,16 +62,16 @@ public class Quaqua14TextFieldFocusHandler implements FocusListener {
                     tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
                     QuaquaManager.getBoolean(uiProperty)
                     ) {
-                if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof Quaqua14KeyboardFocusManager) {
-                    Quaqua14KeyboardFocusManager kfm = (Quaqua14KeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
+                    QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
                     if (event.getOppositeComponent() == kfm.getLastKeyboardTraversingComponent()) {
                         tc.selectAll();
                     }
                 }
             }
         }
-        if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof Quaqua14KeyboardFocusManager) {
-            Quaqua14KeyboardFocusManager kfm = (Quaqua14KeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
+            QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
             kfm.setLastKeyboardTraversingComponent(null);
         }
     }
