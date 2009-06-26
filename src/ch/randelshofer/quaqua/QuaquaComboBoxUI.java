@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxUI.java 1.4.4  2007-02-17
+ * @(#)QuaquaComboBoxUI.java 
  *
  * Copyright (c) 2004-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,6 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-import java.io.Serializable;
 import java.beans.*;
 
 
@@ -29,24 +28,7 @@ import java.beans.*;
  * Quaqua UI for JComboBox.
  *
  * @author  Werner Randelshofer
- * @version 1.4.4 2007-02-17 Don't set background of text editor in method
- * paint.
- * <br>1.4.3 2007-01-18 Set opaque to false on the combo box.
- * <br>1.4.2 2007-01-05 Issue #12: RectangleForCurrentValue returns
- * incorrect value when combo box is a table cell editor.
- * <br>1.4.1 2007-01-04 Retrieve maximum row count from UIManager.
- * <br>1.4 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.3.2 200-06-25 Fixed method getMaxSize.
- * <br>1.3.1 2005-06-11 Method getVisualBounds returned bad values.
- * <br>1.3 2005-03-06 When the combo box was a table cell editor we
- * accidentaly used always the popup icon. The "small" style is now used when
- * the font size is less than 12 (prior less than 13 was used).
- * <br>1.2 2004-12-29 For Java 1.3, we have to use the property
- * "JComboBox.lightweightKeyboardNavigation" to guess, whether we are
- * a table cell editor or not.
- * <br>1.1 2004-07-31 Draw cell editor borderless, when the combo box is
- * used as a table cell editor.
- * <br>1.0 2004-04-09 Created.
+ * @version $Id$
  */
 public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayoutable {
     //private HierarchyListener hierarchyListener;
@@ -142,6 +124,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
             hierarchyListener = null;
         }*/
     }
+
     /*
     protected HierarchyListener createHierarchyListener() {
         return new ComponentActivationHandler(comboBox);

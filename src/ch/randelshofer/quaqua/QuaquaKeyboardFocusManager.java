@@ -1,7 +1,7 @@
 /*
- * @(#)Quaqua14KeyboardFocusManager.java  1.1  2007-08-13
+ * @(#)QuaquaKeyboardFocusManager.java
  *
- * Copyright (c) 2007 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -18,13 +18,12 @@ import java.awt.event.*;
 import javax.swing.*;
 
 /**
- * Quaqua14KeyboardFocusManager.
+ * QuaquaKeyboardFocusManager.
  *
  * @author Werner Randelshofer
- * @version 1.1 2007-08-13 Added setter for lastTraversingComponent.
- * <br>1.0 8. August 2007 Created.
+ * @version $Id$
  */
-public class Quaqua14KeyboardFocusManager extends DefaultKeyboardFocusManager {
+public class QuaquaKeyboardFocusManager extends DefaultKeyboardFocusManager {
     /**
      * Holds the most recent component, for which focusPreviousComponent
      * or focusNextComponent was invoked.
@@ -33,7 +32,7 @@ public class Quaqua14KeyboardFocusManager extends DefaultKeyboardFocusManager {
     
     
     /** Creates a new instance. */
-    public Quaqua14KeyboardFocusManager() {
+    public QuaquaKeyboardFocusManager() {
         initDefaults();
     }
     
@@ -88,5 +87,4 @@ public class Quaqua14KeyboardFocusManager extends DefaultKeyboardFocusManager {
     public void setLastKeyboardTraversingComponent(Component newValue) {
         lastTraversingComponent = newValue;
     }
-    
 }
