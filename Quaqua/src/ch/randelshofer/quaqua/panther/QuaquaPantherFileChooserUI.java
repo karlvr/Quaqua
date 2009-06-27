@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaPantherFileChooserUI.java  2.5.1  2009-06-01
+ * @(#)QuaquaPantherFileChooserUI.java  
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -39,93 +39,7 @@ import java.util.*;
  * (Panther).
  *
  * @author Werner Randelshofer
- * @version 2.5.1 2009-06-01 Dispose model when uninstalling UI. Update
- * approve button state when ancestor is added.
- * <br>2.5 2009-03-13 Resolve aliases when used as "save" dialog type as
- * well (not just only when used as "open" dialog type).
- * <br>2.4 2009-01-21 Handle change of FileSystemView.
- * <br>2.3.6 2008-05-01 Fixed NullPointerException in maybeApproveSelection
- * method and doDirectoryChanged method.
- * <br>2.3.5 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
- * with null arguments. 
- * <br>2.3.4 2008-04-23 NullPointerException occured when sidebar contained
- * an unresolvable alias. 
- * <br>2.3.3 2008-04-18 Approve button was not always enabled, when
- * directory selection mode was selected.
- * <br>2.3.2 2008-03-25 On clicks in the sidebar, check whether the file
- * is traversable.
- * <br>2.3.1 2008-02-13 Use JFileChooser.getCurrentDirectory to make
- * relative paths absolute. 
- * <br>2.3 2008-02-10 The current directory was not shown, when
- * JFileChosser.setCurrentDirectory was called. 
- * <br>2.2.1 2008-01-21 When a directory was changed on the JFileChooser,
- * the UI did not always update its view. 
- * <br>2.2 2007-10-03 Added keystroke support by Bjorn Roche.
- * <br>2.1 2006-12-23 Hardcode size of split pane only instead of hardcoding
- * the size of the file chooser as a whole.
- * <br>2.0 2006-09-23 Invalidate all cached user file names, if the
- * FileView is changed of the JFileChooser. Create AliasFileSystemModel only
- * after the FileSystemView and the FileView has been set on the JFileChooser.
- * Make the behavior better match with the native file dialog in Tiger.
- * <br>1.8 2006-09-21 DirectoryComboBox and sidebar select now the directory
- * that was selected, and not the parent directory. Fixed "New Folder" button text.
- * <br>1.7.1 2006-05-06 Labels are now directly retrieved from UIManager.
- * <br>1.7 2006-04-08 Use BasicFileView when UIManager property
- * FileChooser.speed is set to true.
- * <br>1.6.6 2006-03-28 Update approve button state on text change in
- * filename field.
- * <br>1.6.5 2006-03-22 New folder was created in parent directory
- * when a folder was selected.
- * <br>1.6.4 2006-03-15 Couldn't save a new file.
- * <br>1.6.3 2006-03-14 Name of non-existing file was not written into
- * filename field.
- * <br>1.6.2 2006-03-05 Approve button did not work properly for multiple
- * selection. Disallow approval on double clicks on a directory.
- * <br>1.6.1 2006-02-06 Take infos from AliasFileSystemTreeModel.Node
- * instead of from File objects to reduce the amount of IO operations.
- * <br>1.6 2005-11-26 SidebarRenderer retrieves file icons from the
- * SidebarListModel.
- * <br>1.5.2 2005-11-13 Don't change text of fileNameTextField, when it
- * has focus.
- * <br>1.5.1 2005-11-07 Get "Labels" resource bundle from UIManager.
- * <br>1.5 2005-09-11 Celltips for browser added. Allways display
- * horizontal scroll bar of JBrowser.
- * <br>1.4.4 2005-08-25 Fixed a null pointer exception.
- * <br>1.4.3 2005-06-21 SplitPane divider size configurable by LookAndFeel.
- * <br>1.4.2 2005-06-05 Moved calls to System.getProperty into QuaquaManager.
- * <br>1.4.1 2005-04-22 Tweaked the layout.
- * <br>1.4 2005-03-22 Show as much path components as possible of
- * non-existent files in the directory combo box. Use Locale.getDefault()
- * in case the JFileChooser component can not provide a locale.
- * <br>1.3.1 2004-12-28 Call clearIconCache() on the IconView, if this
- * method is available.
- * <br>1.3 2004-11-01 Support for dropping files on the file chooser
- * added. File and directory selection is now handled in a more straightforward
- * way - this may affect code that depends on the values returned by methods
- * JFileChooser.getSelectedFiles(), JFileChooser.getSelectedFile() while the
- * file chooser is being shown.
- * 1.2.2 2004-10-26 setFileSelected had no effect, when a file with
- * a relative path was used.
- * <br>1.2.1 2004-10-21 Double clicking the browsers approves the selection.
- * When there is an approvable selection, the approve button is made the default
- * button.
- * <br>1.2 2004-10-17 Resolve alias files. Do not clear fileName text
- * field, when the user selects a directory. Volumes list did not update
- * properly when a volume was added/removed. Handle relative path names.
- * Display the real name of a file in the file name text field. Enable the
- * approve button only, when the right kind of file (or directory) is selected.
- * Treat non-traversable directories like files. Selecting a file in the volumes
- * list, sets the current directory to that file. Fixed a bug where the file
- * name in the file name field was used to determine the approved file altough
- * the field was not visible.
- * <br>1.1.2 2004-09-11 Fixed IndexOutOfBoundsException caused by method
- * addItem of inner class DirectoryComboBoxModel. Replaced all method
- * invocations to method QuaquaManager.getProperty to
- * QuaquaManager.getProperty.
- * <br>1.1.1 2004-08-28 Set the FileView of the JFileChooser.
- * <br>1.1 2004-07-31 Set the text of the approve button to "Choose", when
- * directory selection is enabled. Fixed layout issue with fileNameTextField.
- * 1.0 2004-07-04 Created.
+ * @version $Id$
  */
 public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
@@ -1723,6 +1637,10 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         public void setSelectedItem(Object filter) {
             if (filter != null) {
                 getFileChooser().setFileFilter((FileFilter) filter);
+                // Don't clear the filename field, when the user changes
+                // the filename filter.
+                // FIXME - Maybe we should disable the save
+                // button when the name is not matched by the filter?
                 setFileName(null);
                 fireContentsChanged(this, -1, -1);
             }

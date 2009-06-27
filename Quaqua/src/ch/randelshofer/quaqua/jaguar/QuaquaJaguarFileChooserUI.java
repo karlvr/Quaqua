@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaJaguarFileChooserUI.java  1.8.1  2009-06-01
+ * @(#)QuaquaJaguarFileChooserUI.java  
  *
  * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -36,78 +36,7 @@ import java.util.*;
  * (Jaguar).
  *
  * @author Werner Randelshofer
- * @version 1.8.1 2009-06-01 Dispose model when uninstalling UI.
- * <br>1.8 2009-03-13 Resolve aliases when used as "save" dialog type as
- * well (not just only when used as "open" dialog type).
- * <br>1.7.4 2008-02-13 Use JFileChooser.getCurrentDirectory to make
- * relative paths absolute. 
- * <br>1.7.3 2006-04-23 Labels are now retrieved directly from UIManager. 
- * <br>1.7.2 2005-11-07 Get "Labels" resource bundle from UIManager.
- * <br>1.7.1 2005-06-05 Moved calls to System.getProperty into QuaquaManager.
- * <br>1.7 2005-04-22 Tweaked the layout and localized the texts.
- * <br>1.6.1 2004-12-28 Call clearIconCache() on the IconView, if this
- * method is available.
- * <br>1.6 2004-10-31 updateSelection had no effect, when a file with
- * a relative path was used. Support for dropping files on the file chooser
- * added. File and directory selection is now handled in a more straightforward
- * way - this may affect code that depends on the values of methods
- * JFileChooser.getSelectedFiles(), JFileChooser.getSelectedFile() while the
- * file chooser is being shown.
- * <br>1.5.1 2004-10-21 Double clicking the browsers approves the selection.
- * When there is an approvable selection, the approve button is made the default
- * button.
- * <br>1.5 2004-10-17 Resolve alias files. Do not clear fileName text
- * field, when the user selects a directory. Handle relative path names.
- * Display the real name of a file in the file name text field. Enable the
- * approve button only, when the right kind of file (or directory) is selected.
- * Treat non-traversable directories like files. Fixed a bug where the file
- * name in the file name field was used to determine the approved file altough
- * the field was not visible.
- * <br>1.4.4 2004-09-11 Replaced all method invocations to method
- * QuaquaManager.getProperty to QuaquaManager.getProperty.
- * <br>1.4.3 2004-08-28 Set the FileView of the JFileChooser.
- * <br>1.4.2 2004-07-30 Set the text of the approve button to "Choose", when
- * directory selection is enabled.
- * 1.4.1 2004-07-28 After creating a new folder, make the newly created
- * folder the current directory. Fixed a bug which caused that no new folder was
- * created. DirectoryComboBox was not always updated when
- * a directory was selected.
- * <br>1.4 2004-06-26 Cell renderer draws different expanded/expanding
- * icon when selected. Renamed from QuaquaFileChooserUI to
- * QuaquaJaguarFileChooserUI.
- * <br>1.3 2004-05-02 Cell renderer draws visually different selection
- * colors when browser has focus. Each change in the fileNameTextField triggers
- * a change of the selected file in the JFileChooser. When the JFileChooser is
- * no longer shown, we stop autovalidation of the tree model, (instead of
- * invalidating it). Clear the file name text field, when the user selects
- * another directory. The 'New Folder' action created the new folder at the
- * wrong directory. Fixed an NPE in
- * QuaquaJaguarFileChooserUI.DoubleClickListener.mouseClicked().
- * <br>1.2 2004-03-20 Automatic validation of the tree model can be switched
- * off by setting the  system property "Quaqua.FileChooser.autovalidate" to
- * "false".
- * JFileChooser.SAVE_DIALOG mode: When the user selects a file in the browser,
- * we set the file name in the fileNameTextField. This is similar to the
- * behaviour of the FileDialog for Mac OS X 10.3 (Panther). When the file
- * chooser is in JFileChooser.SAVE_DIALOG mode, double clicking a file name does
- * not trigger an 'accept' of the file anymore.
- * <br>1.1  2004-03-14 When the file chooser is in JFileChooser.SAVE_DIALOG
- * mode, file names are grayed out. The tree model is validated (refreshed) only,
- * when the JFileChooser is showing. The OSXFileSystemView is now created using a
- * factory. There are now two different strategies to invalidate the tree model:
- * lazyInvalidate and invalidate.
- * <br>1.0.4 2004-02-12 The JBrowser is updating asynchronously. When an
- * update occures between the two clicks of a double click, users may
- * accidently open or save to the wrong file. We ignore know double clicks, if
- * the first click and the second click occured on different files.
- * <br>1.0.3 2004-02-06 Fixed a bug which prevented the approve button from
- * become enabled, when multiple file selection was turned on. This bug occured
- * on JDK 1.3 only, it did not occur on JDK 1.4 and higher versions.
- * <br>1.0.1 2003-11-12 Added approveSelectionAction as a listener
- * to the fileNameTextField.
- * <br>1.0 2003-10-06 Good enough to bear this version number.
- * <br>0.1 2003-07-24  Created.
- *
+ * @version $Id$
  */
 public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
@@ -1313,6 +1242,10 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         public void setSelectedItem(Object filter) {
             if (filter != null) {
                 getFileChooser().setFileFilter((FileFilter) filter);
+                // Don't clear the filename field, when the user changes
+                // the filename filter.
+                // FIXME - Maybe we should disable the save
+                // button when the name is not matched by the filter?
                 setFileName(null);
                 fireContentsChanged(this, -1, -1);
             }
