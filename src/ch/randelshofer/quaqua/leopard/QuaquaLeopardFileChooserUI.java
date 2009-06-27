@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  1.5.1  2009-06-01
+ * @(#)QuaquaLeopardFileChooserUI.java  
  *
  * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -42,37 +42,7 @@ import javax.swing.plaf.metal.MetalFileChooserUI;
  * (Leopard).
  *
  * @author Werner Randelshofer
- * @version 1.6 2009-06-10 Added support for native side bar icons for
- * special folders on the file system.
- * <br>1.5.1 2009-06-01 Dispose model when uninstalling UI. Update approve
- * button state when an ancestor is added.
- * <br>1.5 2009-04-01 Use QuaquaTreeUI when UIManager-property
- * "FileChooser.useQuaquaTreeUI" has the value Boolean.TRUE.
- * <br>1.4 2009-03-13 Resolve aliases when used as "save" dialog type as
- * well (not just only when used as "open" dialog type).
- * <br>1.3.1 2009-02-01 Use client property "Quaqua.Tree.style"="sideBar" and "sourceList"
- * to simplify SideBarRenderer.
- * <b>1.3 2009-01-21 Handle a change of the FileSystemView in JFileChooser.
- * <br>1.2.8 2007-07-10 Sidebar was not rendered with the correct font.
- * <br>1.2.7 2008-05-01 Fixed NullPointerException in maybeApproveSelection
- * method and doDirectoryChanged method.
- * <br>1.2.6 2008-04-27 Don't call AliasFileSystemTreeModel.invalidatePath
- * with null arguments. 
- * <br>1.2.5 2008-04-23 NullPointerException occured when sidebar contained
- * an unresolvable alias. 
- * <br>1.2.4 2008-04-21 SidebarRenderer.getPreferredSize threw
- * a NullPointerException, when its font was null
- * <br>1.2.3 2008-04-18 Approve button was not always enabled, when
- * directory selection mode was selected.
- * <br>1.2.2 2008-03-25 On clicks in the sidebar, check whether the file
- * is traversable.
- * <br>1.2.1 2008-02-13 Use JFileChooser.getCurrentDirectory to make
- * relative paths absolute. 
- * <br>1.2 2008-02-10 The current directory was not shown, when
- * JFileChosser.setCurrentDirectory was called. 
- * <br>1.1 2008-01-21 When a directory was changed on the JFileChooser,
- * the UI did not always update its view. 
- * <br>1.0 2007-11-10  Created.
+ * @version $Id$
  */
 public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // Implementation derived from MetalFileChooserUI
@@ -1015,7 +985,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     }
                     isEnabled &= isSaveDialog || fc.accept(files[i]);
                     if (!isEnabled) {
-    System.err.println("ACCEPT? "+fc.accept(files[i])+" "+files[i]);
+                        System.err.println("ACCEPT? " + fc.accept(files[i]) + " " + files[i]);
                     }
                 }
             }
@@ -1481,28 +1451,30 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 FileInfo info = (FileInfo) value;
                 setText(info.getUserName());
 
-                if (isSpecialFolder(info))
+                if (isSpecialFolder(info)) {
                     setIcon(getSpecialFolderIcon(info));
-                else
+                } else {
                     setIcon(info.getIcon());
+                }
             }
             return this;
         }
-        
+
         /**
          * Gets the special icon for the folder.
          * 
          * @param info The {@link FileInfo}.
          * @return The icon.
-        **/
+         **/
         private Icon getSpecialFolderIcon(FileInfo info) {
             // Load the icon from the UIDefaults table
             Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + info.getFile().getName());
-            
+
             // If we somehow fail to load the icon, fall back to standard way
-            if (icon == null)
+            if (icon == null) {
                 icon = info.getIcon();
-            
+            }
+
             return icon;
         }
 
@@ -1515,33 +1487,25 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
          */
         private boolean isSpecialFolder(FileInfo info) {
             // Only allow this for Mac OS X as directory structures are different on other OSs.
-            if (!QuaquaManager.isOSX())
+            if (!QuaquaManager.isOSX()) {
                 return false;
-            
+            }
+
             File file = info.getFile();
             // Only directories can hava special icons.
-            if (file.isFile())
+            if (file.isFile()) {
                 return false;
+            }
 
             String parentFile = file.getParentFile().getAbsolutePath();
             if (parentFile.equals(System.getProperty("user.home"))) {
                 // Look for user's home special folders
                 String name = file.getName();
-                return name.equals("Applications")
-                        || name.equals("Desktop")
-                        || name.equals("Documents")
-                        || name.equals("Downloads")
-                        || name.equals("Library")
-                        || name.equals("Movies")
-                        || name.equals("Music")
-                        || name.equals("Pictures")
-                        || name.equals("Public")
-                        || name.equals("Sites");
+                return name.equals("Applications") || name.equals("Desktop") || name.equals("Documents") || name.equals("Downloads") || name.equals("Library") || name.equals("Movies") || name.equals("Music") || name.equals("Pictures") || name.equals("Public") || name.equals("Sites");
             } else if (parentFile.equals(computer.getAbsolutePath())) {
                 // Look for computer's special folders
                 String name = file.getName();
-                return name.equals("Applications")
-                        || name.equals("Library");
+                return name.equals("Applications") || name.equals("Library");
             } else if (!parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
                 // Look for Utility folder in the /Applications folder
                 return file.getName().equals("Utilities");
@@ -1549,7 +1513,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             // Nothing found - return null
             return false;
         }
-
     }
     final static int space = 10;
 
@@ -1694,6 +1657,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         public void setSelectedItem(Object filter) {
             if (filter != null) {
                 getFileChooser().setFileFilter((FileFilter) filter);
+                // Don't clear the filename field, when the user changes
+                // the filename filter.
+                // FIXME - Maybe we should disable the save
+                // button when the name is not matched by the filter?
                 setFileName(null);
                 fireContentsChanged(this, -1, -1);
             }
@@ -2045,8 +2012,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             // ancestor.
             updateApproveButtonState();
             JFileChooser fc = getFileChooser();
-            if (fc.getSelectedFile() !=null) {
-            ensureFileIsVisible(fc, fc.getSelectedFile());
+            if (fc.getSelectedFile() != null) {
+                ensureFileIsVisible(fc, fc.getSelectedFile());
             }
         //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
         }
