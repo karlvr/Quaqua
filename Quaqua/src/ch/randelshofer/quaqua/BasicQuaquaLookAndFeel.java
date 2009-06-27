@@ -1586,6 +1586,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             //"ComboBox.timeFactor", ...
             "ComboBox.maximumRowCount", new Integer(8),
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
+            "ComboBox.showPopupOnNavigation", Boolean.TRUE,
             // Set this to Boolean.TRUE to get the same preferred height for
             // non-editable combo boxes and editable-combo boxes.
             "ComboBox.harmonizePreferredHeight", Boolean.FALSE,

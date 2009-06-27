@@ -635,6 +635,13 @@ public class QuaquaComboPopup extends BasicComboPopup {
 
         public void keyPressed(KeyEvent e) {
             processKeyEvent(e, true);
+
+            // Forward key pressed events to QuaquaComboBoxUI when the
+            // popup us showing, but the combo box is not focused.
+            if (!e.isConsumed() && !comboBox.isEditable() && !comboBox.isFocusOwner()) {
+                QuaquaComboBoxUI ui = (QuaquaComboBoxUI) comboBox.getUI();
+                ui.getKeyListener().keyPressed(e);
+            }
         }
 
         public void keyReleased(KeyEvent e) {
@@ -642,32 +649,33 @@ public class QuaquaComboPopup extends BasicComboPopup {
         }
 
         private boolean processKeyEvent(KeyEvent e, boolean pressed) {
-            if (e.isConsumed()) {
-                return false;
-            }
-            int condition = WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
-            // Get the KeyStroke
-            KeyStroke ks;
+            // Forward key pressed events to QuaquaComboBoxUI when the
+            // popup us showing, but the combo box is not focused.
+            if (!e.isConsumed() && !comboBox.isEditable() && !comboBox.isFocusOwner()) {
+                int condition = WHEN_ANCESTOR_OF_FOCUSED_COMPONENT;
+                // Get the KeyStroke
+                KeyStroke ks;
 
-            if (e.getID() == KeyEvent.KEY_TYPED) {
-                ks = KeyStroke.getKeyStroke(e.getKeyChar());
-            } else {
-                ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers(),
-                        (pressed ? false : true));
-            }
-            InputMap map = comboBox.getInputMap(condition/*, false*/);
-            ActionMap am = comboBox.getActionMap(/*false*/);
+                if (e.getID() == KeyEvent.KEY_TYPED) {
+                    ks = KeyStroke.getKeyStroke(e.getKeyChar());
+                } else {
+                    ks = KeyStroke.getKeyStroke(e.getKeyCode(), e.getModifiers(),
+                            (pressed ? false : true));
+                }
+                InputMap map = comboBox.getInputMap(condition/*, false*/);
+                ActionMap am = comboBox.getActionMap(/*false*/);
 
-            // System.out.println("QuaquaComboPopup@"+QuaquaComboPopup.this.hashCode()+".processKeyEvent " + ks);
-            if (map != null && am != null && isEnabled()) {
-                e.consume();
+                // System.out.println("QuaquaComboPopup@"+QuaquaComboPopup.this.hashCode()+".processKeyEvent " + ks);
+                if (map != null && am != null && isEnabled()) {
 
-                Object binding = map.get(ks);
-                // System.out.println("  binding: " + binding);
-                Action action = (binding == null) ? null : am.get(binding);
-                if (action != null) {
-                    return SwingUtilities.notifyAction(action, ks, e, comboBox,
-                            e.getModifiers());
+                    Object binding = map.get(ks);
+                    // System.out.println("  binding: " + binding);
+                    Action action = (binding == null) ? null : am.get(binding);
+                    if (action != null) {
+                        e.consume();
+                        return SwingUtilities.notifyAction(action, ks, e, comboBox,
+                                e.getModifiers());
+                    }
                 }
             }
             return false;

@@ -271,7 +271,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
     
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
-        System.out.println("EditableComboBoxTest.comboBoxActionPerformed:"+evt);
+        //System.out.println("EditableComboBoxTest.comboBoxActionPerformed:"+evt);
     }//GEN-LAST:event_comboBoxActionPerformed
     
     
