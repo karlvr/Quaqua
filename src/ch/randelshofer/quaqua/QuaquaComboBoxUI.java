@@ -125,6 +125,9 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         }*/
     }
 
+    public KeyListener getKeyListener() {
+        return keyListener;
+    }
     /*
     protected HierarchyListener createHierarchyListener() {
         return new ComponentActivationHandler(comboBox);
