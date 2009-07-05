@@ -344,6 +344,9 @@
                 Leopard.14=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                SnowLeopard.14=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 "
             />
         <jar basedir="${builddir}" compress="true" 
@@ -379,6 +382,8 @@ CrossTiger.14=ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel; 
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
+CrossSnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel;
+CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
         </echo>
         <mkdir dir="${distdir}"/>
         <jar basedir="${builddir}" compress="true" jarfile="${distdir}/quaqua.jar" 
