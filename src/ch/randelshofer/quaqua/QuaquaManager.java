@@ -162,6 +162,10 @@ public class QuaquaManager {
      */
     public final static int LEOPARD = 5;
     /**
+     * Mac OS X 10.6 Snow Leopard.
+     */
+    public final static int SNOW_LEOPARD = 6;
+    /**
      * Generic Linux.
      */
     public final static int LINUX = -4;
@@ -220,8 +224,10 @@ public class QuaquaManager {
                 OS = TIGER;
             } else if (osVersion.equals("10.5")) {
                 OS = LEOPARD;
+            } else if (osVersion.equals("10.6")) {
+                OS = SNOW_LEOPARD;
             } else {
-                OS = TIGER;
+                OS = LEOPARD;
             }
         } else if (osName.startsWith("Darwin")) {
             OS = DARWIN;
@@ -246,6 +252,8 @@ public class QuaquaManager {
             design = TIGER;
         } else if (osDesign.equals("leopard")) {
             design = LEOPARD;
+        } else if (osDesign.equals("snowleopard")) {
+            design = SNOW_LEOPARD;
         } else {
             switch (OS) {
                 case CHEETAH : design = JAGUAR;  break;
@@ -253,7 +261,8 @@ public class QuaquaManager {
                 case JAGUAR  : design = JAGUAR;  break;
                 case PANTHER : design = PANTHER; break;
                 case TIGER   : design = TIGER; break;
-                case LEOPARD :
+                case LEOPARD : design = LEOPARD; break;
+                case SNOW_LEOPARD : design = SNOW_LEOPARD; break;
                 default :
                     design = LEOPARD;   break;
             }
@@ -332,6 +341,9 @@ public class QuaquaManager {
             lafs.put("Leopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("Leopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("Leopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
+            lafs.put("SnowLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
+            lafs.put("SnowLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
+            lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("CrossTiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
@@ -348,7 +360,7 @@ public class QuaquaManager {
     /**
      * Returns the current operating system.
      *
-     * @return one of the OS constants: CHEETAH..LEOPARD, DARWIN, WINDOWS or UNKNOWN.
+     * @return one of the OS constants: CHEETAH..SNOW_LEOPARD, DARWIN, WINDOWS or UNKNOWN.
      */
     public static int getOS() {
         return OS;
@@ -424,6 +436,11 @@ public class QuaquaManager {
                         lafKey = "Tiger.14";
                         break;
                     case LEOPARD :
+                        lafKey = "Leopard.14";
+                        break;
+                    case SNOW_LEOPARD :
+                        lafKey = "SnowLeopard.14";
+                        break;
                     default :
                         lafKey = "Leopard.14";
                         break;
@@ -440,6 +457,11 @@ public class QuaquaManager {
                         lafKey = "Tiger.15";
                         break;
                     case LEOPARD :
+                        lafKey = "Leopard.15";
+                        break;
+                    case SNOW_LEOPARD :
+                        lafKey = "SnowLeopard.15";
+                        break;
                     default :
                         lafKey = "Leopard.15";
                         break;
@@ -456,6 +478,11 @@ public class QuaquaManager {
                         lafKey = "Tiger.16";
                         break;
                     case LEOPARD :
+                        lafKey = "Leopard.16";
+                        break;
+                    case SNOW_LEOPARD :
+                        lafKey = "SnowLeopard.16";
+                        break;
                     default :
                         lafKey = "Leopard.16";
                         break;
@@ -474,6 +501,11 @@ public class QuaquaManager {
                         lafKey = "CrossTiger.14";
                         break;
                     case LEOPARD :
+                        lafKey = "Leopard.14";
+                        break;
+                    case SNOW_LEOPARD :
+                        lafKey = "SnowLeopard.14";
+                        break;
                     default :
                         lafKey = "CrossLeopard.14";
                         break;
@@ -490,7 +522,12 @@ public class QuaquaManager {
                     case TIGER :
                         lafKey = "CrossTiger.15";
                         break;
-                    case LEOPARD :
+                     case LEOPARD :
+                        lafKey = "CrossLeopard.15";
+                        break;
+                    case SNOW_LEOPARD :
+                        lafKey = "CrossSnowLeopard.15";
+                        break;
                     default :
                         lafKey = "CrossLeopard.15";
                         break;
