@@ -1492,23 +1492,25 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
 
             File file = info.getFile();
-            // Only directories can hava special icons.
-            if (file.isFile()) {
+            // Only directories can have special icons.
+            if (file == null || file.isFile()) {
                 return false;
             }
 
-            String parentFile = file.getParentFile().getAbsolutePath();
-            if (parentFile.equals(System.getProperty("user.home"))) {
-                // Look for user's home special folders
-                String name = file.getName();
-                return name.equals("Applications") || name.equals("Desktop") || name.equals("Documents") || name.equals("Downloads") || name.equals("Library") || name.equals("Movies") || name.equals("Music") || name.equals("Pictures") || name.equals("Public") || name.equals("Sites");
-            } else if (parentFile.equals(computer.getAbsolutePath())) {
-                // Look for computer's special folders
-                String name = file.getName();
-                return name.equals("Applications") || name.equals("Library");
-            } else if (!parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
-                // Look for Utility folder in the /Applications folder
-                return file.getName().equals("Utilities");
+            if (file.getParentFile() != null) {
+                String parentFile = file.getParentFile().getAbsolutePath();
+                if (parentFile.equals(System.getProperty("user.home"))) {
+                    // Look for user's home special folders
+                    String name = file.getName();
+                    return name.equals("Applications") || name.equals("Desktop") || name.equals("Documents") || name.equals("Downloads") || name.equals("Library") || name.equals("Movies") || name.equals("Music") || name.equals("Pictures") || name.equals("Public") || name.equals("Sites");
+                } else if (parentFile.equals(computer.getAbsolutePath())) {
+                    // Look for computer's special folders
+                    String name = file.getName();
+                    return name.equals("Applications") || name.equals("Library");
+                } else if (!parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
+                    // Look for Utility folder in the /Applications folder
+                    return file.getName().equals("Utilities");
+                }
             }
             // Nothing found - return null
             return false;
