@@ -281,7 +281,7 @@ public class QuaquaIconFactory {
 
     /**
      * Gets the application image. This is a buffered image of size 128x128.
-     * If the Cocoa Java bridge and the ImageIO API is present, this will get
+     * If the Quaqua JNI code and the ImageIO API are present, this will get
      * the image from the OS X application bundle.
      * In all other cases this will return a default application image.
      */
