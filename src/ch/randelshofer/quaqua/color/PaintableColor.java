@@ -43,7 +43,10 @@ public abstract class PaintableColor extends Color {
         super(r, g, b, a);
     }
     
-    public abstract Paint getPaint(Component c, int xOffset, int yOffset);
+    public final Paint getPaint(Component c, int xOffset, int yOffset) {
+        return getPaint(c, xOffset, yOffset, c.getWidth(), c.getHeight());
+    }
+    public abstract Paint getPaint(Component c, int x, int y, int width, int height);
     
     /**
      * If the Color is an instance of PaintableColor, returns a Paint
@@ -63,6 +66,18 @@ public abstract class PaintableColor extends Color {
     public static Paint getPaint(Color color, Component c, int xOffset, int yOffset) {
         return (color instanceof PaintableColor) 
         ? ((PaintableColor) color).getPaint(c, xOffset, yOffset) 
+        : color;
+    }
+    /**
+     * xOffset and yOffset are used to achieve the shifted texture effect that
+     * is used to render tabbed panes with Jaguar design.
+     *
+     * @param xOffset shifts the paint on the x-axis.
+     * @param yOffset shifts the paint on the y-axis.
+     */
+    public static Paint getPaint(Color color, Component c, int x, int y, int width, int height) {
+        return (color instanceof PaintableColor)
+        ? ((PaintableColor) color).getPaint(c, x, y, width, height)
         : color;
     }
     

@@ -18,11 +18,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import java.io.Serializable;
 import java.beans.*;
-import javax.swing.border.Border;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
-import javax.swing.plaf.UIResource;
 
 /**
  * QuaquaComboPopup.
@@ -319,6 +316,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
         list.setBackground(UIManager.getColor("PopupMenu.background"));
         list.setFocusable(true);
         list.setRequestFocusEnabled(true);
+        list.putClientProperty("Quaqua.List.style", "comboPopup");
     }
 
     /**

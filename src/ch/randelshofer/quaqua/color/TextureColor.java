@@ -57,12 +57,12 @@ public class TextureColor extends PaintableColor {
         return (BufferedImage) texture;
     }
     
-    public Paint getPaint(Component c, int xOffset, int yOffset) {
+    public Paint getPaint(Component c, int x, int y, int width, int height) {
         BufferedImage txtr = getTexture();
         if (txtr != null) {
             Point p = getRootPaneOffset(c);
             return new TexturePaint(txtr, new Rectangle(
-            p.x+xOffset,p.y+yOffset,txtr.getWidth(),txtr.getHeight()
+            p.x+x,p.y+y,txtr.getWidth(),txtr.getHeight()
             ));
         } else {
             return this;

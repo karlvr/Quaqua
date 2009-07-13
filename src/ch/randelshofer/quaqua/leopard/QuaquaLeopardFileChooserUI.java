@@ -1381,9 +1381,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // Renderer for DirectoryComboBox
     //
     class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
+        private Border border = new EmptyBorder(1,0,1,0);
 
         IndentIcon ii = new IndentIcon();
-        private Border border = new EmptyBorder(1, 0, 1, 0);
         private JSeparator separator = new JSeparator();
 
         public DirectoryComboBoxRenderer() {
@@ -1610,6 +1610,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      * Render different type sizes and styles.
      */
     public class FilterComboBoxRenderer extends DefaultListCellRenderer {
+        private Border border = new EmptyBorder(1,0,1,0);
 
         public Component getListCellRendererComponent(JList list,
                 Object value, int index, boolean isSelected,
@@ -1620,10 +1621,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             if (value != null && value instanceof FileFilter) {
                 setText(((FileFilter) value).getDescription());
             }
+            setBorder(border);
 
             return this;
         }
-    }
+        }
 
     //
     // DataModel for Types Comboxbox

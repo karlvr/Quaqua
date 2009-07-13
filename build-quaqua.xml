@@ -30,7 +30,7 @@
         <property name="keystore.storepass" value="werner"/>
 
         <!-- Compilation properties -->
-        <property name="debug" value="false"/>
+        <property name="debug" value="true"/>
         <property name="j2se4" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" />
         <property name="j2se5" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/ui.jar" />
         <property name="j2se6" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar" />
