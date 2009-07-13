@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxCellRenderer.java  1.0.3  2006-02-13
+ * @(#)QuaquaComboBoxCellRenderer.java  
  *
  * Copyright (c) 2004-2006 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -22,11 +22,7 @@ import javax.swing.plaf.*;
  * QuaquaComboBoxCellRenderer.
  *
  * @author  Werner Randelshofer
- * @version 1.0.3 2006-02-13 Fixed background color. 
- * <br>1.0.2 2005-05-28 Enforce default foreground color on the renderer.
- * <br>1.0.1 2004-10-06 Border insets adjusted because of changes in class
- * QuaquaComboPopup.
- * <br>1.0 April 11, 2004 Created.
+ * @version $Id$
  */
 public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
     private ListCellRenderer valueRenderer;
@@ -47,7 +43,7 @@ public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
         }
         panel.setOpaque(true);
     }
-    
+
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component valueComponent = valueRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         panel.removeAll();
@@ -55,7 +51,7 @@ public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
         panel.add(valueComponent);
         panel.setBackground((isSelected) ? 
         valueComponent.getBackground() :
-            UIManager.getColor("PopupMenu.background")
+           UIManager.getColor("PopupMenu.background")
         );
 
         return panel;

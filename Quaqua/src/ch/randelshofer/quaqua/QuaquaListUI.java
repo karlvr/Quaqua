@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaListUI.java  1.5.1  2009-04-03
+ * @(#)QuaquaListUI.java  
  *
  * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,6 +13,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -21,43 +22,22 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.event.*;
 import java.lang.reflect.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
 
 /**
  * QuaquaListUI for Java 1.4.
  * 
  * @author Werner Randelshofer
- * @version 1.5.1 2009-04-03 The selection of disabled lists could be changed.
- * <br>1.5 2008-05-31 Use InactivatableColorUIResource for Tree selection
- * colors.
- * <br>1.4 2008-04-22 On mousePressed, requestFocusInWindow.
- * <br>1.3 2008-03-21 Made selection behavior more consistent with native
- * Aqua applications. Paint method has to mess with tree cell renderer colors, 
- * in case someone nests a TreeCellRenderer into a ListCellRenderer. 
- * <br>1.2.4 2007-10-11 Use List.selectionBackground instead
- * of Tree.selectionBackground. 
- * <br>1.2.3 2007-08-01 Don't change the selection when the user
- * triggers the popup menu.
- * <br>1.2.3 2007-08-01 Don't change the selection when the user
- * triggers the popup menu.
- * <br>1.2.2 2007-05-18 Fixed NPE when ListDataHandler.contentsChanged
- * is called on non-existing rows.
- * <br>1.2.1 2007-04-28 An exception was thrown when items where added
- * to the list and no item was selected.
- * <br>1.2 2007-01-29 Optimized repaint on contentsChanged event.
- * <br>1.1.4 2007-01-16 Focus border repainting factored out into
- * QuaquaViewportUI. Reimplemented fix for Issue #6 in a new way.
- * <br>1.1.3 2007-01-15 Change foreground color of cell renderer even if
- * it is not an UIResource.
- * <br>1.1.2 2007-01-05 Issue #6: Selection needs to be drawn differently
- * when list hasn't focus or is disabled or is on an inactive window.
- * 1.1.1 2006-04-23 Minor fix to make this class compilable with J2SE 1.5
- * <br>1.1 2005-03-13 LnF Property "List.alternateBackground" replaced
- * by "List.alternateBackground.0" and "List.alternateBackground.1".
- * <br>1.0  December 13, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaListUI extends BasicListUI {
 
     private boolean isStriped = false;
+    private boolean isComboPopup = false;
+    /** comboCellBorder is used to accommodate the cell in the combo popup. */
+    private final static Border comboCellBorder = new EmptyBorder(0,7,0,7);
     /**
      * This variable has the value of JList.VERTICAL, if Java 1.4 or higher is
      * present. In older Java VM's it has value 0.
@@ -199,7 +179,7 @@ public class QuaquaListUI extends BasicListUI {
         int ch = rowBounds.height;
 
         if (list.isSelectedIndex(row)) {
-            g.setColor(UIManager.getColor("List.selectionBackground"));
+          ((Graphics2D) g).setPaint( PaintableColor.getPaint(UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground":"List.selectionBackground"),rendererComponent,cx,cy,cw,ch));
             g.fillRect(cx, cy, cw, ch);
         } else {
             if (isStriped) {
@@ -209,7 +189,19 @@ public class QuaquaListUI extends BasicListUI {
             }
         }
 
+        if (isComboPopup && (rendererComponent instanceof JComponent)) {
+            Border oldBorder = ((JComponent) rendererComponent).getBorder();
+            if (oldBorder != null) {
+            ((JComponent) rendererComponent).setBorder(new CompoundBorder(comboCellBorder,oldBorder));
+            } else {
+            ((JComponent) rendererComponent).setBorder(comboCellBorder);
+            }
         rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
+             ((JComponent) rendererComponent).setBorder(oldBorder);
+        } else {
+
+        rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
+        }
     }
 
     /**
@@ -224,8 +216,10 @@ public class QuaquaListUI extends BasicListUI {
 
         boolean isEnabled = c.isEnabled();
         boolean isFocused = QuaquaUtilities.isFocused(c);
-        Color selectionBackground = UIManager.getColor("List.selectionBackground");
-        Color selectionForeground = UIManager.getColor("List.selectionForeground");
+        Object value = c.getClientProperty("Quaqua.List.style") ;
+        isComboPopup = value != null && value.equals("comboPopup");
+        Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground":"List.selectionBackground");
+        Color selectionForeground = UIManager.getColor(isComboPopup ? "ComboBox.selectionForeground":"List.selectionForeground");
         if (selectionBackground instanceof InactivatableColorUIResource) {
             ((InactivatableColorUIResource) selectionBackground).setActive(isFocused);
         }

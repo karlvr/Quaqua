@@ -33,8 +33,8 @@ public class GradientColor extends PaintableColor {
     }
     
 
-    public Paint getPaint(Component c, int xOffset, int yOffset) {
-        return new GradientPaint(0,0,color1,0,c.getHeight(),color2,true);
+    public Paint getPaint(Component c, int x, int y, int widht, int height) {
+        return new GradientPaint(x,y,color1,x,y+height,color2,true);
     }
 
 }
