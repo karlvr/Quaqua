@@ -18,6 +18,8 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import java.io.Serializable;
 import java.beans.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
 
@@ -34,6 +36,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
     private Component lastFocused;
     private JRootPane invokerRootPane;
     private boolean focusTraversalKeysEnabled;
+    /** comboCellBorder is used to accommodate the cell in the combo popup. */
+    private final static Border comboCellBorder = new EmptyBorder(0,7,0,7);
 
     public QuaquaComboPopup(JComboBox cBox, QuaquaComboBoxUI qqui) {
         super(cBox);
@@ -194,7 +198,6 @@ public class QuaquaComboPopup extends BasicComboPopup {
         boolean isEditable = isEditable();
         boolean isSmall = QuaquaUtilities.isSmallSizeVariant(comboBox);
 
-
         if (isTableCellEditor) {
             if (hasScrollBars) {
                 pw = Math.max(pw, listWidth + 16);
@@ -215,6 +218,12 @@ public class QuaquaComboPopup extends BasicComboPopup {
                 }
             }
         }
+
+        // Take extended cell border into account which is used in
+        // QuaquaListUI.
+        Insets cellBorderInsets = comboCellBorder.getBorderInsets(this);
+        pw+=cellBorderInsets.left+cellBorderInsets.right;
+
         // Calculate the desktop dimensions relative to the combo box.
         GraphicsConfiguration gc = comboBox.getGraphicsConfiguration();
         Point p = new Point();
