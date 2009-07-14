@@ -189,19 +189,11 @@ public class QuaquaListUI extends BasicListUI {
             }
         }
 
-        if (isComboPopup && (rendererComponent instanceof JComponent)) {
-            Border oldBorder = ((JComponent) rendererComponent).getBorder();
-            if (oldBorder != null) {
-            ((JComponent) rendererComponent).setBorder(new CompoundBorder(comboCellBorder,oldBorder));
-            } else {
-            ((JComponent) rendererComponent).setBorder(comboCellBorder);
-            }
-        rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
-             ((JComponent) rendererComponent).setBorder(oldBorder);
-        } else {
-
-        rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
+        if (isComboPopup) {
+            cx += 7;
+            cw -=14;
         }
+        rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
     }
 
     /**
