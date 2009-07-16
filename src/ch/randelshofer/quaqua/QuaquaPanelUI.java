@@ -21,6 +21,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 /**
  * QuaquaPanelUI.
  *

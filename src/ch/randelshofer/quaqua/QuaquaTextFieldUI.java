@@ -83,6 +83,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         if (popupListener != null) {
             getComponent().addMouseListener(popupListener);
         }
+        QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
         super.installListeners();
     }
 
@@ -95,6 +96,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
             getComponent().removeMouseListener(popupListener);
             popupListener = null;
         }
+        QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
         super.uninstallListeners();
     }
 
