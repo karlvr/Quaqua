@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaEditorPaneUI.java  1.3  2007-01-16
+ * @(#)QuaquaEditorPaneUI.java  
  *
- * Copyright (c) 2004-2007 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -28,11 +28,7 @@ import javax.swing.border.*;
  * QuaquaEditorPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 1.3 2007-01-17 Factored focus listener out into QuaquaViewportView.
- * <br>1.2 2006-04-24 Added support for .popupHandler UIManager property.
- * <br>1.1 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.0.1 2005-06-30 Fixed NPE in method getVisualBounds.
- * <br>1.0 2004-12-02 Created.
+ * @version $Id$
  */
 public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLayoutable
 {
@@ -48,6 +44,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         if (popupListener != null) {
             getComponent().addMouseListener(popupListener);
         }
+        QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
     }
     
     protected void uninstallListeners() {
@@ -55,6 +52,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
             getComponent().removeMouseListener(popupListener);
             popupListener = null;
         }
+        QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
     }
     
     protected MouseListener createPopupListener() {

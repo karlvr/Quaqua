@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua14FormattedTextFieldUI.java  1.6.2  2009-04-03
+ * @(#)QuaquaFormattedTextFieldUI.java 
  *
  * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -26,24 +26,12 @@ import javax.swing.plaf.basic.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
 /**
- * Quaqua14FormattedTextFieldUI.
+ * QuaquaFormattedTextFieldUI.
  * 
  * @author Werner Randelshofer
- * @version 1.6.2 2009-04-03  Paint the background color if no background
- * border is present.
- * <br>1.6.1 2009-02-16 Override method paintBackground to make it do
- * nothing.
- * <br>1.6 2007-08-06 Select all text when the user tabs into the field.
- * <br>1.5 2007-07-27 Added 2 pixels to the preferred width.
- * <br>1.4 2006-04-24 Added support for .popupHandler UIManager property.
- * Fixed .opaque UIManager property.
- * <br>1.3 2005-10-01 Tweaked due to changes in QuaquaTreeUI. Non-opaque
- * background painting delegated to QuaquaTextFieldBorder.
- * <br>1.2 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.1 2005-02-27 Support for margin added.
- * <br>1.0  06 March 2005  Created.
+ * @version $Id$
  */
-public class Quaqua14FormattedTextFieldUI extends BasicFormattedTextFieldUI implements VisuallyLayoutable {
+public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implements VisuallyLayoutable {
     boolean oldDragState = false;
     private FocusListener focusListener;
     private MouseListener popupListener;
@@ -56,7 +44,7 @@ public class Quaqua14FormattedTextFieldUI extends BasicFormattedTextFieldUI impl
      * @return the UI
      */
     public static ComponentUI createUI(JComponent c) {
-        return new Quaqua14FormattedTextFieldUI();
+        return new QuaquaFormattedTextFieldUI();
     }
     
     public void installUI(JComponent c) {
@@ -89,6 +77,7 @@ public class Quaqua14FormattedTextFieldUI extends BasicFormattedTextFieldUI impl
         if (popupListener != null) {
             getComponent().addMouseListener(popupListener);
         }
+        QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
         super.installListeners();
     }
     
@@ -101,6 +90,7 @@ public class Quaqua14FormattedTextFieldUI extends BasicFormattedTextFieldUI impl
             getComponent().removeMouseListener(popupListener);
             popupListener = null;
         }
+        QuaquaTextCursorHandler.getInstance().uninstallListeners(getComponent());
         super.uninstallListeners();
     }
     
