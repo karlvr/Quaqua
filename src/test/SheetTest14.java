@@ -49,6 +49,7 @@ private JFileChooser saveFile;
         saveFileSheetButton = new javax.swing.JButton();
         messageSheetButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
+        experimentalSheetCheckbox = new JCheckBox();
 
         setLayout(new java.awt.GridBagLayout());
 
@@ -114,6 +115,18 @@ private JFileChooser saveFile;
             }
         });
 
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 3;
+        add(experimentalSheetCheckbox, gridBagConstraints);
+        
+        experimentalSheetCheckbox.setText("Experimental Native Sheet");
+        experimentalSheetCheckbox.addChangeListener(new javax.swing.event.ChangeListener() {
+        	public void stateChanged(javax.swing.event.ChangeEvent evt) {
+        		experimentalSheetChange(evt);
+        	}
+        });
+        experimentalSheetCheckbox.doClick();
+        
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         add(messageSheetButton1, gridBagConstraints);
@@ -208,6 +221,10 @@ private JFileChooser saveFile;
             }
         });
     }//GEN-LAST:event_saveChangesSheet
+    
+    private void experimentalSheetChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_experimentalSheetChange
+        UIManager.put("Sheet.experimentalSheet", new Boolean(experimentalSheetCheckbox.isSelected()));
+    }//GEN-LAST:event_experimentalSheetChange
                     
     private void analyzeOption(int option) {
         switch (option) {
@@ -241,6 +258,7 @@ private JFileChooser saveFile;
     private javax.swing.JButton messageSheetButton1;
     private javax.swing.JButton saveChangesSheetButton;
     private javax.swing.JButton saveFileSheetButton;
+    private javax.swing.JCheckBox experimentalSheetCheckbox;
     // End of variables declaration//GEN-END:variables
     
 }
