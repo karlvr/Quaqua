@@ -10,7 +10,7 @@
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
         <property name="versionNumber" value="5.5alpha"/>
-        <property name="version" value="${versionNumber} 2009-07-16"/>
+        <property name="version" value="${versionNumber} 2009-07-19"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -180,6 +180,10 @@
              linked in in their entirety. (APPLE ONLY) -->
         <arg value="-ObjC"/>
         
+        <!-- Add frameworks inside the JavaVM framework to the framework search
+             path as the JavaNativeFoundation is inside that framework -->
+        <arg value="-F/System/Library/Frameworks/JavaVM.framework/Frameworks"/>
+        
         <!-- Frameworks used by the library. -->
         <arg value="-framework"/>
         <arg value="JavaVM"/>
@@ -187,12 +191,15 @@
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
+        <arg value="-framework"/>
+        <arg value="JavaNativeFoundation"/>
         
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
         </exec>
     </target>
     <target depends="init" name="jnilib-64">
@@ -275,6 +282,11 @@
              linked in in their entirety. (APPLE ONLY) -->
         <arg value="-ObjC"/>
         
+        <!-- Add frameworks inside the JavaVM framework to the framework search
+             path as the JavaNativeFoundation is inside that framework -->
+        <arg value="-F/System/Library/Frameworks/JavaVM.framework/Frameworks"/>
+        
+        
         <!-- Frameworks used by the library. -->
         <arg value="-framework"/>
         <arg value="JavaVM"/>
@@ -282,12 +294,15 @@
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
+        <arg value="-framework"/>
+        <arg value="JavaNativeFoundation"/>
         
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
+        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
         </exec>
     </target>
 
@@ -457,6 +472,10 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXImageIO"
+                destdir="${srcdir}/native"
+                />
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.osx.OSXSheetSupport"
                 destdir="${srcdir}/native"
                 />
     </target>
