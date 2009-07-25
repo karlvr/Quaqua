@@ -1,6 +1,6 @@
 #import "ch_randelshofer_quaqua_osx_OSXSheetSupport.h"
 #import <Cocoa/Cocoa.h>
-#import <JavaNativeFoundation/JavaNativeFoundation.h>
+// #import <JavaNativeFoundation/JavaNativeFoundation.h> // not supported in Tiger
 #import <JavaVM/jawt_md.h>
 
 #pragma mark Header part
@@ -61,13 +61,13 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
  * Signature: (Lch/randelshofer/quaqua/JSheet;Ljava/awt/Window;)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet (JNIEnv *env, jclass clazz, jobject sheet, jobject parent) {
-    JNF_COCOA_ENTER(env);
+	NSAutoreleasePool* pool = [NSAutoreleasePool new];
     
     SheetSupport *sheetSupport = [[SheetSupport alloc] initWithSheet:sheet onWindow:parent jniEnv:env];
     [sheetSupport retain];
     [sheetSupport performSelectorOnMainThread:@selector(showSheet) withObject:nil waitUntilDone:NO];
     
-    JNF_COCOA_EXIT(env);
+	[pool release];
 }
 
 /*
@@ -78,11 +78,11 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
  * Signature: (Lch/randelshofer/quaqua/JSheet;)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHideSheet (JNIEnv *env, jclass clazz, jobject sheet) {
-    JNF_COCOA_ENTER(env);
+	NSAutoreleasePool* pool = [NSAutoreleasePool new];
     
     [NSApp endSheet:GetWindowFromComponent(sheet, env)];
     
-    JNF_COCOA_EXIT(env);
+	[pool release];
 }
 
 @implementation SheetSupport

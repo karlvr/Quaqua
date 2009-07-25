@@ -180,10 +180,6 @@
              linked in in their entirety. (APPLE ONLY) -->
         <arg value="-ObjC"/>
         
-        <!-- Add frameworks inside the JavaVM framework to the framework search
-             path as the JavaNativeFoundation is inside that framework -->
-        <arg value="-F/System/Library/Frameworks/JavaVM.framework/Frameworks"/>
-        
         <!-- Frameworks used by the library. -->
         <arg value="-framework"/>
         <arg value="JavaVM"/>
@@ -191,8 +187,6 @@
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
-        <arg value="-framework"/>
-        <arg value="JavaNativeFoundation"/>
         
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
@@ -281,12 +275,7 @@
              archive libraries that define an Objective-C class or category to be
              linked in in their entirety. (APPLE ONLY) -->
         <arg value="-ObjC"/>
-        
-        <!-- Add frameworks inside the JavaVM framework to the framework search
-             path as the JavaNativeFoundation is inside that framework -->
-        <arg value="-F/System/Library/Frameworks/JavaVM.framework/Frameworks"/>
-        
-        
+                
         <!-- Frameworks used by the library. -->
         <arg value="-framework"/>
         <arg value="JavaVM"/>
@@ -294,8 +283,6 @@
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
-        <arg value="-framework"/>
-        <arg value="JavaNativeFoundation"/>
         
         <!-- Input file -->
         <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
