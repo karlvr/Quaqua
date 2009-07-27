@@ -10,9 +10,6 @@ jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
 
 @interface SheetSupport : NSObject
 {
-    jobject listener;
-    jobject sheet;
-    jobject parent;
     NSWindow *sheetWindow;
     NSWindow *parentWindow;
 }
@@ -91,11 +88,8 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
 {
     [super init];
     
-    sheet = (*env)->NewGlobalRef(env, s);
-    parent = (*env)->NewGlobalRef(env, p);
-    
-    sheetWindow = GetWindowFromComponent(sheet, env);
-    parentWindow = GetWindowFromComponent(parent, env);
+    sheetWindow = GetWindowFromComponent(s, env);
+    parentWindow = GetWindowFromComponent(p, env);
     
     [sheetWindow setShowsResizeIndicator:YES];
     
