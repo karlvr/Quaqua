@@ -58,13 +58,8 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
  * Signature: (Lch/randelshofer/quaqua/JSheet;Ljava/awt/Window;)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet (JNIEnv *env, jclass clazz, jobject sheet, jobject parent) {
-	NSAutoreleasePool* pool = [NSAutoreleasePool new];
-    
     SheetSupport *sheetSupport = [[SheetSupport alloc] initWithSheet:sheet onWindow:parent jniEnv:env];
-    [sheetSupport retain];
     [sheetSupport performSelectorOnMainThread:@selector(showSheet) withObject:nil waitUntilDone:NO];
-    
-	[pool release];
 }
 
 /*
@@ -75,11 +70,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
  * Signature: (Lch/randelshofer/quaqua/JSheet;)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHideSheet (JNIEnv *env, jclass clazz, jobject sheet) {
-	NSAutoreleasePool* pool = [NSAutoreleasePool new];
-    
-    [NSApp endSheet:GetWindowFromComponent(sheet, env)];
-    
-	[pool release];
+    [NSApp performSelectorOnMainThread:@selector(endSheet:) withObject:GetWindowFromComponent(sheet, env) waitUntilDone:NO];
 }
 
 @implementation SheetSupport
@@ -91,8 +82,6 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
     sheetWindow = GetWindowFromComponent(s, env);
     parentWindow = GetWindowFromComponent(p, env);
     
-    [sheetWindow setShowsResizeIndicator:YES];
-    
     return self;
 }
 
@@ -103,8 +92,8 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
         modalDelegate:nil // self
        didEndSelector:nil // @selector(sheetDidEnd:returnCode:contextInfo:)
           contextInfo:NULL];
-    // Callback support removed - that's why we can autorelease self now
-    [self autorelease];
+    // release in diese Methode verschieben, da Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet vielleicht schon beendet ist
+    [self release];
 }
 
 // Callback support removed - not needed
