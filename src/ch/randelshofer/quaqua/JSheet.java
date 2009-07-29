@@ -23,7 +23,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.EventListenerList;
 import javax.swing.plaf.OptionPaneUI;
 
-import ch.randelshofer.quaqua.osx.*;
+import ch.randelshofer.quaqua.osx.OSXApplication;
+import ch.randelshofer.quaqua.osx.OSXSheetSupport;
 import ch.randelshofer.quaqua.util.Methods;
 
 //import com.apple.cocoa.application.*;
@@ -61,6 +62,10 @@ public class JSheet extends JDialog {
      * If the owner moves, we have to change the location of the sheet as well.
      */
     private ComponentListener ownerMovementHandler;
+    /**
+     * This handler is used to handle window events of the owner.
+     */
+    private WindowListener windowEventHandler;
     /**
      * If this is non-null, we put the owner to the specified location,
      * when the sheet is hidden.
@@ -167,6 +172,27 @@ public class JSheet extends JDialog {
                 }
             }
         };
+        
+        // If the sheet is experimental, we need some special handling
+        // so that the JSheet is handled correctly
+        windowEventHandler = new WindowAdapter() {
+            // Iconifying the owner window causes some problems
+            // This is an attempt do solve it
+            public void windowDeiconified(WindowEvent e) {
+                JSheet.this.setVisible(false);
+                JSheet.this.setVisible(true);
+            }
+            
+            public void windowIconified(WindowEvent e) {
+                // TODO The sheet is reshown when the parent window is iconified.
+                // setVisible(false) on the sheet only deiconifies the owner window.
+            }
+
+            public void windowActivated(WindowEvent e) {
+                if (JSheet.this.isVisible() && JSheet.this.getOwner() == e.getWindow())
+                    JSheet.this.toFront();
+            }
+        };
     }
 
     protected boolean isShowAsSheet() {
@@ -182,7 +208,12 @@ public class JSheet extends JDialog {
      * This method is invoked just before the JSheet is shown.
      */
     protected void installSheet() {
-        if (!isNativeSheetSupported() && !isInstalled && !isExperimentalSheet()) {
+        if (!isNativeSheetSupported() && !isInstalled && isExperimentalSheet()) {
+            Window owner = getOwner();
+            if(owner != null) {
+                owner.addWindowListener(windowEventHandler);
+            }
+        } else if (!isNativeSheetSupported() && !isInstalled && !isExperimentalSheet()) {
             Window owner = getOwner();
             if (owner != null) {
 
@@ -250,19 +281,24 @@ public class JSheet extends JDialog {
         if (isInstalled) {
             Window owner = getOwner();
             if (owner != null) {
-                // Note: We mustn't change the windows focusable state because
-                // this also affects the focusable state of the JSheet.
-                //owner.setFocusableWindowState(true);
-                owner.setEnabled(true);
-                //((JFrame) owner).setResizable(true);
-                owner.removeComponentListener(ownerMovementHandler);
+                if (isExperimentalSheet()) {
+                    owner.removeWindowListener(windowEventHandler);
+                } else {
+                    // Note: We mustn't change the windows focusable state
+                    // because
+                    // this also affects the focusable state of the JSheet.
+                    // owner.setFocusableWindowState(true);
+                    owner.setEnabled(true);
+                    // ((JFrame) owner).setResizable(true);
+                    owner.removeComponentListener(ownerMovementHandler);
 
-                if (shiftBackLocation != null) {
-                    owner.setLocation(shiftBackLocation);
-                }
-                if (oldFocusOwner != null) {
-                    owner.toFront();
-                    oldFocusOwner.requestFocus();
+                    if (shiftBackLocation != null) {
+                        owner.setLocation(shiftBackLocation);
+                    }
+                    if (oldFocusOwner != null) {
+                        owner.toFront();
+                        oldFocusOwner.requestFocus();
+                    }
                 }
             }
             isInstalled = false;
