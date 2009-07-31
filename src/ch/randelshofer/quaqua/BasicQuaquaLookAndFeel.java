@@ -2059,6 +2059,16 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     }
 
     protected void installKeyboardFocusManager() {
+        try {
+            //KeyboardFocusManager currentManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+           // currentManager.
+
+
+            KeyboardFocusManager.setCurrentKeyboardFocusManager(new QuaquaKeyboardFocusManager());
+        } catch (SecurityException ex) {
+            System.err.print("Warning: "+this+" couldn't install QuaquaKeyboardFocusManager.");
+            //ex.printStackTrace();
+        }
     }
 
     /**
