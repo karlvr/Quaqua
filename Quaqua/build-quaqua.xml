@@ -381,6 +381,9 @@ Tiger.16=ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel;
 Leopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel;     
 Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;     
 Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;     
+SnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel;
+SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
+SnowLeopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;
 CrossTiger.14=ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel; 
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel; 
@@ -960,7 +963,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     </target>
     <target depends="init" name="run Quaqua 1.5 Auto Brushed Metal">
         <java classname="test.Main" classpath="${classpath}" failonerror="true" fork="true" jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Dapple.awt.brushMetalLook=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>

@@ -1,7 +1,7 @@
 /*
- * @(#)MultiIcon.java  1.0.1  2006-02-14
+ * @(#)MultiIcon.java
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -16,7 +16,6 @@ package ch.randelshofer.quaqua.icon;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 
 /**
  * An icon which paints one out of multiple icons depending on the state
@@ -24,8 +23,7 @@ import javax.swing.plaf.*;
  * MultiIcon can lazily create the icons from a tiled image.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2006-02-14 Created tileCount icons from image.
- * <br>1.0 October 17, 2005 Created.
+ * @version $Id$
  */
 public abstract class MultiIcon implements Icon {
     /**
