@@ -1000,8 +1000,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
-                    "ENTER", JTextField.notifyAction,
-                });
+                    "ENTER", JTextField.notifyAction,});
 
         UIDefaults.LazyInputMap tabbedPaneFocusInputMap =
                 new UIDefaults.LazyInputMap(new Object[]{
@@ -1431,6 +1430,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * The defaults initialized here are common to all Quaqua Look and Feels.
      */
     protected void initGeneralDefaults(UIDefaults table) {
+        String javaVersion = QuaquaManager.getProperty("java.version", "");
+
         String systemFontName = getBaseSystemFont().getName();
         Boolean isRequestFocusEnabled = new Boolean(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true"));
 
@@ -1461,8 +1462,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         // Autovalidation
         Boolean autovalidate = new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.autovalidate", "true").equals("true"));
 
-        // Popup menus
+        // Popup menus for all text components
         Object textComponentPopupHandler = new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaTextComponentPopupHandler");
+        // Focus handler for all text fields
+        Object textFieldFocusHandler = new UIDefaults.ProxyLazyValue(
+                (javaVersion.startsWith("1.4") || javaVersion.startsWith("1.5")) ?//
+                "ch.randelshofer.quaqua.Quaqua14TextFieldFocusHandler" ://
+                "ch.randelshofer.quaqua.Quaqua16TextFieldFocusHandler");
 
         // TextField auto selection
         Boolean autoselect = new Boolean(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").
@@ -1641,6 +1647,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             new Object[]{new Insets(1, 1, 1, 1)}),
             "FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
+            "FormattedTextField.focusHandler", textFieldFocusHandler,
             "FormattedTextField.popupHandler", textComponentPopupHandler,
             "FormattedTextField.autoSelect", autoselect,
             "Label.border", new VisualMargin(0, 0, 0, 0),
@@ -1674,6 +1681,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "PopupMenu.enableHeavyWeightPopup", Boolean.TRUE,
             "PasswordField.border", textFieldBorder,
             "PasswordField.opaque", opaque,
+            "PasswordField.focusHandler", textFieldFocusHandler,
             "PasswordField.popupHandler", textComponentPopupHandler,
             "PasswordField.autoSelect", autoselect,
             "RadioButton.border", new VisualMargin(0, 0, 0, 0),
@@ -1834,6 +1842,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "TextArea.popupHandler", textComponentPopupHandler,
             "TextField.border", textFieldBorder,
             "TextField.opaque", opaque,
+            "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
             "TextField.autoSelect", autoselect,
             "TextPane.margin", new InsetsUIResource(1, 3, 1, 3),
@@ -1881,9 +1890,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         putDefaults(table, uiDefaults);
 
         // Support for GroupLayout
-        String javaVersion = QuaquaManager.getProperty("java.version", "");
-        if (javaVersion.startsWith("1.3") ||
-                javaVersion.startsWith("1.4") ||
+        if (javaVersion.startsWith("1.4") ||
                 javaVersion.startsWith("1.5")) {
             uiDefaults = new Object[]{
                         "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
@@ -2059,15 +2066,17 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     }
 
     protected void installKeyboardFocusManager() {
-        try {
-            //KeyboardFocusManager currentManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-           // currentManager.
+        String javaVersion = QuaquaManager.getProperty("java.version", "");
+        if (javaVersion.startsWith("1.4") || javaVersion.startsWith("1.5")) {
+            try {
+                //KeyboardFocusManager currentManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+                // currentManager.
 
-
-            KeyboardFocusManager.setCurrentKeyboardFocusManager(new QuaquaKeyboardFocusManager());
-        } catch (SecurityException ex) {
-            System.err.print("Warning: "+this+" couldn't install QuaquaKeyboardFocusManager.");
-            //ex.printStackTrace();
+                KeyboardFocusManager.setCurrentKeyboardFocusManager(new QuaquaKeyboardFocusManager());
+            } catch (SecurityException ex) {
+                System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
+                //ex.printStackTrace();
+            }
         }
     }
 

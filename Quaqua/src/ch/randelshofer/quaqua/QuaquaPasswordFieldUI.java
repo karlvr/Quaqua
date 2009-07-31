@@ -91,11 +91,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
     }
     
     protected FocusListener createFocusListener() {
-        try {
-            return (FocusListener) Methods.invokeStatic("ch.randelshofer.quaqua.Quaqua14TextFieldFocusHandler","getInstance");
-        } catch (NoSuchMethodException ex) {
-            return QuaquaFocusHandler.getInstance();
-        }
+        return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
     protected MouseListener createPopupListener() {
         return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");

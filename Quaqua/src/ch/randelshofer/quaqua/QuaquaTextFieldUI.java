@@ -101,11 +101,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
     }
 
     protected FocusListener createFocusListener() {
-        try {
-            return (FocusListener) Methods.invokeStatic("ch.randelshofer.quaqua.Quaqua14TextFieldFocusHandler", "getInstance");
-        } catch (NoSuchMethodException ex) {
-            return QuaquaFocusHandler.getInstance();
-        }
+        return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
 
     protected MouseListener createPopupListener() {
