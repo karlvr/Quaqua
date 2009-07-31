@@ -95,7 +95,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     }
     
     protected FocusListener createFocusListener() {
-        return Quaqua14TextFieldFocusHandler.getInstance();
+        return (FocusListener) UIManager.get(getPropertyPrefix() + ".focusHandler");
     }
     protected MouseListener createPopupListener() {
         return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
