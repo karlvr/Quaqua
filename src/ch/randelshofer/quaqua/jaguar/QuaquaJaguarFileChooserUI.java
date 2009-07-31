@@ -1246,7 +1246,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 // the filename filter.
                 // FIXME - Maybe we should disable the save
                 // button when the name is not matched by the filter?
-                setFileName(null);
+                //setFileName(null);
                 fireContentsChanged(this, -1, -1);
             }
         }

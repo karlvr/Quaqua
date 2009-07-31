@@ -17,9 +17,7 @@ import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.leopard.filechooser.*;
 import ch.randelshofer.quaqua.panther.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
 
-//import ch.randelshofer.gui.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -33,8 +31,6 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
 import java.util.*;
-//import java.util.regex.*;
-import javax.swing.plaf.metal.MetalFileChooserUI;
 
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
@@ -1665,7 +1661,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 // the filename filter.
                 // FIXME - Maybe we should disable the save
                 // button when the name is not matched by the filter?
-                setFileName(null);
+                //setFileName(null);
                 fireContentsChanged(this, -1, -1);
             }
         }
