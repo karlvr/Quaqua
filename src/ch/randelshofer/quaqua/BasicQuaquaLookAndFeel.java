@@ -266,16 +266,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         Object listSelectionForeground = new InactivatableColorUIResource(
                 ((Color) table.get("listHighlightText")).getRGB(),
                 ((Color) inactiveSelectionForeground).getRGB());
-        Object treeSelectionBackground = new InactivatableColorUIResource(
-                ((Color) table.get("listHighlight")).getRGB(),
-                inactiveSelectionBackground.getRGB());
-        Object treeSelectionForeground = new InactivatableColorUIResource(
-                ((Color) table.get("listHighlightText")).getRGB(),
-                ((Color) inactiveSelectionForeground).getRGB());
-        //Object listSelectionBackground = table.get("listHighlight");
-        //Object listSelectionForeground = table.get("listHighlightText");
-        //Object listInactiveSelectionBackground = inactiveSelectionBackground;
-        //Object listInactiveSelectionForeground = inactiveSelectionForeground;
 
         ColorUIResource listSelectionBorderColor = (ColorUIResource) table.get("listHighlightBorder");
         ColorUIResource listAlternateBackground = Preferences.get("AppleAquaColorVariant").equals("6") ? new ColorUIResource(0xf0f0f0) : new ColorUIResource(0xedf3fe);
@@ -544,9 +534,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolTip.background", table.get("info"),
             "Tree.alternateBackground.0", listAlternateBackground,
             "Tree.alternateBackground.1", listBackground,
-            "Tree.selectionBackground", treeSelectionBackground,
+            "Tree.selectionBackground", listSelectionBackground,
             "Tree.selectionBorderColor", listSelectionBorderColor,
-            "Tree.selectionForeground", treeSelectionForeground,
+            "Tree.selectionForeground", listSelectionForeground,
             "Tree.controlForeground", listForeground,
             "Tree.textBackground", translucentColor,
             "Tree.textForeground", listForeground,
