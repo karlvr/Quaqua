@@ -16,9 +16,7 @@ package ch.randelshofer.quaqua.panther;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.panther.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
 
-//import ch.randelshofer.gui.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.*;
@@ -32,7 +30,7 @@ import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
 import java.util.*;
-//import java.util.regex.*;
+
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
  * to the one provided with the native Aqua user interface on Mac OS X 10.3
