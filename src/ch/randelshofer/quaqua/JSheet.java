@@ -176,17 +176,10 @@ public class JSheet extends JDialog {
         // If the sheet is experimental, we need some special handling
         // so that the JSheet is handled correctly
         windowEventHandler = new WindowAdapter() {
-            // Iconifying the owner window causes some problems
-            // This is an attempt do solve it
-            public void windowDeiconified(WindowEvent e) {
-                JSheet.this.setVisible(false);
-                JSheet.this.setVisible(true);
-            }
-            
-            public void windowIconified(WindowEvent e) {
+            //public void windowIconified(WindowEvent e) {
                 // TODO The sheet is reshown when the parent window is iconified.
                 // setVisible(false) on the sheet only deiconifies the owner window.
-            }
+            //}
 
             public void windowActivated(WindowEvent e) {
                 if (JSheet.this.isVisible() && JSheet.this.getOwner() == e.getWindow())
@@ -213,6 +206,7 @@ public class JSheet extends JDialog {
             if(owner != null) {
                 owner.addWindowListener(windowEventHandler);
             }
+            isInstalled = true;
         } else if (!isNativeSheetSupported() && !isInstalled && !isExperimentalSheet()) {
             Window owner = getOwner();
             if (owner != null) {
