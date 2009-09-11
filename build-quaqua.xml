@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="5.5alpha1"/>
-        <property name="version" value="${versionNumber} 2009-09-01"/>
+        <property name="versionNumber" value="6.0alpha0"/>
+        <property name="version" value="${versionNumber} 2009-09-11"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -132,10 +132,10 @@
              specify the minimum target system for the software.
              http://developer.apple.com/documentation/DeveloperTools/Conceptual/cross_development/Using/chapter_3_section_2.html#//apple_ref/doc/uid/20002000-1114311-BABGCAAB
              -->
-        <arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
+        <!--arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
+        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/-->
+        <arg value="/Developer/SDKs/MacOSX10.5.sdk"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/>
-        <!--<arg value="/Developer/SDKs/MacOSX10.5.sdk"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.5"/>-->
         
         <!-- -o file
              Place output in file file. This applies regardless to whatever sort 
@@ -300,11 +300,29 @@
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
-        <!-- We compile as much classes as we can with Java 1.3. -->
+        <!-- We compile as much classes as we can with Java 1.4. -->
         <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" 
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true" 
                 srcdir="${srcdir}" source="1.4" target="1.4"
+            >
+            <include name="**/Quaqua14FileChooserLAF.java"/>
+            <include name="**/QuaquaLeopardFileChooserLAF.java"/>
+            <include name="**/QuaquaLookAndFeel.java"/>
+            <include name="**/QuaquaBrowserUI.java"/>
+            <include name="**/DefaultBrowserCellRenderer.java"/>
+            <include name="**/QuaquaTreeUI.java"/>
+            <include name="**/QuaquaPantherFileChooserUI.java"/>
+            <include name="**/QuaquaLeopardFileChooserUI.java"/>
+            <include name="**/filechooser/*FileSystemView.java"/>
+            <exclude name="**/*15*.java"/>
+            <exclude name="**/*16*.java"/>
+        </javac>
+        <!-- We compile the remaining classes with 1.6. -->
+        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar"
+                debug="${debug}" deprecation="true"
+                destdir="${builddir}" optimize="true"
+                srcdir="${srcdir}" source="1.6" target="1.6"
             >
             <include name="**/Quaqua14FileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>

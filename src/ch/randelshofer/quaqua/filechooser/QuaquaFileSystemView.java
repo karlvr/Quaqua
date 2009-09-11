@@ -74,15 +74,10 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         className = "ch.randelshofer.quaqua.leopard.filechooser.DarwinLeopardFileSystemView";
                         break;
                     case QuaquaManager.LEOPARD :
-                        // In theory, we could use the DarwinLeopardFileSystemView
-                        // if native code is available for Quaqua. But it turns
-                        // out, that Apple's FileView implementation can read
-                        // icons much faster than our OSXFile class does.
-                        /*if (OSXFile.canWorkWithAliases()) {
-                        className = "ch.randelshofer.quaqua.leopard.filechooser.DarwinLeopardFileSystemView";
-                        } else {*/
                         className = "ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView";
-                        //}
+                        break;
+                    case QuaquaManager.SNOW_LEOPARD :
+                        className = "ch.randelshofer.quaqua.snow_leopard.filechooser.OSX16SnowLeopardFileSystemView";
                         break;
                     case QuaquaManager.TIGER :
                         className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
@@ -94,7 +89,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                     	className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
                     	break;
                     default :
-                        className = "ch.randelshofer.quaqua.tiger.filechooser.OSXTigerFileSystemView";
+                        className = "ch.randelshofer.quaqua.snow_leopard.filechooser.OSX16SnowLeopardFileSystemView";
                         break;
                 }
             try {
