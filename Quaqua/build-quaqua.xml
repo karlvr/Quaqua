@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="5.5alpha"/>
-        <property name="version" value="${versionNumber} 2009-07-19"/>
+        <property name="versionNumber" value="5.5alpha1"/>
+        <property name="version" value="${versionNumber} 2009-09-01"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -383,7 +383,7 @@ Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;     
 SnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel;
 SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
-SnowLeopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;
+SnowLeopard.16=ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel;
 CrossTiger.14=ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel; 
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel; 

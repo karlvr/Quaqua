@@ -343,7 +343,7 @@ public class QuaquaManager {
             lafs.put("Leopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("SnowLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("SnowLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
-            lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
+            lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua16SnowLeopardLookAndFeel");
             lafs.put("CrossTiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
@@ -366,7 +366,7 @@ public class QuaquaManager {
         return OS;
     }
     /**
-     * Returns true if the current operating system is know to be a Mac OS X.
+     * Returns true if the current operating system is known to be Mac OS X.
      */
     public static boolean isOSX() {
         return OS >= CHEETAH;
@@ -409,21 +409,7 @@ public class QuaquaManager {
         }
         
         String javaVersion = getProperty("java.version","");
-        // FIXME - Remove Java 1.3 support
-        if (className.equals("com.apple.mrj.swing.MacLookAndFeel")) {
-            switch (design) {
-                case JAGUAR :
-                    lafKey = "Jaguar.13";
-                    break;
-                case PANTHER :
-                    lafKey = "Panther.13";
-                    break;
-                case TIGER :
-                default :
-                    lafKey = "Tiger.13";
-                    break;
-            }
-        } else if (className.equals("apple.laf.AquaLookAndFeel")) {
+        if (className.equals("apple.laf.AquaLookAndFeel")) {
             if (javaVersion.startsWith("1.4")) {
                 switch (design) {
                     case JAGUAR :
