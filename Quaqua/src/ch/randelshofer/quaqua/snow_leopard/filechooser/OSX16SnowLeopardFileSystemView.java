@@ -1,7 +1,7 @@
 /*
- * @(#)OSXLeopardFileSystemView.java  
+ * @(#)OSX16SnowLeopardFileSystemView.java
  *
- * Copyright (c) 2007-2009 Werner Randelshofer
+ * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -10,26 +10,30 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-package ch.randelshofer.quaqua.leopard.filechooser;
+package ch.randelshofer.quaqua.snow_leopard.filechooser;
 
+import ch.randelshofer.quaqua.leopard.filechooser.*;
 import ch.randelshofer.quaqua.filechooser.*;
+import ch.randelshofer.quaqua.osx.OSXFile;
 import java.io.*;
 import java.util.*;
+import javax.swing.Icon;
+import javax.swing.UIManager;
 
 /**
- * OSXLeopardFileSystemView.
+ * OSX16SnowLeopardFileSystemView.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
+public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
 
     private static final File volumesFolder = new File("/Volumes");
     private static final File networkFolder = new File("/Network");
     private static final File computer = new File("/");
     private static File systemVolume;
 
-    public OSXLeopardFileSystemView() {
+    public OSX16SnowLeopardFileSystemView() {
     }
 
     public File getSystemVolume() {
@@ -258,6 +262,20 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
     public File getDefaultDirectory() {
         return getHomeDirectory();
     }
+
+    @Override
+    public Icon getSystemIcon(File f) {
+        if (f.equals(getComputer())) {
+            return UIManager.getIcon("FileView.computerIcon");
+        } else {
+            if (OSXFile.canWorkWithAliases()) {
+                return OSXFile.getIcon(f, 16);
+            } else {
+                return target.getSystemIcon(f);
+            }
+        }
+    }
+
 }
 
 

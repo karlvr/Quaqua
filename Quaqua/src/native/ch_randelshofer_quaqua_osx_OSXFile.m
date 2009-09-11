@@ -458,12 +458,17 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
         NSData* dataNS = NULL;
         NSArray* reps = [image representations];
         NSEnumerator *enumerator = [reps objectEnumerator];
+        int bestSize = -1;
         while (imageRep = [enumerator nextObject]) {
-            if ([imageRep pixelsWide] == size && 
-                [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
-                NSBitmapImageRep* bitmapRep = imageRep;
-                dataNS = [bitmapRep TIFFRepresentation];
-                break;
+            if ([imageRep pixelsWide] >= size &&
+                (bestSize == -1 || [imageRep pixelsWide] - size < bestSize - size)) {
+
+                dataNS = [imageRep TIFFRepresentation];
+                bestSize = [imageRep pixelsWide];
+
+                if ([imageRep pixelsWide] == size) {
+                    break;
+                }
             }
         }
         if (dataNS == NULL) {

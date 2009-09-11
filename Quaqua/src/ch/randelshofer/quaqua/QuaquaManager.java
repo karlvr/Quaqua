@@ -14,7 +14,6 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
-import ch.randelshofer.quaqua.filechooser.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.util.*;
@@ -343,7 +342,7 @@ public class QuaquaManager {
             lafs.put("Leopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("SnowLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("SnowLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
-            lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua16SnowLeopardLookAndFeel");
+            lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel");
             lafs.put("CrossTiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
