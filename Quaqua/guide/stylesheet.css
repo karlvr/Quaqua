@@ -60,6 +60,15 @@ h3 {
 	color: #000000;
 	text-decoration: none;
 }
+.nav {
+	background-color: #E8E8E8;
+	margin: 0px;
+	padding: 10px;
+}
+.nav li {
+	margin: 0px;
+	padding: 0px;
+}
 .nav2 {
 	font-family: Tahoma, "Trebuchet MS", Arial, Helvetica, sans-serif;
 	font-size: 11px;
@@ -186,6 +195,10 @@ ol {
 }
 a {
 	font-weight: bold;
+	text-decoration: none;
+}
+a:hover {
+	text-decoration: underline;
 }
 .listingsmall {
 	font-family: Verdana, Arial, Helvetica, sans-serif;
