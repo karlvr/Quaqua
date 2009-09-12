@@ -35,6 +35,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
     protected final static String tigerDir = "/ch/randelshofer/quaqua/tiger/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";
+    protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snow_leopard/images/";
 
     /** Creates a new instance. */
     public BasicQuaquaLookAndFeel(String targetClassName) {

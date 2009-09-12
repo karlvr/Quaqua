@@ -448,39 +448,41 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     NSImage* image = [workspace iconForFile:pathNS];
     //NSLog (@"%@", image);
     if (image != NULL) {
-        // Set the desired size of the image
-        NSSize desiredSize = { size, size };
-        [image setSize:desiredSize];
 
-        // Unfortunately, setting the desired size does not always have an effect,
-        // we need to choose the best image representation by ourselves.
+        // Create a scaled version of the image by choosing the best
+        // representation.
+        NSSize desiredSize = { size, size };
+        NSImage* scaledImage = [[[NSImage alloc] initWithSize:desiredSize] autorelease];
+        [scaledImage setSize: desiredSize];
         NSImageRep* imageRep;
-        NSData* dataNS = NULL;
-        NSArray* reps = [image representations];
-        NSEnumerator *enumerator = [reps objectEnumerator];
-        int bestSize = -1;
+        NSImageRep* bestRep = NULL;
+        NSEnumerator *enumerator = [[image representations] objectEnumerator];
         while (imageRep = [enumerator nextObject]) {
             if ([imageRep pixelsWide] >= size &&
-                (bestSize == -1 || [imageRep pixelsWide] - size < bestSize - size)) {
+                (bestRep == NULL || [imageRep pixelsWide] < [bestRep pixelsWide]) ) {
 
-                dataNS = [imageRep TIFFRepresentation];
-                bestSize = [imageRep pixelsWide];
-
-                if ([imageRep pixelsWide] == size) {
-                    break;
-                }
+                bestRep = imageRep;
             }
         }
-        if (dataNS == NULL) {
-            dataNS = [image TIFFRepresentation];
+        if (bestRep != NULL) {
+            [scaledImage addRepresentation: bestRep];
+        } else {
+            // We should never get to here, but if we do, we use the
+            // original image.
+            scaledImage = image;
+            [scaledImage setSize: desiredSize];
         }
 
-        unsigned len = [dataNS length];
-        void* bytes = malloc(len);
-        [dataNS getBytes: bytes];
-        result = (*env)->NewByteArray(env, len);
-        (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
-        free(bytes);
+        // Convert image to TIFF
+        NSData* dataNS = [scaledImage TIFFRepresentation];
+        if (dataNS != NULL) {
+            unsigned len = [dataNS length];
+            void* bytes = malloc(len);
+            [dataNS getBytes: bytes];
+            result = (*env)->NewByteArray(env, len);
+            (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+            free(bytes);
+        }
     }
 
 
@@ -513,7 +515,7 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetBasicIte
     }
 
     // Release the C char array
-    (*env)->ReleaseStringChars(env, pathJ, pathC);
+    (*env)->ReleaseStringUTFChars(env, pathJ, pathC);
 
     // Return the result
     return (err == 0) ? itemInfoRecord.flags : 0;

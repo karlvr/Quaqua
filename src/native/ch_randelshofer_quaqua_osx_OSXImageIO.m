@@ -90,28 +90,32 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
     if (imageNS != NULL) {
         [imageNS autorelease];
 
-        // Set the desired size of the image
+        // Create a scaled version of the image by choosing the best
+        // representation.
         NSSize desiredSize = { width, height };
-        [imageNS setSize:desiredSize];
-
-        // Unfortunately, setting the desired size does not always have an effect,
-        // we need to choose the best image representation by ourselves.
+        NSImage* scaledImage = [[[NSImage alloc] initWithSize:desiredSize] autorelease];
+        [scaledImage setSize: desiredSize];
         NSImageRep* imageRep;
-        NSData* dataNS = NULL;
-        NSArray* reps = [imageNS representations];
-        NSEnumerator *enumerator = [reps objectEnumerator];
+        NSImageRep* bestRep = NULL;
+        NSEnumerator *enumerator = [[imageNS representations] objectEnumerator];
         while (imageRep = [enumerator nextObject]) {
-            if ([imageRep pixelsWide] == width &&
-                [imageRep pixelsHigh] == height &&
-                [imageRep isKindOfClass: [NSBitmapImageRep class]]) {
-                NSBitmapImageRep* bitmapRep = imageRep;
-                dataNS = [bitmapRep TIFFRepresentation];
-                break;
+            if ([imageRep pixelsWide] >= width &&
+                (bestRep == NULL || [imageRep pixelsWide] < [bestRep pixelsWide]) ) {
+
+                bestRep = imageRep;
             }
         }
-        if (dataNS == NULL) {
-            dataNS = [imageNS TIFFRepresentation];
+        if (bestRep != NULL) {
+            [scaledImage addRepresentation: bestRep];
+        } else {
+            // We should never get to here, but if we do, we use the
+            // original image.
+            scaledImage = imageNS;
+            [scaledImage setSize: desiredSize];
         }
+
+        // Convert image to TIFF
+        NSData* dataNS = [scaledImage TIFFRepresentation];
         if (dataNS != NULL) {
             unsigned len = [dataNS length];
             void* bytes = malloc(len);
