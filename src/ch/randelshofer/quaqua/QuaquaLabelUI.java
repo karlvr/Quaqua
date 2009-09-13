@@ -121,31 +121,26 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         if (style != null) {
             boolean selected = style.endsWith("Selected");
 
-            if ((style.equals("category") || style.equals("categorySelected"))
-                    && UIManager.getFont("Tree.category.font.sideBar") != null
-                    && UIManager.getColor("Tree.category.foreground.sideBar") != null) {
+            if (style.startsWith("category")) {
                 
                 s = s.toUpperCase();
-                font = UIManager.getFont("Tree.category.font.sideBar");
+                font = UIManager.getFont("Tree.sideBarCategory.font");
                 style = (selected) ? "shadow" : "emboss";
-            } else if ((style.equals("row") || style.equals("rowSelected"))
-                    && UIManager.getFont("Tree.font.sideBar") != null
-                    && UIManager.getFont("Tree.font.selected.sideBar") != null
-                && UIManager.getColor("Tree.foreground.sideBar") != null) {
+                foreground=UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
+
+            } else if (style.startsWith("row")) {
                 
                 font = selected ? UIManager
-                        .getFont("Tree.font.selected.sideBar") : UIManager
-                        .getFont("Tree.font.sideBar");
+                        .getFont("Tree.sideBar.selectionFont") : UIManager
+                        .getFont("Tree.sideBar.font");
                 style = selected ? "shadow" : null;
             }
 
-            if (style != null && style.equals("emboss")
-                    && UIManager.getColor("Label.embossForeground") != null) {
+            if (style != null && style.equals("emboss")) {
                 g.setFont(font);
                 g.setColor(UIManager.getColor("Label.embossForeground"));
                 QuaquaUtilities.drawString(g, s, accChar, textX, textY + 1);
-            } else if (style != null && style.equals("shadow")
-                    && UIManager.getColor("Label.shadowForeground") != null) {
+            } else if (style != null && style.equals("shadow")) {
                 g.setFont(font);
                 g.setColor(UIManager.getColor("Label.shadowForeground"));
                 QuaquaUtilities.drawString(g, s, accChar, textX, textY + 1);
@@ -169,39 +164,32 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         String style = (String) l.getClientProperty("Quaqua.Label.style");
         if (style != null) {
             boolean selected = style.endsWith("Selected");
+            boolean active = ! style.contains("Inactive");
 
-            if ((style.equals("category") || style.equals("categorySelected"))
-                    && UIManager.getFont("Tree.category.font.sideBar") != null
-                    && UIManager.getColor("Tree.category.foreground.sideBar") != null) {
+            if (style.startsWith("category")) {
                 
                 s = s.toUpperCase();
-                font = UIManager.getFont("Tree.category.font.sideBar");
-                foreground = UIManager
-                        .getColor("Tree.category.foreground.sideBar");
+                font = UIManager.getFont("Tree.sideBarCategory.font");
+                foreground=UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
                 if (foreground instanceof InactivatableColorUIResource)
                     ((InactivatableColorUIResource) foreground)
-                            .setActive(selected);
+                            .setActive(active);
                 style = (selected) ? "shadow" : "emboss";
                 
-            } else if ((style.equals("row") || style.equals("rowSelected"))
-                    && UIManager.getFont("Tree.font.sideBar") != null
-                    && UIManager.getColor("Tree.foreground.sideBar") != null) {
-                
-                font = UIManager.getFont("Tree.font.sideBar");
-                foreground = UIManager.getColor("Tree.foreground.sideBar");
+            } else if (style.startsWith("row")) {
+                font = UIManager.getFont(selected ? "Tree.sideBar.selectionFont" : "Tree.sideBar.font");
+                foreground = UIManager.getColor(selected ? "Tree.sideBar.selectionForeground":"Tree.sideBar.foreground");
                 if (foreground instanceof InactivatableColorUIResource)
                     ((InactivatableColorUIResource) foreground)
-                            .setActive(selected);
+                            .setActive(active);
                 style = (selected) ? "shadow" : null;
             }
 
-            if (style != null && style.equals("emboss")
-                    && UIManager.getColor("Label.embossForeground") != null) {
+            if (style != null && style.equals("emboss")) {
                 g.setFont(font);
                 g.setColor(UIManager.getColor("Label.embossForeground"));
                 QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY + 1);
-            } else if (style != null && style.equals("shadow")
-                    && UIManager.getColor("Label.shadowForeground") != null) {
+            } else if (style != null && style.equals("shadow")) {
                 g.setFont(font);
                 g.setColor(UIManager.getColor("Label.shadowForeground"));
                 QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY + 1);

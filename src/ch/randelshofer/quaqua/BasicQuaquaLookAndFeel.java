@@ -1484,21 +1484,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         Boolean enforceVisualMargin = new Boolean(QuaquaManager.getProperty("Quaqua.enforceVisualMargin", "false").equals("true"));
 
         Object[] uiDefaults = {
-            "Browser.expandedIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{commonDir + "Browser.disclosureIcons.png", four, Boolean.TRUE, zero}),
-            "Browser.expandingIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{commonDir + "Browser.disclosureIcons.png", four, Boolean.TRUE, one}),
-            "Browser.selectedExpandedIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{commonDir + "Browser.disclosureIcons.png", four, Boolean.TRUE, two}),
-            "Browser.selectedExpandingIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{commonDir + "Browser.disclosureIcons.png", four, Boolean.TRUE, three}),
-            "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
+            "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{commonDir + "Browser.sizeHandleIcon.png", one, Boolean.TRUE, one}),
+            //
             //"Button.actionMap", ...,
             "Button.border", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder", new Object[]{"push"}),

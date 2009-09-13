@@ -63,7 +63,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     private String newFolderToolTipText = null;
     private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
-    private String newFolderDialogPrompt,  newFolderDefaultName,  newFolderErrorText,  newFolderExistsErrorText,  newFolderTitleText;
+    private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
     private final static File computer = AliasFileSystemTreeModel.COMPUTER;
     private SidebarTreeModel sidebarTreeModel;
     /**
@@ -447,6 +447,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             sidebarTree.setUI((TreeUI) QuaquaTreeUI.createUI(sidebarTree));
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
+        sidebarTree.setRequestFocusEnabled(false);
 
         sidebarTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 
@@ -503,7 +504,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 UIManager.getIcon("Browser.expandingIcon"),
                 UIManager.getIcon("Browser.expandedIcon"),
                 UIManager.getIcon("Browser.selectedExpandingIcon"),
-                UIManager.getIcon("Browser.selectedExpandedIcon"));
+                UIManager.getIcon("Browser.selectedExpandedIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandedIcon"));
         browser.setColumnCellRenderer(fileRenderer);
         if (fc.isMultiSelectionEnabled()) {
             browser.setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
@@ -906,12 +909,12 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
             if (list.size() == 0 && files.length > 0) {
                 list.add(fc.getFileSystemView().getParentDirectory(files[0]));
-            /*
-            // Set the dir name, if it does not exist
-            if (! files[0].exists()) {
-            setFileName(files[0].getName());
-            }
-             */
+                /*
+                // Set the dir name, if it does not exist
+                if (! files[0].exists()) {
+                setFileName(files[0].getName());
+                }
+                 */
             }
 
             if (!subtreeModel.isDescendant(fullPath)) {
@@ -1024,7 +1027,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         approveButton.setText(getApproveButtonText(fc));
         approveButton.setToolTipText(getApproveButtonToolTipText(fc));
         approveButton.setMnemonic(getApproveButtonMnemonic(fc));
-    //cancelButton.setToolTipText(getCancelButtonToolTipText(fc));
+        //cancelButton.setToolTipText(getCancelButtonToolTipText(fc));
     }
 
     private void updateFileChooserFromBrowser() {
@@ -1377,8 +1380,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // Renderer for DirectoryComboBox
     //
     class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
-        private Border border = new EmptyBorder(1,0,1,0);
 
+        private Border border = new EmptyBorder(1, 0, 1, 0);
         IndentIcon ii = new IndentIcon();
         private JSeparator separator = new JSeparator();
 
@@ -1407,11 +1410,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) value;
             if (node == null) {
                 return separator;
-            /*
-            File root = new File("/");
-            setText(getFileChooser().getName(root));
-            ii.icon = getFileChooser().getIcon(root);
-             */
+                /*
+                File root = new File("/");
+                setText(getFileChooser().getName(root));
+                ii.icon = getFileChooser().getIcon(root);
+                 */
             } else {
                 setText(node.getUserName());
                 ii.icon = node.getIcon();
@@ -1606,7 +1609,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      * Render different type sizes and styles.
      */
     public class FilterComboBoxRenderer extends DefaultListCellRenderer {
-        private Border border = new EmptyBorder(1,0,1,0);
+
+        private Border border = new EmptyBorder(1, 0, 1, 0);
 
         public Component getListCellRendererComponent(JList list,
                 Object value, int index, boolean isSelected,
@@ -1621,7 +1625,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
             return this;
         }
-        }
+    }
 
     //
     // DataModel for Types Comboxbox
@@ -2015,7 +2019,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             if (fc.getSelectedFile() != null) {
                 ensureFileIsVisible(fc, fc.getSelectedFile());
             }
-        //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
+            //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
         }
 
         public void ancestorRemoved(AncestorEvent event) {
@@ -2154,11 +2158,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                         }
                     }
                 }
-            /*
-            TreePath path = subtreeModel.getPathToRoot();
-            getFileSystemTreeModel().lazyInvalidatePath(path);
-            getFileSystemTreeModel().validatePath(path);
-             */
+                /*
+                TreePath path = subtreeModel.getPathToRoot();
+                getFileSystemTreeModel().lazyInvalidatePath(path);
+                getFileSystemTreeModel().validatePath(path);
+                 */
             }
         }
     }

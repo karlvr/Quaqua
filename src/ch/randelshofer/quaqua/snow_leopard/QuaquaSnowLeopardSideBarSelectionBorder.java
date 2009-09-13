@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaLeopardSideBarSelectionBorder.java 
+ * @(#)QuaquaSnowLeopardSideBarSelectionBorder.java
  *
- * Copyright (c) 2007-2009 Werner Randelshofer
+ * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -10,8 +10,7 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
-package ch.randelshofer.quaqua.leopard;
+package ch.randelshofer.quaqua.snow_leopard;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
@@ -20,57 +19,54 @@ import javax.swing.border.*;
 import javax.swing.plaf.UIResource;
 
 /**
- * QuaquaLeopardSideBarSelectionBorder.
+ * QuaquaSnowLeopardSideBarSelectionBorder.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
-    
+public class QuaquaSnowLeopardSideBarSelectionBorder implements Border, UIResource {
+
     /** Creates a new instance. */
-    public QuaquaLeopardSideBarSelectionBorder() {
+    public QuaquaSnowLeopardSideBarSelectionBorder() {
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         Graphics2D g = (Graphics2D) gr;
         if (QuaquaUtilities.isFocused(c)) {
-            // top line: 0x4580c8
-            g.setColor(new Color(0x4580c8));
+            // top line: 0x5896d0
+            g.setColor(new Color(0x5896d0));
             g.fillRect(x, y, width, 1);
             g.setPaint(new GradientPaint(
-                    x, y + 1, new Color(0x5c93d5),
-                    x, y + height - 1, new Color(0x1a58ad),
-                    true
-                    ));
+                    x, y + 1, new Color(0x6ea6d6),
+                    x, y + height - 1, new Color(0x216cb7),
+                    true));
         } else {
             if (QuaquaUtilities.isOnActiveWindow(c)) {
-                // top line: 0x91a0c0
-            g.setColor(new Color(0x91a0c0));
-            g.fillRect(x, y, width, 1);
+                // top line: 0xa2b1cb
+                g.setColor(new Color(0xa2b1cb));
+                g.fillRect(x, y, width, 1);
                 g.setPaint(new GradientPaint(
-                        x, y + 1,new Color(0xa9b1d0),
-                        x, y + height - 1,new Color(0x6e81a9),
-                        true
-                        ));
-                
+                        x, y + 1, new Color(0xb1bfd8),
+                        x, y + height - 1, new Color(0x8296b8),
+                        true));
+
             } else {
-                // top line: 0x979797
-            g.setColor(new Color(0x979797));
-            g.fillRect(x, y, width, 1);
+                // top line: 0xa8a8a8
+                g.setColor(new Color(0xa8a8a8));
+                g.fillRect(x, y, width, 1);
                 g.setPaint(new GradientPaint(
-                        x, y + 1,new Color(0xb4b4b4),
-                        x, y + height - 1,new Color(0x8a8a8a)
-                        ));
+                        x, y + 1, new Color(0xc1c1c1),
+                        x, y + height - 1, new Color(0x9c9c9c)));
             }
         }
         g.fillRect(x, y + 1, width, height - 1);
     }
+
     public Insets getBorderInsets(Component c) {
         return new Insets(0, 0, 0, 0);
     }
-    
+
     public boolean isBorderOpaque() {
         return true;
     }
-    
 }
