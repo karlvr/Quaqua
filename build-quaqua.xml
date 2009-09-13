@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.0alpha0"/>
-        <property name="version" value="${versionNumber} 2009-09-11"/>
+        <property name="versionNumber" value="6.0"/>
+        <property name="version" value="${versionNumber} 2009-09-13"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -585,7 +585,8 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         <mkdir dir="${docdir}"/>
         <javadoc destdir="${docdir}" footer="&lt;font size=-2>Copyright 2003-2007 (c) Werner Randelshofer.&lt;br>All rights reserved.&lt;/font>" 
         header="Quaqua ${version}" encoding="UTF-8"
-        windowtitle="Quaqua ${version}">
+        windowtitle="Quaqua ${version}"
+        maxmemory="256M">
             <sourcepath>
                 <pathelement location="${srcdir}"/>
             </sourcepath>
