@@ -14,10 +14,14 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.lang.reflect.Method;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -166,7 +170,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             // Therefore we can only do a short circuit, if the value is true.
             if (value != null && value.booleanValue()) {
                 return true;
-            //return value.booleanValue();
+                //return value.booleanValue();
             }
         }
 
@@ -710,7 +714,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         Graphics2D g = (Graphics2D) gr;
         g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    /*g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
+        /*g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
     }
 
     /**
@@ -730,9 +734,9 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         if (w instanceof RootPaneContainer) {
             JRootPane rp = ((RootPaneContainer) w).getRootPane();
 
-                // Window alpha is for J2SE 5 on Mac OS X 10.5
-                // See: http://developer.apple.com/technotes/tn2007/tn2196.html#WINDOW_ALPHA
-                rp.putClientProperty("Window.alpha", new Float(value / 255f));
+            // Window alpha is for J2SE 5 on Mac OS X 10.5
+            // See: http://developer.apple.com/technotes/tn2007/tn2196.html#WINDOW_ALPHA
+            rp.putClientProperty("Window.alpha", new Float(value / 255f));
 
         }
     }
@@ -866,17 +870,17 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             c.setOpaque(((Boolean) value).booleanValue());
         } else if (propertyName == "autoscrolls") {
             c.setAutoscrolls(((Boolean) value).booleanValue());
-        /*
-        } else if (propertyName == "focusTraversalKeysForward") {
-        c.setFocusTraversalKeys(KeyboardFocusManager.
-        FORWARD_TRAVERSAL_KEYS,
-        (java.util.Set)value);*/
-        /*
-        } else if (propertyName == "focusTraversalKeysBackward") {
-        c.setFocusTraversalKeys(KeyboardFocusManager.
-        BACKWARD_TRAVERSAL_KEYS,
-        (java.util.Set)value);
-         */
+            /*
+            } else if (propertyName == "focusTraversalKeysForward") {
+            c.setFocusTraversalKeys(KeyboardFocusManager.
+            FORWARD_TRAVERSAL_KEYS,
+            (java.util.Set)value);*/
+            /*
+            } else if (propertyName == "focusTraversalKeysBackward") {
+            c.setFocusTraversalKeys(KeyboardFocusManager.
+            BACKWARD_TRAVERSAL_KEYS,
+            (java.util.Set)value);
+             */
         } else {
             throw new IllegalArgumentException("property \"" +
                     propertyName + "\" cannot be set using this method");
@@ -938,5 +942,59 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         } else if (p.equals("mini")) {
             c.setFont(UIManager.getFont("MiniSystemFont"));
         }
+    }
+
+    public static int getDragThreshold() {
+        try {
+            Integer value = (Integer) Methods.invokeStatic(DragSource.class, "getDragThreshold");
+            return value.intValue();
+        } catch (Throwable ex) {
+            ex.printStackTrace();
+            return 5;
+        }
+    }
+
+    public static int mapDragOperationFromModifiers(MouseEvent me,
+            TransferHandler th) {
+        return convertModifiersToDropAction(me.getModifiersEx(), th.getSourceActions((JComponent) me.getSource()));
+    }
+
+    public static int convertModifiersToDropAction(final int modifiers,
+            final int supportedActions) {
+        int dropAction = DnDConstants.ACTION_NONE;
+
+        /*
+         * Fix for 4285634.
+         * Calculate the drop action to match Motif DnD behavior.
+         * If the user selects an operation (by pressing a modifier key),
+         * return the selected operation or ACTION_NONE if the selected
+         * operation is not supported by the drag source.
+         * If the user doesn't select an operation search the set of operations
+         * supported by the drag source for ACTION_MOVE, then for
+         * ACTION_COPY, then for ACTION_LINK and return the first operation
+         * found.
+         */
+        switch (modifiers & (InputEvent.SHIFT_DOWN_MASK |
+                InputEvent.CTRL_DOWN_MASK)) {
+            case InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK:
+                dropAction = DnDConstants.ACTION_LINK;
+                break;
+            case InputEvent.CTRL_DOWN_MASK:
+                dropAction = DnDConstants.ACTION_COPY;
+                break;
+            case InputEvent.SHIFT_DOWN_MASK:
+                dropAction = DnDConstants.ACTION_MOVE;
+                break;
+            default:
+                if ((supportedActions & DnDConstants.ACTION_MOVE) != 0) {
+                    dropAction = DnDConstants.ACTION_MOVE;
+                } else if ((supportedActions & DnDConstants.ACTION_COPY) != 0) {
+                    dropAction = DnDConstants.ACTION_COPY;
+                } else if ((supportedActions & DnDConstants.ACTION_LINK) != 0) {
+                    dropAction = DnDConstants.ACTION_LINK;
+                }
+        }
+
+        return dropAction & supportedActions;
     }
 }

@@ -15,6 +15,7 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
+import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
@@ -37,13 +38,12 @@ public class QuaquaListUI extends BasicListUI {
     private boolean isStriped = false;
     private boolean isComboPopup = false;
     /** comboCellBorder is used to accommodate the cell in the combo popup. */
-    private final static Border comboCellBorder = new EmptyBorder(0,7,0,7);
+    private final static Border comboCellBorder = new EmptyBorder(0, 7, 0, 7);
     /**
      * This variable has the value of JList.VERTICAL, if Java 1.4 or higher is
      * present. In older Java VM's it has value 0.
      */
     private final static int VERTICAL;
-
 
     static {
         int value = 0;
@@ -54,7 +54,6 @@ public class QuaquaListUI extends BasicListUI {
         VERTICAL = value;
     }
     private final static Method getLayoutOrientation;
-
 
     static {
         Method value = null;
@@ -179,7 +178,7 @@ public class QuaquaListUI extends BasicListUI {
         int ch = rowBounds.height;
 
         if (list.isSelectedIndex(row)) {
-          ((Graphics2D) g).setPaint( PaintableColor.getPaint(UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground":"List.selectionBackground"),rendererComponent,cx,cy,cw,ch));
+            ((Graphics2D) g).setPaint(PaintableColor.getPaint(UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground" : "List.selectionBackground"), rendererComponent, cx, cy, cw, ch));
             g.fillRect(cx, cy, cw, ch);
         } else {
             if (isStriped) {
@@ -191,7 +190,7 @@ public class QuaquaListUI extends BasicListUI {
 
         if (isComboPopup) {
             cx += 7;
-            cw -=14;
+            cw -= 14;
         }
         rendererPane.paintComponent(g, rendererComponent, list, cx, cy, cw, ch, true);
     }
@@ -208,10 +207,10 @@ public class QuaquaListUI extends BasicListUI {
 
         boolean isEnabled = c.isEnabled();
         boolean isFocused = QuaquaUtilities.isFocused(c);
-        Object value = c.getClientProperty("Quaqua.List.style") ;
+        Object value = c.getClientProperty("Quaqua.List.style");
         isComboPopup = value != null && value.equals("comboPopup");
-        Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground":"List.selectionBackground");
-        Color selectionForeground = UIManager.getColor(isComboPopup ? "ComboBox.selectionForeground":"List.selectionForeground");
+        Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground" : "List.selectionBackground");
+        Color selectionForeground = UIManager.getColor(isComboPopup ? "ComboBox.selectionForeground" : "List.selectionForeground");
         if (selectionBackground instanceof InactivatableColorUIResource) {
             ((InactivatableColorUIResource) selectionBackground).setActive(isFocused);
         }
@@ -329,6 +328,7 @@ public class QuaquaListUI extends BasicListUI {
         private boolean mouseReleaseDeselects;
         private boolean mouseDragSelects;
         private MouseEvent armedEvent;
+        private int dragThreshold;
 
         public void mouseClicked(MouseEvent e) {
         }
@@ -350,6 +350,7 @@ public class QuaquaListUI extends BasicListUI {
                 }
             }
             armedEvent = e;
+            dragThreshold = QuaquaUtilities.getDragThreshold();
 
             // Note: Some applications depend on selection changes only occuring
             // on focused components. Maybe we must not do any changes to the
@@ -393,14 +394,30 @@ public class QuaquaListUI extends BasicListUI {
 
         public void mouseDragged(MouseEvent e) {
             mouseReleaseDeselects = false;
-            if (mouseDragSelects /*&& 
-                    QuaquaDragGestureRecognizer.exceedsMotionTreshold(armedEvent, e)*/) {
-                int index = locationToIndex(list, e.getPoint());
-                if (index != -1) {
-                    Rectangle cellBounds = getCellBounds(list, index, index);
-                    list.scrollRectToVisible(cellBounds);
-                    int anchorIndex = list.getAnchorSelectionIndex();
-                    list.setSelectionInterval(anchorIndex, index);
+            int dx = Math.abs(e.getX() - armedEvent.getX());
+            int dy = Math.abs(e.getY() - armedEvent.getY());
+            if ((dx > dragThreshold) || (dy > dragThreshold)) {
+                if (mouseDragSelects) {
+                    int index = locationToIndex(list, e.getPoint());
+                    if (index != -1) {
+                        Rectangle cellBounds = getCellBounds(list, index, index);
+                        list.scrollRectToVisible(cellBounds);
+                        int anchorIndex = list.getAnchorSelectionIndex();
+                        list.setSelectionInterval(anchorIndex, index);
+                    }
+                } else {
+                    if (list.getDragEnabled()) {
+                        TransferHandler th = list.getTransferHandler();
+                        int action = QuaquaUtilities.mapDragOperationFromModifiers(e, th);
+                        if (action != TransferHandler.NONE) {
+                            /* notify the BeforeDrag instance * /
+                            if (bd != null) {
+                            bd.dragStarting(dndArmedEvent);
+                            }*/
+                            th.exportAsDrag(list, armedEvent, action);
+                            //clearState();
+                        }
+                    }
                 }
             }
         }
@@ -444,15 +461,7 @@ public class QuaquaListUI extends BasicListUI {
      * @see #installUI
      */
     protected MouseInputListener createMouseInputListener() {
-        // Compatibility with SoyLatte: 
-        // Only use our own mouse listener on Java 1.4 and 1.5,
-        // it does not work with J2SE6.
-        if (System.getProperty("java.version").startsWith("1.4") ||
-                System.getProperty("java.version").startsWith("1.5")) {
-            return new MouseInputHandler();
-        } else {
-            return super.createMouseInputListener();
-        }
+        return new MouseInputHandler();
     }
 
     /**
