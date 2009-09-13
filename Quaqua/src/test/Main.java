@@ -81,7 +81,7 @@ public class Main extends javax.swing.JFrame {
         }
         setTitle(UIManager.getLookAndFeel().getName() + " " +
                 QuaquaManager.getVersion() +
-                " on Java " + System.getProperty("java.version"));
+                " on Java " + System.getProperty("java.version")+" "+System.getProperty("os.arch"));
 
         jMenuItem1.setAccelerator(KeyStroke.getKeyStroke("meta I"));
         jMenuItem1.addActionListener(new ActionListener() {

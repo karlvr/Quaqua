@@ -348,7 +348,10 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 UIManager.getIcon("Browser.expandingIcon"),
                 UIManager.getIcon("Browser.expandedIcon"),
                 UIManager.getIcon("Browser.selectedExpandingIcon"),
-                UIManager.getIcon("Browser.selectedExpandedIcon")));
+                UIManager.getIcon("Browser.selectedExpandedIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandedIcon")
+                ));
         if (fc.isMultiSelectionEnabled()) {
             browser.setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
         } else {

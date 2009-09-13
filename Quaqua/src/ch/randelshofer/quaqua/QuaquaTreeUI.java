@@ -65,6 +65,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /** This is set to true, if the editor may start editing. */
     private boolean isMouseReleaseStartsEditing;
     private boolean isDragRecognitionOngoing;
+    private final static Color TRANSPARENT_COLOR = new Color(0, true);
 
     /** Creates a new instance. */
     public QuaquaTreeUI() {
@@ -431,24 +432,36 @@ public class QuaquaTreeUI extends BasicTreeUI {
     }
 
     private Icon getTreeIcon(boolean isExpanded, boolean isSelected) {
-        Icon[] icons = (Icon[]) UIManager.get("Tree.icons");
+        boolean isSideBar = isSideBar();
+
+        Icon[] icons = (Icon[]) UIManager.get(isSideBar ? "Tree.sideBar.icons" : "Tree.icons");
         if (icons == null) {
             return UIManager.getIcon((isExpanded) ? "Tree.expandedIcon" : "Tree.collapsedIcon");
         } else {
-            Object property = tree.getClientProperty("Quaqua.Tree.style");
-            boolean isSideBar = property != null && (property.equals("sideBar") ||
-                    property.equals("sourceList"));
 
-            int index = (isExpanded) ? 3 : 0;
-            if (!isSideBar && !QuaquaUtilities.isOnActiveWindow(tree)) {
-                index += 2;
-            } else {
-                if (isSelected && QuaquaUtilities.isFocused(tree)) {
+            int index = (isExpanded) ? 5 : 0;
+            if (isSelected) {
+                if (QuaquaUtilities.isFocused(tree)) {
+                    index+=2;
+                } else if (QuaquaUtilities.isOnActiveWindow(tree)) {
                     index++;
-                } else if (!tree.isEnabled()) {
-                    index += 2;
+                } else {
+                    index += 3;
                 }
+            } else if (!tree.isEnabled()) {
+                index += 4;
             }
+
+            /*
+            if (!isSideBar && !QuaquaUtilities.isOnActiveWindow(tree)) {
+            index += 2;
+            } else {
+            if (isSelected && QuaquaUtilities.isFocused(tree)) {
+            index++;
+            } else if (!tree.isEnabled()) {
+            index += 2;
+            }
+            }*/
             return icons[index];
         }
     }
@@ -466,8 +479,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * @since 1.5
      */
     protected int getRowX(int row, int depth) {
-        Object property = tree.getClientProperty("Quaqua.Tree.style");
-        boolean isSideBar = property != null && (property.equals("sideBar") || property.equals("sourceList"));
+        boolean isSideBar = isSideBar();
 
         if (isSideBar) {
             return totalChildIndent * (Math.max(1, depth - 2) + depthOffset);
@@ -570,7 +582,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         Graphics2D g = (Graphics2D) gr;
         Object property = tree.getClientProperty("Quaqua.Tree.style");
         boolean isStriped = property != null && property.equals("striped");
-        boolean isSideBar = property != null && (property.equals("sideBar") || property.equals("sourceList"));
+        boolean isSideBar = isSideBar();
         Color[] stripes = {UIManager.getColor("Tree.alternateBackground.0"), UIManager.getColor("Tree.alternateBackground.1")};
         boolean isEnabled = c.isEnabled();
         boolean isFocused = QuaquaUtilities.isFocused(c);
@@ -853,7 +865,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         bounds.x += 4;
                     }
                     paintRow(g, paintBounds, insets, bounds, path,
-                            row, isExpanded, hasBeenExpanded, isLeaf, isEnabled, isFocused);
+                            row, isExpanded, hasBeenExpanded, isLeaf, isEnabled, isFocused, isActive);
                     if ((bounds.y + bounds.height) >= endY) {
                         done = true;
                     }
@@ -971,7 +983,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     protected void paintRow(Graphics g, Rectangle clipBounds,
             Insets insets, Rectangle bounds, TreePath path,
             int row, boolean isExpanded,
-            boolean hasBeenExpanded, boolean isLeaf, boolean isEnabled, boolean isFocused) {
+            boolean hasBeenExpanded, boolean isLeaf, boolean isEnabled, boolean isFocused, boolean isActive) {
         // Don't paint the renderer if editing this row.
         if (editingComponent != null && editingRow == row) {
             return;
@@ -995,28 +1007,25 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 (leadIndex == row));
 
         // CHANGE Set appropriate client property when component is a JLabel
-        Object property = tree.getClientProperty("Quaqua.Tree.style");
-        boolean isSideBar = property != null && (property.equals("sideBar") ||
-                property.equals("sourceList"));
+        boolean isSideBar = isSideBar();
         if (isSideBar && component instanceof JLabel) {
             JLabel label = (JLabel) component;
             boolean isTopLevel = path.getPathCount() == (isRootVisible() ? 1
                     : 2);
 
             label.putClientProperty("Quaqua.Label.style",
-                    isTopLevel ? isRowSelected ? "categorySelected"
-                    : "category" : isRowSelected ? "rowSelected"
-                    : "row");
+                    isTopLevel ? isRowSelected ? (isActive ? "categorySelected" : "categoryInactiveSelected")
+                    : (isActive ? "category" : "categoryInactive") : isRowSelected ? (isActive ? "rowSelected" : "rowInactiveSelected")
+                    : (isActive ? "row" : "rowInactive"));
 
             // We need to do some (very ugly) modifications because
             // DefaultTreeCellRenderers have their own paint-method
             // and paint a border around each item
             if (label instanceof DefaultTreeCellRenderer) {
                 DefaultTreeCellRenderer treeCellRenderer = (DefaultTreeCellRenderer) label;
-                treeCellRenderer.setBackgroundNonSelectionColor(new Color(0,
-                        true));
-                treeCellRenderer.setBackgroundSelectionColor(new Color(0, true));
-                treeCellRenderer.setBorderSelectionColor(new Color(0, true));
+                treeCellRenderer.setBackgroundNonSelectionColor(TRANSPARENT_COLOR);
+                treeCellRenderer.setBackgroundSelectionColor(TRANSPARENT_COLOR);
+                treeCellRenderer.setBorderSelectionColor(TRANSPARENT_COLOR);
                 treeCellRenderer.setBorder(new EmptyBorder(0, 0, 0, 0));
             }
 
@@ -1028,6 +1037,12 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
         rendererPane.paintComponent(g, component, tree, bounds.x, bounds.y,
                 bounds.width, bounds.height, true);
+    }
+
+    private boolean isSideBar() {
+        Object property = tree.getClientProperty("Quaqua.Tree.style");
+        return property != null && (property.equals("sideBar") ||
+                property.equals("sourceList"));
     }
 
     /**
@@ -1173,7 +1188,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             if (event.getSource() == treeSelectionModel) {
                 treeSelectionModel.resetRowSelection();
 
-            // Update the lead row in the JTree
+                // Update the lead row in the JTree
             } else if (event.getSource() == tree) {
                 if (name == "Frame.active") {
                     if (tree.getClientProperty("Quaqua.Tree.style") != null && (tree.getClientProperty("Quaqua.Tree.style").equals("sideBar") || tree.getClientProperty("Quaqua.Tree.style").equals("sourceList"))) {
@@ -1271,7 +1286,9 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 // Note: Some applications depend on selection changes only occuring
                 // on focused components. Maybe we must not do any changes to the
                 // selection changes at all, when the compnent is not focused?
+                if (tree.isRequestFocusEnabled()) {
                 tree.requestFocusInWindow();
+                }
 
 
                 TreePath path = getClosestPathForLocation(tree, e.getX(), e.getY());
@@ -1341,7 +1358,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         }
                     }
                 }
-            // tree.getSelectionModel().setValueIsAdjusting(mouseDragSelects);
+                // tree.getSelectionModel().setValueIsAdjusting(mouseDragSelects);
             }
         }
 
@@ -1452,7 +1469,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     int index = tree.getRowForPath(path);
                     tree.setSelectionInterval(index, index);
                 }
-            //tree.getSelectionModel().setValueIsAdjusting(false);
+                //tree.getSelectionModel().setValueIsAdjusting(false);
             }
             if (tree.isRequestFocusEnabled()) {
                 tree.requestFocus();

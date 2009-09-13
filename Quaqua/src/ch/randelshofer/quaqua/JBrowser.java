@@ -721,17 +721,17 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     public TreePath getPathForLocation(int x, int y) {
         // XXX - Check if closest path intersects x,y.
         return getClosestPathForLocation(x, y);
-    /*
-    TreePath closestPath = getClosestPathForLocation(x, y);
-    if (closestPath != null) {
-    Rectangle pathBounds = getPathBounds(closestPath);
-    if(pathBounds != null &&
-    x >= pathBounds.x && x < (pathBounds.x + pathBounds.width) &&
-    y >= pathBounds.y && y < (pathBounds.y + pathBounds.height))
-    return closestPath;
-    }
-    return null;
-     */
+        /*
+        TreePath closestPath = getClosestPathForLocation(x, y);
+        if (closestPath != null) {
+        Rectangle pathBounds = getPathBounds(closestPath);
+        if(pathBounds != null &&
+        x >= pathBounds.x && x < (pathBounds.x + pathBounds.width) &&
+        y >= pathBounds.y && y < (pathBounds.y + pathBounds.height))
+        return closestPath;
+        }
+        return null;
+         */
     }
 
     /**
@@ -1057,7 +1057,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         if (t != null) {
             for (int i = 0, n = getListColumnCount(); i < n; i++) {
                 new DropTarget(getColumnList(i), getDropTarget().getDefaultActions(), getDropTarget());
-            //getColumnList(i).setDropTarget(t);
+                //getColumnList(i).setDropTarget(t);
             }
         }
         if (previewColumn != null) {
@@ -1127,12 +1127,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         firePropertyChange(SELECTION_MODEL_PROPERTY, oldValue,
                 this.selectionModel);
-    /*
-    if (accessibleContext != null) {
-    accessibleContext.firePropertyChange(
-    AccessibleContext.ACCESSIBLE_SELECTION_PROPERTY,
-    Boolean.valueOf(false), Boolean.valueOf(true));
-    }*/
+        /*
+        if (accessibleContext != null) {
+        accessibleContext.firePropertyChange(
+        AccessibleContext.ACCESSIBLE_SELECTION_PROPERTY,
+        Boolean.valueOf(false), Boolean.valueOf(true));
+        }*/
     }
 
     /**
@@ -1387,14 +1387,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 getColumnList(i).setSelectedIndex(treeModel.getIndexOfChild(path.getPathComponent(i), path.getPathComponent(i + 1)));
             }
 
-        /*
-        if (getParent() != null) {
-        getParent().validate();
-        } else {
-        validate();
-        }*/
+            /*
+            if (getParent() != null) {
+            getParent().validate();
+            } else {
+            validate();
+            }*/
         }
-    //scrollRectToVisible(getComponent(getComponentCount() - 1).getBounds());
+        //scrollRectToVisible(getComponent(getComponentCount() - 1).getBounds());
     }
 
     /**
@@ -1450,7 +1450,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         if (getDropTarget() != null) {
             new DropTarget(l, getDropTarget().getDefaultActions(), getDropTarget());
-        //l.setDropTarget(getDropTarget());
+            //l.setDropTarget(getDropTarget());
         }
 
         if (cellRenderer != null) {
@@ -1684,7 +1684,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 case SwingConstants.HORIZONTAL:
                     for (int i = components.length - 1; i >= 0; i--) {
                         Rectangle cbounds = components[i].getBounds();
-                        
+
                         if (cbounds.x > visibleRect.x) {
                             increment = cbounds.x - visibleRect.x;
                         } else if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
@@ -1940,7 +1940,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     protected class BrowserLayout implements LayoutManager {
 
-        private int preferredWidth = 0,  preferredHeight = 0;
+        private int preferredWidth = 0, preferredHeight = 0;
         private boolean sizeUnknown = true;
 
         /* Required by LayoutManager. */
@@ -2096,7 +2096,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         public int getSize() {
             return size;
-        //return model.getChildCount(path.getLastPathComponent());
+            //return model.getChildCount(path.getLastPathComponent());
         }
 
         private void updateSize() {
@@ -2345,7 +2345,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             }
             // selectionModel.
             updateExpandedState(columnList);
-        //columnList.requestFocus();
+            //columnList.requestFocus();
         }
 
         private void updateExpandedState(JList columnList) {
@@ -2423,10 +2423,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     ((MouseListener) listeners[i]).mousePressed(refiredEvent);
                 }
             }
-        // Do not change the expanded state while the mouse is pressed.
-        // We update it only on mouse released, to be more consistent with
-        // the native file chooser.
-        //updateExpandedState(columnList);
+            // Do not change the expanded state while the mouse is pressed.
+            // We update it only on mouse released, to be more consistent with
+            // the native file chooser.
+            //updateExpandedState(columnList);
         }
     }
 
@@ -3233,18 +3233,26 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         private EmptyBorder noFocusBorder;
         protected Icon expandedIcon = null;
         protected Icon selectedExpandedIcon = null;
-        protected Icon expandingIcon = null;
+        protected Icon focusedSelectedExpandedIcon = null;
 
         public BrowserCellRendererWrapper(BrowserCellRenderer treeCellRenderer) {
             this.browserCellRenderer = treeCellRenderer;
 
-            BufferedImage iconImages[] = Images.split(
-                    Toolkit.getDefaultToolkit().createImage(
-                    DefaultColumnCellRenderer.class.getResource("images/Browser.disclosureIcons.png")),
-                    4, true);
+            expandedIcon = UIManager.getIcon("Browser.expandedIcon");
+            selectedExpandedIcon = UIManager.getIcon("Browser.selectedExpandedIcon");
+            focusedSelectedExpandedIcon = UIManager.getIcon("Browser.focusedSelectedExpandedIcon");
 
-            expandedIcon = new ImageIcon(iconImages[0]);
-            selectedExpandedIcon = new ImageIcon(iconImages[2]);
+            if (expandedIcon == null) {
+                BufferedImage iconImages[] = Images.split(
+                        Toolkit.getDefaultToolkit().createImage(
+                        DefaultColumnCellRenderer.class.getResource("snow_leopard/images/Browser.disclosureIcons.png")),
+                        6, true);
+System.err.println("JBrowser WARNING FALLBACK");
+
+                expandedIcon = new ImageIcon(iconImages[0]);
+                selectedExpandedIcon = new ImageIcon(iconImages[4]);
+                focusedSelectedExpandedIcon = new ImageIcon(iconImages[2]);
+            }
 
             noFocusBorder = new EmptyBorder(1, 1, 1, 1);
             setLayout(new BorderLayout());
@@ -3312,14 +3320,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 setBackground(list.getSelectionBackground());
                 Color foreground = (!isFocused && UIManager.getColor("List.inactiveSelectionForeground") != null) ? UIManager.getColor("List.inactiveSelectionForeground") : list.getSelectionForeground();
                 arrowLabel.setForeground(foreground);
-                arrowLabel.setIcon(selectedExpandedIcon);
+                arrowLabel.setIcon(isFocused ? focusedSelectedExpandedIcon : selectedExpandedIcon);
             } else {
                 setBackground(list.getBackground());
                 Color foreground = list.getForeground();
                 arrowLabel.setForeground(foreground);
                 arrowLabel.setIcon(expandedIcon);
             }
-
 
             arrowLabel.setVisible(!getModel().isLeaf(value));
 
