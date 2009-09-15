@@ -25,7 +25,7 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.0.1alpha"/>
+        <property name="versionNumber" value="6.0.1"/>
         <property name="version" value="${versionNumber} 2009-09-15"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
@@ -347,7 +347,7 @@
                 <include name="**/Browser*.png"/>
                 <include name="**/FileChooser.*.png"/>
                 <include name="**/FileView.*.png"/>
-                <include name="**/Tree.icons.png"/>
+                <include name="**/Tree.*.png"/>
                 <include name="**/*.txt"/>
             </fileset>
         </copy>
@@ -415,7 +415,7 @@ CrossLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookA
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
 CrossSnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel;
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
-        </echo>
+</echo>
         <mkdir dir="${distdir}"/>
         <jar basedir="${builddir}" compress="true" jarfile="${distdir}/quaqua.jar" 
             >
