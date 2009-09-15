@@ -949,7 +949,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             Integer value = (Integer) Methods.invokeStatic(DragSource.class, "getDragThreshold");
             return value.intValue();
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             return 5;
         }
     }
