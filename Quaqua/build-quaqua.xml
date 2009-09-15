@@ -9,8 +9,8 @@
     <target name="init">
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.0"/>
-        <property name="version" value="${versionNumber} 2009-09-13"/>
+        <property name="versionNumber" value="6.0.1alpha"/>
+        <property name="version" value="${versionNumber} 2009-09-15"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -315,6 +315,8 @@
             <include name="**/QuaquaPantherFileChooserUI.java"/>
             <include name="**/QuaquaLeopardFileChooserUI.java"/>
             <include name="**/filechooser/*FileSystemView.java"/>
+            <include name="**/QuaquaIconFactory.java"/>
+            <include name="**/QuaquaLeopardSideBarSelectionBorder.java"/>
             <exclude name="**/*15*.java"/>
             <exclude name="**/*16*.java"/>
         </javac>

@@ -1803,6 +1803,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "SplitPaneDivider.border", null,
             "SplitPaneDivider.focusable", Boolean.FALSE,
             "SplitPaneDivider.requestFocusEnabled", Boolean.FALSE,
+            //
             "TabbedPane.opaque", opaque,
             "TabbedPane.wrap.opaque", opaque,
             "TabbedPane.scroll.opaque", opaque,
@@ -1816,6 +1817,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "TableHeader.cellBorder", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaTableHeaderBorder$UIResource",
             new Object[]{commonDir + "TableHeader.borders.png", new Insets(6, 1, 9, 1)}),
+            //
             "TextArea.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
@@ -1827,6 +1829,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "TextPane.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextPane.opaque", Boolean.TRUE,
             "TextPane.popupHandler", textComponentPopupHandler,
+            //
             "ToggleButton.border", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder",
             new Object[]{"toggle"}),
@@ -1845,6 +1848,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolBar.separatorSize", null,
             "ToolBar.margin", new InsetsUIResource(0, 0, 0, 0),
             "ToolTip.border", new BorderUIResource.LineBorderUIResource(new ColorUIResource(0x303030)),
+            //
             "Tree.collapsedIcon", makeIcon(getClass(), commonDir + "Tree.collapsedIcon.png"),
             "Tree.expandedIcon", makeIcon(getClass(), commonDir + "Tree.expandedIcon.png"),
             "Tree.leftChildIndent", new Integer(7),

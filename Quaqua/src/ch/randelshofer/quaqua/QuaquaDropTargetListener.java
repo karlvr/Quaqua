@@ -81,7 +81,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
     void updateAutoscrollRegion(JComponent c) {
 	// compute the outer
 	Rectangle visible = c.getVisibleRect();
-	outer.reshape(visible.x, visible.y, visible.width, visible.height);
+	outer.setBounds(visible.x, visible.y, visible.width, visible.height);
 
 	// compute the insets
 	Insets i = new Insets(0, 0, 0, 0);
@@ -98,7 +98,7 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
 	}
 
 	// set the inner from the insets
-	inner.reshape(visible.x + i.left, 
+	inner.setBounds(visible.x + i.left,
 		      visible.y + i.top,
 		      visible.width - (i.left + i.right),
 		      visible.height - (i.top  + i.bottom));

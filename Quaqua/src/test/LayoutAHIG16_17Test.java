@@ -56,7 +56,7 @@ public class LayoutAHIG16_17Test extends javax.swing.JPanel {
         f.add(new LayoutAHIG16_17Test());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
-        f.show();
+        f.setVisible(true);
     }
     
     

@@ -3247,7 +3247,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         Toolkit.getDefaultToolkit().createImage(
                         DefaultColumnCellRenderer.class.getResource("snow_leopard/images/Browser.disclosureIcons.png")),
                         6, true);
-System.err.println("JBrowser WARNING FALLBACK");
 
                 expandedIcon = new ImageIcon(iconImages[0]);
                 selectedExpandedIcon = new ImageIcon(iconImages[4]);

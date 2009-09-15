@@ -49,7 +49,7 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
                     Toolkit.getDefaultToolkit().createImage(
                     DefaultColumnCellRenderer.class.getResource("snow_leopard/images/Browser.disclosureIcons.png")),
                     6, true);
-System.err.println("DefaultColumnCellRenderer WARNING FALLBACK");
+
             expandedIcon = new ImageIcon(iconImages[0]);
             selectedExpandedIcon = new ImageIcon(iconImages[4]);
             focusedSelectedExpandedIcon = new ImageIcon(iconImages[2]);

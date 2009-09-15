@@ -439,17 +439,21 @@ public class QuaquaTreeUI extends BasicTreeUI {
             return UIManager.getIcon((isExpanded) ? "Tree.expandedIcon" : "Tree.collapsedIcon");
         } else {
 
-            int index = (isExpanded) ? 5 : 0;
+            int index = (isExpanded) ? 6 : 0;
             if (isSelected) {
                 if (QuaquaUtilities.isFocused(tree)) {
-                    index+=2;
+                    index += 2;
                 } else if (QuaquaUtilities.isOnActiveWindow(tree)) {
                     index++;
                 } else {
+                    index += 4;
+                }
+            } else {
+                if (!tree.isEnabled()) {
+                    index += 5;
+                } else if (!QuaquaUtilities.isOnActiveWindow(tree)) {
                     index += 3;
                 }
-            } else if (!tree.isEnabled()) {
-                index += 4;
             }
 
             /*
@@ -1287,7 +1291,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 // on focused components. Maybe we must not do any changes to the
                 // selection changes at all, when the compnent is not focused?
                 if (tree.isRequestFocusEnabled()) {
-                tree.requestFocusInWindow();
+                    tree.requestFocusInWindow();
                 }
 
 
