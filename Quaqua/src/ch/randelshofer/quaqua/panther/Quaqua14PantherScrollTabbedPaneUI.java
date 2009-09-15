@@ -1185,7 +1185,7 @@ public class Quaqua14PantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     public boolean requestFocusForVisibleComponent() {
         Component visibleComponent = getVisibleComponent();
-        if (visibleComponent.isFocusTraversable()) {
+        if (visibleComponent.isFocusable()) {
             visibleComponent.requestFocus();
             return true;
         } else if (visibleComponent instanceof JComponent) {
@@ -1641,7 +1641,7 @@ public class Quaqua14PantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 if (selectedComponent != null) {
                     if (selectedComponent != visibleComponent &&
                             visibleComponent != null) {
-                        if (SwingUtilities.findFocusOwner(visibleComponent) != null) {
+                        if (QuaquaUtilities.findFocusOwner(visibleComponent) != null) {
                             shouldChangeFocus = true;
                         }
                     }

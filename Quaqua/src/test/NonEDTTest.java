@@ -38,6 +38,6 @@ public class NonEDTTest {
         f.getContentPane().add(fc);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
-        f.show();
+        f.setVisible(true);
     }
 }
