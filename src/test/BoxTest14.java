@@ -32,7 +32,7 @@ public class BoxTest14 extends javax.swing.JPanel {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new BoxTest14());
         f.pack();
-        f.show();
+        f.setVisible(true);
     }
     
     /** This method is called from within the constructor to

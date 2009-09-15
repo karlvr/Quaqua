@@ -110,7 +110,7 @@ public class DialogTest extends javax.swing.JPanel {
             JButton closeButton = new JButton("Close");
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
-                   frame.hide();
+                   frame.setVisible(false);
                } 
             });
             frame.getContentPane().add(closeButton);
@@ -132,7 +132,7 @@ public class DialogTest extends javax.swing.JPanel {
             JButton closeButton = new JButton("Close");
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
-                   modelessDialog.hide();
+                   modelessDialog.setVisible(false);
                } 
             });
             modelessDialog.getContentPane().add(closeButton);
@@ -153,7 +153,7 @@ public class DialogTest extends javax.swing.JPanel {
             JButton closeButton = new JButton("Close");
             closeButton.addActionListener(new ActionListener() {
                public void actionPerformed(ActionEvent evt) {
-                   modalDialog.hide();
+                   modalDialog.setVisible(false);
                } 
             });
             modalDialog.getContentPane().add(closeButton);

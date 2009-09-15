@@ -105,7 +105,7 @@ public class ColorRenderer extends JLabel implements TableCellRenderer {
                 sc.setViewportView(table);
                 f.getContentPane().add(sc);
                 f.setSize(400,400);
-                f.show();
+                f.setVisible(true);
             }
         });
     }

@@ -23,7 +23,7 @@ public class SpinningProgressIndicator extends JPanel implements Runnable{
         f.getContentPane().add(p);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.pack();
-        f.show();
+        f.setVisible(true);
     }
     
     

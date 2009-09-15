@@ -997,4 +997,31 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
         return dropAction & supportedActions;
     }
+    /**
+     * Return the child <code>Component</code> of the specified
+     * <code>Component</code> that is the focus owner, if any.
+     *
+     * @param c the root of the <code>Component</code> hierarchy to
+     *        search for the focus owner
+     * @return the focus owner, or <code>null</code> if there is no focus
+     *         owner, or if the focus owner is not <code>comp</code>, or a
+     *         descendant of <code>comp</code>
+     *
+     * @see java.awt.KeyboardFocusManager#getFocusOwner
+     */
+    public static Component findFocusOwner(Component c) {
+	Component focusOwner = KeyboardFocusManager.
+	    getCurrentKeyboardFocusManager().getFocusOwner();
+
+	// verify focusOwner is a descendant of c
+	for (Component temp = focusOwner; temp != null;
+	     temp = (temp instanceof Window) ? null : temp.getParent())
+	{
+	    if (temp == c) {
+		return focusOwner;
+	    }
+	}
+
+	return null;
+    }
 }

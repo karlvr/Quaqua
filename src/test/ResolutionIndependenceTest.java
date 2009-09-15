@@ -79,7 +79,7 @@ public class ResolutionIndependenceTest extends javax.swing.JPanel {
            f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
            f.add(new ResolutionIndependenceTest());
            f.pack();
-           f.show();
+           f.setVisible(true);
             }
         });
     }
