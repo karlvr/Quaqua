@@ -350,6 +350,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         splitPane.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 0, 1, 0, new java.awt.Color(153, 153, 153)));
         splitPane.setDividerLocation(134);
         splitPane.setDividerSize(1);
+        // Setting the background color is needed for the Quaqua FileChooser-only LAF.
+        if (UIManager.getColor("FileChooser.splitPaneBackground") != null) {
+            splitPane.setBackground(UIManager.getColor("FileChooser.splitPaneBackground"));
+        }
         splitPane.setContinuousLayout(true);
         sidebarScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -1889,7 +1893,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             optionPane.setWantsInput(true);
             optionPane.setInitialSelectionValue(newFolderDefaultName);
             JDialog dialog = optionPane.createDialog(getFileChooser(), newFolderTitleText);
-            dialog.show();
+            dialog.setVisible(true);
             dialog.dispose();
 
             return (optionPane.getInputValue() == JOptionPane.UNINITIALIZED_VALUE) ? null : (String) optionPane.getInputValue();

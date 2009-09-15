@@ -206,6 +206,7 @@ public class LeopardFileRenderer extends JComponent implements ListCellRenderer 
         if (labelColor != null) {
             if (isSelected) {
                 Insets i = UIManager.getInsets("FileChooser.browserCellSelectedColorLabelInsets");
+                if (i==null) i=new Insets(0,0,0,0);
                 r.y = viewRect.y + i.top;
                 r.width = r.height = viewRect.height - 1;
                 r.x = arrowIconRect.x - (arrowIconRect.width - r.width) / 2 + i.left;
@@ -213,6 +214,7 @@ public class LeopardFileRenderer extends JComponent implements ListCellRenderer 
                 //g.fillOval(r.x, r.y, r.width, r.height);
             } else {
                 Insets i = UIManager.getInsets("FileChooser.browserCellColorLabelInsets");
+                if (i==null) i=new Insets(0,0,0,0);
                 r.x = textRect.x - textIconGap + i.left;
                 r.y = viewRect.y + i.top;
                 r.width = viewRect.width - r.x + viewRect.x - i.right;

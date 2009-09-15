@@ -3,7 +3,6 @@
  *
  * Created on January 15, 2007, 11:44 AM
  */
-
 package test;
 
 import ch.randelshofer.quaqua.QuaquaManager;
@@ -19,11 +18,12 @@ import javax.swing.table.*;
  * @author  werni
  */
 public class TransferHandlerTest14 extends javax.swing.JPanel {
+
     static class TableTransferHandler extends TransferHandler {
-        
+
         public TableTransferHandler() {
         }
-        
+
         /**
          * Create a Transferable to use as the source for a data transfer.
          *
@@ -38,14 +38,14 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                 JTable table = (JTable) c;
                 int[] rows;
                 int[] cols;
-                
+
                 if (!table.getRowSelectionAllowed() && !table.getColumnSelectionAllowed()) {
                     return null;
                 }
-                
+
                 if (!table.getRowSelectionAllowed()) {
                     int rowCount = table.getRowCount();
-                    
+
                     rows = new int[rowCount];
                     for (int counter = 0; counter < rowCount; counter++) {
                         rows[counter] = counter;
@@ -53,10 +53,10 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                 } else {
                     rows = table.getSelectedRows();
                 }
-                
+
                 if (!table.getColumnSelectionAllowed()) {
                     int colCount = table.getColumnCount();
-                    
+
                     cols = new int[colCount];
                     for (int counter = 0; counter < colCount; counter++) {
                         cols[counter] = counter;
@@ -64,16 +64,16 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                 } else {
                     cols = table.getSelectedColumns();
                 }
-                
+
                 if (rows == null || cols == null || rows.length == 0 || cols.length == 0) {
                     return null;
                 }
-                
+
                 StringBuffer plainBuf = new StringBuffer();
                 StringBuffer htmlBuf = new StringBuffer();
-                
+
                 htmlBuf.append("<html>\n<body>\n<table>\n");
-                
+
                 for (int row = 0; row < rows.length; row++) {
                     htmlBuf.append("<tr>\n");
                     for (int col = 0; col < cols.length; col++) {
@@ -86,23 +86,24 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                     plainBuf.deleteCharAt(plainBuf.length() - 1).append("\n");
                     htmlBuf.append("</tr>\n");
                 }
-                
+
                 // remove the last newline
                 plainBuf.deleteCharAt(plainBuf.length() - 1);
                 htmlBuf.append("</table>\n</body>\n</html>");
-                
+
                 return new BasicTransferable(plainBuf.toString(), htmlBuf.toString());
             }
-            
+
             return null;
         }
-        
+
         public int getSourceActions(JComponent c) {
             return COPY;
         }
+
         public boolean canImport(JComponent comp, DataFlavor[] transferFlavors) {
             if (comp instanceof JTable) {
-                for (int i=0;i < transferFlavors.length; i++) {
+                for (int i = 0; i < transferFlavors.length; i++) {
                     if (transferFlavors[i].equals(DataFlavor.javaFileListFlavor)) {
                         return true;
                     }
@@ -110,6 +111,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return false;
         }
+
         /**
          * Causes a transfer to a component from a clipboard or a
          * DND drop operation.  The <code>Transferable</code> represents
@@ -123,33 +125,33 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
          */
         public boolean importData(JComponent comp, Transferable t) {
             JTable table = (JTable) comp;
-            System.out.println("TransferHandler.importData "+comp+" "+t);
+            System.out.println("TransferHandler.importData " + comp + " " + t);
             if (table.getModel() instanceof DefaultTableModel) {
                 DefaultTableModel dtm = (DefaultTableModel) table.getModel();
                 if (t.isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
                     java.util.List fileList;
                     try {
                         fileList = (java.util.List) t.getTransferData(DataFlavor.javaFileListFlavor);
-                        for (Iterator i=fileList.iterator(); i.hasNext(); ) {
+                        for (Iterator i = fileList.iterator(); i.hasNext();) {
                             File file = (File) i.next();
                             Object[] rowData = new Object[dtm.getColumnCount()];
                             switch (rowData.length) {
-                                case 0 :
+                                case 0:
                                     break;
-                                default :
-                                    // run through
-                                case 4 :
+                                default:
+                                // run through
+                                case 4:
                                     rowData[3] = file.isDirectory() ? "Directory" : "File";
-                                    // run through
-                                case 3 :
+                                // run through
+                                case 3:
                                     rowData[2] = new Double(file.length());
-                                    // run through
-                                case 2 :
+                                // run through
+                                case 2:
                                     rowData[1] = new Date(file.lastModified()).toString();
-                                    // run through
-                                case 1 :
+                                // run through
+                                case 1:
                                     rowData[0] = file.getName();
-                                    // run through
+                                // run through
                             }
                             dtm.addRow(rowData);
                         }
@@ -164,43 +166,41 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             return false;
         }
     }
-    
+
     static class BasicTransferable implements Transferable {
-        
+
         protected String plainData;
         protected String htmlData;
-        
         private static DataFlavor[] htmlFlavors;
         private static DataFlavor[] stringFlavors;
         private static DataFlavor[] plainFlavors;
-        
+
         static {
             try {
                 htmlFlavors = new DataFlavor[3];
                 htmlFlavors[0] = new DataFlavor("text/html;class=java.lang.String");
                 htmlFlavors[1] = new DataFlavor("text/html;class=java.io.Reader");
                 htmlFlavors[2] = new DataFlavor("text/html;charset=unicode;class=java.io.InputStream");
-                
+
                 plainFlavors = new DataFlavor[3];
                 plainFlavors[0] = new DataFlavor("text/plain;class=java.lang.String");
                 plainFlavors[1] = new DataFlavor("text/plain;class=java.io.Reader");
                 plainFlavors[2] = new DataFlavor("text/plain;charset=unicode;class=java.io.InputStream");
-                
+
                 stringFlavors = new DataFlavor[2];
-                stringFlavors[0] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType+";class=java.lang.String");
+                stringFlavors[0] = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=java.lang.String");
                 stringFlavors[1] = DataFlavor.stringFlavor;
-                
+
             } catch (ClassNotFoundException cle) {
                 System.err.println("error initializing javax.swing.plaf.basic.BasicTranserable");
             }
         }
-        
+
         public BasicTransferable(String plainData, String htmlData) {
             this.plainData = plainData;
             this.htmlData = htmlData;
         }
-        
-        
+
         /**
          * Returns an array of DataFlavor objects indicating the flavors the data
          * can be provided in.  The array should be ordered according to preference
@@ -211,11 +211,11 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             DataFlavor[] richerFlavors = getRicherFlavors();
             int nRicher = (richerFlavors != null) ? richerFlavors.length : 0;
             int nHTML = (isHTMLSupported()) ? htmlFlavors.length : 0;
-            int nPlain = (isPlainSupported()) ? plainFlavors.length: 0;
+            int nPlain = (isPlainSupported()) ? plainFlavors.length : 0;
             int nString = (isPlainSupported()) ? stringFlavors.length : 0;
             int nFlavors = nRicher + nHTML + nPlain + nString;
             DataFlavor[] flavors = new DataFlavor[nFlavors];
-            
+
             // fill in the array
             int nDone = 0;
             if (nRicher > 0) {
@@ -236,7 +236,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return flavors;
         }
-        
+
         /**
          * Returns whether or not the specified data flavor is supported for
          * this object.
@@ -252,7 +252,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return false;
         }
-        
+
         /**
          * Returns an object which represents the data to be transferred.  The class
          * of the object returned is defined by the representation class of the flavor.
@@ -276,7 +276,9 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                 } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                     return new StringReader(data);
                 } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                    return new StringBufferInputStream(data);
+                    String charsetName = flavor.getParameter("charset");
+                    return new ByteArrayInputStream(data.getBytes(charsetName == null ? "UTF-8" : charsetName));
+                    //return new StringBufferInputStream(data);
                 }
                 // fall through to unsupported
             } else if (isPlainFlavor(flavor)) {
@@ -287,10 +289,12 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
                 } else if (Reader.class.equals(flavor.getRepresentationClass())) {
                     return new StringReader(data);
                 } else if (InputStream.class.equals(flavor.getRepresentationClass())) {
-                    return new StringBufferInputStream(data);
+                    String charsetName = flavor.getParameter("charset");
+                    return new ByteArrayInputStream(data.getBytes(charsetName == null ? "UTF-8" : charsetName));
+                    //return new StringBufferInputStream(data);
                 }
                 // fall through to unsupported
-                
+
             } else if (isStringFlavor(flavor)) {
                 String data = getPlainData();
                 data = (data == null) ? "" : data;
@@ -298,9 +302,8 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             throw new UnsupportedFlavorException(flavor);
         }
-        
+
         // --- richer subclass flavors ----------------------------------------------
-        
         protected boolean isRicherFlavor(DataFlavor flavor) {
             DataFlavor[] richerFlavors = getRicherFlavors();
             int nFlavors = (richerFlavors != null) ? richerFlavors.length : 0;
@@ -311,7 +314,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return false;
         }
-        
+
         /**
          * Some subclasses will have flavors that are more descriptive than HTML
          * or plain text.  If this method returns a non-null value, it will be
@@ -320,13 +323,12 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
         protected DataFlavor[] getRicherFlavors() {
             return null;
         }
-        
+
         protected Object getRicherData(DataFlavor flavor) throws UnsupportedFlavorException {
             return null;
         }
-        
+
         // --- html flavors ----------------------------------------------------------
-        
         /**
          * Returns whether or not the specified data flavor is an HTML flavor that
          * is supported.
@@ -342,7 +344,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return false;
         }
-        
+
         /**
          * Should the HTML flavors be offered?  If so, the method
          * getHTMLData should be implemented to provide something reasonable.
@@ -350,16 +352,15 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
         protected boolean isHTMLSupported() {
             return htmlData != null;
         }
-        
+
         /**
          * Fetch the data in a text/html format
          */
         protected String getHTMLData() {
             return htmlData;
         }
-        
+
         // --- plain text flavors ----------------------------------------------------
-        
         /**
          * Returns whether or not the specified data flavor is an plain flavor that
          * is supported.
@@ -375,7 +376,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             }
             return false;
         }
-        
+
         /**
          * Should the plain text flavors be offered?  If so, the method
          * getPlainData should be implemented to provide something reasonable.
@@ -383,16 +384,15 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
         protected boolean isPlainSupported() {
             return plainData != null;
         }
-        
+
         /**
          * Fetch the data in a text/plain format.
          */
         protected String getPlainData() {
             return plainData;
         }
-        
+
         // --- string flavorss --------------------------------------------------------
-        
         /**
          * Returns whether or not the specified data flavor is a String flavor that
          * is supported.
@@ -409,8 +409,7 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
             return false;
         }
     }
-    
-    
+
     /**
      * Creates new form TransferHandlerTest14
      */
@@ -419,24 +418,24 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
         table.setTransferHandler(new TableTransferHandler());
         table.setDragEnabled(true);
     }
-    
+
     public static void main(String[] args) {
-        
+
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
-                UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
+            UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        
-        
+
+
         JFrame f = new JFrame("TransferHandlerText");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new TransferHandlerTest14());
-        f.show();
-        
+        f.setVisible(true);
+
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -502,31 +501,29 @@ public class TransferHandlerTest14 extends javax.swing.JPanel {
         add(jButton1, gridBagConstraints);
 
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void openFileChooser(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_openFileChooser
         JFileChooser fileChooser;
         fileChooser = new JFileChooser();
         fileChooser.setDragEnabled(true);
-        
+
         final JDialog dialog = new JDialog();
         dialog.setContentPane(fileChooser);
         dialog.pack();
         dialog.setVisible(true);
         dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         fileChooser.addActionListener(new ActionListener() {
+
             public void actionPerformed(ActionEvent evt) {
                 dialog.dispose();
             }
         });
         fileChooser.showOpenDialog(this);
     }//GEN-LAST:event_openFileChooser
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane scrollPane;
     private javax.swing.JTable table;
     // End of variables declaration//GEN-END:variables
-    
 }
