@@ -300,22 +300,23 @@ public class QuaquaManager {
             if (s != null) {
                 BufferedReader r = new BufferedReader(new InputStreamReader(s, "UTF8"));
                 StreamTokenizer tt = new StreamTokenizer(r);
+                tt.wordChars('_', '_');
                 tt.ordinaryChar('=');
                 tt.ordinaryChar(';');
                 while (tt.nextToken() != tt.TT_EOF) {
                     if (tt.ttype != tt.TT_WORD) {
-                        throw new IOException("Illegal token for 'design.version' in laf.txt File");
+                        throw new IOException("Illegal token for 'design.version' in line "+tt.lineno()+" of laf.txt File");
                     }
                     String lafKey = tt.sval;
                     if (tt.nextToken() != '=') {
-                        throw new IOException("Illegal token for '=' in laf.txt File");
+                        throw new IOException("Illegal token for '=' in line "+tt.lineno()+" of laf.txt File");
                     }
                     if (tt.nextToken() != tt.TT_WORD) {
-                        throw new IOException("Illegal token for 'class' in laf.txt File at key '"+lafKey+"'");
+                        throw new IOException("Illegal token for 'class' in line "+tt.lineno()+" of laf.txt File at key '"+lafKey+"'");
                     }
                     String className = tt.sval;
                     if (tt.nextToken() != ';') {
-                        throw new IOException("Illegal token for ';' in laf.txt File");
+                        throw new IOException("Illegal token "+(tt.ttype > 32 ? "'"+(char) tt.ttype+"'":""+tt.ttype)+" for ';' in line "+tt.lineno()+" of laf.txt File");
                     }
                     lafs.put(lafKey, className);
                 }
@@ -325,7 +326,7 @@ public class QuaquaManager {
             }
         } catch (IOException e) {
             System.err.println("Warning: "+QuaquaManager.class+".updateAvailableLAFs() couldn't access resource file \"laf.txt\".");
-            //e.printStackTrace();
+            e.printStackTrace();
             
             // Fall back to default values
             lafs.put("Jaguar.14","ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel");
