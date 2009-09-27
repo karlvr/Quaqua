@@ -997,6 +997,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
         return dropAction & supportedActions;
     }
+
     /**
      * Return the child <code>Component</code> of the specified
      * <code>Component</code> that is the focus owner, if any.
@@ -1010,18 +1011,27 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @see java.awt.KeyboardFocusManager#getFocusOwner
      */
     public static Component findFocusOwner(Component c) {
-	Component focusOwner = KeyboardFocusManager.
-	    getCurrentKeyboardFocusManager().getFocusOwner();
+        Component focusOwner = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusOwner();
 
-	// verify focusOwner is a descendant of c
-	for (Component temp = focusOwner; temp != null;
-	     temp = (temp instanceof Window) ? null : temp.getParent())
-	{
-	    if (temp == c) {
-		return focusOwner;
-	    }
-	}
+        // verify focusOwner is a descendant of c
+        for (Component temp = focusOwner; temp != null;
+                temp = (temp instanceof Window) ? null : temp.getParent()) {
+            if (temp == c) {
+                return focusOwner;
+            }
+        }
 
-	return null;
+        return null;
+    }
+
+    public static boolean isOnTexturedWindow(Component c) {
+        boolean isTextured;
+        JRootPane rootPane = SwingUtilities.getRootPane(c);
+        if (rootPane != null) {
+            isTextured = rootPane.getClientProperty("apple.awt.brushMetalLook") == Boolean.TRUE;
+        } else {
+            isTextured = false;
+        }
+        return isTextured;
     }
 }

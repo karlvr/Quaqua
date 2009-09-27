@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaToolBarBorder.java  1.1  2005-12-18
+ * @(#)QuaquaToolBarBorder.java
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -10,48 +10,92 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
+import java.awt.geom.Point2D;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+
 /**
  * QuaquaToolBarBorder.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-12-18 Tweaked insets.
- * <br>1.0.4 2005-12-09 Inner class UIResource added.
- * <br>1.0.3 2005-09-10 Dont' implement UIResource.
- * <br>1.0.2 2005-05-28 Fixed class cast exceptions in methods paintBorder
- * and getBorderInsets.
- * <br>1.0.1 2005-04-21 Fixed insets.
- * <br>1.0  2005-03-30  Created.
+ * @version $Id$
  */
 public class QuaquaToolBarBorder
-extends AbstractBorder
-implements SwingConstants {
-    
-    private final static Color bright = new Color(0x999999, true);
-    private final static Color dark = new Color(0x8c8c8c);
-    private final static Color divider = new Color(0x9f9f9f);
-    /*
-    private final static Color dark = new Color(0x999999);
-    private final static Color bright = new Color(0xb3b3b3);
-    /*
-     *//*
-    private final static Color dark = new Color(0x808080);
-    private final static Color bright = new Color(0xcccccc);
-      **/
+        extends AbstractBorder
+        implements SwingConstants, BackgroundBorder {
+
+    private final static Border backgroundBorder = new Border() {
+
+        public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+            Graphics2D g = (Graphics2D) gr;
+
+            boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
+            boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
+
+            String style = getStyle(c);
+            if (style.equals("gradient") || style.equals("placard")) {
+
+                g.setPaint(
+                        new GradientPaint(new Point(x, y), new Color(0xfdfdfd), new Point(x, height / 2), new Color(0xf5f5f5), true));
+                g.fillRect(x, y, width, height / 2);
+                g.setColor(new Color(0xebebeb));
+                g.fillRect(x, y + height / 2, width, height - height / 2);
+            } else if (style.equals("bottom") && isTextured) {
+                Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
+                if (gradient.length == 2) {
+                    g.setPaint(
+                            new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
+                } else if (gradient.length == 3) {
+                    g.setPaint(
+                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
+                            new float[]{0f, 1.5f / height, 1f},
+                            gradient));
+                } else if (gradient.length == 4) {
+                    g.setPaint(
+                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
+                            new float[]{0f, 1.5f / height, 0.5f, 1f},
+                            gradient));
+                }
+                g.fillRect(x, y, width, height);
+            } else {
+                g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                g.fillRect(x, y, width, height);
+            }
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(0, 0, 0, 0);
+        }
+
+        public boolean isBorderOpaque() {
+            return true;
+        }
+    };
+
     public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
-        if ((component instanceof JToolBar) 
-        && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
+        String style = getStyle(component);
+        Color bright = UIManager.getColor("ToolBar.borderBright");
+        Color dark = UIManager.getColor("ToolBar.borderDark");
+        Color divider = UIManager.getColor(QuaquaUtilities.isOnActiveWindow(component) ?//
+                "ToolBar." + style + ".borderDivider" : "ToolBar." + style + ".borderDividerInactive");
+        if (divider == null) {
+            divider = UIManager.getColor(QuaquaUtilities.isOnActiveWindow(component) ?//
+                    "ToolBar.borderDivider" : "ToolBar.borderDividerInactive");
+        }
+
+        if ((component instanceof JToolBar) && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
             JToolBar c = (JToolBar) component;
             boolean isDividerDrawn = isDividerDrawn(c);
             int dividerLocation = getDividerLocation(c);
-            if (c.isFloatable() ) {
+            if (c.isFloatable()) {
                 int hx = x, hy = y, hw = w, hh = h;
                 if (isDividerDrawn) {
                     hx = (dividerLocation == WEST) ? x + 1 : x;
@@ -59,82 +103,80 @@ implements SwingConstants {
                     hw = (dividerLocation == EAST || dividerLocation == WEST) ? w - 1 : w;
                     hh = (dividerLocation == SOUTH || dividerLocation == NORTH) ? h - 1 : h;
                 }
-                if (c.getOrientation() == HORIZONTAL ) {
-                    if( QuaquaUtilities.isLeftToRight(c) ) {
+                if (c.getOrientation() == HORIZONTAL) {
+                    if (QuaquaUtilities.isLeftToRight(c)) {
                         g.setColor(bright);
-                        g.fillRect(hx+2,hy+2,1,hh - 4);
-                        g.fillRect(hx+5,hy+2,1,hh - 4);
+                        g.fillRect(hx + 2, hy + 2, 1, hh - 4);
+                        g.fillRect(hx + 5, hy + 2, 1, hh - 4);
                         g.setColor(dark);
-                        g.fillRect(hx+3,hy+2,1,hh - 4);
-                        g.fillRect(hx+6,hy+2,1,hh - 4);
+                        g.fillRect(hx + 3, hy + 2, 1, hh - 4);
+                        g.fillRect(hx + 6, hy + 2, 1, hh - 4);
                     } else {
                         g.setColor(bright);
-                        g.fillRect(hw - hx - 3,hy+2,1,hh - 4);
-                        g.fillRect(hw - hx - 5,hy+2,1,hh - 4);
+                        g.fillRect(hw - hx - 3, hy + 2, 1, hh - 4);
+                        g.fillRect(hw - hx - 5, hy + 2, 1, hh - 4);
                         g.setColor(dark);
-                        g.fillRect(hw - hx - 2,hy+2,1,hh - 4);
-                        g.fillRect(hw - hx - 6,hy+2,1,hh - 4);
+                        g.fillRect(hw - hx - 2, hy + 2, 1, hh - 4);
+                        g.fillRect(hw - hx - 6, hy + 2, 1, hh - 4);
                     }
-                }
-                else // vertical
+                } else // vertical
                 {
                     g.setColor(bright);
-                    g.fillRect(hx+2,hy+2,hw-4,1);
-                    g.fillRect(hx+2,hy+5,hw-4,1);
+                    g.fillRect(hx + 2, hy + 2, hw - 4, 1);
+                    g.fillRect(hx + 2, hy + 5, hw - 4, 1);
                     g.setColor(dark);
-                    g.fillRect(hx+2,hy+3,hw-4,1);
-                    g.fillRect(hx+2,hy+6,hw-4,1);
+                    g.fillRect(hx + 2, hy + 3, hw - 4, 1);
+                    g.fillRect(hx + 2, hy + 6, hw - 4, 1);
                 }
             }
             if (isDividerDrawn) {
                 g.setColor(divider);
                 switch (dividerLocation) {
-                    case NORTH :
-                        g.fillRect(x,y,w,1);
+                    case NORTH:
+                        g.fillRect(x, y, w, 1);
                         break;
-                    case EAST  :
-                        g.fillRect(x + w - 1,y, 1, h);
+                    case EAST:
+                        g.fillRect(x + w - 1, y, 1, h);
                         break;
-                    case SOUTH :
-                        g.fillRect(x,y + h - 1,w,1);
+                    case SOUTH:
+                        g.fillRect(x, y + h - 1, w, 1);
                         break;
-                    case WEST  :
-                        g.fillRect(x,y,1,h);
+                    case WEST:
+                        g.fillRect(x, y, 1, h);
                         break;
-                    default :
+                    default:
                         break;
                 }
             }
         }
     }
-    
+
     public Insets getBorderInsets(Component c) {
-        return getBorderInsets(c, new Insets(0,0,0,0));
+        return getBorderInsets(c, new Insets(0, 0, 0, 0));
     }
-    
+
     private boolean isDividerDrawn(JToolBar c) {
-        Object value = c.getClientProperty(QuaquaToolBarUI.IS_DIVIDER_DRAWN);
-        
+        Object value = c.getClientProperty(QuaquaToolBarUI.TOOLBAR_DRAW_DIVIDER_PROPERTY);
+
         return value == null || value.equals(Boolean.TRUE);
     }
-    
+
     /**
      * Returns SwingConstants.NORTH, .SOUTH, .EAST, .WEST or -1.
      */
     private int getDividerLocation(JToolBar c) {
-        if (! ((BasicToolBarUI) c.getUI()).isFloating()
-        && c.getParent() != null) {
+        if (!((BasicToolBarUI) c.getUI()).isFloating() && c.getParent() != null) {
             Dimension parentSize = c.getParent().getSize();
             Insets parentInsets = c.getParent().getInsets();
             Rectangle bounds = c.getBounds();
-            
+
             boolean fillsWidth = bounds.width >= parentSize.width - parentInsets.left - parentInsets.right;
             boolean fillsHeight = bounds.height >= parentSize.height - parentInsets.top - parentInsets.bottom;
-            
+
             if (fillsWidth && fillsHeight) {
                 return -1;
             }
-            
+
             if (fillsWidth) {
                 if (bounds.y == parentInsets.top) {
                     return SOUTH;
@@ -142,7 +184,7 @@ implements SwingConstants {
                     return NORTH;
                 }
             }
-            
+
             if (fillsHeight) {
                 if (bounds.x == parentInsets.left) {
                     return EAST;
@@ -153,15 +195,14 @@ implements SwingConstants {
         }
         return -1;
     }
-    
+
     public Insets getBorderInsets(Component component, Insets newInsets) {
-        if ((component instanceof JToolBar) 
-        && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
+        if ((component instanceof JToolBar) && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
             JToolBar c = (JToolBar) component;
             newInsets.top = newInsets.left = newInsets.bottom = newInsets.right = 0;
             boolean isFloatable = c.isFloatable();
             if (isFloatable) {
-                if (c.getOrientation() == HORIZONTAL ) {
+                if (c.getOrientation() == HORIZONTAL) {
                     if (c.getComponentOrientation().isLeftToRight()) {
                         newInsets.left = 16;
                     } else {
@@ -171,7 +212,7 @@ implements SwingConstants {
                     newInsets.top = 16;
                 }
             } else {
-                if (c.getOrientation() == HORIZONTAL ) {
+                if (c.getOrientation() == HORIZONTAL) {
                     if (c.getComponentOrientation().isLeftToRight()) {
                         //newInsets.left = 7;
                         newInsets.left = 4;
@@ -191,29 +232,64 @@ implements SwingConstants {
                     //newInsets.left++;
                 } else {
                     switch (getDividerLocation(c)) {
-                        case SOUTH : newInsets.bottom++; break;
-                        case EAST  : newInsets.right++; break;
-                        case NORTH : newInsets.top++; break;
-                        case WEST  : newInsets.left++; break;
-                        default : break;
+                        case SOUTH:
+                            newInsets.bottom++;
+                            break;
+                        case EAST:
+                            newInsets.right++;
+                            break;
+                        case NORTH:
+                            newInsets.top++;
+                            break;
+                        case WEST:
+                            newInsets.left++;
+                            break;
+                        default:
+                            break;
                     }
                 }
             }
             Insets margin = c.getMargin();
-            
-            if (margin != null ) {
-                newInsets.left   += margin.left;
-                newInsets.top    += margin.top;
-                newInsets.right  += margin.right;
+
+            if (margin != null) {
+                newInsets.left += margin.left;
+                newInsets.top += margin.top;
+                newInsets.right += margin.right;
                 newInsets.bottom += margin.bottom;
             }
             return newInsets;
         } else {
-            return new Insets(0,0,0,0);
+            return new Insets(0, 0, 0, 0);
         }
     }
-    
+
+    public Border getBackgroundBorder() {
+        return backgroundBorder;
+    }
+
+    private static String getStyle(Component c) {
+        Object style = null;
+        if (c instanceof JComponent) {
+            JComponent jc = (JComponent) c;
+            style = jc.getClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY);
+        }
+        if (style == null || !(style instanceof String)) {
+            boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
+            if (isTextured) {
+                JRootPane rootPane = SwingUtilities.getRootPane(c);
+                int xOffset = 0, yOffset = 0;
+                for (Component cc = c; cc != rootPane; cc = cc.getParent()) {
+                    xOffset += cc.getX();
+                    yOffset += cc.getY();
+                }
+                style = (yOffset == 0) ? "title" : "plain";
+            } else {
+                style = "plain";
+            }
+        }
+        return (String) style;
+    }
+
     public static class UIResource extends QuaquaToolBarBorder implements javax.swing.plaf.UIResource {
-        
     }
 }

@@ -643,9 +643,9 @@ public class QuaquaTreeUI extends BasicTreeUI {
         Border selectionBorder;
 
         if (isSideBar) {
-            background = UIManager.getColor("Tree.background.sideBar");
+            background = UIManager.getColor("Tree.sideBar.background");
             selectionBorder =
-                    UIManager.getBorder("Tree.selectionBorder.sideBar");
+                    UIManager.getBorder("Tree.sideBar.selectionBorder");
             if (selectionBackground instanceof InactivatableColorUIResource) {
                 ((InactivatableColorUIResource) selectionBackground).setTransparent(true);
             }

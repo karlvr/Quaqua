@@ -1,7 +1,7 @@
 /*
  * @(#)BasicQuaquaLookAndFeel.java
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -1847,6 +1847,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             // sizes depending on the orientation of the separator.
             "ToolBar.separatorSize", null,
             "ToolBar.margin", new InsetsUIResource(0, 0, 0, 0),
+            "ToolBar.borderBright", new AlphaColorUIResource(0x999999),
+            "ToolBar.borderDark", new ColorUIResource(0x8c8c8c),
+            "ToolBar.borderDivider", new ColorUIResource(0x9f9f9f),
+            "ToolBar.borderDividerInactive", new ColorUIResource(0x9f9f9f),
+            "ToolBar.bottom.gradient", new Color[] {new Color(0xd8d8d8),new Color(0xbdbdbd),new Color(0xaeaeae), new Color(0x969696)},
+            "ToolBar.bottom.gradientInactive",  new Color[] {new Color(0xeeeeee),new Color(0xe4e4e4),new Color(0xcfcfcf)},
+            //
             "ToolTip.border", new BorderUIResource.LineBorderUIResource(new ColorUIResource(0x303030)),
             //
             "Tree.collapsedIcon", makeIcon(getClass(), commonDir + "Tree.collapsedIcon.png"),
