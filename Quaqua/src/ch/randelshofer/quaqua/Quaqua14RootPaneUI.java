@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua14RootPaneUI.java  2.0.2  2009-03-16
+ * @(#)Quaqua14RootPaneUI.java 
  *
  * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -32,32 +32,7 @@ import javax.swing.plaf.basic.*;
  * Quaqua14RootPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 2.0.9 2009-03-16 Handle ConcurrentModificationException in
- * allRootPanes WeakHashMap.
- * <br>2.0.1 2008-07-07 Don't process mouse dragged events when
- * the root pane is not showing on screen. 
- * <br>2.0 2008-05-10 Added support for client property "Window.documentModified".
- * <br>1.1.4 2008-03-30 Fixed memory leak in allRootPanes has map, by putting
- * a null value into the weak hash map, instead of the RootPane object.
- * <br>1.1.3 2007-09-29 Fixed NPE in Window snapping behavior code. 
- * <br>1.1.2 2007-08-02 Only snap to the edges of a window, if the
- * is not far away. Don't snap, if the user
- * holds down the alt key.
- * <br>1.1 2007-07-26 Look and Feel decorated windows snap to other
- * windows. Windows on secondary screens couldn't always be dragged back
- * to primary screen.
- * <br>1.0.6 2007-07-05 Resize icon wasn't painted for dialog windows.
- * <br>1.0.5 2007-04-29 Repaint the root paint 100 milliseconds after it
- * has been resized. This is a workaround for the repaint happening twice after
- * a window has been resized.
- * <br>1.0.4 2005-08-03 Removed error output on System.err, when no
- * native support for windows modified property is available.
- * <br>1.0.3 2005-06-29 Fixed NPE in method propertyChanged. Method propertyChange must call super in
- * order to make default button work.
- * <br>1.0.2 2005-06-19 Ancestor window was not properly determined
- * when running under Java 1.5.
- * <br>1.0.1 2005-04-07 Fixed NPE in method ancestorRemoved.
- * <br>1.0  06 February 2005  Created.
+ * @version $Id$
  */
 public class Quaqua14RootPaneUI extends BasicRootPaneUI {
 
@@ -172,17 +147,18 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
     }
 
     public void paint(Graphics g, JComponent c) {
+        Graphics2D gr = (Graphics2D) g;
         // Erase background. This is needed for semi-transparent windows.
         if (root.getClientProperty("Window.alpha") instanceof Float) {
             float alpha = ((Float) root.getClientProperty("Window.alpha")).floatValue();
             if (alpha < 1f) {
-                Graphics2D gr = (Graphics2D) g;
                 if (System.getProperty("java.version").startsWith("1.6")) {
-                    if (PaintableColor.getPaint(c.getBackground(), c) instanceof Color) {
-                        Color bg = c.getBackground();
+                    Color background = c.getBackground();
+                    if (PaintableColor.getPaint(background, c) instanceof Color) {
+                        Color bg = background;
                         gr.setPaint(new Color(bg.getRed(), bg.getGreen(), bg.getBlue(), (int) (alpha * 255f)));
                     } else {
-                        gr.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                        gr.setPaint(PaintableColor.getPaint(background, c));
                     }
                 } else {
                     gr.setPaint(PaintableColor.getPaint(c.getBackground(), c));
@@ -192,9 +168,13 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 gr.fillRect(0, 0, c.getWidth(), c.getHeight());
                 gr.setComposite(comp);
             }
+        } else {
+            Color background = UIManager.getColor("Frame.textured.background");
+            gr.setPaint(PaintableColor.getPaint(background, c));
+            gr.fillRect(0, 0, c.getWidth(), c.getHeight());
         }
         // Paint decorations
-        int style = getRootPane().getWindowDecorationStyle();
+        int style = root.getWindowDecorationStyle();
         if (style != JRootPane.NONE) {
             boolean needsResizeIcon = false;
             if (window instanceof Frame) {
@@ -362,12 +342,12 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                                 setWindowModifiedMethod = peer.getClass().getMethod("setModified", new Class[]{Boolean.TYPE});
                             } catch (NoSuchMethodException ex2) {
                                 isWindowModifiedSupported = false;
-                            //ex2.printStackTrace();
+                                //ex2.printStackTrace();
                             }
 
                         } catch (AccessControlException ex1) {
                             isWindowModifiedSupported = false;
-                        //System.err.println("Sorry. Quaqua14RootPaneUI can not access the native window modified API");
+                            //System.err.println("Sorry. Quaqua14RootPaneUI can not access the native window modified API");
                         }
 
                     }
@@ -385,10 +365,10 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                             setWindowModifiedMethod.invoke(peer, new Object[]{value});
                         } catch (IllegalAccessException ex) {
                             isWindowModifiedSupported = false;
-                        //ex.printStackTrace();
+                            //ex.printStackTrace();
                         } catch (InvocationTargetException ex) {
                             isWindowModifiedSupported = false;
-                        //ex.printStackTrace();
+                            //ex.printStackTrace();
                         }
 
                     }
