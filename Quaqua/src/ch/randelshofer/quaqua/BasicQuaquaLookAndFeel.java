@@ -2099,7 +2099,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     } else if (p != -1) {
                         name = name.substring(0, p);
                     }
-                    if (p == -1 || included.contains(name)) {
+                    if (p == -1 || name.equals("Component") || included.contains(name)) {
                         table.put(keyValueList[i], keyValueList[i + 1]);
                     }
                 } else {

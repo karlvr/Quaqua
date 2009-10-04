@@ -622,6 +622,7 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
             if (window != null) {
                 window.addWindowListener(this);
                 updateWindowModified((JRootPane) evt.getSource());
+                updateComponentTreeUIActivation(ancestor, new Boolean (window.isActive()));
             }
         }
 

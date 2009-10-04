@@ -27,6 +27,7 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import java.io.*;
 import ch.randelshofer.quaqua.osx.OSXImageIO;
+import java.util.*;
 
 /**
  * QuaquaIconFactory.
@@ -50,6 +51,7 @@ public class QuaquaIconFactory {
         private ImageIcon realIcon;
         private int messageType;
         private ch.randelshofer.quaqua.util.SwingWorker worker;
+        private HashSet repaintMe = new HashSet();
 
         public LazyOptionPaneIcon(final int messageType) {
             this.messageType = messageType;
@@ -70,6 +72,21 @@ public class QuaquaIconFactory {
                         return null;
                     }
                 }
+
+                public void finished() {
+                    realIcon = (ImageIcon) get();
+
+                    // Repaint all components that tried to display the icon
+                    // while it was being constructed.
+                    for (Iterator i = repaintMe.iterator(); i.hasNext();) {
+                        Component c = (Component) i.next();
+                        c.repaint();
+                    }
+
+                    // Get rid of the worker and of the repaint list
+                    repaintMe = null;
+                    worker=null;
+                }
             };
             worker.start();
         }
@@ -83,8 +100,10 @@ public class QuaquaIconFactory {
         }
 
         public void paintIcon(final Component c, Graphics g, int x, int y) {
-            if (realIcon == null) {
-                realIcon = (ImageIcon) worker.get();
+            if (realIcon == null && worker != null) {
+                // If the value is still being constructed, we repaint the
+                // component when the icon becomes available.
+                repaintMe.add(c);
             }
             if (realIcon != null) {
                 realIcon.paintIcon(c, g, x, y);
