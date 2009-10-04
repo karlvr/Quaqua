@@ -45,7 +45,7 @@ public class Main extends javax.swing.JFrame {
         });*/
         //getRootPane().putClientProperty("apple.awt.delayWindowOrdering", Boolean.TRUE);
         init();
-    //setResizable(false);
+        //setResizable(false);
     }
 
     public void init() {
@@ -81,7 +81,7 @@ public class Main extends javax.swing.JFrame {
         }
         setTitle(UIManager.getLookAndFeel().getName() + " " +
                 QuaquaManager.getVersion() +
-                " on Java " + System.getProperty("java.version")+" "+System.getProperty("os.arch"));
+                " on Java " + System.getProperty("java.version") + " " + System.getProperty("os.arch"));
 
         jMenuItem1.setAccelerator(KeyStroke.getKeyStroke("meta I"));
         jMenuItem1.addActionListener(new ActionListener() {
@@ -162,19 +162,19 @@ public class Main extends javax.swing.JFrame {
         UIManager.put("Quaqua.Debug.showClipBounds", new Boolean(evt.getStateChange() == evt.SELECTED));
         repaint();
     }//GEN-LAST:event_clipRectStateChanged
-    
+
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args ) {
+    public static void main(String[] args) {
 //System.out.println("Classpath:"+System.getProperty("java.class.path"));        
         final long start = System.currentTimeMillis();
-        
+
         // System.setSecurityManager(new StrictSecurityManager());
-        
+
         //System.out.println("class-path=\n"+System.getProperty("java.class.path").replace(':','\n'));
-        
-        
+
+
         final java.util.List argList = Arrays.asList(args);
         // Explicitly turn on font antialiasing.
         try {
@@ -182,30 +182,29 @@ public class Main extends javax.swing.JFrame {
         } catch (AccessControlException e) {
             // can't do anything about this
         }
-        
+
         // Use screen menu bar, if not switched off explicitly
         try {
             if (System.getProperty("apple.laf.useScreenMenuBar") == null &&
                     System.getProperty("com.apple.macos.useScreenMenuBar") == null) {
-                System.setProperty("apple.laf.useScreenMenuBar","true");
-                System.setProperty("com.apple.macos.useScreenMenuBar","true");
+                System.setProperty("apple.laf.useScreenMenuBar", "true");
+                System.setProperty("com.apple.macos.useScreenMenuBar", "true");
             }
         } catch (AccessControlException e) {
             // can't do anything about this
         }
-        
+
         // Turn on look and feel decoration when not running on Mac OS X or Darwin.
         // This will still not look pretty, because we haven't got cast shadows
         // for the frame on other operating systems.
         boolean useDefaultLookAndFeelDecoration =
-                ! System.getProperty("os.name").toLowerCase().startsWith("mac") &&
-                ! System.getProperty("os.name").toLowerCase().startsWith("darwin")
-                ;
+                !System.getProperty("os.name").toLowerCase().startsWith("mac") &&
+                !System.getProperty("os.name").toLowerCase().startsWith("darwin");
         int index = argList.indexOf("-decoration");
         if (index != -1 && index < argList.size() - 1) {
             useDefaultLookAndFeelDecoration = argList.get(index + 1).equals("true");
         }
-        
+
         if (useDefaultLookAndFeelDecoration) {
             try {
                 Methods.invokeStatic(JFrame.class, "setDefaultLookAndFeelDecorated", Boolean.TYPE, Boolean.TRUE);
@@ -215,9 +214,10 @@ public class Main extends javax.swing.JFrame {
                 e.printStackTrace();
             }
         }
-        
+
         // Launch the test program
         SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 long edtEnd = System.currentTimeMillis();
                 int index;
@@ -225,14 +225,14 @@ public class Main extends javax.swing.JFrame {
                 if (index != -1 && index < argList.size() - 1) {
                     HashSet includes = new HashSet();
                     includes.addAll(Arrays.asList(((String) argList.get(index + 1)).split(",")));
-                    
+
                     QuaquaManager.setIncludedUIs(includes);
                 }
                 index = argList.indexOf("-exclude");
                 if (index != -1 && index < argList.size() - 1) {
                     HashSet excludes = new HashSet();
                     excludes.addAll(Arrays.asList(((String) argList.get(index + 1)).split(",")));
-                    
+
                     QuaquaManager.setExcludedUIs(excludes);
                 }
                 index = argList.indexOf("-laf");
@@ -243,17 +243,17 @@ public class Main extends javax.swing.JFrame {
                     lafName = QuaquaManager.getLookAndFeelClassName();
                 }
                 long lafCreate = 0;
-                if (! lafName.equals("default")) {
-                    
+                if (!lafName.equals("default")) {
+
                     if (lafName.equals("system")) {
                         lafName = UIManager.getSystemLookAndFeelClassName();
                     } else if (lafName.equals("crossplatform")) {
                         lafName = UIManager.getCrossPlatformLookAndFeelClassName();
                     }
-                    
+
                     try {
                         //UIManager.setLookAndFeel(lafName);
-                        System.out.println("   CREATING LAF   "+lafName);
+                        System.out.println("   CREATING LAF   " + lafName);
 
                         LookAndFeel laf = (LookAndFeel) Class.forName(lafName).newInstance();
                         lafCreate = System.currentTimeMillis();
@@ -270,22 +270,21 @@ public class Main extends javax.swing.JFrame {
                 Main f = new Main();
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
-                f.setSize(640,640);
+                f.setSize(640, 640);
                 long packEnd = System.currentTimeMillis();
                 f.setVisible(true);
                 long end = System.currentTimeMillis();
-                System.out.println("QuaquaTest EDT latency="+(edtEnd - start));
-                if (! lafName.equals("default")) {
-                    System.out.println("QuaquaTest laf create latency="+(lafCreate - edtEnd));
-                    System.out.println("QuaquaTest set laf latency="+(lafEnd - lafCreate));
+                System.out.println("QuaquaTest EDT latency=" + (edtEnd - start));
+                if (!lafName.equals("default")) {
+                    System.out.println("QuaquaTest laf create latency=" + (lafCreate - edtEnd));
+                    System.out.println("QuaquaTest set laf latency=" + (lafEnd - lafCreate));
                 }
-                System.out.println("QuaquaTest create latency="+(createEnd - lafEnd));
+                System.out.println("QuaquaTest create latency=" + (createEnd - lafEnd));
                 //System.out.println("Main pack latency  ="+(packEnd - createEnd));
-                System.out.println("QuaquaTest total startup latency="+(end - start));
+                System.out.println("QuaquaTest total startup latency=" + (end - start));
             }
         });
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox clipRectCheckBox;
     private javax.swing.JMenu jMenu1;
@@ -295,5 +294,4 @@ public class Main extends javax.swing.JFrame {
     private javax.swing.JCheckBox layoutRectCheckBox;
     private javax.swing.JTabbedPane tabbedPane;
     // End of variables declaration//GEN-END:variables
-    
 }

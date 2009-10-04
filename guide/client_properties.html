@@ -177,8 +177,7 @@ If no value is specified, the <code>plain</code> style is used.</td>
       It is your responsibility to hide the palette window, when none of your
       application has focus.</p>
           <p>This property will only take into effect, when  the JRootPane
-            decorates the window.</p>
-      </td>
+            decorates the window.</p>      </td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua.RootPane<br />
@@ -187,6 +186,11 @@ If no value is specified, the <code>plain</code> style is used.</td>
           JDialog or a JFrame on the left instead of on the top.</p>
         <p>This property will only take into effect, when  the JRootPane
           decorates the window.</p></td>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+      <td><code><a name="brushMetalLook" id="brushMetalLook"></a>apple.awt.brushMetalLook</code></td>
+      <td><p>If set to <code>Boolean.TRUE</code>, fuses the title bar of the JFrame with the JToolBar at the top of the window, and fuses the border with the JToolBar at the bottom of the window, if the appropriate style of the JToolBar is set.</p>
+      <p>See <a href="#JToolBar">JToolBar</a></p></td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>windowModified</code></td>
@@ -307,11 +311,19 @@ Note: You can set the UIManager property <code>TextComponent.autoSelect</code> t
         fields. The default value is <code>&quot;plain&quot;</code>.</p></td>
     </tr>
   </table>
-  <h5>JToolBar</h5>
+  <h5><a name="JToolBar" id="JToolBar"></a>JToolBar</h5>
   <table width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
     <tr>
       <th>Property</th>
       <th>Notes</th>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+      <td><code>Quaqua.ToolBar<br />
+        .style</code></td>
+      <td><p>Changes the style of a tool bar, if set to: <code>plain, title, bottom</code> or <code>gradient</code>.<br />
+        If no value is specified, the <code>plain</code> style is used.</p>
+        <p>The <code>&quot;title&quot;</code> style requires that the client property <code>apple.awt.brushMetalLook</code> is set on the JRootPane.<br />
+      </p></td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua.ToolBar<br />

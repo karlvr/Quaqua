@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaSplitPaneDivider.java  1.0  November 27, 2005
+ * @(#)QuaquaSplitPaneDivider.java  
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Methods;
@@ -20,34 +19,34 @@ import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+
 /**
  * QuaquaSplitPaneDivider.
  *
  * @author  Werner Randelshofer
- * @version 1.0 November 27, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
+
     static final Cursor defaultCursor =
-    Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
-    
+            Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
     /**
      * Width or height of the divider based on orientation
      * BasicSplitPaneUI adds two to this.
      */
     protected static final int ONE_TOUCH_SIZE_ = 4;
     protected static final int ONE_TOUCH_OFFSET_ = 2;
-    
+
     // private ActionListener doubleClickHandler = new DoubleClickActionHandler();
-    
     /**
      * Creates a new instance.
      */
     public QuaquaSplitPaneDivider(BasicSplitPaneUI ui) {
         super(ui);
         setLayout(new QuaquaDividerLayout());
-        Methods.invokeIfExists(this, "setFocusable",QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
+        Methods.invokeIfExists(this, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
     }
-    
+
     /**
      * Sets the SplitPaneUI that is using the receiver.
      */
@@ -66,7 +65,9 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         if (newUI != null) {
             splitPane = newUI.getSplitPane();
             if (splitPane != null) {
-                if (mouseHandler == null) mouseHandler = new QuaquaMouseHandler();
+                if (mouseHandler == null) {
+                    mouseHandler = new QuaquaMouseHandler();
+                }
                 splitPane.addMouseListener(mouseHandler);
                 splitPane.addMouseMotionListener(mouseHandler);
                 addMouseListener(mouseHandler);
@@ -76,12 +77,11 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                     oneTouchExpandableChanged();
                 }
             }
-        }
-        else {
+        } else {
             splitPane = null;
         }
     }
-    
+
     /**
      * Paints the divider.
      */
@@ -89,42 +89,44 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         Dimension size = getSize();
         Insets insets = getInsets();
         boolean isHorizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
-        
+
         // We support the following styles:
         // "bar": The divider is a bar, that goes accross the split view.
         // "thumb" (this is the default): The divider is a thumb (dimple) on
         //        the regular background pattern.
         String style = (String) splitPane.getClientProperty("Quaqua.SplitPane.style");
-        if (style == null) style = "thumb";
-        
+        if (style == null) {
+            style = "thumb";
+        }
+
         if (style.equals("bar")) {
             Border border = UIManager.getBorder(
-            (isHorizontal) ? "SplitPane.vBar" : "SplitPane.hBar"
-            );
-            border.paintBorder(
-            splitPane, g,
-            insets.left, insets.top,
-            size.width - insets.right - insets.left,
-            size.height - insets.top - insets.bottom
-            );
+                    (isHorizontal) ? "SplitPane.vBar" : "SplitPane.hBar");
+            if (border != null) {
+                border.paintBorder(
+                        splitPane, g,
+                        insets.left, insets.top,
+                        size.width - insets.right - insets.left,
+                        size.height - insets.top - insets.bottom);
+            }
         }
-        
+
         Icon dimple;
         boolean drawDimple;
-        
+
         if (style.equals("thumb")) {
             dimple = UIManager.getIcon("SplitPane.thumbDimple");
             drawDimple = true;
         } else {
             dimple = UIManager.getIcon("SplitPane.barDimple");
             drawDimple = size.width >= dimple.getIconWidth() &&
-            size.height >= dimple.getIconHeight();
+                    size.height >= dimple.getIconHeight();
         }
-        
+
         if (drawDimple) {
             int x = (size.width - dimple.getIconWidth()) / 2;
             int y = (size.height - dimple.getIconHeight()) / 2;
-            
+
             // Make sure, dimple does not intersect with the buttons
             if (splitPane.isOneTouchExpandable()) {
                 if (isHorizontal) {
@@ -133,23 +135,22 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                     x = Math.min(x, leftButton.getX() - dimple.getIconWidth() - ONE_TOUCH_OFFSET_);
                 }
             }
-            
+
             dimple.paintIcon(splitPane, g, x, y);
         }
         super.paint(g);
     }
+
     /**
      * Creates and return an instance of JButton that can be used to
      * collapse the left component in the split pane.
      */
     protected JButton createLeftOneTouchButton() {
         JButton b = new JButton() {
+
             public Icon getIcon() {
                 return UIManager.getIcon(
-                (splitPane.getOrientation() == VERTICAL) ?
-                "SplitPane.leftArrow" :
-                    "SplitPane.upArrow"
-                    );
+                        (splitPane.getOrientation() == VERTICAL) ? "SplitPane.leftArrow" : "SplitPane.upArrow");
             }
         };
         b.setBorder(null);
@@ -161,20 +162,17 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         Methods.invokeIfExists(b, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
         return b;
     }
-    
-    
+
     /**
      * Creates and return an instance of JButton that can be used to
      * collapse the right component in the split pane.
      */
     protected JButton createRightOneTouchButton() {
         JButton b = new JButton() {
+
             public Icon getIcon() {
                 return UIManager.getIcon(
-                (splitPane.getOrientation() == VERTICAL) ?
-                "SplitPane.rightArrow" :
-                    "SplitPane.downArrow"
-                    );
+                        (splitPane.getOrientation() == VERTICAL) ? "SplitPane.rightArrow" : "SplitPane.downArrow");
             }
         };
         b.setBorder(null);
@@ -186,7 +184,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         Methods.invokeIfExists(b, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
         return b;
     }
-    
+
     /**
      * Used to layout a <code>BasicSplitPaneDivider</code>.
      * Layout for the divider
@@ -194,12 +192,13 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
      * <p>
      */
     protected class QuaquaDividerLayout implements LayoutManager {
+
         public void layoutContainer(Container c) {
             if (leftButton != null && rightButton != null &&
-            c == QuaquaSplitPaneDivider.this) {
+                    c == QuaquaSplitPaneDivider.this) {
                 if (splitPane.isOneTouchExpandable()) {
                     Insets insets = c.getInsets();
-                    
+
                     if (orientation == JSplitPane.VERTICAL_SPLIT) {
                         //int extraX = (insets != null) ? insets.left : 0;
                         int blockSize = getHeight();
@@ -209,17 +208,16 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                         }
                         blockSize = Math.min(blockSize, ONE_TOUCH_SIZE_);
                         int extraX = c.getSize().width -
-                        ((insets != null) ? insets.right : 0) -
-                        ONE_TOUCH_OFFSET_ - blockSize * 4;
-                        
+                                ((insets != null) ? insets.right : 0) -
+                                ONE_TOUCH_OFFSET_ - blockSize * 4;
+
                         int y = (c.getSize().height - blockSize) / 2;
-                        
+
                         leftButton.setBounds(extraX, y,
-                        blockSize * 2, blockSize);
+                                blockSize * 2, blockSize);
                         rightButton.setBounds(extraX + blockSize * 2, y,
-                        blockSize * 2, blockSize);
-                    }
-                    else {
+                                blockSize * 2, blockSize);
+                    } else {
                         //int extraY = (insets != null) ? insets.top : 0;
                         int blockSize = getWidth();
                         if (insets != null) {
@@ -228,42 +226,40 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                         }
                         blockSize = Math.min(blockSize, ONE_TOUCH_SIZE_);
                         int extraY = c.getSize().height -
-                        ((insets != null) ? insets.bottom : 0) -
-                        ONE_TOUCH_OFFSET_ - blockSize * 4;
-                        
+                                ((insets != null) ? insets.bottom : 0) -
+                                ONE_TOUCH_OFFSET_ - blockSize * 4;
+
                         int x = (c.getSize().width - blockSize) / 2;
-                        
+
                         leftButton.setBounds(x, extraY,
-                        blockSize, blockSize * 2);
+                                blockSize, blockSize * 2);
                         rightButton.setBounds(x, extraY + blockSize * 2,
-                        blockSize, blockSize * 2);
+                                blockSize, blockSize * 2);
                     }
-                }
-                else {
+                } else {
                     leftButton.setBounds(-5, -5, 1, 1);
                     rightButton.setBounds(-5, -5, 1, 1);
                 }
             }
         }
-        
-        
+
         public Dimension minimumLayoutSize(Container c) {
             // NOTE: This isn't really used, refer to
             // BasicSplitPaneDivider.getPreferredSize for the reason.
             // I leave it in hopes of having this used at some point.
             if (c != QuaquaSplitPaneDivider.this || splitPane == null) {
-                return new Dimension(0,0);
+                return new Dimension(0, 0);
             }
             Dimension buttonMinSize = null;
-            
+
             if (splitPane.isOneTouchExpandable() && leftButton != null) {
                 buttonMinSize = leftButton.getMinimumSize();
             }
-            
+
             Insets insets = getInsets();
             int width = getDividerSize();
             int height = width;
-            
+
             if (orientation == JSplitPane.VERTICAL_SPLIT) {
                 if (buttonMinSize != null) {
                     int size = buttonMinSize.height;
@@ -273,8 +269,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                     height = Math.max(height, size);
                 }
                 width = 1;
-            }
-            else {
+            } else {
                 if (buttonMinSize != null) {
                     int size = buttonMinSize.width;
                     if (insets != null) {
@@ -286,18 +281,18 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
             }
             return new Dimension(width, height);
         }
-        
-        
+
         public Dimension preferredLayoutSize(Container c) {
             return minimumLayoutSize(c);
         }
-        
-        
-        public void removeLayoutComponent(Component c) {}
-        
-        public void addLayoutComponent(String string, Component c) {}
+
+        public void removeLayoutComponent(Component c) {
+        }
+
+        public void addLayoutComponent(String string, Component c) {
+        }
     } // End of class BasicSplitPaneDivider.DividerLayout
-    
+
     /**
      * MouseHandler is responsible for converting mouse events
      * (released, dragged...) into the appropriate DragController
@@ -305,6 +300,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
      * <p>
      */
     protected class QuaquaMouseHandler extends MouseHandler {
+
         /**
          * If dragger is not null it is messaged with completeDrag.
          */
@@ -319,7 +315,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                 splitPane.setLastDividerLocation(lastLoc);
             }
         }
-        
+
         /**
          * Double click on the split bar moves it to the bottom or to the left.
          * If it is already at the bottom most or leftmost position, it is moved
@@ -328,50 +324,50 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         public void mouseClicked(MouseEvent evt) {
             if (evt.getClickCount() == 2) {
                 boolean isHorizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
-                
-                Component  leftC = splitPane.getLeftComponent();
-                Component  rightC = splitPane.getRightComponent();
-                
+
+                Component leftC = splitPane.getLeftComponent();
+                Component rightC = splitPane.getRightComponent();
+
                 if (leftC == null || rightC == null) {
                     return;
                 }
                 Insets insets = splitPane.getInsets();
-                
+
                 int minLoc, maxLoc;
                 if (isHorizontal) {
                     if (leftC.isVisible()) {
                         minLoc = leftC.getMinimumSize().width +
-                        insets.left;
+                                insets.left;
                     } else {
                         minLoc = insets.left;
                     }
                     if (rightC.isVisible()) {
                         maxLoc = splitPane.getWidth() -
-                        rightC.getMinimumSize().width -
-                        insets.right -
-                        getSize().width;
+                                rightC.getMinimumSize().width -
+                                insets.right -
+                                getSize().width;
                     } else {
                         maxLoc = splitPane.getWidth() - insets.right;
                     }
                 } else {
                     if (leftC.isVisible()) {
                         minLoc = leftC.getMinimumSize().height +
-                        insets.top;
+                                insets.top;
                     } else {
                         minLoc = insets.top;
                     }
                     if (rightC.isVisible()) {
                         maxLoc = splitPane.getHeight() -
-                        rightC.getMinimumSize().height -
-                        insets.bottom -
-                        getSize().height;
+                                rightC.getMinimumSize().height -
+                                insets.bottom -
+                                getSize().height;
                     } else {
                         maxLoc = splitPane.getHeight() - insets.bottom;
                     }
                 }
                 maxLoc = Math.max(0, maxLoc);
                 minLoc = Math.max(0, Math.min(minLoc, maxLoc));
-                
+
                 // FIXME We will provide a client property on the split
                 // bar which can be used to specify into which direction the
                 // split bar shall be moved on double click.
@@ -380,7 +376,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                     maxLoc = minLoc;
                     minLoc = helper;
                 }
-                
+
                 int lastLoc = splitPane.getLastDividerLocation();
                 int currentLoc = splitPaneUI.getDividerLocation(splitPane);
                 int newLoc;
@@ -389,7 +385,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                 } else {
                     newLoc = maxLoc;
                 }
-                
+
                 if (currentLoc != newLoc) {
                     splitPane.setDividerLocation(newLoc);
                     // We do this in case the dividers notion of the location

@@ -19,7 +19,19 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
-  <h3> Version 6.1<br />
+  <h3> Version 6.1.1<br />
+    <font size="-1">2009-10-04</font></h3>
+  <p>Enhancements</p>
+  <ul>
+    <li>JToolBar with &quot;bottom&quot; style can now also be used on windows which are not textured.</li>
+  </ul>
+  <p>Fixes</p>
+  <ul>
+    <li>JToolBar with &quot;bottom&quot; style did not repaint when the &quot;active&quot; state of the window changed.</li>
+    <li>JOptionPane on Snow Leopard opened very slowly the first time, because retrieving and scaling the application icon from OS X was done synchronously. JOptionPane opens now immediately – the  icon is rendered after a short delay.</li>
+    <li>JComboBox hit a NullPointerException, when it was the only UI-delegate, that was included using method QuaquaManager.setIncludedUIs().</li>
+  </ul>
+  <h3>Version 6.1<br />
     <font size="-1">2009-09-27</font></h3>
   <p>Enhancements</p>
   <ul>

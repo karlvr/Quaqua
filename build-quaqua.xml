@@ -25,8 +25,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.1"/>
-        <property name="version" value="${versionNumber} 2009-09-27"/>
+        <property name="versionNumber" value="6.1.1"/>
+        <property name="version" value="${versionNumber} 2009-10-04"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -417,6 +417,7 @@ CrossSnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformL
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
 </echo>
         <mkdir dir="${distdir}"/>
+        <delete file="${distdir}/quaqua.jar"/>
         <jar basedir="${builddir}" compress="true" jarfile="${distdir}/quaqua.jar" 
             >
             <manifest>

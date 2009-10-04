@@ -47,34 +47,56 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nati
     jbyteArray result = NULL;
 
     // Allocate a memory pool
-	NSAutoreleasePool* pool = [NSAutoreleasePool new];
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
     // Get the icon image
-	NSApplication* application = [NSApplication sharedApplication];
-	NSSize iconSize = { size, size };
-	NSImage* image = [application applicationIconImage];
-    /* Don't scale image here - apparently the algorithm only uses bilinear
-       interpolation. For optimal results, we need bicubic interpolation.
-	image = [image copy];
-	[image setScalesWhenResized:true];
-	[image setSize:iconSize];
-    */
-	NSData* dataNS = [image TIFFRepresentation];
-    if (dataNS != NULL) {
-    
-        unsigned len = [dataNS length];
-        void* bytes = malloc(len);
-        [dataNS getBytes:bytes];
+    NSApplication* application = [NSApplication sharedApplication];
+    NSSize iconSize = { size, size };
+    NSImage* image = [application applicationIconImage];
 
-        result = (*env)->NewByteArray(env, len);
-        (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
-        free(bytes);
+    //NSLog (@"%@", image);
+    if (image != NULL) {
+
+        // Create a scaled version of the image by choosing the best
+        // representation.
+        NSSize desiredSize = { size, size };
+        NSImage* scaledImage = [[[NSImage alloc] initWithSize:desiredSize] autorelease];
+        [scaledImage setSize: desiredSize];
+        NSImageRep* imageRep;
+        NSImageRep* bestRep = NULL;
+        NSEnumerator *enumerator = [[image representations] objectEnumerator];
+        while (imageRep = [enumerator nextObject]) {
+            if ([imageRep pixelsWide] >= size &&
+                (bestRep == NULL || [imageRep pixelsWide] < [bestRep pixelsWide]) ) {
+
+                bestRep = imageRep;
+            }
+        }
+        if (bestRep != NULL) {
+            [scaledImage addRepresentation: bestRep];
+        } else {
+            // We should never get to here, but if we do, we use the
+            // original image.
+            scaledImage = image;
+            [scaledImage setSize: desiredSize];
+        }
+    
+        // Convert image to TIFF
+        NSData* dataNS = [scaledImage TIFFRepresentation];
+        if (dataNS != NULL) {
+            unsigned len = [dataNS length];
+            void* bytes = malloc(len);
+            [dataNS getBytes: bytes];
+            result = (*env)->NewByteArray(env, len);
+            (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+            free(bytes);
+        }
     }
 
     // Release memory pool
-	[pool release];
+    [pool release];
 
-	return result;
+    return result;
 }
 
 /*

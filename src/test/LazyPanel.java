@@ -1,7 +1,7 @@
 /*
- * @(#)LazyPanel.java  1.0  December 23, 2005
+ * @(#)LazyPanel.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -17,13 +17,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 /**
- * A LazyPanel creates its child component only when it becomes visible.
+ * A LazyPanel creates its child component only when it becomes visible or
+ * when it is painted.
  * LazyPanel is intended for use as a child of a JTabbedPane.
  *
  * @author  Werner Randelshofer
- * @version 1.0 December 23, 2005 Created.
+ * @version $Id$
  */
-public class LazyPanel extends javax.swing.JPanel implements ComponentListener {
+public class LazyPanel extends javax.swing.JPanel {
     private String childClassName;
     
     
@@ -32,7 +33,12 @@ public class LazyPanel extends javax.swing.JPanel implements ComponentListener {
      */
     public LazyPanel() {
         initComponents();
-        addComponentListener(this);
+        addComponentListener(new ComponentAdapter() {
+            public void componentShown(ComponentEvent e) {
+                instantiateChild();
+                LazyPanel.this.removeComponentListener(this);
+            }
+        });
     }
     public LazyPanel(String childClassName) {
         this();
@@ -43,16 +49,11 @@ public class LazyPanel extends javax.swing.JPanel implements ComponentListener {
         this.childClassName = childClassName;
     }
     
-    public void addNotify() {
-        super.addNotify();
-    }
-    
-    
-    public void instantiateChild() {
+    private void instantiateChild() {
         if (childClassName != null) {
+
             long start = System.currentTimeMillis();
             try {
-//System.out.println("*** "+childClassName+" ***");                
                 Class childClass = Class.forName(childClassName);
                 Component child = (Component) childClass.newInstance();
                 add(child);
@@ -61,12 +62,12 @@ public class LazyPanel extends javax.swing.JPanel implements ComponentListener {
                 e.printStackTrace();
             }
             long end = System.currentTimeMillis();
-            //System.out.println("create "+childClassName+" "+(end-start));
+            System.out.println("create "+childClassName+" "+(end-start));
             childClassName = null;
             start = end;
             validate();
             end = System.currentTimeMillis();
-            //System.out.println("validate "+(end-start));
+            System.out.println("validate "+(end-start));
         }
     }
     
@@ -81,23 +82,14 @@ public class LazyPanel extends javax.swing.JPanel implements ComponentListener {
         
     }//GEN-END:initComponents
     
-    public void componentHidden(ComponentEvent e) {
-    }
-    
-    public void componentMoved(ComponentEvent e) {
-    }
-    
-    public void componentResized(ComponentEvent e) {
-    }
-    
-    public void componentShown(ComponentEvent e) {
+    public void paint(Graphics g) {
+        super.paint(g);
         if (childClassName != null) {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run() { instantiateChild(); }
             });
         }
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
     

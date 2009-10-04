@@ -599,21 +599,20 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * is dragged over the toolbar.
      */
     private boolean isDragMovesWindow() {
+        Object toolBarStyle = toolBar.getClientProperty(TOOLBAR_STYLE_PROPERTY);
+        if (toolBarStyle == null) {
+            JRootPane rootPane = SwingUtilities.getRootPane(toolBar);
+            int xOffset = 0, yOffset = 0;
+            for (Component c = toolBar; c != rootPane; c = c.getParent()) {
+                xOffset += c.getX();
+                yOffset += c.getY();
+            }
+            toolBarStyle = (yOffset == 0) ? "title" : "plain";
+        }
+
         if (QuaquaManager.getBoolean("ToolBar.textured.dragMovesWindow")) {
             boolean isTextured = QuaquaUtilities.isOnTexturedWindow(toolBar);
-
-
-            Object toolBarStyle = toolBar.getClientProperty(TOOLBAR_STYLE_PROPERTY);
-            if (toolBarStyle == null) {
-                JRootPane rootPane = SwingUtilities.getRootPane(toolBar);
-                int xOffset = 0, yOffset = 0;
-                for (Component c = toolBar; c != rootPane; c = c.getParent()) {
-                    xOffset += c.getX();
-                    yOffset += c.getY();
-                }
-                toolBarStyle = (yOffset == 0) ? "title" : "plain";
-            }
-            return isTextured && (toolBarStyle.equals("title") || toolBarStyle.equals("bottom"));
+            return (isTextured && (toolBarStyle.equals("title")) || toolBarStyle.equals("bottom"));
         } else {
             return false;
         }
@@ -720,7 +719,9 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         //
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if (propertyName == "lookAndFeel") {
+            if (propertyName == "Frame.active") {
+                toolBar.repaint();
+            } else if (propertyName == "lookAndFeel") {
                 toolBar.updateUI();
             } else if (propertyName == "orientation") {
                 // Search for JSeparator components and change it's orientation
