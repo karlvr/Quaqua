@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTableUI.java  1.10.1  2008-11-05
+ * @(#)QuaquaTableUI.java  
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -15,63 +15,19 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.beans.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 
 /**
  * QuaquaTableUI.
  *
  * @author  Werner Randelshofer
- * @version 1.10.1 2008-11-05 Included fix by laurie_int regarding performance 
- * issue #72 "Table renders slow with very large tables".
- * <br>1.10 2008-07-15 System property "Quaqua.Table.useJ2SE5MouseHandler"
- * enforces use of J2SE5 mouse handler for J2SE6.
- * <br>1.9.3 2008-07-06 Java 1.4 incorrectly reports button 3 pressed when
- * the user presses the meta key.
- * <br>1.9.2 2008-06-22 Selection foreground color must be set to 
- * inactive (=black) when the current cell is not selected, otherwise we get
- * white text on white background.
- * <br>1.9.1 2008-05-31 Moved all code related to InactivateableColorUIResource
- * into method paintCell. 
- * <br>1.9 2008-05-10 Treat table as focused, if it is focused or if
- * it is editing a table cell.
- * <br>1.8.1 2008-05-03 Multiple cell selection did not work.
- * <br>1.8 2008-04-21 Set client property "terminateEditOnFocusLost" to
- * true on initDefaults. On mousePressed, requestFocusInWindow.
- * <br>1.7 2008-03-21 Made selection behavior more consistent with native
- * NSTable control. 
- * <br>1.6 2008-02-07 Reworked drawing of list selection. Implemented
- * ListSelectionListener to ensure that selection changes are properly repainted. 
- * <br>1.5 2008-01-13 Set 'showHorizontalLines' and 'showVerticalLines' to
- * false once when installing the UI, instead of overwriting these properties every
- * time when the client property "Quaqua.Table.style" is changed. 
- * <br>1.4 2007-01-16 Focus border repainting factored out into QuaquaViewportUI.
- * <br>1.3.3 2007-01-15 Change foreground color of cell renderer even if
- * it is not an UIResource.
- * <br>1.3.2 2007-01-05 Issue #6: Selection needs to be drawn differently
- * when table hasn't focus or is disabled or is on an inactive window.
- * Issue #10: Table cells mustn't draw selection background when
- * rowSelectionAllowed is false.
- * <br>1.3.1 2006-05-04 EditorCell was always drawn with alternating
- * row2 color even when the table style was not set to striped.
- * <br>1.3 2006-02-07 Support for client property "Table.isFileList" added.
- * <br>1.2.1 2005-08-25 If the table is not striped, fill the viewport with
- * the background color of the table.
- * <br>1.2 2005-03-11 LnF Property "Table.alternateBackground" replaced
- * by "Table.alternateBackground.0" and "Table.alternateBackground.1".
- * <br>1.1 2004-07-04 FocusHandler added.
- * <br>1.0  June 22, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaTableUI extends BasicTableUI
         implements ViewportPainter {
@@ -131,7 +87,7 @@ public class QuaquaTableUI extends BasicTableUI
         if (table.getColumnModel() != null) {
             table.getColumnModel().addColumnModelListener(columnModelListener);
         }
-    // table.add
+        // table.add
     }
 
     protected void uninstallListeners() {
@@ -160,8 +116,8 @@ public class QuaquaTableUI extends BasicTableUI
         // By default, terminate editing on focus lost.
         table.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 
-    // FIXME - Intercell spacings different from 1,1 don't work currently
-    //table.setIntercellSpacing(new Dimension(4,4));
+        // FIXME - Intercell spacings different from 1,1 don't work currently
+        //table.setIntercellSpacing(new Dimension(4,4));
     }
 
     private void updateStriped() {
@@ -234,7 +190,7 @@ public class QuaquaTableUI extends BasicTableUI
 
             // Paint empty rows at the right to fill the viewport
             if (ts.width < vs.width) {
-                for (int y = p.y + row * rh, ymax = Math.min(th, vs.height); y < ymax; y+=rh) {
+                for (int y = p.y + row * rh, ymax = Math.min(th, vs.height); y < ymax; y += rh) {
                     if (row % 2 == 0) {
                         g.fillRect(0, y, vs.width, rh);
                     }
@@ -494,13 +450,13 @@ public class QuaquaTableUI extends BasicTableUI
         Color background = UIManager.getColor("Table.selectionBackground");
         Color foreground = UIManager.getColor("Table.selectionForeground");
         if (background instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) background).setActive(isFocused && 
+            ((InactivatableColorUIResource) background).setActive(isFocused &&
                     (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
         }
         if (foreground instanceof InactivatableColorUIResource) {
             // Note: We must draw with inactive color, if the current cell is not selected
             //       Otherwise, we get white text on white background.
-            ((InactivatableColorUIResource) foreground).setActive(isFocused && 
+            ((InactivatableColorUIResource) foreground).setActive(isFocused &&
                     (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()) &&
                     table.isCellSelected(row, column));
         }
@@ -570,7 +526,7 @@ public class QuaquaTableUI extends BasicTableUI
         // FIXME - We haven't yet implemented a mouse handler for J2SE6. 
         // Only use our own mouse listener on Java 1.4 and 1.5,
         // it does not work with J2SE6.
-        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler","false").equals("true") ||
+        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler", "false").equals("true") ||
                 QuaquaManager.getProperty("java.version").startsWith("1.4") ||
                 QuaquaManager.getProperty("java.version").startsWith("1.5")) {
             return new MouseHandler();
@@ -619,6 +575,7 @@ public class QuaquaTableUI extends BasicTableUI
     //
     //  The Table's focus listener
     //
+
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
@@ -816,80 +773,84 @@ public class QuaquaTableUI extends BasicTableUI
             int row = table.rowAtPoint(p);
             int column = table.columnAtPoint(p);
 
-            // Note: We must check for table.editCellAt, regardless whether
-            // the table is currently editing or not.
-            //---if (! table.isEditing()) {
-//            table.requestFocus();
-            if (table.editCellAt(row, column, e)) {
-                setDispatchComponent(e);
-                repostEvent(e);
-            }
-            //---}
+            if (table.isEnabled()) {
+                // Note: We must check for table.editCellAt, regardless whether
+                // the table is currently editing or not.
+                //---if (! table.isEditing()) {
+                if (table.editCellAt(row, column, e)) {
+                    setDispatchComponent(e);
+                    repostEvent(e);
+                }
+                //---}
 
-            // Note: Some applications depend on selection changes only occuring
-            // on focused components. Maybe we must not do any changes to the
-            // selection changes at all, when the compnent is not focused?
-            table.requestFocusInWindow();
+                // Note: Some applications depend on selection changes only occuring
+                // on focused components. Maybe we must not do any changes to the
+                // selection changes at all, when the compnent is not focused?
+                table.requestFocusInWindow();
 
-            if (row != -1 && column != -1) {
-                if (table.isRowSelected(row) && e.isPopupTrigger()) {
-                    // Do not change the selection, if the item is already
-                    // selected, and the user triggers the popup menu.
-                } else {
-                    int anchorIndex = table.getSelectionModel().getAnchorSelectionIndex();
-                    // Workaround: Java 1.4 incorrectly reports mouse button 3 down when the Meta-Key is pressed
-                    String javaVersion = System.getProperty("java.version");
-                    if (javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK)) == MouseEvent.META_DOWN_MASK
-                    || ! javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
-                        // toggle the selection
-                        table.changeSelection(row, column, true, false);
-                        toggledRow = row;
-                        toggledColumn = column;
-                        mouseDragAction = MOUSE_DRAG_TOGGLES_SELECTION;
-                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
-                            anchorIndex != -1) {
-                        // add all rows to the selection from the anchor to the row
-                        table.changeSelection(row, column, false, true);
-                        //table.setRowSelectionInterval(anchorIndex, row);
-                        mouseDragAction = MOUSE_DRAG_SELECTS;
-                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
-                        if (table.isCellSelected(row, column)) {
-                            mouseReleaseDeselects = table.isFocusOwner();
-                        } else {
-                            // Only select the cell
-                            table.changeSelection(row, column, false, false);
-                            //table.setRowSelectionInterval(row, row);
+                if (row != -1 && column != -1) {
+                    if (table.isRowSelected(row) && e.isPopupTrigger()) {
+                        // Do not change the selection, if the item is already
+                        // selected, and the user triggers the popup menu.
+                    } else {
+                        int anchorIndex = table.getSelectionModel().getAnchorSelectionIndex();
+                        // Workaround: Java 1.4 incorrectly reports mouse button 3 down when the Meta-Key is pressed
+                        String javaVersion = System.getProperty("java.version");
+                        if (javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK)) == MouseEvent.META_DOWN_MASK || !javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
+                            // toggle the selection
+                            table.changeSelection(row, column, true, false);
+                            toggledRow = row;
+                            toggledColumn = column;
+                            mouseDragAction = MOUSE_DRAG_TOGGLES_SELECTION;
+                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
+                                anchorIndex != -1) {
+                            // add all rows to the selection from the anchor to the row
+                            table.changeSelection(row, column, false, true);
+                            //table.setRowSelectionInterval(anchorIndex, row);
                             mouseDragAction = MOUSE_DRAG_SELECTS;
+                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
+                            if (table.isCellSelected(row, column)) {
+                                mouseReleaseDeselects = table.isFocusOwner();
+                            } else {
+                                // Only select the cell
+                                table.changeSelection(row, column, false, false);
+                                //table.setRowSelectionInterval(row, row);
+                                mouseDragAction = MOUSE_DRAG_SELECTS;
+                            }
+                            //table.getSelectionModel().setAnchorSelectionIndex(row);
                         }
-                    //table.getSelectionModel().setAnchorSelectionIndex(row);
                     }
                 }
-            }
 
-            table.getSelectionModel().setValueIsAdjusting(mouseDragAction != MOUSE_DRAG_DOES_NOTHING);
-        /*
-        if (e.isConsumed()) {
-        selectedOnPress = false;
-        return;
-        }
-        selectedOnPress = true;
-        mouseReleaseDeselects = true;
-        adjustFocusAndSelection(e);
-         */
+                table.getSelectionModel().setValueIsAdjusting(mouseDragAction != MOUSE_DRAG_DOES_NOTHING);
+            }
+            /*
+            if (e.isConsumed()) {
+            selectedOnPress = false;
+            return;
+            }
+            selectedOnPress = true;
+            mouseReleaseDeselects = true;
+            adjustFocusAndSelection(e);
+             */
         }
 
         public void mouseReleased(MouseEvent e) {
             repostEvent(e);
-            mouseDragAction = MOUSE_DRAG_DOES_NOTHING;
-            if (mouseReleaseDeselects) {
-                int row = table.rowAtPoint(e.getPoint());
-                int column = table.columnAtPoint(e.getPoint());
-                table.changeSelection(row, column, false, false);
-            }
-            table.getSelectionModel().setValueIsAdjusting(false);
 
-            if (table.isRequestFocusEnabled() && !table.isEditing()) {
-                table.requestFocus();
+            if (table.isEnabled()) {
+
+                mouseDragAction = MOUSE_DRAG_DOES_NOTHING;
+                if (mouseReleaseDeselects) {
+                    int row = table.rowAtPoint(e.getPoint());
+                    int column = table.columnAtPoint(e.getPoint());
+                    table.changeSelection(row, column, false, false);
+                }
+                table.getSelectionModel().setValueIsAdjusting(false);
+
+                if (table.isRequestFocusEnabled() && !table.isEditing()) {
+                    table.requestFocus();
+                }
             }
         }
 
@@ -904,7 +865,7 @@ public class QuaquaTableUI extends BasicTableUI
         }
 
         public void mouseDragged(MouseEvent e) {
-            if (shouldIgnore(e)) {
+            if (!table.isEnabled() || shouldIgnore(e)) {
                 return;
             }
             /*
@@ -944,8 +905,8 @@ public class QuaquaTableUI extends BasicTableUI
                     int row = table.rowAtPoint(e.getPoint());
                     int column = table.columnAtPoint(e.getPoint());
                     boolean isCellSelection = table.getCellSelectionEnabled();
-                    if (row != -1 && column != -1 && 
-                            ((!isCellSelection && row != toggledRow) || 
+                    if (row != -1 && column != -1 &&
+                            ((!isCellSelection && row != toggledRow) ||
                             (isCellSelection && (row != toggledRow || column != toggledColumn)))) {
                         Rectangle cellBounds = table.getCellRect(row, column, true);
                         table.scrollRectToVisible(cellBounds);
@@ -960,11 +921,12 @@ public class QuaquaTableUI extends BasicTableUI
 
     private class FocusHandler implements FocusListener {
         // FocusListener
+
         private void repaintSelection() {
             int[] rows = table.getSelectedRows();
             Rectangle dirtyRect = null;
             for (int r = 0; r < rows.length; r++) {
-                for (int c = 0,  n = table.getColumnCount(); c < n; c++) {
+                for (int c = 0, n = table.getColumnCount(); c < n; c++) {
                     table.repaint(table.getCellRect(rows[r], c, false));
                 }
             }

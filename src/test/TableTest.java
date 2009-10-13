@@ -158,6 +158,7 @@ plainTable.setRowSelectionAllowed(true);
         comboBox.setEditable(true);
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox));
         largeFontTable.setRowHeight(largeFontTable.getRowHeight() + 7);
+        largeFontTable.setEnabled(false);
 
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
         showVerticalLinesCheckBox.setSelected(plainTable.getShowVerticalLines());
@@ -168,6 +169,7 @@ plainTable.setRowSelectionAllowed(true);
 
     public static void main(String args[]) {
         try {
+            System.setProperty("Quaqua.Table.useJ2SE5MouseHandler","true");
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
@@ -270,6 +272,7 @@ plainTable.setRowSelectionAllowed(true);
         add(jSeparator12, gridBagConstraints);
 
         largeTableScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        largeTableScrollPane.setEnabled(false);
 
         largeFontTable.setFont(new java.awt.Font("Lucida Grande", 0, 16));
         largeFontTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
