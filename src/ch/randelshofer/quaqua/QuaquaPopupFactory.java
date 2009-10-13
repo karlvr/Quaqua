@@ -27,7 +27,7 @@ import javax.swing.border.LineBorder;
  * @version 1.1 2009-05-23 Added support for heavy weight popup.
  * <br>1.0 Jan 7, 2008 Created.
  */
-public class QuaquaPopupFactory {
+public class QuaquaPopupFactory extends PopupFactory {
 
     /**
      * Key used to indicate a light weight popup should be used.

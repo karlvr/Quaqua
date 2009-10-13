@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua13JaguarTabbedPaneUI.java  4.1  2009-04-27
+ * @(#)Quaqua13JaguarTabbedPaneUI.java  
  *
  * Copyright (c) 2001-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -41,27 +41,7 @@ import java.util.*;
  * to be used to lay out the child component inside the JTabbedPane.
  *
  * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
- * @version 4.1 2009-04-27 Added support for client property Quaqua.TabbedPane.tabAlignment.
- * <br>4.0 2007-11-03 Retrieving (some) border resources now from UIManager.
- * <br>3.2 2006-12-24 by Karl von Randow: Use Images class to create artwork.
- * <br>3.1 2006-09-04 Fixed keybord navigation problems.
- * <br>3.0 2006-02-07 Reworked for QuaquaPantherJaguarTabbedPaneUI.
- * <br>2.3 2005-09-08 Lazily create borders.
- * <br>2.2 2005-06-19 Paint text antialiased.
- * <br>2.1 2005-05-15 Dragged in more code from BasicTabbedPaneUI, because
- * mouse clicks on the tab were not working with Java 1.5.
- * <br>2.0.1 2005-04-17 Added one pixel to the bottom margin, when tabs
- * are at the top, left or right. This is because, the cast shadow at the
- * looks like a border line.
- * <br>2.0 2005-04-02 More visual changes for tabs on the left and on the
- * right. Support for dynamic component margin added.
- * <br>1.2 2004-05-09 Support for rendering on inactive window added. Visual
- * changes for tabs on the left and on the right.
- * <br>1.1 2003-11-12 Support for tabs on the left and on the right added.
- * <br>1.0.2 2003-10-04 Content Border Insets match now visually the insets
- * of Apple's original Aqua LAF.
- * <br>1.0.1 2003-09-12 Shift values in method getTabLabelShiftY changed.
- * <br>1.0 2003-07-20 Created.
+ * @version $Id$
  */
 public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         implements VisuallyLayoutable, NavigatableTabbedPaneUI {
@@ -97,7 +77,7 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
     private static Border createNonCachedImageBorder(String name, Insets insets) {
         return QuaquaBorderFactory.create(
                 Images.createImage(Quaqua13JaguarTabbedPaneUI.class.getResource(name)),
-                insets, insets, true, false);
+                insets, insets, true, null, false);
     }
 
     /**
@@ -139,7 +119,6 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
     //--
     /**
      * This is a tab when the tabs are at the top.
-     * Don't cache this border, because every tab has a different size.
      *
      * Indices 0: enabled
      *         1: selected
@@ -153,18 +132,17 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         if (tabTopBorder == null) {
             Insets insets = new Insets(12, 8, 11, 8);
             tabTopBorder = new Border[]{
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.S.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.I.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabTop.DS.png", insets),};
+                        createImageBorder("images/TabbedPane.tabTop.png", insets),
+                        createImageBorder("images/TabbedPane.tabTop.S.png", insets),
+                        createImageBorder("images/TabbedPane.tabTop.I.png", insets),
+                        createImageBorder("images/TabbedPane.tabTop.D.png", insets),
+                        createImageBorder("images/TabbedPane.tabTop.DS.png", insets),};
         }
         return tabTopBorder[i];
     }
     //--
     /**
      * This is a tab when the tabs are at the bottom.
-     * Don't cache this border, because every tab has a different size.
      */
     private static Border[] tabBottomBorder;
 
@@ -172,11 +150,11 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
         if (tabBottomBorder == null) {
             Insets insets = new Insets(11, 8, 12, 8);
             tabBottomBorder = new Border[]{
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.S.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.I.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabBottom.DS.png", insets),};
+                        createImageBorder("images/TabbedPane.tabBottom.png", insets),
+                        createImageBorder("images/TabbedPane.tabBottom.S.png", insets),
+                        createImageBorder("images/TabbedPane.tabBottom.I.png", insets),
+                        createImageBorder("images/TabbedPane.tabBottom.D.png", insets),
+                        createImageBorder("images/TabbedPane.tabBottom.DS.png", insets),};
         }
         return tabBottomBorder[i];
     }
@@ -190,11 +168,11 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
             Insets insets = new Insets(11, 1, 11, 7);
             Insets insetsS = new Insets(11, 2, 11, 7);
             tabRightBorder = new Border[]{
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.S.png", insetsS),
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.I.png", insetsS),
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabRight.DS.png", insetsS),};
+                        createImageBorder("images/TabbedPane.tabRight.png", insets),
+                        createImageBorder("images/TabbedPane.tabRight.S.png", insetsS),
+                        createImageBorder("images/TabbedPane.tabRight.I.png", insetsS),
+                        createImageBorder("images/TabbedPane.tabRight.D.png", insets),
+                        createImageBorder("images/TabbedPane.tabRight.DS.png", insetsS),};
         }
         return tabRightBorder[i];
     }
@@ -208,11 +186,11 @@ public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI
             Insets insets = new Insets(11, 7, 11, 1);
             Insets insetsS = new Insets(11, 7, 11, 2);
             tabLeftBorder = new Border[]{
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.S.png", insetsS),
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.I.png", insetsS),
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.D.png", insets),
-                        createNonCachedImageBorder("images/TabbedPane.tabLeft.DS.png", insetsS),};
+                        createImageBorder("images/TabbedPane.tabLeft.png", insets),
+                        createImageBorder("images/TabbedPane.tabLeft.S.png", insetsS),
+                        createImageBorder("images/TabbedPane.tabLeft.I.png", insetsS),
+                        createImageBorder("images/TabbedPane.tabLeft.D.png", insets),
+                        createImageBorder("images/TabbedPane.tabLeft.DS.png", insetsS),};
         }
         return tabLeftBorder[i];
     }
