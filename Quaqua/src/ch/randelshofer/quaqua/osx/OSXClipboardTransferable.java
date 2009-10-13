@@ -16,6 +16,7 @@ import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
@@ -173,7 +174,7 @@ public class OSXClipboardTransferable implements Transferable {
     }
 
     /** Reads the data from the "General Clipboard" Cocoa NSPasteboard.
-     * If the data flavor is supported, always returns it as a byte array. */
+     * If the data flavor is supported, return it as a byte array or as an input stream. */
     public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
         if (flavor == null) {
             throw new NullPointerException("flavor");
@@ -186,7 +187,11 @@ public class OSXClipboardTransferable implements Transferable {
         if (data == null) {
             throw new UnsupportedFlavorException(flavor);
         }
-        return data;
-    }
 
+        if (flavor.isRepresentationClassInputStream()) {
+            return new ByteArrayInputStream(data);
+        } else {
+            return data;
+        }
+    }
 }

@@ -80,6 +80,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         if (QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").
                 equals("true")) {
             installKeyboardFocusManager();
+            installPopupFactory();
         }
 
         return table;
@@ -1992,6 +1993,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
                 new Object[]{location, insets, new Boolean(fill)});
     }
+    protected Object makeImageBevelBorder(String location, Insets insets, boolean fill, Color fillColor) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
+                new Object[]{location, insets, insets, new Boolean(fill), fillColor});
+    }
 
     protected Object makeImageBevelBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
         return new UIDefaults.ProxyLazyValue(
@@ -2068,6 +2074,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 //ex.printStackTrace();
             }
         }
+    }
+    protected void installPopupFactory() {
+            try {
+                PopupFactory.setSharedInstance(new QuaquaPopupFactory());
+            } catch (SecurityException ex) {
+                System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
+                //ex.printStackTrace();
+            }
     }
 
     /**

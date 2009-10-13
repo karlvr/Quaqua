@@ -51,31 +51,31 @@ public class QuaquaBorderFactory {
      * The image has different insets than the border.
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets) {
-        return create(img, imageInsets, borderInsets, false, true);
+        return create(img, imageInsets, borderInsets, true, null, true);
     }
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
      */
     public static Border create(Image img, Insets borderInsets, boolean fillContentArea, boolean isCaching) {
-        return create(img, borderInsets, borderInsets, fillContentArea, isCaching);
+        return create(img, borderInsets, borderInsets, fillContentArea, null, isCaching);
     }
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
-        return create(img, imageInsets, borderInsets, fillContentArea, true);
+        return create(img, imageInsets, borderInsets, fillContentArea, null, true);
     }
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
      */
-    public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea, boolean isCaching) {
+    public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea, Color fillColor, boolean isCaching) {
         if (isCaching) {
             return new CachedImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea);
         } else {
-            return new ImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea);
+            return new ImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea, fillColor);
         }
     }
     /**
@@ -91,13 +91,19 @@ public class QuaquaBorderFactory {
         return new Quaqua14PlacardButtonBorder();
     }
     public static Border create(String location, Insets borderInsets, boolean fill) {
-        return create(QuaquaIconFactory.createImage(location), borderInsets, borderInsets, fill, false);
+        return create(QuaquaIconFactory.createImage(location), borderInsets, borderInsets, fill, null, false);
     }
     public static Border create(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
-        return create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, false);
+        return create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, null, false);
+    }
+    public static Border create(String location, Insets imageInsets, Insets borderInsets, boolean fill, Color fillColor) {
+        return create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, fillColor, false);
     }
     public static Border createBackgroundBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
-        return new BackgroundBorderUIResource(create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, false));
+        return new BackgroundBorderUIResource(create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, null, false));
+    }
+    public static Border createBackgroundBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill, Color fillColor) {
+        return new BackgroundBorderUIResource(create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, fillColor, false));
     }
     
     /**
@@ -120,7 +126,7 @@ public class QuaquaBorderFactory {
                 );
         Border[] borders = new Border[count];
         for (int i=0; i < count; i++) {
-            borders[i] = create(images[i], insets, insets, fill, isCaching);
+            borders[i] = create(images[i], insets, insets, fill, null, isCaching);
         }
         return borders;
     }
