@@ -623,6 +623,11 @@ public class Quaqua14RootPaneUI extends BasicRootPaneUI {
                 window.addWindowListener(this);
                 updateWindowModified((JRootPane) evt.getSource());
                 updateComponentTreeUIActivation(ancestor, new Boolean (window.isActive()));
+
+                if (QuaquaManager.getBoolean("ColorChooser.unifiedTitleBar") &&
+                        window.getClass().getName().equals("javax.swing.ColorChooserDialog")) {
+                    ((JRootPane) evt.getSource()).putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+                }
             }
         }
 
