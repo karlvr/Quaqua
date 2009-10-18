@@ -13,13 +13,10 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.geom.*;
 import java.beans.*;
 
-import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
 /**
