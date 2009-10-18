@@ -16,19 +16,12 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.ViewportPainter;
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
 import java.awt.event.*;
-import java.awt.image.*;
 import java.beans.*;
-import java.util.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.table.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 
 /**
  * The Quaqua user interface delegate for a JViewport.
@@ -131,7 +124,7 @@ public class QuaquaViewportUI extends BasicViewportUI {
     private class ChangeHandler implements ChangeListener {
         private Point previousLocation = new Point();
         public void stateChanged(ChangeEvent e) {
-            
+
             if (viewport.getView() != null) {
                 Component view = viewport.getView();
                 
