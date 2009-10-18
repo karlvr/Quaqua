@@ -1,7 +1,7 @@
 /**
- * @(#)QuaquaLazyActionMap.java  1.0  Jan 25, 2008
+ * @(#)QuaquaLazyActionMap.java  
  *
- * Copyright (c) 2008 Werner Randelshofer
+ * Copyright (c) 2008-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -21,7 +21,7 @@ import javax.swing.plaf.*;
  * QuaquaLazyActionMap.
  *
  * @author Werner Randelshofer
- * @version 1.0 Jan 25, 2008 Created.
+ * @version $Id$
  */
 public class QuaquaLazyActionMap extends ActionMapUIResource {
     /**

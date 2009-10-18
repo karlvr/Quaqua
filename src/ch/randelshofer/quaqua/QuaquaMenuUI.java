@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuUI.java 1.3  2008-05-04
+ * @(#)QuaquaMenuUI.java 
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -16,17 +16,10 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.beans.*;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
-import javax.swing.text.View;
 /**
  * A replacement for the AquaMenuUI.
  * <p>
@@ -35,14 +28,7 @@ import javax.swing.text.View;
  * classes.
  *
  * @author  Werner Randelshofer
- * @version 1.3 2008-05-04 Added support for background border.
- * <br>1.2.1 2005-09-25 Method paintBackground() did not always use a
- * texture.
- * <br>1.2 2005-08-26 Made menu opaque.
- * <br>1.1.1 2005-04-07 Method paintBackground() did not honour background
- * color of parent component when it is the topLevelMenu.
- * <br>1.1 2003-10-06 Layout code outplaced into class QuaquaMenuPainter
- * <br>1.0 2003-06-20 Created.
+ * @version $Id$
  */
 public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient {
     // BasicMenuUI also uses this.

@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaDefaultTableCellRenderer.java  1.0  January 18, 2007
+ * @(#)QuaquaDefaultTableCellRenderer.java  
  *
- * Copyright (c) 2006 Werner Randelshofer
+ * Copyright (c) 2006-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -13,13 +13,12 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
 import javax.swing.table.*;
 /**
  * QuaquaDefaultTableCellRenderer.
  *
  * @author Werner Randelshofer
- * @version 1.0 January 18, 2007 Created.
+ * @version $Id$
  */
 public class QuaquaDefaultTableCellRenderer extends DefaultTableCellRenderer.UIResource {
     

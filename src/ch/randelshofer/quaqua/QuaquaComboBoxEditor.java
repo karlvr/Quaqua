@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxEditor.java  1.1.1  2007-07-30
+ * @(#)QuaquaComboBoxEditor.java  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -14,11 +14,7 @@
 package ch.randelshofer.quaqua;
 
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.plaf.*;
-import java.io.Serializable;
-import java.awt.*;
-import java.awt.event.*;
 
 import javax.swing.plaf.basic.BasicComboBoxEditor;
 
@@ -26,10 +22,7 @@ import javax.swing.plaf.basic.BasicComboBoxEditor;
  * The default editor for Quaqua editable combo boxes.
  *
  * @author  Werner Randelshofer
- * @version 1.1.1 2007-07-30 Removed debug output. 
- * <br>1.1 2004-12-02 Remove input map entries from the editor which 
- * interfer with the ancestor map entries of the combo box.
- * <br>1.0 2004-04-09 Created.
+ * @version $Id$
  */
 public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
     public QuaquaComboBoxEditor() {

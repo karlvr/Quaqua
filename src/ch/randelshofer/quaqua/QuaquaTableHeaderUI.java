@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaTableHeaderUI.java  1.2  2008-02-07
+ * @(#)QuaquaTableHeaderUI.java  
  *
- * Copyright (c) 2004-2007 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -15,29 +15,18 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import java.awt.*;
-import java.awt.datatransfer.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.beans.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.table.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 /**
  * QuaquaTableHeaderUI.
  *
  * @author  Werner Randelshofer
- * @version 1.2 2007-02-08 Don't do any magic with the size of the table header
- * cells, so that the ColumnModel has full control over the layout.
- * <br>1.1 2006-04-08 Take insets of table header border into account
- * when determining the height of the table header.
- * <br>1.0  June 22, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
     // Listeners that are attached to the JTable

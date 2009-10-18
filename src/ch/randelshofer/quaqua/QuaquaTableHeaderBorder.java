@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaTableHeaderBorder.java  1.0  December 8, 2005
+ * @(#)QuaquaTableHeaderBorder.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,20 +13,16 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import java.awt.*;
-import javax.swing.*;
-import javax.swing.table.*;
 //import javax.swing.text.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 
 /**
  * QuaquaTableHeaderBorder.
  *
  * @author  Werner Randelshofer
- * @version 1.0 December 8, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaTableHeaderBorder implements BackgroundBorder {
     /** Location of the border images. */

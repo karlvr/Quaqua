@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaDesktopPaneUI.java  1.0  06 February 2005
+ * @(#)QuaquaDesktopPaneUI.java 
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
@@ -21,7 +20,7 @@ import javax.swing.plaf.basic.*;
  * QuaquaDesktopPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 1.0  06 February 2005  Created.
+ * @version $Id$
  */
 public class QuaquaDesktopPaneUI extends BasicDesktopPaneUI {
     

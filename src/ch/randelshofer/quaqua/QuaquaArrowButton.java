@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaArrowButton.java  1.0  September 11, 2005
+ * @(#)QuaquaArrowButton.java 
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,7 @@ import javax.swing.*;
  * the button is completely transparent.
  *
  * @author  Werner Randelshofer
- * @version 1.0 September 11, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaArrowButton extends JButton implements SwingConstants {
     private JScrollBar scrollbar;

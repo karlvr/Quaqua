@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaSplitPaneUI.java  1.1  2007-08-02
+ * @(#)QuaquaSplitPaneUI.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -24,7 +24,7 @@ import javax.swing.plaf.basic.*;
  * QuaquaSplitPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 1.0 November 27, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaSplitPaneUI extends BasicSplitPaneUI {
 

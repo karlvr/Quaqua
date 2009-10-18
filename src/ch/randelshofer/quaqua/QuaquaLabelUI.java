@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaLabelUI.java  1.6  2007-11-18
+ * @(#)QuaquaLabelUI.java  
  *
- * Copyright (c) 2005-2007 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -18,31 +18,18 @@ import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
-import java.awt.event.*;
 import java.beans.*;
 
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.text.*;
 
 /**
  * QuaquaLabelUI.
  *
  * @author  Werner Randelshofer
- * @version 1.6.1 2009-02-01 Added support for property "Quaqua.Label.style"=
- * "row", "rowSelected", "category" and "categorySelected" to support side bar JTrees.
- * <br>1.6 2007-11-18 Added support for property "Quaqua.Label.style"=
- * "emboss" and "shadow".
- * <br>1.5.1 2007-01-15 Perceiced bounds.height must reflect font size
- * even if the label is empty.
- * <br>1.5 2006-02-18 Tweaked perceived text bounds. Draw disabled label
- * with disabled text color. Draw background again if we are opaque.
- * <br>1.4 2005-12-08 Support for background border added.
- * <br>1.3 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.2 2006-06-20 Paint text antialiased.
- * <br>1.0  02 April 2005  Created.
+ * @version $Id$
  */
 public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 

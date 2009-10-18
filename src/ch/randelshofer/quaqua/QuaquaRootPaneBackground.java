@@ -12,7 +12,6 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import java.awt.Color;

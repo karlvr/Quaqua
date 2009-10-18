@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaColorWellBorder.java  2.0  2005-09-07
+ * @(#)QuaquaColorWellBorder.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -14,15 +14,12 @@
 package ch.randelshofer.quaqua;
 
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 /**
  * QuaquaColorWellBorder.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2005-09-07 Delegate to SquareButtonBorder instead of subclassing 
- * it.
- * <br>1.0  10 April 2005  Created.
+ * @version $Id$
  */
 public class QuaquaColorWellBorder implements Border {
     private Border squareButtonBorder;

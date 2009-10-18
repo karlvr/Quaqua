@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaPanelUI.java  1.1  2005-05-25
+ * @(#)QuaquaPanelUI.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -21,14 +21,11 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 /**
  * QuaquaPanelUI.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-05-25 Make panel opaque depending on UIManager property
- * "Panel.isOpaque". Support for BackgroundBorder added.
- * <br>1.0  06 February 2005  Created.
+ * @version $Id$
  */
 public class QuaquaPanelUI extends BasicPanelUI {
     // Shared UI object

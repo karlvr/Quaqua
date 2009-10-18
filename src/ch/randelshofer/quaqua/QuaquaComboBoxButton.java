@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxButton.java	1.3.2  2008-01-04
+ * @(#)QuaquaComboBoxButton.java	
  *
  * Copyright (c) 2004-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -18,7 +18,6 @@ import java.awt.*;
 
 import javax.swing.CellRendererPane;
 import javax.swing.DefaultButtonModel;
-import javax.swing.FocusManager;
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,19 +34,7 @@ import ch.randelshofer.quaqua.util.Images;
  * JButton subclass to help out QuaquaComboBoxUI.
  *
  * @author  Werner Randelshofer
- * @version 1.3.2 2008-01-04 Set the enabled state of the cell renderer to
- * the enabled state of the combo box.
- * <br>1.3.1 2007-01-30 Use QuaquaUtilities.isFocused to determine whether
- * focus drawing is needed. 
- * <br>1.3 2006-12-24 by Karl von Randow: Use Images class to create artwork. 
- * <br>1.2 2005-11-30 Create a border only when it is needed.
- * <br>1.1.2 2005-09-11 Streamlined image file names with the rest of
- * Quaqua.
- * <br>1.1.1 2005-06-25 Method setBorder must not set a border, because this will result in
- * bad insets, if the Look and Feel is changed after the button has been created.
- * <br>1.1 2005-03-26 FocusBorder renamed to FocusRing. Because it only
- * contains a ring and not a complete border. Honours Component.visualMargin property.
- * <br>1.0 2004-04-27 Created.
+ * @version $Id$
  */
 public class QuaquaComboBoxButton extends JButton {
     protected JComboBox comboBox;

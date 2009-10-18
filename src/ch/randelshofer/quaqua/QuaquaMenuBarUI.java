@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuBarUI.java  1.1  2005-12-10
+ * @(#)QuaquaMenuBarUI.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -16,7 +16,6 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -25,8 +24,7 @@ import javax.swing.plaf.basic.*;
  * QuaquaMenuBarUI.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-12-10 Support for background border added.
- * <br>1.0  28 December 2004  Created.
+ * @version $Id$
  */
 public class QuaquaMenuBarUI extends BasicMenuBarUI {
     

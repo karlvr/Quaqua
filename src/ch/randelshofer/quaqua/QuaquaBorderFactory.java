@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaBorderFactory.java  2.1  2008-10-04
+ * @(#)QuaquaBorderFactory.java  
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -24,13 +24,7 @@ import java.awt.image.*;
  * Creates an ImageBevelBorder instance optimized for this JVM.
  *
  * @author  Werner Randelshofer
- * @version 2.1 2008-10-04 The factory didn't always create a border which 
- * is an instance of UIResource.
- * <br>2.0 2007-10-30 Dropped support for Java 1.3.
- * <br>1.3 2005-01-04 Method createSmallSquareBorder added.
- * <br>1.2 2005-11-30 Fixed broken creation of CachedImageBevelBorder.
- * <br>1.1 2005-09-07 Support for caching image bevel borders added.
- * <br>1.0  25 April 2005  Created.
+ * @version $Id$
  */
 public class QuaquaBorderFactory {
     

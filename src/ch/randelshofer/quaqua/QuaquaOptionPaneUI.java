@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaOptionPaneUI.java  1.2  2007-03-16
+ * @(#)QuaquaOptionPaneUI.java  
  *
- * Copyright (c) 2005-2006 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -28,13 +28,7 @@ import javax.swing.plaf.basic.*;
  * QuaquaOptionPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 1.2 2007-02-16 If the UIManager property 
- * "OptionPane.messageLabelWidth" is 0, then it doesn't enforce the width
- * of a HTML message.  Added support for UIManager property 
- * "OptionPane.maxCharactePerLineCount".
- * <br>1.1 2006-02-05 As of Mac OS X 10.4 Tiger, native buttons are
- * focusable. So we do this too.
- * <br>1.0 September 21, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
     private final static int MIN_BUTTON_WIDTH = 68+6;

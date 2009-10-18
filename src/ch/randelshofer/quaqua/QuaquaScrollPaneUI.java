@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaScrollPaneUI.java  1.2.2  2005-11-26
+ * @(#)QuaquaScrollPaneUI.java  
  *
- * Copyright (c) 2004-2005 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -25,13 +25,7 @@ import javax.swing.border.*;
  * QuaquaScrollPaneUI.
  *
  * @author  Werner Randelshofer
- * @version 1.2.2 2005-11-26 Retrieve default opaqueness from UIManager.
- * <br>1.2.1 2005-09-17 Don't fill background if non-opaque.
- * <br>1.2 2005-08-25 Installs a QuaquaScrollPaneLayout to the scroll
- * pane to avoid overlapping of scroll bars with the grow-box of a Frame or
- * Dialog.
- * <br>1.1 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.0  June 23, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLayoutable {
     //private HierarchyListener hierarchyListener;

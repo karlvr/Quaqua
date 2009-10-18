@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuItemUI.java 1.1  2008-05-04
+ * @(#)QuaquaMenuItemUI.java 
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -15,16 +15,10 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.beans.*;
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
-import javax.swing.plaf.metal.*;
-import javax.swing.text.View;
 
 /**
  * A replacement for the AquaMenuItemUI.
@@ -42,11 +36,7 @@ import javax.swing.text.View;
  * </ul>
  *
  * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
- * @version 1.1 2008-05-04 Added support for background border.
- * <br>1.0.2 2007-07-25 Don't override installListeners from BasicMenuItemUI. 
- * <br>1.0.1 2003-10-04 A 'break' in getAcceleratorText was missing which
- * resulted in a bad text for the VK_ENTER key code.
- * <br>1.0 2003-07-19 Created.
+ * @version $Id$
  */
 public class QuaquaMenuItemUI extends BasicMenuItemUI
         implements QuaquaMenuPainterClient {

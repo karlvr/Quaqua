@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaEditorKit.java  1.0  December 1, 2004
+ * @(#)QuaquaEditorKit.java 
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -26,7 +26,7 @@ import java.util.*;
  * text editing actions.
  *
  * @author  Werner Randelshofer
- * @version 1.0  December 1, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaEditorKit extends DefaultEditorKit {
     // FIXME - Maybe we should rename this class OSXEditorKit and move it into

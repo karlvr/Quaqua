@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaDefaultListCellRenderer.java  1.0  January 18, 2007
+ * @(#)QuaquaDefaultListCellRenderer.java  
  *
- * Copyright (c) 2006 Werner Randelshofer
+ * Copyright (c) 2006-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -19,7 +19,7 @@ import javax.swing.*;
  * QuaquaDefaultListCellRenderer.
  *
  * @author Werner Randelshofer
- * @version 1.0 January 18, 2007 Created.
+ * @version $Id$
  */
 public class QuaquaDefaultListCellRenderer extends DefaultListCellRenderer.UIResource {
     

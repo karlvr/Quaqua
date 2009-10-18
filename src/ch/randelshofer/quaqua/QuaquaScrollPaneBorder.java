@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaScrollPaneBorder.java  3.2  2008-02-25
+ * @(#)QuaquaScrollPaneBorder.java  
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -18,26 +18,12 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 
 /**
  * QuaquaScrollPaneBorder.
  *
  * @author  Werner Randelshofer
- * @version 3.2 2008-02-25 Don't cache borders. 
- * <br>3.1.3 Don't draw focus border, when viewportView is disabled. 
- * <br>3.1.2 2007-11-03 Fixed a class cast exception in method
- * getBorder, which occured when the viewportView was not a JComponent.
- * <br>3.1.1 2007-10-21 Re-added accidentaly removed support for 
- * property "Quaqua.drawFocusBorder".
- * <br>3.1 2006-01-04 If viewport view is a JTextComponent, take its 
- * editable and enabled state into account.
- * <br>3.0 2005-12-08 Rewritten to create border images lazily and to not
- * hardcode the URL to the border images.
- * <br>2.0 2005-09-10 Lazily create image borders. Don't implement UIResource.
- * <br>1.1 2005-03-27 1.1 Updated to take account of larger focus ring and of
- * margins.
- * <br>1.0  July 4, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaScrollPaneBorder extends VisualMargin {
 

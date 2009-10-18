@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaHighlighter.java  1.0.1  2007-08-06
+ * @(#)QuaquaHighlighter.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -23,9 +23,7 @@ import javax.swing.text.*;
  * QuaquaHighlighter.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2007-08-06 Draw selection with inactive selection background, 
- * of the component is not focused.
- * <br>1.0  July 5, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaHighlighter extends DefaultHighlighter implements UIResource
 {

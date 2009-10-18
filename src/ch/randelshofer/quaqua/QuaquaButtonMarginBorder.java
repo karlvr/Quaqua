@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaButtonMarginBorder.java  1.0  31 March 2005
+ * @(#)QuaquaButtonMarginBorder.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -16,13 +16,12 @@ package ch.randelshofer.quaqua;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 /**
  * QuaquaButtonMarginBorder is used to honour the margins between button text 
  * and button border.
  *
  * @author  Werner Randelshofer
- * @version 1.0  31 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaButtonMarginBorder extends AbstractBorder {
     

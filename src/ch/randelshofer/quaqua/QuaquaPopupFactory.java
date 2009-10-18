@@ -1,5 +1,5 @@
 /**
- * @(#)QuaquaPopupFactory.java  1.1  2009-05-23
+ * @(#)QuaquaPopupFactory.java  
  *
  * Copyright (c) 1996-2009 by the original authors of JHotDraw
  * and all its contributors ("JHotDraw.org")
@@ -15,7 +15,6 @@ package ch.randelshofer.quaqua;
 
 import java.applet.Applet;
 import java.awt.*;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -24,8 +23,7 @@ import javax.swing.border.LineBorder;
  * on Java 1.4 in full screen mode.
  *
  * @author Werner Randelshofer
- * @version 1.1 2009-05-23 Added support for heavy weight popup.
- * <br>1.0 Jan 7, 2008 Created.
+ * @version $Id$
  */
 public class QuaquaPopupFactory extends PopupFactory {
 

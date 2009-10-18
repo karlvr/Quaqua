@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaBrowserUI.java  1.1  2007-01-25
+ * @(#)QuaquaBrowserUI.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -22,8 +22,7 @@ import javax.swing.plaf.*;
  * QuaquaBrowserUI.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2007-01-25 Create Vertical Scrollbar lazily. 
- * <br>1.0 August 25, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
     /**

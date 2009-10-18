@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaButtonBorder.java  2.0  2008-05-10
+ * @(#)QuaquaButtonBorder.java  
  *
- * Copyright (c) 2005-2008 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -71,18 +71,7 @@ import ch.randelshofer.quaqua.util.Images;
  * </ul>
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-05-10 Added support for "JButton.buttonType"="gradient",
- * and "JButton.segmentPosition"="first","middle" and "last" for compatibility 
- * with AquaLookAndFeel.
- * <br>1.5.1 2008-03-17 Slightly reduced margins of rounded push button.
- * <br>1.5 2007-12-18 Fixed visual margins. 
- * <br>1.4 2006-12-24 by Karl von Randow: Use Images class to create artwork.
- * <br>1.2 2005-01-04 "placard" style added. Tweaked visual margin of
- * regular push button and of small push button.
- * <br>1.1 2005-09-06 Create all borders lazily.
- * <br>1.1 2005-09-04 "help" style added.
- * <br>1.0.2 2005-05-06 Fixed "toolbar" property.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaButtonBorder implements Border, UIResource {
     // Shared borders
