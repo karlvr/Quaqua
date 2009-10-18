@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaButtonListener.java  1.0  31 March 2005
+ * @(#)QuaquaButtonListener.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
+ * Copyright (c) 2004-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -14,20 +14,15 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-import java.io.Serializable;
 import java.beans.*;
 /**
  * QuaquaButtonListener.
  *
  * @author  Werner Randelshofer
- * @version 1.0  31 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaButtonListener extends BasicButtonListener {
     transient long lastPressedTimestamp = -1;

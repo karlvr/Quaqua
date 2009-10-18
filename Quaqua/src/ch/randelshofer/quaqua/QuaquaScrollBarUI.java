@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaScrollBarUI.java  1.0.2  2006-04-23
+ * @(#)QuaquaScrollBarUI.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -27,8 +27,7 @@ import javax.swing.plaf.basic.*;
  * QuaquaScrollBarUI.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2005-11-29 Tweaked layoutVScrollBar.
- * <br>1.0 September 11, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaScrollBarUI extends BasicScrollBarUI {
     

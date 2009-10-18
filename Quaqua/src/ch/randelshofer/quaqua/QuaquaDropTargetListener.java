@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaDropTargetListener.java  1.0  November 10, 2007
+ * @(#)QuaquaDropTargetListener.java  
  *
- * Copyright (c) 2007 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -25,7 +25,7 @@ import javax.swing.plaf.*;
  * licenses, but I don't know any other way to override the behavior of BasicTreeUI.
  *
  * @author Werner Randelshofer
- * @version 1.0 November 10, 2007 Created.
+ * @version $Id$
  */
 public class QuaquaDropTargetListener implements DropTargetListener, UIResource, ActionListener {
 

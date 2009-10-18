@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaButtonUI.java  1.6  2007-02-27
+ * @(#)QuaquaButtonUI.java  
  *
- * Copyright (c) 2005-2007 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -13,41 +13,20 @@
 
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.QuaquaButtonBorder;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-import java.io.Serializable;
-import java.beans.*;
 
 /**
  * QuaquaButtonUI.
  *
  * @author  Werner Randelshofer
- * @version 1.6 2007-02-27 Added method getPropertyPrefix. Use QuaquaButtonListener
- * instead of BasicButtonListener. 
- * <br>1.5 2005-12-15 Take insets only into account when border is painted.
- * <br>1.4.2 2005-12-03 Renamed UIManager property "disabledText" to
- * "disabledForeground".
- * <br>1.4.1 2005-09-25 Use BackgroundBorder interface instead of
- * BackgroundBorderUIResource.
- * <br>1.4 2005-09-04 Added support for "Quaqua.Button.style" "help".
- * <br>1.3 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.2 2006-06-19 Paint text antialiased.
- * <br>1.1 2005-07-12 Insets for spacing added.
- * <br>1.0.2 2005-06-05 If rollover is enabled, and the button is
- * selected, but no rollover selected icon is available, use the selected
- * icon instead of the default icon.
- * <br>1.0.1 2005-05-28 Border needs only to be drawn when isBorderPainted
- * returns true.
- * <br>1.0  05 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable {
     // Shared UI object

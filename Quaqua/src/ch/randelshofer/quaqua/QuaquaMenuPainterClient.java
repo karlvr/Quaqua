@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuPainterClient.java  1.0  October 5, 2003
+ * @(#)QuaquaMenuPainterClient.java  
  *
- * Copyright (c) 2003 Werner Randelshofer
+ * Copyright (c) 2003-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -19,7 +19,7 @@ import javax.swing.*;
  * QuaquaMenuPainterClient.
  *
  * @author  Werner Randelshofer
- * @version 1.0 October 5, 2003 Create..
+ * @version $Id$
  */
 public interface QuaquaMenuPainterClient {
     

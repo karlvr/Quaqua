@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaMenuPainter.java  1.2.2  2004-08-09
+ * @(#)QuaquaMenuPainter.java  
  *
- * Copyright (c) 2003 Werner Randelshofer
+ * Copyright (c) 2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -23,17 +23,7 @@ import javax.swing.text.View;
  * QuaquaMenuPainter.
  *
  * @author  Werner Randelshofer
- * @version 1.2.2 2004-08-09 Changed accelerator symbols for VK_PLUS and
- * VK_MINUS to display '+' and '-' characters.
- * <br>1.2.1 2004-07-30 Fixed deprecation warnings, thanks to Steven Elliott.
- * <br>1.2 2004-04-05 If a menu has menu items with icons, make sure
- * that the labels of all menu items are aligned behind the icons in one
- * vertical column.
- * <br>1.1.1 2004-02-06 Symbol for VK_ENTER accelerator changed to match
- * the one used in the screen menu bar of Apple's Java 1.4.2_03-117.1.
- * <br>1.1 2003-11-07 Symbols for accelerators with arrow keys added.
- * <br>1.0.1 2003-10-29 Add 4 pixels to the width of the arrow icon.
- * <br>1.0 October 5, 2003 Created.
+ * @version $Id$
  */
 public class QuaquaMenuPainter {
     /**

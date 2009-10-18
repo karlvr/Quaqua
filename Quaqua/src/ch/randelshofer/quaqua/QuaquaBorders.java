@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaBorders.java  1.0  February 12, 2006
+ * @(#)QuaquaBorders.java  
  *
- * Copyright (c) 2006 Werner Randelshofer
+ * Copyright (c) 2006-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -21,7 +21,7 @@ import javax.swing.border.*;
  * QuaquaBorders.
  *
  * @author  Werner Randelshofer
- * @version 1.0 February 12, 2006 Created.
+ * @version $Id$
  */
 public class QuaquaBorders {
     

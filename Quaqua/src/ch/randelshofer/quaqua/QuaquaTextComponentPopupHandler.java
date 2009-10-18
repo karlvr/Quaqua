@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaTextComponentPopupHandler.java  1.0.1  2007-02-09
+ * @(#)QuaquaTextComponentPopupHandler.java  
  *
- * Copyright (c) 2006 Werner Randelshofer
+ * Copyright (c) 2006-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -14,11 +14,9 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
-import javax.swing.event.*;
 /**
  * TextComponentHandler displays a popup menu on a JTextComponent with the
  * cut/copy and paste actions.
@@ -26,8 +24,7 @@ import javax.swing.event.*;
  * QuaquaTextComponentPopupHandler as a mouse listener on all JTextComponent's.
  *
  * @author Werner Randelshofer.
- * @version 1.0.1 2007-02-09 Don't display popup if component is not focusable.
- * <br>1.0 April 23, 2006 Created.
+ * @version $Id$
  */
 public class QuaquaTextComponentPopupHandler extends MouseAdapter {
     private JPopupMenu popupMenu;

@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaCaret.java  1.0  July 5, 2004
+ * @(#)QuaquaCaret.java  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.

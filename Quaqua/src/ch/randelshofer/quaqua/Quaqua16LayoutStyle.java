@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua16LayoutStyle.java  1.2 2007-12-18
+ * @(#)Quaqua16LayoutStyle.java 
  *
  * Copyright (c) 2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -24,9 +24,7 @@ import java.util.*;
  * To compile this class, you need Java 1.6.
  *
  * @author  Werner Randelshofer
- * @version 1.2 2007-12-18 Bumped minimal treshold for indentation up from 3
- * to 8. 
- * <br>1.0 2007-07-23 Created.
+ * @version $Id$
  */
 public class Quaqua16LayoutStyle extends LayoutStyle {
     private final static boolean DEBUG = false;

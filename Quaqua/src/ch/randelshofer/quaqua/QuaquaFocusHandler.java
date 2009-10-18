@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaFocusHandler.java  1.1  2007-01-16
+ * @(#)QuaquaFocusHandler.java  
  *
  * Copyright (c) 2004-2007 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,16 +13,13 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.Component;
 import java.awt.event.*;
-import java.beans.*;
 import javax.swing.*;
 /**
  * QuaquaFocusHandler.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2007-01-16 Changed to singleton.
- * <br>1.0  July 4, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaFocusHandler implements FocusListener {
     private static QuaquaFocusHandler instance;

@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaComboBoxVisualMargin.java  1.0  July 30, 2007
+ * @(#)QuaquaComboBoxVisualMargin.java  
  *
- * Copyright (c) 2007 Werner Randelshofer
+ * Copyright (c) 2007-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -15,13 +15,11 @@ package ch.randelshofer.quaqua;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
 /**
  * QuaquaComboBoxVisualMargin.
  *
  * @author Werner Randelshofer
- * @version 1.0 July 30, 2007 Created.
+ * @version $Id$
  */
 public class QuaquaComboBoxVisualMargin extends VisualMargin {
     

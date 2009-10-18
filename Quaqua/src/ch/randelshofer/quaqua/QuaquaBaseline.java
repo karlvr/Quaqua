@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaBaseline.java  1.1  2005-07-17
+ * @(#)QuaquaBaseline.java 
  *
  * Copyright (c) 2005 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,8 +21,7 @@ import javax.swing.*;
  * QuaquaBaseline.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.0 June 26, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaBaseline extends Baseline {
     

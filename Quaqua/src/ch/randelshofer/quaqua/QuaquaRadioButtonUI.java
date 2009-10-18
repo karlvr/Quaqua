@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaRadioButtonUI.java  1.3  2006-07-25
+ * @(#)QuaquaRadioButtonUI.java  
  *
- * Copyright (c) 2005-2006 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -16,30 +16,16 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
-import java.awt.font.*;
-import java.awt.image.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
-import java.io.Serializable;
 import java.beans.*;
 import javax.swing.text.View;
 /**
  * QuaquaRadioButtonUI.
  *
  * @author  Werner Randelshofer
- * @version 1.3 2006-07-25 Implemented workaround for Matisse GUI builder. 
- * <br>1.2.2 2006-02-04 Tweaked perceived text bounds.
- * <br>1.2.1 2005-12-03 Renamed UIManager property "disabledText" to
- * "disabledForeground".
- * <br>1.2 2005-07-17 Adapted to changes in interface VisuallyLayoutable.
- * <br>1.1 2005-06-19 Paint text antialiased.
- * <br>1.0.2 2005-06-16 Shifted the icon up by one pixel.
- * <br>1.0.1 2005-05-29 Fixed null pointer exception when no default icon
- * is availabl.e
- * <br>1.0  26 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyLayoutable {
     private final static QuaquaRadioButtonUI checkboxUI = new QuaquaRadioButtonUI();

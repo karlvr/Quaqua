@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaPasswordView.java  1.0.1  2008-01-04
+ * @(#)QuaquaPasswordView.java  
  *
  * Copyright (c) 2005-2008 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,9 +21,7 @@ import javax.swing.text.*;
  * by the JPasswordField.
  *
  * @author  Werner Randelshofer
- * @version 1.0.1 2008-01-04 Only paint a filled circle, if the echo char is
- * a '*' character. 
- * <br>1.0  16 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaPasswordView extends FieldView {
     

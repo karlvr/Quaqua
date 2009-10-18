@@ -15,7 +15,6 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
-import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
@@ -24,7 +23,6 @@ import javax.swing.plaf.basic.*;
 import javax.swing.event.*;
 import java.lang.reflect.*;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 
 /**

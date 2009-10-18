@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaScrollPaneLayout.java  1.1  2005-09-14
+ * @(#)QuaquaScrollPaneLayout.java  
  *
- * Copyright (c) 2005 Werner Randelshofer
+ * Copyright (c) 2005-2009 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
@@ -15,8 +15,6 @@ package ch.randelshofer.quaqua;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
 /**
  * The QuaquaScrollPaneLayout ensures that the vertical and the horizontal
  * scroll bar of a JScrollPane do not intersect with the grow-box of a
@@ -27,9 +25,7 @@ import javax.swing.plaf.*;
  * check for this in this layout manager.
  *
  * @author  Werner Randelshofer
- * @version 1.1 Don't avoid overlaps for JScrollPanes that are located on
- * a JViewport. Fixed bugs in support for small scroll bars.
- * <br>1.0 August 25, 2005 Created.
+ * @version $Id$
  */
 public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
     private final static int GROW_BOX_WIDTH = 15;

@@ -1,7 +1,7 @@
 /**
- * @(#)QuaquaDragGestureRecognizer.java  1.0  Mar 21, 2008
+ * @(#)QuaquaDragGestureRecognizer.java  
  *
- * Copyright (c) 2008 Werner Randelshofer
+ * Copyright (c) 2008-2009 Werner Randelshofer
  * Staldenmattweg 2, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
@@ -12,17 +12,15 @@
  */
 package ch.randelshofer.quaqua;
 
-import java.awt.Toolkit;
 import java.awt.dnd.DnDConstants;
 import java.awt.event.*;
-import java.awt.dnd.DragSource;
 import javax.swing.*;
 
 /**
  * This is a blunt copy of BasicDragGestureRecognizer from J2SE5.
  *
  * @author Werner Randelshofer
- * @version 1.0 Mar 21, 2008 Created.
+ * @version $Id$
  */
 public class QuaquaDragGestureRecognizer implements MouseListener, MouseMotionListener {
 
