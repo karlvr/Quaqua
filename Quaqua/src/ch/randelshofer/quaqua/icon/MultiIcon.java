@@ -54,6 +54,8 @@ public abstract class MultiIcon implements Icon {
      * other icons.
      */
     public MultiIcon(Icon[] icons) {
+        if (icons == null) { throw new IllegalArgumentException("'icons' must not be null"); }
+        if (icons.length == 0) { throw new IllegalArgumentException("'icons' array must have length > 0"); }
         this.icons = icons;
         generateMissingIcons();
     }
