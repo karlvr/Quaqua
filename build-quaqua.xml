@@ -25,8 +25,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.2"/>
-        <property name="version" value="${versionNumber} 2009-10-18"/>
+        <property name="versionNumber" value="6.2.1"/>
+        <property name="version" value="${versionNumber} 2009-10-28"/>
         <property name="lib" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -465,7 +465,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             </manifest>
             <include name="test/*.class"/>
         </jar>
-        <delete file="${builddir}/ch/randelshofer/quaqua/laf.txt"/>
+        <!--delete file="${builddir}/ch/randelshofer/quaqua/laf.txt"/-->
         
         <jar basedir="${builddir}" compress="true" jarfile="${swinglayout}">
             <include name="org/jdesktop/layout/*.class"/>

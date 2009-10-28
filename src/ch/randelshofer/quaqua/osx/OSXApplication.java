@@ -18,6 +18,7 @@ import java.awt.image.*;
 import java.io.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
+import java.awt.Toolkit;
 import java.security.AccessControlException;
 
 /**
@@ -42,6 +43,8 @@ public class OSXApplication {
      * Version of the native code library.
      */
     private final static int EXPECTED_NATIVE_CODE_VERSION = 2;
+    /** This lock is used for synchronizing calls to nativeGetIconImage. */
+    private final static Object ICON_IMAGE_LOCK = new Object();
 
     /**
      * Load the native code.
@@ -52,6 +55,10 @@ public class OSXApplication {
                 if (isNativeCodeAvailable == null) {
                     boolean success = false;
                     try {
+                        // Note: The following line ensures that AWT is started,
+                        // and has initialized NSApplication, before we attempt
+                        // to access it.
+                        Toolkit.getDefaultToolkit().getSystemEventQueue();
 
                         String value = QuaquaManager.getProperty("Quaqua.jniIsPreloaded");
                         if (value == null) {
@@ -151,33 +158,37 @@ public class OSXApplication {
         BufferedImage image = null;
         if (isNativeCodeAvailable()) {
             try {
-                byte[] tiffData = nativeGetIconImage(size);
+                byte[] tiffData;
+                synchronized (ICON_IMAGE_LOCK) {
+                    tiffData = nativeGetIconImage(size);
+                }
 
+                long start = System.currentTimeMillis();
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
                         new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
                         new TIFFDecodeParam());
 
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 image = Images.toBufferedImage(rImg);
-            /*
-            if (rImg instanceof BufferedImage) {
-            image = (BufferedImage) rImg;
-            } else {
-            Raster r = rImg.getData();
-            WritableRaster wr = WritableRaster.createWritableRaster(
-            r.getSampleModel(), null);
-            rImg.copyData(wr);
-            image = new BufferedImage(
-            rImg.getColorModel(),
-            wr,
-            rImg.getColorModel().isAlphaPremultiplied(),
-            null
-            );
-            }*/
+                /*
+                if (rImg instanceof BufferedImage) {
+                image = (BufferedImage) rImg;
+                } else {
+                Raster r = rImg.getData();
+                WritableRaster wr = WritableRaster.createWritableRaster(
+                r.getSampleModel(), null);
+                rImg.copyData(wr);
+                image = new BufferedImage(
+                rImg.getColorModel(),
+                wr,
+                rImg.getColorModel().isAlphaPremultiplied(),
+                null
+                );
+                }*/
             } catch (IOException ex) {
                 if (DEBUG) {
                     ex.printStackTrace();
-                // suppress, we return a default image
+                    // suppress, we return a default image
                 }
             }
         }
@@ -201,7 +212,7 @@ public class OSXApplication {
      * @param size the desired size of the icon in pixels (width and height)
      * @return Byte array with TIFF image data or null in case of failure.
      */
-    private static native byte[] nativeGetIconImage(int size);
+    private static synchronized native byte[] nativeGetIconImage(int size);
 
     /**
      * Returns the version of the native code library. If the version

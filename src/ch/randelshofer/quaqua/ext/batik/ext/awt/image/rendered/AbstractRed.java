@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.GraphicsUtil;
+import java.awt.image.PixelInterleavedSampleModel;
 
 
 // import ch.randelshofer.quaqua.ext.batik.ext.awt.image.DataBufferReclaimer;
@@ -573,14 +574,28 @@ public abstract class AbstractRed implements CachableRed {
 
         final boolean is_INT_PACK =
             GraphicsUtil.is_INT_PACK_Data(getSampleModel(), false);
-
+        // BEGIN PATCH W. Randelshofer Performance
+        boolean is_BYTE_RGBA_INTERLEAVED ;
+        if (! is_INT_PACK && (getSampleModel() instanceof PixelInterleavedSampleModel)) {
+                PixelInterleavedSampleModel pixi = (PixelInterleavedSampleModel) getSampleModel();
+                is_BYTE_RGBA_INTERLEAVED=pixi.getNumBands()==4&&
+                        pixi.getDataType()==DataBuffer.TYPE_BYTE;
+        } else {
+            is_BYTE_RGBA_INTERLEAVED= false;
+        }
+        // END PATCH W. Randelshofer Performance
         for (int y=ty0; y<=ty1; y++)
             for (int x=tx0; x<=tx1; x++) {
                 Raster r = getTile(x, y);
                 if (is_INT_PACK)
                     GraphicsUtil.copyData_INT_PACK(r, wr);
                 else
+        // BEGIN PATCH W. Randelshofer Performance
+                    if (is_BYTE_RGBA_INTERLEAVED) {
+                    GraphicsUtil.copyData_BYTE_RGBA_INTERLEAVED(r, wr);
+                    } else
                     GraphicsUtil.copyData_FALLBACK(r, wr);
+        // END PATCH W. Randelshofer Performance
             }
     }
 

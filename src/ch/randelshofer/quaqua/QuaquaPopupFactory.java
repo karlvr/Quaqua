@@ -559,10 +559,10 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
-            JWindow component = (JWindow) getComponent();
+            JWindow window = (JWindow) getComponent();
 
-            component.setLocation(ownerX, ownerY);
-            component.add(contents, BorderLayout.CENTER);
+            window.setLocation(ownerX, ownerY);
+            window.getContentPane().add(contents, BorderLayout.CENTER);
             contents.invalidate();
             pack();
         }
