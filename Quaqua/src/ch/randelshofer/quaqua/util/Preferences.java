@@ -67,9 +67,9 @@ public class Preferences {
         prefs.put("AppleScrollerPagingBehavior", "false");
 
         if (QuaquaManager.isOSX()) {
-            File globalPrefsFile = new File(
-                    QuaquaManager.getProperty("user.home") + "/Library/Preferences/.GlobalPreferences.plist");
             try {
+                File globalPrefsFile = new File(
+                        QuaquaManager.getProperty("user.home") + "/Library/Preferences/.GlobalPreferences.plist");
                 XMLElement xml = readPList(globalPrefsFile);
                 for (Iterator i0 = xml.iterateChildren(); i0.hasNext();) {
                     XMLElement xml1 = (XMLElement) i0.next();
