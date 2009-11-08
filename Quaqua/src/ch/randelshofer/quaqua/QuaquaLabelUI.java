@@ -151,7 +151,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         String style = (String) l.getClientProperty("Quaqua.Label.style");
         if (style != null) {
             boolean selected = style.endsWith("Selected");
-            boolean active = ! style.contains("Inactive");
+            boolean active = style.indexOf("Inactive") ==-1;
 
             if (style.startsWith("category")) {
                 
