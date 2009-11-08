@@ -13,13 +13,20 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
-import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 /**

@@ -20,6 +20,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -468,7 +470,12 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             LayoutManager lm = cont.getLayout();
             if (lm instanceof BorderLayout) {
                 BorderLayout blm = (BorderLayout) lm;
-                Component c = blm.getLayoutComponent(cont, constraint);
+                Component c = null;
+                try {
+                    c = (Component) Methods.invoke(blm,"getLayoutComponent", new Class[] {Container.class, Object.class}, new Object[]{cont,constraint});
+                } catch (Throwable ex) {
+                    //ex.printStackTrace();
+                }
                 return (c != null && c != toolBar);
             }
         }
@@ -590,7 +597,14 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         String constraint = null;
         LayoutManager lm = dockingSource.getLayout();
         if (lm instanceof BorderLayout) {
-            constraint = (String) ((BorderLayout) lm).getConstraints(toolBar);
+            BorderLayout bl = (BorderLayout) lm;
+            try {
+               constraint = (String) Methods.invoke(bl, "getConstraints", new Class[]{Component.class}, new Object[]{toolBar});
+            } catch (Throwable ex) {
+                // Suppress silently
+                //ex.printStackTrace();
+            }
+
         }
         return (constraint != null) ? constraint : constraintBeforeFloating;
     }
