@@ -839,7 +839,8 @@ public class GraphicsUtil {
         int width = x1 - x0 + 1;
         byte[] srcPixels = srcDB.getBankData()[0];
         byte[] dstPixels = dstDB.getBankData()[0];
-        System.arraycopy(srcPixels, 0, dstPixels, y0 * width * 4, srcPixels.length);
+
+        System.arraycopy(srcPixels, 0, dstPixels, y0 * width * 4, Math.min(srcPixels.length, dstPixels.length));
     }
 // END PATCH W. Randelshofer Performance
 
