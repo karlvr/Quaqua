@@ -20,7 +20,7 @@
              If you run on Mac OS X 10.6 this is wherever your copy of
              Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
              -->
-        <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
+        <property name="osx10.5" value="" />
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
@@ -58,7 +58,7 @@
         <!-- Compile swing-layout for Java 1.4 -->
         <javac bootclasspath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
                 classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+                executable="/usr/bin/javac" fork="true"
                 source="1.4" target="1.4" encoding="UTF-8" 
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
@@ -71,7 +71,7 @@
         <!-- Compile classes which require Java 1.4 -->
         <javac bootclasspath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
                 classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+                executable="/usr/bin/javac" fork="true"
                 source="1.4" target="1.4" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
@@ -89,7 +89,7 @@
         <!-- Compile classes which require Java 1.5 -->
         <javac bootclasspath="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar"
             classpath="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+                executable="/usr/bin/javac" fork="true"
                 source="1.5" target="1.5" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
@@ -100,9 +100,9 @@
             <include name="**/*15*.java"/>
         </javac>
         <!-- Compile classes which require Java 1.6 -->
-        <javac bootclasspath="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar"
+        <!--javac bootclasspath="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar"
                 classpath="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+                executable="/usr/bin/javac" fork="true"
                 source="1.6" target="1.6" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
@@ -111,7 +111,7 @@
                 >
             <compilerarg line="-endorseddirs ."/>
             <include name="**/*16*.java"/>
-        </javac>
+        </javac-->
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
             <fileset dir="${srcdir}">
@@ -337,7 +337,7 @@
             <exclude name="**/*16*.java"/>
         </javac>
         <!-- We compile the remaining classes with 1.6. -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar"
+        <!--javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar"
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
                 srcdir="${srcdir}" source="1.6" target="1.6"
@@ -351,7 +351,7 @@
             <include name="**/QuaquaPantherFileChooserUI.java"/>
             <include name="**/QuaquaLeopardFileChooserUI.java"/>
             <include name="**/filechooser/*FileSystemView.java"/>
-        </javac>
+        </javac-->
         <copy todir="${builddir}">
             <fileset dir="${srcdir}">
                 <include name="**/*.properties"/>
