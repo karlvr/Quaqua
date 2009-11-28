@@ -10,6 +10,9 @@ extern "C" {
 /* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION 0L
+/* Inaccessible static: lastID */
+/* Inaccessible static: listeners */
+/* Inaccessible static: htmlPattern */
 /* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024osx_00024OSXSheetSupport */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
@@ -21,19 +24,11 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
- * Method:    nativeShowSheet
- * Signature: (Ljavax/swing/JDialog;Ljava/awt/Window;)V
+ * Method:    nativeShowOptionSheet
+ * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;Ljava/lang/String;Ljava/awt/Component;I)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowSheet
-  (JNIEnv *, jclass, jobject, jobject);
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
- * Method:    nativeHideSheet
- * Signature: (Ljavax/swing/JDialog;)V
- */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHideSheet
-  (JNIEnv *, jclass, jobject);
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowOptionSheet
+  (JNIEnv *, jclass, jstring, jstring, jstring, jstring, jstring, jboolean, jobjectArray, jstring, jobject, jint);
 
 #ifdef __cplusplus
 }

@@ -223,7 +223,7 @@ private JFileChooser saveFile;
     }//GEN-LAST:event_saveChangesSheet
     
     private void experimentalSheetChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_experimentalSheetChange
-        UIManager.put("Sheet.experimentalSheet", new Boolean(experimentalSheetCheckbox.isSelected()));
+        UIManager.put("Sheet.optionPaneMapping", new Boolean(experimentalSheetCheckbox.isSelected()));
     }//GEN-LAST:event_experimentalSheetChange
                     
     private void analyzeOption(int option) {

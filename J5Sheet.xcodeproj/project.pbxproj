@@ -35,6 +35,7 @@
 		DC23649F10C025490020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629810C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m */; };
 		DC23652110C0271C0020E523 /* J5Sheet_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = DC23652010C0271C0020E523 /* J5Sheet_Prefix.pch */; };
 		DC23652710C027870020E523 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC23652610C027870020E523 /* JavaVM.framework */; };
+		DC23658C10C055CB0020E523 /* libquaqua.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -42,24 +43,37 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DC23654810C02D3F0020E523 /* Ant Build */;
+			remoteGlobalIDString = DC23654810C02D3F0020E523;
 			remoteInfo = "Ant Build";
 		};
 		DC23655410C02DBF0020E523 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC0C605546C1D00DB518D /* J5Sheet */;
+			remoteGlobalIDString = D2AAC0C605546C1D00DB518D;
 			remoteInfo = J5Sheet;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		DC23657C10C054050020E523 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/felix/Documents/Java/Quaqua/J5Sheet/dist;
+			dstSubfolderSpec = 0;
+			files = (
+				DC23658C10C055CB0020E523 /* libquaqua.jnilib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		0867D69BFE84028FC02AAC07 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = /System/Library/Frameworks/Foundation.framework; sourceTree = "<absolute>"; };
 		0867D6A5FE840307C02AAC07 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = /System/Library/Frameworks/AppKit.framework; sourceTree = "<absolute>"; };
 		1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = /System/Library/Frameworks/Cocoa.framework; sourceTree = "<absolute>"; };
 		D2A6134D07B89F6200DD23D3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = /System/Library/Frameworks/CoreData.framework; sourceTree = "<absolute>"; };
-		D2AAC0C705546C1D00DB518D /* J5Sheet.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = J5Sheet.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libquaqua.jnilib; sourceTree = BUILT_PRODUCTS_DIR; };
 		DC235FD310C0250A0020E523 /* Issue32.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = Issue32.java; sourceTree = "<group>"; };
 		DC235FD410C0250A0020E523 /* TestQuaquaDnD16.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = TestQuaquaDnD16.java; sourceTree = "<group>"; };
 		DC235FD810C0250A0020E523 /* BasicBrowserUI.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = BasicBrowserUI.java; sourceTree = "<group>"; };
@@ -925,6 +939,7 @@
 		DC23636410C0250D0020E523 /* WindowsTest.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = WindowsTest.java; sourceTree = "<group>"; };
 		DC23652010C0271C0020E523 /* J5Sheet_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J5Sheet_Prefix.pch; sourceTree = "<group>"; };
 		DC23652610C027870020E523 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
+		DC23657910C053900020E523 /* build-quaqua.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "build-quaqua.xml"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -943,7 +958,7 @@
 		034768DFFF38A50411DB9C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D2AAC0C705546C1D00DB518D /* J5Sheet.dylib */,
+				D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -951,6 +966,7 @@
 		0867D691FE84028FC02AAC07 /* J5Sheet */ = {
 			isa = PBXGroup;
 			children = (
+				DC23657910C053900020E523 /* build-quaqua.xml */,
 				08FB77AEFE84172EC02AAC07 /* Classes */,
 				32C88DFF0371C24200C91783 /* Other Sources */,
 				0867D69AFE84028FC02AAC07 /* External Frameworks and Libraries */,
@@ -2310,7 +2326,7 @@
 /* Begin PBXLegacyTarget section */
 		DC23654810C02D3F0020E523 /* Ant Build */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "-e -f build-quaqua.xml";
+			buildArgumentsString = "-e -f build-quaqua.xml \"jni javah\" all";
 			buildConfigurationList = DC23655610C02DDE0020E523 /* Build configuration list for PBXLegacyTarget "Ant Build" */;
 			buildPhases = (
 			);
@@ -2332,6 +2348,7 @@
 				D2AAC0C305546C1D00DB518D /* Headers */,
 				D2AAC0C405546C1D00DB518D /* Sources */,
 				D2AAC0C505546C1D00DB518D /* Frameworks */,
+				DC23657C10C054050020E523 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -2339,7 +2356,7 @@
 			);
 			name = J5Sheet;
 			productName = J5Sheet;
-			productReference = D2AAC0C705546C1D00DB518D /* J5Sheet.dylib */;
+			productReference = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 /* End PBXNativeTarget section */
@@ -2398,6 +2415,8 @@
 				COPY_PHASE_STRIP = NO;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_ENABLE_FIX_AND_CONTINUE = YES;
 				GCC_MODEL_TUNING = G5;
@@ -2406,7 +2425,7 @@
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = J5Sheet;
+				PRODUCT_NAME = quaqua;
 			};
 			name = Debug;
 		};
@@ -2417,12 +2436,14 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
 				GCC_MODEL_TUNING = G5;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
-				PRODUCT_NAME = J5Sheet;
+				PRODUCT_NAME = quaqua;
 			};
 			name = Release;
 		};

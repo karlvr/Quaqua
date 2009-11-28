@@ -12,6 +12,7 @@ extern "C" {
 /* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXApplication_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXApplication_EXPECTED_NATIVE_CODE_VERSION 2L
+/* Inaccessible static: ICON_IMAGE_LOCK */
 /* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024osx_00024OSXApplication */
 /* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024QuaquaIconFactory */
 /*

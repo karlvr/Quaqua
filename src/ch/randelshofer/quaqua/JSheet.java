@@ -99,10 +99,6 @@ public class JSheet extends JDialog {
      */
     private static final boolean isDocumentModalitySupported;
     /**
-     * If this is set to true, the JSheet tries to use an experimental JNI method to be shown as a native window.
-    **/
-    private boolean isExperimentalSheet;
-    /**
      * This variable is only used in Java 1.5 and previous versions.
      * In order to make the sheet document modal, we have to block events on
      * the owner window. We do this by setting a JPanel as the glass
@@ -136,13 +132,9 @@ public class JSheet extends JDialog {
     }
 
     private void init() {
-        isExperimentalSheet = UIManager.getBoolean("Sheet.experimentalSheet");
-
         if (getOwner() != null && isShowAsSheet()) {
             if (isNativeSheetSupported()) {
                 getRootPane().putClientProperty("apple.awt.documentModalSheet", Boolean.TRUE);
-            } else if (isExperimentalSheet()) {
-                setUndecorated(true);
             } else {
                 setUndecorated(true);
                 getRootPane().setWindowDecorationStyle(JRootPane.NONE);
@@ -172,28 +164,10 @@ public class JSheet extends JDialog {
                 }
             }
         };
-        
-        // If the sheet is experimental, we need some special handling
-        // so that the JSheet is handled correctly
-        windowEventHandler = new WindowAdapter() {
-            //public void windowIconified(WindowEvent e) {
-                // TODO The sheet is reshown when the parent window is iconified.
-                // setVisible(false) on the sheet only deiconifies the owner window.
-            //}
-
-            public void windowActivated(WindowEvent e) {
-                if (JSheet.this.isVisible() && JSheet.this.getOwner() == e.getWindow())
-                    JSheet.this.toFront();
-            }
-        };
     }
 
     protected boolean isShowAsSheet() {
         return UIManager.getBoolean("Sheet.showAsSheet");
-    }
-    
-    protected boolean isExperimentalSheet() {
-        return isExperimentalSheet && !isNativeSheetSupported();
     }
 
     /**
@@ -201,13 +175,7 @@ public class JSheet extends JDialog {
      * This method is invoked just before the JSheet is shown.
      */
     protected void installSheet() {
-        if (!isNativeSheetSupported() && !isInstalled && isExperimentalSheet()) {
-            Window owner = getOwner();
-            if(owner != null) {
-                owner.addWindowListener(windowEventHandler);
-            }
-            isInstalled = true;
-        } else if (!isNativeSheetSupported() && !isInstalled && !isExperimentalSheet()) {
+        if (!isNativeSheetSupported() && !isInstalled) {
             Window owner = getOwner();
             if (owner != null) {
 
@@ -275,24 +243,20 @@ public class JSheet extends JDialog {
         if (isInstalled) {
             Window owner = getOwner();
             if (owner != null) {
-                if (isExperimentalSheet()) {
-                    owner.removeWindowListener(windowEventHandler);
-                } else {
-                    // Note: We mustn't change the windows focusable state
-                    // because
-                    // this also affects the focusable state of the JSheet.
-                    // owner.setFocusableWindowState(true);
-                    owner.setEnabled(true);
-                    // ((JFrame) owner).setResizable(true);
-                    owner.removeComponentListener(ownerMovementHandler);
+                // Note: We mustn't change the windows focusable state
+                // because
+                // this also affects the focusable state of the JSheet.
+                // owner.setFocusableWindowState(true);
+                owner.setEnabled(true);
+                // ((JFrame) owner).setResizable(true);
+                owner.removeComponentListener(ownerMovementHandler);
 
-                    if (shiftBackLocation != null) {
-                        owner.setLocation(shiftBackLocation);
-                    }
-                    if (oldFocusOwner != null) {
-                        owner.toFront();
-                        oldFocusOwner.requestFocus();
-                    }
+                if (shiftBackLocation != null) {
+                    owner.setLocation(shiftBackLocation);
+                }
+                if (oldFocusOwner != null) {
+                    owner.toFront();
+                    oldFocusOwner.requestFocus();
                 }
             }
             isInstalled = false;
@@ -301,7 +265,7 @@ public class JSheet extends JDialog {
 
     public void addNotify() {
         super.addNotify();
-        if (UIManager.getBoolean("Sheet.showAsSheet") && !isExperimentalSheet()) {
+        if (UIManager.getBoolean("Sheet.showAsSheet")) {
             QuaquaUtilities.setWindowAlpha(this, 240);
         }
     }
@@ -339,6 +303,14 @@ public class JSheet extends JDialog {
     private static boolean isDocumentModalitySupported() {
         return isDocumentModalitySupported;
     }
+    
+    /**
+     * If this returns true, the JSheet tries to map JOptionPanes to their native counterpart NSAlert.
+     * To turn on this behaviour, call UIManager.set("Sheet.optionPaneMapping", Boolean.TRUE).
+    **/
+    private static boolean isOptionPaneMappingAllowed() {
+        return UIManager.getBoolean("Sheet.optionPaneMapping");
+    }
 
     public void dispose() {
         super.dispose();
@@ -352,7 +324,7 @@ public class JSheet extends JDialog {
         } else if (getOwner() instanceof JDialog) {
             rp = ((JDialog) getOwner()).getRootPane();
         }
-        if (rp != null && !isDocumentModalitySupported() && !isExperimentalSheet()) {
+        if (rp != null && !isDocumentModalitySupported()) {
             Component blockingComponent = rp.getGlassPane();
             blockingComponent.setVisible(false);
             if (ownersGlassPane != null) {
@@ -370,7 +342,7 @@ public class JSheet extends JDialog {
         } else if (getOwner() instanceof JDialog) {
             rp = ((JDialog) getOwner()).getRootPane();
         }
-        if (rp != null && !isDocumentModalitySupported() && !isExperimentalSheet()) {
+        if (rp != null && !isDocumentModalitySupported()) {
             ownersGlassPane = rp.getGlassPane();
             JPanel blockingPanel = new JPanel();
             blockingPanel.setOpaque(false);
@@ -381,11 +353,7 @@ public class JSheet extends JDialog {
     }
 
     public void hide() {
-        if (isExperimentalSheet()) {
-            OSXSheetSupport.hideSheet(this);
-            hide0();
-            uninstallSheet();
-        } else if (isAnimated() && isShowAsSheet() && !isNativeSheetSupported()) {
+        if (isAnimated() && isShowAsSheet() && !isNativeSheetSupported()) {
             getContentPane().setVisible(false);
 
             final Rectangle startBounds = getBounds();
@@ -433,19 +401,6 @@ public class JSheet extends JDialog {
     }
 
     public void show() {
-        if (isExperimentalSheet()) {
-            // Install the sheet
-            installSheet();
-            // Create the native peer - maybe not supported
-            addNotify();
-            if (OSXSheetSupport.showAsSheet(this)) {
-                // Tell lightweight components to be visible
-                show0();
-                return;
-            } else {
-                isExperimentalSheet = false;
-            }
-        }
         if (isAnimated() && isShowAsSheet() && !isNativeSheetSupported()) {
             installSheet();
             getContentPane().setVisible(false);
@@ -612,9 +567,13 @@ public class JSheet extends JDialog {
      * @param listener The listener for SheetEvents.
      */
     public static void showSheet(JOptionPane pane, Component parentComponent, SheetListener listener) {
-        final JSheet sheet = createSheet(pane, parentComponent, styleFromMessageType(pane.getMessageType()));
-        sheet.addSheetListener(listener);
-        sheet.show();
+        if (isOptionPaneMappingAllowed() && OSXSheetSupport.supportsNativeOptionPane(pane)) {
+            OSXSheetSupport.showOptionSheet(pane, parentComponent, listener);
+        } else {
+            final JSheet sheet = createSheet(pane, parentComponent, styleFromMessageType(pane.getMessageType()));
+            sheet.addSheetListener(listener);
+            sheet.show();
+        }
     }
 
     /**
@@ -810,20 +769,24 @@ public class JSheet extends JDialog {
         pane.setInitialSelectionValue(initialSelectionValue);
         pane.setComponentOrientation(((parentComponent == null) ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
 
-        int style = styleFromMessageType(messageType);
-        JSheet sheet = createSheet(pane, parentComponent, style);
+        if (isOptionPaneMappingAllowed() && OSXSheetSupport.supportsNativeOptionPane(pane)) {
+            OSXSheetSupport.showOptionSheet(pane, parentComponent, listener);
+        } else {
+            int style = styleFromMessageType(messageType);
+            JSheet sheet = createSheet(pane, parentComponent, style);
 
-        pane.selectInitialValue();
+            pane.selectInitialValue();
 
-        /*
-        sheet.addWindowListener(new WindowAdapter() {
-        public void windowClosed(WindowEvent evt) {
-        sheet.dispose();
+            /*
+             sheet.addWindowListener(new WindowAdapter() {
+             public void windowClosed(WindowEvent evt) {
+             sheet.dispose();
+             }
+             });*/
+            sheet.addSheetListener(listener);
+            sheet.show();
+            sheet.toFront();
         }
-        });*/
-        sheet.addSheetListener(listener);
-        sheet.show();
-        sheet.toFront();
     }
 
     /**
@@ -979,12 +942,16 @@ public class JSheet extends JDialog {
         pane.setInitialValue(initialValue);
         pane.setComponentOrientation(((parentComponent == null) ? JOptionPane.getRootFrame() : parentComponent).getComponentOrientation());
 
-        int style = styleFromMessageType(messageType);
-        JSheet sheet = createSheet(pane, parentComponent, style);
-        pane.selectInitialValue();
-        sheet.addSheetListener(listener);
-        sheet.show();
-        sheet.toFront();
+        if (isOptionPaneMappingAllowed() && OSXSheetSupport.supportsNativeOptionPane(pane)) {
+            OSXSheetSupport.showOptionSheet(pane, parentComponent, listener);
+        } else {
+            int style = styleFromMessageType(messageType);
+            JSheet sheet = createSheet(pane, parentComponent, style);
+            pane.selectInitialValue();
+            sheet.addSheetListener(listener);
+            sheet.show();
+            sheet.toFront();
+        }
     }
 
     private static int styleFromMessageType(int messageType) {

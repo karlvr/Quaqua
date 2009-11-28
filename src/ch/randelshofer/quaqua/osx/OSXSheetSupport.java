@@ -14,13 +14,13 @@
 package ch.randelshofer.quaqua.osx;
 
 
-import java.awt.Window;
+import java.util.HashMap;
+import java.util.regex.*;
+import java.awt.*;
 import java.security.AccessControlException;
+import javax.swing.*;
 
-import javax.swing.JDialog;
-
-import ch.randelshofer.quaqua.JSheet;
-import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.*;
 
 /**
  * {@link OSXSheetSupport} provides support for native {@link JDialog JDialogs} for Java 5 and
@@ -36,6 +36,55 @@ import ch.randelshofer.quaqua.QuaquaManager;
  * @author Felix Draxler
  */
 public class OSXSheetSupport {
+    private static class SessionInfo {
+        /*private final static int NSAlertFirstButtonReturn  = 1000;
+        private final static int NSAlertSecondButtonReturn  = 1001; // Might be needed in a future version with more than 3 buttons supported.
+        private final static int NSAlertThirdButtonReturn  = 1002;*/
+        private final static int NSAlertDefaultReturn = 1;
+        private final static int NSAlertAlternateReturn = 0;
+        private final static int NSAlertOtherReturn = -1;
+        private final static int NSAlertErrorReturn = -2;
+        
+        final JOptionPane pane;
+        final SheetListener listener;
+        
+        SessionInfo(JOptionPane pane, SheetListener listener) {
+            this.pane = pane;
+            this.listener = listener;
+        }
+        
+        void notifyListener(int returnCode, Object returnValue) {
+            if (listener != null) {
+                if (pane.getOptions() == null) {
+                    int code = mapCode(returnCode);
+                    if (returnValue != null && code == JOptionPane.CANCEL_OPTION)
+                        returnValue = JOptionPane.UNINITIALIZED_VALUE;
+                    listener.optionSelected(new SheetEvent(SessionInfo.this, pane, mapCode(returnCode), null, returnValue));
+                } else {
+                    listener.optionSelected(new SheetEvent(SessionInfo.this, pane, mapCode(returnCode), pane.getOptions()[mapOption(returnCode)], returnValue));
+                }
+            }
+        }
+        
+        private int mapCode(int nativeCode) {
+            if (nativeCode == NSAlertDefaultReturn)
+                return JOptionPane.YES_OPTION; // same as JOptionPane.OK_OPTION
+            else if (nativeCode == NSAlertOtherReturn)
+                return JOptionPane.CANCEL_OPTION;
+            else
+                return JOptionPane.NO_OPTION;
+        }
+        
+        private int mapOption(int nativeCode) {
+            if (nativeCode == NSAlertDefaultReturn)
+                return 0;
+            else if (nativeCode == NSAlertOtherReturn)
+                return 1;
+            else
+                return 2;
+        }
+    }
+    
     /**
      * This variable is set to true, if native code is available.
      */
@@ -44,6 +93,10 @@ public class OSXSheetSupport {
      * Version of the native code library.
      */
     private final static int EXPECTED_NATIVE_CODE_VERSION = 0;
+    
+    private static int lastID = 0;
+    private static HashMap listeners = new HashMap();
+    private static Pattern htmlPattern = Pattern.compile("<html>.*<head>.*<style.*>.+</style>.*</head>.*<b>(.*)</b>(<p>.*(</p>)?)*.*");
 
     private OSXSheetSupport() {
     }
@@ -148,7 +201,7 @@ public class OSXSheetSupport {
      * @param sheet
      * @return <code>true</code>, if showing the sheet succeeds.
      *         <code>false</code> otherwise.
-     */
+     * /
     public static boolean showAsSheet(JDialog sheet) {
         Window owner = sheet.getOwner();
         if (isNativeCodeAvailable() && owner != null) {
@@ -175,7 +228,7 @@ public class OSXSheetSupport {
      *            The sheet.
      * @param owner
      *            The owner.
-     */
+     * /
     private static native void nativeShowSheet(JDialog sheet, Window owner);
 
     /**
@@ -186,7 +239,7 @@ public class OSXSheetSupport {
      * @see #showAsSheet(JDialog)
      * @param sheet
      *            The sheet to hide.
-     */
+     * /
     public static void hideSheet(JDialog sheet) {
         if (isNativeCodeAvailable() && sheet.isVisible()) {
             nativeHideSheet(sheet);
@@ -198,8 +251,8 @@ public class OSXSheetSupport {
      * 
      * @param sheet
      *            The sheet.
-     */
-    private static native void nativeHideSheet(JDialog sheet);
+     * /
+    private static native void nativeHideSheet(JDialog sheet);*/
 
     // Callback support removed - not needed
     // @SuppressWarnings("unused")
@@ -207,4 +260,140 @@ public class OSXSheetSupport {
     // // Just post a String on the Console.
     // System.out.println(sheet + " was closed.");
     // }
+    
+    /**
+     * Returns whether the passed JOptionPane is likely to be valid shown as a native Sheet by NSAlert.
+     *
+     * @return true if the tests passed; false if not
+    **/
+    public static boolean supportsNativeOptionPane(JOptionPane pane) {
+        // Native code must be available show native things at all
+        if (!isNativeCodeAvailable())
+            return false;
+        
+        // Check options if they are specified
+        Object[] options = pane.getOptions();
+        if (options != null) {
+            // Native dialog has only three buttons and must have at least one
+            if (options.length > 3 || options.length == 0)
+                return false;
+            
+            // Buttons may only have Strings displayed
+            for (int i = 0; i < options.length; i++) {
+                if (!(options[i] instanceof String))
+                    return false;
+            }
+        }
+            
+        // Native dialog only supports input for null selection values
+        if (pane.getWantsInput() && pane.getSelectionValues() != null)
+            return false;
+        
+        // Message must not be a HTML String and not conform to the example given in 
+        if (pane.getMessage().toString().startsWith("<html>") && !htmlPattern.matcher(pane.getMessage().toString()).matches())
+            return false;
+        
+        // Passed all checks - let's hope it works out!
+        return true;
+    }
+    
+    /**
+     * Calls the native code
+    **/
+    public static void showOptionSheet(JOptionPane pane, Component parentComponent, SheetListener listener) {
+        // Native code must be available show native things at all
+        if (!isNativeCodeAvailable())
+            throw new UnsatisfiedLinkError("Quaqua's Native code is not available! Please ensure the libquaqua.jnilib and libquaqua64.jnilib are in the proper locations.");
+        
+        String[] options = new String[3];
+        if (pane.getOptions() == null) {
+            switch (pane.getOptionType()) {
+                case JOptionPane.DEFAULT_OPTION:
+                    options[0] = UIManager.getString("OptionPane.okButtonText");
+                    break;
+                case JOptionPane.YES_NO_OPTION:
+                    options[0] = UIManager.getString("OptionPane.yesButtonText");
+                    options[2] = UIManager.getString("OptionPane.noButtonText");
+                    break;
+                case JOptionPane.YES_NO_CANCEL_OPTION:
+                    options[0] = UIManager.getString("OptionPane.yesButtonText");
+                    options[2] = UIManager.getString("OptionPane.noButtonText");
+                    options[1] = UIManager.getString("OptionPane.cancelButtonText");
+                    break;
+                case JOptionPane.OK_CANCEL_OPTION:
+                    options[0] = UIManager.getString("OptionPane.okButtonText");
+                    options[2] = UIManager.getString("OptionPane.cancelButtonText");
+                    break;
+                default:
+                    options = null;
+                    break;
+            }
+        } else {
+            Object[] opts = pane.getOptions();
+            for (int i = 0; i < opts.length; i++) {
+                options[i] = opts[i].toString();
+            }
+        }
+        boolean wantsInput = pane.getWantsInput();
+        String[] selectionValues;
+        String initialSelectionValue;
+        if (wantsInput && pane.getSelectionValues() != null && pane.getSelectionValues().length != 0 && pane.getWantsInput()) {
+            selectionValues = new String[pane.getSelectionValues().length];
+            for (int i = 0; i < selectionValues.length; i++) {
+                selectionValues[i] = pane.getSelectionValues()[i].toString();
+            }
+            initialSelectionValue = pane.getInitialSelectionValue().toString();
+        } else {
+            selectionValues = null;
+            initialSelectionValue = null;
+        }
+        
+        String message = pane.getMessage().toString();
+        String defaultButton = options[0];
+        String alternateButton = options[2];
+        String otherButton = options[1];
+        String format;
+        if (!message.startsWith("<html>")) {
+            // If message has multiple lines, split the first one to be the bold message
+            // and the rest to be the informative text
+            if (message.indexOf('\n') != -1) {
+                format = message.substring(message.indexOf('\n')).trim();
+                message = message.substring(0, message.indexOf('\n'));
+            } else
+                format = null;
+        } else {
+            format = "";
+            Matcher m = htmlPattern.matcher(message);
+            m.matches();
+            for (int i = 1; i <= m.groupCount(); i++) {
+                String g = m.group(i);
+                if (g == null)
+                    continue;
+                if (i == 1)
+                    message = g.replaceAll("<br>", " ");
+                else
+                    format = (i == 2) ? g.trim() : (format +"\n"+ g.trim());
+            }
+            if (format.length() > 0)
+                format = format.replaceAll("<br>", " ").replaceAll("<p>", "\n").trim();
+        }
+        int id = ++lastID;
+        listeners.put(new Integer(id), new SessionInfo(pane, listener));
+        nativeShowOptionSheet(message, defaultButton, alternateButton, otherButton, format, wantsInput, selectionValues, initialSelectionValue, SwingUtilities.getWindowAncestor(parentComponent), id);
+    }
+    
+    private static native void nativeShowOptionSheet(String message, String defaultButton, String alternateButton, String otherButton, String format, boolean wantsInput, String[] selectionValues, String initialSelectionValue, Component parentComponent, int id);
+    
+    private static void performListenerForID(final int id, final int returnCode, final String returnValue) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                Integer i = new Integer(id);
+                SessionInfo info = (SessionInfo)listeners.get(i);
+                if (info != null) {
+                    info.notifyListener(returnCode, returnValue);
+                }
+                listeners.remove(i);
+            }
+        });
+    }
 }

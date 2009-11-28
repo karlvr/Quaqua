@@ -52,6 +52,16 @@ public class SheetEvent extends EventObject {
         this.value = value;
         this.inputValue = inputValue;
     }
+    /**
+     * Creates a new instance. This is for internal use only.
+     */
+    public SheetEvent(Object source, JOptionPane optionPane, int option, Object value, Object inputValue) {
+        super(source);
+        this.pane = optionPane;
+        this.option = option;
+        this.value = value;
+        this.inputValue = inputValue;
+    }
     
     /**
      * Returns the pane on the sheet. This is either a JFileChooser or a
