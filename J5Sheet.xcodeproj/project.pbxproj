@@ -15,6 +15,7 @@
 			dependencies = (
 				DC23655310C02DBF0020E523 /* PBXTargetDependency */,
 				DC23655510C02DBF0020E523 /* PBXTargetDependency */,
+				DC23688210C1D25F0020E523 /* PBXTargetDependency */,
 			);
 			name = Both;
 			productName = Both;
@@ -36,6 +37,20 @@
 		DC23652110C0271C0020E523 /* J5Sheet_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = DC23652010C0271C0020E523 /* J5Sheet_Prefix.pch */; };
 		DC23652710C027870020E523 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC23652610C027870020E523 /* JavaVM.framework */; };
 		DC23658C10C055CB0020E523 /* libquaqua.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */; };
+		DC23686A10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23628F10C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.h */; };
+		DC23686B10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23629110C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h */; };
+		DC23686C10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXFile.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23629310C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXFile.h */; };
+		DC23686D10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23629510C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.h */; };
+		DC23686E10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23629710C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.h */; };
+		DC23686F10C1D1930020E523 /* J5Sheet_Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = DC23652010C0271C0020E523 /* J5Sheet_Prefix.pch */; };
+		DC23687110C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629010C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.m */; };
+		DC23687210C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629210C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m */; };
+		DC23687310C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXFile.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629410C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXFile.m */; };
+		DC23687410C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629610C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.m */; };
+		DC23687510C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629810C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m */; };
+		DC23687710C1D1930020E523 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		DC23687810C1D1930020E523 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC23652610C027870020E523 /* JavaVM.framework */; };
+		DC23687A10C1D1930020E523 /* libquaqua.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -53,6 +68,13 @@
 			remoteGlobalIDString = D2AAC0C605546C1D00DB518D;
 			remoteInfo = J5Sheet;
 		};
+		DC23688110C1D25F0020E523 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DC23686810C1D1930020E523 /* J5Sheet 64-bit */;
+			remoteInfo = "J5Sheet 64-bit";
+		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -63,6 +85,16 @@
 			dstSubfolderSpec = 0;
 			files = (
 				DC23658C10C055CB0020E523 /* libquaqua.jnilib in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DC23687910C1D1930020E523 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /Users/felix/Documents/Java/Quaqua/J5Sheet/dist;
+			dstSubfolderSpec = 0;
+			files = (
+				DC23687A10C1D1930020E523 /* libquaqua.jnilib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -940,6 +972,7 @@
 		DC23652010C0271C0020E523 /* J5Sheet_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = J5Sheet_Prefix.pch; sourceTree = "<group>"; };
 		DC23652610C027870020E523 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
 		DC23657910C053900020E523 /* build-quaqua.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "build-quaqua.xml"; sourceTree = "<group>"; };
+		DC23687E10C1D1930020E523 /* libquaqua64.jnilib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libquaqua64.jnilib; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -952,6 +985,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC23687610C1D1930020E523 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC23687710C1D1930020E523 /* Cocoa.framework in Frameworks */,
+				DC23687810C1D1930020E523 /* JavaVM.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -959,6 +1001,7 @@
 			isa = PBXGroup;
 			children = (
 				D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */,
+				DC23687E10C1D1930020E523 /* libquaqua64.jnilib */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -2321,6 +2364,19 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC23686910C1D1930020E523 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC23686A10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.h in Headers */,
+				DC23686B10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h in Headers */,
+				DC23686C10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXFile.h in Headers */,
+				DC23686D10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.h in Headers */,
+				DC23686E10C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.h in Headers */,
+				DC23686F10C1D1930020E523 /* J5Sheet_Prefix.pch in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXLegacyTarget section */
@@ -2359,6 +2415,24 @@
 			productReference = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */;
 			productType = "com.apple.product-type.library.dynamic";
 		};
+		DC23686810C1D1930020E523 /* J5Sheet 64-bit */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DC23687B10C1D1930020E523 /* Build configuration list for PBXNativeTarget "J5Sheet 64-bit" */;
+			buildPhases = (
+				DC23686910C1D1930020E523 /* Headers */,
+				DC23687010C1D1930020E523 /* Sources */,
+				DC23687610C1D1930020E523 /* Frameworks */,
+				DC23687910C1D1930020E523 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "J5Sheet 64-bit";
+			productName = J5Sheet;
+			productReference = DC23687E10C1D1930020E523 /* libquaqua64.jnilib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -2375,6 +2449,7 @@
 				DC23654810C02D3F0020E523 /* Ant Build */,
 				D2AAC0C605546C1D00DB518D /* J5Sheet */,
 				DC23654F10C02DB50020E523 /* Both */,
+				DC23686810C1D1930020E523 /* J5Sheet 64-bit */,
 			);
 		};
 /* End PBXProject section */
@@ -2392,6 +2467,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DC23687010C1D1930020E523 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DC23687110C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.m in Sources */,
+				DC23687210C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m in Sources */,
+				DC23687310C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXFile.m in Sources */,
+				DC23687410C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXImageIO.m in Sources */,
+				DC23687510C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -2404,6 +2491,11 @@
 			isa = PBXTargetDependency;
 			target = D2AAC0C605546C1D00DB518D /* J5Sheet */;
 			targetProxy = DC23655410C02DBF0020E523 /* PBXContainerItemProxy */;
+		};
+		DC23688210C1D25F0020E523 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DC23686810C1D1930020E523 /* J5Sheet 64-bit */;
+			targetProxy = DC23688110C1D25F0020E523 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2515,6 +2607,57 @@
 			};
 			name = Release;
 		};
+		DC23687C10C1D1930020E523 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					i386,
+					ppc7400,
+					ppc64,
+					x86_64,
+				);
+				COPY_PHASE_STRIP = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
+				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = quaqua64;
+			};
+			name = Debug;
+		};
+		DC23687D10C1D1930020E523 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = (
+					i386,
+					ppc7400,
+					ppc64,
+					x86_64,
+				);
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				EXECUTABLE_EXTENSION = jnilib;
+				EXECUTABLE_PREFIX = lib;
+				GCC_MODEL_TUNING = G5;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
+				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
+				INSTALL_PATH = /usr/local/lib;
+				PRODUCT_NAME = quaqua64;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2550,6 +2693,15 @@
 			buildConfigurations = (
 				DC23655010C02DB70020E523 /* Debug */,
 				DC23655110C02DB70020E523 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DC23687B10C1D1930020E523 /* Build configuration list for PBXNativeTarget "J5Sheet 64-bit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DC23687C10C1D1930020E523 /* Debug */,
+				DC23687D10C1D1930020E523 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

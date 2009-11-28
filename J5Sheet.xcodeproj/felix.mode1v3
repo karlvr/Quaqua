@@ -216,7 +216,7 @@
 						<key>_historyCapacity</key>
 						<integer>0</integer>
 						<key>bookmark</key>
-						<string>DC23685D10C1C9430020E523</string>
+						<string>DC23688E10C1D3160020E523</string>
 						<key>history</key>
 						<array>
 							<string>DC23678910C13DFD0020E523</string>
@@ -314,17 +314,12 @@
 								<string>0867D691FE84028FC02AAC07</string>
 								<string>08FB77AEFE84172EC02AAC07</string>
 								<string>DC235FD110C0250A0020E523</string>
-								<string>1C37FBAC04509CD000000102</string>
-								<string>DC23657410C053630020E523</string>
-								<string>1C37FAAC04509CD000000102</string>
 								<string>1C37FABC05509CD000000102</string>
-								<string>DC2367DF10C174050020E523</string>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>29</integer>
-									<integer>27</integer>
+									<integer>0</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -379,7 +374,7 @@
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DC23685C10C1C9430020E523</string>
+										<string>DC23688D10C1D3160020E523</string>
 										<key>history</key>
 										<array>
 											<string>DC23653710C02CE50020E523</string>
@@ -470,14 +465,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 0}, {807, 773}}</string>
+								<string>{{0, 0}, {807, 541}}</string>
 								<key>RubberWindowFrame</key>
 								<string>128 59 1078 819 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>PBXNavigatorGroup</string>
 							<key>Proportion</key>
-							<string>773pt</string>
+							<string>541pt</string>
 						</dict>
 						<dict>
 							<key>ContentConfiguration</key>
@@ -490,14 +485,14 @@
 							<key>GeometryConfiguration</key>
 							<dict>
 								<key>Frame</key>
-								<string>{{0, 778}, {807, 0}}</string>
+								<string>{{0, 546}, {807, 232}}</string>
 								<key>RubberWindowFrame</key>
 								<string>128 59 1078 819 0 0 1440 878 </string>
 							</dict>
 							<key>Module</key>
 							<string>XCDetailModule</string>
 							<key>Proportion</key>
-							<string>0pt</string>
+							<string>232pt</string>
 						</dict>
 					</array>
 					<key>Proportion</key>
@@ -652,14 +647,15 @@
 	<integer>5</integer>
 	<key>WindowOrderList</key>
 	<array>
+		<string>DC23651810C025A60020E523</string>
 		<string>DC23665110C07AE70020E523</string>
 		<string>DC23661D10C0781C0020E523</string>
 		<string>DC23661E10C0781C0020E523</string>
+		<string>1C78EAAD065D492600B07095</string>
 		<string>1CD10A99069EF8BA00B06720</string>
 		<string>DC235FCF10C024EE0020E523</string>
-		<string>/Users/felix/Documents/Java/Quaqua/J5Sheet/J5Sheet.xcodeproj</string>
 		<string>DC23679010C13F0D0020E523</string>
-		<string>1C78EAAD065D492600B07095</string>
+		<string>/Users/felix/Documents/Java/Quaqua/J5Sheet/J5Sheet.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
 	<string>128 59 1078 819 0 0 1440 878 </string>
@@ -678,14 +674,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>ch_randelshofer_quaqua_osx_OSXSheetSupport.m</string>
+								<string>JSheet.java</string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -702,6 +696,8 @@
 							<string>361pt</string>
 						</dict>
 						<dict>
+							<key>BecomeActive</key>
+							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
@@ -1124,12 +1120,12 @@
 								<dict>
 									<key>PBXCVSModuleTreeModuleColumnWidthsKey</key>
 									<array>
-										<real>266</real>
-										<real>56.66162109375</real>
+										<real>268</real>
+										<real>56</real>
 										<real>63</real>
 										<real>60</real>
 										<real>63</real>
-										<real>139.556640625</real>
+										<real>139</real>
 									</array>
 									<key>PBXCVSModuleTreeModuleColumnsKey</key>
 									<array>
@@ -1145,6 +1141,8 @@
 								<string>1CD052920623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
 								<string>SCM Results</string>
+								<key>SCMActivityViewerShowingDefaultKey</key>
+								<string>{{0, 143}, {684, 225}}</string>
 							</dict>
 							<key>GeometryConfiguration</key>
 							<dict>
@@ -1174,7 +1172,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>DC23651810C025A60020E523</string>
-				<string>DC23651910C025A60020E523</string>
+				<string>DC23686510C1CAED0020E523</string>
 				<string>1C78EAB2065D492600B07095</string>
 				<string>1CD052920623707200166675</string>
 			</array>
