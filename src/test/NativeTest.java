@@ -26,6 +26,7 @@ public class NativeTest extends javax.swing.JPanel {
         initComponents();
         tabbedPane.add(new LazyPanel("test.FileSystemTest"), "File System");
         tabbedPane.add(new LazyPanel("test.ClipboardTest"), "Clipboard");
+        tabbedPane.add(new LazyPanel("test.NativeSheetTest"), "Sheets");
     }
 
     /** This method is called from within the constructor to

@@ -37,13 +37,9 @@ import ch.randelshofer.quaqua.*;
  */
 public class OSXSheetSupport {
     private static class SessionInfo {
-        /*private final static int NSAlertFirstButtonReturn  = 1000;
+        private final static int NSAlertFirstButtonReturn  = 1000;
         private final static int NSAlertSecondButtonReturn  = 1001; // Might be needed in a future version with more than 3 buttons supported.
-        private final static int NSAlertThirdButtonReturn  = 1002;*/
-        private final static int NSAlertDefaultReturn = 1;
-        private final static int NSAlertAlternateReturn = 0;
-        private final static int NSAlertOtherReturn = -1;
-        private final static int NSAlertErrorReturn = -2;
+        private final static int NSAlertThirdButtonReturn  = 1002;
         
         final JOptionPane pane;
         final SheetListener listener;
@@ -55,33 +51,38 @@ public class OSXSheetSupport {
         
         void notifyListener(int returnCode, Object returnValue) {
             if (listener != null) {
-                if (pane.getOptions() == null) {
-                    int code = mapCode(returnCode);
-                    if (returnValue != null && code == JOptionPane.CANCEL_OPTION)
-                        returnValue = JOptionPane.UNINITIALIZED_VALUE;
-                    listener.optionSelected(new SheetEvent(SessionInfo.this, pane, mapCode(returnCode), null, returnValue));
+                Object inputValue;
+                if (pane.getWantsInput()) {
+                    inputValue = (returnValue != null) ? returnValue : JOptionPane.UNINITIALIZED_VALUE;
                 } else {
-                    listener.optionSelected(new SheetEvent(SessionInfo.this, pane, mapCode(returnCode), pane.getOptions()[mapOption(returnCode)], returnValue));
+                    inputValue = null;
                 }
+                
+                Object value;
+                int option;
+                if (pane.getOptions() == null) {
+                    option = mapCode(returnCode);
+                    value = null;
+                } else {
+                    option = mapOption(returnCode);
+                    value = pane.getOptions()[option];
+                }
+                
+                listener.optionSelected(new SheetEvent(JSheet.NATIVE_SHEET_SOURCE, pane, option, value, inputValue));
             }
         }
         
         private int mapCode(int nativeCode) {
-            if (nativeCode == NSAlertDefaultReturn)
+            if (nativeCode == NSAlertFirstButtonReturn)
                 return JOptionPane.YES_OPTION; // same as JOptionPane.OK_OPTION
-            else if (nativeCode == NSAlertOtherReturn)
+            else if (nativeCode == NSAlertSecondButtonReturn)
                 return JOptionPane.CANCEL_OPTION;
             else
                 return JOptionPane.NO_OPTION;
         }
         
         private int mapOption(int nativeCode) {
-            if (nativeCode == NSAlertDefaultReturn)
-                return 0;
-            else if (nativeCode == NSAlertOtherReturn)
-                return 1;
-            else
-                return 2;
+            return nativeCode - 1000;
         }
     }
     
@@ -96,7 +97,7 @@ public class OSXSheetSupport {
     
     private static int lastID = 0;
     private static HashMap listeners = new HashMap();
-    private static Pattern htmlPattern = Pattern.compile("<html>.*<head>.*<style.*>.+</style>.*</head>.*<b>(.*)</b>(<p>.*(</p>)?)*.*");
+    private static Pattern htmlPattern = Pattern.compile("<html>.*<head>.*<style.*>.+</style>.*</head>.*<b>(.*)</b>(<p>.*)*.*");
 
     private OSXSheetSupport() {
     }
@@ -275,7 +276,7 @@ public class OSXSheetSupport {
         Object[] options = pane.getOptions();
         if (options != null) {
             // Native dialog has only three buttons and must have at least one
-            if (options.length > 3 || options.length == 0)
+            if (options.length == 0)
                 return false;
             
             // Buttons may only have Strings displayed
@@ -285,12 +286,10 @@ public class OSXSheetSupport {
             }
         }
             
-        // Native dialog only supports input for null selection values
-        if (pane.getWantsInput() && pane.getSelectionValues() != null)
-            return false;
-        
-        // Message must not be a HTML String and not conform to the example given in 
-        if (pane.getMessage().toString().startsWith("<html>") && !htmlPattern.matcher(pane.getMessage().toString()).matches())
+        // Message may only be a HTML String if it conforms to the example given at:
+        // http://randelshofer.ch/quaqua/guide/joptionpane.html
+        String message = pane.getMessage().toString();
+        if (message.startsWith("<html>") && !htmlPattern.matcher(message).matches())
             return false;
         
         // Passed all checks - let's hope it works out!
@@ -305,24 +304,20 @@ public class OSXSheetSupport {
         if (!isNativeCodeAvailable())
             throw new UnsatisfiedLinkError("Quaqua's Native code is not available! Please ensure the libquaqua.jnilib and libquaqua64.jnilib are in the proper locations.");
         
-        String[] options = new String[3];
+        String[] options;
         if (pane.getOptions() == null) {
             switch (pane.getOptionType()) {
                 case JOptionPane.DEFAULT_OPTION:
-                    options[0] = UIManager.getString("OptionPane.okButtonText");
+                    options = new String[] { UIManager.getString("OptionPane.okButtonText") };
                     break;
                 case JOptionPane.YES_NO_OPTION:
-                    options[0] = UIManager.getString("OptionPane.yesButtonText");
-                    options[2] = UIManager.getString("OptionPane.noButtonText");
+                    options = new String[] { UIManager.getString("OptionPane.yesButtonText"), UIManager.getString("OptionPane.noButtonText") };
                     break;
                 case JOptionPane.YES_NO_CANCEL_OPTION:
-                    options[0] = UIManager.getString("OptionPane.yesButtonText");
-                    options[2] = UIManager.getString("OptionPane.noButtonText");
-                    options[1] = UIManager.getString("OptionPane.cancelButtonText");
+                    options = new String[] { UIManager.getString("OptionPane.yesButtonText"), UIManager.getString("OptionPane.cancelButtonText"), UIManager.getString("OptionPane.noButtonText") };
                     break;
                 case JOptionPane.OK_CANCEL_OPTION:
-                    options[0] = UIManager.getString("OptionPane.okButtonText");
-                    options[2] = UIManager.getString("OptionPane.cancelButtonText");
+                    options = new String[] { UIManager.getString("OptionPane.okButtonText"), UIManager.getString("OptionPane.cancelButtonText") };
                     break;
                 default:
                     options = null;
@@ -330,6 +325,7 @@ public class OSXSheetSupport {
             }
         } else {
             Object[] opts = pane.getOptions();
+            options = new String[opts.length];
             for (int i = 0; i < opts.length; i++) {
                 options[i] = opts[i].toString();
             }
@@ -349,9 +345,6 @@ public class OSXSheetSupport {
         }
         
         String message = pane.getMessage().toString();
-        String defaultButton = options[0];
-        String alternateButton = options[2];
-        String otherButton = options[1];
         String format;
         if (!message.startsWith("<html>")) {
             // If message has multiple lines, split the first one to be the bold message
@@ -362,6 +355,8 @@ public class OSXSheetSupport {
             } else
                 format = null;
         } else {
+            // Format a HTML text so that the first part is in the bold
+            // text and each other paragraph in a paragraph
             format = "";
             Matcher m = htmlPattern.matcher(message);
             m.matches();
@@ -377,13 +372,19 @@ public class OSXSheetSupport {
             if (format.length() > 0)
                 format = format.replaceAll("<br>", " ").replaceAll("<p>", "\n").trim();
         }
+        // Create ID and save the listener and option pane in a session info object
         int id = ++lastID;
         listeners.put(new Integer(id), new SessionInfo(pane, listener));
-        nativeShowOptionSheet(message, defaultButton, alternateButton, otherButton, format, wantsInput, selectionValues, initialSelectionValue, SwingUtilities.getWindowAncestor(parentComponent), id);
+        // Show the alert
+        nativeShowOptionSheet(message, options, format, wantsInput, selectionValues, initialSelectionValue, SwingUtilities.getWindowAncestor(parentComponent), id);
     }
     
-    private static native void nativeShowOptionSheet(String message, String defaultButton, String alternateButton, String otherButton, String format, boolean wantsInput, String[] selectionValues, String initialSelectionValue, Component parentComponent, int id);
+    private static native void nativeShowOptionSheet(String message, String[] options, String format, boolean wantsInput, String[] selectionValues, String initialSelectionValue, Component parentComponent, int id);
     
+    /**
+     * This method serves as a callback for the native code to pass results from an NSAlert
+     * back to the SheetListener.
+    **/
     private static void performListenerForID(final int id, final int returnCode, final String returnValue) {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {

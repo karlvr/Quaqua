@@ -9,6 +9,7 @@ NSWindow * GetWindowFromComponent(jobject parent, JNIEnv *env);
 jint GetJNIEnv(JNIEnv **env, bool *mustDetach);
 NSString * GetNSStringFromJString(jstring string, JNIEnv *env);
 jstring GetJStringFromNSString(NSString *string, JNIEnv *env);
+NSArray * GetNSArrayFromJStringArray(jobjectArray array, JNIEnv *env);
 
 @interface AlertDelegate : NSObject
 {
@@ -16,8 +17,8 @@ jstring GetJStringFromNSString(NSString *string, JNIEnv *env);
     NSAlert *alert;
 }
 
-+ (id) alertDelegateWithMessageText:(NSString *)messageTitle defaultButton:(NSString *)defaultButtonTitle alternateButton:(NSString *)alternateButtonTitle otherButton:(NSString *)otherButtonTitle informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident;
-- (id) initWithMessageText:(NSString *)messageTitle defaultButton:(NSString *)defaultButtonTitle alternateButton:(NSString *)alternateButtonTitle otherButton:(NSString *)otherButtonTitle informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident;
++ (id)alertDelegateWithMessageText:(NSString *)messageTitle withOptions:(NSArray *)options informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident;
+- (id) initWithMessageText:(NSString *)messageTitle withOptions:(NSArray *)options informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident;
 - (void) runPanel:(NSWindow *)parent;
 - (void) alertDidEnd:(NSAlert *)alert returnCode:(int)returnCode contextInfo:(void *)contextInfo;
 - (void) setSelectionValues:(NSArray *)selectionValues withDefaultValue:(NSString *)defaultValue;
@@ -59,20 +60,20 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
  * Method:    nativeShowOptionSheet
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/awt/Component;I)V
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;Ljava/lang/String;Ljava/awt/Component;I)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowOptionSheet (JNIEnv * env, jclass clazz, jstring message, jstring defaultButton, jstring alternateButton, jstring otherButton, jstring format, jboolean wantsInput, jobjectArray selectionValues, jstring initialSelectionValues, jobject component, jint ident) {
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowOptionSheet (JNIEnv * env, jclass clazz, jstring message, jobjectArray options, jstring format, jboolean wantsInput, jobjectArray selectionValues, jstring initialSelectionValue, jobject component, jint ident) {
+    
     NSAutoreleasePool *pool = [NSAutoreleasePool new];
     
     NSWindow *window = GetWindowFromComponent(component, env);
     AlertDelegate *delegate = [[AlertDelegate alloc] initWithMessageText:GetNSStringFromJString(message, env)
-                                                           defaultButton:GetNSStringFromJString(defaultButton, env)
-                                                         alternateButton:GetNSStringFromJString(alternateButton, env)
-                                                             otherButton:GetNSStringFromJString(otherButton, env)
+                                                             withOptions:GetNSArrayFromJStringArray(options, env)
                                                informativeTextWithFormat:GetNSStringFromJString(format, env)
                                                                   withID:ident];
     if (wantsInput)
-        [delegate setSelectionValues:nil withDefaultValue:GetNSStringFromJString(initialSelectionValues, env)];
+        [delegate setSelectionValues:GetNSArrayFromJStringArray(selectionValues, env)
+                    withDefaultValue:GetNSStringFromJString(initialSelectionValue, env)];
     [delegate performSelectorOnMainThread:@selector(runPanel:) withObject:window waitUntilDone:NO];
     //[delegate retain];
     
@@ -81,28 +82,27 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
 
 @implementation AlertDelegate
 
-+ (id)alertDelegateWithMessageText:(NSString *)messageTitle defaultButton:(NSString *)defaultButtonTitle alternateButton:(NSString *)alternateButtonTitle otherButton:(NSString *)otherButtonTitle informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident {
++ (id)alertDelegateWithMessageText:(NSString *)messageTitle withOptions:(NSArray *)options informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident {
     return [[[AlertDelegate alloc] initWithMessageText:messageTitle
-                                         defaultButton:defaultButtonTitle
-                                       alternateButton:alternateButtonTitle
-                                           otherButton:otherButtonTitle
+                                           withOptions:options
                              informativeTextWithFormat:informativeText
                                                 withID:ident]
             autorelease];
 }
 
-- (id)initWithMessageText:(NSString *)messageTitle defaultButton:(NSString *)defaultButtonTitle alternateButton:(NSString *)alternateButtonTitle otherButton:(NSString *)otherButtonTitle informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident {
+- (id)initWithMessageText:(NSString *)messageTitle withOptions:(NSArray *)options informativeTextWithFormat:(NSString *)informativeText withID:(jint)ident {
     [super init];
     
     if (informativeText == nil)
         informativeText = @"";
     
-    alert = [[NSAlert alertWithMessageText:messageTitle
-                             defaultButton:defaultButtonTitle
-                           alternateButton:alternateButtonTitle
-                               otherButton:otherButtonTitle
-                 informativeTextWithFormat:informativeText]
-             retain];
+    alert = [[NSAlert alloc] init];
+    [alert setMessageText:messageTitle];
+    [alert setInformativeText:informativeText];
+    for (NSString *string in options) {
+        [alert addButtonWithTitle:string];
+    }
+    [alert setIcon:[NSApp applicationIconImage]];
     identifier = ident;
     
     return self;
@@ -117,11 +117,13 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
 }
 
 - (void) alertDidEnd:(NSAlert *)a returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    // TODO Perform callback to Java
-    NSTextField *field = (NSTextField *)[a accessoryView];
+    NSView *view = (NSView *)[a accessoryView];
     NSString *result;
-    if (field) {
-        result = [field stringValue];
+    if (view) {
+        if ([view isKindOfClass:[NSTextField class]])
+            result = [(NSTextField *)view stringValue];
+        else
+            result = [(NSPopUpButton *)view titleOfSelectedItem];
     } else {
         result = nil;
     }
@@ -165,11 +167,10 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
         [alert setAccessoryView:textField];
         [textField release];
     } else {
-        NSComboBox *comboBox = [[NSComboBox alloc] initWithFrame:NSMakeRect(0, 0, 200, 26)];
-        [comboBox addItemsWithObjectValues:selectionValues];
-        [comboBox setEditable:NO];
+        NSPopUpButton *comboBox = [[NSPopUpButton alloc] initWithFrame:NSMakeRect(0, 0, 200, 26)];
+        [comboBox addItemsWithTitles:selectionValues];
         if (defaultValue)
-            [comboBox selectItemWithObjectValue:defaultValue];
+            [comboBox selectItemWithTitle:defaultValue];
         [alert setAccessoryView:comboBox];
         [comboBox release];
     }
@@ -311,4 +312,17 @@ jstring GetJStringFromNSString(NSString *string, JNIEnv *env) {
     [string getCharacters:buffer];
     jstring javaStr = (*env)->NewString(env, (jchar *)buffer, buflength);
     return javaStr;
+}
+
+NSArray * GetNSArrayFromJStringArray(jobjectArray array, JNIEnv *env) {
+    if (array == NULL)
+        return nil;
+    
+    jsize length = (*env)->GetArrayLength(env, array);
+    NSMutableArray *nsArray = [NSMutableArray arrayWithCapacity:length];
+    for (int i = 0; i < length; i++) {
+        jstring string = (*env)->GetObjectArrayElement(env, array, i);
+        [nsArray addObject:GetNSStringFromJString(string, env)];
+    }
+    return nsArray;
 }

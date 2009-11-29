@@ -973,6 +973,7 @@
 		DC23652610C027870020E523 /* JavaVM.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaVM.framework; path = /System/Library/Frameworks/JavaVM.framework; sourceTree = "<absolute>"; };
 		DC23657910C053900020E523 /* build-quaqua.xml */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = "build-quaqua.xml"; sourceTree = "<group>"; };
 		DC23687E10C1D1930020E523 /* libquaqua64.jnilib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libquaqua64.jnilib; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC2368D710C2BB8E0020E523 /* NativeSheetTest.java */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.java; path = NativeSheetTest.java; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -2246,6 +2247,7 @@
 				DC23630010C0250D0020E523 /* MatisseTest.java */,
 				DC23630110C0250D0020E523 /* NativeTest.form */,
 				DC23630210C0250D0020E523 /* NativeTest.java */,
+				DC2368D710C2BB8E0020E523 /* NativeSheetTest.java */,
 				DC23630310C0250D0020E523 /* NonEDTTest.java */,
 				DC23630410C0250D0020E523 /* OptionPaneTest.form */,
 				DC23630510C0250D0020E523 /* OptionPaneTest.java */,

@@ -25,10 +25,10 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
  * Method:    nativeShowOptionSheet
- * Signature: (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;Ljava/lang/String;Ljava/awt/Component;I)V
+ * Signature: (Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Z[Ljava/lang/String;Ljava/lang/String;Ljava/awt/Component;I)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowOptionSheet
-  (JNIEnv *, jclass, jstring, jstring, jstring, jstring, jstring, jboolean, jobjectArray, jstring, jobject, jint);
+  (JNIEnv *, jclass, jstring, jobjectArray, jstring, jboolean, jobjectArray, jstring, jobject, jint);
 
 #ifdef __cplusplus
 }

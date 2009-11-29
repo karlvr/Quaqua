@@ -117,15 +117,15 @@ private JFileChooser saveFile;
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         add(experimentalSheetCheckbox, gridBagConstraints);
         
-        experimentalSheetCheckbox.setText("Experimental Native Sheet");
+        experimentalSheetCheckbox.setText("Map JOptionPanes to NSAlerts (experimental)");
         experimentalSheetCheckbox.addChangeListener(new javax.swing.event.ChangeListener() {
         	public void stateChanged(javax.swing.event.ChangeEvent evt) {
         		experimentalSheetChange(evt);
         	}
         });
-        experimentalSheetCheckbox.doClick();
         
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;

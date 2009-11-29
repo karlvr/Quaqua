@@ -107,6 +107,10 @@ public class JSheet extends JDialog {
      * and restore it after we have finished.
      */
     private Component ownersGlassPane;
+    /**
+     * Source given to a SheetEvent when a native sheet returned
+    **/
+    public final static Object NATIVE_SHEET_SOURCE = "Native sheet";
 
     static {
         // SoyLatte doesn't properly support document modal dialogs yet.
@@ -306,7 +310,7 @@ public class JSheet extends JDialog {
     
     /**
      * If this returns true, the JSheet tries to map JOptionPanes to their native counterpart NSAlert.
-     * To turn on this behaviour, call UIManager.set("Sheet.optionPaneMapping", Boolean.TRUE).
+     * To turn on this behaviour, call <code>UIManager.set("Sheet.optionPaneMapping", Boolean.TRUE)</code>.
     **/
     private static boolean isOptionPaneMappingAllowed() {
         return UIManager.getBoolean("Sheet.optionPaneMapping");
