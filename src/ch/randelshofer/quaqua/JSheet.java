@@ -311,11 +311,24 @@ public class JSheet extends JDialog {
     /**
      * If this returns true, the JSheet tries to map JOptionPanes to their native counterpart NSAlert.
      * To turn on this behaviour, call <code>UIManager.set("Sheet.optionPaneMapping", Boolean.TRUE)</code>.
+     * <p>
+     * Default is <code>false</code>.
     **/
     private static boolean isOptionPaneMappingAllowed() {
         return UIManager.getBoolean("Sheet.optionPaneMapping");
     }
-
+    
+    /**
+     * If this returns true, the JSheet embeds JFileChoosers in native NSWindows.
+     * To turn on this behaviour, call <code>UIManager.set("Sheet.fileChooserEmbedding", Boolean.TRUE)</code>.
+     * <p>
+     * Default is <code>false</code>.
+     **/
+    private static boolean isFileChooserEmbeddingAllowed() {
+        return UIManager.getBoolean("Sheet.fileChooserEmbedding");
+    }
+    
+    
     public void dispose() {
         super.dispose();
         uninstallSheet();
@@ -1121,6 +1134,11 @@ public class JSheet extends JDialog {
         String title = chooser.getUI().getDialogTitle(chooser);
         chooser.getAccessibleContext().setAccessibleDescription(title);
 
+        if (isFileChooserEmbeddingAllowed()) {
+            final Frame sheet = OSXSheetSupport.showFileChooserSheet(chooser, parent, listener);
+            if (sheet != null)
+                return;
+        }
         final JSheet sheet = new JSheet(frame);
         sheet.addSheetListener(listener);
 

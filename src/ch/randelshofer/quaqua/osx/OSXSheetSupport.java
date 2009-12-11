@@ -17,6 +17,7 @@ package ch.randelshofer.quaqua.osx;
 import java.util.HashMap;
 import java.util.regex.*;
 import java.awt.*;
+import java.awt.event.*;
 import java.security.AccessControlException;
 import javax.swing.*;
 
@@ -396,5 +397,123 @@ public class OSXSheetSupport {
                 listeners.remove(i);
             }
         });
+    }
+    
+    // #### Component embedding ####
+    
+    /**
+     * Shows a component embedded in a sheet on the window of the parent Component.
+    **/
+    public static Frame showFileChooserSheet(final JFileChooser component, Component parent,
+                                             final SheetListener listener) {
+        if (!isNativeCodeAvailable()) {
+            return null;
+        }
+        
+        JRootPane p = new JRootPane();
+        component.setVisible(true);
+        p.getContentPane().add(component, BorderLayout.CENTER);
+        p.setSize(p.getPreferredSize());
+        
+        long nativeView = createNativeView(p.getWidth(), p.getHeight());
+        final SheetFrame frame = new SheetFrame(nativeView);
+        frame.addNotify();
+        frame.setVisible(true);
+        
+        final ActionListener actionListener = new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                int option;
+                if (evt.getActionCommand().equals("ApproveSelection")) {
+                    option = JFileChooser.APPROVE_OPTION;
+                } else {
+                    option = JFileChooser.CANCEL_OPTION;
+                }
+                frame.hide();
+                fireOptionSelected(component, option, listener);
+                component.removeActionListener(this);
+            }
+        };
+        component.addActionListener(actionListener);
+        frame.addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                fireOptionSelected(component, JFileChooser.CANCEL_OPTION, listener);
+                component.removeActionListener(actionListener);
+            }
+        });
+        component.rescanCurrentDirectory();
+        
+        showSheet(SwingUtilities.getWindowAncestor(parent), nativeView);
+        
+        frame.add(p);
+        frame.privateSetSize(p.getWidth(), p.getHeight());
+        
+        return frame;
+    }
+    
+    private static void fireOptionSelected(final JFileChooser pane, final int option, final SheetListener listener) {
+        if (listener != null) {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    listener.optionSelected(new SheetEvent(JSheet.NATIVE_SHEET_SOURCE, pane, option, null));
+                }
+            });
+        }
+    }
+    
+    private native static long createNativeView(int width, int height);
+    
+    /**
+     * Hides a Frame created by {@link #showComponentSheet}.
+    **/
+    public static void hideSheet(Frame frame) {
+        if (frame != null && isNativeCodeAvailable() && frame instanceof SheetFrame) {
+            SheetFrame sheetFrame = (SheetFrame) frame;
+            nativeHideSheet(sheetFrame.handle);
+            sheetFrame.setVisible(false);
+        }
+    }
+    
+    private native static void nativeHideSheet(long view);
+    
+    private native static void nativeSetBounds(long handle, int width, int height);
+    
+    private native static void showSheet(Window owner, long view);
+
+    /**
+     * This class serves as the frame embedded in the native NSWindow.
+     * <p>
+     * As far as I understand the class loading mechanism, this class should never
+     * come to be loaded except for if it is needed. If you do encounter
+     * ClassNotFoundErrors for apple.awt.CEmbeddedFrame please write on the forum.
+     **/
+    private static final class SheetFrame extends apple.awt.CEmbeddedFrame {
+        private long handle;
+        
+        public SheetFrame(long handle) {
+            super(handle);
+            this.handle = handle;
+        }
+        
+        public void hide() {
+            nativeHideSheet(handle);
+            super.hide();
+        }
+        
+        public void setBounds(int x, int y, int width, int height) {
+            nativeSetBounds(handle, width, height);
+            super.setBounds(0, 0, width, height);
+        }
+        
+        public void paint(Graphics g) {
+            super.paint(g);
+            // Painting the resize indicator in the bottom right corner
+            Icon icon = UIManager.getIcon("Frame.resize");
+            if (icon != null)
+                icon.paintIcon(this, g, getWidth() - icon.getIconWidth(), getHeight() - icon.getIconHeight());
+        }
+        
+        private void privateSetSize(int width, int height) {
+            super.setBounds(0, 0, width, height);
+        }
     }
 }

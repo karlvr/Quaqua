@@ -225,6 +225,133 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
 
 //@end
 
+#pragma mark Embedding headers
+
+NSWindow * GetWindowFromComponent(jobject parent, JNIEnv *env);
+@interface AWTView : NSView
+{
+}
+
+@end
+
+@interface AWTWindow : NSWindow
+{
+}
+
+@end
+
+#pragma mark Embedding implementation
+@implementation AWTView
+
+- (BOOL)acceptsFirstResponder
+{
+    return YES;
+}
+
+- (void) dealloc
+{
+    NSLog(@"Dealloc of window!");
+    [super dealloc];
+}
+
+@end
+
+@implementation AWTWindow
+
+- (BOOL)canBecomeKeyWindow
+{
+    return YES;
+}
+
+- (BOOL)canBecomeMainWindow
+{
+    return YES;
+}
+
+- (void) dealloc
+{
+    NSLog(@"Dealloc of window!");
+    [super dealloc];
+}
+
+
+@end
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    createNativeView
+ * Signature: (II)J
+ */
+JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_createNativeView(JNIEnv *env, jclass clazz, jint width, jint height)
+{
+    AWTWindow *window = [[AWTWindow alloc] initWithContentRect:NSMakeRect(0, 0, width, height) styleMask:NSTitledWindowMask backing:NSBackingStoreBuffered defer:YES];
+    
+    AWTView *view = [[AWTView alloc] initWithFrame:NSMakeRect(0, 0, width, height)];
+    [window setContentView:view];
+    [window setInitialFirstResponder:view];
+    
+    return (jlong)view;
+}
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    nativeHideSheet
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHideSheet(JNIEnv *env, jclass clazz, jlong view)
+{
+    NSView *nsView = (NSView *)view;
+    NSWindow *sheetWindow = [nsView window];
+    
+    [NSApp endSheet:sheetWindow];
+    [sheetWindow close];
+    [nsView release];
+}
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    nativeSetBounds
+ * Signature: (JII)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSetBounds(JNIEnv *env, jclass clazz, jlong view, jint width, jint height)
+{
+    AWTView *nsView = (AWTView *)view;
+    NSWindow *sheetWindow = [nsView window];
+    NSRect r = [sheetWindow frame];
+    r.origin.x = r.origin.x + r.size.width / 2 - width / 2;
+    r.origin.y = r.origin.y + r.size.height - height;
+    r.size.width = width;
+    r.size.height = height;
+    [sheetWindow setFrame:r display:NO animate:NO];
+}
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    showSheet
+ * Signature: (Ljava/awt/Window;J)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_showSheet(JNIEnv *env, jclass clazz, jobject owner, jlong view)
+{
+    AWTView *nsView = (AWTView *)view;
+    NSLog(@"%i and %@", owner != NULL, nsView);
+    NSWindow *ownerWindow = GetWindowFromComponent(owner, env);
+    NSWindow *sheetWindow = [nsView window];
+    
+    NSInvocation *invoc = [NSInvocation invocationWithMethodSignature:[NSApp methodSignatureForSelector:@selector(beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:)]];
+    [invoc setSelector:@selector(beginSheet:modalForWindow:modalDelegate:didEndSelector:contextInfo:)];
+    [invoc setTarget:NSApp];
+    [invoc setArgument:&sheetWindow atIndex:2];
+    [invoc setArgument:&ownerWindow atIndex:3];
+    [invoc performSelectorOnMainThread:@selector(invoke) withObject:nil waitUntilDone:NO];
+    
+    NSView *awtView = [[nsView subviews] objectAtIndex:0];
+    [sheetWindow makeKeyWindow];
+    [sheetWindow makeFirstResponder:awtView];
+}
+
+
+#pragma mark Helper methods
+
 /*
  Determines whether the current thread is already attached to the VM,
  and tells the caller if it needs to later DetachCurrentThread 

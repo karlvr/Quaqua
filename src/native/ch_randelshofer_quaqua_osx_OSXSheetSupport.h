@@ -30,6 +30,38 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeGet
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeShowOptionSheet
   (JNIEnv *, jclass, jstring, jobjectArray, jstring, jboolean, jobjectArray, jstring, jobject, jint);
 
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    createNativeView
+ * Signature: (II)J
+ */
+JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_createNativeView
+  (JNIEnv *, jclass, jint, jint);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    nativeHideSheet
+ * Signature: (J)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHideSheet
+  (JNIEnv *, jclass, jlong);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    nativeSetBounds
+ * Signature: (JII)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSetBounds
+  (JNIEnv *, jclass, jlong, jint, jint);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
+ * Method:    showSheet
+ * Signature: (Ljava/awt/Window;J)V
+ */
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_showSheet
+  (JNIEnv *, jclass, jobject, jlong);
+
 #ifdef __cplusplus
 }
 #endif

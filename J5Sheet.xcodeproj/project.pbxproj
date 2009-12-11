@@ -72,7 +72,7 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 0867D690FE84028FC02AAC07 /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = DC23686810C1D1930020E523 /* J5Sheet 64-bit */;
+			remoteGlobalIDString = DC23686810C1D1930020E523;
 			remoteInfo = "J5Sheet 64-bit";
 		};
 /* End PBXContainerItemProxy section */
@@ -2448,9 +2448,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
+				DC23654F10C02DB50020E523 /* Both */,
 				DC23654810C02D3F0020E523 /* Ant Build */,
 				D2AAC0C605546C1D00DB518D /* J5Sheet */,
-				DC23654F10C02DB50020E523 /* Both */,
 				DC23686810C1D1930020E523 /* J5Sheet 64-bit */,
 			);
 		};
