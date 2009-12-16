@@ -312,6 +312,20 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 event.isShiftDown());
     }
 
+    private TreePath getMouseClickedClosestPathForLocation(JTree tree, int x, int y) {
+        final TreePath path = getClosestPathForLocation(tree, x, y);
+        if (path == null) {
+            return null;
+        }
+
+        final Rectangle pathBounds = getPathBounds(tree, path);
+        if (y > pathBounds.y + pathBounds.height) {
+            return null;
+        }
+
+        return path;
+    }
+
     //
     // The following selection methods (lead/anchor) are covers for the
     // methods in JTree.
@@ -1295,7 +1309,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 }
 
 
-                TreePath path = getClosestPathForLocation(tree, e.getX(), e.getY());
+                TreePath path = getMouseClickedClosestPathForLocation(tree, e.getX(), e.getY());
 
                 /*
                 if (startEditing(path, e)) {
@@ -1462,7 +1476,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         !stopEditing(tree)) {
                     return;
                 }
-                TreePath path = getClosestPathForLocation(tree, e.getX(),
+                TreePath path = getMouseClickedClosestPathForLocation(tree, e.getX(),
                         e.getY());
                 if (startEditingOnRelease(path, e, e)) {
                     return;
