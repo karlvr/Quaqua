@@ -394,7 +394,7 @@ public class QuaquaListUI extends BasicListUI {
             mouseReleaseDeselects = false;
             int dx = Math.abs(e.getX() - armedEvent.getX());
             int dy = Math.abs(e.getY() - armedEvent.getY());
-            if ((dx > dragThreshold) || (dy > dragThreshold)) {
+            if (Math.sqrt(dx*dx+dy*dy) > dragThreshold) {
                 if (mouseDragSelects) {
                     int index = locationToIndex(list, e.getPoint());
                     if (index != -1) {

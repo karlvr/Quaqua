@@ -366,6 +366,7 @@ public class OSXFile {
                 return image;
 
             } catch (IOException ex) {
+                //ex.printStackTrace();
                 return null;
             }
         } else {

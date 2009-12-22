@@ -414,6 +414,10 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         
         
         String text = b.getText();
+        boolean isEmpty = (text == null || text.length() == 0);
+        if (isEmpty) {
+            text = " ";
+        }
         Icon icon = (b.isEnabled()) ? b.getIcon() : b.getDisabledIcon();
         
         if ((icon == null) && (text == null)) {
@@ -435,9 +439,14 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         layoutCL(b, fm, text, icon, viewR, iconR, textR);
         
         Rectangle textBounds = Fonts.getPerceivedBounds(text, c.getFont(), c);
+        if (isEmpty) {
+            textBounds.width = 0;
+        }
         int ascent = fm.getAscent();
+        textR.x += textBounds.x;
+        textR.width = textBounds.width;
         textR.y += ascent + textBounds.y;
-        textR.height = textBounds.height;
+        textR.height -= fm.getHeight() - textBounds.height;
         
         bounds.setBounds(textR);
         return bounds;

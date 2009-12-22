@@ -191,14 +191,4 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
     public UIDefaults getDefaults() {
         return target.getDefaults();
     }
-
-    /**
-     * Returns a string that displays and identifies this
-     * object's properties.
-     *
-     * @return a String representation of this object
-     */
-    public String toString() {
-	return target.toString();
-    }    
 }    

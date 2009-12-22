@@ -161,7 +161,7 @@ class QuaquaDragRecognitionSupport {
         
         int dx = Math.abs(me.getX() - dndArmedEvent.getX());
         int dy = Math.abs(me.getY() - dndArmedEvent.getY());
-        if ((dx > motionThreshold) || (dy > motionThreshold)) {
+        if (Math.sqrt(dx*dx+dy*dy) > motionThreshold) {
             TransferHandler th = component.getTransferHandler();
             int action = mapDragOperationFromModifiers(me, th);
             if (action != TransferHandler.NONE) {

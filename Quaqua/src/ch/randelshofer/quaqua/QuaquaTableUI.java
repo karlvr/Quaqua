@@ -868,28 +868,6 @@ public class QuaquaTableUI extends BasicTableUI
             if (!table.isEnabled() || shouldIgnore(e)) {
                 return;
             }
-            /*
-            mouseReleaseDeselects = false;
-            repostEvent(e);
-            CellEditor editor = table.getCellEditor();
-            if (editor == null || editor.shouldSelectCell(e)) {
-            Point p = e.getPoint();
-            int row2 = table.rowAtPoint(p);
-            int column = table.columnAtPoint(p);
-            // The autoscroller can generate drag events outside the Table's range.
-            if ((column == -1) || (row2 == -1)) {
-            return;
-            }
-            // Fix for 4835633
-            // Until we support drag-selection, dragging should not change
-            // the selection (act like single-select).
-            Object bySize = table.getClientProperty("Table.isFileList");
-            if (bySize instanceof Boolean &&
-            ((Boolean) bySize).booleanValue()) {
-            return;
-            }
-            table.changeSelection(row2, column, false, true);
-            }*/
             CellEditor editor = table.getCellEditor();
             if (editor == null || editor.shouldSelectCell(e)) {
                 mouseReleaseDeselects = false;
