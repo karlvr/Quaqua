@@ -264,7 +264,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         textR.y += ascent + textBounds.y;
         textR.height -= fm.getHeight() - textBounds.height;
 
-        // Determine rect rectangle
+        // Determine text rectangle
         switch (type) {
             case VisuallyLayoutable.COMPONENT_BOUNDS:
                 if (icon != null) {

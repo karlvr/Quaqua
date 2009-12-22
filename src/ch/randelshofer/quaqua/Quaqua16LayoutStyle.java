@@ -503,6 +503,7 @@ public class Quaqua16LayoutStyle extends LayoutStyle {
                     break;
             }
         }
+   //System.out.println("Quaqua16LayoutStyle.getPreferredGap:"+component1.getClass()+"@"+component1.hashCode()+","+position+","+component2.getClass()+"@"+component2.hashCode()+":"+result);
         
         return result;
     }
@@ -627,7 +628,7 @@ public class Quaqua16LayoutStyle extends LayoutStyle {
             default :
                 break;
         }
-        
+   //System.out.println("Quaqua16LayoutStyle.getContainerGap:"+component.getClass()+"@"+component.hashCode()+","+position+","+parent.getClass()+":"+result);
         return result;
     }
     

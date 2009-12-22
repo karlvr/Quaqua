@@ -15,18 +15,11 @@
             you can only build Quaqua for J2SE 6.
             -->
 
-        <!-- Set "osx10.5" to where you Mac OS X 10.5 System folder resides.
-             In case you run this Ant task on Mac OS X 10.5, this is "".
-             If you run on Mac OS X 10.6 this is wherever your copy of
-             Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
-             -->
-        <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
-
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
         <property name="versionNumber" value="6.2.2"/>
         <property name="version" value="${versionNumber} 2009-11-08"/>
-        <property name="lib" value="lib"/>
+        <property name="libdir" value="lib"/>
         <property name="srcdir" value="src"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
@@ -44,9 +37,30 @@
         <!-- ====================== -->
         <property name="debug" value="true"/>
 
-        <property name="j2se4" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.4.2" />
-        <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0" />
+        <!-- Set "osx10.5" to where you Mac OS X 10.5 System folder resides.
+             In case you run this Ant task on Mac OS X 10.5, this is "".
+             If you run on Mac OS X 10.6 this is wherever your copy of
+             Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
+             -->
+        <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
+
+        <property name="j2se4" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.4" />
+        <property name="j2se4.bootclasspath" value="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar" />
+        <property name="j2se4.classpath" value="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar" />
+        <property name="j2se4.extdirs" value="." />
+        <property name="j2se4.endorseddirs" value="." />
+
+        <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5" />
+        <property name="j2se5.bootclasspath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
+        <property name="j2se5.classpath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
+        <property name="j2se5.extdirs" value="." />
+        <property name="j2se5.endorseddirs" value="." />
+
         <property name="j2se6" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6" />
+        <property name="j2se6.bootclasspath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
+        <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
+        <property name="j2se6.extdirs" value="." />
+        <property name="j2se6.endorseddirs" value="." />
     </target>
    
     <target depends="init" name="compile">
@@ -56,29 +70,29 @@
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
         <!-- Compile swing-layout for Java 1.4 -->
-        <javac bootclasspath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+        <javac bootclasspath="${j2se4.bootclasspath}"
+                classpath="${j2se4.classpath}"
+                fork="true"
                 source="1.4" target="1.4" encoding="UTF-8" 
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
-                extdirs="."
                 deprecation="true"
+                extdirs="${j2se4.extdirs}"
                 >
-            <compilerarg line="-endorseddirs ."/>
+            <compilerarg line="-endorseddirs ${j2se4.endorseddirs}"/>
             <include name="org/jdesktop/layout/**.java"/>
         </javac>
         <!-- Compile classes which require Java 1.4 -->
         <javac bootclasspath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
                 classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+                fork="true"
                 source="1.4" target="1.4" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
-                extdirs="."
+                extdirs="${j2se4.extdirs}"
                 >
-            <compilerarg line="-endorseddirs ."/>
+            <compilerarg line="-endorseddirs ${j2se4.endorseddirs}"/>
             <exclude name="**/*15*.java"/>
             <exclude name="**/*16*.java"/>
             <exclude name="test/AHIG*.java"/>
@@ -87,29 +101,29 @@
             <exclude name="com/**"/>
         </javac>
         <!-- Compile classes which require Java 1.5 -->
-        <javac bootclasspath="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar"
-            classpath="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+        <javac bootclasspath="${j2se5.bootclasspath}"
+                classpath="${j2se5.classpath}"
+                fork="true"
                 source="1.5" target="1.5" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
-                extdirs="."
+                extdirs="${j2se5.extdirs}"
                 >
-            <compilerarg line="-endorseddirs ."/>
+            <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
             <include name="**/*15*.java"/>
         </javac>
         <!-- Compile classes which require Java 1.6 -->
-        <javac bootclasspath="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar"
-                classpath="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar"
-                executable="${j2se6}/Home/bin/javac" fork="true"
+        <javac bootclasspath="${j2se6.bootclasspath}"
+                classpath="${j2se6.classpath}"
+                fork="true"
                 source="1.6" target="1.6" encoding="UTF-8"
                 srcdir="${srcdir}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
-                extdirs="."
+                extdirs="${j2se6.extdirs}"
                 >
-            <compilerarg line="-endorseddirs ."/>
+            <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
             <include name="**/*16*.java"/>
         </javac>
         <!-- copy resources to the builddir -->
@@ -610,7 +624,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 <pathelement location="${srcdir}"/>
             </sourcepath>
             <classpath>
-                <pathelement location="${lib}/swing-layout.jar"/>
+                <pathelement location="${libdir}/swing-layout.jar"/>
             </classpath>
             <excludepackage name="test"/>
             <excludepackage name="bugs"/>
@@ -1319,6 +1333,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="com.sun.java.swing.plaf.motif.MotifLookAndFeel"/>
+            <arg value="-decoration"/>
+            <arg value="true"/>
+        </java>
+    </target>
+    <target depends="init" name="run Nimbus 1.6">
+        <java classname="test.Main" classpath="${classpath}"
+                failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Dswing.aatext=true"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"/>
             <arg value="-decoration"/>
             <arg value="true"/>
         </java>
