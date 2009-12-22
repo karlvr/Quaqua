@@ -207,7 +207,7 @@ public class JSheet extends JDialog {
                 owner.addWindowListener(windowEventHandler);
             }
             isInstalled = true;
-        } else if (!isNativeSheetSupported() && !isInstalled && !isExperimentalSheet()) {
+        } else {
             Window owner = getOwner();
             if (owner != null) {
 
