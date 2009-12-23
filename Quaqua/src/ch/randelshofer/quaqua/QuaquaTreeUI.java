@@ -523,10 +523,6 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
     }
 
-    protected boolean startEditing(TreePath path, MouseEvent event) {
-        return super.startEditing(path, event);
-    }
-
     InputMap getInputMap(int condition) {
         if (condition == JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT) {
             return (InputMap) UIManager.get("Tree.ancestorInputMap");
@@ -1284,6 +1280,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
 
         public void mouseExited(MouseEvent e) {
+            isMouseReleaseStartsEditing = false;
         }
 
         public void dragStarting(MouseEvent me) {
@@ -1311,14 +1308,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 TreePath path = getMouseClickedClosestPathForLocation(tree, e.getX(), e.getY());
 
-                /*
-                if (startEditing(path, e)) {
-                return;
-                }*/
-
                 // Check for clicks in expand control
                 if (isLocationInExpandControl(path, e.getX(), e.getY())) {
-
                     checkForClickInExpandControl(path, e.getX(), e.getY());
                     return;
                 }
@@ -1376,46 +1367,9 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         }
                     }
                 }
-                // tree.getSelectionModel().setValueIsAdjusting(mouseDragSelects);
             }
         }
 
-        /*
-        void handleSelection(MouseEvent e) {
-        if (tree != null && tree.isEnabled()) {
-        if (isEditing(tree) && tree.getInvokesStopCellEditing() &&
-        !stopEditing(tree)) {
-        return;
-        }
-        QuaquaUtilities.adjustFocus(tree);
-        TreePath leadPath = getClosestPathForLocation(tree, e.getX(),
-        e.getY());
-        handleSelectionImpl(e, leadPath);
-        }
-        }
-        protected void handleSelectionImpl(MouseEvent e, TreePath leadPath) {
-        if (leadPath != null) {
-        Rectangle bounds = getPathBounds(tree, leadPath);
-        int x = e.getX();
-        int y = e.getY();
-        if (y > (bounds.y + bounds.height)) {
-        return;
-        }
-        // Preferably checkForClickInExpandControl could take
-        // the Event to do this it self!
-        if ((e.getModifiersEx() & MouseEvent.BUTTON1_DOWN_MASK) != 0) {
-        checkForClickInExpandControl(leadPath, x, y);
-        }
-        // Perhaps they clicked the cell itself. If so,
-        // select it.
-        //if (x > bounds.x && x <= (bounds.x + bounds.width)) {
-        if (!isLocationInExpandControl(leadPath, x, y)) {
-        if ((/*DRAG_FIX && * /tree.getDragEnabled()) || !startEditing(leadPath, e)) {
-        selectPathForEvent(leadPath, e);
-        }
-        }
-        }
-        }*/
         public void mouseDragged(MouseEvent e) {
             if (tree.isEnabled()) {
                 if (tree.getDragEnabled() && isDragRecognitionOngoing) {
@@ -1468,6 +1422,11 @@ public class QuaquaTreeUI extends BasicTreeUI {
          */
         public void mouseMoved(MouseEvent e) {
             isMouseReleaseStartsEditing = false;
+                // this is a dirty trick to reset the timer of the cell editor.
+                if (tree.getCellEditor() != null) {
+                    tree.getCellEditor().isCellEditable(new EventObject(this) {
+                    });
+                }
         }
 
         public void mouseReleased(MouseEvent e) {
@@ -2046,6 +2005,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
 
         private void startEditing(JTree tree, QuaquaTreeUI ui) {
+new Throwable().printStackTrace();
             TreePath lead = ui.getLeadSelectionPath();
             int editRow = (lead != null) ? ui.getRowForPath(tree, lead) : -1;
 
