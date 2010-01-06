@@ -409,7 +409,8 @@ NSArray * GetNSArrayFromJStringArray(jobjectArray array, JNIEnv *env) {
     
     jsize length = (*env)->GetArrayLength(env, array);
     NSMutableArray *nsArray = [NSMutableArray arrayWithCapacity:length];
-    for (int i = 0; i < length; i++) {
+    int i;
+    for (i = 0; i < length; i++) {
         jstring string = (*env)->GetObjectArrayElement(env, array, i);
         [nsArray addObject:GetNSStringFromJString(string, env)];
     }

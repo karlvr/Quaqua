@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXAggregateTarget section */
-		DC23654F10C02DB50020E523 /* Both */ = {
+		DC23654F10C02DB50020E523 /* All */ = {
 			isa = PBXAggregateTarget;
-			buildConfigurationList = DC23655710C02DDE0020E523 /* Build configuration list for PBXAggregateTarget "Both" */;
+			buildConfigurationList = DC23655710C02DDE0020E523 /* Build configuration list for PBXAggregateTarget "All" */;
 			buildPhases = (
 			);
 			dependencies = (
@@ -17,7 +17,7 @@
 				DC23655510C02DBF0020E523 /* PBXTargetDependency */,
 				DC23688210C1D25F0020E523 /* PBXTargetDependency */,
 			);
-			name = Both;
+			name = All;
 			productName = Both;
 		};
 /* End PBXAggregateTarget section */
@@ -2448,7 +2448,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DC23654F10C02DB50020E523 /* Both */,
+				DC23654F10C02DB50020E523 /* All */,
 				DC23654810C02D3F0020E523 /* Ant Build */,
 				D2AAC0C605546C1D00DB518D /* J5Sheet */,
 				DC23686810C1D1930020E523 /* J5Sheet 64-bit */,
@@ -2698,7 +2698,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DC23655710C02DDE0020E523 /* Build configuration list for PBXAggregateTarget "Both" */ = {
+		DC23655710C02DDE0020E523 /* Build configuration list for PBXAggregateTarget "All" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DC23655010C02DB70020E523 /* Debug */,

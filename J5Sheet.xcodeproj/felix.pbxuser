@@ -3,7 +3,7 @@
 	0867D690FE84028FC02AAC07 /* Project object */ = {
 		activeBuildConfigurationName = Debug;
 		activeExecutable = DC23663010C079F30020E523 /* Java execution */;
-		activeTarget = DC23654810C02D3F0020E523 /* Ant Build */;
+		activeTarget = DC23654F10C02DB50020E523 /* All */;
 		addToTargets = (
 		);
 		breakpoints = (
@@ -224,6 +224,12 @@
 			DC30F28310ED25A5001004DD = DC30F28310ED25A5001004DD /* PBXTextBookmark */;
 			DC30F28410ED25A5001004DD = DC30F28410ED25A5001004DD /* PBXTextBookmark */;
 			DC30F28710ED25A5001004DD = DC30F28710ED25A5001004DD /* PBXTextBookmark */;
+			DC47C8D810F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8D810F4B2DF00AEF102 /* PBXTextBookmark */;
+			DC47C8D910F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8D910F4B2DF00AEF102 /* PBXTextBookmark */;
+			DC47C8DA10F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8DA10F4B2DF00AEF102 /* PBXTextBookmark */;
+			DC47C8DB10F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8DB10F4B2DF00AEF102 /* PBXTextBookmark */;
+			DC47C8DC10F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8DC10F4B2DF00AEF102 /* PBXTextBookmark */;
+			DC47C8DD10F4B2DF00AEF102 /* PBXTextBookmark */ = DC47C8DD10F4B2DF00AEF102 /* PBXTextBookmark */;
 			DC69B31F10E1213D009455A4 = DC69B31F10E1213D009455A4 /* PBXTextBookmark */;
 		};
 		sourceControlManager = DC235FC310C023280020E523 /* Source Control */;
@@ -295,9 +301,9 @@
 	};
 	DC23617710C0250B0020E523 /* JSheet.java */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {861, 16632}}";
-			sepNavSelRange = "{13846, 25}";
-			sepNavVisRange = "{13577, 528}";
+			sepNavIntBoundsRect = "{{0, 0}, {882, 16856}}";
+			sepNavSelRange = "{49410, 0}";
+			sepNavVisRange = "{11150, 1466}";
 			sepNavWindowFrame = "{{388, 14}, {944, 855}}";
 		};
 	};
@@ -507,7 +513,7 @@
 	DC23654810C02D3F0020E523 /* Ant Build */ = {
 		activeExec = 0;
 	};
-	DC23654F10C02DB50020E523 /* Both */ = {
+	DC23654F10C02DB50020E523 /* All */ = {
 		activeExec = 0;
 	};
 	DC23655F10C02E260020E523 /* PBXTargetBookmark */ = {
@@ -526,9 +532,10 @@
 	};
 	DC23657910C053900020E523 /* build-quaqua.xml */ = {
 		uiCtxt = {
-			sepNavIntBoundsRect = "{{0, 0}, {770, 21588}}";
-			sepNavSelRange = "{38772, 61}";
-			sepNavVisRange = "{37453, 1855}";
+			sepNavIntBoundsRect = "{{0, 0}, {882, 21686}}";
+			sepNavSelRange = "{2125, 0}";
+			sepNavVisRange = "{1669, 2258}";
+			sepNavWindowFrame = "{{2, -194}, {1033, 874}}";
 		};
 	};
 	DC23657E10C054170020E523 /* PBXTextBookmark */ = {
@@ -566,7 +573,7 @@
 		fRef = DC23657910C053900020E523 /* build-quaqua.xml */;
 		name = "build-quaqua.xml: 127";
 		rLen = 10;
-		rLoc = 6040;
+		rLoc = 6913;
 		rType = 0;
 		vrLen = 1795;
 		vrLoc = 0;
@@ -644,7 +651,7 @@
 		fRef = DC23617710C0250B0020E523 /* JSheet.java */;
 		name = "JSheet.java: 660";
 		rLen = 0;
-		rLoc = 27389;
+		rLoc = 27476;
 		rType = 0;
 		vrLen = 2752;
 		vrLoc = 24927;
@@ -1035,7 +1042,7 @@
 		fRef = DC23617710C0250B0020E523 /* JSheet.java */;
 		name = "JSheet.java: 335";
 		rLen = 0;
-		rLoc = 12509;
+		rLoc = 12596;
 		rType = 0;
 		vrLen = 1424;
 		vrLoc = 11105;
@@ -1055,7 +1062,7 @@
 		fRef = DC23617710C0250B0020E523 /* JSheet.java */;
 		name = "JSheet.java: 335";
 		rLen = 0;
-		rLoc = 12509;
+		rLoc = 12596;
 		rType = 0;
 		vrLen = 1424;
 		vrLoc = 11105;
@@ -1144,12 +1151,72 @@
 		vrLen = 1186;
 		vrLoc = 0;
 	};
+	DC47C8D810F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC2368D710C2BB8E0020E523 /* NativeSheetTest.java */;
+		name = "NativeSheetTest.java: 62";
+		rLen = 0;
+		rLoc = 2511;
+		rType = 0;
+		vrLen = 1957;
+		vrLoc = 1222;
+	};
+	DC47C8D910F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC23617710C0250B0020E523 /* JSheet.java */;
+		name = "JSheet.java: 1186";
+		rLen = 0;
+		rLoc = 49410;
+		rType = 0;
+		vrLen = 1466;
+		vrLoc = 11150;
+	};
+	DC47C8DA10F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC23657910C053900020E523 /* build-quaqua.xml */;
+		name = "build-quaqua.xml: 773";
+		rLen = 61;
+		rLoc = 39645;
+		rType = 0;
+		vrLen = 1855;
+		vrLoc = 37453;
+	};
+	DC47C8DB10F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC2368D710C2BB8E0020E523 /* NativeSheetTest.java */;
+		name = "NativeSheetTest.java: 62";
+		rLen = 0;
+		rLoc = 2511;
+		rType = 0;
+		vrLen = 1957;
+		vrLoc = 1222;
+	};
+	DC47C8DC10F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC23617710C0250B0020E523 /* JSheet.java */;
+		name = "JSheet.java: 1186";
+		rLen = 0;
+		rLoc = 49410;
+		rType = 0;
+		vrLen = 1466;
+		vrLoc = 11150;
+	};
+	DC47C8DD10F4B2DF00AEF102 /* PBXTextBookmark */ = {
+		isa = PBXTextBookmark;
+		fRef = DC23657910C053900020E523 /* build-quaqua.xml */;
+		name = "build-quaqua.xml: 45";
+		rLen = 0;
+		rLoc = 2125;
+		rType = 0;
+		vrLen = 2258;
+		vrLoc = 1669;
+	};
 	DC69B31F10E1213D009455A4 /* PBXTextBookmark */ = {
 		isa = PBXTextBookmark;
 		fRef = DC23657910C053900020E523 /* build-quaqua.xml */;
 		name = "build-quaqua.xml: 773";
 		rLen = 61;
-		rLoc = 38772;
+		rLoc = 39645;
 		rType = 0;
 		vrLen = 1855;
 		vrLoc = 37453;

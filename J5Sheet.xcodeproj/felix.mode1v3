@@ -232,6 +232,8 @@
 			<key>Layout</key>
 			<array>
 				<dict>
+					<key>BecomeActive</key>
+					<true/>
 					<key>ContentConfiguration</key>
 					<dict>
 						<key>PBXBottomSmartGroupGIDs</key>
@@ -277,8 +279,8 @@
 							<key>PBXSmartGroupTreeModuleOutlineStateSelectionKey</key>
 							<array>
 								<array>
-									<integer>26</integer>
-									<integer>19</integer>
+									<integer>7</integer>
+									<integer>6</integer>
 								</array>
 							</array>
 							<key>PBXSmartGroupTreeModuleOutlineStateVisibleRectKey</key>
@@ -314,14 +316,12 @@
 					<key>Dock</key>
 					<array>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXProjectModuleGUID</key>
 								<string>1CE0B20306471E060097A5F4</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>NativeSheetTest.java</string>
+								<string>build-quaqua.xml</string>
 								<key>PBXSplitModuleInNavigatorKey</key>
 								<dict>
 									<key>Split0</key>
@@ -329,11 +329,11 @@
 										<key>PBXProjectModuleGUID</key>
 										<string>1CE0B20406471E060097A5F4</string>
 										<key>PBXProjectModuleLabel</key>
-										<string>NativeSheetTest.java</string>
+										<string>build-quaqua.xml</string>
 										<key>_historyCapacity</key>
 										<integer>0</integer>
 										<key>bookmark</key>
-										<string>DC28B62B10EFA51800BC861B</string>
+										<string>DC47C8DD10F4B2DF00AEF102</string>
 										<key>history</key>
 										<array>
 											<string>DC23653710C02CE50020E523</string>
@@ -355,15 +355,15 @@
 											<string>DC2369C010C326A10020E523</string>
 											<string>DC05B25110D2A56200B9D14E</string>
 											<string>DC05B25F10D2A70D00B9D14E</string>
-											<string>DC69B31F10E1213D009455A4</string>
 											<string>DC30F27510ECE899001004DD</string>
 											<string>DC30F27610ECE899001004DD</string>
 											<string>DC30F28310ED25A5001004DD</string>
 											<string>DC30F28410ED25A5001004DD</string>
 											<string>DC28B61D10EFA2FE00BC861B</string>
 											<string>DC28B62210EFA44700BC861B</string>
-											<string>DC28B62810EFA51800BC861B</string>
-											<string>DC28B62910EFA51800BC861B</string>
+											<string>DC47C8D810F4B2DF00AEF102</string>
+											<string>DC47C8D910F4B2DF00AEF102</string>
+											<string>DC47C8DA10F4B2DF00AEF102</string>
 										</array>
 										<key>prevStack</key>
 										<array>
@@ -393,10 +393,9 @@
 											<string>DC2369C210C326A10020E523</string>
 											<string>DC30F27C10ECE899001004DD</string>
 											<string>DC30F28710ED25A5001004DD</string>
-											<string>DC28B61F10EFA2FE00BC861B</string>
 											<string>DC28B62510EFA44700BC861B</string>
-											<string>DC28B62610EFA44700BC861B</string>
-											<string>DC28B62A10EFA51800BC861B</string>
+											<string>DC47C8DB10F4B2DF00AEF102</string>
+											<string>DC47C8DC10F4B2DF00AEF102</string>
 										</array>
 									</dict>
 									<key>SplitCount</key>
@@ -454,9 +453,9 @@
 			</array>
 			<key>TableOfContents</key>
 			<array>
-				<string>DC28B61410EFA29100BC861B</string>
+				<string>DC47C8DE10F4B2DF00AEF102</string>
 				<string>1CE0B1FE06471DED0097A5F4</string>
-				<string>DC28B61510EFA29100BC861B</string>
+				<string>DC47C8DF10F4B2DF00AEF102</string>
 				<string>1CE0B20306471E060097A5F4</string>
 				<string>1CE0B20506471E060097A5F4</string>
 			</array>
@@ -591,6 +590,7 @@
 	<key>WindowOrderList</key>
 	<array>
 		<string>DC235FCF10C024EE0020E523</string>
+		<string>1CD10A99069EF8BA00B06720</string>
 		<string>/Users/felix/Documents/Java/Quaqua/J5Sheet/J5Sheet.xcodeproj</string>
 	</array>
 	<key>WindowString</key>
@@ -615,7 +615,7 @@
 								<key>PBXProjectModuleGUID</key>
 								<string>1CD0528F0623707200166675</string>
 								<key>PBXProjectModuleLabel</key>
-								<string>JSheet.java</string>
+								<string></string>
 								<key>StatusBarVisibility</key>
 								<true/>
 							</dict>
@@ -632,8 +632,6 @@
 							<string>205pt</string>
 						</dict>
 						<dict>
-							<key>BecomeActive</key>
-							<true/>
 							<key>ContentConfiguration</key>
 							<dict>
 								<key>PBXBuildLogShowsTranscriptDefaultKey</key>
@@ -675,7 +673,7 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>DC235FCF10C024EE0020E523</string>
-				<string>DC28B61C10EFA2FB00BC861B</string>
+				<string>DC47C8E010F4B2DF00AEF102</string>
 				<string>1CD0528F0623707200166675</string>
 				<string>XCMainBuildResultsModuleGUID</string>
 			</array>
@@ -717,8 +715,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {499, 397}}</string>
-											<string>{{499, 0}, {595, 397}}</string>
+											<string>{{0, 0}, {499, 399}}</string>
+											<string>{{499, 0}, {595, 399}}</string>
 										</array>
 									</dict>
 									<key>VerticalSplitView</key>
@@ -733,8 +731,8 @@
 										<string>yes</string>
 										<key>sizes</key>
 										<array>
-											<string>{{0, 0}, {1094, 397}}</string>
-											<string>{{0, 397}, {1094, 357}}</string>
+											<string>{{0, 0}, {1094, 399}}</string>
+											<string>{{0, 399}, {1094, 355}}</string>
 										</array>
 									</dict>
 								</dict>
@@ -767,7 +765,7 @@
 										<real>365</real>
 									</array>
 									<key>Frame</key>
-									<string>{{499, 0}, {595, 397}}</string>
+									<string>{{499, 0}, {595, 399}}</string>
 									<key>RubberWindowFrame</key>
 									<string>149 60 1094 795 0 0 1440 878 </string>
 								</dict>
@@ -795,13 +793,13 @@
 			<key>TableOfContents</key>
 			<array>
 				<string>1CD10A99069EF8BA00B06720</string>
-				<string>DC36B3A410EA95C5006FEE72</string>
+				<string>DC47C8E110F4B2DF00AEF102</string>
 				<string>1C162984064C10D400B95A72</string>
-				<string>DC36B3A510EA95C5006FEE72</string>
-				<string>DC36B3A610EA95C5006FEE72</string>
-				<string>DC36B3A710EA95C5006FEE72</string>
-				<string>DC36B3A810EA95C5006FEE72</string>
-				<string>DC36B3A910EA95C5006FEE72</string>
+				<string>DC47C8E210F4B2DF00AEF102</string>
+				<string>DC47C8E310F4B2DF00AEF102</string>
+				<string>DC47C8E410F4B2DF00AEF102</string>
+				<string>DC47C8E510F4B2DF00AEF102</string>
+				<string>DC47C8E610F4B2DF00AEF102</string>
 			</array>
 			<key>ToolbarConfiguration</key>
 			<string>xcode.toolbar.config.debugV3</string>
