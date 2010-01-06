@@ -313,9 +313,13 @@ public class JSheet extends JDialog {
      * To turn on this behaviour, call <code>UIManager.set("Sheet.optionPaneMapping", Boolean.TRUE)</code>.
      * <p>
      * Default is <code>false</code>.
+     * <p>
+     * This feature is only allowed on Leopard (Tiger support is planned).
     **/
     private static boolean isOptionPaneMappingAllowed() {
-        return UIManager.getBoolean("Sheet.optionPaneMapping");
+        return UIManager.getBoolean("Sheet.optionPaneMapping")
+            && System.getProperty("os.version").compareTo("10.5") >= 0
+            && System.getProperty("os.version").compareTo("10.6") < 0;
     }
     
     /**
@@ -323,9 +327,13 @@ public class JSheet extends JDialog {
      * To turn on this behaviour, call <code>UIManager.set("Sheet.fileChooserEmbedding", Boolean.TRUE)</code>.
      * <p>
      * Default is <code>false</code>.
+     * <p>
+     * This feature is only allowed on Tiger and Leopard.
      **/
     private static boolean isFileChooserEmbeddingAllowed() {
-        return UIManager.getBoolean("Sheet.fileChooserEmbedding");
+        return UIManager.getBoolean("Sheet.fileChooserEmbedding")
+            && System.getProperty("os.version").compareTo("10.4") >= 0
+            && System.getProperty("os.version").compareTo("10.6") < 0;
     }
     
     

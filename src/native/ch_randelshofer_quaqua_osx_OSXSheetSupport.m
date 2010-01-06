@@ -99,7 +99,10 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
     alert = [[NSAlert alloc] init];
     [alert setMessageText:messageTitle];
     [alert setInformativeText:informativeText];
-    for (NSString *string in options) {
+    int i;
+    int count = [options count];
+    for (i = 0; i < count; i++) {
+        NSString *string = [options objectAtIndex:i];
         [alert addButtonWithTitle:string];
     }
     [alert setIcon:[NSApp applicationIconImage]];
@@ -185,49 +188,8 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
 
 @end
 
-
-
-// Callback support removed - not needed
-/*
- - (void) sheetDidEnd:(NSWindow *)window returnCode:(int)returnCode contextInfo:(void *)contextInfo {
-    JNIEnv *env = NULL;
-	bool shouldDetach = false;
-    
-	// Find out if we actually need to attach the current thread to obtain a JNIEnv, 
-	// or if one is already in place
-	// This will determine whether DetachCurrentThread should be called later
-	if (GetJNIEnv(&env, &shouldDetach) != JNI_OK) {
-		NSLog(@"sheetDidEnd: could not attach to JVM");
-		return;
-	}
-	
-	// If we have file results, translate them to Java strings and tell the Java JSheetDelegate 
-	// class to notify our listener
-    if (fireFinishedMethodID != NULL) {
-		// Callback; Java will invoke fireSheetFinished on Java sheet support
-        // That's where it hang:
-		(*env)->CallStaticVoidMethod(env, sheetSupportClass, fireFinishedMethodID, sheet);
-	}
-	
-	// We're done with the sheet and its owner; release the global refs
-	(*env)->DeleteGlobalRef(env, sheet);
-	(*env)->DeleteGlobalRef(env, parent);
-    
-	// IMPORTANT: if GetJNIEnv attached for us, we need to detach when done
-	if (shouldDetach) {
-        (*jvm)->DetachCurrentThread(jvm);
-	}
-	// This delegate was was retained in nativeShowSheet; since this callback occurs on the AppKit thread,
-	// which always has a pool in place, it can be autoreleased rather than released
-	[self autorelease];
-}
-*/
-
-//@end
-
 #pragma mark Embedding headers
 
-NSWindow * GetWindowFromComponent(jobject parent, JNIEnv *env);
 @interface AWTView : NSView
 {
 }

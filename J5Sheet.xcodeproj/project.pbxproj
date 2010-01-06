@@ -24,6 +24,7 @@
 
 /* Begin PBXBuildFile section */
 		D2AAC0CC05546C4400DB518D /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
+		DC05B27C10D2B21D00B9D14E /* libquaqua64.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = DC23687E10C1D1930020E523 /* libquaqua64.jnilib */; };
 		DC23649610C025490020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23628F10C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.h */; };
 		DC23649710C025490020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629010C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXApplication.m */; };
 		DC23649810C025490020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h in Headers */ = {isa = PBXBuildFile; fileRef = DC23629110C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXClipboardTransferable.h */; };
@@ -50,7 +51,6 @@
 		DC23687510C1D1930020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = DC23629810C0250C0020E523 /* ch_randelshofer_quaqua_osx_OSXSheetSupport.m */; };
 		DC23687710C1D1930020E523 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1058C7B1FEA5585E11CA2CBB /* Cocoa.framework */; };
 		DC23687810C1D1930020E523 /* JavaVM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC23652610C027870020E523 /* JavaVM.framework */; };
-		DC23687A10C1D1930020E523 /* libquaqua.jnilib in CopyFiles */ = {isa = PBXBuildFile; fileRef = D2AAC0C705546C1D00DB518D /* libquaqua.jnilib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -94,7 +94,7 @@
 			dstPath = /Users/felix/Documents/Java/Quaqua/J5Sheet/dist;
 			dstSubfolderSpec = 0;
 			files = (
-				DC23687A10C1D1930020E523 /* libquaqua.jnilib in CopyFiles */,
+				DC05B27C10D2B21D00B9D14E /* libquaqua64.jnilib in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2519,7 +2519,9 @@
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = quaqua;
+				SDKROOT = macosx10.4;
 			};
 			name = Debug;
 		};
@@ -2537,7 +2539,9 @@
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = quaqua;
+				SDKROOT = macosx10.4;
 			};
 			name = Release;
 		};
@@ -2632,7 +2636,9 @@
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = quaqua64;
+				SDKROOT = macosx10.5;
 			};
 			name = Debug;
 		};
@@ -2656,7 +2662,9 @@
 				GCC_PREFIX_HEADER = J5Sheet_Prefix.pch;
 				HEADER_SEARCH_PATHS = /System/Library/Frameworks/JavaVM.framework/Headers/;
 				INSTALL_PATH = /usr/local/lib;
+				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_NAME = quaqua64;
+				SDKROOT = macosx10.5;
 			};
 			name = Release;
 		};

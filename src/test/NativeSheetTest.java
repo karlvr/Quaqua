@@ -56,7 +56,7 @@ public class NativeSheetTest extends JPanel implements ActionListener, SheetList
         JLabel helpText = new JLabel();
         helpText.setText("<html>This test sets the UIManager properties \"Sheet.optionPaneMapping\" "
                          + "and \"Sheet.fileChooserEmbedding\" to <code>Boolean.TRUE</code>.<br>"
-                         + "To activate the behaviour on this page please set the properties to <code>true</code>."
+                         + "To activate the behaviour presented on this page please set these properties to <code>true</code>."
                          + "<p>Please note:"
                          + "<p>The properties are in stage of development and only fairly stable. If you encounter any issues, "
                          + "we encourage you to write about it in the project forum or the bug reporter.");
