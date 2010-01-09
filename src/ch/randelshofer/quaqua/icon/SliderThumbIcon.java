@@ -1,8 +1,8 @@
 /*
  * @(#)SliderThumbIcon.java  4.0  2007-12-02
  *
- * Copyright (c) 2003-2007 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

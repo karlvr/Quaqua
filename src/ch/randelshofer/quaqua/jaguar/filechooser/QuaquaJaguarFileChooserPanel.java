@@ -1,8 +1,8 @@
 /*
  * @(#)TestQuaquaFileChooserPanel.java  1.0.2  2006-04-23
  *
- * Copyright (c) 2003-2006 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
  *

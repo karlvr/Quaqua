@@ -1,8 +1,8 @@
 /*
  * @(#)HSBChooser.java  1.4  2007-02-24
  *
- * Copyright (c) 2005-2007 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2005-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * This software is the confidential and proprietary information of

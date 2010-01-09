@@ -1,8 +1,8 @@
 /*
  * @(#)Quaqua13JaguarTabbedPaneUI.java  
  *
- * Copyright (c) 2001-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2001-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -40,7 +40,7 @@ import java.util.*;
  * <code>Quaqua.TabbedPaneChild.contentInsets</code> specifies the insets 
  * to be used to lay out the child component inside the JTabbedPane.
  *
- * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
  * @version $Id$
  */
 public class Quaqua13JaguarTabbedPaneUI extends BasicTabbedPaneUI

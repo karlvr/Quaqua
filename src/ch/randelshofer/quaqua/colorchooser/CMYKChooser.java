@@ -1,8 +1,8 @@
 /*
  * @(#)CMYKChooser.java  1.6  2008-04-23
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * This software is the confidential and proprietary information of

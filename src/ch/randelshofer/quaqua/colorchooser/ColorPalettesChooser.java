@@ -1,8 +1,8 @@
 /*
  * @(#)ColorPalettesChooser.java  1.1  2006-04-23
  *
- * Copyright (c) 2005-2006 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2005-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
