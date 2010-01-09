@@ -492,6 +492,76 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
     return result;
 }
 
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetQuickLookThumbnailImage
+ * Signature: (Ljava/lang/String;I)[B
+ */
+typedef long (*QuickLookRequest)(CFAllocatorRef, CFURLRef, CGSize, CFDictionaryRef);
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQuickLookThumbnailImage
+(JNIEnv *env, jclass javaClass, jstring pathJ, jint size) {
+    // Assert arguments
+    if (pathJ == NULL) return NULL;
+    
+    // Prepare result
+    jbyteArray result = NULL;
+    
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+    
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
+                                               length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
+    NSURL *fileURL = [NSURL fileURLWithPath:pathNS];
+    
+    // Load the QuickLook bundle
+    NSURL *bundleURL = [NSURL fileURLWithPath:@"/System/Library/Frameworks/QuickLook.framework"];
+    CFBundleRef cfBundle = CFBundleCreate(kCFAllocatorDefault, (CFURLRef)bundleURL);
+    NSBitmapImageRep *image = nil;
+    // If we didn'succeed, the framework does not exist. The image is null, so null is returned 
+    if (cfBundle) {
+        NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] 
+                                                         forKey:@"IconMode"];
+        // Get the thumbnail function pointer
+        QuickLookRequest functionRef = CFBundleGetFunctionPointerForName(cfBundle,
+                                                                         CFSTR("QLThumbnailImageCreate"));
+        // Perform the request
+        CGImageRef ref = functionRef(kCFAllocatorDefault, 
+                                     (CFURLRef)fileURL, 
+                                     CGSizeMake(size, size),
+                                     (CFDictionaryRef)dict);
+        CFRelease(cfBundle);
+        // Use the created image to create a bitmap image representation
+        if (ref) {
+            image = [[NSBitmapImageRep alloc] initWithCGImage:ref];
+            CFRelease(ref);
+        }
+    }
+    
+    //NSLog (@"%@", image);
+    if (image != NULL) {
+        // Convert image to TIFF
+        NSData* dataNS = [image TIFFRepresentation];
+        if (dataNS != NULL) {
+            unsigned len = [dataNS length];
+            void* bytes = malloc(len);
+            [dataNS getBytes: bytes];
+            result = (*env)->NewByteArray(env, len);
+            (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+            free(bytes);
+        }
+    }
+    
+    
+    // Release memory pool
+    [pool release];
+    
+    return result;
+}
+
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getBasicItemInfoFlags

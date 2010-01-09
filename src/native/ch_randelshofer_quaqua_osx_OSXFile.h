@@ -94,6 +94,14 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetQuickLookThumbnailImage
+ * Signature: (Ljava/lang/String;I)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQuickLookThumbnailImage
+  (JNIEnv *, jclass, jstring, jint);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeGetBasicItemInfoFlags
  * Signature: (Ljava/lang/String;)I
  */

@@ -1,8 +1,8 @@
 /*
  * @(#)FilePreview.java  2.2.1  2007-11-25
  *
- * Copyright (c) 2005-2010 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2005-2006 Werner Randelshofer
+ * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -427,7 +427,15 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         if (file != null) {
         new Worker() {
             public Object construct() {
-                return OSXFile.getIconImage(file, 128);
+                Object o = null;
+                if (System.getProperty("os.version").compareTo("1.5") >= 0) {
+                    o = OSXFile.getQuickLookThumbnailImage(file, 128);
+                }
+                if (o == null) {
+                    return OSXFile.getIconImage(file, 128);
+                } else {
+                    return o;
+                }
             }
             public void finished(Object value) {
                 Image fileIconImage = (Image) value;
