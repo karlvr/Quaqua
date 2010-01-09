@@ -1,8 +1,8 @@
 /*
  * @(#)OSXJaguarFileSystemView.java 4.0  2008-05-10
  *
- * Copyright (c) 2001-2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2001-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

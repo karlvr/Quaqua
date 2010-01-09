@@ -1,8 +1,8 @@
 /*
  * @(#)Quaqua14JaguarTabbedPaneUI.java 1.0.1  2007-11-01
  *
- * Copyright (c) 2001-2007 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2001-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -38,7 +38,7 @@ import java.util.*;
  * <code>Quaqua.TabbedPaneChild.contentInsets</code> specifies the insets 
  * to be used to lay out the child component inside the JTabbedPane.
  *
- * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
  * @version 1.0.1 2007-11-01 Fixed NPE which occurs when TabLayoutPolicy is set 
  *to Scroll. 
  * <br>1.0 2006-09-05 Created.

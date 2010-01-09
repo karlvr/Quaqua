@@ -1,8 +1,8 @@
 /*
  * @(#)QuaquaLeopardFileChooserUI.java  
  *
- * Copyright (c) 2007-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2007-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
  *

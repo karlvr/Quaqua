@@ -1,7 +1,14 @@
 /*
- * IteratorEnumeration.java
+ * @(#)IteratorEnumeration.java 
  *
- * Created on March 9, 2004, 5:41 PM
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * All rights reserved.
+ *
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 
 package ch.randelshofer.quaqua.util;
@@ -9,7 +16,9 @@ package ch.randelshofer.quaqua.util;
 import java.util.*;
 /**
  * This Enumeration is a wrapper over an Iterator.
- * @author  werni
+ * 
+ * @author  Werner Randelshofer
+ * @version $Id$
  */
 public class IteratorEnumeration implements Enumeration {
     private Iterator iterator;

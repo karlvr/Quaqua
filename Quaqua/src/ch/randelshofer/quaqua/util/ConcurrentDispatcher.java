@@ -1,8 +1,8 @@
 /*
  * @(#)ConcurrentDispatcher.java  2.1  2009-06-01
  *
- * Copyright (c) 2002-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland
+ * Copyright (c) 2002-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -42,7 +42,7 @@ import javax.swing.*;
  * dispatcher.dispatch(runner);
  * </pre>
  *
- * @author  Werner Randelshofer, Staldenmattweg 2, Immensee, CH-6405, Switzerland
+ * @author  Werner Randelshofer, Hausmatt 10, Immensee, CH-6405, Switzerland
  * @version 2.1 2009-06-01 Added dispose method.
  * <br>2.0 2002-04-07 dispatchLIFO added.
  * <br>1.0 2002-05-18 Created.

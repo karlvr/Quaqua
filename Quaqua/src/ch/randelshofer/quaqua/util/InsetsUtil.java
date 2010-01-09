@@ -1,8 +1,8 @@
 /*
- * @(#)InsetsUtil.java  1.1  2005-05-05
+ * @(#)InsetsUtil.java  
  *
- * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -18,8 +18,7 @@ import java.awt.*;
  * Utilities for Insets.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-05-05 Method addTo(Insets,Insets) added.
- * <br>1.0  03 April 2005  Created.
+ * @version $Id$
  */
 public class InsetsUtil {
     

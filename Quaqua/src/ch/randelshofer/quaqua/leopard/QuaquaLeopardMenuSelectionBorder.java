@@ -1,8 +1,8 @@
 /**
  * @(#)QuaquaLeopardMenuSelectionBorder.java  1.0  May 4, 2008
  *
- * Copyright (c) 2008 Werner Randelshofer
- * Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * Copyright (c) 2008-2010 Werner Randelshofer
+ * Hausmatt 10, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

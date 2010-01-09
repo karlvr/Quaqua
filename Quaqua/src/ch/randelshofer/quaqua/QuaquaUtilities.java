@@ -1,8 +1,8 @@
 /*
  * @(#)QuaquaUtilities.java  5.0  2008-05-10
  *
- * Copyright (c) 2003-2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -31,7 +31,7 @@ import javax.swing.plaf.basic.*;
 /**
  * Utility class for the Quaqua LAF.
  *
- * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
  * @version 5.0 2008-05-10 Added support for client property "JComponent.sizeVariant". 
  * <br>4.1.1 2008-04-17 Tried to use fractional font metrics but it
  * does not work well.

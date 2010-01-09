@@ -1,8 +1,8 @@
 /*
  * @(#)Quaqua14PantherScrollTabbedPaneUI.java  1.4  2009-04-27
  *
- * Copyright (c) 2006-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2006-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

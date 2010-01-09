@@ -1,8 +1,8 @@
 /*
  * @(#)Fonts.java  1.2.4  2006-02-04
  *
- * Copyright (c) 2003-2006 Werner Randelshofer
- * Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -24,7 +24,7 @@ import javax.swing.*;
 /**
  * Fonts.
  *
- * @author  Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * @author  Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
  * @version 1.2.4 2006-02-04 Tweaked perceived bounds. 
  * <br>1.2.3 2005-06-25 Fixed NullPointerException in method getPerceivedBounds.
  * <br>1.2.2 2005-06-18 Changed if-statement for checking for JavaVM specific

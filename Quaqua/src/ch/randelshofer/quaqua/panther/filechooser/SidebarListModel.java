@@ -1,8 +1,8 @@
 /*
  * @(#)SidebarListModel.java  3.0.3  2008-04-17
  *
- * Copyright (c) 2004-2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

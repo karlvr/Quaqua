@@ -1,8 +1,8 @@
 /*
  * @(#)Quaqua14TitlePane.java  2.1  2008-05-10
  *
- * Copyright (c) 2006-2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2006-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

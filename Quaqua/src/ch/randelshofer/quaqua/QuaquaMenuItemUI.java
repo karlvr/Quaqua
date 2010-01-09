@@ -1,8 +1,8 @@
 /*
  * @(#)QuaquaMenuItemUI.java 
  *
- * Copyright (c) 2003-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -35,7 +35,7 @@ import javax.swing.plaf.basic.*;
  * </li>
  * </ul>
  *
- * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
  * @version $Id$
  */
 public class QuaquaMenuItemUI extends BasicMenuItemUI

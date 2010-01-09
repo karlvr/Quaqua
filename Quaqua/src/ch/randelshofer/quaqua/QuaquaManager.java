@@ -1,8 +1,8 @@
 /*
  * @(#)QuaquaManager.java 
  *
- * Copyright (c) 2003-2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -690,7 +690,7 @@ public class QuaquaManager {
         JLabel label = new JLabel(
                 "<html>"
                 + "<p align=center><b>Quaqua Look and Feel "+version+"</b><br><br>"
-                + "Copyright 2003-2007 Werner Randelshofer<br>"
+                + "Copyright 2003-2010 Werner Randelshofer<br>"
                 + "All Rights Reserved.<br>"
                 + "<br>"
                 + "This is a software library.<br>"
