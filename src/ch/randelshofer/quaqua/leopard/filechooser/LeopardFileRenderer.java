@@ -16,10 +16,8 @@ import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.swing.plaf.BorderUIResource.LineBorderUIResource;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -124,9 +122,12 @@ public class LeopardFileRenderer extends JComponent implements ListCellRenderer 
         FileInfo info = (FileInfo) value;
         File file = info.getFile();
 
-        boolean isGrayed =
+       /* boolean isGrayed =
                 (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG && !info.isTraversable()) ||
+                !info.isAcceptable();*/
+        boolean isGrayed =
                 !info.isAcceptable();
+  
 
         labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
         labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);

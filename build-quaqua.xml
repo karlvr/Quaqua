@@ -19,8 +19,8 @@
         <property name="author" value="Werner Randelshofer"/>
         <property name="versionNumber" value="6.2.3alpha1"/>
         <property name="version" value="${versionNumber} 2009-12-23"/>
-        <property name="libdir" value="lib"/>
-        <property name="srcdir" value="src"/>
+        <property name="lib" value="lib"/>
+        <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
@@ -74,7 +74,7 @@
                 classpath="${j2se4.classpath}"
                 fork="true"
                 source="1.4" target="1.4" encoding="UTF-8" 
-                srcdir="${srcdir}" destdir="${builddir}"
+                srcdir="${src}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se4.extdirs}"
@@ -87,7 +87,7 @@
                 classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
                 fork="true"
                 source="1.4" target="1.4" encoding="UTF-8"
-                srcdir="${srcdir}" destdir="${builddir}"
+                srcdir="${src}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se4.extdirs}"
@@ -105,7 +105,7 @@
                 classpath="${j2se5.classpath}"
                 fork="true"
                 source="1.5" target="1.5" encoding="UTF-8"
-                srcdir="${srcdir}" destdir="${builddir}"
+                srcdir="${src}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se5.extdirs}"
@@ -118,7 +118,7 @@
                 classpath="${j2se6.classpath}"
                 fork="true"
                 source="1.6" target="1.6" encoding="UTF-8"
-                srcdir="${srcdir}" destdir="${builddir}"
+                srcdir="${src}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se6.extdirs}"
@@ -128,7 +128,7 @@
         </javac>
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
-            <fileset dir="${srcdir}">
+            <fileset dir="${src}">
                 <include name="**/*.properties"/>
                 <include name="**/*.png"/>
                 <include name="**/*.ttf"/>
@@ -219,11 +219,11 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
         </exec>
     </target>
     <target depends="init" name="jnilib-64">
@@ -315,11 +315,11 @@
         <arg value="Cocoa"/>
         
         <!-- Input file -->
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
-        <arg value="${srcdir}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXSheetSupport.m"/>
         </exec>
     </target>
 
@@ -334,7 +334,7 @@
         <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" 
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true" 
-                srcdir="${srcdir}" source="1.4" target="1.4"
+                srcdir="${src}" source="1.4" target="1.4"
             >
             <include name="**/Quaqua14FileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
@@ -354,7 +354,7 @@
         <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar"
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
-                srcdir="${srcdir}" source="1.6" target="1.6"
+                srcdir="${src}" source="1.6" target="1.6"
             >
             <include name="**/Quaqua14FileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
@@ -367,7 +367,7 @@
             <include name="**/filechooser/*FileSystemView.java"/>
         </javac>
         <copy todir="${builddir}">
-            <fileset dir="${srcdir}">
+            <fileset dir="${src}">
                 <include name="**/*.properties"/>
                 <include name="**/Browser*.png"/>
                 <include name="**/FileChooser.*.png"/>
@@ -501,23 +501,23 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init,compile" name="jni javah">
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXClipboardTransferable"
-                destdir="${srcdir}/native"
+                destdir="${src}/native"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXFile"
-                destdir="${srcdir}/native"
+                destdir="${src}/native"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXApplication"
-                destdir="${srcdir}/native"
+                destdir="${src}/native"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXImageIO"
-                destdir="${srcdir}/native"
+                destdir="${src}/native"
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXSheetSupport"
-                destdir="${srcdir}/native"
+                destdir="${src}/native"
                 />
     </target>
     <target depends="init, jar, jnilib" name="jar-signed">
@@ -591,7 +591,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
    <target depends="init,jnilib,jar,jar-filechooser,javadoc" 
         description="Build a release." name="release">
         <delete>
-            <fileset defaultexcludes="false" dir="${srcdir}">
+            <fileset defaultexcludes="false" dir="${src}">
                 <include name="**/*.class"/>
                 <include name="**/*.java~"/>
             </fileset>
@@ -621,14 +621,14 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         windowtitle="Quaqua ${version}"
         maxmemory="256M">
             <sourcepath>
-                <pathelement location="${srcdir}"/>
+                <pathelement location="${src}"/>
             </sourcepath>
             <classpath>
-                <pathelement location="${libdir}/swing-layout.jar"/>
+                <pathelement location="${lib}/swing-layout.jar"/>
             </classpath>
             <excludepackage name="test"/>
             <excludepackage name="bugs"/>
-            <packageset dir="${srcdir}">
+            <packageset dir="${src}">
                 <include name="ch/randelshofer/**"/>
             </packageset>
         </javadoc>
