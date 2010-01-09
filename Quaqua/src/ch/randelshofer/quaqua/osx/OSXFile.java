@@ -1,8 +1,8 @@
 /*
  * @(#)OSXFile.java
  *
- * Copyright (c) 2004-2010 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2009 Werner Randelshofer
+ * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -358,28 +358,73 @@ public class OSXFile {
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
                 }
-
+                
                 // Scale the image
                 if (image.getWidth() != size) {
                     image = Images.toBufferedImage(image.getScaledInstance(size, size, BufferedImage.SCALE_SMOOTH));
                 }
                 return image;
-
+                
             } catch (IOException ex) {
-                //ex.printStackTrace();
                 return null;
             }
         } else {
             return null;
         }
     }
-
+    
+    /**
+     * Returns the QuickLook thumbnail image for the specified file.
+     * If it could not be created, native code fetches the file's icon instead.
+     * Please only call this method on Leopard and above.
+     */
+    public static BufferedImage getQuickLookThumbnailImage(File file, int size) {
+        if (isNativeCodeAvailable() && file != null) {
+            try {
+                byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getPath(), size);
+                
+                if (tiffData == null) {
+                    return null;
+                }
+                
+                TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
+                                                                new TIFFDecodeParam());
+                
+                RenderedImage rImg = decoder.decodeAsRenderedImage(0);
+                BufferedImage image;
+                if (rImg instanceof BufferedImage) {
+                    image = (BufferedImage) rImg;
+                } else {
+                    Raster r = rImg.getData();
+                    WritableRaster wr = WritableRaster.createWritableRaster(r.getSampleModel(), null);
+                    rImg.copyData(wr);
+                    image = new BufferedImage(rImg.getColorModel(),
+                                              wr,
+                                              rImg.getColorModel().isAlphaPremultiplied(),
+                                              null);
+                }
+                return image;
+            } catch (IOException ex) {
+                return null;
+            }
+        } else {
+            return null;
+        }
+    }
+    
     /**
      * Returns the icon for the specified file.
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
         return new ImageIcon(getIconImage(file, size));
+    }
+    
+    /**
+     * Returns a QuickLook thumbnail for the specified file.
+     */
+    public static Icon getQuickLookThumbnail(File file, int size) {
+        return new ImageIcon(getQuickLookThumbnailImage(file, size));
     }
 
     /**
@@ -492,7 +537,17 @@ public class OSXFile {
      * @return Byte array with TIFF image data or null in case of failure.
      */
     private static native byte[] nativeGetIconImage(String path, int size);
-
+    
+    /**
+     * Returns the QuickLook thumbnail image of a file as a byte array containing TIFF image 
+     * data.
+     *
+     * @param path the path to the file.
+     * @param size the desired size of the icon in pixels (width and height).
+     * @return Byte array with TIFF image data or null in case of failure.
+     */
+    private static native byte[] nativeGetQuickLookThumbnailImage(String path, int size);
+    
     /**
      * Returns the basic item-information flags of the file specified by the given path.
      * <p>
