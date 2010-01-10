@@ -403,7 +403,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
                     ((Window) floatingToolBar).setLocation(floatingX, floatingY);
                 }
                 if (floatingToolBar instanceof Window) {
-                    ((Window) floatingToolBar).show();
+                    ((Window) floatingToolBar).setVisible(true);
                 }
             } else {
                 if (floatingToolBar == null) {
@@ -521,7 +521,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
                 if (dragWindow0.isVisible() == false) {
                     Dimension size = toolBar.getPreferredSize();
                     dragWindow0.setSize(size.width, size.height);
-                    dragWindow0.show();
+                    dragWindow0.setVisible(true);
                 }
             } catch (IllegalComponentStateException e) {
             }
