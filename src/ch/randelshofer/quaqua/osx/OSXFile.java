@@ -38,7 +38,7 @@ public class OSXFile {
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 4;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 5;
     /**
      * This array holds the colors used for drawing the gradients of a file
      * label.

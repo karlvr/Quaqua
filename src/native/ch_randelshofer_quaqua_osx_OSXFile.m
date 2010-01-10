@@ -628,7 +628,7 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDispl
  */
 JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
-    return 4;
+    return 5;
 }
 
 
