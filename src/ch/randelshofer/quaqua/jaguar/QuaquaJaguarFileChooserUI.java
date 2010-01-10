@@ -1445,7 +1445,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
             optionPane.setWantsInput(true);
             optionPane.setInitialSelectionValue(newFolderDefaultName);
             JDialog dialog = optionPane.createDialog(getFileChooser(), newFolderTitleText);
-            dialog.show();
+            dialog.setVisible(true);
             dialog.dispose();
 
             return (optionPane.getInputValue() == JOptionPane.UNINITIALIZED_VALUE) ? null : (String) optionPane.getInputValue();

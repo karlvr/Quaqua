@@ -152,7 +152,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add((Component) new ColorPalettesChooser());
         f.pack();
-        f.show();
+        f.setVisible(true);
     }
     
     protected void buildChooser() {

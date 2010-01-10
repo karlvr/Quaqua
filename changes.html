@@ -19,11 +19,16 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
-  <h3> Version 6.2.3<br />
-    <font size="-1">2009-12-?</font></h3>
+  <h3> Version 6.3<br />
+    <font size="-1">2010-01-10</font></h3>
+  <p>Enhancements</p>
+  <ul>
+    <li>JFileChooser: The preview column shows a preview of the file content instead of a larger version of the file icon.</li>
+  </ul>
   <p>Fixes</p>
   <ul>
-    <li>Class Preferences catches now a security exception which can occur when it attempts to read the user.home system property.</li>
+    <li>Class &quot;Preferences&quot; catches now a security exception which can occur when it attempts to read the user.home system property.</li>
+    <li>JFileChooser: Files with numbers in the filename were not sorted with OSX Collation rules.</li>
     <li>JTree:
       <ul>
         <li>Issue 90: &quot;Clicking below a tree should not select the last line&quot;.</li>

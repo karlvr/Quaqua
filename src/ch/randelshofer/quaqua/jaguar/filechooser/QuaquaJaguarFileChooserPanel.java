@@ -46,7 +46,7 @@ public class QuaquaJaguarFileChooserPanel extends javax.swing.JPanel {
         p.add(fp = new QuaquaJaguarFileChooserPanel());
         d.getContentPane().add(p);
         d.getRootPane().setDefaultButton(fp.approveButton);
-        d.show();
+        d.setVisible(true);
     }
     
     /** This method is called from within the constructor to

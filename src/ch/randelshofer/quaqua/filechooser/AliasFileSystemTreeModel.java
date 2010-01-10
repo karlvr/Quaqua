@@ -203,7 +203,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             } catch (IllegalComponentStateException e) {
                 locale = Locale.getDefault();
             }
-            collator = OSXCollator.getInstance(locale);
+            collator = new OSXCollator(locale);
         //collator = Collator.getInstance(locale);
         }
         return collator;
