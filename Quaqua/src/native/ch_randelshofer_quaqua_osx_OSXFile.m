@@ -529,10 +529,11 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQu
         QuickLookRequest functionRef = CFBundleGetFunctionPointerForName(cfBundle,
                                                                          CFSTR("QLThumbnailImageCreate"));
         // Perform the request
-        CGImageRef ref = functionRef(kCFAllocatorDefault, 
+        CGImageRef ref = (CGImageRef) functionRef(kCFAllocatorDefault,
                                      (CFURLRef)fileURL, 
                                      CGSizeMake(size, size),
                                      (CFDictionaryRef)dict);
+
         CFRelease(cfBundle);
         // Use the created image to create a bitmap image representation
         if (ref) {
