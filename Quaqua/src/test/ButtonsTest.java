@@ -38,7 +38,7 @@ public class ButtonsTest extends javax.swing.JPanel {
         tabbedPane.add(new LazyPanel("test.RolloverIconTest14"), "RolloverIcon");
         tabbedPane.setSelectedIndex(3);
         
-       // Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);
+        Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);
     }
     
     /** This method is called from within the constructor to

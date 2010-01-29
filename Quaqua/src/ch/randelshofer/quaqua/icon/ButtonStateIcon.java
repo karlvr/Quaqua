@@ -99,15 +99,12 @@ public class ButtonStateIcon extends MultiIcon {
        
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();
-System.out.println("ButtonStateIcon "+((AbstractButton)c).getText()+" "+model.isArmed());
             if (isActive) {
                 if (model.isEnabled()) {
                     if (/*model.isPressed() && */model.isArmed()) {
                         if (model.isSelected()) {
-System.out.println("ButtonStateIcon    EPS:"+EPS);
                             icon = icons[EPS];
                         } else {
-System.out.println("ButtonStateIcon    EP:"+EP);
                             icon = icons[EP];
                         }
                     } else if (model.isSelected()) {
