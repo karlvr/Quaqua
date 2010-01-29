@@ -1,5 +1,5 @@
 /*
- * @(#)ColorSliderTextFieldHandler.java  2.0  2007-02-24
+ * @(#)ColorSliderTextFieldHandler.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,14 +15,12 @@ package ch.randelshofer.quaqua.colorchooser;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 /**
  * This handler adjusts the value of a component in the color slider model,
  * when the user enters text into the text field.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2007-02-24 Made subclassable.
- * <br>1.0 November 22, 2005 Created.
+ * @version $Id$
  */
 public class ColorSliderTextFieldHandler implements DocumentListener, ChangeListener {
     protected JTextField textField;

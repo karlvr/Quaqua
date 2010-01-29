@@ -1,5 +1,5 @@
 /*
- * @(#)ColorWheel.java  2.0  2008-04-18
+ * @(#)ColorWheel.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,7 +13,6 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
-import java.awt.image.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -24,8 +23,7 @@ import javax.swing.event.*;
  * The ColorWheel should be used together with a HSB brightness color slider.
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-04-18 Reworked to facilitate subclassing.
- * <br>1.0 August 27, 2005 Created.
+ * @version $Id$
  */
 public class ColorWheel extends JPanel {
 

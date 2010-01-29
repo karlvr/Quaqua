@@ -1,5 +1,5 @@
 /*
- * @(#)ColorWheelImageProducer.java  2.0  2008-04-19
+ * @(#)ColorWheelImageProducer.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,15 +15,14 @@ package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
 import java.awt.image.*;
-import java.awt.color.*;
+
 /**
  * Produces the image of a ColorWheel.
  *
  * @see ColorWheel
  *
  * @author  Werner Randelshofer
- * @version 2.0 2008-04-19 Made class more subclassing-friendly.
- * <br>1.0 August 27, 2005 Created.
+ * @version $Id$
  */
 public class ColorWheelImageProducer extends MemoryImageSource {
     protected int[] pixels;

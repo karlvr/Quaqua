@@ -1,5 +1,5 @@
 /*
- * @(#)ColorWheelChooser.java  1.1.1  2007-02-24
+ * @(#)ColorWheelChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.util.*;
 
 import java.awt.*;
 import javax.swing.*;
@@ -25,12 +24,7 @@ import javax.swing.plaf.*;
  * brightness slider.
  *
  * @author  Werner Randelshofer
- * @version 1.1.1 2007-02-24 To prevent rounding errors: Don't set color on
- * color model while updating the chooser from the color model. 
- * <br>1.1 2006-04-23 Retrieve labels from UIManager. 
- * <br>1.0.2 2005-11-07 Get "labels" resource bundle from UIManager.
- * <br>1.0.1 2005-09-11 Get icon from UIManager.
- * <br>1.0 August 27, 2005 Created.
+ * @version $Id$
  */
 public class ColorWheelChooser extends AbstractColorChooserPanel implements UIResource {
     private ColorWheel colorWheel;

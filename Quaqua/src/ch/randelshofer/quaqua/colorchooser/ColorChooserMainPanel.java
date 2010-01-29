@@ -1,5 +1,5 @@
 /*
- * @(#)ColorChooserMainPanel.java  1.4.2  2007-02-24
+ * @(#)ColorChooserMainPanel.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,26 +14,16 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.colorchooser.*;
 
 /**
  * The main panel of the color chooser UI.
  *
  * @author  Werner Randelshofer
- * @version 1.4.2 2007-02-24 Identify color picker by its class name
- * instead of by its display name. 
- * <br>1.4.1 2007-02-15 Fixed NPE in addColorChooserPanel caused by 
- * AbstractColorChooserPanel having a null display name. 
- * <br>1.4 2005-12-18 ColorPicker added.
- * <br>1.3 2005-09-05 Get font from UIManager.
- * <br>1.2 2005-08-27 Remember chooser panel.
- * <br>1.1 2005-04-23 Removed main method.
- * <br>1.0  30 March 2005  Created.
+ * @version $Id$
  */
 public class ColorChooserMainPanel extends javax.swing.JPanel {
     /**

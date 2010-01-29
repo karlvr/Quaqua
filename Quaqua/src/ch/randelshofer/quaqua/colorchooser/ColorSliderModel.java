@@ -1,5 +1,5 @@
 /*
- * @(#)ColorSliderModel.java  1.0  May 22, 2005
+ * @(#)ColorSliderModel.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,12 +14,8 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
-import java.awt.color.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.plaf.*;
-import java.io.*;
 import java.util.*;
 /**
  * Abstract super class for ColorModels which can be used in conjunction with
@@ -30,7 +26,7 @@ import java.util.*;
  * having a ColorSliderUI.
  *
  * @author  Werner Randelshofer
- * @version 1.0 May 22, 2005 Created.
+ * @version $Id$
  */
 public abstract class ColorSliderModel {
     /**
