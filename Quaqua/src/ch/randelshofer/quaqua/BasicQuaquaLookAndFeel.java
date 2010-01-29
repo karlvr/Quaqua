@@ -12,6 +12,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.color.*;
 import javax.swing.*;
@@ -150,7 +151,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         ColorUIResource inactiveSelectionBackground = new ColorUIResource(0xd0d0d0);
 
         // Get text selection background from Mac OS X system preferences
-        String colorValues = Preferences.getString("AppleHighlightColor");
+        String colorValues = OSXPreferences.getString("AppleHighlightColor");
         try {
             float[] rgb = new float[3];
             StringTokenizer tt = new StringTokenizer(colorValues);
@@ -195,7 +196,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             }
         }
 
-        boolean isGraphite = Preferences.getString("AppleAquaColorVariant").equals("6");
+        boolean isGraphite = OSXPreferences.getString("AppleAquaColorVariant").equals("6");
 
 
         Object[] uiDefaults = {
@@ -270,7 +271,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 ((Color) inactiveSelectionForeground).getRGB());
 
         ColorUIResource listSelectionBorderColor = (ColorUIResource) table.get("listHighlightBorder");
-        ColorUIResource listAlternateBackground = Preferences.get("AppleAquaColorVariant").equals("6") ? new ColorUIResource(0xf0f0f0) : new ColorUIResource(0xedf3fe);
+        ColorUIResource listAlternateBackground = OSXPreferences.get("AppleAquaColorVariant").equals("6") ? new ColorUIResource(0xf0f0f0) : new ColorUIResource(0xedf3fe);
 
 
 
@@ -1278,7 +1279,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         // informative text in alerts. It is also the default font for column
         // headings in lists, for help tags, and for small controls. You can also
         // use it to provide additional information about settings in various
-        // windows, such as the QuickTime pane in System Preferences.
+        // windows, such as the QuickTime pane in System OSXPreferences.
         Object smallSystemFont = new UIDefaults.ProxyLazyValue(
                 "javax.swing.plaf.FontUIResource",
                 null,
@@ -1625,6 +1626,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             new UIDefaults.ProxyLazyValue(
             "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
             new Object[]{new Insets(1, 1, 1, 1)}),
+
+            "FileChooser.disclosureButtonIcon", makeButtonStateIcon(
+            leopardDir + "FileChooser.disclosureButtonIcons.png", 10),
+            
             "FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
             "FormattedTextField.focusHandler", textFieldFocusHandler,
@@ -1714,13 +1719,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(Preferences.getString("AppleScrollBarVariant").equals("DoubleMax"));
+            return new Boolean(OSXPreferences.getString("AppleScrollBarVariant").equals("DoubleMax"));
         }
     },
             "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(Preferences.getString("AppleScrollerPagingBehavior").equals("true"));
+            return new Boolean(OSXPreferences.getString("AppleScrollerPagingBehavior").equals("true"));
         }
     },
             "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),

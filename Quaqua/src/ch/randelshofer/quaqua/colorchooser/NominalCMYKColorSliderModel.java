@@ -1,21 +1,17 @@
-package ch.randelshofer.quaqua.colorchooser;
-
 /*
- * @(#)ICC_CMYKColorSliderModel.java  1.0  May 22, 2005
+ * @(#)ICC_CMYKColorSliderModel.java
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
+package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
-import java.awt.color.*;
-import java.io.*;
 import javax.swing.*;
 /**
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) with
@@ -25,7 +21,7 @@ import javax.swing.*;
  * perfectly absorb the desired wavelenghts.
  *
  * @author  Werner Randelshofer
- * @version 1.0 May 22, 2005 Created.
+ * @version $Id$
  */
 public class NominalCMYKColorSliderModel extends ColorSliderModel {
     /**
@@ -52,6 +48,7 @@ public class NominalCMYKColorSliderModel extends ColorSliderModel {
         red = 1f - cyan * (1f - black) - black;
         green = 1f - magenta * (1f - black) - black;
         blue = 1f - yellow * (1f - black) - black;
+        
         return 0xff000000
         | ((int) (red * 255) << 16)
         | ((int) (green * 255) << 8)

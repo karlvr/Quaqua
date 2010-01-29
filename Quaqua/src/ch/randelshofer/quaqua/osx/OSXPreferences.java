@@ -1,5 +1,5 @@
 /*
- * @(#)Preferences.java  
+ * @(#)OSXPreferences.java
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -10,27 +10,28 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-package ch.randelshofer.quaqua.util;
+package ch.randelshofer.quaqua.osx;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
+import ch.randelshofer.quaqua.util.BinaryPListParser;
 import java.io.*;
 import java.util.*;
 
 /**
- * Utility class for accessing Mac OS X System Preferences.
+ * Utility class for accessing Mac OS X System OSXPreferences.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class Preferences {
+public class OSXPreferences {
 
     private static HashMap prefs;
 
     /**
      * Creates a new instance.
      */
-    public Preferences() {
+    public OSXPreferences() {
     }
 
     public static String getString(String key) {
