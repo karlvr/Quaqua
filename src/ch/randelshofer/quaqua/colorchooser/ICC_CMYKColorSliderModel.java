@@ -1,7 +1,5 @@
-package ch.randelshofer.quaqua.colorchooser;
-
 /*
- * @(#)ICC_CMYKColorSliderModel.java  1.1  2008-04-23
+ * @(#)ICC_CMYKColorSliderModel.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -12,11 +10,13 @@ package ch.randelshofer.quaqua.colorchooser;
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
+package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
 import java.awt.color.*;
 import java.io.*;
 import javax.swing.*;
+
 /**
  * A ColorSliderModel for CMYK color models (cyan, magenta, yellow, black) in
  * a color space defined by a ICC color profile (International Color Consortium).
@@ -28,23 +28,24 @@ import javax.swing.*;
  * 
  *
  * @author  Werner Randelshofer
- * @version 1.1 2008-04-23 Added constructor without parameters. 
- * <br>1.0 May 22, 2005 Created.
+ * @version $Id$
  */
 public class ICC_CMYKColorSliderModel extends ColorSliderModel {
+
     private ICC_ColorSpace colorSpace;
-    float[] cmyk = new float[4]; 
-    float[] rgb = new float[3]; 
-   /**
+    float[] cmyk = new float[4];
+    float[] rgb = new float[3];
+
+    /**
      * Creates a new instance.
      */
     public ICC_CMYKColorSliderModel() {
         super(new DefaultBoundedRangeModel[]{
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100)
-        });
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100)
+                });
         try {
             read(getClass().getResourceAsStream("Generic CMYK Profile.icc"));
         } catch (IOException e) {
@@ -60,11 +61,11 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
      */
     public ICC_CMYKColorSliderModel(InputStream iccProfile) throws IOException {
         super(new DefaultBoundedRangeModel[]{
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100),
-            new DefaultBoundedRangeModel(0, 0, 0, 100)
-        });
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100),
+                    new DefaultBoundedRangeModel(0, 0, 0, 100)
+                });
         read(iccProfile);
     }
 
@@ -80,7 +81,7 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
         rgb = colorSpace.toRGB(cmyk);
         return 0xff000000 | ((int) (rgb[0] * 255f) << 16) | ((int) (rgb[1] * 255f) << 8) | (int) (rgb[2] * 255f);
     }
-    
+
     public void setRGB(int newRGB) {
         rgb[0] = ((newRGB & 0xff0000) >>> 16) / 255f;
         rgb[1] = ((newRGB & 0x00ff00) >>> 8) / 255f;
@@ -93,7 +94,7 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
         components[3].setValue((int) (cmyk[3] * 100f));
         rgb = colorSpace.toRGB(cmyk);
     }
-    
+
     public int toRGB(int[] values) {
         cmyk[0] = values[0] / 100f;
         cmyk[1] = values[1] / 100f;
@@ -102,5 +103,25 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
         rgb = colorSpace.toRGB(cmyk);
         return 0xff000000 | ((int) (rgb[0] * 255f) << 16) | ((int) (rgb[1] * 255f) << 8) | (int) (rgb[2] * 255f);
     }
-    
+
+    public Color getColor() {
+        cmyk[0] = components[0].getValue() / 100f;
+        cmyk[1] = components[1].getValue() / 100f;
+        cmyk[2] = components[2].getValue() / 100f;
+        cmyk[3] = components[3].getValue() / 100f;
+        return new Color(colorSpace, cmyk, 1f);
+    }
+
+    public void setColor(Color color) {
+        if (color.getColorSpace().equals(colorSpace)) {
+            cmyk = color.getColorComponents(cmyk);
+        } else {
+            cmyk = color.getColorComponents(colorSpace, cmyk);
+        }
+        rgb = colorSpace.toRGB(cmyk);
+        components[0].setValue((int) (cmyk[0] * 100f));
+        components[1].setValue((int) (cmyk[1] * 100f));
+        components[2].setValue((int) (cmyk[2] * 100f));
+        components[3].setValue((int) (cmyk[3] * 100f));
+    }
 }

@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.util;
 
+import ch.randelshofer.quaqua.osx.OSXPreferences;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
@@ -47,7 +48,7 @@ public class Images {
     }
     public static Image createImage(URL resource) {
         Image image = Toolkit.getDefaultToolkit().createImage(resource);
-        if (Preferences.getString("AppleAquaColorVariant").equals("6")) {
+        if (OSXPreferences.getString("AppleAquaColorVariant").equals("6")) {
             if (canGraphite(resource)) {
                 image = toGraphite(image);
             }

@@ -13,11 +13,9 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 /**
  * An Icon with different visuals reflecting the state of the AbstractButton
  * on which it draws on.
