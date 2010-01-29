@@ -1,5 +1,5 @@
 /*
- * @(#)CMYKChooser.java  1.6  2008-04-23
+ * @(#)CMYKChooser.java  
  *
  * Copyright (c) 2004-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,11 +15,9 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.colorchooser.*;
@@ -28,17 +26,7 @@ import javax.swing.plaf.*;
  * A color chooser with CMYK color sliders.
  *
  * @author  Werner Randelshofer
- * @version 1.6 2008-04-23 Use CMYK slider model with ICC profile. 
- * <br>1.5 2007-02-24 Select text in text fields when they gain
- * focus. The fields were too short for J2SE 1.3.
- * <br>1.4 2006-04-23 Get labels directly from UIManager.
- * <br>1.3 2005-11-22 Moved handler for text fields into separate class.
- * <br>1.2.2 2005-11-22 If the user enters a non-numeric value, set the
- * corresponding bounded range model to 0.
- * <br>1.2.1 2005-11-07 Get "Labels" ResourceBundle from UIManager.
- * <br>1.2 2005-09-05 Get font, spacing and icon from UIManager.
- * <br>1.1.1 2005-05-23 Localized form.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class CMYKChooser
 extends AbstractColorChooserPanel

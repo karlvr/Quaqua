@@ -1,5 +1,5 @@
 /*
- * @(#)ColorPalettes.java  1.0  September 18, 2005
+ * @(#)ColorPalettes.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -18,7 +18,7 @@ import java.awt.*;
  * This class provides some well known color palettes as array constants.
  *
  * @author  Werner Randelshofer
- * @version 1.0 September 18, 2005 Created.
+ * @version $Id$
  */
 public class DefaultPalettes {
     /**

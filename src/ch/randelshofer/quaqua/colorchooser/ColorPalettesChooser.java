@@ -1,5 +1,5 @@
 /*
- * @(#)ColorPalettesChooser.java  1.1  2006-04-23
+ * @(#)ColorPalettesChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,12 +14,10 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.text.*;
 import javax.swing.*;
 import javax.swing.colorchooser.*;
-import javax.swing.border.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
 import java.util.*;
@@ -28,9 +26,7 @@ import java.util.*;
  * ColorPalettesChooser.
  *
  * @author  Werner Randelshofer
- * @version 1.1 2006-04-23 Get UIManager directly from UIManager.
- * <br>1.0.1 2005-11-07 Load "UIManager" resource bundle from UIManager.
- * <br>1.0 September 18, 2005 Created.
+ * @version $Id$
  */
 public class ColorPalettesChooser extends AbstractColorChooserPanel implements UIResource {
     

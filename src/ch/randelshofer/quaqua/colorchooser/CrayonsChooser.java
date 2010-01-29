@@ -1,5 +1,5 @@
 /*
- * @(#)CrayonsChooser.java  1.1  2006-04-23
+ * @(#)CrayonsChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,24 +13,18 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.util.*;
 
 import java.awt.*;
-//import java.awt.event.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.colorchooser.*;
-import javax.swing.event.*;
 import javax.swing.plaf.*;
 
 /**
  * A color chooser which provides a choice of Crayons.
  *
  * @author  Werner Randelshofer
- * @version 1.2 2006-04-23 Retrieve labels from UIManager. 
- * <br>1.0.2 2005-11-07 Get "labels" resource bundle from UIManager.
- * <br>1.0.1 2005-09-11 Get icon from UIManager.
- * <br>1.0 August 28, 2005 Created.
+ * @version $Id$
  */
 public class CrayonsChooser extends AbstractColorChooserPanel implements UIResource {
     private Crayons crayons;

@@ -1,5 +1,5 @@
 /*
- * @(#)Crayons.java  1.2  2006-04-23
+ * @(#)Crayons.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,24 +14,16 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.awt.image.*;
-import java.awt.geom.*;
 import javax.swing.*;
-import javax.swing.event.*;
 /**
  * A panel which displays a selection of color crayons. The user can click at
  * a crayon to pick a color.
  *
  * @author  Werner Randelshofer
- * @version 1.2 2006-04-23 Retrieve labels directly from UIManager. 
- * <br>1.1.1 2005-11-07 Get "labels" resource bundle from UIManager.
- * <br>1.1 2005-08-30 Rearranged code to ease the creation of derived look
- * and feels.
- * <br>1.0 August 28, 2005 Created.
+ * @version $Id$
  */
 public class Crayons extends javax.swing.JPanel {
     

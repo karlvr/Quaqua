@@ -1,5 +1,5 @@
 /*
- * @(#)ColorSliderUI.java  1.1  2007-12-02
+ * @(#)ColorSliderUI.java  
  *
  * Copyright (c) 2004-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -27,12 +27,7 @@ import javax.swing.plaf.basic.*;
  *
  *
  * @author  Werner Randelshofer
- * @version 1.1 2007-12-01 Streamlined UIManager properties. 
- * <br>1.0.3 2005-09-11 Tweaked layout and drawing code.
- * <br>1.0.2 2005-08-28 Color track must always be regenerated if the
- * snapToTicks property changes.
- * <br>1.0.1 2005-04-18 Fixed an undesired shift of the track on the x-axis.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class ColorSliderUI extends BasicSliderUI {
     private final static Color foreground = new Color(0x949494);

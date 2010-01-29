@@ -1,5 +1,5 @@
 /*
- * @(#)ColorSliderHexTextFieldHandler.java  1.0  24. Februar 2007
+ * @(#)ColorSliderHexTextFieldHandler.java 
  *
  * Copyright (c) 2006-2010 Werner Randelshofer
  * Hausmatt 10, CH-6405 Immensee, Switzerland
@@ -20,7 +20,7 @@ import javax.swing.event.ChangeEvent;
  * ColorSliderHexTextFieldHandler.
  *
  * @author Werner Randelshofer
- * @version 1.0 24. Februar 2007 Created.
+ * @version $Id$
  */
 public class ColorSliderHexTextFieldHandler extends ColorSliderTextFieldHandler {
     

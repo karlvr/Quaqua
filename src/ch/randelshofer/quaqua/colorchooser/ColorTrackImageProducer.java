@@ -1,5 +1,5 @@
 /*
- * @(#)ColorTrackImageProducer.java  1.1  2005-08-28
+ * @(#)ColorTrackImageProducer.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import java.awt.*;
 import java.awt.image.*;
 import javax.swing.*;
 /**
@@ -23,11 +22,7 @@ import javax.swing.*;
  * @see ColorSliderUI
  *
  * @author  Werner Randelshofer
- * @version 1.1 2005-08-28 Support for vertical color track implemented. 
- * Passing now a null pixel array to super constructor to avoid unnecessary 
- * memory allocation. Method markAsDirty() added.
- * <br>1.0.1 2005-04-18 Fixed a minor shift in the color range.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class ColorTrackImageProducer extends MemoryImageSource {
     private int[] pixels;

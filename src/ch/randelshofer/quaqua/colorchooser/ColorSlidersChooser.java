@@ -1,5 +1,5 @@
 /*
- * @(#)ColorSlidersChooser.java  1.4  2006-04-23
+ * @(#)ColorSlidersChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,27 +13,17 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 import javax.swing.colorchooser.*;
 import javax.swing.plaf.*;
-import java.util.*;
 /**
  * The ColorSlidersChooser contains four individual color slider pages: gray
  * slider, RGB sliders, CMYK sliders, and HTML sliders.
  *
  * @author  Werner Randelshofer
- * @version 1.4 2006-04-23 Retrieve labels from UIManager. 
- * <br>1.3.1 2005-11-07 Get "UIManager" ResourceBundle from UIManager.
- * <br>1.3 2005-09-05 Get Font and icon from UIManager.
- * <br>1.2 2005-08-27 Keep track of last slider panel, and open this
- * panel, when the ColorSlidersChooser is recreated.
- * <br>1.1.1 2005-04-23 Localized form.
- * <br>1.0  30 March 2005  Created.
+ * @version $Id$
  */
 public class ColorSlidersChooser extends AbstractColorChooserPanel
 implements UIResource {
