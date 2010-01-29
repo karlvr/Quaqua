@@ -93,16 +93,21 @@ public class ButtonStateIcon extends MultiIcon {
     
     protected Icon getIcon(Component c) {
         Icon icon;
-        boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-        
+        boolean isActive = QuaquaUtilities.isOnActiveWindow(c)//
+                ||(c instanceof JCheckBoxMenuItem)//
+                ||(c instanceof JRadioButtonMenuItem);
+       
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();
+System.out.println("ButtonStateIcon "+((AbstractButton)c).getText()+" "+model.isArmed());
             if (isActive) {
                 if (model.isEnabled()) {
                     if (/*model.isPressed() && */model.isArmed()) {
                         if (model.isSelected()) {
+System.out.println("ButtonStateIcon    EPS:"+EPS);
                             icon = icons[EPS];
                         } else {
+System.out.println("ButtonStateIcon    EP:"+EP);
                             icon = icons[EP];
                         }
                     } else if (model.isSelected()) {
