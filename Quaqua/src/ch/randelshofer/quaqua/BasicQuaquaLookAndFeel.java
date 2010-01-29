@@ -1509,6 +1509,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             commonDir + "Button.helpFocusRings.png", 2,
             new Rectangle(0, 0, 25, 25)),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
+
+            // Note: Minimum width only affects regular sized buttons with push button style
+            "Button.minimumWidth",80,
+
+
             //"CheckBox.background", ...,
             "CheckBox.border", new VisualMargin(0, 0, 0, 0),
             "CheckBox.icon", makeOverlaidButtonStateIcon(
