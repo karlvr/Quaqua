@@ -1511,7 +1511,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Button.requestFocusEnabled", isRequestFocusEnabled,
 
             // Note: Minimum width only affects regular sized buttons with push button style
-            "Button.minimumWidth",80,
+            "Button.minimumWidth",new Integer(80),
 
 
             //"CheckBox.background", ...,

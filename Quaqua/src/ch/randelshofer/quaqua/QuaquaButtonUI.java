@@ -274,6 +274,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     // ********************************
 
     public Dimension getMinimumSize(JComponent c) {
+        AbstractButton b = (AbstractButton) c;
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style == null) {
             style = "push";
@@ -286,7 +287,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             Dimension p = getPreferredSize(c);
             d.height = Math.max(d.height, p.height);
         }
-        if (!QuaquaUtilities.isSmallSizeVariant(c) && style.equals("push")) {
+        if (!QuaquaUtilities.isSmallSizeVariant(c) && style.equals("push") //
+                && b.getIcon() == null && b.getText() != null) {
             d.width = Math.max(d.width, UIManager.getInt("Button.minimumWidth"));
         }
         return d;
@@ -311,8 +313,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     public static Dimension getPreferredSize(AbstractButton b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
-        if (style==null) {
-            style="push";
+        if (style == null) {
+            style = "push";
         }
         if (style.equals("help")) {
             Icon helpIcon = UIManager.getIcon("Button.helpIcon");
@@ -356,7 +358,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         r.width += insets.left + insets.right;
         r.height += insets.top + insets.bottom;
         //}
-        if (!QuaquaUtilities.isSmallSizeVariant(b) && style.equals("push")) {
+        if (!QuaquaUtilities.isSmallSizeVariant(b) && style.equals("push")
+                && b.getIcon() == null && b.getText() != null) {
             r.width = Math.max(r.width, UIManager.getInt("Button.minimumWidth"));
         }
         return r.getSize();
