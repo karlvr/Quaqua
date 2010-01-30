@@ -1,5 +1,5 @@
 /*
- * @(#)ButtonStateIcon.java  3.1  2005-12-08
+ * @(#)ButtonStateIcon.java 
  *
  * Copyright (c) 2003-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -21,14 +21,7 @@ import javax.swing.*;
  * on which it draws on.
  *
  * @author  Werner Randelshofer
- * @version 3.1 2005-12-08 Draw pressed state if model is armed, instead of
- * drawing pressed state if model is armed and pressed.
- * <br>3.0 2005-10-17 Changed superclass to MultiIcon.
- * <br>2.0.1 2005-10-02 Used Enabled image for Pressed-Unarmed state.
- * <br>2.0.1 2005-09-11 generateMissing icons can now deal with only one
- * provided icon image.
- * <br>2.0 2005-03-19 Reworked.
- * <br>1.0 October 5, 2003 Create..
+ * @version $Id$
  */
 public class ButtonStateIcon extends MultiIcon {
     private final static int E = 0;
