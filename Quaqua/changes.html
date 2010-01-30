@@ -1,5 +1,21 @@
-<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.0//EN" "http://www.wapforum.org/DTD/xhtml-mobile10.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+<!--
+ * @(#)changes.html
+ *
+ * Copyright (c) 2003-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * All rights reserved.
+ *
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
+ *
+ * @author  Werner Randelshofer
+ * @version $Id$
+ *-->
+
 <head>
 <title>Quaqua Look and Feel &middot; Changes</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,17 +26,17 @@
 <div id="Spalte1" style="position:absolute; left:10px; top:10px; width:460px; height:60px; z-index:3">
   <div id="Spalte5" style="position:absolute; left:480px; top:70px; width:220px; height:120px; z-index:7">
             <h3 class="dividerparagraph">Documentation </h3>
-            <p class="semiparagraph"><strong><img src="guide/images/layout/link.gif" width="9" height="10" border="0" align="baseline" /></strong><a href="readme.html">Readme</a></p>
-            <p><strong><img src="guide/images/layout/link.gif" width="9" height="10" border="0" align="baseline" />Changes</strong></p>
-            <p><strong><a href="license.html"><img src="guide/images/layout/link.gif" width="9" height="10" border="0" align="baseline" /></a></strong><a href="license.html">License</a></p>
-            <p class="doubleparagraph"><strong><img src="guide/images/layout/link.gif" width="9" height="10" border="0" align="baseline" /></strong><a href="guide/index.html">Usage</a></p>
+            <p class="semiparagraph"><a href="readme.html">Readme</a></p>
+    <p><strong>Changes</strong></p>
+    <p><a href="license.html">License</a></p>
+    <p><a href="guide/index.html">Usage</a></p>
   </div>
   <h3>Quaqua Look and Feel</h3>
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
   <h3> Version 6.4<br />
-    <font size="-1">2010-01-29</font></h3>
+    <font size="-1">2010-01-30</font></h3>
   <p>Enhancements</p>
   <ul>
     <li>JFileChooser: The &quot;quick look&quot; preview is now expandable. By default it is collapsed. The expanded state is stored in user preferences.</li>
@@ -372,7 +388,7 @@
   <p><font size="-1">&nbsp;</font></p>
   <p>Fixes</p>
   <ul>
-    <li>Fixed broken client property "Quaqua.Component.cellRendererFor".</li>
+    <li>Fixed broken client property &quot;Quaqua.Component.cellRendererFor&quot;.</li>
     <li>TreeUI: Fixed keyboard navigation in tree.</li>
   </ul>
   <h3>Version 4.2<br />
@@ -394,9 +410,9 @@
     <li>TabbedPaneUI: Reduced top insets of tabs.</li>
     <li>TableUI: Set 'showHorizontalLines' and 'showVerticalLines' to
  false once when installing the UI, instead of overwriting these properties every
- time when the client property "Quaqua.Table.style" is changed. The UIManager-property
+ time when the client property &quot;Quaqua.Table.style&quot; is changed. The UIManager-property
 'Table.gridColor' is now light gray instead of white.</li>
-    <li>LookAndFeel: Quaqua now overrides the UIManager property "ClassLoader".</li>
+    <li>LookAndFeel: Quaqua now overrides the UIManager property &quot;ClassLoader&quot;.</li>
     <li>TextFieldBorder: Did draw focus ring even when text component was disabled.</li>
     <li>PasswordFieldUI: Only replace echo character with a bullet character, if the echo character is a '*'.</li>
   </ul>
@@ -478,8 +494,8 @@
   <p>Enhancements</p>
   <ul>
       <li>QuaquaTextFieldUI, QuaquaPasswordFieldUI, QuaquaFormattedTextFieldUI:
-      Added a new client property "Quaqua.TextComponent.autoSelect"</li>
-      <li>UIManager: Added a new property "TextComponent.autoSelect"</li>
+      Added a new client property &quot;Quaqua.TextComponent.autoSelect&quot;</li>
+      <li>UIManager: Added a new property &quot;TextComponent.autoSelect&quot;</li>
   </ul>
   <p>Fixes</p>
   <ul>
@@ -505,7 +521,7 @@
   <p>Fixes</p>
   <ul>
       <li>QuaquaComboBoxUI: Removed debugging output. UIManager property
-  "ComboBox.harmonizePreferredHeight" had no effect.</li>
+  &quot;ComboBox.harmonizePreferredHeight&quot; had no effect.</li>
   </ul>
   <h3>Version 3.9<br />
     <font size="-1">2007-07-30</font></h3>
@@ -541,7 +557,7 @@ JDialog windows; Look and feel decorated windows couldn't always be dragged from
       a secondary screen to the main screen.</li>
     <li>TextFieldUI, FormattedTextFieldUI, PasswordFieldUI: Added two pixels to
     preferred width.</li>
-    <li>All text component UI's:Fixed input map for backspace key (replaced "typed \010" by "BACK_SPACE").</li>
+    <li>All text component UI's:Fixed input map for backspace key (replaced &quot;typed \010&quot; by &quot;BACK_SPACE&quot;).</li>
     <li>quaqua-filechooser-only.jar, quaqua-menu-only.jar, 
     quaqua-colorchooser-only.jar: Added missing QuaquaLookAndFeel class.</li>
   </ul>
