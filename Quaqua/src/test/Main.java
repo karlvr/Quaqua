@@ -206,13 +206,8 @@ public class Main extends javax.swing.JFrame {
         }
 
         if (useDefaultLookAndFeelDecoration) {
-            try {
-                Methods.invokeStatic(JFrame.class, "setDefaultLookAndFeelDecorated", Boolean.TYPE, Boolean.TRUE);
-                Methods.invokeStatic(JDialog.class, "setDefaultLookAndFeelDecorated", Boolean.TYPE, Boolean.TRUE);
-            } catch (NoSuchMethodException e) {
-                // can't do anything about this
-                e.printStackTrace();
-            }
+            JFrame.setDefaultLookAndFeelDecorated(true);
+            JDialog.setDefaultLookAndFeelDecorated(true);
         }
 
         // Launch the test program

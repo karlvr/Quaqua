@@ -80,7 +80,7 @@ public class QuaquaCaret extends DefaultCaret
         }
         super.focusGained(focusevent);
     }
-    
+
     public void focusLost(FocusEvent focusevent) {
         isFocused = false;
         super.focusLost(focusevent);

@@ -177,12 +177,12 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSer
     // Convert Java filename to C filename
     const char *aliasPathC;
     aliasPathC = (*env)->GetStringUTFChars(env, aliasPathJ, 0);
-    
+
     // Do the API calls
     FSRef fileRef;
     OSErr err;
     AliasHandle aliasHdl;
-    CFDataRef dataRef;
+    CFDataRef dataRef = NULL;
     const UInt8* dataBytes; // bytes of dataRef
     int length; // length of the dataBytes array
 
@@ -190,6 +190,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSer
     if (err == 0) {
         err = FSNewAlias(NULL, &fileRef, &aliasHdl);
     }
+
     if (err == 0) {
         dataRef = CFDataCreate(
                         kCFAllocatorDefault,
