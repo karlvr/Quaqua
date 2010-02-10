@@ -1,5 +1,5 @@
 /*
- * @(#)ResourceBundleUtil.java  1.3.3  2005-11-07
+ * @(#)QuaquaResourceBundleUtil.java  1.3.3  2005-11-07
  *
  * Copyright (c) 2000-2010 Werner Randelshofer
  * Hausmatt 10, CH-6405 Immensee, Switzerland
@@ -33,7 +33,7 @@ import java.net.URL;
  * <br>      1.2 2001-07-23   Adaptation to JDK 1.3 in progress.
  * <br>      1.0 2000-06-10   Created.
  */
-public class ResourceBundleUtil {
+public class QuaquaResourceBundleUtil {
     /** The wrapped resource bundle. */
     private ResourceBundle resource;
     
@@ -41,7 +41,7 @@ public class ResourceBundleUtil {
      * Creates a new ResouceBundleUtil which wraps
      * the provided resource bundle.
      */
-    public ResourceBundleUtil(ResourceBundle r) {
+    public QuaquaResourceBundleUtil(ResourceBundle r) {
         resource = r;
     }
     
@@ -158,9 +158,9 @@ public class ResourceBundleUtil {
      *
      * @see java.util.ResourceBundle
      */
-    public static ResourceBundleUtil getBundle(String baseName)
+    public static QuaquaResourceBundleUtil getBundle(String baseName)
     throws MissingResourceException {
-        return new ResourceBundleUtil(ResourceBundle.getBundle(baseName, Locale.getDefault()));
+        return new QuaquaResourceBundleUtil(ResourceBundle.getBundle(baseName, Locale.getDefault()));
     }
     /**
      * Get the appropriate ResourceBundle subclass.
@@ -171,7 +171,7 @@ public class ResourceBundleUtil {
      *
      * @see java.util.ResourceBundle
      */
-    public static ResourceBundleUtil getLAFBundle(String baseName)
+    public static QuaquaResourceBundleUtil getLAFBundle(String baseName)
     throws MissingResourceException {
         return getLAFBundle(baseName, Locale.getDefault());
     }
@@ -184,17 +184,17 @@ public class ResourceBundleUtil {
      *
      * @see java.util.ResourceBundle
      */
-    public static ResourceBundleUtil getLAFBundle(String baseName, Locale locale)
+    public static QuaquaResourceBundleUtil getLAFBundle(String baseName, Locale locale)
     throws MissingResourceException {
-        ResourceBundleUtil r;
+        QuaquaResourceBundleUtil r;
         try {
-            r = new ResourceBundleUtil(
+            r = new QuaquaResourceBundleUtil(
             ResourceBundle.getBundle(
             baseName + "_" + UIManager.getLookAndFeel().getID(), locale
             )
             );
         } catch (MissingResourceException e) {
-            r = new ResourceBundleUtil(
+            r = new QuaquaResourceBundleUtil(
             ResourceBundle.getBundle(baseName, locale)
             );
         }
