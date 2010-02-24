@@ -162,8 +162,8 @@ public class QuaquaListUI extends BasicListUI {
             int leadIndex) {
         Object value = dataModel.getElementAt(row);
         boolean isEnabled = list.isEnabled();
-        boolean isFocused = isEnabled &&
-                QuaquaUtilities.isFocused(list);
+        boolean isFocused = isEnabled
+                && QuaquaUtilities.isFocused(list);
         boolean cellHasFocus = isFocused && (row == leadIndex);
         boolean isSelected = selModel.isSelectedIndex(row);
 
@@ -362,7 +362,7 @@ public class QuaquaListUI extends BasicListUI {
                     // Do not change the selection, if the list is disabled
                     // or the item is already
                     // selected, and the user triggers the popup menu.
-                    } else {
+                } else {
                     int anchorIndex = list.getAnchorSelectionIndex();
 
                     if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
@@ -372,8 +372,8 @@ public class QuaquaListUI extends BasicListUI {
                             list.addSelectionInterval(index, index);
                             mouseDragSelects = true;
                         }
-                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
-                            anchorIndex != -1) {
+                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK
+                            && anchorIndex != -1) {
                         list.setSelectionInterval(anchorIndex, index);
                         mouseDragSelects = true;
                     } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
@@ -392,9 +392,16 @@ public class QuaquaListUI extends BasicListUI {
 
         public void mouseDragged(MouseEvent e) {
             mouseReleaseDeselects = false;
+
+            // Abort if mouseDragged event is received without prior
+            // mousePressed event.
+            if (armedEvent == null) {
+                return;
+            }
+
             int dx = Math.abs(e.getX() - armedEvent.getX());
             int dy = Math.abs(e.getY() - armedEvent.getY());
-            if (Math.sqrt(dx*dx+dy*dy) > dragThreshold) {
+            if (Math.sqrt(dx * dx + dy * dy) > dragThreshold) {
                 if (mouseDragSelects) {
                     int index = locationToIndex(list, e.getPoint());
                     if (index != -1) {
