@@ -450,7 +450,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
                     public Object construct() {
                         Object o = null;
-                        if (System.getProperty("os.version").compareTo("1.5") >= 0) {
+                        if (System.getProperty("os.version").compareTo("10.6") >= 0) {
                             o = OSXFile.getQuickLookThumbnailImage(file, 128);
                         }
                         if (o == null) {
