@@ -376,7 +376,10 @@ public class OSXFile {
     /**
      * Returns the QuickLook thumbnail image for the specified file.
      * If it could not be created, native code fetches the file's icon instead.
-     * Please only call this method on Leopard and above.
+     * <p>
+     * Please only call this method on Mac OS X 10.6 Snow Leopard and above.
+     * Altough the native API is also present on Mac OS X 10.5 our code does
+     * not run stable there.
      */
     public static BufferedImage getQuickLookThumbnailImage(File file, int size) {
         if (isNativeCodeAvailable() && file != null) {
