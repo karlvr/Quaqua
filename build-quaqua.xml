@@ -17,8 +17,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.4.1"/>
-        <property name="version" value="${versionNumber} 2010-03-20"/>
+        <property name="versionNumber" value="6.5"/>
+        <property name="version" value="${versionNumber} 2010-04-07"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -672,6 +672,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-DQuaqua.design=snowleopard"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard ScreenMenuBar">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-DQuaqua.design=snowleopard"/>
             <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>

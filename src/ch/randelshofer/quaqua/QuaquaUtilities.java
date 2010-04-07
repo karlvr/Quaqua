@@ -284,6 +284,11 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
          */
         graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+//        graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+//               RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+
+
+
         /*graphics2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
         RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
 
@@ -324,10 +329,10 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             Window ancestor = SwingUtilities.getWindowAncestor(component);
             Object kfm = Methods.invokeStatic("java.awt.KeyboardFocusManager", "getCurrentKeyboardFocusManager");
 
-            return isFocusOwner ||
-                    component == Methods.invoke(kfm, "getPermanentFocusOwner") &&
-                    ancestor != null &&
-                    Methods.invokeGetter(ancestor, "isFocused", false);
+            return isFocusOwner
+                    || component == Methods.invoke(kfm, "getPermanentFocusOwner")
+                    && ancestor != null
+                    && Methods.invokeGetter(ancestor, "isFocused", false);
         } catch (NoSuchMethodException e) {
             return component.hasFocus();
         }
@@ -684,8 +689,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             dx = (viewR.x + viewR.width) - (labelR_x + labelR_width);
         } else { // (horizontalAlignment == CENTER)
 
-            dx = (viewR.x + (viewR.width / 2)) -
-                    (labelR_x + (labelR_width / 2));
+            dx = (viewR.x + (viewR.width / 2))
+                    - (labelR_x + (labelR_width / 2));
         }
 
         /* Translate textR and glypyR by dx,dy.
@@ -792,7 +797,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                 method.invoke(clazz, new Object[]{w, Boolean.FALSE});
             } catch (Throwable e2) {
                 // silently ignore this exception.
-                }
+            }
         }
     }
 
@@ -882,8 +887,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             (java.util.Set)value);
              */
         } else {
-            throw new IllegalArgumentException("property \"" +
-                    propertyName + "\" cannot be set using this method");
+            throw new IllegalArgumentException("property \""
+                    + propertyName + "\" cannot be set using this method");
         }
     }
 
@@ -974,8 +979,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
          * ACTION_COPY, then for ACTION_LINK and return the first operation
          * found.
          */
-        switch (modifiers & (InputEvent.SHIFT_DOWN_MASK |
-                InputEvent.CTRL_DOWN_MASK)) {
+        switch (modifiers & (InputEvent.SHIFT_DOWN_MASK
+                | InputEvent.CTRL_DOWN_MASK)) {
             case InputEvent.SHIFT_DOWN_MASK | InputEvent.CTRL_DOWN_MASK:
                 dropAction = DnDConstants.ACTION_LINK;
                 break;

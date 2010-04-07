@@ -1509,11 +1509,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             commonDir + "Button.helpFocusRings.png", 2,
             new Rectangle(0, 0, 25, 25)),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
-
             // Note: Minimum width only affects regular sized buttons with push button style
-            "Button.minimumWidth",new Integer(80),
-
-
+            "Button.minimumWidth", new Integer(80),
             //"CheckBox.background", ...,
             "CheckBox.border", new VisualMargin(0, 0, 0, 0),
             "CheckBox.icon", makeOverlaidButtonStateIcon(
@@ -1631,10 +1628,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             new UIDefaults.ProxyLazyValue(
             "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
             new Object[]{new Insets(1, 1, 1, 1)}),
-
             "FileChooser.disclosureButtonIcon", makeButtonStateIcon(
             leopardDir + "FileChooser.disclosureButtonIcons.png", 10),
-            
             "FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
             "FormattedTextField.focusHandler", textFieldFocusHandler,
@@ -1659,16 +1654,18 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "OptionPane.warningIcon", new UIDefaults.ProxyLazyValue(
             "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{new Integer(JOptionPane.WARNING_MESSAGE)}),
             "OptionPane.warningIconResource", "/ch/randelshofer/quaqua/images/OptionPane.warningIcon.png",
-            "OptionPane.css", "<head>" +
-            "<style type=\"text/css\">" +
-            "b { font: 13pt \"" + systemFontName + "\" }" +
-            "p { font: 11pt \"" + systemFontName + "\"; margin-top: 8px }" +
-            "</style>" +
-            "</head>",
+            "OptionPane.css", "<head>"
+            + "<style type=\"text/css\">"
+            + "b { font: 13pt \"" + systemFontName + "\" }"
+            + "p { font: 11pt \"" + systemFontName + "\"; margin-top: 8px }"
+            + "</style>"
+            + "</head>",
             "OptionPane.messageLabelWidth", new Integer(360),
             "OptionPane.maxCharactersPerLineCount", new Integer(60),
             "Panel.opaque", opaque,
+            //
             "PopupMenu.enableHeavyWeightPopup", Boolean.TRUE,
+            //
             "PasswordField.border", textFieldBorder,
             "PasswordField.opaque", opaque,
             "PasswordField.focusHandler", textFieldFocusHandler,
@@ -1862,8 +1859,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolBar.borderDark", new ColorUIResource(0x8c8c8c),
             "ToolBar.borderDivider", new ColorUIResource(0x9f9f9f),
             "ToolBar.borderDividerInactive", new ColorUIResource(0x9f9f9f),
-            "ToolBar.bottom.gradient", new Color[] {new Color(0xd8d8d8),new Color(0xbdbdbd),new Color(0xaeaeae), new Color(0x969696)},
-            "ToolBar.bottom.gradientInactive",  new Color[] {new Color(0xeeeeee),new Color(0xe4e4e4),new Color(0xcfcfcf)},
+            "ToolBar.bottom.gradient", new Color[]{new Color(0xd8d8d8), new Color(0xbdbdbd), new Color(0xaeaeae), new Color(0x969696)},
+            "ToolBar.bottom.gradientInactive", new Color[]{new Color(0xeeeeee), new Color(0xe4e4e4), new Color(0xcfcfcf)},
             //
             "ToolTip.border", new BorderUIResource.LineBorderUIResource(new ColorUIResource(0x303030)),
             //
@@ -1891,8 +1888,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         putDefaults(table, uiDefaults);
 
         // Support for GroupLayout
-        if (javaVersion.startsWith("1.4") ||
-                javaVersion.startsWith("1.5")) {
+        if (javaVersion.startsWith("1.4")
+                || javaVersion.startsWith("1.5")) {
             uiDefaults = new Object[]{
                         "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
                         "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
@@ -2003,6 +2000,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
                 new Object[]{location, insets, new Boolean(fill)});
     }
+
     protected Object makeImageBevelBorder(String location, Insets insets, boolean fill, Color fillColor) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
@@ -2085,13 +2083,16 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             }
         }
     }
+
     protected void installPopupFactory() {
+        if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
             try {
                 PopupFactory.setSharedInstance(new QuaquaPopupFactory());
             } catch (SecurityException ex) {
                 System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
                 //ex.printStackTrace();
             }
+        }
     }
 
     /**

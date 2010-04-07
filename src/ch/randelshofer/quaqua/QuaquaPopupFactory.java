@@ -14,6 +14,9 @@ package ch.randelshofer.quaqua;
 
 import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -550,7 +553,18 @@ public class QuaquaPopupFactory extends PopupFactory {
         }
 
         Component createComponent(Component owner) {
-            Component component = new JWindow(SwingUtilities.getWindowAncestor(owner));
+            final JWindow wnd;
+            Component component = wnd=new JWindow(SwingUtilities.getWindowAncestor(owner));
+                wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
+                wnd.getRootPane().putClientProperty("Window.alpha", new Float(0.948));
+                wnd.setBackground(new Color(0xffffff,true));
+                wnd.addWindowListener(new WindowAdapter() {
+
+                public void windowOpened(WindowEvent e) {
+                wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", new Long(System.currentTimeMillis()));
+                }
+
+            });
             return component;
         }
 
