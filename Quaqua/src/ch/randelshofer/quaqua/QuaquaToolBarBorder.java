@@ -45,7 +45,7 @@ public class QuaquaToolBarBorder
             Graphics2D g = (Graphics2D) gr;
 
             boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-            //boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
+            boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
 
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {
@@ -55,7 +55,7 @@ public class QuaquaToolBarBorder
                 g.fillRect(x, y, width, height / 2);
                 g.setColor(new Color(0xebebeb));
                 g.fillRect(x, y + height / 2, width, height - height / 2);
-            } else if (style.equals("bottom") /*&& isTextured*/) {
+            } else if (style.equals("bottom") && isTextured) {
                 Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
                 if (gradient.length == 2) {
                     g.setPaint(
