@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua.util;
 
-import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 import ch.randelshofer.quaqua.ext.base64.*;
 import java.io.*;

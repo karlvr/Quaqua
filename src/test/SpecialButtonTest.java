@@ -1,5 +1,5 @@
 /*
- * @(#)ButtonTest.java  1.0  13 February 2005
+ * @(#)ButtonTest.java  1.0  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,7 @@ import javax.swing.border.*;
  * ButtonTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class SpecialButtonTest extends javax.swing.JPanel {
     
@@ -31,7 +31,8 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         placardButton.putClientProperty("JButton.buttonType", "toolbar");
         smallPlacardButton.putClientProperty("JButton.buttonType", "toolbar");
         tableHeaderButton.putClientProperty("JButton.buttonType", "toolbar");
-        
+
+        // Quaqua client properties
         placardButton.putClientProperty("Quaqua.Button.style", "placard");
         smallPlacardButton.putClientProperty("Quaqua.Button.style","placard");
         colorWellButton.putClientProperty("Quaqua.Button.style","colorWell");
@@ -40,8 +41,8 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         smallColorWellButton.setBackground(Color.white);
         tableHeaderButton.putClientProperty("Quaqua.Button.style", "tableHeader");
         
-        // Leopard properties
-        if (QuaquaManager.getDesign() == QuaquaManager.LEOPARD) {
+        // Apple AquaLookAndFeel client properties
+        if (QuaquaManager.getDesign() >= QuaquaManager.LEOPARD) {
             placardButton.putClientProperty("JButton.buttonType", "gradient");
             smallPlacardButton.putClientProperty("JButton.buttonType", "gradient");
             smallPlacardButton.putClientProperty("JComponent.sizeVariant","small");

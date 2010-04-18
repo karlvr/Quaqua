@@ -1,5 +1,5 @@
 /*
- * @(#)ScriptSystem.java  1.0  June 12, 2005
+ * @(#)ScriptSystem.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -18,7 +18,7 @@ import java.awt.*;
  * Constants for the script systems supported by Unicode.
  *
  * @author  Werner Randelshofer
- * @version 1.0 June 12, 2005 Created.
+ * @version $Id$
  */
 public class ScriptSystem {
     /**

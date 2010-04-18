@@ -44,12 +44,6 @@
              -->
         <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
 
-        <property name="j2se4" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.4" />
-        <property name="j2se4.bootclasspath" value="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar" />
-        <property name="j2se4.classpath" value="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar" />
-        <property name="j2se4.extdirs" value="." />
-        <property name="j2se4.endorseddirs" value="." />
-
         <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5" />
         <property name="j2se5.bootclasspath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
         <property name="j2se5.classpath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
@@ -69,36 +63,18 @@
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
-        <!-- Compile swing-layout for Java 1.4 -->
-        <javac bootclasspath="${j2se4.bootclasspath}"
-                classpath="${j2se4.classpath}"
+        <!-- Compile swing-layout for Java 1.5 -->
+        <javac bootclasspath="${j2se5.bootclasspath}"
+                classpath="${j2se5.classpath}"
                 fork="true"
-                source="1.4" target="1.4" encoding="UTF-8" 
+                source="1.5" target="1.5" encoding="UTF-8"
                 srcdir="${src}" destdir="${builddir}"
                 debug="${debug}" optimize="true"
                 deprecation="true"
-                extdirs="${j2se4.extdirs}"
+                extdirs="${j2se5.extdirs}"
                 >
-            <compilerarg line="-endorseddirs ${j2se4.endorseddirs}"/>
+            <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
             <include name="org/jdesktop/layout/**.java"/>
-        </javac>
-        <!-- Compile classes which require Java 1.4 -->
-        <javac bootclasspath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                classpath="${j2se4}/Classes/classes.jar:${j2se4}/Classes/ui.jar"
-                fork="true"
-                source="1.4" target="1.4" encoding="UTF-8"
-                srcdir="${src}" destdir="${builddir}"
-                debug="${debug}" optimize="true"
-                deprecation="true"
-                extdirs="${j2se4.extdirs}"
-                >
-            <compilerarg line="-endorseddirs ${j2se4.endorseddirs}"/>
-            <exclude name="**/*15*.java"/>
-            <exclude name="**/*16*.java"/>
-            <exclude name="test/AHIG*.java"/>
-            <exclude name="test/Matisse*.java"/>
-            <exclude name="test/TabbedPaneTestHTML*.java"/>
-            <exclude name="com/**"/>
         </javac>
         <!-- Compile classes which require Java 1.5 -->
         <javac bootclasspath="${j2se5.bootclasspath}"
@@ -125,6 +101,18 @@
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
             <include name="**/*16*.java"/>
+        </javac>
+        <!-- Compile remaining classes with Java 1.5 -->
+        <javac bootclasspath="${j2se5.bootclasspath}"
+                classpath="${j2se5.classpath}"
+                fork="true"
+                source="1.5" target="1.5" encoding="UTF-8"
+                srcdir="${src}" destdir="${builddir}"
+                debug="${debug}" optimize="true"
+                deprecation="true"
+                extdirs="${j2se5.extdirs}"
+                >
+            <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
         </javac>
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
@@ -336,7 +324,7 @@
                 destdir="${builddir}" optimize="true" 
                 srcdir="${src}" source="1.4" target="1.4"
             >
-            <include name="**/Quaqua14FileChooserLAF.java"/>
+            <include name="**/QuaquaPantherFileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
             <include name="**/QuaquaLookAndFeel.java"/>
             <include name="**/QuaquaBrowserUI.java"/>
@@ -356,7 +344,7 @@
                 destdir="${builddir}" optimize="true"
                 srcdir="${src}" source="1.6" target="1.6"
             >
-            <include name="**/Quaqua14FileChooserLAF.java"/>
+            <include name="**/QuaquaPantherFileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
             <include name="**/QuaquaLookAndFeel.java"/>
             <include name="**/QuaquaBrowserUI.java"/>
@@ -382,22 +370,14 @@
             message="${version}"/>
         <echo file="${builddir}/ch/randelshofer/quaqua/laf.txt"
             message=" 
-                Jaguar.13=ch.randelshofer.quaqua.subset.Quaqua13FileChooserLAF; 
-                Panther.13=ch.randelshofer.quaqua.subset.Quaqua13FileChooserLAF;  
-                Tiger.13=ch.randelshofer.quaqua.subset.Quaqua13FileChooserLAF; 
-                Jaguar.14=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF; 
-                Panther.14=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Tiger.14=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Jaguar.15=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF; 
-                Panther.15=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Tiger.15=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Jaguar.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF; 
-                Panther.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Tiger.16=ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF;
-                Leopard.14=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+                Jaguar.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+                Panther.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+                Tiger.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+                Jaguar.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+                Panther.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+                Tiger.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
                 Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-                SnowLeopard.14=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
                 "
@@ -419,26 +399,18 @@
         <echo file="${builddir}/ch/randelshofer/quaqua/version.txt"
             message="${version}"/>
         <echo file="${builddir}/ch/randelshofer/quaqua/laf.txt"
->Jaguar.14=ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel;
-Jaguar.15=ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel;
+>Jaguar.15=ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel;
 Jaguar.16=ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel;
-Panther.14=ch.randelshofer.quaqua.panther.Quaqua14PantherLookAndFeel;
 Panther.15=ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel;
 Panther.16=ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel;
-Tiger.14=ch.randelshofer.quaqua.tiger.Quaqua14TigerLookAndFeel;     
 Tiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel;     
 Tiger.16=ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel;     
-Leopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel;     
 Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;     
 Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;     
-SnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel;
 SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 SnowLeopard.16=ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel;
-CrossTiger.14=ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel; 
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
-CrossLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel; 
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
-CrossSnowLeopard.14=ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel;
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
 </echo>
         <mkdir dir="${distdir}"/>
@@ -859,20 +831,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="true"/>
         </java>
     </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.4 Tiger Window Decorated">
-        <java classname="test.Main" classpath="${classpath}"
-         failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <jvmarg value="-DQuaqua.design=tiger"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-            <arg value="-decoration"/>
-            <arg value="true"/>
-        </java>
-    </target>
     <target depends="init" name="run Quaqua 1.5 OS X 10.3 Panther Window Decorated">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
@@ -887,38 +845,10 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="true"/>
         </java>
     </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.3 Panther Window Decorated">
-        <java classname="test.Main" classpath="${classpath}"
-         failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <jvmarg value="-DQuaqua.design=panther"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-            <arg value="-decoration"/>
-            <arg value="true"/>
-        </java>
-    </target>
     <target depends="init" name="run Quaqua 1.5 OS X 10.2 Jaguar Window Decorated">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-            <arg value="-decoration"/>
-            <arg value="true"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.2 Jaguar Window Decorated">
-        <java classname="test.Main" classpath="${classpath}"
-         failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -1168,32 +1098,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
         </java>
     </target>
-    <target depends="init" name="run Quaqua 1.4 CrossPlatform 10.4 Tiger">
-        <java classname="test.Main" classpath="${classpath}" 
-        failonerror="true" fork="true" 
-        jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel"/>
-            <arg value="-decoration"/>
-            <arg value="true"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 CrossPlatform 10.5 Leopard">
-        <java classname="test.Main" classpath="${classpath}" 
-        failonerror="true" fork="true" 
-        jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel"/>
-            <arg value="-decoration"/>
-            <arg value="true"/>
-        </java>
-    </target>
     <target depends="init" name="run Quaqua 1.5 CrossPlatform 10.5 Leopard">
         <java classname="test.Main" classpath="${classpath}" 
         failonerror="true" fork="true" 
@@ -1363,171 +1267,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="true"/>
         </java>
     </target>
-    <target depends="init" name="run Quaqua 1.4 Auto">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 Auto Opaque">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.opaque=true"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 Auto w/Jaguar JTabbedPane">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.TabbedPane.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 Auto ScreenMenuBar">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 Auto Brushed Metal">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.awt.brushMetalLook=true"/>
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-Dcom.apple.macos.useScreenMenuBar=true"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 Jaguar Brushed Metal">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.awt.brushMetalLook=true"/>
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Aqua 1.4 Brushed Metal">
-        <java classname="test.Main" failonerror="true" fork="true">
-            <jvmarg value="-Dapple.awt.brushMetalLook=true"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.4 Tiger">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-DQuaqua.design=tiger"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.4 Tiger ScreenMenuBar">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-DQuaqua.design=tiger"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.3 Panther">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true"
-        >
-            <!--jvmarg value="-verbose"/-->
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-DQuaqua.design=panther"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <jvmarg value="-DQuaqua.opaque=true"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 OS X 10.3 Panther ScreenMenuBar">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-DQuaqua.design=panther"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init, compile" name="run Quaqua 1.4 OS X 10.2 Jaguar">
-        <java classname="test.Main"
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-            failonerror="true" fork="true">
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Aqua 1.4">
-        <java classname="test.Main" 
-                classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-                failonerror="true" fork="true"
-        >
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="apple.laf.AquaLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Metal 1.4">
-        <java classname="test.Main" classpath="${classpath}" 
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="javax.swing.plaf.metal.MetalLookAndFeel"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 FileChooser">
-        <java classname="test.Main" classpath="${classpath}" 
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Home/bin/java"
-        failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.subset.Quaqua14FileChooserLAF"/>
-        </java>
-    </target>
     <target depends="init" name="run Quaqua 1.5 LeopardFileChooser">
         <java classname="test.Main" classpath="${classpath}" 
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
@@ -1546,14 +1285,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF"/>
-        </java>
-    </target>
-    <target depends="init" name="run Quaqua 1.4 ColorChooser">
-        <java classname="test.Main" classpath="${classpath}"  failonerror="true" fork="true">
-            <jvmarg value="-DQuaqua.design=jaguar"/>
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="ch.randelshofer.quaqua.subset.Quaqua14ColorChooserLAF"/>
         </java>
     </target>
 </project>

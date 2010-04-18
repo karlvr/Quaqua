@@ -16,6 +16,8 @@ import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import java.awt.*;
 import java.awt.event.PaintEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
@@ -52,7 +54,7 @@ public class FileChooserTest extends javax.swing.JPanel {
                 extSet.add(tt.nextToken());
             }
 
-        //extSet.addAll(Arrays.asList(newValue.toLowerCase().split(" ")));
+            //extSet.addAll(Arrays.asList(newValue.toLowerCase().split(" ")));
         }
 
         public boolean accept(File file) {
@@ -124,6 +126,32 @@ public class FileChooserTest extends javax.swing.JPanel {
                 selectFilesOnlyItem.isSelected() ? JFileChooser.FILES_ONLY : (selectDirectoriesOnlyItem.isSelected() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_AND_DIRECTORIES));
         fileChooser.setFileHidingEnabled(!hiddenFilesItem.isSelected());
         fileChooser.setMultiSelectionEnabled(multiSelectionItem.isSelected());
+        if (accessoryCheckBox.isSelected()) {
+            if (!(fileChooser.getAccessory() instanceof Accessory)) {
+                Accessory pa = new Accessory();
+                fileChooser.setAccessory(pa);
+                fileChooser.addPropertyChangeListener(pa);
+            }
+        } else {
+            if (fileChooser.getAccessory() instanceof Accessory) {
+                Accessory pa = (Accessory) fileChooser.getAccessory();
+                fileChooser.setAccessory(null);
+                fileChooser.removePropertyChangeListener(pa);
+            }
+        }
+        if (previewCheckBox.isSelected()) {
+            if (!(fileChooser.getClientProperty("Quaqua.FileChooser.previewComponent") instanceof Preview)) {
+                Preview pa = new Preview();
+                fileChooser.putClientProperty("Quaqua.FileChooser.previewComponent", pa);
+                fileChooser.addPropertyChangeListener(pa);
+            }
+        } else {
+            if (fileChooser.getClientProperty("Quaqua.FileChooser.previewComponent") instanceof Preview) {
+                Preview pa = (Preview) fileChooser.getAccessory();
+                fileChooser.putClientProperty("Quaqua.FileChooser.previewComponent", null);
+                fileChooser.removePropertyChangeListener(pa);
+            }
+        }
 
         if (customFileSystemViewItem.isSelected() != isUseCustomFileSystemView) {
             isUseCustomFileSystemView = customFileSystemViewItem.isSelected();
@@ -137,10 +165,10 @@ public class FileChooserTest extends javax.swing.JPanel {
 
     private void updateButtons() {
         boolean b =
-                !customApproveItem.isSelected() &&
-                selectFilesOnlyItem.isSelected() &&
-                !multiSelectionItem.isSelected() &&
-                !hiddenFilesItem.isSelected();
+                !customApproveItem.isSelected()
+                && selectFilesOnlyItem.isSelected()
+                && !multiSelectionItem.isSelected()
+                && !hiddenFilesItem.isSelected();
 
         saveFileDialogButton.setEnabled(b);
         openFileDialogButton.setEnabled(b);
@@ -219,6 +247,8 @@ public class FileChooserTest extends javax.swing.JPanel {
         filterFilesItem = new javax.swing.JCheckBox();
         filterFilesField = new javax.swing.JTextField();
         customFileSystemViewItem = new javax.swing.JCheckBox();
+        accessoryCheckBox = new javax.swing.JCheckBox();
+        previewCheckBox = new javax.swing.JCheckBox();
         actionPanel = new javax.swing.JPanel();
         openFileDialogButton = new javax.swing.JButton();
         saveFileDialogButton = new javax.swing.JButton();
@@ -276,10 +306,10 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
         settingsPanel.add(multiSelectionItem, gridBagConstraints);
 
         hiddenFilesItem.setText("Show hidden files");
@@ -289,8 +319,9 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
         settingsPanel.add(hiddenFilesItem, gridBagConstraints);
 
         customApproveItem.setText("Use custom approve button text");
@@ -301,7 +332,6 @@ public class FileChooserTest extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         settingsPanel.add(customApproveItem, gridBagConstraints);
@@ -322,18 +352,19 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
         settingsPanel.add(filterFilesItem, gridBagConstraints);
 
         filterFilesField.setText("gif jpg png");
         filterFilesField.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 22, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 48, 0, 0);
         settingsPanel.add(filterFilesField, gridBagConstraints);
 
         customFileSystemViewItem.setText("Use custom FileSystemView");
@@ -343,6 +374,20 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         settingsPanel.add(customFileSystemViewItem, gridBagConstraints);
+
+        accessoryCheckBox.setText("Use Accessory");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        settingsPanel.add(accessoryCheckBox, gridBagConstraints);
+
+        previewCheckBox.setText("Use Preview");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
+        settingsPanel.add(previewCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -571,6 +616,7 @@ public class FileChooserTest extends javax.swing.JPanel {
 
 }//GEN-LAST:event_setDirectoryPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox accessoryCheckBox;
     private javax.swing.JPanel actionPanel;
     private javax.swing.JButton createWithButton;
     private javax.swing.JTextField customApproveField;
@@ -586,6 +632,7 @@ public class FileChooserTest extends javax.swing.JPanel {
     private javax.swing.JLabel outputLabel;
     private javax.swing.JPanel outputPanel;
     private javax.swing.JScrollPane outputScrollPane;
+    private javax.swing.JCheckBox previewCheckBox;
     private javax.swing.JButton resetButton;
     private javax.swing.JPanel resetPanel;
     private javax.swing.JPanel resetPanel1;
@@ -601,4 +648,79 @@ public class FileChooserTest extends javax.swing.JPanel {
     private javax.swing.JTextField setSelectedFileField;
     private javax.swing.JPanel settingsPanel;
     // End of variables declaration//GEN-END:variables
+
+    private static class Preview extends JLabel implements PropertyChangeListener {
+
+        private Icon emptyIcon = new Icon() {
+
+            public void paintIcon(Component c, Graphics g, int x, int y) {
+                //
+            }
+
+            public int getIconWidth() {
+                return 64;
+            }
+
+            public int getIconHeight() {
+                return 64;
+            }
+        };
+
+        public Preview() {
+            setIcon(emptyIcon);
+            setFont(new Font("Dialog", Font.PLAIN, 11));
+        }
+
+        public void propertyChange(PropertyChangeEvent evt) {
+            if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
+                final File file = (File) evt.getNewValue();
+                if (file == null || file.isDirectory()) {
+                    setIcon(emptyIcon);
+                    //setText(null);
+                } else {
+                    new Thread() {
+
+                        public void run() {
+                            Image img = Toolkit.getDefaultToolkit().createImage(file.getPath());
+
+                            final ImageIcon icon = new ImageIcon(img.getScaledInstance(64, 64, Image.SCALE_SMOOTH)) {
+
+                                public int getIconWidth() {
+                                    return 64;
+                                }
+
+                                public int getIconHeight() {
+                                    return 64;
+                                }
+                            };
+                            SwingUtilities.invokeLater(new Runnable() {
+
+                                public void run() {
+                                    setIcon(icon);
+                                    //setText(file.getName());
+                                }
+                            });
+                        }
+                    }.start();
+                }
+            }
+
+        }
+    }
+
+    private static class Accessory extends JPanel implements PropertyChangeListener {
+
+        public Accessory() {
+            System.out.println (UIManager.getLookAndFeel().getID());
+
+            JLabel l = new JLabel("Encoding:");
+            JComboBox cb = new JComboBox();
+            cb.setModel(new DefaultComboBoxModel(new String[]{"UTF-8","UTF-16BE","UTF-16LE","ASCII"}) );
+            add(l);
+            add(cb);
+        }
+
+        public void propertyChange(PropertyChangeEvent evt) {
+        }
+    }
 }

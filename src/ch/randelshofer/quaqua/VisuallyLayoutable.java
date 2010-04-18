@@ -1,5 +1,5 @@
 /*
- * @(#)VisuallyLayoutable.java  2.0  2005-07-17
+ * @(#)VisuallyLayoutable.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -24,15 +24,7 @@ import javax.swing.*;
  * each release.
  * 
  * @author  Werner Randelshofer
- * @version 2.0 2005-07-14 Added operation getBaseline. 
- * Replaced operation getVisualBounds by operation getVisualMargin.
- * <br>1.2 2005-06-15 Removed support for both LOWERCASE_TEXT_BOUNDS
- * and UPPERCASE_TEXT_BOUNDS. There is no only support for TEXT_BOUNDS, which
- * is equivalent to UPPERCASE_TEXT_BOUNDS.
- * <br>1.1 2005-06-11 Lowercase text bounds are now based on the height of character 
- * 'x' instead of character 'z'. This is because 'X-Height' is a common
- * typographic scale for the ascent of lower case character.
- * <br>1.0  2005-05-12  Created.
+ * @version $Id$
  */
 public interface VisuallyLayoutable {
     /**

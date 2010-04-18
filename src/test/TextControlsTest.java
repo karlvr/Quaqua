@@ -1,8 +1,8 @@
 /*
- * @(#)JPanel.java  1.0  19 March 2005
+ * @(#)TextControlsTest.java
  *
- * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -18,10 +18,10 @@ import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
- * JPanel.
+ * Text controls test.
  *
  * @author  Werner Randelshofer
- * @version 1.0  19 March 2005  Created.
+ * @version $Id$
  */
 public class TextControlsTest extends javax.swing.JPanel {
     
@@ -30,7 +30,7 @@ public class TextControlsTest extends javax.swing.JPanel {
         initComponents();
         
         tabbedPane.add(new LazyPanel("test.EditorPaneTest"), "EditorPane");
-            tabbedPane.add(new LazyPanel("test.FormattedTextFieldTest14"), "FormattedTextField");
+            tabbedPane.add(new LazyPanel("test.FormattedTextFieldTest"), "FormattedTextField");
         tabbedPane.add(new LazyPanel("test.PasswordFieldTest"), "PasswordField");
         tabbedPane.add(new LazyPanel("test.TextAreaTest"), "TextArea");
        tabbedPane.add(new LazyPanel("test.TextFieldTest"), "TextField");

@@ -1,8 +1,8 @@
 /*
- * @(#)JPanel.java  1.0  19 March 2005
+ * @(#)AdjustmentControlsTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -14,12 +14,12 @@
 package test;
 
 import ch.randelshofer.quaqua.util.Methods;
-import javax.swing.*;
+
 /**
- * JPanel.
+ * AdjustmentControlsTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  19 March 2005  Created.
+ * @version $Id$
  */
 public class AdjustmentControlsTest extends javax.swing.JPanel {
     
@@ -28,8 +28,8 @@ public class AdjustmentControlsTest extends javax.swing.JPanel {
         initComponents();
             tabbedPane.add(new LazyPanel("test.SliderTest"), "Slider");
 
-            tabbedPane.add(new LazyPanel("test.SpinnerTest14"), "Spinner");
-            tabbedPane.add(new LazyPanel("test.ProgressBarTest14"), "ProgressBar");
+            tabbedPane.add(new LazyPanel("test.SpinnerTest"), "Spinner");
+            tabbedPane.add(new LazyPanel("test.ProgressBarTest"), "ProgressBar");
         tabbedPane.add(new LazyPanel("test.ScrollBarTest"), "ScrollBar");
 
         Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);

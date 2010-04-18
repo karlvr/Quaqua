@@ -1,5 +1,5 @@
 /*
- * @(#)VisuallyLayoutableIcon.java  1.0  May 14, 2005
+ * @(#)VisuallyLayoutableIcon.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -20,7 +20,7 @@ import javax.swing.*;
  * relative to the upper left corner of the icon.
  *
  * @author  Werner Randelshofer
- * @version 1.0 May 14, 2005 Created.
+ * @version $Id$
  */
 public class VisuallyLayoutableIcon implements Icon {
     private Icon icon;

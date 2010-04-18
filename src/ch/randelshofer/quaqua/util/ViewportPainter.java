@@ -1,5 +1,5 @@
 /*
- * @(#)ViewportPainter.java  1.0  14 December 2004
+ * @(#)ViewportPainter.java  
  *
  * Copyright (c) 2004-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -20,7 +20,7 @@ import javax.swing.*;
  * paint onto the content area of a JViewport.
  *
  * @author  Werner Randelshofer
- * @version 1.0  14 December 2004  Created.
+ * @version $Id$
  */
 public interface ViewportPainter {
     /**

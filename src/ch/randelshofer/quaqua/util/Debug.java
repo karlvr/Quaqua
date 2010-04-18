@@ -1,5 +1,5 @@
 /*
- * @(#)Debug.java  1.0 2005-05-14
+ * @(#)Debug.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,7 @@ import javax.swing.plaf.*;
  * Debug.
  *
  * @author  Werner Randelshofer
- * @version 1.0 May 14, 2005 Created.
+ * @version $Id$
  */
 public class Debug {
     private final static Stroke defaultStroke = new BasicStroke();

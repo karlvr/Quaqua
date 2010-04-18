@@ -40,7 +40,7 @@ class SwingLayoutStyle extends LayoutStyle {
                     "javax.swing.LayoutStyle$ComponentPlacement");
             swingLayoutStyleClass = Class.forName("javax.swing.LayoutStyle");
             getLayoutStyle =
-                    swingLayoutStyleClass.getMethod("getInstance", null);
+                    swingLayoutStyleClass.getMethod("getInstance");
             getPreferredGap =
                     swingLayoutStyleClass.getMethod("getPreferredGap",
                     new Class[] { JComponent.class, JComponent.class,
@@ -78,7 +78,7 @@ class SwingLayoutStyle extends LayoutStyle {
     
     private static final Object getSwingLayoutStyle() {
         try {
-            return SWING_GET_LAYOUT_STYLE_METHOD.invoke(null, null);
+            return SWING_GET_LAYOUT_STYLE_METHOD.invoke(null);
         } catch (IllegalAccessException iae) {
         } catch (InvocationTargetException ite) {
         }

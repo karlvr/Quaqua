@@ -1,8 +1,8 @@
 /*
- * @(#)QuaquaExplorer.java  1.0  2009-10-04
+ * @(#)QuaquaExplorer.java  
  * 
  * Copyright (c) 2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  * 
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -24,7 +24,7 @@ import javax.swing.tree.*;
  * QuaquaExplorer.
  *
  * @author Werner Randelshofer
- * @version 1.0 2009-10-04 Created.
+ * @version $Id$
  */
 public class QuaquaExplorer extends javax.swing.JPanel {
 
@@ -77,12 +77,12 @@ public class QuaquaExplorer extends javax.swing.JPanel {
         n.add(new Item("Editable Combo Box", "test.EditableComboBoxTest"));
         root.add(n = new DefaultMutableTreeNode("ADJUSTORS"));
         n.add(new Item("Slider", "test.SliderTest"));
-        n.add(new Item("Spinner", "test.SpinnerTest14"));
-        n.add(new Item("Progress Bar", "test.ProgressBarTest14"));
+        n.add(new Item("Spinner", "test.SpinnerTest"));
+        n.add(new Item("Progress Bar", "test.ProgressBarTest"));
         n.add(new Item("Scroll Bar", "test.ScrollBarTest"));
         root.add(n = new DefaultMutableTreeNode("TEXT"));
         n.add(new Item("Editor Pane", "test.EditorPaneTest"));
-        n.add(new Item("Formatted Text Field", "test.FormattedTextFieldTest14"));
+        n.add(new Item("Formatted Text Field", "test.FormattedTextFieldTest"));
         n.add(new Item("Password Field", "test.PasswordFieldTest"));
         n.add(new Item("Text Area", "test.TextAreaTest"));
         n.add(new Item("Text Field", "test.TextFieldTest"));
@@ -98,7 +98,7 @@ public class QuaquaExplorer extends javax.swing.JPanel {
         n.add(new Item("Wrapped Tabbed Pane", "test.TabbedPaneTestWrap"));
         n.add(new Item("Split Pane", "test.SplitPaneTest"));
         n.add(new Item("Border", "test.BorderTest"));
-        n.add(new Item("Box", "test.BoxTest14"));
+        n.add(new Item("Box", "test.BoxTest"));
         root.add(n = new DefaultMutableTreeNode("WINDOWS"));
         n.add(new Item("Desktop Pane", "test.DesktopPaneTest"));
         n.add(new Item("Root Pane", "test.RootPaneTest"));
@@ -108,13 +108,13 @@ public class QuaquaExplorer extends javax.swing.JPanel {
         n.add(new Item("File Chooser", "test.FileChooserTest"));
         n.add(new Item("OptionPane", "test.OptionPaneTest"));
         n.add(new Item("Dialog", "test.DialogTest"));
-        n.add(new Item("Sheet", "test.SheetTest14"));
-        n.add(new Item("Palette", "test.PaletteTest14"));
+        n.add(new Item("Sheet", "test.SheetTest"));
+        n.add(new Item("Palette", "test.PaletteTest"));
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
         n.add(new Item("Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
-        n.add(new Item("Drag and Drop", "test.DnDTest14"));
+        n.add(new Item("Drag and Drop", "test.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
         n.add(new Item("Focus Traversal", "test.FocusTraversalTest"));
         root.add(n = new DefaultMutableTreeNode("NATIVE CODE"));
