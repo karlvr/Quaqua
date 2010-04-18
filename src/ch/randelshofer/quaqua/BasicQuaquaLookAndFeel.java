@@ -58,7 +58,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * shouldn't override this method.
      */
     public String getID() {
-        return "Aqua";
+        return "Quaqua";
     }
 
     /**
