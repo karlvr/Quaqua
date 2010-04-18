@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaViewportUI.java  1.4  2007-11-1
+ * @(#)QuaquaViewportUI.java  
  *
  * Copyright (c) 2004-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -27,17 +27,7 @@ import javax.swing.event.*;
  * The Quaqua user interface delegate for a JViewport.
  *
  * @author  Werner Randelshofer
- * @version 1.4 2007-11-11 Added property change listener. 
- * <br>1.3 2007-01-16 Listen to focus changes on the viewport and its
- * child component, and repaint the parent scroll pane border on focus change.
- * <br>1.2.2 2005-11-26 Retrieve default opaqueness from UIManager.
- * Fixed broken invocation of ViewportPainter.
- * <br>1.2.1 2005-09-17 Only paint viewport if it is opaque.
- * <br>1.2 2005-08-25 Fill the viewport with the background color of its
- * viewport view if the UI of the viewport is not an instance of ViewportPainter.
- * <br>1.1 2004-12-14 Do not check whether the view is striped or not,
- * always use the view for drawing the viewport.
- * <br>1.0  June 22, 2004  Created.
+ * @version $Id$
  */
 public class QuaquaViewportUI extends BasicViewportUI {
     private ChangeListener changeListener;

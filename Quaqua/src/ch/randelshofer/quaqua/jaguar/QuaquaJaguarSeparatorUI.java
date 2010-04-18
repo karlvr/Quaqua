@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaJaguarSeparatorUI.java 2.2  2005-09-25
+ * @(#)QuaquaJaguarSeparatorUI.java 
  *
  * Copyright (c) 2001-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -34,12 +34,7 @@ import javax.swing.plaf.basic.*;
  * </ul>
  *
  * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
- * @version 2.2 2005-09-25 Paint texture when on menu.
- * <br>2.1 2005-05-23 Take insets into account when drawing the separator
- * line.
- * <br>2.0 2004-05-25 Renamed from Quaqua141UPSeparatorUI to
- * QuaquqJaguarSeparatorUI.
- * <br>1.0 2003-09-29 Created.
+ * @version $Id$
  */
 public class QuaquaJaguarSeparatorUI extends BasicSeparatorUI implements VisuallyLayoutable {
     

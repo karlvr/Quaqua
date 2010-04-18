@@ -42,8 +42,8 @@ public class WindowsTest extends javax.swing.JPanel {
         tabbedPane.addTab("FileChooser", null, new LazyPanel("test.FileChooserTest"), "FileChooser");
         tabbedPane.addTab("OptionPane", null, new LazyPanel("test.OptionPaneTest"), "OptionPane");
         tabbedPane.addTab("Dialog", null, new LazyPanel("test.DialogTest"), "Dialog");
-        tabbedPane.addTab("Sheet", null, new LazyPanel("test.SheetTest14"), "Sheet");
-        tabbedPane.addTab("Palette", null, new LazyPanel("test.PaletteTest15"), "Palette");
+        tabbedPane.addTab("Sheet", null, new LazyPanel("test.SheetTest"), "Sheet");
+        tabbedPane.addTab("Palette", null, new LazyPanel("test.PaletteTest"), "Palette");
 
         Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);
     }

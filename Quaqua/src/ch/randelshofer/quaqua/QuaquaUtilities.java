@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaUtilities.java  5.0  2008-05-10
+ * @(#)QuaquaUtilities.java  
  *
  * Copyright (c) 2003-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -20,8 +20,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.lang.reflect.Method;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -32,49 +30,7 @@ import javax.swing.plaf.basic.*;
  * Utility class for the Quaqua LAF.
  *
  * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
- * @version 5.0 2008-05-10 Added support for client property "JComponent.sizeVariant". 
- * <br>4.1.1 2008-04-17 Tried to use fractional font metrics but it
- * does not work well.
- * <br>4.1 2007-11-10 Added method adjustFocus and shouldIgnore from
- * SwingUtilities2.
- * <br>4.0 2007-11-01 Rewrote method isFocused for Java 1.4 or higher. 
- * <br>3.6 2007-08-01 Method isFocused did not always work as expected.
- * <br>3.5 2007-03-04 Added support for client property
- * "Quaqua.Component.cellRendererFor".
- * <br>3.4 2007-02-27 Added method getUIOfType.
- * <br>3.3 2007-02-10 Method installProperty added.
- * <br>3.2 2007-01-18 Changed method isFocused to return true, if the
- * component is focusOwner or permanentFocusOwner.
- * <br>3.1 2006-09-04 Added method compositeRequestFocus.
- * <br>3.0.5 2006-08-20 Method endGraphics must not set
- * KEY_TEXT_ANTIALIASING to null.
- * <br>3.0.4 2006-02-19 Catch Throwable in method setWindowAlpha instead
- * of catching NoSuchMethodException.
- * <br>3.0.3 2006-01-08 Don't set Window alpha, when running on
- * Java 1.4.2_05 on Mac OS X 10.3.5. Because this only has the effect of turning
- * the background color of the Window to white.
- * <br>3.0.2 2005-12-10 Method isOnActiveWindow() did not reliably
- * return true.
- * <br>3.0.1 2005-11-12 Fixed NPE in method repaint border.
- * <br>3.0 2005-09-24 Removed all reflection helper methods. Moved Sheet
- * helper methods out into class Sheets.
- * <br>2.6 2005-09-17 Method isOnFocusedWindow returns true, if
- * the window returns false on "getFocusableWindowState".
- * <br>2.5 2005-03-13 Renamed method isFrameActive to isOnActiveFrame.
- * <br>2.4 2004-12-28 Method createBufferdImage added. Method
- * isOnActiveWindow() renamed to isFrameActive().
- * <br>2.3 2004-12-14 Method getUI added.
- * <br>2.2.1 2004-12-01 Methods setDragEnabled and getDragEnabled never
- * worked because the attempted to get method objects on the wrong class.
- * <br>2.2 2004-09-19 Refined algorithm of method isFrameActive.
- * <br>2.1 2004-07-04 Methods repaintBorder, beginFont, endFont and
- * isFocused added.
- * <br>2.0 2004-04-27 Renamed from QuaquaGraphicUtils to QuaquaUtilities.
- * Added method isFrameActive(Component).
- * <br>1.1.1 2003-10-08 Diagnostic output to System.out removed.
- * <br>1.1 2003-10-05 Methods getModifiersText and getModifiersUnicode
- * added.
- * <br>1.0 2003-07-19 Created.
+ * @version $Id$
  */
 public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstants {
 

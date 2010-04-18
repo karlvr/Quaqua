@@ -272,7 +272,6 @@ public class QuaquaManager {
      * Map of Quaqua Look and Feels.
      *
      * key<String> lafKey.
-     *             One out of Jaguar13,Jaguar14,Panther13,Panther14,Tiger13,Tiger14.
      * value<String> Look and Feel class name.
      */
     private static HashMap lafs;
@@ -329,25 +328,18 @@ public class QuaquaManager {
             e.printStackTrace();
             
             // Fall back to default values
-            lafs.put("Jaguar.14","ch.randelshofer.quaqua.jaguar.Quaqua14JaguarLookAndFeel");
             lafs.put("Jaguar.15","ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
             lafs.put("Jaguar.16","ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
-            lafs.put("Panther.14","ch.randelshofer.quaqua.panther.Quaqua14PantherLookAndFeel");
             lafs.put("Panther.15","ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
             lafs.put("Panther.16","ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
-            lafs.put("Tiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerLookAndFeel");
             lafs.put("Tiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
             lafs.put("Tiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
-            lafs.put("Leopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("Leopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("Leopard.16","ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
-            lafs.put("SnowLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardLookAndFeel");
             lafs.put("SnowLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("SnowLeopard.16","ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel");
-            lafs.put("CrossTiger.14","ch.randelshofer.quaqua.tiger.Quaqua14TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.15","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16","ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
-            lafs.put("CrossLeopard.14","ch.randelshofer.quaqua.leopard.Quaqua14LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15","ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.16","ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
         }
@@ -410,28 +402,7 @@ public class QuaquaManager {
         
         String javaVersion = getProperty("java.version","");
         if (className.equals("apple.laf.AquaLookAndFeel")) {
-            if (javaVersion.startsWith("1.4")) {
-                switch (design) {
-                    case JAGUAR :
-                        lafKey = "Jaguar.14";
-                        break;
-                    case PANTHER :
-                        lafKey = "Panther.14";
-                        break;
-                    case TIGER :
-                        lafKey = "Tiger.14";
-                        break;
-                    case LEOPARD :
-                        lafKey = "Leopard.14";
-                        break;
-                    case SNOW_LEOPARD :
-                        lafKey = "SnowLeopard.14";
-                        break;
-                    default :
-                        lafKey = "Leopard.14";
-                        break;
-                }
-            } else if (javaVersion.startsWith("1.5")) {
+            if (javaVersion.startsWith("1.5")) {
                 switch (design) {
                     case JAGUAR :
                         lafKey = "Jaguar.15";
@@ -475,28 +446,6 @@ public class QuaquaManager {
                 }
             }
         } else {
-            if (javaVersion.startsWith("1.4")) {
-                switch (design) {
-                    case JAGUAR :
-                        lafKey = "CrossTiger.14";
-                        break;
-                    case PANTHER :
-                        lafKey = "CrossTiger.14";
-                        break;
-                    case TIGER :
-                        lafKey = "CrossTiger.14";
-                        break;
-                    case LEOPARD :
-                        lafKey = "Leopard.14";
-                        break;
-                    case SNOW_LEOPARD :
-                        lafKey = "SnowLeopard.14";
-                        break;
-                    default :
-                        lafKey = "CrossLeopard.14";
-                        break;
-                }
-            } else {
                 lafKey = "CrossPlatform.15";
                 switch (design) {
                     case JAGUAR :
@@ -518,7 +467,6 @@ public class QuaquaManager {
                         lafKey = "CrossLeopard.15";
                         break;
                 }
-            }
         }
         
         if (lafs.containsKey(lafKey)) {

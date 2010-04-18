@@ -1,8 +1,8 @@
 /*
- * @(#)JPanel.java  1.0  19 March 2005
+ * @(#)GroupingControlsTest.java
  *
- * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -16,10 +16,10 @@ package test;
 import ch.randelshofer.quaqua.util.Methods;
 import javax.swing.*;
 /**
- * JPanel.
+ * GroupingControlsTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  19 March 2005  Created.
+ * @version $Id$
  */
 public class GroupingControlsTest extends javax.swing.JPanel {
     
@@ -31,7 +31,7 @@ public class GroupingControlsTest extends javax.swing.JPanel {
         tabbedPane.add(new LazyPanel("test.TabbedPaneTestWrap"), "Wrap TabbedPane");
         tabbedPane.add(new LazyPanel("test.SplitPaneTest"), "SplitPane");
         tabbedPane.add(new LazyPanel("test.BorderTest"), "Border");
-        tabbedPane.add(new LazyPanel("test.BoxTest14"), "Box");
+        tabbedPane.add(new LazyPanel("test.BoxTest"), "Box");
 
         Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);
     }

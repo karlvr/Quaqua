@@ -76,13 +76,13 @@ public class QuaquaBorderFactory {
      * Creates a new instance of a border for square buttons.
      */
     public static Border createSquareButtonBorder() {
-        return new Quaqua14SquareButtonBorder();
+        return new QuaquaSquareButtonBorder();
     }
     /**
      * Creates a new instance of a border for placard buttons.
      */
     public static Border createPlacardButtonBorder() {
-        return new Quaqua14PlacardButtonBorder();
+        return new QuaquaPlacardButtonBorder();
     }
     public static Border create(String location, Insets borderInsets, boolean fill) {
         return create(QuaquaIconFactory.createImage(location), borderInsets, borderInsets, fill, null, false);

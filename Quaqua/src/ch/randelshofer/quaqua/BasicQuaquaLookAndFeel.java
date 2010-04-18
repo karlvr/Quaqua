@@ -1459,9 +1459,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         Object textComponentPopupHandler = new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaTextComponentPopupHandler");
         // Focus handler for all text fields
         Object textFieldFocusHandler = new UIDefaults.ProxyLazyValue(
-                (javaVersion.startsWith("1.4") || javaVersion.startsWith("1.5")) ?//
-                "ch.randelshofer.quaqua.Quaqua14TextFieldFocusHandler" ://
-                "ch.randelshofer.quaqua.Quaqua16TextFieldFocusHandler");
+                (javaVersion.startsWith("1.5")) ?//
+                "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler15" ://
+                "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler");
 
         // TextField auto selection
         Boolean autoselect = new Boolean(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").
@@ -1888,14 +1888,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         putDefaults(table, uiDefaults);
 
         // Support for GroupLayout
-        if (javaVersion.startsWith("1.4")
-                || javaVersion.startsWith("1.5")) {
+        if (javaVersion.startsWith("1.5")) {
             uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),
+                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
                         "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
         } else {
             uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.Quaqua14LayoutStyle"),};
+                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle"),};
         }
         putDefaults(table, uiDefaults);
     }

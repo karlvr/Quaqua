@@ -270,7 +270,7 @@ public class Baseline {
     
     private static int getBaselineResizeBehaviorUsingMustang(JComponent c) {
         try {
-            Object result = COMPONENT_BRB_METHOD.invoke(c, null);
+            Object result = COMPONENT_BRB_METHOD.invoke(c);
             if (result == ENUM_BRB_CENTER_OFFSET) {
                 return BRB_CENTER_OFFSET;
             } else if (result == ENUM_BRB_CONSTANT_ASCENT) {
@@ -316,7 +316,7 @@ public class Baseline {
     private static int invokeBRBIMethod(Method method, Component c) {
         int brb = BRB_OTHER;
         try {
-            brb = ((Integer)method.invoke(c, null)).intValue();
+            brb = ((Integer)method.invoke(c)).intValue();
         } catch (IllegalAccessException iae) {
         } catch (IllegalArgumentException iae2) {
         } catch (InvocationTargetException ite2) {

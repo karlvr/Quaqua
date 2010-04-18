@@ -1,8 +1,8 @@
 /*
- * @(#)JPanel.java  1.0  19 March 2005
- *
- * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * @(#)ButtonsTest.java
+ * 
+ * Copyright (c) 2004-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -14,13 +14,12 @@
 package test;
 
 import ch.randelshofer.quaqua.util.Methods;
-import javax.swing.*;
 
 /**
  * JPanel.
  *
  * @author  Werner Randelshofer
- * @version 1.0  19 March 2005  Created.
+ * @version $Id$
  */
 public class ButtonsTest extends javax.swing.JPanel {
     
@@ -35,7 +34,7 @@ public class ButtonsTest extends javax.swing.JPanel {
         tabbedPane.add(new LazyPanel("test.RadioButtonTest"), "RadioButton");
         tabbedPane.add(new LazyPanel("test.ComboBoxTest"), "ComboBox");
         tabbedPane.add(new LazyPanel("test.EditableComboBoxTest"), "Editable ComboBox");
-        tabbedPane.add(new LazyPanel("test.RolloverIconTest14"), "RolloverIcon");
+        tabbedPane.add(new LazyPanel("test.RolloverIconTest"), "RolloverIcon");
         tabbedPane.setSelectedIndex(3);
         
         Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 0); // JTabbedPane.WRAP_TAB_LAYOUT);

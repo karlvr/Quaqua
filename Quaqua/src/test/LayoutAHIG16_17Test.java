@@ -1,8 +1,8 @@
 /*
- * @(#)LayoutAHIG16_17Test.java  1.0  June 14, 2007
+ * @(#)LayoutAHIG16_17Test.java  
  *
- * Copyright (c) 2007 Werner Randelshofer
- * Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * Copyright (c) 2007-2010 Werner Randelshofer
+ * Hausmatt 10, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -25,7 +25,7 @@ import org.jdesktop.layout.*;
  * http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGLayout/chapter_20_section_4.html#//apple_ref/doc/uid/TP30000360-SW2
  *
  * @author Werner Randelshofer
- * @version 1.0 June 14, 2007 Created.
+ * @version $Id$
  */
 public class LayoutAHIG16_17Test extends javax.swing.JPanel {
     /** Creates new instance. */

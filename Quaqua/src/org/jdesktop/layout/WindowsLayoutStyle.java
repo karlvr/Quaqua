@@ -95,6 +95,7 @@ class WindowsLayoutStyle extends LayoutStyle {
         return dlu * baseUnitY / 8;
     }
 
+    @SuppressWarnings("deprecated")
     private void calculateBaseUnits() {
         // This calculation comes from:
         // http://support.microsoft.com/default.aspx?scid=kb;EN-US;125681
