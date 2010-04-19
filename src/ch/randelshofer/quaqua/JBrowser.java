@@ -151,7 +151,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * The previewColumn contains a SizeConstrainedPanel as its child.
      * The SizeConstrainedPanel contains the component returned by the
      * preview renderer.
-     * The prefererred width of the SizeConstrainedPanel is set to the
+     * The preferred width of the SizeConstrainedPanel is set to the
      * value of variable fixedCellWidth.
      */
     private JScrollPane previewColumn;
@@ -999,6 +999,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         // TODO: update preview column
         if (newValue == null) {
             if (previewColumn != null) {
+                repaint(previewColumn.getBounds());
                 remove(previewColumn);
                 previewColumn = null;
             }

@@ -2,7 +2,7 @@
  * @(#)LayoutAHIG15_1Test.java  1.0  June 14, 2007
  *
  * Copyright (c) 2007 Werner Randelshofer
- * Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * Hausmatt 10, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

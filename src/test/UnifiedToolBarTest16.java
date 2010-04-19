@@ -2,7 +2,7 @@
  * @(#)UnifiedToolBarTest16.java  1.0  2009-09-27
  * 
  * Copyright (c) 2009 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  * 
  * The copyright of this software is owned by Werner Randelshofer. 

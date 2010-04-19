@@ -2,7 +2,7 @@
  * @(#)FileChooser.java  1.0  13 February 2005
  *
  * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 
@@ -15,14 +15,15 @@ package test;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import java.awt.*;
-import java.awt.event.PaintEvent;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
-import javax.swing.plaf.FileChooserUI;
 
 /**
  * FileChooser.
@@ -128,28 +129,26 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileChooser.setMultiSelectionEnabled(multiSelectionItem.isSelected());
         if (accessoryCheckBox.isSelected()) {
             if (!(fileChooser.getAccessory() instanceof Accessory)) {
-                Accessory pa = new Accessory();
+                Accessory pa = new Accessory(fileChooser);
                 fileChooser.setAccessory(pa);
-                fileChooser.addPropertyChangeListener(pa);
             }
         } else {
             if (fileChooser.getAccessory() instanceof Accessory) {
                 Accessory pa = (Accessory) fileChooser.getAccessory();
                 fileChooser.setAccessory(null);
-                fileChooser.removePropertyChangeListener(pa);
+                pa.dispose();
             }
         }
         if (previewCheckBox.isSelected()) {
-            if (!(fileChooser.getClientProperty("Quaqua.FileChooser.previewComponent") instanceof Preview)) {
-                Preview pa = new Preview();
-                fileChooser.putClientProperty("Quaqua.FileChooser.previewComponent", pa);
-                fileChooser.addPropertyChangeListener(pa);
+            if (!(fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview)) {
+                Preview pa = new Preview(fileChooser);
+                fileChooser.putClientProperty("Quaqua.FileChooser.preview", pa);
             }
         } else {
-            if (fileChooser.getClientProperty("Quaqua.FileChooser.previewComponent") instanceof Preview) {
+            if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
                 Preview pa = (Preview) fileChooser.getAccessory();
-                fileChooser.putClientProperty("Quaqua.FileChooser.previewComponent", null);
-                fileChooser.removePropertyChangeListener(pa);
+                fileChooser.putClientProperty("Quaqua.FileChooser.preview", null);
+                pa.dispose();
             }
         }
 
@@ -382,7 +381,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         settingsPanel.add(accessoryCheckBox, gridBagConstraints);
 
-        previewCheckBox.setText("Use Preview");
+        previewCheckBox.setText("Use custom preview");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 11;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -615,6 +614,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileChooser.setCurrentDirectory(new File(setDirectoryField.getText()));
 
 }//GEN-LAST:event_setDirectoryPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox accessoryCheckBox;
     private javax.swing.JPanel actionPanel;
@@ -651,76 +651,106 @@ public class FileChooserTest extends javax.swing.JPanel {
 
     private static class Preview extends JLabel implements PropertyChangeListener {
 
-        private Icon emptyIcon = new Icon() {
+        private JFileChooser fileChooser;
 
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-                //
-            }
-
-            public int getIconWidth() {
-                return 64;
-            }
-
-            public int getIconHeight() {
-                return 64;
-            }
-        };
-
-        public Preview() {
-            setIcon(emptyIcon);
+        public Preview(JFileChooser fc) {
+            this.fileChooser = fc;
             setFont(new Font("Dialog", Font.PLAIN, 11));
+            fileChooser.addPropertyChangeListener(this);
+            setVerticalAlignment(JLabel.TOP);
+            setHorizontalAlignment(JLabel.CENTER);
+            setHorizontalTextPosition(JLabel.CENTER);
+            setVerticalTextPosition(JLabel.BOTTOM);
+            setBackground(Color.WHITE);
+            setOpaque(true);
+            updatePreview();
+        }
+
+        private void updatePreview() {
+            final File file = fileChooser.getSelectedFile();
+            if (file == null || file.isDirectory()) {
+                setIcon(null);
+                setText(null);
+            } else {
+                new Thread() {
+
+                    public void run() {
+                        Image img = Toolkit.getDefaultToolkit().createImage(file.getPath());
+
+                        final ImageIcon icon = new ImageIcon(img.getScaledInstance(64, 64, Image.SCALE_SMOOTH));
+                        SwingUtilities.invokeLater(new Runnable() {
+
+                            public void run() {
+                                setIcon(icon);
+                                setText(file.getName());
+                                repaint();
+                            }
+                        });
+                    }
+                }.start();
+            }
         }
 
         public void propertyChange(PropertyChangeEvent evt) {
             if (JFileChooser.SELECTED_FILE_CHANGED_PROPERTY.equals(evt.getPropertyName())) {
-                final File file = (File) evt.getNewValue();
-                if (file == null || file.isDirectory()) {
-                    setIcon(emptyIcon);
-                    //setText(null);
-                } else {
-                    new Thread() {
-
-                        public void run() {
-                            Image img = Toolkit.getDefaultToolkit().createImage(file.getPath());
-
-                            final ImageIcon icon = new ImageIcon(img.getScaledInstance(64, 64, Image.SCALE_SMOOTH)) {
-
-                                public int getIconWidth() {
-                                    return 64;
-                                }
-
-                                public int getIconHeight() {
-                                    return 64;
-                                }
-                            };
-                            SwingUtilities.invokeLater(new Runnable() {
-
-                                public void run() {
-                                    setIcon(icon);
-                                    //setText(file.getName());
-                                }
-                            });
-                        }
-                    }.start();
-                }
+                updatePreview();
             }
 
+        }
+
+        public void dispose() {
+            fileChooser.removePropertyChangeListener(this);
         }
     }
 
     private static class Accessory extends JPanel implements PropertyChangeListener {
 
-        public Accessory() {
-            System.out.println (UIManager.getLookAndFeel().getID());
+        private JCheckBox togglePreviewCheckBox;
+        private JFileChooser fileChooser;
+
+        public Accessory(JFileChooser fc) {
+            this.fileChooser = fc;
+            setBorder(new TitledBorder(""));
 
             JLabel l = new JLabel("Encoding:");
             JComboBox cb = new JComboBox();
-            cb.setModel(new DefaultComboBoxModel(new String[]{"UTF-8","UTF-16BE","UTF-16LE","ASCII"}) );
+            cb.setModel(new DefaultComboBoxModel(new String[]{"UTF-8", "UTF-16BE", "UTF-16LE", "ASCII"}));
             add(l);
             add(cb);
+
+            togglePreviewCheckBox = new JCheckBox("Show custom preview");
+            togglePreviewCheckBox.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    if (togglePreviewCheckBox.isSelected()) {
+                        if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
+                            Preview p = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
+                            p.dispose();
+                        }
+                        fileChooser.putClientProperty("Quaqua.FileChooser.preview", new Preview(fileChooser));
+                    } else {
+                        if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
+                            Preview p = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
+                            p.dispose();
+                        }
+                        fileChooser.putClientProperty("Quaqua.FileChooser.preview", null);
+                    }
+                }
+            });
+            add(togglePreviewCheckBox);
+            togglePreviewCheckBox.setSelected(fileChooser.getClientProperty("Quaqua.FileChooser.preview") != null);
+
+            fc.addPropertyChangeListener(this);
+        }
+
+        public void dispose() {
+            fileChooser.removePropertyChangeListener(this);
         }
 
         public void propertyChange(PropertyChangeEvent evt) {
+            if (evt.getPropertyName().equals("Quaqua.FileChooser.preview")) {
+                togglePreviewCheckBox.setSelected(fileChooser.getClientProperty("Quaqua.FileChooser.preview") != null);
+            }
         }
     }
 }

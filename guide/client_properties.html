@@ -47,8 +47,8 @@ MM_reloadPage(true);
       <th>Notes</th>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
-      <td><p><code>JComponent</code></p>
-      <p><code>.sizeVariant</code></p></td>
+      <td><p><code>JComponent</code><code>.sizeVariant</code></p>
+      </td>
       <td><p>Changes the size variant of a component, if set to <code>regular</code>, <code>small</code> or <code>mini</code>. The default value is <code>regular</code>.</p>
         <p>&nbsp;</p>
         <p>Note: Setting this property causes the UI delegate, to set an appropriate font on the component. <br />
@@ -103,6 +103,19 @@ MM_reloadPage(true);
     </tr>
   </table>
   <h5></h5>
+  <h5>JFileChooser</h5>
+  <table width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
+    <tr>
+      <th>Property</th>
+      <th>Notes</th>
+    </tr>
+    <tr valign="top" bgcolor="#ffffff">
+      <td><code>Quaqua.FileChooser<br />
+      .preview</code></td>
+      <td><p>If set to a <code>java.awt.Component</code>, specifies the component used for rendering the file preview in the last column of the column view in the file browser.</p>
+        <p>If this property is not set, or if its value is null, the file chooser renders the preview using its own renderer.</p></td>
+    </tr>
+  </table>
   <h5>JButton</h5>
   <table width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
     <tr>
@@ -111,24 +124,24 @@ MM_reloadPage(true);
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua.Button<br />
-      .style</code></td>
+        .style</code></td>
       <td>Changes the style of a button, if set to one of the following String
-        values: <code>bevel</code>, <code>square</code>, <code>push</code>, <code>colorWell</code>, <code>toggle</code>,
-        <code>toggleWest</code>, <code>toggleCenter</code>, <code>toggleEast,
-        toolBar, toolBarRollover, toolBarTab, help</code>.<br />
+        values: <code>bevel</code>, <code>square</code>, <code>push</code>, <code>colorWell</code>, <code>toggle</code>, <code>toggleWest</code>, <code>toggleCenter</code>, <code>toggleEast,
+          toolBar, toolBarRollover, toolBarTab, help</code>.<br />
         If no value is specified, the <code>push</code> style is used.<br />
-      This property overrides the <code>JButton.buttonType</code> property.</td>
+        This property overrides the <code>JButton.buttonType</code> property.</td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>JButton<br />
-      .buttonType</code></td>
+        .buttonType</code></td>
       <td>Changes the style of a button, if set to one of the following String
         values: <code>icon, toolbar, text</code>.<br />
-If no value is specified, the <code>text</code> style is used.<br />
-This property is here for backwards compatibility with Apple's Aqua Look and
-Feel only. It is overriden, if the <code>Quaqua.Button.style</code> property is set.</td>
+        If no value is specified, the <code>text</code> style is used.<br />
+        This property is here for backwards compatibility with Apple's Aqua Look and
+        Feel only. It is overriden, if the <code>Quaqua.Button.style</code> property is set.</td>
     </tr>
   </table>
+  <h5></h5>
   <h5>JOptionPane</h5>
   <table width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
     <tr>

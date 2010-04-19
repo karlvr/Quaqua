@@ -174,7 +174,7 @@
         </Component>
         <Component class="javax.swing.JCheckBox" name="previewCheckBox">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Use Preview"/>
+            <Property name="text" type="java.lang.String" value="Use custom preview"/>
           </Properties>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout" value="org.netbeans.modules.form.compat2.layouts.DesignGridBagLayout$GridBagConstraintsDescription">

@@ -122,9 +122,9 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 // Preserve font style attributes as long as they don't interfere
                 // with the font style of the sidebar.
                 if (selected) {
-                    font=font.deriveFont(l.getFont().getStyle()|font.getStyle());
+                    font = font.deriveFont(l.getFont().getStyle() | font.getStyle());
                 } else {
-                    font=font.deriveFont(l.getFont().getStyle());
+                    font = font.deriveFont(l.getFont().getStyle());
                 }
 
                 style = selected ? "shadow" : null;
@@ -172,14 +172,18 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
             } else if (style.startsWith("row")) {
                 font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
+                if (font == null) {
+                    font = l.getFont();
+                }
 
                 // Preserve font style attributes as long as they don't interfere
                 // with the font style of the sidebar.
                 if (selected) {
-                    font=font.deriveFont(l.getFont().getStyle()|font.getStyle());
+                    font = font.deriveFont(l.getFont().getStyle() | font.getStyle());
                 } else {
-                    font=font.deriveFont(l.getFont().getStyle());
+                    font = font.deriveFont(l.getFont().getStyle());
                 }
+
 
                 foreground = UIManager.getColor(selected ? "Tree.sideBar.selectionForeground" : "Tree.sideBar.foreground");
                 if (foreground instanceof InactivatableColorUIResource) {

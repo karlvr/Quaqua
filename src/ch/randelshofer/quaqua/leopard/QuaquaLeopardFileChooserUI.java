@@ -104,6 +104,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     private AbstractAction keyListenerAction = new AbstractAction() {
         // XXX - This should be rewritten using an ActionMap
 
+        @Override
         public void actionPerformed(ActionEvent ae) {
             File file = null;
             switch (ae.getActionCommand().charAt(0)) {
@@ -207,9 +208,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         super(filechooser);
     }
 
+    @Override
     public void installComponents(JFileChooser fc) {
         sidebarTree = new javax.swing.JTree() {
 
+            @Override
             public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
                 d.width = 10;
@@ -646,7 +649,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         fileNamePanel.setVisible(isSave);
 
         // Preview column
-        browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+        doPreviewComponentChanged(null);
 
         // Button state
         updateApproveButtonState();
@@ -674,6 +677,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         fc.doLayout();
     }
 
+    @Override
     public void uninstallComponents(JFileChooser fc) {
         fc.removeAll();
 
@@ -691,6 +695,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      * We install the same listeners as BasicFileChooserUI plus an
      * AncestorListener and a property change listener.
      */
+    @Override
     protected void installListeners(JFileChooser fc) {
         super.installListeners(fc);
         ancestorListener = createAncestorListener(fc);
@@ -700,6 +705,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         fc.addPropertyChangeListener(filterComboBoxModel);
     }
 
+    @Override
     protected void uninstallListeners(JFileChooser fc) {
         super.uninstallListeners(fc);
         if (ancestorListener != null) {
@@ -716,6 +722,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     protected void installStrings(JFileChooser fc) {
         super.installStrings(fc);
 
@@ -771,6 +778,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     /**
      * FIXME - This could be moved up to BasicFileChooserUI.
      */
+    @Override
     public JPanel getAccessoryPanel() {
         return accessoryPanel;
     }
@@ -792,6 +800,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         return new FileChooserAncestorListener();
     }
 
+    @Override
     public void createModel() {
         JFileChooser fc = getFileChooser();
 
@@ -1072,6 +1081,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      */
     protected class BrowserSelectionListener implements TreeSelectionListener {
 
+        @Override
         public void valueChanged(TreeSelectionEvent e) {
             if (isAdjusting != 0) {
                 return;
@@ -1234,10 +1244,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         boolean isSave = isFileNameFieldVisible();
         fileNameTextField.setEnabled(isSave);
         fileNamePanel.setVisible(isSave);
-        //model.setResolveAliasesToFiles(!isSave);
-        // ResourceBundleUtil bundle = (ResourceBundleUtil) UIManager.get("Labels");
-        // boolean isLocalized = bundle.getLocale().getLanguage().equals(getLocale().getLanguage());
-        browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+
+        doPreviewComponentChanged(null);
     }
 
     private void doApproveButtonMnemonicChanged(PropertyChangeEvent e) {
@@ -1261,14 +1269,35 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         browser.setModel(getTreeModel());
         sidebarTree.setModel(sidebarTreeModel = new SidebarTreeModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
     }
+
+    private void doPreviewComponentChanged(PropertyChangeEvent e) {
+        JFileChooser fc = getFileChooser();
+        final Component pv = (Component) fc.getClientProperty("Quaqua.FileChooser.preview");
+        if (pv != null) {
+            browser.setPreviewRenderer(new BrowserPreviewRenderer() {
+
+                public Component getPreviewRendererComponent(JBrowser browser, TreePath[] paths) {
+                    return pv;
+                }
+            });
+            browser.setPreviewColumnWidth(Math.max(browser.getFixedCellWidth()
+                    ,pv.getPreferredSize().width));
+        } else {
+            boolean isSave = isFileNameFieldVisible();
+            browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+            browser.setPreviewColumnWidth(browser.getFixedCellWidth());
+        }
+    }
     /*
      * Listen for filechooser property changes, such as
      * the selected dir changing, or the type of the dialog changing.
      */
 
+    @Override
     public PropertyChangeListener createPropertyChangeListener(final JFileChooser fc) {
         return new PropertyChangeListener() {
 
+            @Override
             public void propertyChange(PropertyChangeEvent e) {
                 isAdjusting++;
 
@@ -1291,8 +1320,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     doAccessoryChanged(e);
                 } else if (s.equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)) {
                     doChoosableFilterChanged(e);
-                } else if (s.equals(JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY) ||
-                        s.equals(JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY)) {
+                } else if (s.equals(JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY)
+                        || s.equals(JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY)) {
                     doApproveButtonTextChanged(e);
                 } else if (s.equals(JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY)) {
                     doDialogTypeChanged(e);
@@ -1302,6 +1331,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     doControlButtonsChanged(e);
                 } else if (s.equals(JFileChooser.FILE_VIEW_CHANGED_PROPERTY)) {
                     doFileViewChanged(e);
+                } else if (s.equals("Quaqua.FileChooser.preview")) {
+                    doPreviewComponentChanged(e);
                 } else if (s.equals("componentOrientation")) {
                     /* FIXME - This needs JDK 1.4 to work.
                     ComponentOrientation o = (ComponentOrientation)e.getNewValue();
@@ -1352,6 +1383,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         browser.ensurePathIsVisible(path);
     }
 
+    @Override
     public String getFileName() {
         if (fileNameTextField != null) {
             return fileNameTextField.getText();
@@ -1360,10 +1392,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     public void setFileName(String filename) {
-        if (fileNameTextField != null &&
-                !fileNameTextField.hasFocus() &&
-                (filename == null || !fileNameTextField.getText().equals(filename))) {
+        if (fileNameTextField != null
+                && !fileNameTextField.hasFocus()
+                && (filename == null || !fileNameTextField.getText().equals(filename))) {
             fileNameTextField.setText(filename);
         }
     }
@@ -1393,6 +1426,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             separator.setPreferredSize(new Dimension(9, 9));
         }
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected,
                 boolean cellHasFocus) {
@@ -1444,6 +1478,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,
                 int row, boolean cellHasFocus) {
@@ -1526,6 +1561,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         Icon icon = null;
         int depth = 0;
 
+        @Override
         public void paintIcon(Component c, Graphics g, int x, int y) {
             if (icon != null) {
                 if (c.getComponentOrientation().isLeftToRight()) {
@@ -1536,10 +1572,12 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public int getIconWidth() {
             return (icon == null) ? depth * space : icon.getIconWidth() + depth * space;
         }
 
+        @Override
         public int getIconHeight() {
             return (icon == null) ? 0 : icon.getIconHeight();
         }
@@ -1583,20 +1621,24 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             setSelectedItem(this.path.getLastPathComponent());
         }
 
+        @Override
         public void setSelectedItem(Object selectedItem) {
             AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) selectedItem;
             this.selectedDirectory = node;
             fireContentsChanged(this, -1, -1);
         }
 
+        @Override
         public Object getSelectedItem() {
             return selectedDirectory;
         }
 
+        @Override
         public int getSize() {
             return (path == null) ? 0 : path.getPathCount();
         }
 
+        @Override
         public Object getElementAt(int index) {
             return path.getPathComponent(path.getPathCount() - index - 1);
         }
@@ -1616,6 +1658,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
         private Border border = new EmptyBorder(1, 0, 1, 0);
 
+        @Override
         public Component getListCellRendererComponent(JList list,
                 Object value, int index, boolean isSelected,
                 boolean cellHasFocus) {
@@ -1652,6 +1695,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             filters = getFileChooser().getChoosableFileFilters();
         }
 
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String prop = e.getPropertyName();
             if (prop == JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY) {
@@ -1662,6 +1706,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public void setSelectedItem(Object filter) {
             if (filter != null) {
                 getFileChooser().setFileFilter((FileFilter) filter);
@@ -1674,6 +1719,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public Object getSelectedItem() {
             // Ensure that the current filter is in the list.
             // NOTE: we shouldnt' have to do this, since JFileChooser adds
@@ -1695,6 +1741,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             return getFileChooser().getFileFilter();
         }
 
+        @Override
         public int getSize() {
             if (filters != null) {
                 return filters.length;
@@ -1703,6 +1750,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public Object getElementAt(int index) {
             if (index > getSize() - 1) {
                 // This shouldn't happen. Try to recover gracefully.
@@ -1725,6 +1773,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             super("DirectoryComboBoxAction");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             if (isAdjusting != 0) {
                 return;
@@ -1773,16 +1822,19 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     protected JButton getApproveButton(JFileChooser fc) {
         return approveButton;
     }
 
+    @Override
     public Action getApproveSelectionAction() {
         return approveSelectionAction;
     }
 
     protected class DoubleClickListener extends MouseAdapter {
 
+        @Override
         public void mouseClicked(MouseEvent e) {
             // Note: We must not react on mouse clicks with clickCount=1.
             //       Because this interfers with the mouse handling code in
@@ -1872,6 +1924,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // *****************************
     // ***** Directory Actions *****
     // *****************************
+    @Override
     public Action getNewFolderAction() {
         return newFolderAction;
     }
@@ -1899,6 +1952,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             return (optionPane.getInputValue() == JOptionPane.UNINITIALIZED_VALUE) ? null : (String) optionPane.getInputValue();
         }
 
+        @Override
         public void actionPerformed(ActionEvent actionevent) {
             JFileChooser fc = getFileChooser();
             String newFolderName = showNewFolderDialog();
@@ -1941,10 +1995,12 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
     protected class SaveTextFocusListener implements FocusListener {
 
+        @Override
         public void focusGained(FocusEvent focusevent) {
             updateApproveButtonState();
         }
 
+        @Override
         public void focusLost(FocusEvent focusevent) {
             /* empty */
         }
@@ -1952,14 +2008,17 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
     protected class SaveTextDocumentListener implements DocumentListener {
 
+        @Override
         public void insertUpdate(DocumentEvent documentevent) {
             textChanged();
         }
 
+        @Override
         public void removeUpdate(DocumentEvent documentevent) {
             textChanged();
         }
 
+        @Override
         public void changedUpdate(DocumentEvent documentevent) {
             //textChanged();
         }
@@ -1971,6 +2030,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
             SwingUtilities.invokeLater(new Runnable() {
 
+                @Override
                 public void run() {
                     JFileChooser fc = getFileChooser();
                     AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) browser.getSelectionPath().getLastPathComponent();
@@ -2007,6 +2067,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
      */
     private class FileChooserAncestorListener implements AncestorListener {
 
+        @Override
         public void ancestorAdded(AncestorEvent event) {
             if (model != null) {
                 model.setAutoValidate(QuaquaManager.getBoolean("FileChooser.autovalidate"));
@@ -2026,6 +2087,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             //QuaquaUtilities.setWindowAlpha(SwingUtilities.getWindowAncestor(event.getAncestorParent()), 230);
         }
 
+        @Override
         public void ancestorRemoved(AncestorEvent event) {
             if (model != null) {
                 model.setAutoValidate(false);
@@ -2037,6 +2099,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             }
         }
 
+        @Override
         public void ancestorMoved(AncestorEvent event) {
         }
     }
@@ -2047,6 +2110,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public void ensureFileIsVisible(JFileChooser fc, final File f) {
         if (browser.getSelectionPaths() != null) {
             TreePath[] paths = browser.getSelectionPaths();
@@ -2073,6 +2137,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public String getApproveButtonText(JFileChooser fc) {
         String buttonText = fc.getApproveButtonText();
         if (buttonText != null) {
@@ -2091,6 +2156,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public FileView getFileView(JFileChooser fc) {
         return fileView;
     }
@@ -2098,6 +2164,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public void rescanCurrentDirectory(JFileChooser fc) {
         // Validation is only necessary, when the JFileChooser is showing.
         if (fc.isShowing()) {
@@ -2115,6 +2182,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // ********** BasicFileChooserUI PLAF methods ************
     // *******************************************************
 
+    @Override
     public void clearIconCache() {
         try {
             fileView.getClass().getMethod("clearIconCache", new Class[0]).invoke(fileView, new Object[0]);
@@ -2132,6 +2200,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     // *******************************************************
     private class SidebarSelectionListener implements TreeSelectionListener {
 
+        @Override
         public void valueChanged(TreeSelectionEvent e) {
             if (isAdjusting != 0) {
                 return;
@@ -2183,6 +2252,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
             super("approveSelection");
         }
 
+        @Override
         public void actionPerformed(ActionEvent e) {
             maybeApproveSelection(true);
         }

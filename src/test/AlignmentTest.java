@@ -2,7 +2,7 @@
  * @(#)AlignmentTest.java  1.0  May 16, 2005
  *
  * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

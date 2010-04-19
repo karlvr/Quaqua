@@ -3,7 +3,7 @@ package test;
  * @(#)GroupLayoutTest.java  1.0  June 5, 2006
  *
  * Copyright (c) 2006 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

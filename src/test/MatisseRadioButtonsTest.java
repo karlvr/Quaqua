@@ -2,7 +2,7 @@
  * @(#)MatisseRadioButtonsTest.java  1.0  September 17, 2006
  *
  * Copyright (c) 2006 Werner Randelshofer
- * Staldenmattweg 2, CH-6405 Immensee, Switzerland
+ * Hausmatt 10, CH-6405 Immensee, Switzerland
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

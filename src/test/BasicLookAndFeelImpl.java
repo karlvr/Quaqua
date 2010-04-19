@@ -2,7 +2,7 @@
  * @(#)BasicLookAndFeelImpl.java  1.0  2008-11-17
  *
  * Copyright (c) 2008 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
@@ -20,7 +20,7 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
  *
  * Note: This class must be Java 1.4 compatible.
  *
- * @author Werner Randelshofer, Staldenmattweg 2, CH-6405 Immensee
+ * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee
  * @version 1.0 2008-11-17 Created.
  */
 public class BasicLookAndFeelImpl extends BasicLookAndFeel {

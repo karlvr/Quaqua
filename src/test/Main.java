@@ -1,173 +1,64 @@
 /*
- * @(#)Main.java  1.0  13 February 2005
- *
- * Copyright (c) 2004 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * @(#)Main.java
+ * 
+ * Copyright (c) 2009-2010 Werner Randelshofer
+ * Hausmatt 10, Immensee, CH-6405, Switzerland.
  * All rights reserved.
- *
+ * 
  * The copyright of this software is owned by Werner Randelshofer. 
  * You may not use, copy or modify this software, except in  
  * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
-import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
-import ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView;
-import ch.randelshofer.quaqua.util.*;
-import java.awt.*;
-import java.awt.event.*;
-import java.io.IOException;
-import java.net.URLClassLoader;
-import java.security.*;
+import ch.randelshofer.quaqua.QuaquaManager;
+import java.security.AccessControlException;
+import java.util.Arrays;
+import java.util.HashSet;
 import javax.swing.*;
-import javax.swing.plaf.*;
 import javax.swing.border.*;
-import java.util.*;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.*;
 
 /**
  * Main.
  *
- * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @author Werner Randelshofer
+ * @version $Id$
  */
-public class Main extends javax.swing.JFrame {
+public class Main extends javax.swing.JPanel {
 
-    Dimension preferredSize;
+    private static class Item extends DefaultMutableTreeNode {
 
-    /** Creates new form. */
-    public Main() {
-        /*
-        SwingUtilities.invokeLater(new Runnable() {
-        public void run() { init(); }
-        });*/
-        //getRootPane().putClientProperty("apple.awt.delayWindowOrdering", Boolean.TRUE);
-        init();
-        //setResizable(false);
-    }
+        private String label;
+        private String clazz;
+        private JComponent component;
 
-    public void init() {
-        initComponents();
-
-        // setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        addWindowListener(new WindowAdapter() {
-
-            public void windowClosing(WindowEvent evt) {
-                System.exit(0);
-            }
-        });
-
-
-        tabbedPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, -5, -4, -5));
-        tabbedPane.add(new LazyPanel("test.ButtonsTest"), "Buttons");
-        tabbedPane.add(new LazyPanel("test.AdjustmentControlsTest"), "Adjustors");
-        tabbedPane.add(new LazyPanel("test.TextControlsTest"), "Text");
-        tabbedPane.add(new LazyPanel("test.ViewControlsTest"), "Views");
-        tabbedPane.add(new LazyPanel("test.GroupingControlsTest"), "Grouping");
-        tabbedPane.add(new LazyPanel("test.WindowsTest"), "Windows");
-        tabbedPane.add(new LazyPanel("test.LayoutTest"), "Layout");
-        tabbedPane.add(new LazyPanel("test.BehaviorsTest"), "Behavior");
-        tabbedPane.add(new LazyPanel("test.NativeTest"), "Native");
-        Methods.invokeIfExists(tabbedPane, "setTabLayoutPolicy", 1); // JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        Component[] panes = tabbedPane.getComponents();
-        for (int i = 0; i < panes.length; i++) {
-            JComponent c = (JComponent) panes[i];
-            if (!(c instanceof UIResource)) {
-                c.setBorder(new EmptyBorder(12, 20, 20, 20));
-            }
+        public Item(String label, String clazz) {
+            this.label = label;
+            this.clazz = clazz;
         }
-        setTitle(UIManager.getLookAndFeel().getName() + " " +
-                QuaquaManager.getVersion() +
-                " on Java " + System.getProperty("java.version") + " " + System.getProperty("os.arch"));
 
-        jMenuItem1.setAccelerator(KeyStroke.getKeyStroke("meta I"));
-        jMenuItem1.addActionListener(new ActionListener() {
+        public String toString() {
+            return label;
+        }
 
-            public void actionPerformed(ActionEvent evt) {
-                JOptionPane.showMessageDialog(Main.this, "jMenuItem 1");
+        public JComponent getComponent() {
+            if (component == null) {
+                try {
+                    component = (JComponent) Class.forName(clazz).newInstance();
+                } catch (Exception ex) {
+                    component = new JLabel(ex.toString());
+                }
             }
-        });
-    }
-
-    public void setPreferredSize(Dimension d) {
-        preferredSize = d;
-    }
-
-    public Dimension getPreferredSize() {
-        if (preferredSize != null) {
-            return (Dimension) preferredSize.clone();
-        } else {
-            return super.getPreferredSize();
+            return component;
         }
     }
 
-    /** This method is called from within the constructor to
-     * initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is
-     * always regenerated by the Form Editor.
-     */
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        tabbedPane = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        clipRectCheckBox = new javax.swing.JCheckBox();
-        layoutRectCheckBox = new javax.swing.JCheckBox();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-
-        tabbedPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(11, 0, 0, 0));
-        getContentPane().add(tabbedPane, java.awt.BorderLayout.CENTER);
-
-        clipRectCheckBox.setText("Show Clip Rects");
-        clipRectCheckBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                clipRectStateChanged(evt);
-            }
-        });
-        jPanel1.add(clipRectCheckBox);
-
-        layoutRectCheckBox.setText("Show Layout Rects");
-        layoutRectCheckBox.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                layoutRectStateChanged(evt);
-            }
-        });
-        jPanel1.add(layoutRectCheckBox);
-
-        getContentPane().add(jPanel1, java.awt.BorderLayout.SOUTH);
-
-        jMenu1.setText("Menu");
-
-        jMenuItem1.setText("Item");
-        jMenu1.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu1);
-
-        setJMenuBar(jMenuBar1);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void layoutRectStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_layoutRectStateChanged
-        UIManager.put("Quaqua.Debug.showVisualBounds", new Boolean(evt.getStateChange() == evt.SELECTED));
-        repaint();
-    }//GEN-LAST:event_layoutRectStateChanged
-
-    private void clipRectStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_clipRectStateChanged
-        UIManager.put("Quaqua.Debug.showClipBounds", new Boolean(evt.getStateChange() == evt.SELECTED));
-        repaint();
-    }//GEN-LAST:event_clipRectStateChanged
-
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) {
-//System.out.println("Classpath:"+System.getProperty("java.class.path"));        
+//System.out.println("Classpath:"+System.getProperty("java.class.path"));
         final long start = System.currentTimeMillis();
 
         // System.setSecurityManager(new StrictSecurityManager());
@@ -262,7 +153,13 @@ public class Main extends javax.swing.JFrame {
                     }
                 }
                 long lafEnd = System.currentTimeMillis();
-                Main f = new Main();
+                JFrame f = new JFrame();
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+       f.setTitle(UIManager.getLookAndFeel().getName() + " " +
+                QuaquaManager.getVersion() +
+                " on Java " + System.getProperty("java.version") + " " + System.getProperty("os.arch"));
+                Main ex = new Main();
+                f.add(ex);
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
                 f.setSize(640, 640);
@@ -280,13 +177,130 @@ public class Main extends javax.swing.JFrame {
             }
         });
     }
+
+
+    /** Creates new form Main */
+    public Main() {
+        initComponents();
+        treeScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
+        splitPane.setDividerSize(1);
+        splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
+        tree.putClientProperty("Quaqua.Tree.style", "sideBar");
+        tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+        tree.setRequestFocusEnabled(false);
+
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        DefaultMutableTreeNode n;
+        root.add(n = new DefaultMutableTreeNode("BUTTONS"));
+        n.add(new Item("Push Button", "test.PushButtonTest"));
+        n.add(new Item("Special Buttons", "test.SpecialButtonTest"));
+        n.add(new Item("Toggle Button", "test.ToggleButtonTest"));
+        n.add(new Item("Check Box", "test.CheckBoxTest"));
+        n.add(new Item("Radio Button", "test.RadioButtonTest"));
+        n.add(new Item("Combo Box", "test.ComboBoxTest"));
+        n.add(new Item("Editable Combo Box", "test.EditableComboBoxTest"));
+        root.add(n = new DefaultMutableTreeNode("ADJUSTORS"));
+        n.add(new Item("Slider", "test.SliderTest"));
+        n.add(new Item("Spinner", "test.SpinnerTest"));
+        n.add(new Item("Progress Bar", "test.ProgressBarTest"));
+        n.add(new Item("Scroll Bar", "test.ScrollBarTest"));
+        root.add(n = new DefaultMutableTreeNode("TEXT"));
+        n.add(new Item("Editor Pane", "test.EditorPaneTest"));
+        n.add(new Item("Formatted Text Field", "test.FormattedTextFieldTest"));
+        n.add(new Item("Password Field", "test.PasswordFieldTest"));
+        n.add(new Item("Text Area", "test.TextAreaTest"));
+        n.add(new Item("Text Field", "test.TextFieldTest"));
+        n.add(new Item("Text Pane", "test.TextPaneTest"));
+        root.add(n = new DefaultMutableTreeNode("VIEWS"));
+        n.add(new Item("List", "test.ListTest"));
+        n.add(new Item("Table", "test.TableTest"));
+        n.add(new Item("Tree", "test.TreeTest"));
+        n.add(new Item("Scroll Pane", "test.ScrollPaneTest"));
+        n.add(new Item("Browser", "test.BrowserTest"));
+        root.add(n = new DefaultMutableTreeNode("GROUPING"));
+        n.add(new Item("Scrollable Tabbed Pane", "test.TabbedPaneTestScroll"));
+        n.add(new Item("Wrapped Tabbed Pane", "test.TabbedPaneTestWrap"));
+        n.add(new Item("Split Pane", "test.SplitPaneTest"));
+        n.add(new Item("Border", "test.BorderTest"));
+        n.add(new Item("Box", "test.BoxTest"));
+        root.add(n = new DefaultMutableTreeNode("WINDOWS"));
+        n.add(new Item("Desktop Pane", "test.DesktopPaneTest"));
+        n.add(new Item("Root Pane", "test.RootPaneTest"));
+        n.add(new Item("Popup Menu", "test.PopupMenuTest"));
+        n.add(new Item("Tool Bar", "test.ToolBarTest"));
+        n.add(new Item("Color Chooser", "test.ColorChooserTest"));
+        n.add(new Item("File Chooser", "test.FileChooserTest"));
+        n.add(new Item("OptionPane", "test.OptionPaneTest"));
+        n.add(new Item("Dialog", "test.DialogTest"));
+        n.add(new Item("Sheet", "test.SheetTest"));
+        n.add(new Item("Palette", "test.PaletteTest"));
+        root.add(n = new DefaultMutableTreeNode("LAYOUT"));
+        n.add(new Item("Alignment", "test.AlignmentTest"));
+        n.add(new Item("Margin", "test.VisualMarginTest"));
+        root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
+        n.add(new Item("Drag and Drop", "test.DnDTest"));
+        n.add(new Item("Input Verifier", "test.InputVerifierTest"));
+        n.add(new Item("Focus Traversal", "test.FocusTraversalTest"));
+        root.add(n = new DefaultMutableTreeNode("NATIVE CODE"));
+        n.add(new Item("File System", "test.FileSystemTest"));
+        n.add(new Item("Clipboard", "test.ClipboardTest"));
+        DefaultTreeModel tm = new DefaultTreeModel(root);
+        tree.setModel(tm);
+
+        tree.addTreeSelectionListener(new TreeSelectionListener() {
+
+            public void valueChanged(TreeSelectionEvent e) {
+                TreePath path = tree.getSelectionPath();
+                viewPane.removeAll();
+                if (path != null && path.getPathCount() > 0 && (path.getLastPathComponent() instanceof Item)) {
+                    viewPane.add(((Item) path.getLastPathComponent()).getComponent());
+                }
+                viewPane.revalidate();
+                viewPane.repaint();
+            }
+        });
+
+        for (int i = tree.getRowCount(); i >= 0; i--) {
+            tree.expandRow(i);
+        }
+    }
+
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
+     */
+  
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        splitPane = new javax.swing.JSplitPane();
+        treeScrollPane = new javax.swing.JScrollPane();
+        tree = new javax.swing.JTree();
+        viewPane = new javax.swing.JPanel();
+
+        setLayout(new java.awt.BorderLayout());
+
+        splitPane.setDividerLocation(200);
+
+        treeScrollPane.setMinimumSize(new java.awt.Dimension(0, 0));
+
+        tree.setRootVisible(false);
+        tree.setShowsRootHandles(true);
+        treeScrollPane.setViewportView(tree);
+
+        splitPane.setLeftComponent(treeScrollPane);
+
+        viewPane.setMinimumSize(new java.awt.Dimension(0, 1));
+        viewPane.setLayout(new java.awt.BorderLayout());
+        splitPane.setRightComponent(viewPane);
+
+        add(splitPane, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JCheckBox clipRectCheckBox;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JCheckBox layoutRectCheckBox;
-    private javax.swing.JTabbedPane tabbedPane;
+    private javax.swing.JSplitPane splitPane;
+    private javax.swing.JTree tree;
+    private javax.swing.JScrollPane treeScrollPane;
+    private javax.swing.JPanel viewPane;
     // End of variables declaration//GEN-END:variables
 }
