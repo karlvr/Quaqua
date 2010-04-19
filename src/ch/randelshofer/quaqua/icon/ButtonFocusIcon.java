@@ -1,5 +1,5 @@
 /*
- * @(#)ButtonFocusIcon.java  3.0.1  2006-02-15
+ * @(#)ButtonFocusIcon.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,7 +14,6 @@
 package ch.randelshofer.quaqua.icon;
 
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
@@ -24,12 +23,7 @@ import javax.swing.*;
  * abstract button.
  *
  * @author  Werner Randelshofer
- * @version 3.0.1 2006-02-15 Fixed creation of missing icons.
- * <br>3.0 2005-10-17 Changed superclass to MultiIcon.
- * <br>2.1 2005-06-25 Only paint focus for an abstract button, if its
- * isFocusPainted method returns true.
- * <br>2.0 2005-03-19 Reworked.
- * <br>1.0 October 5, 2003 Create..
+ * @version $Id$
  */
 public class ButtonFocusIcon extends MultiIcon {
     private final static int E = 0;
@@ -71,7 +65,7 @@ public class ButtonFocusIcon extends MultiIcon {
 
     protected Icon getIcon(Component c) {
         Icon icon = null;
-        if (QuaquaUtilities.isFocused(c)
+        if (QuaquaUtilities.isFocused(c) && c.isEnabled()
         && (! (c instanceof AbstractButton) || ((AbstractButton) c).isFocusPainted())) {
             ButtonModel model = ((AbstractButton) c).getModel();
             if (model.isSelected()) {
