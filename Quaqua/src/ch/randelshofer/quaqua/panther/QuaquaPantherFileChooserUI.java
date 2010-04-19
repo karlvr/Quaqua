@@ -770,7 +770,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
         // FIXME - We should not overwrite the FileView attribute
         // of the JFileChooser.
-        if (QuaquaManager.getBoolean("FileChooser.speed")) {
+        if (UIManager.getBoolean("FileChooser.speed")) {
             fileView = new BasicFileView();
         } else {
             fileView = QuaquaFileSystemView.getQuaquaFileSystemView().createFileView(fc);
@@ -1995,7 +1995,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
         public void ancestorAdded(AncestorEvent event) {
             if (model != null) {
-                model.setAutoValidate(QuaquaManager.getBoolean("FileChooser.autovalidate"));
+                model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
                 if (sidebarListModel != null) {
                     sidebarListModel.lazyValidate();

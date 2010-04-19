@@ -52,7 +52,7 @@ public class QuaquaSplitPaneUI extends BasicSplitPaneUI {
         splitPane.setContinuousLayout(true);
         setContinuousLayout(splitPane.isContinuousLayout());
          */
-        Methods.invokeIfExists(splitPane, "setFocusable", QuaquaManager.getBoolean("SplitPane.focusable"));
+       splitPane.setFocusable(UIManager.getBoolean("SplitPane.focusable"));
     }
 
     /**

@@ -66,7 +66,8 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         }
 	QuaquaUtilities.installProperty(b, "opaque", UIManager.get("RadioButton.opaque"));
         //b.setOpaque(false);
-        b.setRequestFocusEnabled(QuaquaManager.getBoolean("RadioButton.requestFocusEnabled"));
+        b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
+        b.setFocusable(UIManager.getBoolean("RadioButton.focusable"));
     }
     
     // ********************************
@@ -245,7 +246,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
      */
     private Insets getInsets(AbstractButton b, Insets i) {
         i = b.getInsets(i);
-        if (QuaquaManager.getBoolean("RadioButton.enforceVisualMargin")) {
+        if (UIManager.getBoolean("RadioButton.enforceVisualMargin")) {
             Insets vmargin = UIManager.getInsets("Component.visualMargin");
             i.left = Math.max(i.left, vmargin.left);
             i.top = Math.max(i.top, vmargin.top);

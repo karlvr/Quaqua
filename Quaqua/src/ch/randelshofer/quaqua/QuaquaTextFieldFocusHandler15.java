@@ -60,7 +60,7 @@ public class QuaquaTextFieldFocusHandler15 implements FocusListener {
             
             if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
                     tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
-                    QuaquaManager.getBoolean(uiProperty)
+                    UIManager.getBoolean(uiProperty)
                     ) {
                 if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
                     QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();

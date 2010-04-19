@@ -61,7 +61,7 @@ public class QuaquaTextFieldFocusHandler implements FocusListener {
 
             if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
                     tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
-                    QuaquaManager.getBoolean(uiProperty)) {
+                    UIManager.getBoolean(uiProperty)) {
                 if (event instanceof CausedFocusEvent) {
                     CausedFocusEvent cfEvent = (CausedFocusEvent) event;
                     if (cfEvent.getCause() == Cause.TRAVERSAL_FORWARD ||

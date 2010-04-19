@@ -48,12 +48,12 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         smallMinimumThumbSize = (Dimension)UIManager.get("ScrollBar.smallMinimumThumbSize");
         updatePlaceButtonsTogether();
         LookAndFeel.installColorsAndFont(scrollbar, "ScrollBar.background", "ScrollBar.foreground", "ScrollBar.font");
-        Methods.invokeIfExists(scrollbar, "setFocusable", QuaquaManager.getBoolean("ScrollBar.focusable"));
+        scrollbar.setFocusable(UIManager.getBoolean("ScrollBar.focusable"));
     }
     private void updatePlaceButtonsTogether() {
         Object value = scrollbar.getClientProperty("Quaqua.ScrollBar.placeButtonsTogether");
         if (value == null) {
-            isPlaceButtonsTogether = QuaquaManager.getBoolean("ScrollBar.placeButtonsTogether");
+            isPlaceButtonsTogether = UIManager.getBoolean("ScrollBar.placeButtonsTogether");
         } else {
             isPlaceButtonsTogether = value.equals(Boolean.TRUE);
         }
@@ -312,7 +312,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
      * ScrollBar.allowsAbsolutePositioning.
      */
     public boolean getSupportsAbsolutePositioning() {
-        return QuaquaManager.getBoolean("ScrollBar.supportsAbsolutePositioning");
+        return UIManager.getBoolean("ScrollBar.supportsAbsolutePositioning");
     }
     
     protected void layoutVScrollbar(JScrollBar sb)  {

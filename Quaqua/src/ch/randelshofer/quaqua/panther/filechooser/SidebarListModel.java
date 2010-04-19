@@ -324,7 +324,7 @@ public class SidebarListModel
                     icon = (isTraversable())
                     ? UIManager.getIcon("FileView.directoryIcon")
                     : UIManager.getIcon("FileView.fileIcon");
-                if (! QuaquaManager.getBoolean("FileChooser.speed")) {
+                if (! UIManager.getBoolean("FileChooser.speed")) {
                     dispatcher.dispatch(new Worker() {
                         public Object construct() {
                             return fileChooser.getIcon(file);
@@ -415,7 +415,7 @@ public class SidebarListModel
                     icon = (isTraversable())
                     ? UIManager.getIcon("FileView.directoryIcon")
                     : UIManager.getIcon("FileView.fileIcon");
-                if (file != null && ! QuaquaManager.getBoolean("FileChooser.speed")) {
+                if (file != null && ! UIManager.getBoolean("FileChooser.speed")) {
                     dispatcher.dispatch(new Worker() {
                         public Object construct() {
                             return fileChooser.getIcon(file);

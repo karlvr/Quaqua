@@ -53,7 +53,8 @@ public class QuaquaSliderUI extends BasicSliderUI
         super.installDefaults(slider);
                 
         focusInsets = getVisualMargin(slider);
-        slider.setRequestFocusEnabled(QuaquaManager.getBoolean("Slider.requestFocusEnabled"));
+        slider.setRequestFocusEnabled(UIManager.getBoolean("Slider.requestFocusEnabled"));
+        slider.setFocusable(UIManager.getBoolean("CheckBox.focusable"));
     }
 
     protected void uninstallListeners(JSlider slider) {

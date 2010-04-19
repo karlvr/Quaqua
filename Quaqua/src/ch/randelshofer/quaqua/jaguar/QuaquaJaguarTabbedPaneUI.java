@@ -264,7 +264,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
         LookAndFeel.installBorder(tabPane, prefix + "border");
 
-        tabPane.setOpaque(QuaquaManager.getBoolean(prefix + "opaque"));
+        tabPane.setOpaque(UIManager.getBoolean(prefix + "opaque"));
     }
 
     protected void paintTabBorder(Graphics g, int tabPlacement,

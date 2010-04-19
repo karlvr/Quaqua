@@ -175,7 +175,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
         LookAndFeel.installBorder(tabPane, prefix + "border");
 
-        tabPane.setOpaque(QuaquaManager.getBoolean(prefix + "opaque"));
+        tabPane.setOpaque(UIManager.getBoolean(prefix + "opaque"));
 
         outerTabInsets = UIManager.getInsets(prefix + "outerTabInsets");
         smallOuterTabInsets = UIManager.getInsets(prefix + "smallOuterTabInsets");
@@ -187,7 +187,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             smallOuterTabInsets = new Insets(0, 0, 0, 0);
         }
 
-        tabPane.setOpaque(QuaquaManager.getBoolean(prefix + "opaque"));
+        tabPane.setOpaque(UIManager.getBoolean(prefix + "opaque"));
     }
 
     protected void installComponents() {

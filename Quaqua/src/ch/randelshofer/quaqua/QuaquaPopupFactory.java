@@ -59,7 +59,7 @@ public class QuaquaPopupFactory extends PopupFactory {
                 return HEAVY_WEIGHT_POPUP;
             }
         }
-        return QuaquaManager.getBoolean("PopupMenu.enableHeavyWeightPopup") ? HEAVY_WEIGHT_POPUP : MEDIUM_WEIGHT_POPUP;
+        return UIManager.getBoolean("PopupMenu.enableHeavyWeightPopup") ? HEAVY_WEIGHT_POPUP : MEDIUM_WEIGHT_POPUP;
     }
 
     /**

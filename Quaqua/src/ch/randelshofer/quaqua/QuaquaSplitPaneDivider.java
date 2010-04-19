@@ -43,7 +43,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
     public QuaquaSplitPaneDivider(BasicSplitPaneUI ui) {
         super(ui);
         setLayout(new QuaquaDividerLayout());
-        Methods.invokeIfExists(this, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
+        setFocusable(UIManager.getBoolean("SplitPaneDivider.focusable"));
     }
 
     /**
@@ -158,7 +158,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         b.setFocusPainted(false);
         b.setBorderPainted(false);
         b.setRequestFocusEnabled(false);
-        Methods.invokeIfExists(b, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
+        b.setFocusable(UIManager.getBoolean("SplitPaneDivider.focusable"));
         return b;
     }
 
@@ -180,7 +180,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         b.setFocusPainted(false);
         b.setBorderPainted(false);
         b.setRequestFocusEnabled(false);
-        Methods.invokeIfExists(b, "setFocusable", QuaquaManager.getBoolean("SplitPaneDivider.focusable"));
+        b.setFocusable(UIManager.getBoolean("SplitPaneDivider.focusable"));
         return b;
     }
 

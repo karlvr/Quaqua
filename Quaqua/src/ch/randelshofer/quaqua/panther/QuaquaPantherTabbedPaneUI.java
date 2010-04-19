@@ -69,7 +69,7 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
         }
         currentUI.installUI(c);
         
-        tabPane.setRequestFocusEnabled(QuaquaManager.getBoolean("TabbedPane.requestFocusEnabled"));
+        tabPane.setRequestFocusEnabled(UIManager.getBoolean("TabbedPane.requestFocusEnabled"));
         
 	//installComponents();
         //installDefaults(); 
