@@ -1476,6 +1476,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     commonDir + "TextField.searchBorders.png",
                     commonDir + "TextField.small.searchBorders.png",});
 
+        // True if all controls are focusable,
+        // false if only text boxes and listes are focusable.
+        Boolean allControlsFocusable=OSXPreferences.getString("AppleKeyboardUIMode", "3").equals("3");
+
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
         //
@@ -1511,6 +1515,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Button.requestFocusEnabled", isRequestFocusEnabled,
             // Note: Minimum width only affects regular sized buttons with push button style
             "Button.minimumWidth", new Integer(80),
+            "Button.focusable", allControlsFocusable,
+            //
             //"CheckBox.background", ...,
             "CheckBox.border", new VisualMargin(0, 0, 0, 0),
             "CheckBox.icon", makeOverlaidButtonStateIcon(
@@ -1528,6 +1534,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "CheckBox.textShiftOffset", zero,
             "CheckBox.requestFocusEnabled", isRequestFocusEnabled,
             "CheckBoxMenuItem.borderPainted", Boolean.TRUE,
+            "CheckBox.focusable", allControlsFocusable,
+            // Set this to true, to workaround Matisse issue #
+            // Enforce margin is used to workaround a workaround in the Matisse
+            // design tool for NetBeans. Matisse removes borders from some
+            // components in order to workaround some ugliness in the look
+            // and feels that ship with the J2SE.
+            "CheckBox.enforceVisualMargin", enforceVisualMargin,
+            //
             // class names of default choosers
             "ColorChooser.defaultChoosers", new String[]{
                 "ch.randelshofer.quaqua.colorchooser.ColorWheelChooser",
@@ -1565,6 +1579,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{new Integer(4), new Integer(4), new Integer(25), new Integer(25)}),
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
+            //
             "ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,
@@ -1587,6 +1602,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             // color of the editor to the the foreground color of the JComboBox.
             // True is needed for rendering of combo boxes in JTables.
             "ComboBox.changeEditorForeground", Boolean.TRUE,
+            "ComboBox.focusable", allControlsFocusable,
+            //
             // The visual margin is used to allow each component having room
             // for a cast shadow and a focus ring, and still supporting a
             // consistent visual arrangement of all components aligned to their
@@ -1595,19 +1612,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             // "Quaqua.visualMargin" or a per-component property e.g.
             // "Button.visualMargin".
             "Component.visualMargin", visualMargin,
-            // Set this to true, to workaround Matisse issue #
-            // Enforce margin is used to workaround a workaround in the Matisse
-            // design tool for NetBeans. Matisse removes borders from some
-            // components in order to workaround some ugliness in the look
-            // and feels that ship with the J2SE.
-            "CheckBox.enforceVisualMargin", enforceVisualMargin,
-            "RadioButton.enforceVisualMargin", enforceVisualMargin,
+            //
             //"DesktopIcon.border", ...
 
             //"EditorPane.border", ...
             //"EditorPane.caretBlinkRate", ...
             "EditorPane.margin", new InsetsUIResource(1, 3, 1, 3),
             "EditorPane.popupHandler", textComponentPopupHandler,
+            //
             "FileChooser.homeFolderIcon", makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
             "FileChooser.autovalidate", autovalidate,
             "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
@@ -1689,6 +1701,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "RadioButton.textShiftOffset", zero,
             "RadioButton.requestFocusEnabled", isRequestFocusEnabled,
             "RadioButtonMenuItem.borderPainted", Boolean.TRUE,
+            "RadioButton.enforceVisualMargin", enforceVisualMargin,
+            "RadioButton.focusable", allControlsFocusable,
+            //
             // RootPane
             "RootPane.opaque", Boolean.TRUE,
             "RootPane.frameBorder", new UIDefaults.ProxyLazyValue(
@@ -1767,7 +1782,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ScrollPane.focusable", Boolean.FALSE,
             "ScrollPane.opaque", opaque,
             "Separator.border", new VisualMargin(),
+            //
             "Sheet.showAsSheet", Boolean.TRUE,
+            //
             "Slider.roundThumb", makeSliderThumbIcon(commonDir + "Slider.roundThumbs.png"),
             "Slider.roundThumb.small", makeSliderThumbIcon(commonDir + "Slider.roundThumbs.small.png"),
             "Slider.southThumb", makeSliderThumbIcon(commonDir + "Slider.southThumbs.png"),
@@ -1784,6 +1801,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "Slider.focusInsets", new Insets(0, 0, 0, 0),
             "Slider.verticalTracks", makeImageBevelBorders(commonDir + "Slider.verticalTracks.png", new Insets(4, 5, 4, 0), 2, true),
             "Slider.horizontalTracks", makeImageBevelBorders(commonDir + "Slider.horizontalTracks.png", new Insets(5, 4, 0, 4), 2, false),
+            "Slider.focusable", allControlsFocusable,
+            //
             "Spinner.arrowButtonBorder", null,
             "Spinner.arrowButtonInsets", null,
             "Spinner.border", null,

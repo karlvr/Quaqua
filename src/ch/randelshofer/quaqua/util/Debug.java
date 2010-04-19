@@ -39,7 +39,7 @@ public class Debug {
         Graphics2D g = (Graphics2D) gr;
         g.setStroke(defaultStroke);
         
-        if (QuaquaManager.getBoolean("Quaqua.Debug.showVisualBounds")
+        if (UIManager.getBoolean("Quaqua.Debug.showVisualBounds")
         && ui instanceof VisuallyLayoutable) {
             
             VisuallyLayoutable layoutable = (VisuallyLayoutable) ui;
@@ -51,7 +51,7 @@ public class Debug {
             rect = layoutable.getVisualBounds(c,VisuallyLayoutable.TEXT_BOUNDS,c.getWidth(),c.getHeight());
             g.drawRect(rect.x,rect.y,rect.width - 1,rect.height - 1);
         }
-        if (QuaquaManager.getBoolean("Quaqua.Debug.showClipBounds")) {
+        if (UIManager.getBoolean("Quaqua.Debug.showClipBounds")) {
             g.setColor(UIManager.getColor("Quaqua.Debug.clipBoundsForeground"));
             g.drawRect(0,0,c.getWidth() - 1,c.getHeight() - 1);
         }

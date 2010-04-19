@@ -494,15 +494,6 @@ public class QuaquaManager {
     }
     
     /**
-     * This method returns a boolean UIManager property.
-     * This method has been moved here, because Java 1.3 does not support
-     * this directly.
-     */
-    public static boolean getBoolean(String key) {
-        Object value = UIManager.get(key);
-        return (value instanceof Boolean) ? ((Boolean)value).booleanValue() : false;
-    }
-    /**
      * This method returns a locally specified property, if it has been set using
      * method <code>setProperty</code>.
      * If no local property has been found, a system property using

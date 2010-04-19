@@ -67,7 +67,7 @@ public class QuaquaComboBoxVisualMargin extends VisualMargin {
      */
     protected Insets getVisualMargin(Component c, Insets insets) {
         Insets i = super.getVisualMargin(c, insets);
-        if (QuaquaManager.getBoolean("ComboBox.harmonizePreferredHeight")) {
+        if (UIManager.getBoolean("ComboBox.harmonizePreferredHeight")) {
             if (! ((JComboBox) c).isEditable()) {
                 i.top += 1;
                 i.bottom += 1;

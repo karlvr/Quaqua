@@ -122,7 +122,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         directoryDispatcher = new ConcurrentDispatcher();
         aliasResolutionDispatcher = new SequentialDispatcher();
 
-        doItFast = QuaquaManager.getBoolean("FileChooser.speed");
+        doItFast = UIManager.getBoolean("FileChooser.speed");
     }
 
     public void dispatchDirectoryUpdater(Runnable r) {
@@ -188,7 +188,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
      */
     private Comparator getNodeComparator() {
         if (nodeComparator == null) {
-            nodeComparator = QuaquaManager.getBoolean("FileChooser.orderByType")
+            nodeComparator = UIManager.getBoolean("FileChooser.orderByType")
                     ? (Comparator) new NodeTypeComparator()
                     : (Comparator) new NodeNameComparator();
         }
@@ -275,7 +275,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             isDirectory = fileType == OSXFile.FILE_TYPE_DIRECTORY;
         }
         boolean isTraversable;
-        if (QuaquaManager.getBoolean("FileChooser.speed")) {
+        if (UIManager.getBoolean("FileChooser.speed")) {
             isTraversable = isDirectory;
         } else {
             isTraversable = isDirectory && fileChooser.isTraversable(resolvedFile);

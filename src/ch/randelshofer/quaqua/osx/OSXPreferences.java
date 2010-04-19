@@ -66,6 +66,8 @@ public class OSXPreferences {
         prefs.put("AppleScrollBarVariant", "DoubleMax");
         // Click in the scroll bar to: "true"=Jump to here, "false"=Jump to next page
         prefs.put("AppleScrollerPagingBehavior", "false");
+        // Keyboard UI mode: "1"=Tab moves to text boxes and lists only, "3"=Tab moves to all controls
+        prefs.put("AppleKeyboardUIMode", "3");
 
         if (QuaquaManager.isOSX()) {
             try {

@@ -450,7 +450,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         }
         splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
         separator.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 0, 3, 0));
-        if (QuaquaManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
+        if (UIManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
             sidebarTree.setUI((TreeUI) QuaquaTreeUI.createUI(sidebarTree));
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
@@ -810,7 +810,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
         // FIXME - We should not overwrite the FileView attribute
         // of the JFileChooser.
-        if (QuaquaManager.getBoolean("FileChooser.speed")) {
+        if (UIManager.getBoolean("FileChooser.speed")) {
             fileView = new BasicFileView();
         } else {
             fileView = QuaquaFileSystemView.getQuaquaFileSystemView().createFileView(fc);
@@ -1473,7 +1473,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     class SidebarRenderer extends DefaultTreeCellRenderer {
 
         public SidebarRenderer() {
-            if (QuaquaManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
+            if (UIManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
                 setUI((LabelUI) QuaquaLabelUI.createUI(this));
             }
         }
@@ -2070,7 +2070,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         @Override
         public void ancestorAdded(AncestorEvent event) {
             if (model != null) {
-                model.setAutoValidate(QuaquaManager.getBoolean("FileChooser.autovalidate"));
+                model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
                 if (sidebarTreeModel != null) {
                     sidebarTreeModel.lazyValidate();

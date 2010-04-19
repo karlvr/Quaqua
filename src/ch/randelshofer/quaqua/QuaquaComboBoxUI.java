@@ -65,9 +65,13 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // Note: we need to invoke c.setOpaque explicitly, installProperty does
         //       not seem to work.
         //LookAndFeel.installProperty(c, "opaque", UIManager.get("ComboBox.opaque"));
-        c.setOpaque(QuaquaManager.getBoolean("ComboBox.opaque"));
+        c.setOpaque(UIManager.getBoolean("ComboBox.opaque"));
         
-        comboBox.setRequestFocusEnabled(QuaquaManager.getBoolean("ComboBox.requestFocusEnabled"));
+        comboBox.setRequestFocusEnabled(UIManager.getBoolean("ComboBox.requestFocusEnabled"));
+
+        // We can't set this property because it breaks the behavior of editable
+        // combo boxes.
+        comboBox.setFocusable(comboBox.isEditable()||UIManager.getBoolean("ComboBox.focusable"));
     }
     protected void installDefaults() {
         super.installDefaults();
@@ -174,7 +178,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     
     public void paint( Graphics g, JComponent c ) {
         if (editor != null &&
-                QuaquaManager.getBoolean("ComboBox.changeEditorForeground")) {
+                UIManager.getBoolean("ComboBox.changeEditorForeground")) {
             editor.setForeground(c.getForeground());
         }
         Debug.paint(g, c, this);
@@ -193,6 +197,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
      * Instantiate it only within subclasses of <FooUI>.
      */
     public class QuaquaPropertyChangeListener extends BasicComboBoxUI.PropertyChangeHandler {
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             super.propertyChange( e );
             String name = e.getPropertyName();
@@ -201,6 +206,10 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 QuaquaComboBoxButton button = (QuaquaComboBoxButton)arrowButton;
                 button.setIconOnly(comboBox.isEditable());
                 updateTableCellEditor();
+
+                // FIXME - This may cause mayhem!
+                comboBox.setFocusable(comboBox.isEditable()||UIManager.getBoolean("ComboBox.focusable"));
+
                 comboBox.repaint();
             } else if ( name.equals( "background" ) ) {
                 Color color = (Color)e.getNewValue();

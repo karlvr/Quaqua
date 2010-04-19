@@ -1551,7 +1551,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
         public void ancestorAdded(AncestorEvent event) {
             if (model != null) {
-                model.setAutoValidate(QuaquaManager.getBoolean("FileChooser.autovalidate"));
+                model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
             }
             // We update the approve button state here, because the approve

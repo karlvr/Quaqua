@@ -42,7 +42,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("ScrollPane.opaque"));
         //c.setOpaque(QuaquaManager.getBoolean("ScrollPane.opaque"));
-        Methods.invokeIfExists(c, "setFocusable", QuaquaManager.getBoolean("ScrollPane.focusable"));
+        c.setFocusable(UIManager.getBoolean("ScrollPane.focusable"));
     }
     protected PropertyChangeListener createPropertyChangeListener() {
         return new PropertyChangeHandler(super.createPropertyChangeListener());

@@ -57,7 +57,8 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
         }
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get("CheckBox.opaque"));
         //b.setOpaque(false);
-        b.setRequestFocusEnabled(QuaquaManager.getBoolean("CheckBox.requestFocusEnabled"));
+        b.setRequestFocusEnabled(UIManager.getBoolean("CheckBox.requestFocusEnabled"));
+        b.setFocusable(UIManager.getBoolean("CheckBox.focusable"));
     }
 
     // ********************************
@@ -299,7 +300,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
      */
     private Insets getInsets(AbstractButton b, Insets i) {
         i = b.getInsets(i);
-        if (QuaquaManager.getBoolean("CheckBox.enforceVisualMargin")) {
+        if (UIManager.getBoolean("CheckBox.enforceVisualMargin")) {
             Insets vmargin = UIManager.getInsets("Component.visualMargin");
             i.left = Math.max(i.left, vmargin.left);
             i.top = Math.max(i.top, vmargin.top);

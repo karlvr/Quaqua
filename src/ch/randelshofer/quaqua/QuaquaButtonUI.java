@@ -98,7 +98,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         String pp = getPropertyPrefix();
         //b.setOpaque(QuaquaManager.getBoolean(pp+"opaque"));
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get(pp + "opaque"));
-        b.setRequestFocusEnabled(QuaquaManager.getBoolean(pp + "requestFocusEnabled"));
+        b.setRequestFocusEnabled(UIManager.getBoolean(pp + "requestFocusEnabled"));
+        b.setFocusable(UIManager.getBoolean(pp+"focusable"));
     }
 
     protected BasicButtonListener createButtonListener(AbstractButton b) {

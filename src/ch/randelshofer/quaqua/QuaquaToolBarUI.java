@@ -624,7 +624,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             toolBarStyle = (yOffset == 0) ? "title" : "plain";
         }
 
-        if (QuaquaManager.getBoolean("ToolBar.textured.dragMovesWindow")) {
+        if (UIManager.getBoolean("ToolBar.textured.dragMovesWindow")) {
             boolean isTextured = QuaquaUtilities.isOnTexturedWindow(toolBar);
             return (isTextured && (toolBarStyle.equals("title")) || toolBarStyle.equals("bottom"));
         } else {
