@@ -616,7 +616,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         fileNamePanel.setVisible(isSave);
 
         // Preview column
-        browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+        doPreviewComponentChanged(null);
 
         // Button state
         updateApproveButtonState();
@@ -1138,6 +1138,24 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         browser.setModel(getTreeModel());
         sidebarList.setModel(sidebarListModel = new SidebarListModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
     }
+    private void doPreviewComponentChanged(PropertyChangeEvent e) {
+        JFileChooser fc = getFileChooser();
+        final Component pv = (Component) fc.getClientProperty("Quaqua.FileChooser.preview");
+        if (pv != null) {
+            browser.setPreviewRenderer(new BrowserPreviewRenderer() {
+
+                public Component getPreviewRendererComponent(JBrowser browser, TreePath[] paths) {
+                    return pv;
+                }
+            });
+            browser.setPreviewColumnWidth(Math.max(browser.getFixedCellWidth()
+                    ,pv.getPreferredSize().width));
+        } else {
+            boolean isSave = isFileNameFieldVisible();
+            browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+            browser.setPreviewColumnWidth(browser.getFixedCellWidth());
+        }
+    }
 
     private void doFileSelectionModeChanged(PropertyChangeEvent e) {
         //Commented out, because there is no reason for clearing the icon cache
@@ -1203,10 +1221,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         boolean isSave = isFileNameFieldVisible();
         fileNameTextField.setEnabled(isSave);
         fileNamePanel.setVisible(isSave);
-        //model.setResolveAliasesToFiles(!isSave);
-        // ResourceBundleUtil bundle = (ResourceBundleUtil) UIManager.get("Labels");
-        // boolean isLocalized = bundle.getLocale().getLanguage().equals(getLocale().getLanguage());
-        browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
+
+        doPreviewComponentChanged(null);
     }
 
     private void doApproveButtonMnemonicChanged(PropertyChangeEvent e) {
@@ -1261,6 +1277,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                     doControlButtonsChanged(e);
                 } else if (s.equals(JFileChooser.FILE_VIEW_CHANGED_PROPERTY)) {
                     doFileViewChanged(e);
+                } else if (s.equals("Quaqua.FileChooser.preview")) {
+                    doPreviewComponentChanged(e);
                 } else if (s.equals("componentOrientation")) {
                     /* FIXME - This needs JDK 1.4 to work.
                     ComponentOrientation o = (ComponentOrientation)e.getNewValue();
