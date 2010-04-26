@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua;
 
-import org.jdesktop.layout.*;
 import java.awt.*;
 import javax.swing.*;
 import java.lang.reflect.*;
@@ -424,9 +423,9 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
         
         if (type == INDENT) {
             // Compute gap
-            int sizeStyle = getSizeStyle(component1);
+            int sizeVariant = getSizeVariant(component1);
             Insets vgap = getVisualIndent(component1);
-            Insets pgap = getPreferredGap(component1, INDENT, sizeStyle);
+            Insets pgap = getPreferredGap(component1, INDENT, sizeVariant);
             switch (position) {
                 case SwingConstants.NORTH :
                     result = (vgap.bottom > 8) ? vgap.bottom : pgap.bottom;
@@ -463,9 +462,9 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
             
             // If the two components have different size styles, we use the
             // smaller size style to determine the gap
-            int sizeStyle = Math.min(getSizeStyle(component1), getSizeStyle(component2));
-            Insets gap1 = getPreferredGap(component1, type, sizeStyle);
-            Insets gap2 = getPreferredGap(component2, type, sizeStyle);
+            int sizeVariant = Math.min(getSizeVariant(component1), getSizeVariant(component2));
+            Insets gap1 = getPreferredGap(component1, type, sizeVariant);
+            Insets gap2 = getPreferredGap(component2, type, sizeVariant);
             
             // The AHIG defines the minimal spacing for a component
             // therefore we use the larger of the two gap values.
@@ -583,10 +582,10 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
     Container parent) {
         int result;
         
-        int sizeStyle = Math.min(getSizeStyle(component), getSizeStyle(parent));
+        int sizeVariant = Math.min(getSizeVariant(component), getSizeVariant(parent));
         
         // Compute gap
-        Insets gap = getContainerGap(parent, sizeStyle);
+        Insets gap = getContainerGap(parent, sizeVariant);
         
         switch (position) {
             case SwingConstants.NORTH :
@@ -710,17 +709,34 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
         return new Insets(0,0,0,0);
     }
     /**
-     * Returns the size style of a specified component.
+     * Returns the size variant of a specified component.
      *
      * @return REGULAR, SMALL or MINI.
      */
-    private int getSizeStyle(Component c) {
+    private int getSizeVariant(Component c) {
+        // Look for size variant client property
+        if (c instanceof JComponent) {
+            String variant = (String) ((JComponent) c).getClientProperty("JComponent.sizeVariant");
+            if (variant != null) {
+                if (variant.equals("regular")) {
+                    return REGULAR;
+                }
+                if (variant.equals("mini")) {
+                    return MINI;
+                }
+                if (variant.equals("small")) {
+                    return SMALL;
+                }
+            }
+        }
         // Aqua components have a different style depending on the
         // font size used.
         // 13 Point = Regular
         // 11 Point = Small
         //  9 Point = Mini
-        int fontSize = c.getFont().getSize();
+        Font f = c.getFont();
+        if (f==null) return REGULAR;
+        int fontSize = f.getSize();
         return (fontSize >= 13) ? REGULAR : ((fontSize > 9) ? SMALL : MINI);
     }
 }

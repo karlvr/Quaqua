@@ -13,7 +13,6 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.osx.OSXPreferences;
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.color.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
@@ -1478,7 +1477,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
 
         // True if all controls are focusable,
         // false if only text boxes and listes are focusable.
-        Boolean allControlsFocusable=OSXPreferences.getString("AppleKeyboardUIMode", "3").equals("3");
+        Boolean allControlsFocusable =//
+                QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true")//
+                || OSXPreferences.getString("AppleKeyboardUIMode", "3").equals("3");
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
