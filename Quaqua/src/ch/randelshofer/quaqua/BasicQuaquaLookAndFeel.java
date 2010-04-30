@@ -56,6 +56,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * that doesn't make any fundamental changes to the look or feel
      * shouldn't override this method.
      */
+    @Override
     public String getID() {
         return "Quaqua";
     }
@@ -69,6 +70,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * @see #uninitialize
      * @see UIManager#setLookAndFeel
      */
+    @Override
     public UIDefaults getDefaults() {
         UIDefaults table = target.getDefaults();
 
@@ -86,6 +88,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         return table;
     }
 
+    @Override
     protected final void initComponentDefaults(UIDefaults table) {
         initResourceBundle(table);
         initColorDefaults(table);
@@ -142,6 +145,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * values, otherwise we create color uiDefaults whose values match
      * the defaults Windows95 colors.
      */
+    @Override
     protected void initSystemColorDefaults(UIDefaults table) {
         ColorUIResource textSelectionBackground;
         ColorUIResource listSelectionBackground;
@@ -1245,7 +1249,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * This is Lucida Grande, Plain, 13.
      */
     protected Font getBaseSystemFont() {
-        return new Font("Lucida Grande", Font.PLAIN, 13);
+        return new FontUIResource("Lucida Grande", Font.PLAIN, 13);
     }
 
     protected void initFontDefaults(UIDefaults table) {
@@ -1335,7 +1339,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             //smallSystemFont = smallSystemFont;
             menuFont = smallSystemFont;
             applicationFont = smallSystemFont;
-            labelFont = labelFont;
+            //labelFont = labelFont;
         }
 
         Object[] uiDefaults = {
@@ -2071,6 +2075,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
      * @see JRootPane#setWindowDecorationStyle
      * @since 1.4
      */
+    @Override
     public boolean getSupportsWindowDecorations() {
         return false;
     }
