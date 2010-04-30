@@ -49,9 +49,11 @@ public class QuaquaTableUI extends BasicTableUI
     /**
      * Creates the key listener for handling keyboard navigation in the JTable.
      */
+    @Override
     protected KeyListener createKeyListener() {
         return new KeyAdapter() {
 
+            @Override
             public void keyPressed(KeyEvent e) {
                 // Eat away META down keys..
                 // We need to do this, because the JTable.processKeyBinding(…) 
@@ -75,6 +77,7 @@ public class QuaquaTableUI extends BasicTableUI
     /**
      * Attaches listeners to the JTable.
      */
+    @Override
     protected void installListeners() {
         super.installListeners();
         propertyChangeListener = createPropertyChangeListener();
@@ -90,6 +93,7 @@ public class QuaquaTableUI extends BasicTableUI
         // table.add
     }
 
+    @Override
     protected void uninstallListeners() {
         super.uninstallListeners();
         table.removePropertyChangeListener(propertyChangeListener);
@@ -104,6 +108,7 @@ public class QuaquaTableUI extends BasicTableUI
 
     }
 
+    @Override
     protected void installDefaults() {
         super.installDefaults();
         Object property = table.getClientProperty("Quaqua.Table.style");
@@ -132,6 +137,7 @@ public class QuaquaTableUI extends BasicTableUI
     /** Paint a representation of the <code>table</code> instance
      * that was set in installUI().
      */
+    @Override
     public void paint(Graphics g, JComponent c) {
         if (table.getRowCount() <= 0 || table.getColumnCount() <= 0) {
             return;
@@ -450,15 +456,15 @@ public class QuaquaTableUI extends BasicTableUI
         Color background = UIManager.getColor("Table.selectionBackground");
         Color foreground = UIManager.getColor("Table.selectionForeground");
         if (background instanceof InactivatableColorUIResource) {
-            ((InactivatableColorUIResource) background).setActive(isFocused &&
-                    (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
+            ((InactivatableColorUIResource) background).setActive(isFocused
+                    && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
         }
         if (foreground instanceof InactivatableColorUIResource) {
             // Note: We must draw with inactive color, if the current cell is not selected
             //       Otherwise, we get white text on white background.
-            ((InactivatableColorUIResource) foreground).setActive(isFocused &&
-                    (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()) &&
-                    table.isCellSelected(row, column));
+            ((InactivatableColorUIResource) foreground).setActive(isFocused
+                    && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed())
+                    && table.isCellSelected(row, column));
         }
 
         Dimension spacing = table.getIntercellSpacing();
@@ -469,19 +475,15 @@ public class QuaquaTableUI extends BasicTableUI
             spacing.width -= 1;
         }
 
-        if (table.isEditing() && table.getEditingRow() == row &&
-                table.getEditingColumn() == column) {
+        if (table.isEditing() && table.getEditingRow() == row
+                && table.getEditingColumn() == column) {
             Component component = table.getEditorComponent();
-            //  component.setBackground((isStriped) ? getAlternateColor(row2 % 2) : table.getBackground());
-            // We only need to paint the alternate background color for even
-            // rows, because the background for uneven rows is painted by
-            // method paintViewport().
-/*
-            if (isStriped && row2 % 2 == 0) {
-            g.setColor(getAlternateColor(0));
-            g.fillRect(cellRect.x - spacing.width, cellRect.y, cellRect.width + spacing.width * 2, cellRect.height + spacing.height);
-            }*/
-            component.setFont(table.getFont());
+
+            // Unless a font has been explicitly set on the editor, we
+            // set the font used by the table.
+            if (component.getFont() instanceof UIResource) {
+                component.setFont(table.getFont());
+            }
             component.setBounds(cellRect);
             component.validate();
         } else {
@@ -522,13 +524,14 @@ public class QuaquaTableUI extends BasicTableUI
     /**
      * Creates the mouse listener for the JTable.
      */
+    @Override
     protected MouseInputListener createMouseInputListener() {
         // FIXME - We haven't yet implemented a mouse handler for J2SE6. 
         // Only use our own mouse listener on Java 1.4 and 1.5,
         // it does not work with J2SE6.
-        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler", "false").equals("true") ||
-                QuaquaManager.getProperty("java.version").startsWith("1.4") ||
-                QuaquaManager.getProperty("java.version").startsWith("1.5")) {
+        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler", "false").equals("true")
+                || QuaquaManager.getProperty("java.version").startsWith("1.4")
+                || QuaquaManager.getProperty("java.version").startsWith("1.5")) {
             return new MouseHandler();
         } else {
             return super.createMouseInputListener();
@@ -569,6 +572,7 @@ public class QuaquaTableUI extends BasicTableUI
     /**
      * Creates the focus listener for handling keyboard navigation in the JTable.
      */
+    @Override
     protected FocusListener createFocusListener() {
         return new FocusHandler();
     }
@@ -597,8 +601,8 @@ public class QuaquaTableUI extends BasicTableUI
                 Object value = event.getNewValue();
                 isStriped = value != null && value.equals("striped");
                 updateStriped();
-            } else if (name.equals("showVerticalLines") ||
-                    name.equals("showHorizontalLines")) {
+            } else if (name.equals("showVerticalLines")
+                    || name.equals("showHorizontalLines")) {
                 if (table.getParent() instanceof JViewport) {
                     table.getParent().repaint();
                 }
@@ -759,9 +763,9 @@ public class QuaquaTableUI extends BasicTableUI
         }
 
         private boolean shouldIgnore(MouseEvent e) {
-            return e.isConsumed() || (!(SwingUtilities.isLeftMouseButton(e) && table.isEnabled())) || e.isPopupTrigger() &&
-                    (table.rowAtPoint(e.getPoint()) == -1 ||
-                    table.isRowSelected(table.rowAtPoint(e.getPoint())));
+            return e.isConsumed() || (!(SwingUtilities.isLeftMouseButton(e) && table.isEnabled())) || e.isPopupTrigger()
+                    && (table.rowAtPoint(e.getPoint()) == -1
+                    || table.isRowSelected(table.rowAtPoint(e.getPoint())));
         }
 
         public void mousePressed(MouseEvent e) {
@@ -802,8 +806,8 @@ public class QuaquaTableUI extends BasicTableUI
                             toggledRow = row;
                             toggledColumn = column;
                             mouseDragAction = MOUSE_DRAG_TOGGLES_SELECTION;
-                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
-                                anchorIndex != -1) {
+                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK
+                                && anchorIndex != -1) {
                             // add all rows to the selection from the anchor to the row
                             table.changeSelection(row, column, false, true);
                             //table.setRowSelectionInterval(anchorIndex, row);
@@ -883,9 +887,9 @@ public class QuaquaTableUI extends BasicTableUI
                     int row = table.rowAtPoint(e.getPoint());
                     int column = table.columnAtPoint(e.getPoint());
                     boolean isCellSelection = table.getCellSelectionEnabled();
-                    if (row != -1 && column != -1 &&
-                            ((!isCellSelection && row != toggledRow) ||
-                            (isCellSelection && (row != toggledRow || column != toggledColumn)))) {
+                    if (row != -1 && column != -1
+                            && ((!isCellSelection && row != toggledRow)
+                            || (isCellSelection && (row != toggledRow || column != toggledColumn)))) {
                         Rectangle cellBounds = table.getCellRect(row, column, true);
                         table.scrollRectToVisible(cellBounds);
                         table.changeSelection(row, column, true, false);

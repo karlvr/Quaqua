@@ -1,5 +1,5 @@
 /*
- * @(#)TableTest.java  1.0  13 February 2005
+ * @(#)TableTest.java 
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,18 +15,15 @@ package test;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
-import java.util.*;
 
 /**
  * TableTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class TableTest extends javax.swing.JPanel {
 
@@ -49,11 +46,11 @@ public class TableTest extends javax.swing.JPanel {
             data = new Object[6][columnClasses.length];
             for (int i = 0; i < data.length; i++) {
                 data[i][0] = Boolean.TRUE;
-                data[i][1] = (i%2==0) ? "Fooing In The Wind" : "Baring The Sea";
-                data[i][2] = (i%2==0) ? "3:51" : "3:42";
-                data[i][3] = (i%2==0) ? "Foo Guy" : "Bar Girl";
-                data[i][4] = (i%2==0) ? "Pop" : "Rock";
-                data[i][5] = (i%2==0) ? new Integer(2007) : new Integer(2008);
+                data[i][1] = (i % 2 == 0) ? "Fooing In The Wind" : "Baring The Sea";
+                data[i][2] = (i % 2 == 0) ? "3:51" : "3:42";
+                data[i][3] = (i % 2 == 0) ? "Foo Guy" : "Bar Girl";
+                data[i][4] = (i % 2 == 0) ? "Pop" : "Rock";
+                data[i][5] = (i % 2 == 0) ? new Integer(2007) : new Integer(2008);
             }
         }
 
@@ -90,19 +87,19 @@ public class TableTest extends javax.swing.JPanel {
     /** Creates new form. */
     public TableTest() {
         initComponents();
-/*
+        /*
         plainTable = new JTable() {
-            public void repaint(long tm, int x, int y, int w, int h) {
-                super.repaint(tm, x, y, w, h);
-                
-System.out.println("JTable.repaint("+tm+","+x+","+y+" "+w+" "+h);                
-if (w == 192) {
-    new Throwable().printStackTrace();
-}
-            }
+        public void repaint(long tm, int x, int y, int w, int h) {
+        super.repaint(tm, x, y, w, h);
+
+        System.out.println("JTable.repaint("+tm+","+x+","+y+" "+w+" "+h);
+        if (w == 192) {
+        new Throwable().printStackTrace();
+        }
+        }
         };
         plainTableScrollPane.setViewportView(plainTable);
-  */      
+         */
         plainTable.setModel(new MyTableModel());
 
         DefaultComboBoxModel rendererComboModel, editorComboModel;
@@ -119,8 +116,8 @@ if (w == 192) {
         cm.getColumn(4).setCellRenderer(new DefaultCellRenderer(comboBox = new JComboBox(rendererComboModel)));
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox = new JComboBox(editorComboModel)));
         plainTable.putClientProperty("Quaqua.Table.style", "plain");
-plainTable.getColumnModel().setColumnSelectionAllowed(true);
-plainTable.setRowSelectionAllowed(true);
+        plainTable.getColumnModel().setColumnSelectionAllowed(true);
+        plainTable.setRowSelectionAllowed(true);
 
         stripedTable.setModel(new MyTableModel());
         rendererComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
@@ -158,18 +155,18 @@ plainTable.setRowSelectionAllowed(true);
         comboBox.setEditable(true);
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox));
         largeFontTable.setRowHeight(largeFontTable.getRowHeight() + 7);
-        largeFontTable.setEnabled(false);
+        //largeFontTable.setEnabled(false);
 
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
         showVerticalLinesCheckBox.setSelected(plainTable.getShowVerticalLines());
-        
+
         // J2SE6 only
         Methods.invokeIfExists(plainTable, "setAutoCreateRowSorter", true);
     }
 
     public static void main(String args[]) {
         try {
-            System.setProperty("Quaqua.Table.useJ2SE5MouseHandler","true");
+            System.setProperty("Quaqua.Table.useJ2SE5MouseHandler", "true");
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
