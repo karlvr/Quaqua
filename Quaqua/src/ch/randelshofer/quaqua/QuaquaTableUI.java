@@ -905,11 +905,39 @@ public class QuaquaTableUI extends BasicTableUI
         // FocusListener
 
         private void repaintSelection() {
-            int[] rows = table.getSelectedRows();
-            Rectangle dirtyRect = null;
-            for (int r = 0; r < rows.length; r++) {
-                for (int c = 0, n = table.getColumnCount(); c < n; c++) {
-                    table.repaint(table.getCellRect(rows[r], c, false));
+            final int[] rows = table.getSelectedRows();
+            if (rows.length > 0) {
+                //
+                // only repaint visible rows
+                //
+                int firstRow = 0;
+                int lastRow = table.getRowCount();
+                int firstCol = 0;
+                int lastCol = table.getColumnCount();
+                if (table.getParent() instanceof JViewport) {
+                    final JViewport pp = (JViewport) table.getParent();
+                    final Point currentPos = pp.getViewPosition();
+                    final Dimension extentSize = pp.getExtentSize();
+                    // 1/-1 allow for rows & cols partially in the rect
+                    firstRow = table.rowAtPoint(currentPos) - 1;
+                    firstCol = table.columnAtPoint(currentPos) - 1;
+                    lastRow = table.rowAtPoint(new Point(currentPos.x, currentPos.y + extentSize.height)) + 1;
+                    lastCol = table.columnAtPoint(new Point(currentPos.x + extentSize.width, currentPos.y)) + 1;
+                }
+
+                if (rows[0] <= lastRow && rows[rows.length - 1] >= firstRow) {
+                    for (int r = 0; r < rows.length; r++) {
+                        int rr = rows[r];
+                        if (rr >= firstRow) {
+                            if (rr <= lastRow) {
+                                for (int c = firstCol; c < lastCol; c++) {
+                                    table.repaint(table.getCellRect(rr, c, false));
+                                }
+                            } else {
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
