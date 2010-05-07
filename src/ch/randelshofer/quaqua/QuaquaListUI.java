@@ -22,8 +22,6 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.event.*;
 import java.lang.reflect.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 /**
  * QuaquaListUI for Java 1.4.
@@ -35,8 +33,6 @@ public class QuaquaListUI extends BasicListUI {
 
     private boolean isStriped = false;
     private boolean isComboPopup = false;
-    /** comboCellBorder is used to accommodate the cell in the combo popup. */
-    private final static Border comboCellBorder = new EmptyBorder(0, 7, 0, 7);
     /**
      * This variable has the value of JList.VERTICAL, if Java 1.4 or higher is
      * present. In older Java VM's it has value 0.
@@ -152,6 +148,7 @@ public class QuaquaListUI extends BasicListUI {
      *
      * @see #paint
      */
+    @Override
     protected void paintCell(
             Graphics g,
             int row,
@@ -200,6 +197,7 @@ public class QuaquaListUI extends BasicListUI {
      *
      * @see #paintCell
      */
+    @Override
     public void paint(Graphics g, JComponent c) {
         paintStripes(g, c);
 
@@ -254,6 +252,7 @@ public class QuaquaListUI extends BasicListUI {
      * @see #installUI
      * @see CellRendererPane
      */
+    @Override
     protected void installDefaults() {
         super.installDefaults();
         updateStriped();
@@ -465,6 +464,7 @@ public class QuaquaListUI extends BasicListUI {
      * @see MouseInputHandler
      * @see #installUI
      */
+    @Override
     protected MouseInputListener createMouseInputListener() {
         return new MouseInputHandler();
     }
@@ -500,10 +500,12 @@ public class QuaquaListUI extends BasicListUI {
         }
     }
 
+    @Override
     protected FocusListener createFocusListener() {
         return new FocusHandler();
     }
 
+    @Override
     protected ListDataListener createListDataListener() {
         return new ListDataHandler();
     }
@@ -530,6 +532,7 @@ public class QuaquaListUI extends BasicListUI {
      */
     public class PropertyChangeHandler extends BasicListUI.PropertyChangeHandler {
 
+        @Override
         public void propertyChange(PropertyChangeEvent e) {
             String name = e.getPropertyName();
 
@@ -568,6 +571,7 @@ public class QuaquaListUI extends BasicListUI {
      * @see PropertyChangeListener
      * @see #installUI
      */
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return new PropertyChangeHandler();
     }

@@ -20,6 +20,7 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
+import javax.swing.plaf.basic.BasicLookAndFeel;
 
 /**
  * The BasicQuaquaLookAndFeel contains the look and feel properties that are
@@ -29,7 +30,7 @@ import java.security.*;
  * @version $Id$
  */
 public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
-
+BasicLookAndFeel a;
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
@@ -1376,6 +1377,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             new UIDefaults.ProxyLazyValue(
             "javax.swing.plaf.BorderUIResource$LineBorderUIResource",
             new Object[]{table.get("listHighlightBorder")}),
+            "List.cellNoFocusBorder",
+            new UIDefaults.ProxyLazyValue(
+            "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
+            new Object[]{1,1,1,1}),
             "Menu.acceleratorFont", menuFont,
             "Menu.font", menuFont,
             "MenuBar.font", menuFont,

@@ -88,8 +88,6 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
     }
     
     public void paintViewport(Graphics g, JViewport c) {
-        JBrowser browser = (JBrowser) c.getView();
-        
         Dimension vs = c.getSize();
         Dimension bs = browser.getSize();
         Point p = browser.getLocation();

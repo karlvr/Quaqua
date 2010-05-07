@@ -41,6 +41,7 @@ public class BasicBrowserUI extends BrowserUI {
     //
     public void installUI(JComponent c) {
         c.setBackground(UIManager.getColor("List.background"));
+        c.setFont(UIManager.getFont("List.font"));
         sizeHandleIcon = new ImageIcon(getClass().getResource("images/Browser.sizeHandleIcon.png"));
 
         browser = (JBrowser) c;
