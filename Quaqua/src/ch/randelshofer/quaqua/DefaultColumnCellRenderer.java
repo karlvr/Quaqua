@@ -30,12 +30,13 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
     private JPanel panel;
     private JLabel textLabel;
     private JLabel arrowLabel;
-    private EmptyBorder noFocusBorder;
     private JBrowser browser;
     protected Icon expandedIcon = null;
     protected Icon selectedExpandedIcon = null;
     protected Icon focusedSelectedExpandedIcon = null;
     protected Icon expandingIcon = null;
+    private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
+    private static final Color TRANSPARENT_COLOR=new Color(0,true);
 
     public DefaultColumnCellRenderer(JBrowser browser) {
         this.browser = browser;
@@ -55,128 +56,59 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
             focusedSelectedExpandedIcon = new ImageIcon(iconImages[2]);
         }
 
-        noFocusBorder = new EmptyBorder(1, 1, 1, 1);
         panel = new JPanel(new BorderLayout()) {
             // Overridden for performance reasons.
             //public void validate() {}
 
+            @Override
             public void revalidate() {
             }
 
+            @Override
             public void repaint(long tm, int x, int y, int width, int height) {
             }
 
+            @Override
             public void repaint(Rectangle r) {
             }
 
+            @Override
             protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, short oldValue, short newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, int oldValue, int newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, long oldValue, long newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, float oldValue, float newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, double oldValue, double newValue) {
             }
 
+            @Override
             public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
             }
         };
 
-        textLabel = new JLabel() {
-            // Overridden for performance reasons.
-
-            public void validate() {
-            }
-
-            public void revalidate() {
-            }
-
-            public void repaint(long tm, int x, int y, int width, int height) {
-            }
-
-            public void repaint(Rectangle r) {
-            }
-
-            protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-                // Strings get interned...
-                if (propertyName == "text") {
-                    super.firePropertyChange(propertyName, oldValue, newValue);
-                }
-            }
-
-            public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, int oldValue, int newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-            }
-        };
-        arrowLabel = new JLabel() {
-            // Overridden for performance reasons.
-
-            public void validate() {
-            }
-
-            public void revalidate() {
-            }
-
-            public void repaint(long tm, int x, int y, int width, int height) {
-            }
-
-            public void repaint(Rectangle r) {
-            }
-
-            protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-                // Strings get interned...
-                if (propertyName == "text") {
-                    super.firePropertyChange(propertyName, oldValue, newValue);
-                }
-            }
-
-            public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, int oldValue, int newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-            }
-
-            public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-            }
-        };
-
+        textLabel = new LabelRenderer();
+        arrowLabel = new LabelRenderer();
         panel.setOpaque(true);
-        panel.setBorder(noFocusBorder);
 
         textLabel.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
+        textLabel.setOpaque(false);
         arrowLabel.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
+        arrowLabel.setOpaque(false);
 
         panel.add(textLabel, BorderLayout.CENTER);
         arrowLabel.setIcon(expandedIcon);
@@ -196,7 +128,7 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
             arrowLabel.setForeground(foreground);
             arrowLabel.setIcon(isFocused ? focusedSelectedExpandedIcon : selectedExpandedIcon);
         } else {
-            panel.setBackground(list.getBackground());
+            panel.setBackground(TRANSPARENT_COLOR);
             Color foreground = list.getForeground();
             textLabel.setForeground(foreground);
             arrowLabel.setForeground(foreground);
@@ -211,7 +143,13 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
 
         textLabel.setEnabled(list.isEnabled());
         textLabel.setFont(list.getFont());
-        panel.setBorder((cellHasFocus) ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
+
+        // Get border. Handle Look and feels which don't specify a border.
+        Border border = UIManager.getBorder((cellHasFocus) ? "List.focusCellHighlightBorder" : "List.cellNoFocusBorder");
+        if (border == null) {
+            border = DEFAULT_NO_FOCUS_BORDER;
+        }
+        panel.setBorder(border);
 
         return panel;
     }
@@ -222,5 +160,58 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
             super(browser);
         }
     }
+
+    private static class LabelRenderer extends JLabel {
+        // Overridden for performance reasons.
+
+        @Override
+        public void validate() {
+        }
+
+        @Override
+        public void revalidate() {
+        }
+
+        @Override
+        public void repaint(
+                long tm, int x, int y, int width, int height) {
+        }
+
+        @Override
+        public void repaint(Rectangle r) {
+        }
+
+        @Override
+        protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+            // Strings get interned...
+            if (propertyName == "text") {
+                super.firePropertyChange(propertyName, oldValue, newValue);
+            }
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, short oldValue, short newValue) {
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, long oldValue, long newValue) {
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, float oldValue, float newValue) {
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, double oldValue, double newValue) {
+        }
+
+        @Override
+        public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+        }
+    };
 }
 

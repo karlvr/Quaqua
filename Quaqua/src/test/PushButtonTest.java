@@ -129,6 +129,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         borderlessLabel = new javax.swing.JLabel();
         springPanel = new javax.swing.JPanel();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         enabledButton.setText("Ångström H");
@@ -254,12 +255,14 @@ public class PushButtonTest extends javax.swing.JPanel {
         borderlessButton.setBorderPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE;
         add(borderlessButton, gridBagConstraints);
 
         borderlessLabel.setText("Borderless");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(borderlessLabel, gridBagConstraints);
 
