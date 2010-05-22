@@ -92,6 +92,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return buttonUI;
     }
 
+    @Override
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
 
@@ -99,13 +100,15 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         //b.setOpaque(QuaquaManager.getBoolean(pp+"opaque"));
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get(pp + "opaque"));
         b.setRequestFocusEnabled(UIManager.getBoolean(pp + "requestFocusEnabled"));
-        b.setFocusable(UIManager.getBoolean(pp+"focusable"));
+        b.setFocusable(UIManager.getBoolean(pp + "focusable"));
     }
 
+    @Override
     protected BasicButtonListener createButtonListener(AbstractButton b) {
         return new QuaquaButtonListener(b);
     }
 
+    @Override
     public void paint(Graphics g, JComponent c) {
 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
@@ -131,6 +134,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
      * As of Java 2 platform v 1.4 this method should not be used or overriden.
      * Use the paintText method which takes the AbstractButton argument.
      */
+    @Override
     protected void paintText(Graphics g, JComponent c, Rectangle textRect, String text) {
         paintText(g, (AbstractButton) c, textRect, text);
     }
@@ -144,6 +148,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
      * @param text String to render
      * @since 1.4
      */
+    @Override
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
@@ -170,6 +175,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
                 textRect.y + fm.getAscent() + getTextShiftOffset());
     }
 
+    @Override
     protected void paintIcon(Graphics g, JComponent c, Rectangle iconRect) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
@@ -267,6 +273,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
      * This method is here, to let QuaquaButtonListener access this
      * property.
      */
+    @Override
     protected String getPropertyPrefix() {
         return super.getPropertyPrefix();
     }
@@ -274,6 +281,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     //          Layout Methods
     // ********************************
 
+    @Override
     public Dimension getMinimumSize(JComponent c) {
         AbstractButton b = (AbstractButton) c;
         String style = (String) c.getClientProperty("Quaqua.Button.style");
@@ -286,19 +294,25 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         Dimension d = super.getMinimumSize(c);
         if (isFixedHeight(c)) {
             Dimension p = getPreferredSize(c);
-            d.height = Math.max(d.height, p.height);
+            if (d != null && p != null) {
+                d.height = Math.max(d.height, p.height);
+            }
         }
         if (!QuaquaUtilities.isSmallSizeVariant(c) && style.equals("push") //
                 && b.getIcon() == null && b.getText() != null) {
-            d.width = Math.max(d.width, UIManager.getInt("Button.minimumWidth"));
+            if (d != null) {
+                d.width = Math.max(d.width, UIManager.getInt("Button.minimumWidth"));
+            }
         }
         return d;
     }
 
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
     }
 
+    @Override
     public Dimension getMaximumSize(JComponent c) {
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style != null && style.equals("help")) {
@@ -396,6 +410,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
                 Methods.invokeGetter(c, "getIconTextGap", 4));
     }
 
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
