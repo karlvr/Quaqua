@@ -59,7 +59,7 @@ BasicLookAndFeel a;
      */
     @Override
     public String getID() {
-        return "Quaqua";
+        return "Aqua";
     }
 
     /**

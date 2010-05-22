@@ -13,10 +13,8 @@
 package test;
 
 import ch.randelshofer.quaqua.QuaquaManager;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
-import javax.swing.border.EmptyBorder;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;

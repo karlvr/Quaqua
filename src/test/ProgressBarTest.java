@@ -65,6 +65,7 @@ public class ProgressBarTest extends javax.swing.JPanel {
         indeterminateBar3 = new javax.swing.JProgressBar();
         jLabel7 = new javax.swing.JLabel();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -166,9 +167,11 @@ public class ProgressBarTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(jProgressBar14, gridBagConstraints);
 
-        indeterminateBar3.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        indeterminateBar3.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 1.0;
         add(indeterminateBar3, gridBagConstraints);
 
         jLabel7.setFont(new java.awt.Font("Lucida Grande", 0, 11));

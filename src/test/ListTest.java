@@ -53,6 +53,7 @@ public class ListTest extends javax.swing.JPanel {
         disabledList = new javax.swing.JList();
         disabled = new javax.swing.JLabel();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         list.setModel(new javax.swing.AbstractListModel() {

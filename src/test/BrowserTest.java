@@ -37,21 +37,33 @@ public class BrowserTest extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         scrollPane1 = new javax.swing.JScrollPane();
         browser1 = new ch.randelshofer.quaqua.JBrowser();
         scrollPane2 = new javax.swing.JScrollPane();
         browser2 = new ch.randelshofer.quaqua.JBrowser();
 
-        setLayout(new java.awt.GridLayout(0, 1));
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
+        setLayout(new java.awt.GridBagLayout());
 
         scrollPane1.setViewportView(browser1);
 
-        add(scrollPane1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        add(scrollPane1, gridBagConstraints);
 
         scrollPane2.setViewportView(browser2);
 
-        add(scrollPane2);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 0);
+        add(scrollPane2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
