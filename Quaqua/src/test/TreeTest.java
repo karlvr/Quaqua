@@ -68,6 +68,7 @@ public class TreeTest extends javax.swing.JPanel {
         tree4 = new javax.swing.JTree();
         textField = new javax.swing.JTextField();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridLayout(2, 2));
 
         tree1.setEditable(true);

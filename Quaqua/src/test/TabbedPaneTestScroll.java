@@ -111,6 +111,7 @@ public class TabbedPaneTestScroll extends javax.swing.JPanel {
         jPanel10 = new javax.swing.JPanel();
         smallLabel = new javax.swing.JLabel();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         tabbedPane2.setTabPlacement(javax.swing.JTabbedPane.RIGHT);
@@ -132,8 +133,8 @@ public class TabbedPaneTestScroll extends javax.swing.JPanel {
         tabbedPane2.addTab("tab2", tabbedPane7);
         tabbedPane2.addTab("tab3", tabbedPane8);
 
-        tabbedPane1.addTab("HHH", tabbedPane2);
-        tabbedPane1.addTab("tab2", jPanel7);
+        tabbedPane1.addTab("HHH", new javax.swing.ImageIcon(getClass().getResource("/ch/randelshofer/quaqua/images/FileView.hardDriveIcon.png")), tabbedPane2); // NOI18N
+        tabbedPane1.addTab("tab2", new javax.swing.ImageIcon(getClass().getResource("/ch/randelshofer/quaqua/images/FileView.floppyDriveIcon.png")), jPanel7); // NOI18N
         tabbedPane1.addTab("tab3", jPanel8);
 
         gridBagConstraints = new java.awt.GridBagConstraints();

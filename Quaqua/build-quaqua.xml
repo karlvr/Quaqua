@@ -17,8 +17,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="6.5"/>
-        <property name="version" value="${versionNumber} 2010-04-07"/>
+        <property name="versionNumber" value="6.5alpha1"/>
+        <property name="version" value="${versionNumber} 2010-05-14"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -318,11 +318,11 @@
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
-        <!-- We compile as much classes as we can with Java 1.4. -->
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.4/Classes/ui.jar" 
+        <!-- We compile as much classes as we can with Java 1.5. -->
+        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Classes/ui.jar"
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true" 
-                srcdir="${src}" source="1.4" target="1.4"
+                srcdir="${src}" source="1.5" target="1.5"
             >
             <include name="**/QuaquaPantherFileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>

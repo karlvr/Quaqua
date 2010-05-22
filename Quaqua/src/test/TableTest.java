@@ -203,6 +203,7 @@ public class TableTest extends javax.swing.JPanel {
         showVerticalLinesCheckBox = new javax.swing.JCheckBox();
         showHorizontalLinesCheckBox = new javax.swing.JCheckBox();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setPreferredSize(new java.awt.Dimension(400, 300));
         setLayout(new java.awt.GridBagLayout());
 

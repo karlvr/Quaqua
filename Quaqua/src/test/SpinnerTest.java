@@ -43,6 +43,7 @@ public class SpinnerTest extends javax.swing.JPanel {
         jSpinner4 = new javax.swing.JSpinner();
         jLabel2 = new javax.swing.JLabel();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -71,10 +72,12 @@ public class SpinnerTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(jSpinner3, gridBagConstraints);
 
-        jSpinner4.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        jSpinner4.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         jSpinner4.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weighty = 1.0;
         add(jSpinner4, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 11));

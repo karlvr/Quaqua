@@ -162,7 +162,7 @@ public class Main extends javax.swing.JPanel {
                 f.add(ex);
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
-                f.setSize(640, 640);
+                f.setSize(740, 440);
                 long packEnd = System.currentTimeMillis();
                 f.setVisible(true);
                 long end = System.currentTimeMillis();

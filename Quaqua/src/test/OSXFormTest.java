@@ -38,7 +38,7 @@ public class OSXFormTest
        GroupLayout layout = new GroupLayout(panel);
        panel.setLayout(layout);
 
-       if(UIManager.getLookAndFeel().getName().startsWith("Quaqua"));
+       if(UIManager.getLookAndFeel().getID().equals("Aqua"));
        {
            layout.setAutocreateGaps(true);
            layout.setAutocreateContainerGaps(true);

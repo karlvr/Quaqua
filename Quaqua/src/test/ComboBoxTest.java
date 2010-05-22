@@ -157,6 +157,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         iconLabel = new javax.swing.JLabel();
         tableComboBox = new javax.swing.JComboBox();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         comboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
@@ -215,7 +216,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel4, gridBagConstraints);
 
-        smallComboBox1.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        smallComboBox1.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -224,7 +225,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox1, gridBagConstraints);
 
-        smallComboBox2.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        smallComboBox2.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 9;
@@ -232,7 +233,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox2, gridBagConstraints);
 
-        smallComboBox3.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        smallComboBox3.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         smallComboBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -247,7 +248,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator2, gridBagConstraints);
 
-        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 18)); // NOI18N
+        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 18));
         largeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -277,7 +278,8 @@ public class ComboBoxTest extends javax.swing.JPanel {
         tableComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(tableComboBox, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
