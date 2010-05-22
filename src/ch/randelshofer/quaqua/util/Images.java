@@ -92,46 +92,26 @@ public class Images {
     }
     
     /**
-     * Based on a code example from:
-     * http://tams-www.informatik.uni-hamburg.de/applets/hades/webdemos/00-intro/02-imageprocessing/saturation.html
-     * @author karlvr
-     *
+     * The graphite filter converts Mac OS X artwork from "Blue Appearance" to
+     * "Graphite Appearance" by desaturing the colors.
      */
     public static class GraphiteFilter extends RGBImageFilter {
         private final static float saturationAdjust = 0.179f;
-        private static float hueAdjust = 0.0052f;
-        private static float brightnessAdjust = 0.09f;
-        
-        
-        private float[] hsb = new float[3];
         
         public int filterRGB(int x, int y, int rgb) {
             int alpha = rgb & 0xff000000;
-            int red = (rgb >> 16) & 0xff;
-            int green = (rgb >> 8) & 0xff;
+            int red = (rgb >>> 16) & 0xff;
+            int green = (rgb >>> 8) & 0xff;
             int blue = rgb & 0xff;
-            /*
-            float RW = (1f - saturationAdjust) * 0.3086f; // or 0.299 for YIV values
-            float RG = (1f - saturationAdjust) * 0.6084f; // or 0.587 for YIV values
-            float RB = (1f - saturationAdjust) * 0.0820f; // or 0.114 for YIV values
-             */
-            float RW = (1f - saturationAdjust) * 0.333f; // or 0.299 for YIV values
-            float RG = (1f - saturationAdjust) * 0.333f; // or 0.587 for YIV values
-            float RB = (1f - saturationAdjust) * 0.333f; // or 0.114 for YIV values
+
+            float weight = (1f-saturationAdjust)*1f/3f;
+            float a = weight + saturationAdjust;
+            float b = weight;
+            float c = weight;
             
-            float a = RW + saturationAdjust;
-            float b = RW;
-            float c = RW;
-            float d = RG;
-            float e = RG + saturationAdjust;
-            float f = RG;
-            float g = RB;
-            float h = RB;
-            float i = RB + saturationAdjust;
-            
-            int outputRed   = (int) (a*red + d*green + g*blue);
-            int outputGreen = (int) (b*red + e*green + h*blue);
-            int outputBlue  = (int) (c*red + f*green + i*blue);
+            int outputRed   = (int) (a*red + c*green + b*blue);
+            int outputGreen = (int) (b*red + a*green + c*blue);
+            int outputBlue  = (int) (c*red + b*green + a*blue);
             return alpha | (outputRed << 16) | (outputGreen << 8) | (outputBlue);
         }
     }
