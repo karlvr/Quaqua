@@ -84,17 +84,15 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      * HashMap<String,SystemItemInfo>
      */
     private HashMap systemItemsMap = new HashMap();
-
     /**
      * The defaultUserItems are used when we fail to read the user items from
      * the sidebarFile.
      */
     private final static File[] defaultUserItems;
 
-
     static {
-        if (QuaquaManager.isOSX() ||
-                QuaquaManager.getOS() == QuaquaManager.DARWIN) {
+        if (QuaquaManager.isOSX()
+                || QuaquaManager.getOS() == QuaquaManager.DARWIN) {
             defaultUserItems = new File[]{
                         new File(QuaquaManager.getProperty("user.home"), "Desktop"),
                         new File(QuaquaManager.getProperty("user.home"), "Documents"),
@@ -110,7 +108,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                     };
         } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
             defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"),"Desktop"),
+                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
                         new File("/media"),
                         new File(QuaquaManager.getProperty("user.home"), "Documents"),
                         new File(QuaquaManager.getProperty("user.home"))
@@ -158,34 +156,37 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         bestBefore = Long.MAX_VALUE;
 
         dispatcher.dispatch(
-                new Worker() {
+                new Worker<Object[]>() {
 
-                    public Object construct() {
-                        try {
-                            return read();
-                        } catch (Exception e) {
-                            return e;
-                        }
+                    public Object[] construct() throws IOException {
+                        return read();
                     }
 
-                    public void finished(Object value) {
+                    public void done(Object[] value) {
                         ArrayList freshUserItems;
 
-                        if (value instanceof Throwable) {
-                            System.err.println("Warning: SidebarTreeModel uses default user items.");
-                            freshUserItems = new ArrayList(defaultUserItems.length);
-                            for (int i = 0; i < defaultUserItems.length; i++) {
-                                if (defaultUserItems[i] == null) {
-                                    freshUserItems.add(null);
-                                } else if (defaultUserItems[i].exists()) {
-                                    freshUserItems.add(new FileNode(defaultUserItems[i]));
-                                }
-                            }
-                        } else {
-                            systemItemsMap = (HashMap) ((Object[]) value)[0];
-                            freshUserItems = (ArrayList) ((Object[]) value)[1];
-                        }
+                        systemItemsMap = (HashMap) value[0];
+                        freshUserItems = (ArrayList) value[1];
+                        update(freshUserItems);
+                    }
 
+            @Override
+                    public void failed(Throwable value) {
+                        ArrayList freshUserItems;
+
+                        System.err.println("Warning: SidebarTreeModel uses default user items.");
+                        freshUserItems = new ArrayList(defaultUserItems.length);
+                        for (int i = 0; i < defaultUserItems.length; i++) {
+                            if (defaultUserItems[i] == null) {
+                                freshUserItems.add(null);
+                            } else if (defaultUserItems[i].exists()) {
+                                freshUserItems.add(new FileNode(defaultUserItems[i]));
+                            }
+                        }
+                        update(freshUserItems);
+                    }
+
+                    private void update(ArrayList freshUserItems) {
                         int systemItemsSize = model.getChildCount(volumesPath.getLastPathComponent());
                         int oldUserItemsSize = placesNode.getChildCount();
                         if (oldUserItemsSize > 0) {
@@ -252,8 +253,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 if (!isInView) {
                     SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
                     int insertionIndex = 0;
-                    while (insertionIndex < devicesNode.getChildCount() &&
-                            ((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex)).compareTo(newNode) < 0) {
+                    while (insertionIndex < devicesNode.getChildCount()
+                            && ((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex)).compareTo(newNode) < 0) {
                         insertionIndex++;
                     }
                     insertNodeInto(newNode, devicesNode, insertionIndex);
@@ -455,15 +456,17 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 icon = (isTraversable())
                         ? UIManager.getIcon("FileView.directoryIcon")
                         : UIManager.getIcon("FileView.fileIcon");
+                //
                 if (!UIManager.getBoolean("FileChooser.speed")) {
-                    dispatcher.dispatch(new Worker() {
+                    dispatcher.dispatch(new Worker<Icon>() {
 
-                        public Object construct() {
+                        public Icon construct() {
                             return fileChooser.getIcon(file);
                         }
 
-                        public void finished(Object value) {
-                            icon = (Icon) value;
+                        @Override
+                        public void done(Icon value) {
+                            icon = value;
                             int[] changedIndices = {getParent().getIndex(FileNode.this)};
                             Object[] changedChildren = {FileNode.this};
                             SidebarTreeModel.this.fireTreeNodesChanged(
@@ -566,15 +569,17 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 icon = (isTraversable())
                         ? UIManager.getIcon("FileView.directoryIcon")
                         : UIManager.getIcon("FileView.fileIcon");
+                //
                 if (file != null && !UIManager.getBoolean("FileChooser.speed")) {
-                    dispatcher.dispatch(new Worker() {
+                    dispatcher.dispatch(new Worker<Icon>() {
 
-                        public Object construct() {
+                        public Icon construct() {
                             return fileChooser.getIcon(file);
                         }
 
-                        public void finished(Object value) {
-                            icon = (Icon) value;
+                        @Override
+                        public void done(Icon value) {
+                            icon = value;
 
                             int[] changedIndices = new int[]{getParent().getIndex(AliasNode.this)};
                             Object[] changedChildren = new Object[]{AliasNode.this};

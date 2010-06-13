@@ -13,7 +13,6 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import ch.randelshofer.quaqua.filechooser.OSXCollator;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
@@ -204,7 +203,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 locale = Locale.getDefault();
             }
             collator = new OSXCollator(locale);
-        //collator = Collator.getInstance(locale);
+            //collator = Collator.getInstance(locale);
         }
         return collator;
     }
@@ -815,7 +814,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         public Node(File f, String userName) {
             this.file = f;
             this.userName = userName;
-        //update();
+            //update();
         }
 
         /**
@@ -936,8 +935,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
                     public void finished(Object value) {
                         // Fire a TreeNodeChanged only, if validation was
                         // successful, and if we are still part of the tree
-                        if (value == Boolean.TRUE &&
-                                getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
+                        if (value == Boolean.TRUE
+                                && getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
                             fireTreeNodeChanged(Node.this);
                         }
                         infoState = VALID;
@@ -971,7 +970,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
          */
         public void invalidateTree() {
             invalidateInfo();
-        // nothing to do, because Node is a leaf.
+            // nothing to do, because Node is a leaf.
         }
 
         /**
@@ -1073,7 +1072,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public String toString() {
             return (userName == null) ? file.getName() : userName;
-        //return userName+"#"+hashCode();
+            //return userName+"#"+hashCode();
         }
 
         public Enumeration children() {
@@ -1441,15 +1440,15 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public DirectoryNode(File file) {
             super(file);
-        // No need to check for exists() && isTraversable in the code below,
-        // because we are only creating DirectoryNode's for files of which we
-        // know that they exist, and that they are traversable
+            // No need to check for exists() && isTraversable in the code below,
+            // because we are only creating DirectoryNode's for files of which we
+            // know that they exist, and that they are traversable
             /*
-        if (file != null
-        && file.exists()
-        && ! fileChooser.isTraversable(file)) {
-        cacheInvalidationTime = Long.MAX_VALUE;
-        }*/
+            if (file != null
+            && file.exists()
+            && ! fileChooser.isTraversable(file)) {
+            cacheInvalidationTime = Long.MAX_VALUE;
+            }*/
         }
 
         public long getFileLength() {
@@ -1677,7 +1676,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 }
                 //if (accept(files[i])) {
                 list.add(files[i]);
-            //}
+                //}
             }
             return (File[]) list.toArray(new File[list.size()]);
         }
@@ -1705,7 +1704,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
     public class AliasNode extends Node {
 
         private File resolvedFile;
-        private Worker resolver;
+        private Worker<File> resolver;
 
         public AliasNode(File aliasFile, File resolvedFile) {
             super(aliasFile);
@@ -1714,16 +1713,19 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public File lazyGetResolvedFile() {
             if (resolvedFile == null && resolver == null) {
-                resolver = new Worker() {
+                resolver = new Worker<File>() {
 
-                    public Object construct() {
+                    public File construct() {
                         return OSXFile.resolveAlias(file, false);
                     }
 
-                    public void finished(Object value) {
-                        if (value instanceof File) {
-                            resolvedFile = (File) value;
-                        }
+                    @Override
+                    public void done(File value) {
+                        resolvedFile = value;
+                    }
+
+                    @Override
+                    public void finished() {
                         resolver = null;
 
                         // only fire events, if we are still part of the tree
@@ -1760,7 +1762,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         /**
          * The current resolver.
          */
-        private Worker resolver;
+        private Worker<File> resolver;
 
         public AliasDirectoryNode(File aliasFile, File resolvedFile) {
             super(aliasFile);
@@ -1777,16 +1779,19 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         public File lazyGetResolvedFile() {
             if (resolvedFile == null && resolver == null) {
-                resolver = new Worker() {
+                resolver = new Worker<File>() {
 
-                    public Object construct() {
+                    public File construct() {
                         return OSXFile.resolveAlias(file, false);
                     }
 
-                    public void finished(Object value) {
-                        if (value instanceof File) {
-                            resolvedFile = (File) value;
-                        }
+                    @Override
+                    public void done(File value) {
+                        resolvedFile = (File) value;
+                    }
+
+                    @Override
+                    public void finished() {
                         resolver = null;
                         // only fire events, if we are still part of the tree
                         if (getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
