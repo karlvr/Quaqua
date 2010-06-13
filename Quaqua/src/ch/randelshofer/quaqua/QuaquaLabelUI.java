@@ -205,8 +205,6 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         g.setFont(font);
         g.setColor(foreground);
         QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY);
-        //SwingUtilities2.drawStringUnderlineCharAt(l, g, s, mnemIndex,
-        //                                             textX, textY);
     }
 
     /**

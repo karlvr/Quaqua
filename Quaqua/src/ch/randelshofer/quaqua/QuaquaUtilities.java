@@ -20,6 +20,8 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.lang.reflect.Method;
 import java.net.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -40,6 +42,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * directly.
      */
     private static boolean canInstallProperty = true;
+    /** Holds the class name of SwingUtilities2 once it has been resolved. */
+    private static String swingUtilities2;
 
     /** Prevent instance creation. */
     private QuaquaUtilities() {
@@ -300,9 +304,29 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return Methods.invokeStaticGetter(GraphicsEnvironment.class, "isHeadless", false);
     }
 
+    /** Returns the class name of SwingUtilities2. */
+    private static String getSwingUtilities2() {
+        if (swingUtilities2 == null) {
+            // Location of SwingUtilities2 in J2SE6:
+            swingUtilities2 = "sun.swing.SwingUtilities2";
+            try {
+                Class.forName(swingUtilities2);
+            } catch (ClassNotFoundException ex) {
+                // Location of SwingUtilities2 in J2SE5:
+                swingUtilities2 = "com.sun.java.swing.SwingUtilities2";
+                try {
+                    Class.forName(swingUtilities2);
+                } catch (ClassNotFoundException ex2) {
+                    System.err.println("Warning QuaquaUtilities: Couldn't locate class "+swingUtilities2);
+                }
+            }
+        }
+        return swingUtilities2;
+    }
+
     public static int getLeftSideBearing(Font f, String string) {
         return ((Integer) Methods.invokeStatic(
-                "com.sun.java.swing.SwingUtilities2", "getLeftSideBearing",
+                getSwingUtilities2(), "getLeftSideBearing",
                 new Class[]{Font.class, String.class}, new Object[]{f, string},
                 new Integer(0))).intValue();
     }
@@ -860,9 +884,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     public static void adjustFocus(JComponent tree) {
-        //SwingUtilities2.adjustFocus(tree);
         try {
-            Methods.invokeStatic("com.sun.java.swing.SwingUtilities2", "adjustFocus", JComponent.class, tree);
+            Methods.invokeStatic(getSwingUtilities2(), "adjustFocus", JComponent.class, tree);
         } catch (NoSuchMethodException ex) {
             tree.requestFocusInWindow();
         }
@@ -871,7 +894,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     static boolean shouldIgnore(MouseEvent e, JComponent tree) {
         //return QuaquaUtilities2.shouldIgnore(e, tree);
         try {
-            return ((Boolean) Methods.invokeStatic("com.sun.java.swing.SwingUtilities2", "shouldIgnore",
+            return ((Boolean) Methods.invokeStatic(getSwingUtilities2(), "shouldIgnore",
                     new Class[]{MouseEvent.class, JComponent.class},
                     new Object[]{e, tree})).booleanValue();
         } catch (NoSuchMethodException ex) {
