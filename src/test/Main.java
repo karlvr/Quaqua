@@ -41,6 +41,7 @@ public class Main extends javax.swing.JPanel {
             this.clazz = clazz;
         }
 
+        @Override
         public String toString() {
             return label;
         }
@@ -58,13 +59,7 @@ public class Main extends javax.swing.JPanel {
     }
 
     public static void main(String[] args) {
-//System.out.println("Classpath:"+System.getProperty("java.class.path"));
         final long start = System.currentTimeMillis();
-
-        // System.setSecurityManager(new StrictSecurityManager());
-
-        //System.out.println("class-path=\n"+System.getProperty("java.class.path").replace(':','\n'));
-
 
         final java.util.List argList = Arrays.asList(args);
         // Explicitly turn on font antialiasing.

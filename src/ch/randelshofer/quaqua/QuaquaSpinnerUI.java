@@ -79,6 +79,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #installUI
      * @see #createNextButton
      */
+    @Override
     protected Component createPreviousButton() {
         JButton button = createArrowButton(SwingConstants.NORTH, previousButtonHandler);
         button.setIcon(UIManager.getIcon("Spinner.south"));
@@ -99,6 +100,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #installUI
      * @see #createPreviousButton
      */
+    @Override
     protected Component createNextButton() {
         JButton button = createArrowButton(SwingConstants.NORTH, nextButtonHandler);
         button.setIcon(UIManager.getIcon("Spinner.north"));
@@ -107,6 +109,9 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     
     private JButton createArrowButton(int direction, ArrowButtonHandler handler) {
         JButton b = new JButton();
+        if (! (b.getUI() instanceof QuaquaButtonUI)) {
+            b.setUI((ButtonUI) QuaquaButtonUI.createUI(b));
+        }
         b.setBorderPainted(false);
         b.setMargin(new Insets(0,0,0,0));
         b.addActionListener(handler);
@@ -136,6 +141,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #createPreviousButton
      * @see #createEditor
      */
+    @Override
     protected LayoutManager createLayout() {
         return new SpinnerLayout();
     }
@@ -150,6 +156,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @return A PropertyChangeListener for the JSpinner itself
      * @see #installListeners
      */
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return new PropertyChangeHandler();
     }
@@ -219,6 +226,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #replaceEditor
      * @see JSpinner#getEditor
      */
+    @Override
     protected JComponent createEditor() {
         JComponent editor = spinner.getEditor();
         maybeRemoveEditorBorder(editor);
@@ -241,6 +249,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #createEditor
      * @see #createPropertyChangeListener
      */
+    @Override
     protected void replaceEditor(JComponent oldEditor, JComponent newEditor) {
         spinner.remove(oldEditor);
         maybeRemoveEditorBorder(newEditor);
@@ -323,6 +332,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
     private JComponent getEditor() {
         return (JComponent) ((SpinnerLayout) spinner.getLayout()).editor;
     }
+    @Override
     public void paint( Graphics g, JComponent c ) {
         super.paint(g, c);
         Debug.paint(g, c, this);
@@ -358,6 +368,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #createPreviousButton
      * @see #createEditor
      */
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Spinner.opaque"));
@@ -374,6 +385,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      * @see #replaceEditor
      * @see #uninstallListeners
      */
+    @Override
     protected void installListeners() {
         spinner.addPropertyChangeListener(propertyChangeListener);
     }
@@ -387,6 +399,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
      *
      * @see #installListeners
      */
+    @Override
     protected void uninstallListeners() {
         spinner.removePropertyChangeListener(propertyChangeListener);
         removeEditorBorderListener(spinner.getEditor());
@@ -430,8 +443,6 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         }
         
         public void actionPerformed(ActionEvent e) {
-            JSpinner spinner = this.spinner;
-            
             if (!(e.getSource() instanceof javax.swing.Timer)) {
                 // Most likely resulting from being in ActionMap.
                 spinner = eventToSpinner(e);
@@ -777,6 +788,7 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
         if (margin == null) margin = UIManager.getInsets("Component.visualMargin");
         return (Insets) margin.clone();
     }
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
