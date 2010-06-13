@@ -50,15 +50,14 @@ public class QuaquaIconFactory {
 
         private ImageIcon realIcon;
         private int messageType;
-        private ch.randelshofer.quaqua.util.SwingWorker worker;
+        private Worker<ImageIcon> worker;
         private HashSet repaintMe = new HashSet();
 
         public LazyOptionPaneIcon(final int messageType) {
             this.messageType = messageType;
-            worker = new ch.randelshofer.quaqua.util.SwingWorker() {
+            worker = new Worker<ImageIcon>() {
 
-                public Object construct() {
-                    try {
+                public ImageIcon construct() {
                         switch (messageType) {
                             case JOptionPane.WARNING_MESSAGE:
                                 return createWarningIcon();
@@ -67,14 +66,11 @@ public class QuaquaIconFactory {
                             default:
                                 return createApplicationIcon();
                         }
-                    } catch (Throwable t) {
-                        t.printStackTrace();
-                        return null;
-                    }
                 }
 
-                public void finished() {
-                    realIcon = (ImageIcon) get();
+                @Override
+                public void done(ImageIcon result) {
+                    realIcon = result;
 
                     // Repaint all components that tried to display the icon
                     // while it was being constructed.

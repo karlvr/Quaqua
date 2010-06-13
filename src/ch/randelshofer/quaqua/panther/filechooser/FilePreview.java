@@ -446,10 +446,10 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
             // operations. Therefore we do this in a worker thread.
             final File file = info.lazyGetResolvedFile();
             if (file != null) {
-                new Worker() {
+                new Worker<Image>() {
 
-                    public Object construct() {
-                        Object o = null;
+                    public Image construct() {
+                        Image o = null;
                         if (System.getProperty("os.version").compareTo("10.6") >= 0) {
                             o = OSXFile.getQuickLookThumbnailImage(file, 128);
                         }
@@ -460,8 +460,9 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
                         }
                     }
 
-                    public void finished(Object value) {
-                        Image fileIconImage = (Image) value;
+                    @Override
+                    public void done(Image value) {
+                        Image fileIconImage = value;
                         isFileIconAvailable = fileIconImage != null;
                         if (isFileIconAvailable) {
                             previewLabel.setIcon(new ImageIcon(fileIconImage));
