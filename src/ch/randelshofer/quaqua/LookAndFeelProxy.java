@@ -1,5 +1,5 @@
 /*
- * @(#)LookAndFeelProxy.java  
+ * @(#)LookAndFeelProxy.java
  *
  * Copyright (c) 2003-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -121,6 +121,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      *			indicating the error condition is not directly 
      *			associated with a <code>Component</code>.
      */
+    @Override
     public void provideErrorFeedback(Component component) {
         try {
         Methods.invoke(target, "provideErrorFeedback", Component.class, component);
@@ -144,6 +145,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      * @see JRootPane#setWindowDecorationStyle
      * @since 1.4
      */
+    @Override
     public boolean getSupportsWindowDecorations() {
         try {
         return ((Boolean) Methods.invoke(target, "getSupportsWindowDecorations")).booleanValue();
@@ -163,6 +165,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      * @see #uninitialize
      * @see UIManager#setLookAndFeel
      */
+    @Override
     public void initialize() {
         target.initialize();
     }
@@ -175,6 +178,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      *
      * @see #initialize
      */
+    @Override
     public void uninitialize() {
         target.uninitialize();
     }
@@ -188,7 +192,13 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      * @see #uninitialize
      * @see UIManager#setLookAndFeel
      */
+    @Override
     public UIDefaults getDefaults() {
         return target.getDefaults();
+    }
+
+    @Override
+    public LayoutStyle getLayoutStyle() {
+        return target.getLayoutStyle();
     }
 }    

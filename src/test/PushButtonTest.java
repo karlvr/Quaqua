@@ -255,13 +255,13 @@ public class PushButtonTest extends javax.swing.JPanel {
         borderlessButton.setBorderPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         add(borderlessButton, gridBagConstraints);
 
         borderlessLabel.setText("Borderless");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(borderlessLabel, gridBagConstraints);

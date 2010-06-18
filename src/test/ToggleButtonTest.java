@@ -112,17 +112,15 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         toggle8 = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
 
+        FormListener formListener = new FormListener();
+
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         buttonGroup1.add(toggle1);
         toggle1.setSelected(true);
         toggle1.setText("Ångström H");
-        toggle1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggle1ActionPerformed(evt);
-            }
-        });
+        toggle1.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(toggle1, gridBagConstraints);
@@ -130,11 +128,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         buttonGroup1.add(toggle2);
         toggle2.setText("Ångström H");
         toggle2.setEnabled(false);
-        toggle2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggle2ActionPerformed(evt);
-            }
-        });
+        toggle2.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(toggle2, gridBagConstraints);
@@ -149,11 +143,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
 
         buttonGroup2.add(toggle3);
         toggle3.setText("West");
-        toggle3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggle3ActionPerformed(evt);
-            }
-        });
+        toggle3.addActionListener(formListener);
         jPanel2.add(toggle3);
 
         buttonGroup2.add(toggle4);
@@ -180,11 +170,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         buttonGroup1.add(toggle9);
         toggle9.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         toggle9.setText("Ångström H");
-        toggle9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                toggle9ActionPerformed(evt);
-            }
-        });
+        toggle9.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(toggle9, gridBagConstraints);
@@ -211,7 +197,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         jPanel4.add(toggle6);
 
         buttonGroup2.add(toggle7);
-        toggle7.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        toggle7.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         toggle7.setText("Center");
         jPanel4.add(toggle7);
 
@@ -226,11 +212,31 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel4, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         jLabel2.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         add(jLabel2, gridBagConstraints);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == toggle1) {
+                ToggleButtonTest.this.toggle1ActionPerformed(evt);
+            }
+            else if (evt.getSource() == toggle2) {
+                ToggleButtonTest.this.toggle2ActionPerformed(evt);
+            }
+            else if (evt.getSource() == toggle3) {
+                ToggleButtonTest.this.toggle3ActionPerformed(evt);
+            }
+            else if (evt.getSource() == toggle9) {
+                ToggleButtonTest.this.toggle9ActionPerformed(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
     
     private void toggle9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle9ActionPerformed

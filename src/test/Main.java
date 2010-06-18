@@ -50,8 +50,9 @@ public class Main extends javax.swing.JPanel {
             if (component == null) {
                 try {
                     component = (JComponent) Class.forName(clazz).newInstance();
-                } catch (Exception ex) {
+                } catch (Throwable ex) {
                     component = new JLabel(ex.toString());
+                    ex.printStackTrace();
                 }
             }
             return component;
@@ -157,7 +158,7 @@ public class Main extends javax.swing.JPanel {
                 f.add(ex);
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
-                f.setSize(740, 440);
+                f.setSize(740, 480);
                 long packEnd = System.currentTimeMillis();
                 f.setVisible(true);
                 long end = System.currentTimeMillis();
@@ -232,7 +233,8 @@ public class Main extends javax.swing.JPanel {
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
         n.add(new Item("Margin", "test.VisualMarginTest"));
-        n.add(new Item("Matisse", "test.MatisseTest"));
+        n.add(new Item("Matisse J2SE5", "test.MatisseTest15"));
+        n.add(new Item("Matisse J2SE6", "test.MatisseTest16"));
         n.add(new Item("Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));
@@ -278,7 +280,7 @@ public class Main extends javax.swing.JPanel {
         viewPane = new javax.swing.JPanel();
         controlPanel = new javax.swing.JPanel();
         showClipBoundsBox = new javax.swing.JCheckBox();
-        jCheckBox2 = new javax.swing.JCheckBox();
+        showVisualBoundsBox = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -304,8 +306,9 @@ public class Main extends javax.swing.JPanel {
         showClipBoundsBox.addActionListener(formListener);
         controlPanel.add(showClipBoundsBox);
 
-        jCheckBox2.setText("jCheckBox2");
-        controlPanel.add(jCheckBox2);
+        showVisualBoundsBox.setText("Show Visual Bounds");
+        showVisualBoundsBox.addActionListener(formListener);
+        controlPanel.add(showVisualBoundsBox);
 
         rightPane.add(controlPanel, java.awt.BorderLayout.SOUTH);
 
@@ -320,21 +323,29 @@ public class Main extends javax.swing.JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == showClipBoundsBox) {
-                Main.this.showClipBoundsBoxActionPerformed(evt);
+                Main.this.showClipBounds(evt);
+            }
+            else if (evt.getSource() == showVisualBoundsBox) {
+                Main.this.showVisualBounds(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
 
-    private void showClipBoundsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showClipBoundsBoxActionPerformed
+    private void showClipBounds(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showClipBounds
        UIManager.put("Quaqua.Debug.showClipBounds", showClipBoundsBox.isSelected()?Boolean.TRUE:Boolean.FALSE);
        repaint();
-    }//GEN-LAST:event_showClipBoundsBoxActionPerformed
+    }//GEN-LAST:event_showClipBounds
+
+    private void showVisualBounds(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showVisualBounds
+        UIManager.put("Quaqua.Debug.showVisualBounds", showVisualBoundsBox.isSelected()?Boolean.TRUE:Boolean.FALSE);
+       repaint();
+    }//GEN-LAST:event_showVisualBounds
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlPanel;
-    private javax.swing.JCheckBox jCheckBox2;
     private javax.swing.JPanel rightPane;
     private javax.swing.JCheckBox showClipBoundsBox;
+    private javax.swing.JCheckBox showVisualBoundsBox;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JTree tree;
     private javax.swing.JScrollPane treeScrollPane;
