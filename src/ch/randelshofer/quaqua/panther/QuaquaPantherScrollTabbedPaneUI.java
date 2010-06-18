@@ -75,6 +75,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             setOpaque(false);
         }
 
+        @Override
         public void setBorder(Border b) {
             // Only allow UIResource borders
             if (b instanceof UIResource) {
@@ -82,10 +83,12 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         public boolean hasFocus() {
             return tabPane.hasFocus();
         }
 
+        @Override
         public boolean isFocusOwner() {
             return tabPane.isFocusOwner();
         }
@@ -147,10 +150,12 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return new ItemHandler();
     }
 
+    @Override
     protected LayoutManager createLayoutManager() {
         return new QuaquaTabbedPaneLayout();
     }
 
+    @Override
     protected void installDefaults() {
 
         super.installDefaults();
@@ -190,22 +195,25 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         tabPane.setOpaque(UIManager.getBoolean(prefix + "opaque"));
     }
 
+    @Override
     protected void installComponents() {
         if (tabsCombo == null) {
             tabsCombo = new TabsComboBox();
             tabsCombo.setModel(tabsComboModel);
             tabsCombo.setFont(tabPane.getFont());
-        // tabsCombo.setFocusable(false);
+            // tabsCombo.setFocusable(false);
         }
         tabPane.add(tabsCombo);
         tabsComboModel.setModel(tabPane);
     }
 
+    @Override
     protected void uninstallComponents() {
         tabPane.remove(tabsCombo);
         tabsComboModel.setModel(tabPane);
     }
 
+    @Override
     protected void installListeners() {
         if ((propertyChangeListener = createPropertyChangeListener()) != null) {
             tabPane.addPropertyChangeListener(propertyChangeListener);
@@ -231,6 +239,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected void uninstallListeners() {
         if (itemListener != null) {
             if (tabsCombo != null) {
@@ -266,22 +275,27 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected MouseListener createMouseListener() {
         return new QuaquaMouseHandler();
     }
 
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return new QuaquaPropertyHandler();
     }
 
+    @Override
     protected ChangeListener createChangeListener() {
         return new QuaquaTabSelectionHandler();
     }
 
+    @Override
     protected FocusListener createFocusListener() {
         return new FocusHandler();
     }
 
+    @Override
     protected void installKeyboardActions() {
         InputMap km = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -321,6 +335,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return insets;
     }
 
+    @Override
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
         boolean isSmall = QuaquaUtilities.isSmallSizeVariant(tabPane);
 
@@ -342,6 +357,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     }
 
+    @Override
     protected Insets getContentBorderInsets(int tabPlacement) {
         Insets insets = null;
 
@@ -376,6 +392,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return currentContentBorderInsets;
     }
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
@@ -414,6 +431,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         Debug.paint(g, c, this);
     }
 
+    @Override
     protected void paintContentBorder(Graphics gr, int tabPlacement, int selectedIndex) {
         Boolean isContentBorderPainted = (Boolean) tabPane.getClientProperty("Quaqua.TabbedPane.contentBorderPainted");
         if (isContentBorderPainted != null && !isContentBorderPainted.booleanValue()) {
@@ -520,6 +538,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return croppedLabel;
     }
 
+    @Override
     protected void paintTabArea(Graphics gr, int tabPlacement, int selectedIndex) {
 
         Graphics2D g;
@@ -553,6 +572,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected void paintTab(Graphics gr, int tabPlacement,
             Rectangle[] rects, int tabIndex,
             Rectangle iconRect, Rectangle textRect) {
@@ -607,6 +627,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     }
 
+    @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
             int tabIndex,
             int x, int y, int w, int h,
@@ -659,12 +680,14 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      * note that this function does now draw the background of the tab.
      * that is done elsewhere
      */
+    @Override
     protected void paintTabBorder(Graphics g, int tabPlacement,
             int tabIndex,
             int x, int y, int w, int h,
             boolean isSelected) {
     }
 
+    @Override
     protected void paintText(Graphics g, int tabPlacement,
             Font font, FontMetrics metrics, int tabIndex,
             String title, Rectangle textRect,
@@ -698,6 +721,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
             Rectangle[] rects, int tabIndex,
             Rectangle iconRect, Rectangle textRect,
@@ -760,10 +784,12 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) {
         return 0;
     }
 
+    @Override
     protected int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) {
         return 0;
     }
@@ -772,13 +798,14 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      * Returns the tab index which intersects the specified point
      * in the JTabbedPane's coordinate space.
      */
+    @Override
     public int tabForCoordinate(JTabbedPane pane, int x, int y) {
         ensureCurrentLayout();
         Point p = new Point(x, y);
 
         if (tabsCombo.isVisible()) {
             return -1;
-        //translatePointToTabPanel(x, y, p);
+            //translatePointToTabPanel(x, y, p);
         }
         int tabCount = tabPane.getTabCount();
         for (int i = 0; i < tabCount; i++) {
@@ -809,6 +836,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      *
      * @since 1.4
      */
+    @Override
     protected Rectangle getTabBounds(int tabIndex, Rectangle dest) {
         if (tabsCombo.isVisible()) {
             dest.x = tabsCombo.getX();
@@ -946,6 +974,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      *
      * @since 1.4
      */
+    @Override
     protected View getTextViewForTab(int tabIndex) {
         if (htmlViews != null) {
             return (View) htmlViews.elementAt(tabIndex);
@@ -953,6 +982,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return null;
     }
 
+    @Override
     protected int calculateTabHeight(int tabPlacement, int tabIndex, int fontHeight) {
         int height = 0;
         View v = getTextViewForTab(tabIndex);
@@ -973,18 +1003,20 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return height;
     }
 
+    @Override
     protected int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) {
         Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int tabRunOverlay = getTabRunOverlay(tabPlacement);
-        return (horizRunCount > 0 ? horizRunCount * (maxTabHeight - tabRunOverlay) + tabRunOverlay +
-                tabAreaInsets.top + tabAreaInsets.bottom : 0);
+        return (horizRunCount > 0 ? horizRunCount * (maxTabHeight - tabRunOverlay) + tabRunOverlay
+                + tabAreaInsets.top + tabAreaInsets.bottom : 0);
     }
 
+    @Override
     protected int calculateTabAreaWidth(int tabPlacement, int vertRunCount, int maxTabWidth) {
         Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
         int tabRunOverlay = getTabRunOverlay(tabPlacement);
-        int result = (vertRunCount > 0 ? vertRunCount * (maxTabWidth - tabRunOverlay) + tabRunOverlay +
-                tabAreaInsets.left + tabAreaInsets.right : 0);
+        int result = (vertRunCount > 0 ? vertRunCount * (maxTabWidth - tabRunOverlay) + tabRunOverlay
+                + tabAreaInsets.left + tabAreaInsets.right : 0);
         return result;
     }
 
@@ -1075,6 +1107,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return map;
     }
 
+    @Override
     protected boolean shouldRotateTabRuns(int tabPlacement) {
         return false;
     }
@@ -1185,6 +1218,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         return false;
     }
 
+    @Override
     public void navigateSelectedTab(int direction) {
         // super.navigateSelectedTab(direction);
         int tabPlacement = tabPane.getTabPlacement();
@@ -1475,20 +1509,25 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     public class QuaquaTabbedPaneLayout //implements LayoutManager {
             extends BasicTabbedPaneUI.TabbedPaneLayout {
 
+        @Override
         public void addLayoutComponent(String name, Component comp) {
         }
 
+        @Override
         public void removeLayoutComponent(Component comp) {
         }
 
+        @Override
         public Dimension preferredLayoutSize(Container parent) {
             return calculateSize(false);
         }
 
+        @Override
         public Dimension minimumLayoutSize(Container parent) {
             return calculateSize(true);
         }
 
+        @Override
         protected Dimension calculateSize(boolean minimum) {
             int tabPlacement = tabPane.getTabPlacement();
             Insets insets = getInsets();
@@ -1527,16 +1566,16 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             switch (tabPlacement) {
                 case LEFT:
                 case RIGHT:
-                    height = Math.max(height, calculateMaxTabHeight(tabPlacement) +
-                            tabAreaInsets.top + tabAreaInsets.bottom);
+                    height = Math.max(height, calculateMaxTabHeight(tabPlacement)
+                            + tabAreaInsets.top + tabAreaInsets.bottom);
                     tabExtent = preferredTabAreaWidth(tabPlacement, height);
                     width += tabExtent;
                     break;
                 case TOP:
                 case BOTTOM:
                 default:
-                    width = Math.max(width, calculateMaxTabWidth(tabPlacement) +
-                            tabAreaInsets.left + tabAreaInsets.right);
+                    width = Math.max(width, calculateMaxTabWidth(tabPlacement)
+                            + tabAreaInsets.left + tabAreaInsets.right);
                     tabExtent = preferredTabAreaHeight(tabPlacement, width);
                     height += tabExtent;
             }
@@ -1545,6 +1584,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
         }
 
+        @Override
         protected int preferredTabAreaHeight(int tabPlacement, int width) {
             FontMetrics metrics = getFontMetrics();
             int tabCount = tabPane.getTabCount();
@@ -1569,6 +1609,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             return total;
         }
 
+        @Override
         protected int preferredTabAreaWidth(int tabPlacement, int height) {
             FontMetrics metrics = getFontMetrics();
             int tabCount = tabPane.getTabCount();
@@ -1598,6 +1639,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             return total;
         }
 
+        @Override
         public void layoutContainer(Container parent) {
             int tabPlacement = tabPane.getTabPlacement();
             Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
@@ -1628,8 +1670,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 // programs are now depending on this, we're making it work.
                 //
                 if (selectedComponent != null) {
-                    if (selectedComponent != visibleComponent &&
-                            visibleComponent != null) {
+                    if (selectedComponent != visibleComponent
+                            && visibleComponent != null) {
                         if (QuaquaUtilities.findFocusOwner(visibleComponent) != null) {
                             shouldChangeFocus = true;
                         }
@@ -1653,10 +1695,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                             // calculate content area bounds
                             cx = insets.left + tw + contentInsets.left;
                             cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right - tw -
-                                    contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom -
-                                    contentInsets.top - contentInsets.bottom;
+                            cw = bounds.width - insets.left - insets.right - tw
+                                    - contentInsets.left - contentInsets.right;
+                            ch = bounds.height - insets.top - insets.bottom
+                                    - contentInsets.top - contentInsets.bottom;
                             break;
                         case RIGHT:
                             // calculate tab area bounds
@@ -1668,10 +1710,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                             // calculate content area bounds
                             cx = insets.left + contentInsets.left;
                             cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right - tw -
-                                    contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom -
-                                    contentInsets.top - contentInsets.bottom;
+                            cw = bounds.width - insets.left - insets.right - tw
+                                    - contentInsets.left - contentInsets.right;
+                            ch = bounds.height - insets.top - insets.bottom
+                                    - contentInsets.top - contentInsets.bottom;
                             break;
                         case BOTTOM:
                             // calculate tab area bounds
@@ -1683,10 +1725,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                             // calculate content area bounds
                             cx = insets.left + contentInsets.left;
                             cy = insets.top + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right -
-                                    contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom - th -
-                                    contentInsets.top - contentInsets.bottom;
+                            cw = bounds.width - insets.left - insets.right
+                                    - contentInsets.left - contentInsets.right;
+                            ch = bounds.height - insets.top - insets.bottom - th
+                                    - contentInsets.top - contentInsets.bottom;
                             break;
                         case TOP:
                         default:
@@ -1699,10 +1741,10 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                             // calculate content area bounds
                             cx = insets.left + contentInsets.left;
                             cy = insets.top + th + contentInsets.top;
-                            cw = bounds.width - insets.left - insets.right -
-                                    contentInsets.left - contentInsets.right;
-                            ch = bounds.height - insets.top - insets.bottom - th -
-                                    contentInsets.top - contentInsets.bottom;
+                            cw = bounds.width - insets.left - insets.right
+                                    - contentInsets.left - contentInsets.right;
+                            ch = bounds.height - insets.top - insets.bottom - th
+                                    - contentInsets.top - contentInsets.bottom;
                     }
 
                     for (int i = 0; i < numChildren; i++) {
@@ -1741,12 +1783,14 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         public void calculateLayoutInfo() {
             int tabCount = tabPane.getTabCount();
             assureRectsCreated(tabCount);
             calculateTabRects(tabPane.getTabPlacement(), tabCount);
         }
 
+        @Override
         protected void calculateTabRects(int tabPlacement, int tabCount) {
             FontMetrics metrics = getFontMetrics();
             Dimension size = tabPane.getSize();
@@ -1841,9 +1885,9 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                     }
                 }
             }
-            if (verticalTabRuns ||
-                    totalTabSize <= availableTabSize ||
-                    redistributableSize > 0 && tabPane.getClientProperty("Quaqua.TabbedPane.shortenTabs") != Boolean.FALSE) {
+            if (verticalTabRuns
+                    || totalTabSize <= availableTabSize
+                    || redistributableSize > 0 && tabPane.getClientProperty("Quaqua.TabbedPane.shortenTabs") != Boolean.FALSE) {
                 // Tabs are on the LEFT or RIGHT or
                 // enough space is available or
                 // redistributable size is available and we are allowed to
@@ -2026,6 +2070,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         /*
          * Rotates the run-index array so that the selected run is run[0]
          */
+        @Override
         protected void rotateTabRuns(int tabPlacement, int selectedRun) {
             for (int i = 0; i < selectedRun; i++) {
                 int save = tabRuns[0];
@@ -2036,6 +2081,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         protected void normalizeTabRuns(int tabPlacement, int tabCount,
                 int start, int max) {
             boolean verticalTabRuns = (tabPlacement == LEFT || tabPlacement == RIGHT);
@@ -2169,6 +2215,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     public class QuaquaPropertyHandler extends BasicTabbedPaneUI.PropertyChangeHandler {
 
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String name = evt.getPropertyName();
             if ("enabled".equals(name)) {
@@ -2180,13 +2227,40 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             } else if (name.equals("JComponent.sizeVariant")) {
                 QuaquaUtilities.applySizeVariant(tabPane);
             }
-            // Forward everyhting except tabLayoutPolicy change to super class.
+            // Forward everything except tabLayoutPolicy change to super class.
             // tabLayoutPolicy must not be forward, because it would break
             // the functionality of class
-            // ch.randelshofer.quaqua.panther.QuaquaPantherJaguarTabbedPaneUI.
+            // ch.randelshofer.quaqua.panther.QuaquaPantherTabbedPaneUI.
             if (!name.equals("tabLayoutPolicy")) {
                 super.propertyChange(evt);
             }
+
+            if (name == "indexForTitle"//
+                    || name == "indexForNullComponent") {
+                Integer index = (Integer) evt.getNewValue();
+                if (htmlViews != null) {
+                    htmlViews.removeElementAt(index);
+                }
+                updateHtmlViews(index);
+            }
+        }
+
+        private void updateHtmlViews(int index) {
+            String title = tabPane.getTitleAt(index);
+            boolean isHTML = BasicHTML.isHTMLString(title);
+            if (isHTML) {
+                if (htmlViews == null) {    // Initialize vector
+                    htmlViews = createHTMLVector();
+                } else {                  // Vector already exists
+                    View v = BasicHTML.createHTMLView(tabPane, title);
+                    htmlViews.insertElementAt(v, index);
+                }
+            } else {                             // Not HTML
+                if (htmlViews != null) {           // Add placeholder
+                    htmlViews.insertElementAt(null, index);
+                }                                // else nada!
+            }
+            updateMnemonics();
         }
     }
 

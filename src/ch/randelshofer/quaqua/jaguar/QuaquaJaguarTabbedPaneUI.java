@@ -1086,6 +1086,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         return tabIndex == lastIndex;
     }
 
+    @Override
     protected void paintText(Graphics g, int tabPlacement,
     Font font, FontMetrics metrics, int tabIndex,
     String title, Rectangle textRect,
@@ -1489,6 +1490,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      */
     public class QuaquaPropertyChangeHandler extends BasicTabbedPaneUI.PropertyChangeHandler {
 
+        @Override
         public void propertyChange(PropertyChangeEvent evt) {
             String name = evt.getPropertyName();
             if (name.equals("Frame.active")) {

@@ -470,7 +470,7 @@ public class QuaquaTableUI extends BasicTableUI
             // Unless a font has been explicitly set on the editor, we
             // set the font used by the table.
             if (component.getFont() instanceof UIResource) {
-                component.setFont(table.getFont());
+            component.setFont(table.getFont());
             }
             component.setBounds(cellRect);
             component.validate();
@@ -514,7 +514,7 @@ public class QuaquaTableUI extends BasicTableUI
      */
     @Override
     protected MouseInputListener createMouseInputListener() {
-            return getHandler();
+        return getHandler();
     }
 
     /**
@@ -555,9 +555,10 @@ public class QuaquaTableUI extends BasicTableUI
     protected FocusListener createFocusListener() {
         return getHandler();
     }
+
     private static int getAdjustedLead(JTable table,
-                                       boolean row,
-                                       ListSelectionModel model) {
+            boolean row,
+            ListSelectionModel model) {
 
         int index = model.getLeadSelectionIndex();
         int compare = row ? table.getRowCount() : table.getColumnCount();
@@ -566,9 +567,8 @@ public class QuaquaTableUI extends BasicTableUI
 
     private static int getAdjustedLead(JTable table, boolean row) {
         return row ? getAdjustedLead(table, row, table.getSelectionModel())
-                   : getAdjustedLead(table, row, table.getColumnModel().getSelectionModel());
+                : getAdjustedLead(table, row, table.getColumnModel().getSelectionModel());
     }
-
 
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
@@ -582,7 +582,7 @@ public class QuaquaTableUI extends BasicTableUI
     private class Handler implements
             PropertyChangeListener, ListSelectionListener,//
             TableColumnModelListener, FocusListener, MouseInputListener, //
-    KeyListener {
+            KeyListener {
 
         private boolean isAdjustingRowSelection;
         // Component receiving mouse events during editing.
@@ -598,7 +598,6 @@ public class QuaquaTableUI extends BasicTableUI
         private int toggledRow = -1;
         /** index of previously toggled column. */
         private int toggledColumn = -1;
-
 
         public void propertyChange(PropertyChangeEvent event) {
             String name = event.getPropertyName();
@@ -884,7 +883,7 @@ public class QuaquaTableUI extends BasicTableUI
                         toggledColumn = column;
                     }
                 } else if (mouseDragAction == MOUSE_DRAG_STARTS_DND) {
-                                        if (table.getDragEnabled()) {
+                    if (table.getDragEnabled()) {
                         TransferHandler th = table.getTransferHandler();
                         int action = QuaquaUtilities.mapDragOperationFromModifiers(e, th);
                         if (action != TransferHandler.NONE) {
@@ -950,16 +949,18 @@ public class QuaquaTableUI extends BasicTableUI
         // END FocusListener
 
         // BEGIN KeyListener
-            public void keyPressed(KeyEvent e) {
-                // Eat away META down keys..
-                // We need to do this, because the JTable.processKeyBinding(…)
-                // method does not treat VK_META as a modifier key, and starts
-                // editing a cell, whenever this key is pressed.
-                if (e.getKeyCode() == KeyEvent.VK_META) {
-                    e.consume();
-                }
+        public void keyPressed(KeyEvent e) {
+            // Eat away META down keys..
+            // We need to do this, because the JTable.processKeyBinding(…)
+            // method does not treat VK_META as a modifier key, and starts
+            // editing a cell, whenever this key is pressed.
+            if (e.getKeyCode() == KeyEvent.VK_META) {
+                e.consume();
             }
-        public void keyReleased(KeyEvent e) { }
+        }
+
+        public void keyReleased(KeyEvent e) {
+        }
 
         public void keyTyped(KeyEvent e) {
             KeyStroke keyStroke = KeyStroke.getKeyStroke(e.getKeyChar(),
@@ -970,17 +971,16 @@ public class QuaquaTableUI extends BasicTableUI
             // in the table and then forward it to the editor if the editor
             // had focus. Make sure this doesn't happen by checking our
             // InputMaps.
-	    InputMap map = table.getInputMap(JComponent.WHEN_FOCUSED);
-	    if (map != null && map.get(keyStroke) != null) {
-		return;
-	    }
-	    map = table.getInputMap(JComponent.
-				  WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-	    if (map != null && map.get(keyStroke) != null) {
-		return;
-	    }
+            InputMap map = table.getInputMap(JComponent.WHEN_FOCUSED);
+            if (map != null && map.get(keyStroke) != null) {
+                return;
+            }
+            map = table.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+            if (map != null && map.get(keyStroke) != null) {
+                return;
+            }
 
-	    keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+            keyStroke = KeyStroke.getKeyStrokeForEvent(e);
 
             // The AWT seems to generate an unconsumed \r event when
             // ENTER (\n) is pressed.
@@ -1007,23 +1007,21 @@ public class QuaquaTableUI extends BasicTableUI
             Component editorComp = table.getEditorComponent();
             if (table.isEditing() && editorComp != null) {
                 if (editorComp instanceof JComponent) {
-                    JComponent component = (JComponent)editorComp;
-		    map = component.getInputMap(JComponent.WHEN_FOCUSED);
-		    Object binding = (map != null) ? map.get(keyStroke) : null;
-		    if (binding == null) {
-			map = component.getInputMap(JComponent.
-					 WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-			binding = (map != null) ? map.get(keyStroke) : null;
-		    }
-		    if (binding != null) {
-			ActionMap am = component.getActionMap();
-			Action action = (am != null) ? am.get(binding) : null;
-			if (action != null && SwingUtilities.
-			    notifyAction(action, keyStroke, e, component,
-					 e.getModifiers())) {
-			    e.consume();
-			}
-		    }
+                    JComponent component = (JComponent) editorComp;
+                    map = component.getInputMap(JComponent.WHEN_FOCUSED);
+                    Object binding = (map != null) ? map.get(keyStroke) : null;
+                    if (binding == null) {
+                        map = component.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+                        binding = (map != null) ? map.get(keyStroke) : null;
+                    }
+                    if (binding != null) {
+                        ActionMap am = component.getActionMap();
+                        Action action = (am != null) ? am.get(binding) : null;
+                        if (action != null && SwingUtilities.notifyAction(action, keyStroke, e, component,
+                                e.getModifiers())) {
+                            e.consume();
+                        }
+                    }
                 }
             }
         }

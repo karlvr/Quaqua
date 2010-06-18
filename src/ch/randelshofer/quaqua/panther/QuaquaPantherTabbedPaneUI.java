@@ -20,6 +20,7 @@ import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 /**
  * The QuaquaPantherTabbedPaneUI uses to the QuaquaJaguarTabbedPaneUI for
  * the WRAP_TAB_LAYOUT policy and the QuaquaPantherScrollTabbedPaneUI for
