@@ -26,8 +26,9 @@ import javax.swing.tree.*;
 import javax.swing.filechooser.*;
 
 /**
- * The AliasFileSystemTreeModel provides the data model for the JBrowser in a
+ * The AliasFileSystemTreeModel provides the data model for the file system in a
  * QuaquaFileChooserUI.
+ * <p>
  * It is capable of resolving aliases to files, and it updates its content
  * asynchronously to the AWT Event Dispatcher thread.
  *
@@ -1003,9 +1004,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
         }
 
         public void removeFromParent() {
-            MutableTreeNode parent = (MutableTreeNode) getParent();
             if (parent != null) {
-                parent.remove(this);
+                ((MutableTreeNode)parent).remove(this);
             }
         }
 
@@ -1071,6 +1071,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return false;
         }
 
+        @Override
         public String toString() {
             return (userName == null) ? file.getName() : userName;
             //return userName+"#"+hashCode();
@@ -1452,10 +1453,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
             }*/
         }
 
+        @Override
         public long getFileLength() {
             return -1l;
         }
 
+        @Override
         public String getFileKind() {
             return "folder";
         }
@@ -1464,6 +1467,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
          * Marks this node as invalid.
          * If the node denotes not a directory, nothing happens.
          */
+        @Override
         public void invalidateChildren() {
             if (DEBUG) {
                 System.out.println("AliasFileSystemTreeModel.invalidateChildren " + lazyGetResolvedFile());
@@ -1476,6 +1480,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
          * Marks the children of this node as invalid.
          * This has only an effect, if this node denotes a directory.
          */
+        @Override
         public void lazyInvalidateChildren() {
             if (validator == null && bestBeforeTimeMillis < System.currentTimeMillis()) {
                 if (DEBUG) {
@@ -1489,10 +1494,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
             }
         }
 
+        @Override
         public boolean isValidatingChildren() {
             return validator != null;
         }
 
+        @Override
         public void stopValidationSubtree() {
             validator = null;
             for (Enumeration i = super.children(); i.hasMoreElements();) {
@@ -1503,6 +1510,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         /**
          * Marks this subtree as invalid.
          */
+        @Override
         public void invalidateTree() {
             invalidateInfo();
             if (childrenState == VALID) {
@@ -1520,6 +1528,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
          * children of this node.
          * If the node denotes not a directory, nothing happens.
          */
+        @Override
         public void validateChildren() {
             if (childrenState == INVALID) {
                 childrenState = VALIDATING;
@@ -1548,6 +1557,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             }
         }
 
+        @Override
         public Enumeration children() {
             autoValidateChildren();
             if (children == null) {
@@ -1565,10 +1575,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
             }
         }
 
+        @Override
         public boolean getAllowsChildren() {
             return true;
         }
 
+        @Override
         public TreeNode getChildAt(int childIndex) {
             if (children == null) {
                 throw new IndexOutOfBoundsException(childIndex + " >= 0");
@@ -1577,16 +1589,19 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return (TreeNode) children.get(childIndex);
         }
 
+        @Override
         public int getChildCount() {
             autoValidateChildren();
             return (children == null) ? 0 : children.size();
         }
 
+        @Override
         public int getIndex(TreeNode node) {
             autoValidateChildren();
             return (children == null) ? -1 : children.indexOf(node);
         }
 
+        @Override
         public void insert(MutableTreeNode newChild, int childIndex) {
             invalidateChildren();
 
@@ -1608,10 +1623,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
             children.add(childIndex, newChild);
         }
 
+        @Override
         public boolean isLeaf() {
             return false;
         }
 
+        @Override
         public void remove(MutableTreeNode aChild) {
             if (aChild == null) {
                 throw new IllegalArgumentException("argument is null");
@@ -1623,6 +1640,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             remove(getIndex(aChild));	// linear search
         }
 
+        @Override
         public void remove(int childIndex) {
             invalidateChildren();
 
@@ -1652,22 +1670,27 @@ public class AliasFileSystemTreeModel implements TreeModel {
             super(COMPUTER);
         }
 
+        @Override
         public boolean getAllowsChildren() {
             return true;
         }
 
+        @Override
         public boolean isLeaf() {
             return false;
         }
 
+        @Override
         public String toString() {
             return "Root#" + hashCode();
         }
 
+        @Override
         protected long getDirectoryTTL() {
             return 1000;
         }
 
+        @Override
         protected File[] getFiles() {
             LinkedList list = new LinkedList();
             File[] files = getFileSystemView().getRoots();
@@ -1682,6 +1705,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return (File[]) list.toArray(new File[list.size()]);
         }
 
+        @Override
         public void validateChildren() {
             if (DEBUG) {
                 System.out.println("AliasFileSystemTreeModel.validateChildren of ROOT " + (childrenState == INVALID) + " " + lazyGetResolvedFile());
@@ -1693,6 +1717,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         public String getUserName() {
         return "Computer";
         }*/
+        @Override
         public Icon getIcon() {
             validateInfo();
             if (icon == null) {
@@ -1712,6 +1737,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             this.resolvedFile = resolvedFile;
         }
 
+        @Override
         public File lazyGetResolvedFile() {
             if (resolvedFile == null && resolver == null) {
                 resolver = new Worker<File>() {
@@ -1741,6 +1767,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return resolvedFile;
         }
 
+        @Override
         public File getResolvedFile() {
             if (resolvedFile == null) {
                 resolvedFile = OSXFile.resolveAlias(file, false);
@@ -1748,10 +1775,12 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return (resolvedFile == null) ? file : resolvedFile;
         }
 
+        @Override
         public String getFileKind() {
             return "alias";
         }
 
+        @Override
         public boolean isAlias() {
             return false;
         }
@@ -1770,14 +1799,17 @@ public class AliasFileSystemTreeModel implements TreeModel {
             this.resolvedFile = resolvedFile;
         }
 
+        @Override
         public String getFileKind() {
             return "alias";
         }
 
+        @Override
         public boolean isAlias() {
             return false;
         }
 
+        @Override
         public File lazyGetResolvedFile() {
             if (resolvedFile == null && resolver == null) {
                 resolver = new Worker<File>() {
@@ -1805,6 +1837,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return resolvedFile;
         }
 
+        @Override
         public File getResolvedFile() {
             if (resolvedFile == null) {
                 resolvedFile = OSXFile.resolveAlias(file, false);
@@ -1812,6 +1845,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return (resolvedFile == null) ? file : resolvedFile;
         }
 
+        @Override
         public boolean isValidatingChildren() {
             return super.isValidatingChildren() || resolver != null;
         }
