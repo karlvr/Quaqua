@@ -668,7 +668,7 @@ public class BinaryPListParser {
             throw new IOException("parseUID: unsupported byte count: "+count);
         }
         byte[] uid = new byte[count];
-        in.read(uid);
+        in.readFully(uid);
         objectTable.add(new BPLUid(new BigInteger(uid).intValue()));
     }
 

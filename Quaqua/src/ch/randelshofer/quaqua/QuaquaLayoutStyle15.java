@@ -417,6 +417,7 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
      *         or <code>UNRELATED</code>; or <code>component1</code> or
      *         <code>component2</code> is null
      */
+    @Override
     public int getPreferredGap(JComponent component1, JComponent component2,
     int type, int position, Container parent) {
         int result;
@@ -578,6 +579,7 @@ public class QuaquaLayoutStyle15 extends org.jdesktop.layout.LayoutStyle {
      *         <code>SwingConstants.WEST</code>;
      *         or <code>component</code> is null
      */
+    @Override
     public int getContainerGap(JComponent component, int position,
     Container parent) {
         int result;

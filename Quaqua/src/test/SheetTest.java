@@ -48,64 +48,42 @@ private JFileChooser saveFile;
         messageSheetButton1 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
 
+        FormListener formListener = new FormListener();
+
         setLayout(new java.awt.GridBagLayout());
 
         confirmSheetButton.setText("Confirm Sheet");
-        confirmSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                confirmSheet(evt);
-            }
-        });
+        confirmSheetButton.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         add(confirmSheetButton, gridBagConstraints);
 
         inputSheetButton.setText("Input Sheet");
-        inputSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                inputSheet(evt);
-            }
-        });
+        inputSheetButton.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         add(inputSheetButton, gridBagConstraints);
 
         messageSheetButton.setText("Message Sheet");
-        messageSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                messageSheet(evt);
-            }
-        });
+        messageSheetButton.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 0;
         add(messageSheetButton, gridBagConstraints);
 
         saveChangesSheetButton.setText("Save Changes Sheet");
-        saveChangesSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveChangesSheet(evt);
-            }
-        });
+        saveChangesSheetButton.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         add(saveChangesSheetButton, gridBagConstraints);
 
         saveFileSheetButton.setText("Save File Sheet");
-        saveFileSheetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveFileSheet(evt);
-            }
-        });
+        saveFileSheetButton.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         add(saveFileSheetButton, gridBagConstraints);
 
         messageSheetButton1.setText("Delayed Message Sheet");
-        messageSheetButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                delayedMessageSheet(evt);
-            }
-        });
+        messageSheetButton1.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
         add(messageSheetButton1, gridBagConstraints);
@@ -117,6 +95,32 @@ private JFileChooser saveFile;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         add(jLabel1, gridBagConstraints);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == confirmSheetButton) {
+                SheetTest.this.confirmSheet(evt);
+            }
+            else if (evt.getSource() == inputSheetButton) {
+                SheetTest.this.inputSheet(evt);
+            }
+            else if (evt.getSource() == messageSheetButton) {
+                SheetTest.this.messageSheet(evt);
+            }
+            else if (evt.getSource() == saveChangesSheetButton) {
+                SheetTest.this.saveChangesSheet(evt);
+            }
+            else if (evt.getSource() == saveFileSheetButton) {
+                SheetTest.this.saveFileSheet(evt);
+            }
+            else if (evt.getSource() == messageSheetButton1) {
+                SheetTest.this.delayedMessageSheet(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     private void delayedMessageSheet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_delayedMessageSheet

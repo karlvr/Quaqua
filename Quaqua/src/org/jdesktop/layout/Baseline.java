@@ -1096,8 +1096,7 @@ public class Baseline {
             // but we don't offer public API to detect if XP is active.
             String osVersion = System.getProperty("os.version");
             if (osVersion != null) {
-                Float version = Float.valueOf(osVersion);
-                if (version.floatValue() > 4.0) {
+                if (osVersion.compareTo("4.0") > 0) {
                     y += 2;
                     height -= 4;
                 }

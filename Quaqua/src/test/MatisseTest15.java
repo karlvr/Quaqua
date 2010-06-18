@@ -1,6 +1,6 @@
 package test;
 /*
- * @(#)MatisseTest.java  1.0  June 5, 2006
+ * @(#)MatisseTest16.java  1.0  June 5, 2006
  *
  * Copyright (c) 2006 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -12,20 +12,19 @@ package test;
  * Werner Randelshofer. For details see accompanying license terms. 
  */
 
-import ch.randelshofer.quaqua.*;
 import javax.swing.*;
 /**
- * MatisseTest.
+ * MatisseTest16.
  * 
  * 
  * 
  * @author Werner Randelshofer
  * @version 1.0  June 5, 2006  Created.
  */
-public class MatisseTest extends javax.swing.JPanel {
+public class MatisseTest15 extends javax.swing.JPanel {
     
     /** Creates a new instance. */
-    public MatisseTest() {
+    public MatisseTest15() {
         initComponents();
     }
     
@@ -41,7 +40,7 @@ public class MatisseTest extends javax.swing.JPanel {
         
         JFrame f = new JFrame("Matisse Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        MatisseTest nt = new MatisseTest();
+        MatisseTest15 nt = new MatisseTest15();
         f.getContentPane().add(nt);
         f.setSize(400,400);
         f.setVisible(true);
@@ -75,26 +74,20 @@ public class MatisseTest extends javax.swing.JPanel {
 
         radioButtonGroup.add(jRadioButton1);
         jRadioButton1.setText("Radio Button 1");
-        jRadioButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         radioButtonGroup.add(jRadioButton2);
         jRadioButton2.setText("Radio Button 2");
-        jRadioButton2.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         radioButtonGroup.add(jRadioButton3);
         jRadioButton3.setText("Radio Button 3");
-        jRadioButton3.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jLabel2.setText("Check Boxes Label");
 
         jCheckBox1.setText("Check Box 1");
-        jCheckBox1.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jCheckBox2.setText("Check Box 2");
-        jCheckBox2.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jCheckBox3.setText("Check Box 3");
-        jCheckBox3.setMargin(new java.awt.Insets(0, 0, 0, 0));
 
         jLabel3.setText("Text Fields Label");
 
@@ -126,7 +119,7 @@ public class MatisseTest extends javax.swing.JPanel {
                     .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.TRAILING)
                         .add(jCheckBox2)
                         .add(jCheckBox1)))
-                .addContainerGap(org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(82, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
@@ -139,7 +132,7 @@ public class MatisseTest extends javax.swing.JPanel {
                 .add(jRadioButton2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jRadioButton3)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel2)
                     .add(jCheckBox1))
@@ -147,7 +140,7 @@ public class MatisseTest extends javax.swing.JPanel {
                 .add(jCheckBox2)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(jCheckBox3)
-                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(18, 18, 18)
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
                     .add(jLabel3)
                     .add(jTextField1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))

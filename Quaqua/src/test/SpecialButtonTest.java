@@ -144,7 +144,7 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(smallPlacardButton, gridBagConstraints);
 
-        smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -152,11 +152,11 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        smallColorWellButton.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        smallColorWellButton.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallColorWellButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weighty = 1.0;
         add(smallColorWellButton, gridBagConstraints);
 

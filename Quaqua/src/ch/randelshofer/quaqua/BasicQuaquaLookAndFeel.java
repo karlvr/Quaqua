@@ -1916,15 +1916,10 @@ BasicLookAndFeel a;
             "ClassLoader", getClass().getClassLoader(),};
         putDefaults(table, uiDefaults);
 
-        // Support for GroupLayout
-        if (javaVersion.startsWith("1.5")) {
+        // Support for org.jdesktop.layout.GroupLayout
             uiDefaults = new Object[]{
                         "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
                         "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
-        } else {
-            uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle"),};
-        }
         putDefaults(table, uiDefaults);
     }
 
@@ -2185,5 +2180,10 @@ BasicLookAndFeel a;
                 table.put(keyValueList[i], keyValueList[i + 1]);
             }
         }
+    }
+
+    @Override
+    public LayoutStyle getLayoutStyle() {
+        return QuaquaLayoutStyle.getInstance();
     }
 }

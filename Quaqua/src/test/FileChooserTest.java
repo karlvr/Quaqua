@@ -108,6 +108,7 @@ public class FileChooserTest extends javax.swing.JPanel {
                 //System.out.println("FileChooserTest.paint "+EventQueue.getCurrentEvent());
                 }*/
 
+                @Override
                 public void updateUI() {
                     long start = System.currentTimeMillis();
                     super.updateUI();
@@ -266,6 +267,8 @@ public class FileChooserTest extends javax.swing.JPanel {
         outputScrollPane = new javax.swing.JScrollPane();
         outputField = new javax.swing.JTextArea();
 
+        FormListener formListener = new FormListener();
+
         setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 20, 20, 20));
         setLayout(new java.awt.GridBagLayout());
 
@@ -274,11 +277,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         selectionTypeGroup.add(selectFilesOnlyItem);
         selectFilesOnlyItem.setSelected(true);
         selectFilesOnlyItem.setText("Select files");
-        selectFilesOnlyItem.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                selectionTypeGroupChanged(evt);
-            }
-        });
+        selectFilesOnlyItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -299,11 +298,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         settingsPanel.add(selectFilesAndDirectoriesItem, gridBagConstraints);
 
         multiSelectionItem.setText("Allow multiple selection");
-        multiSelectionItem.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                multiSelectionItemChanged(evt);
-            }
-        });
+        multiSelectionItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -312,11 +307,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         settingsPanel.add(multiSelectionItem, gridBagConstraints);
 
         hiddenFilesItem.setText("Show hidden files");
-        hiddenFilesItem.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                hiddenFilesItemChanged(evt);
-            }
-        });
+        hiddenFilesItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -324,11 +315,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         settingsPanel.add(hiddenFilesItem, gridBagConstraints);
 
         customApproveItem.setText("Use custom approve button text");
-        customApproveItem.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                customApproveItemChanged(evt);
-            }
-        });
+        customApproveItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -345,11 +332,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         settingsPanel.add(customApproveField, gridBagConstraints);
 
         filterFilesItem.setText("Filter files");
-        filterFilesItem.addItemListener(new java.awt.event.ItemListener() {
-            public void itemStateChanged(java.awt.event.ItemEvent evt) {
-                filterFilesItemChanged(evt);
-            }
-        });
+        filterFilesItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -397,35 +380,19 @@ public class FileChooserTest extends javax.swing.JPanel {
         actionPanel.setLayout(new java.awt.GridLayout(0, 2));
 
         openFileDialogButton.setText("Open AWT File Dialog");
-        openFileDialogButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openFileDialog(evt);
-            }
-        });
+        openFileDialogButton.addActionListener(formListener);
         actionPanel.add(openFileDialogButton);
 
         saveFileDialogButton.setText("Save AWT File Dialog");
-        saveFileDialogButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveFileDialog(evt);
-            }
-        });
+        saveFileDialogButton.addActionListener(formListener);
         actionPanel.add(saveFileDialogButton);
 
         openFileButton.setText("Open Swing File Chooser");
-        openFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                openFileChooser(evt);
-            }
-        });
+        openFileButton.addActionListener(formListener);
         actionPanel.add(openFileButton);
 
         saveFileButton.setText("Save Swing File Chooser");
-        saveFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                saveFileChooser(evt);
-            }
-        });
+        saveFileButton.addActionListener(formListener);
         actionPanel.add(saveFileButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -438,34 +405,18 @@ public class FileChooserTest extends javax.swing.JPanel {
         resetPanel.setLayout(new java.awt.GridBagLayout());
 
         resetButton.setText("Reset to:");
-        resetButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reset(evt);
-            }
-        });
+        resetButton.addActionListener(formListener);
         resetPanel.add(resetButton, new java.awt.GridBagConstraints());
 
         setSelectedFileButton.setText("Set to:");
-        setSelectedFileButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setTo(evt);
-            }
-        });
+        setSelectedFileButton.addActionListener(formListener);
         resetPanel.add(setSelectedFileButton, new java.awt.GridBagConstraints());
 
         createWithButton.setText("Create With:");
-        createWithButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                createWith(evt);
-            }
-        });
+        createWithButton.addActionListener(formListener);
         resetPanel.add(createWithButton, new java.awt.GridBagConstraints());
 
-        setSelectedFileField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reset(evt);
-            }
-        });
+        setSelectedFileField.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
@@ -481,19 +432,11 @@ public class FileChooserTest extends javax.swing.JPanel {
         resetPanel1.setLayout(new java.awt.GridBagLayout());
 
         setDirectoryButton.setText("Set directory to:");
-        setDirectoryButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setDirectoryPerformed(evt);
-            }
-        });
+        setDirectoryButton.addActionListener(formListener);
         resetPanel1.add(setDirectoryButton, new java.awt.GridBagConstraints());
 
         setDirectoryField.setText("/Applications");
-        setDirectoryField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                setDirectoryPerformed(evt);
-            }
-        });
+        setDirectoryField.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
@@ -537,6 +480,62 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(16, 0, 0, 0);
         add(outputPanel, gridBagConstraints);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener, java.awt.event.ItemListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == openFileDialogButton) {
+                FileChooserTest.this.openFileDialog(evt);
+            }
+            else if (evt.getSource() == saveFileDialogButton) {
+                FileChooserTest.this.saveFileDialog(evt);
+            }
+            else if (evt.getSource() == openFileButton) {
+                FileChooserTest.this.openFileChooser(evt);
+            }
+            else if (evt.getSource() == saveFileButton) {
+                FileChooserTest.this.saveFileChooser(evt);
+            }
+            else if (evt.getSource() == resetButton) {
+                FileChooserTest.this.reset(evt);
+            }
+            else if (evt.getSource() == setSelectedFileButton) {
+                FileChooserTest.this.setTo(evt);
+            }
+            else if (evt.getSource() == createWithButton) {
+                FileChooserTest.this.createWith(evt);
+            }
+            else if (evt.getSource() == setSelectedFileField) {
+                FileChooserTest.this.reset(evt);
+            }
+            else if (evt.getSource() == setDirectoryButton) {
+                FileChooserTest.this.setDirectoryPerformed(evt);
+            }
+            else if (evt.getSource() == setDirectoryField) {
+                FileChooserTest.this.setDirectoryPerformed(evt);
+            }
+        }
+
+        public void itemStateChanged(java.awt.event.ItemEvent evt) {
+            if (evt.getSource() == selectFilesOnlyItem) {
+                FileChooserTest.this.selectionTypeGroupChanged(evt);
+            }
+            else if (evt.getSource() == multiSelectionItem) {
+                FileChooserTest.this.multiSelectionItemChanged(evt);
+            }
+            else if (evt.getSource() == hiddenFilesItem) {
+                FileChooserTest.this.hiddenFilesItemChanged(evt);
+            }
+            else if (evt.getSource() == customApproveItem) {
+                FileChooserTest.this.customApproveItemChanged(evt);
+            }
+            else if (evt.getSource() == filterFilesItem) {
+                FileChooserTest.this.filterFilesItemChanged(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
     private void createWith(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWith
         reset(evt);
@@ -614,7 +613,6 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileChooser.setCurrentDirectory(new File(setDirectoryField.getText()));
 
 }//GEN-LAST:event_setDirectoryPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox accessoryCheckBox;
     private javax.swing.JPanel actionPanel;
@@ -674,6 +672,7 @@ public class FileChooserTest extends javax.swing.JPanel {
             } else {
                 new Thread() {
 
+                    @Override
                     public void run() {
                         Image img = Toolkit.getDefaultToolkit().createImage(file.getPath());
 

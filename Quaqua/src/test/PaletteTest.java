@@ -63,55 +63,59 @@ public class PaletteTest extends javax.swing.JPanel {
         miniHPaletteButton = new javax.swing.JButton();
         miniVPaletteButton = new javax.swing.JButton();
 
+        FormListener formListener = new FormListener();
+
         setLayout(new java.awt.GridLayout(0, 1));
 
         regularHPaletteButton.setText("Regular Horizontal Palette");
-        regularHPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regularHorizontalPalette(evt);
-            }
-        });
+        regularHPaletteButton.addActionListener(formListener);
         add(regularHPaletteButton);
 
         regularVPaletteButton.setText("Regular Vertical Palette");
-        regularVPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                regularVerticalPalette(evt);
-            }
-        });
+        regularVPaletteButton.addActionListener(formListener);
         add(regularVPaletteButton);
 
         smallHPaletteButton.setText("Small Horizontal Palette");
-        smallHPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                smallHorizontalPalette(evt);
-            }
-        });
+        smallHPaletteButton.addActionListener(formListener);
         add(smallHPaletteButton);
 
         smallVPaletteButton.setText("Small Vertical Palette");
-        smallVPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                smallVerticalPalette(evt);
-            }
-        });
+        smallVPaletteButton.addActionListener(formListener);
         add(smallVPaletteButton);
 
         miniHPaletteButton.setText("Mini Horizontal Palette");
-        miniHPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miniHorizontalPalette(evt);
-            }
-        });
+        miniHPaletteButton.addActionListener(formListener);
         add(miniHPaletteButton);
 
         miniVPaletteButton.setText("Mini Vertical Palette");
-        miniVPaletteButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                miniVerticalPalette(evt);
-            }
-        });
+        miniVPaletteButton.addActionListener(formListener);
         add(miniVPaletteButton);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == regularHPaletteButton) {
+                PaletteTest.this.regularHorizontalPalette(evt);
+            }
+            else if (evt.getSource() == regularVPaletteButton) {
+                PaletteTest.this.regularVerticalPalette(evt);
+            }
+            else if (evt.getSource() == smallHPaletteButton) {
+                PaletteTest.this.smallHorizontalPalette(evt);
+            }
+            else if (evt.getSource() == smallVPaletteButton) {
+                PaletteTest.this.smallVerticalPalette(evt);
+            }
+            else if (evt.getSource() == miniHPaletteButton) {
+                PaletteTest.this.miniHorizontalPalette(evt);
+            }
+            else if (evt.getSource() == miniVPaletteButton) {
+                PaletteTest.this.miniVerticalPalette(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     private void miniHorizontalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miniHorizontalPalette

@@ -145,14 +145,14 @@ public class CheckBoxTest extends javax.swing.JPanel {
         jCheckBox5.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jCheckBox5.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.weighty = 1.0;
         add(jCheckBox5, gridBagConstraints);
 
         largeLabel.setText("Large Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(largeLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
