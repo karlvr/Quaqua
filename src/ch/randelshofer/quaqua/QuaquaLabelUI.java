@@ -163,7 +163,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
             if (style.startsWith("category")) {
 
                 s = s.toUpperCase();
-                font = UIManager.getFont("Tree.sideBarCategory.font");
+                font = UIManager.getFont(selected?"Tree.sideBarCategory.selectionFont":"Tree.sideBarCategory.font");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
