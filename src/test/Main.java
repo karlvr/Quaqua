@@ -239,7 +239,6 @@ public class Main extends javax.swing.JPanel {
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
-        n.add(new Item("Focus Traversal", "test.FocusTraversalTest"));
         root.add(n = new DefaultMutableTreeNode("NATIVE CODE"));
         n.add(new Item("File System", "test.FileSystemTest"));
         n.add(new Item("Clipboard", "test.ClipboardTest"));
