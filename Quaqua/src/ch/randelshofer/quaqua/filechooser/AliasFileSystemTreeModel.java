@@ -912,9 +912,9 @@ public class AliasFileSystemTreeModel implements TreeModel {
         public void validateInfo() {
             if (infoState == INVALID) {
                 infoState = VALIDATING;
-                fileInfoDispatcher.dispatch(new Worker() {
+                fileInfoDispatcher.dispatch(new Worker<Boolean>() {
 
-                    public Object construct() {
+                    public Boolean construct() {
                         if (!doItFast) {
                             Icon oldIcon = icon;
                             int oldFileLabel = fileLabel;
@@ -932,7 +932,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         return Boolean.FALSE;
                     }
 
-                    public void finished(Object value) {
+                    @Override
+                    public void done(Boolean value) {
                         // Fire a TreeNodeChanged only, if validation was
                         // successful, and if we are still part of the tree
                         if (value == Boolean.TRUE
