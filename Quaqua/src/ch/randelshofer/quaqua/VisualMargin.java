@@ -1,5 +1,5 @@
 /*
- * @(#)VisualMargin.java  2.2  2005-10-01
+ * @(#)VisualMargin.java  
  *
  * Copyright (c) 2004-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -30,11 +30,7 @@ import javax.swing.plaf.*;
  * smaller margin using the client property "Quaqua.Component.margin".
  *
  * @author  Werner Randelshofer
- * @version 2.2 2005-10-01 Added method getVisualMargin.
- * <br>2.1 2005-06-21 Implements UIResource.
- * <br>2.0 2005-05-08 Renamed from BorderMargin to VisualMargin. Reworked
- * API.
- * <br>1.0  31 March 2005  Created.
+ * @version $Id$
  */
 public class VisualMargin extends AbstractBorder implements UIResource {
     /**
