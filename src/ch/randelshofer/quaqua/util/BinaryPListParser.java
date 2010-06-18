@@ -10,14 +10,15 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua.util;
 
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 import ch.randelshofer.quaqua.ext.base64.*;
 import java.io.*;
+import java.math.BigInteger;
 import java.util.*;
 import java.text.*;
+
 /**
  * Reads a binary PList file and returns it as a NanoXML XMLElement.
  * <p>
@@ -48,6 +49,7 @@ import java.text.*;
  * @version $Id$
  */
 public class BinaryPListParser {
+
     private final static boolean DEBUG = false;
 
     /* Description of the binary plist format derived from
@@ -135,7 +137,6 @@ public class BinaryPListParser {
      * topLevelOffset ::= byte*8            // unsigned big-endian long
      * </pre>
      */
-    
     /**
      * Total count of objrefs and keyrefs.
      */
@@ -152,77 +153,96 @@ public class BinaryPListParser {
      * Offset in file of top level offset in offset table. 
      */
     private int topLevelOffset;
-    
     /**
      * Object table.
      * We gradually fill in objects from the binary PList object table into
      * this list.
      */
     private ArrayList objectTable;
-    
+
+    /** Holder for a binary PList Uid element. */
+    private static class BPLUid {
+
+        private final int number;
+
+        public BPLUid(int number) {
+            super();
+            this.number = number;
+        }
+
+        public int getNumber() {
+            return number;
+        }
+    }
+
     /**
      * Holder for a binary PList array element.
      */
     private static class BPLArray {
+
         ArrayList objectTable;
         int[] objref;
-        
+
         public Object getValue(int i) {
             return objectTable.get(objref[i]);
         }
-        
+
+        @Override
         public String toString() {
             StringBuffer buf = new StringBuffer("Array{");
-            for (int i=0; i < objref.length; i++) {
+            for (int i = 0; i < objref.length; i++) {
                 if (i > 0) {
                     buf.append(',');
                 }
                 if (objectTable.size() > objref[i]
-                && objectTable.get(objref[i]) != this) {
+                        && objectTable.get(objref[i]) != this) {
                     buf.append(objectTable.get(objref[i]));
                 } else {
-                    buf.append("*"+objref[i]);
+                    buf.append("*" + objref[i]);
                 }
             }
             buf.append('}');
             return buf.toString();
         }
     }
-    
+
     /**
      * Holder for a binary PList dict element.
      */
     private static class BPLDict {
+
         ArrayList objectTable;
         int[] keyref;
         int[] objref;
-        
+
         public String getKey(int i) {
             return objectTable.get(keyref[i]).toString();
         }
+
         public Object getValue(int i) {
             return objectTable.get(objref[i]);
         }
-        
+
+        @Override
         public String toString() {
             StringBuffer buf = new StringBuffer("BPLDict{");
-            for (int i=0; i < keyref.length; i++) {
+            for (int i = 0; i < keyref.length; i++) {
                 if (i > 0) {
                     buf.append(',');
                 }
                 if (keyref[i] < 0 || keyref[i] >= objectTable.size()) {
-                    buf.append("#"+keyref[i]);
+                    buf.append("#" + keyref[i]);
                 } else if (objectTable.get(keyref[i]) == this) {
-                    buf.append("*"+keyref[i]);
+                    buf.append("*" + keyref[i]);
                 } else {
                     buf.append(objectTable.get(keyref[i]));
                     //buf.append(keyref[i]);
                 }
                 buf.append(":");
                 if (objref[i] < 0 || objref[i] >= objectTable.size()) {
-                    buf.append("#"+objref[i]);
+                    buf.append("#" + objref[i]);
                 } else if (objectTable.get(objref[i]) == this) {
-                    buf.append("*"+objref[i]);
+                    buf.append("*" + objref[i]);
                 } else {
                     buf.append(objectTable.get(objref[i]));
                     //buf.append(objref[i]);
@@ -232,13 +252,13 @@ public class BinaryPListParser {
             return buf.toString();
         }
     }
-    
+
     /**
      * Creates a new instance.
      */
     public BinaryPListParser() {
     }
-    
+
     /**
      * Parses a binary PList file and turns it into a XMLElement.
      * The XMLElement is equivalent with a XML PList file parsed using
@@ -252,7 +272,7 @@ public class BinaryPListParser {
         byte[] buf = null;
         try {
             raf = new RandomAccessFile(file, "r");
-            
+
             // Parse the HEADER
             // ----------------
             //  magic number ("bplist")
@@ -262,7 +282,7 @@ public class BinaryPListParser {
             if (bpli != 0x62706c69 || st00 != 0x73743030) {
                 throw new IOException("parseHeader: File does not start with 'bplist00' magic.");
             }
-            
+
             // Parse the TRAILER
             // ----------------
             //	byte size of offset ints in offset table
@@ -286,15 +306,14 @@ public class BinaryPListParser {
                 raf.close();
             }
         }
-        
+
         // Parse the OBJECT TABLE
         // ----------------------
         objectTable = new ArrayList();
         DataInputStream in = null;
         try {
             in = new DataInputStream(
-            new ByteArrayInputStream(buf)
-            );
+                    new ByteArrayInputStream(buf));
             parseObjectTable(in);
         } finally {
             if (in != null) {
@@ -305,12 +324,11 @@ public class BinaryPListParser {
         // Convert the object table to XML and return it
         XMLElement root = new XMLElement(new HashMap(), false, false);
         root.setName("plist");
-        root.setAttribute("version","1.0");
+        root.setAttribute("version", "1.0");
         convertObjectTableToXML(root, objectTable.get(0));
         return root;
     }
-    
-    
+
     /**
      * Converts the object table in the binary PList into an XMLElement.
      */
@@ -319,7 +337,7 @@ public class BinaryPListParser {
         if (object instanceof BPLDict) {
             BPLDict dict = (BPLDict) object;
             elem.setName("dict");
-            for (int i=0; i < dict.keyref.length; i++) {
+            for (int i = 0; i < dict.keyref.length; i++) {
                 XMLElement key = parent.createAnotherElement();
                 key.setName("key");
                 key.setContent(dict.getKey(i));
@@ -329,10 +347,10 @@ public class BinaryPListParser {
         } else if (object instanceof BPLArray) {
             BPLArray arr = (BPLArray) object;
             elem.setName("array");
-            for (int i=0; i < arr.objref.length; i++) {
+            for (int i = 0; i < arr.objref.length; i++) {
                 convertObjectTableToXML(elem, arr.getValue(i));
             }
-            
+
         } else if (object instanceof String) {
             elem.setName("string");
             elem.setContent((String) object);
@@ -358,12 +376,16 @@ public class BinaryPListParser {
             elem.setName("date");
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
             elem.setContent(format.format((Date) object));
-        } else  {
+        } else if (object instanceof BPLUid) {
+            elem.setName("UID");
+            elem.setContent(Integer.toString(((BPLUid) object).getNumber()));
+        } else {
             elem.setName("unsupported");
             elem.setContent(object.toString());
         }
         parent.addChild(elem);
     }
+
     /**
      * Object Formats (marker byte followed by additional info in some cases)
      * null	0000 0000
@@ -390,28 +412,28 @@ public class BinaryPListParser {
         int marker;
         while ((marker = in.read()) != -1) {
             switch ((marker & 0xf0) >> 4) {
-                case 0 : {
+                case 0: {
                     parsePrimitive(in, marker & 0xf);
                     break;
                 }
-                case 1 : {
+                case 1: {
                     int count = 1 << (marker & 0xf);
                     parseInt(in, count);
                     break;
                 }
-                case 2 : {
+                case 2: {
                     int count = 1 << (marker & 0xf);
                     parseReal(in, count);
                     break;
                 }
-                case 3 : {
+                case 3: {
                     if ((marker & 0xf) != 3) {
-                        throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                        throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     }
                     parseDate(in);
                     break;
                 }
-                case 4 : {
+                case 4: {
                     int count = marker & 0xf;
                     if (count == 15) {
                         count = readCount(in);
@@ -419,7 +441,7 @@ public class BinaryPListParser {
                     parseData(in, count);
                     break;
                 }
-                case 5 : {
+                case 5: {
                     int count = marker & 0xf;
                     if (count == 15) {
                         count = readCount(in);
@@ -427,7 +449,7 @@ public class BinaryPListParser {
                     parseAsciiString(in, count);
                     break;
                 }
-                case 6 : {
+                case 6: {
                     int count = marker & 0xf;
                     if (count == 15) {
                         count = readCount(in);
@@ -435,22 +457,27 @@ public class BinaryPListParser {
                     parseUnicodeString(in, count);
                     break;
                 }
-                case 7 : {
-                    if (DEBUG) System.out.println("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 7: {
+                    if (DEBUG) {
+                        System.out.println("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                    }
                     return;
                     // throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
                     //break;
                 }
-                case 8 : {
+                case 8: {
                     int count = (marker & 0xf) + 1;
-                    if (DEBUG) System.out.println("uid "+count);
+                    if (DEBUG) {
+                        System.out.println("uid " + count);
+                    }
+                    parseUID(in, count);
                     break;
                 }
-                case 9 : {
-                    throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 9: {
+                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     //break;
                 }
-                case 10 : {
+                case 10: {
                     int count = marker & 0xf;
                     if (count == 15) {
                         count = readCount(in);
@@ -462,15 +489,15 @@ public class BinaryPListParser {
                     }
                     break;
                 }
-                case 11 : {
-                    throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 11: {
+                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     //break;
                 }
-                case 12 : {
-                    throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 12: {
+                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     //break;
                 }
-                case 13 : {
+                case 13: {
                     int count = marker & 0xf;
                     if (count == 15) {
                         count = readCount(in);
@@ -482,18 +509,18 @@ public class BinaryPListParser {
                     }
                     break;
                 }
-                case 14 : {
-                    throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 14: {
+                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     //break;
                 }
-                case 15 : {
-                    throw new IOException("parseObjectTable: illegal marker "+Integer.toBinaryString(marker));
+                case 15: {
+                    throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     //break;
                 }
             }
         }
     }
-    
+
     /**
      * Reads a count value from the object table. Count values are encoded
      * using the following scheme:
@@ -506,11 +533,11 @@ public class BinaryPListParser {
             throw new IOException("variableLengthInt: Illegal EOF in marker");
         }
         if (((marker & 0xf0) >> 4) != 1) {
-            throw new IOException("variableLengthInt: Illegal marker "+Integer.toBinaryString(marker));
+            throw new IOException("variableLengthInt: Illegal marker " + Integer.toBinaryString(marker));
         }
         int count = 1 << (marker & 0xf);
         int value = 0;
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             int b = in.read();
             if (b == -1) {
                 throw new IOException("variableLengthInt: Illegal EOF in value");
@@ -519,8 +546,7 @@ public class BinaryPListParser {
         }
         return value;
     }
-    
-    
+
     /**
      * null	0000 0000
      * bool	0000 1000			// false
@@ -541,10 +567,11 @@ public class BinaryPListParser {
             case 15:
                 // fill byte: don't add to object table
                 break;
-            default :
-                throw new IOException("parsePrimitive: illegal primitive "+Integer.toBinaryString(primitive));
+            default:
+                throw new IOException("parsePrimitive: illegal primitive " + Integer.toBinaryString(primitive));
         }
     }
+
     /**
      * array	1010 nnnn	[int]	objref*	// nnnn is count, unless '1111', then int count follows
      */
@@ -552,16 +579,17 @@ public class BinaryPListParser {
         BPLArray arr = new BPLArray();
         arr.objectTable = objectTable;
         arr.objref = new int[count];
-        
-        for (int i=0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             arr.objref[i] = in.readByte() & 0xff;
             if (arr.objref[i] == -1) {
                 throw new IOException("parseByteArray: illegal EOF in objref*");
             }
         }
-        
+
         objectTable.add(arr);
     }
+
     /**
      * array	1010 nnnn	[int]	objref*	// nnnn is count, unless '1111', then int count follows
      */
@@ -569,24 +597,26 @@ public class BinaryPListParser {
         BPLArray arr = new BPLArray();
         arr.objectTable = objectTable;
         arr.objref = new int[count];
-        
-        for (int i=0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             arr.objref[i] = in.readShort() & 0xffff;
             if (arr.objref[i] == -1) {
                 throw new IOException("parseShortArray: illegal EOF in objref*");
             }
         }
-        
+
         objectTable.add(arr);
     }
     /*
      * data	0100 nnnn	[int]	...	// nnnn is number of bytes unless 1111 then int count follows, followed by bytes
      */
+
     private void parseData(DataInputStream in, int count) throws IOException {
         byte[] data = new byte[count];
         in.readFully(data);
         objectTable.add(data);
     }
+
     /**
      * byte dict	1101 nnnn keyref* objref*	// nnnn is less than '1111'
      */
@@ -595,15 +625,16 @@ public class BinaryPListParser {
         dict.objectTable = objectTable;
         dict.keyref = new int[count];
         dict.objref = new int[count];
-        
-        for (int i=0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             dict.keyref[i] = in.readByte() & 0xff;
         }
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             dict.objref[i] = in.readByte() & 0xff;
         }
         objectTable.add(dict);
     }
+
     /**
      * short dict	1101 ffff int keyref* objref*	// int is count
      */
@@ -612,15 +643,16 @@ public class BinaryPListParser {
         dict.objectTable = objectTable;
         dict.keyref = new int[count];
         dict.objref = new int[count];
-        
-        for (int i=0; i < count; i++) {
+
+        for (int i = 0; i < count; i++) {
             dict.keyref[i] = in.readShort() & 0xffff;
         }
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             dict.objref[i] = in.readShort() & 0xffff;
         }
         objectTable.add(dict);
     }
+
     /**
      * string	0101 nnnn	[int]	...	// ASCII string, nnnn is # of chars, else 1111 then int count, then bytes
      */
@@ -630,15 +662,25 @@ public class BinaryPListParser {
         String str = new String(buf, "ASCII");
         objectTable.add(str);
     }
+
+    private void parseUID(DataInputStream in, int count) throws IOException {
+        if (count > 4) {
+            throw new IOException("parseUID: unsupported byte count: "+count);
+        }
+        byte[] uid = new byte[count];
+        in.read(uid);
+        objectTable.add(new BPLUid(new BigInteger(uid).intValue()));
+    }
+
     /**
      * int	0001 nnnn	...		// # of bytes is 2^nnnn, big-endian bytes
      */
     private void parseInt(DataInputStream in, int count) throws IOException {
         if (count > 8) {
-            throw new IOException("parseInt: unsupported byte count:"+count);
+            throw new IOException("parseInt: unsupported byte count: " + count);
         }
         long value = 0;
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             int b = in.read();
             if (b == -1) {
                 throw new IOException("parseInt: Illegal EOF in value");
@@ -647,21 +689,23 @@ public class BinaryPListParser {
         }
         objectTable.add(new Long(value));
     }
+
     /**
      * real	0010 nnnn	...		// # of bytes is 2^nnnn, big-endian bytes
      */
     private void parseReal(DataInputStream in, int count) throws IOException {
         switch (count) {
-            case 4 :
+            case 4:
                 objectTable.add(new Float(in.readFloat()));
                 break;
-            case 8 :
+            case 8:
                 objectTable.add(new Double(in.readDouble()));
                 break;
-            default :
-                throw new IOException("parseReal: unsupported byte count:"+count);
+            default:
+                throw new IOException("parseReal: unsupported byte count:" + count);
         }
     }
+
     /**
      *  date	0011 0011	...		// 8 byte float follows, big-endian bytes
      */
@@ -671,16 +715,16 @@ public class BinaryPListParser {
         //objectTable.add(new Date((long) date));
         objectTable.add(new Date());
     }
+
     /**
      * string	0110 nnnn	[int]	...	// Unicode string, nnnn is # of chars, else 1111 then int count, then big-endian 2-byte shorts
      */
     private void parseUnicodeString(DataInputStream in, int count) throws IOException {
         char[] buf = new char[count];
-        for (int i=0; i < count; i++) {
+        for (int i = 0; i < count; i++) {
             buf[i] = in.readChar();
         }
         String str = new String(buf);
         objectTable.add(str);
     }
-
 }
