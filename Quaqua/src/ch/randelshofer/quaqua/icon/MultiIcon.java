@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua.icon;
 
 import ch.randelshofer.quaqua.util.*;
@@ -26,12 +25,12 @@ import javax.swing.*;
  * @version $Id$
  */
 public abstract class MultiIcon implements Icon {
+
     /**
      * The icons from which we choose from.
      * This variable is null, if we are using a tiled image as our base.
      */
     protected Icon[] icons;
-    
     /** Holds the icon pictures in a single image. This variable is used only
      *until we create the icons array. Then it is set to null.
      */
@@ -45,8 +44,7 @@ public abstract class MultiIcon implements Icon {
      * to get the icons out of it.
      */
     private boolean isTiledHorizontaly;
-    
-    
+
     /**
      * Creates a new instance from an array of icons.
      * All icons must have the same dimensions.
@@ -54,8 +52,12 @@ public abstract class MultiIcon implements Icon {
      * other icons.
      */
     public MultiIcon(Icon[] icons) {
-        if (icons == null) { throw new IllegalArgumentException("'icons' must not be null"); }
-        if (icons.length == 0) { throw new IllegalArgumentException("'icons' array must have length > 0"); }
+        if (icons == null) {
+            throw new IllegalArgumentException("'icons' must not be null");
+        }
+        if (icons.length == 0) {
+            throw new IllegalArgumentException("'icons' array must have length > 0");
+        }
         this.icons = icons;
         generateMissingIcons();
     }
@@ -68,14 +70,14 @@ public abstract class MultiIcon implements Icon {
      */
     public MultiIcon(Image[] images) {
         this.icons = new Icon[images.length];
-        for (int i=0, n = icons.length; i < n; i++) {
+        for (int i = 0, n = icons.length; i < n; i++) {
             if (images[i] != null) {
                 icons[i] = new ImageIcon(images[i]);
             }
         }
         generateMissingIcons();
     }
-    
+
     /**
      * Creates a new instance.
      * The icon representations are created lazily from the tiled image.
@@ -85,18 +87,17 @@ public abstract class MultiIcon implements Icon {
         this.tileCount = tileCount;
         this.isTiledHorizontaly = isTiledHorizontaly;
     }
-    
-    
+
     public int getIconHeight() {
         generateIconsFromTiledImage();
-        return icons[0].getIconHeight();
+        return (icons[0] == null) ? 0 : icons[0].getIconHeight();
     }
-    
+
     public int getIconWidth() {
         generateIconsFromTiledImage();
-        return icons[0].getIconWidth();
+        return (icons[0] == null) ? 0 : icons[0].getIconWidth();
     }
-    
+
     public void paintIcon(java.awt.Component c, java.awt.Graphics g, int x, int y) {
         generateIconsFromTiledImage();
         Icon icon = getIcon(c);
@@ -104,12 +105,12 @@ public abstract class MultiIcon implements Icon {
             icon.paintIcon(c, g, x, y);
         }
     }
-    
+
     private void generateIconsFromTiledImage() {
         if (icons == null) {
             icons = new Icon[tileCount];
             Image[] images = Images.split(tiledImage, tileCount, isTiledHorizontaly);
-            for (int i=0, n = Math.min(images.length, icons.length); i < n; i++) {
+            for (int i = 0, n = Math.min(images.length, icons.length); i < n; i++) {
                 if (images[i] != null) {
                     icons[i] = new ImageIcon(images[i]);
                 }
@@ -118,7 +119,8 @@ public abstract class MultiIcon implements Icon {
             tiledImage = null;
         }
     }
-    
+
     protected abstract Icon getIcon(Component c);
+
     protected abstract void generateMissingIcons();
 }
