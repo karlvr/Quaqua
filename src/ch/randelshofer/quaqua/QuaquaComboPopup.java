@@ -187,6 +187,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      * @param ph starting height
      * @return a rectangle which represents the placement and size of the popup
      */
+    @Override
     protected Rectangle computePopupBounds(int px, int py, int pw, int ph) {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
@@ -230,16 +231,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
         SwingUtilities.convertPointFromScreen(p, comboBox);
         if (gc != null) {
             // Get the screen insets.
-            // This method will work with JDK 1.4 only. Since we want to stay
-            // compatible with JDk 1.3, we use the Reflection API to access it.
-            //Insets screenInsets = toolkit.getScreenInsets(gc);
-            Insets screenInsets;
-            try {
-                screenInsets = (Insets) Toolkit.class.getMethod("getScreenInsets", new Class[]{GraphicsConfiguration.class}).invoke(toolkit, new Object[]{gc});
-            } catch (Exception e) {
-                //e.printStackTrace();
-                screenInsets = new Insets(22, 0, 0, 0);
-            }
+            Insets screenInsets=toolkit.getScreenInsets(gc);
             // Note: We must create a new rectangle here, because method
             // getBounds does not return a copy of a rectangle on J2SE 1.3.
             screenBounds = new Rectangle(gc.getBounds());
@@ -275,18 +267,16 @@ public class QuaquaComboPopup extends BasicComboPopup {
             }
         }
 
-        // Compute the rectangle for the popup menu
-        Rectangle rect = new Rectangle(
-                px,
-                Math.max(py, p.y + screenBounds.y),
-                Math.min(screenBounds.width, pw),
-                Math.min(screenBounds.height - 40, ph));
-
         // Add the preferred scroll bar width, if the popup does not fit
         // on the available rectangle.
-        if (rect.height < ph) {
+        Rectangle rect = new Rectangle(px-p.x,py-p.y,pw,ph);
+        if (screenBounds.height < ph) {
             rect.width += 16;
         }
+        // Compute the rectangle for the popup menu
+        rect = screenBounds.intersection(rect);
+        rect.x+=p.x;
+        rect.y+=p.y;
 
         return rect;
     }

@@ -1,5 +1,5 @@
 /*
- * @(#)ComboBoxTest.java  1.0  13 February 2005
+ * @(#)ComboBoxTest.java  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -21,7 +21,7 @@ import javax.swing.border.*;
  * ComboBoxTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class ComboBoxTest extends javax.swing.JPanel {
     private static class ColorIcon implements Icon {
@@ -60,6 +60,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         public ColorComboCellRenderer() {
             setIconTextGap(6);
         }
+        @Override
         public Component getListCellRendererComponent(
                 JList list,
                 Object value,
@@ -77,6 +78,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
             }
             return l;
         }
+        @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             /*
