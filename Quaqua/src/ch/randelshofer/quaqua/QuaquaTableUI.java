@@ -51,19 +51,7 @@ public class QuaquaTableUI extends BasicTableUI
      */
     @Override
     protected KeyListener createKeyListener() {
-        return new KeyAdapter() {
-
-            @Override
-            public void keyPressed(KeyEvent e) {
-                // Eat away META down keys..
-                // We need to do this, because the JTable.processKeyBinding(…) 
-                // method does not treat VK_META as a modifier key, and starts
-                // editing a cell, whenever this key is pressed.
-                if (e.getKeyCode() == KeyEvent.VK_META) {
-                    e.consume();
-                }
-            }
-        };
+        return getHandler();
     }
 
     private Color getAlternateColor(int modulo) {
@@ -526,16 +514,7 @@ public class QuaquaTableUI extends BasicTableUI
      */
     @Override
     protected MouseInputListener createMouseInputListener() {
-        // FIXME - We haven't yet implemented a mouse handler for J2SE6. 
-        // Only use our own mouse listener on Java 1.4 and 1.5,
-        // it does not work with J2SE6.
-        if (QuaquaManager.getProperty("Quaqua.Table.useJ2SE5MouseHandler", "false").equals("true")
-                || QuaquaManager.getProperty("java.version").startsWith("1.4")
-                || QuaquaManager.getProperty("java.version").startsWith("1.5")) {
-            return new MouseHandler();
-        } else {
-            return super.createMouseInputListener();
-        }
+            return getHandler();
     }
 
     /**
@@ -574,11 +553,22 @@ public class QuaquaTableUI extends BasicTableUI
      */
     @Override
     protected FocusListener createFocusListener() {
-        return new FocusHandler();
+        return getHandler();
     }
-    //
-    //  The Table's focus listener
-    //
+    private static int getAdjustedLead(JTable table,
+                                       boolean row,
+                                       ListSelectionModel model) {
+
+        int index = model.getLeadSelectionIndex();
+        int compare = row ? table.getRowCount() : table.getColumnCount();
+        return index < compare ? index : -1;
+    }
+
+    private static int getAdjustedLead(JTable table, boolean row) {
+        return row ? getAdjustedLead(table, row, table.getSelectionModel())
+                   : getAdjustedLead(table, row, table.getColumnModel().getSelectionModel());
+    }
+
 
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
@@ -590,9 +580,25 @@ public class QuaquaTableUI extends BasicTableUI
      * varaible, or TreeState, based on what changes.
      */
     private class Handler implements
-            PropertyChangeListener, ListSelectionListener, TableColumnModelListener {
+            PropertyChangeListener, ListSelectionListener,//
+            TableColumnModelListener, FocusListener, MouseInputListener, //
+    KeyListener {
 
-        private boolean rowSelectionAdjusting;
+        private boolean isAdjustingRowSelection;
+        // Component receiving mouse events during editing.
+        // May not be editorComponent.
+        private Component dispatchComponent;
+        private boolean mouseReleaseDeselects;
+        private final static int MOUSE_DRAG_DOES_NOTHING = 0;
+        private final static int MOUSE_DRAG_SELECTS = 1;
+        private final static int MOUSE_DRAG_TOGGLES_SELECTION = 2;
+        private final static int MOUSE_DRAG_STARTS_DND = 3;
+        private int mouseDragAction;
+        /** index of previously toggled row. */
+        private int toggledRow = -1;
+        /** index of previously toggled column. */
+        private int toggledColumn = -1;
+
 
         public void propertyChange(PropertyChangeEvent event) {
             String name = event.getPropertyName();
@@ -692,14 +698,14 @@ public class QuaquaTableUI extends BasicTableUI
          */
         public void valueChanged(ListSelectionEvent e) {
             boolean isAdjusting = e.getValueIsAdjusting();
-            if (rowSelectionAdjusting && !isAdjusting) {
+            if (isAdjustingRowSelection && !isAdjusting) {
                 // The assumption is that when the model is no longer adjusting
                 // we will have already gotten all the changes, and therefore
                 // don't need to do an additional paint.
-                rowSelectionAdjusting = false;
+                isAdjustingRowSelection = false;
                 return;
             }
-            rowSelectionAdjusting = isAdjusting;
+            isAdjustingRowSelection = isAdjusting;
             // The getCellRect() calls will fail unless there is at least one column.
             if (table.getRowCount() <= 0 || table.getColumnCount() <= 0) {
                 return;
@@ -716,23 +722,6 @@ public class QuaquaTableUI extends BasicTableUI
         private int limit(int i, int a, int b) {
             return Math.min(b, Math.max(i, a));
         }
-    } // End of BasicTableUI.Handler
-
-    public class MouseHandler implements MouseInputListener {
-
-        // Component receiving mouse events during editing.
-        // May not be editorComponent.
-        private Component dispatchComponent;
-        private boolean selectedOnPress;
-        private boolean mouseReleaseDeselects;
-        private final static int MOUSE_DRAG_DOES_NOTHING = 0;
-        private final static int MOUSE_DRAG_SELECTS = 1;
-        private final static int MOUSE_DRAG_TOGGLES_SELECTION = 2;
-        private int mouseDragAction;
-        /** index of previously toggled row. */
-        private int toggledRow = -1;
-        /** index of previously toggled column. */
-        private int toggledColumn = -1;
 
         //  The Table's mouse listener methods.
         public void mouseClicked(MouseEvent e) {
@@ -798,30 +787,28 @@ public class QuaquaTableUI extends BasicTableUI
                         // selected, and the user triggers the popup menu.
                     } else {
                         int anchorIndex = table.getSelectionModel().getAnchorSelectionIndex();
-                        // Workaround: Java 1.4 incorrectly reports mouse button 3 down when the Meta-Key is pressed
-                        String javaVersion = System.getProperty("java.version");
-                        if (javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK)) == MouseEvent.META_DOWN_MASK || !javaVersion.startsWith("1.4") && (e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
+                        if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) //
+                                == MouseEvent.META_DOWN_MASK) {
                             // toggle the selection
                             table.changeSelection(row, column, true, false);
                             toggledRow = row;
                             toggledColumn = column;
                             mouseDragAction = MOUSE_DRAG_TOGGLES_SELECTION;
-                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK
+                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK))//
+                                == MouseEvent.SHIFT_DOWN_MASK
                                 && anchorIndex != -1) {
                             // add all rows to the selection from the anchor to the row
                             table.changeSelection(row, column, false, true);
-                            //table.setRowSelectionInterval(anchorIndex, row);
                             mouseDragAction = MOUSE_DRAG_SELECTS;
                         } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
                             if (table.isCellSelected(row, column)) {
                                 mouseReleaseDeselects = table.isFocusOwner();
+                                mouseDragAction = MOUSE_DRAG_STARTS_DND;
                             } else {
                                 // Only select the cell
                                 table.changeSelection(row, column, false, false);
-                                //table.setRowSelectionInterval(row, row);
                                 mouseDragAction = MOUSE_DRAG_SELECTS;
                             }
-                            //table.getSelectionModel().setAnchorSelectionIndex(row);
                         }
                     }
                 }
@@ -896,13 +883,32 @@ public class QuaquaTableUI extends BasicTableUI
                         toggledRow = row;
                         toggledColumn = column;
                     }
+                } else if (mouseDragAction == MOUSE_DRAG_STARTS_DND) {
+                                        if (table.getDragEnabled()) {
+                        TransferHandler th = table.getTransferHandler();
+                        int action = QuaquaUtilities.mapDragOperationFromModifiers(e, th);
+                        if (action != TransferHandler.NONE) {
+                            /* notify the BeforeDrag instance * /
+                            if (bd != null) {
+                            bd.dragStarting(dndArmedEvent);
+                            }*/
+                            th.exportAsDrag(table, e, action);
+                            //clearState();
+                        }
+                    }
+
                 }
             }
         }
-    }
 
-    private class FocusHandler implements FocusListener {
-        // FocusListener
+        // BEGIN FocusListener
+        public void focusGained(FocusEvent e) {
+            repaintSelection();
+        }
+
+        public void focusLost(FocusEvent e) {
+            repaintSelection();
+        }
 
         private void repaintSelection() {
             final int[] rows = table.getSelectedRows();
@@ -941,13 +947,86 @@ public class QuaquaTableUI extends BasicTableUI
                 }
             }
         }
+        // END FocusListener
 
-        public void focusGained(FocusEvent e) {
-            repaintSelection();
-        }
+        // BEGIN KeyListener
+            public void keyPressed(KeyEvent e) {
+                // Eat away META down keys..
+                // We need to do this, because the JTable.processKeyBinding(…)
+                // method does not treat VK_META as a modifier key, and starts
+                // editing a cell, whenever this key is pressed.
+                if (e.getKeyCode() == KeyEvent.VK_META) {
+                    e.consume();
+                }
+            }
+        public void keyReleased(KeyEvent e) { }
 
-        public void focusLost(FocusEvent e) {
-            repaintSelection();
+        public void keyTyped(KeyEvent e) {
+            KeyStroke keyStroke = KeyStroke.getKeyStroke(e.getKeyChar(),
+                    e.getModifiers());
+
+            // We register all actions using ANCESTOR_OF_FOCUSED_COMPONENT
+            // which means that we might perform the appropriate action
+            // in the table and then forward it to the editor if the editor
+            // had focus. Make sure this doesn't happen by checking our
+            // InputMaps.
+	    InputMap map = table.getInputMap(JComponent.WHEN_FOCUSED);
+	    if (map != null && map.get(keyStroke) != null) {
+		return;
+	    }
+	    map = table.getInputMap(JComponent.
+				  WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+	    if (map != null && map.get(keyStroke) != null) {
+		return;
+	    }
+
+	    keyStroke = KeyStroke.getKeyStrokeForEvent(e);
+
+            // The AWT seems to generate an unconsumed \r event when
+            // ENTER (\n) is pressed.
+            if (e.getKeyChar() == '\r') {
+                return;
+            }
+
+            int leadRow = getAdjustedLead(table, true);
+            int leadColumn = getAdjustedLead(table, false);
+            if (leadRow != -1 && leadColumn != -1 && !table.isEditing()) {
+                if (!table.editCellAt(leadRow, leadColumn)) {
+                    return;
+                }
+            }
+
+            // Forwarding events this way seems to put the component
+            // in a state where it believes it has focus. In reality
+            // the table retains focus - though it is difficult for
+            // a user to tell, since the caret is visible and flashing.
+
+            // Calling table.requestFocus() here, to get the focus back to
+            // the table, seems to have no effect.
+
+            Component editorComp = table.getEditorComponent();
+            if (table.isEditing() && editorComp != null) {
+                if (editorComp instanceof JComponent) {
+                    JComponent component = (JComponent)editorComp;
+		    map = component.getInputMap(JComponent.WHEN_FOCUSED);
+		    Object binding = (map != null) ? map.get(keyStroke) : null;
+		    if (binding == null) {
+			map = component.getInputMap(JComponent.
+					 WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+			binding = (map != null) ? map.get(keyStroke) : null;
+		    }
+		    if (binding != null) {
+			ActionMap am = component.getActionMap();
+			Action action = (am != null) ? am.get(binding) : null;
+			if (action != null && SwingUtilities.
+			    notifyAction(action, keyStroke, e, component,
+					 e.getModifiers())) {
+			    e.consume();
+			}
+		    }
+                }
+            }
         }
-    }
+        // END KeyListener
+    } // End of QuaquaTableUI.Handler
 }
