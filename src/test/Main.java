@@ -232,6 +232,8 @@ public class Main extends javax.swing.JPanel {
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
         n.add(new Item("Margin", "test.VisualMarginTest"));
+        n.add(new Item("Matisse", "test.MatisseTest"));
+        n.add(new Item("Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
@@ -272,7 +274,13 @@ public class Main extends javax.swing.JPanel {
         splitPane = new javax.swing.JSplitPane();
         treeScrollPane = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
+        rightPane = new javax.swing.JPanel();
         viewPane = new javax.swing.JPanel();
+        controlPanel = new javax.swing.JPanel();
+        showClipBoundsBox = new javax.swing.JCheckBox();
+        jCheckBox2 = new javax.swing.JCheckBox();
+
+        FormListener formListener = new FormListener();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -286,13 +294,47 @@ public class Main extends javax.swing.JPanel {
 
         splitPane.setLeftComponent(treeScrollPane);
 
-        viewPane.setMinimumSize(new java.awt.Dimension(0, 1));
+        rightPane.setMinimumSize(new java.awt.Dimension(0, 1));
+        rightPane.setLayout(new java.awt.BorderLayout());
+
         viewPane.setLayout(new java.awt.BorderLayout());
-        splitPane.setRightComponent(viewPane);
+        rightPane.add(viewPane, java.awt.BorderLayout.CENTER);
+
+        showClipBoundsBox.setText("Show Clip Bounds");
+        showClipBoundsBox.addActionListener(formListener);
+        controlPanel.add(showClipBoundsBox);
+
+        jCheckBox2.setText("jCheckBox2");
+        controlPanel.add(jCheckBox2);
+
+        rightPane.add(controlPanel, java.awt.BorderLayout.SOUTH);
+
+        splitPane.setRightComponent(rightPane);
 
         add(splitPane, java.awt.BorderLayout.CENTER);
+    }
+
+    // Code for dispatching events from components to event handlers.
+
+    private class FormListener implements java.awt.event.ActionListener {
+        FormListener() {}
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            if (evt.getSource() == showClipBoundsBox) {
+                Main.this.showClipBoundsBoxActionPerformed(evt);
+            }
+        }
     }// </editor-fold>//GEN-END:initComponents
+
+    private void showClipBoundsBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showClipBoundsBoxActionPerformed
+       UIManager.put("Quaqua.Debug.showClipBounds", showClipBoundsBox.isSelected()?Boolean.TRUE:Boolean.FALSE);
+       repaint();
+    }//GEN-LAST:event_showClipBoundsBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel controlPanel;
+    private javax.swing.JCheckBox jCheckBox2;
+    private javax.swing.JPanel rightPane;
+    private javax.swing.JCheckBox showClipBoundsBox;
     private javax.swing.JSplitPane splitPane;
     private javax.swing.JTree tree;
     private javax.swing.JScrollPane treeScrollPane;
