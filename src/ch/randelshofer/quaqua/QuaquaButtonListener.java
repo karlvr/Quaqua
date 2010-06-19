@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
@@ -18,6 +17,8 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.basic.*;
 import java.beans.*;
+import java.util.Enumeration;
+
 /**
  * QuaquaButtonListener.
  *
@@ -25,25 +26,30 @@ import java.beans.*;
  * @version $Id$
  */
 public class QuaquaButtonListener extends BasicButtonListener {
+
     transient long lastPressedTimestamp = -1;
     transient boolean shouldDiscardRelease = false;
-    
+
     /** Creates a new instance. */
     public QuaquaButtonListener(AbstractButton button) {
         super(button);
     }
+
+    @Override
     public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
         if (prop.equals("Frame.active")) {
-            ((AbstractButton)e.getSource()).repaint();
+            ((AbstractButton) e.getSource()).repaint();
         }
         super.propertyChange(e);
     }
+
+    @Override
     public void mousePressed(MouseEvent e) {
-        if (SwingUtilities.isLeftMouseButton(e) ) {
+        if (SwingUtilities.isLeftMouseButton(e)) {
             AbstractButton b = (AbstractButton) e.getSource();
-            
-            if(b.contains(e.getX(), e.getY())) {
+
+            if (b.contains(e.getX(), e.getY())) {
                 long multiClickThreshhold = Methods.invokeGetter(b, "getMultiClickThreshhold", (long) 0);
                 long lastTime = lastPressedTimestamp;
                 long currentTime = lastPressedTimestamp = e.getWhen();
@@ -51,7 +57,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     shouldDiscardRelease = true;
                     return;
                 }
-                
+
                 ButtonModel model = b.getModel();
                 if (!model.isEnabled()) {
                     // Disabled buttons ignore all input...
@@ -62,80 +68,160 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     model.setArmed(true);
                 }
                 model.setPressed(true);
-                if(!b.hasFocus() && b.isRequestFocusEnabled()) {
-                    b.requestFocus();
+                if (!b.hasFocus()) {
+                    if (b.isRequestFocusEnabled()) {
+                        b.requestFocus();
+                    } else {
+                        // request focus if one of the buttons in the button group
+                        // has focus
+                        if (model instanceof DefaultButtonModel) {
+                            ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                            if (grp != null) {
+                                for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
+                                    AbstractButton grpButton = (AbstractButton) i.nextElement();
+                                    if (grpButton.hasFocus()) {
+                                        b.requestFocus();
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
-    };
-    
+    }
+
+    @Override
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isLeftMouseButton(e)) {
             // Support for multiClickThreshhold
             if (shouldDiscardRelease) {
                 shouldDiscardRelease = false;
+
+
                 return;
+
+
             }
             AbstractButton b = (AbstractButton) e.getSource();
             ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);
+
+
         }
-    };
-    
+    }
+
+    ;
+
+    @Override
     public void mouseEntered(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
-        if(b.isRolloverEnabled()) {
+
+
+        if (b.isRolloverEnabled()) {
             model.setRollover(true);
+
+
         }
-        if (model.isPressed())
+        if (model.isPressed()) {
             model.setArmed(true);
-    };
-    
+        }
+
+
+    }
+
+    ;
+
+    @Override
     public void mouseExited(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
-        if(b.isRolloverEnabled()) {
+
+
+        if (b.isRolloverEnabled()) {
             model.setRollover(false);
+
+
         }
         model.setArmed(false);
-    };
+
+
+    }
+
+    ;
+
+    @Override
     public void focusGained(FocusEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
-        if (b instanceof JButton && ((JButton)b).isDefaultCapable()) {
+
+
+        if (b instanceof JButton && ((JButton) b).isDefaultCapable()) {
             JRootPane root = b.getRootPane();
+
+
+
+
             if (root != null) {
-                QuaquaButtonUI ui = (QuaquaButtonUI)QuaquaUtilities.getUIOfType(
-                        ((AbstractButton)b).getUI(), QuaquaButtonUI.class);
-                if (ui != null &&
-                        UIManager.get(ui.getPropertyPrefix()+"defaultButtonFollowsFocus") != Boolean.FALSE) {
+                QuaquaButtonUI ui = (QuaquaButtonUI) QuaquaUtilities.getUIOfType(
+                        ((AbstractButton) b).getUI(), QuaquaButtonUI.class);
+
+
+
+
+                if (ui != null
+                        && UIManager.get(ui.getPropertyPrefix() + "defaultButtonFollowsFocus") != Boolean.FALSE) {
                     root.putClientProperty("temporaryDefaultButton", b);
-                    root.setDefaultButton((JButton)b);
+                    root.setDefaultButton((JButton) b);
                     root.putClientProperty("temporaryDefaultButton", null);
                 }
             }
+
         }
+
+
         b.repaint();
+
+
     }
-    
+
+    @Override
     public void focusLost(FocusEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         JRootPane root = b.getRootPane();
+
+
         if (root != null) {
-            JButton initialDefault = (JButton)root.getClientProperty("initialDefaultButton");
+            JButton initialDefault = (JButton) root.getClientProperty("initialDefaultButton");
+
+
+
+
             if (b != initialDefault) {
-                QuaquaButtonUI ui = (QuaquaButtonUI)QuaquaUtilities.getUIOfType(
-                        ((AbstractButton)b).getUI(), QuaquaButtonUI.class);
-                if (ui != null &&
-                        UIManager.get(ui.getPropertyPrefix()+"defaultButtonFollowsFocus") != Boolean.FALSE) {
+                QuaquaButtonUI ui = (QuaquaButtonUI) QuaquaUtilities.getUIOfType(
+                        ((AbstractButton) b).getUI(), QuaquaButtonUI.class);
+
+
+
+
+
+
+
+
+                if (ui != null
+                        && UIManager.get(ui.getPropertyPrefix() + "defaultButtonFollowsFocus") != Boolean.FALSE) {
                     root.setDefaultButton(initialDefault);
                 }
             }
+
+
         }
-        
+
         b.getModel().setArmed(false);
-        
+
         b.repaint();
+
     }
 }

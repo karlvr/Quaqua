@@ -58,6 +58,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     // ********************************
     //        Install PLAF
     // ********************************
+    @Override
     protected void installDefaults(AbstractButton b){
         super.installDefaults(b);
         if(!defaults_initialized) {
@@ -73,14 +74,17 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     // ********************************
     //        Uninstall PLAF
     // ********************************
+    @Override
     protected void uninstallDefaults(AbstractButton b){
         super.uninstallDefaults(b);
         defaults_initialized = false;
     }
+    @Override
     protected void installListeners(AbstractButton b) {
         super.installListeners(b);
         b.addPropertyChangeListener(propertyChangeListener);
     }
+    @Override
     protected void uninstallListeners(AbstractButton b) {
         super.uninstallListeners(b);
         b.removePropertyChangeListener(propertyChangeListener);
@@ -90,10 +94,12 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         return (c.getFont().getSize() <= 11) ? smallIcon : icon;
     }
     
+    @Override
     protected BasicButtonListener createButtonListener(AbstractButton b) {
         return new QuaquaButtonListener(b);
     }
     
+    @Override
     public void paint( Graphics g, JComponent c ) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         AbstractButton b = (AbstractButton) c;
@@ -189,6 +195,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         Debug.paint(g, c, this);
     }
     
+    @Override
     protected void paintFocus(Graphics g, Rectangle textR, Dimension size){
     }
     
@@ -196,6 +203,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     /**
      * The preferred size of the radio button
      */
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         if(c.getComponentCount() > 0) {
             return null;
@@ -265,6 +273,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
      * @param text String to render
      * @since 1.4
      */
+    @Override
     protected void paintText(Graphics g, AbstractButton b, Rectangle textR, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
@@ -334,6 +343,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         }
         return clippedText;
     }
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
