@@ -16,7 +16,6 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -54,7 +53,9 @@ public class QuaquaPopupFactory extends PopupFactory {
         if (owner instanceof JComponent) {
             JComponent c = (JComponent) owner;
             Float alpha = (Float) c.getClientProperty("Quaqua.PopupMenu.alpha");
-            if (alpha == null) alpha = new Float(0.75f);
+            if (alpha == null) {
+                alpha = new Float(0.75f);
+            }
             if (alpha.floatValue() == 1f) {
                 return HEAVY_WEIGHT_POPUP;
             }
@@ -70,6 +71,7 @@ public class QuaquaPopupFactory extends PopupFactory {
         return getPopupType(owner);
     }
 
+    @Override
     public Popup getPopup(Component owner, Component contents,
             int x, int y) throws IllegalArgumentException {
         if (contents == null) {
@@ -169,6 +171,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             return null;
         }
 
+        @Override
         public void hide() {
             Component component = getComponent();
 
@@ -196,8 +199,8 @@ public class QuaquaPopupFactory extends PopupFactory {
 
         void reset(Component owner, Component contents, int ownerX,
                 int ownerY) {
-            if ((owner instanceof JFrame) || (owner instanceof JDialog) ||
-                    (owner instanceof JWindow)) {
+            if ((owner instanceof JFrame) || (owner instanceof JDialog)
+                    || (owner instanceof JWindow)) {
                 // Force the content to be added to the layered pane, otherwise
                 // we'll get an exception when adding to the RootPaneContainer.
                 owner = ((RootPaneContainer) owner).getLayeredPane();
@@ -221,8 +224,8 @@ public class QuaquaPopupFactory extends PopupFactory {
                     Rectangle bnd = component.getBounds();
                     for (int i = 0; i < ownedWindows.length; i++) {
                         Window owned = ownedWindows[i];
-                        if (owned.isVisible() &&
-                                bnd.intersects(owned.getBounds())) {
+                        if (owned.isVisible()
+                                && bnd.intersects(owned.getBounds())) {
 
                             return true;
                         }
@@ -244,9 +247,9 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int height = component.getHeight();
                 for (parent = owner.getParent(); parent != null;
                         parent = parent.getParent()) {
-                    if (parent instanceof JFrame ||
-                            parent instanceof JDialog ||
-                            parent instanceof JWindow) {
+                    if (parent instanceof JFrame
+                            || parent instanceof JDialog
+                            || parent instanceof JWindow) {
 
                         Rectangle r = parent.getBounds();
                         Insets i = parent.getInsets();
@@ -265,8 +268,8 @@ public class QuaquaPopupFactory extends PopupFactory {
                         r.y = p.y;
                         return SwingUtilities.isRectangleContainingRectangle(
                                 r, new Rectangle(x, y, width, height));
-                    } else if (parent instanceof Window ||
-                            parent instanceof Applet) {
+                    } else if (parent instanceof Window
+                            || parent instanceof Applet) {
                         // No suitable swing component found
                         break;
                     }
@@ -318,6 +321,7 @@ public class QuaquaPopupFactory extends PopupFactory {
         //
         // Popup methods
         //
+        @Override
         public void hide() {
             super.hide();
 
@@ -326,6 +330,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             component.removeAll();
         }
 
+        @Override
         public void show() {
             Container parent = null;
 
@@ -340,8 +345,8 @@ public class QuaquaPopupFactory extends PopupFactory {
                         continue;
                     }
                     parent = ((JRootPane) p).getLayeredPane();
-                // Continue, so that if there is a higher JRootPane, we'll
-                // pick it up.
+                    // Continue, so that if there is a higher JRootPane, we'll
+                    // pick it up.
                 } else if (p instanceof Window) {
                     if (parent == null) {
                         parent = p;
@@ -368,6 +373,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             }
         }
 
+        @Override
         Component createComponent(Component owner) {
             JComponent component = new JPanel(new BorderLayout(), true);
             component.setBorder(new LineBorder(new Color(0xb2b2b2)));
@@ -381,6 +387,7 @@ public class QuaquaPopupFactory extends PopupFactory {
         /**
          * Resets the <code>Popup</code> to an initial state.
          */
+        @Override
         void reset(Component owner, Component contents, int ownerX,
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
@@ -426,15 +433,16 @@ public class QuaquaPopupFactory extends PopupFactory {
             return popup;
         }
 
-
         //
         // Popup
         //
+        @Override
         public void hide() {
             super.hide();
             rootPane.getContentPane().removeAll();
         }
 
+        @Override
         public void show() {
             Component component = getComponent();
             Container parent = null;
@@ -447,8 +455,8 @@ public class QuaquaPopupFactory extends PopupFactory {
             if it has a layered pane,
             add to that, otherwise
             add to the window. */
-            while (!(parent instanceof Window || parent instanceof Applet) &&
-                    (parent != null)) {
+            while (!(parent instanceof Window || parent instanceof Applet)
+                    && (parent != null)) {
                 parent = parent.getParent();
             }
             // Set the visibility to false before adding to workaround a
@@ -474,6 +482,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             component.setVisible(true);
         }
 
+        @Override
         Component createComponent(Component owner) {
             Panel component = new Panel(new BorderLayout());
 
@@ -491,6 +500,7 @@ public class QuaquaPopupFactory extends PopupFactory {
         /**
          * Resets the <code>Popup</code> to an initial state.
          */
+        @Override
         void reset(Component owner, Component contents, int ownerX,
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
@@ -529,8 +539,8 @@ public class QuaquaPopupFactory extends PopupFactory {
                     JPopupMenu jpm = (JPopupMenu) contents;
                     Component popComps[] = jpm.getComponents();
                     for (int i = 0; i < popComps.length; i++) {
-                        if (!(popComps[i] instanceof MenuElement) &&
-                                !(popComps[i] instanceof JSeparator)) {
+                        if (!(popComps[i] instanceof MenuElement)
+                                && !(popComps[i] instanceof JSeparator)) {
                             focusPopup = true;
                             break;
                         }
@@ -552,22 +562,24 @@ public class QuaquaPopupFactory extends PopupFactory {
             return popup;
         }
 
+        @Override
         Component createComponent(Component owner) {
             final JWindow wnd;
-            Component component = wnd=new JWindow(SwingUtilities.getWindowAncestor(owner));
-                wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
-                wnd.getRootPane().putClientProperty("Window.alpha", new Float(0.948));
-                wnd.setBackground(new Color(0xffffff,true));
-                wnd.addWindowListener(new WindowAdapter() {
+            Component component = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
+            wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
+            wnd.getRootPane().putClientProperty("Window.alpha", new Float(0.948));
+            wnd.setBackground(new Color(0xffffff, true));
+            wnd.addWindowListener(new WindowAdapter() {
 
+                @Override
                 public void windowOpened(WindowEvent e) {
-                wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", new Long(System.currentTimeMillis()));
+                    wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", new Long(System.currentTimeMillis()));
                 }
-
             });
             return component;
         }
 
+        @Override
         void reset(Component owner, Component contents, int ownerX,
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
@@ -584,6 +596,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * Makes the <code>Popup</code> visible. If the <code>Popup</code> is
          * currently visible, this has no effect.
          */
+        @Override
         public void show() {
             Component component = getComponent();
 
@@ -600,6 +613,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * on a <code>disposed</code> <code>Popup</code>, indeterminate
          * behavior will result.
          */
+        @Override
         public void hide() {
             Component component = getComponent();
 
