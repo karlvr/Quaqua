@@ -195,12 +195,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Should columns should be resizable?
      **/
     private boolean columnsResizable = true;
-    
     /** This border is used when the Look and Feel does not specify a
      * "List.cellNoFocusBorder".
      */
     private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-    private static final Color TRANSPARENT_COLOR=new Color(0,true);
+    private static final Color TRANSPARENT_COLOR = new Color(0, true);
 
     /**
      * Creates a <code>JBrowser</code> with a sample model.
@@ -1438,7 +1437,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         Object value = getModel().getElementAt(index);
                         Component renderer = getCellRenderer().getListCellRendererComponent(this, value, index, false, false);
                         if (renderer.getPreferredSize().width > getWidth()) {
-                            return value.toString();
+                            return convertValueToText(value, false, false, false, index, false);
                         }
 
                     }
@@ -2309,7 +2308,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             }
             int lastComponentIndex = getComponentCount() - 1;
             if (lastComponentIndex >= 0) {
-                scrollRectToVisible(getComponent(lastComponentIndex).getBounds());
+                Rectangle bounds = getComponent(lastComponentIndex).getBounds();
+                // Try to scroll two columns into view, so the list showing selection
+                // is visible as well
+                if (lastComponentIndex > 0) {
+                    Rectangle leftBounds = getComponent(lastComponentIndex - 1).getBounds();
+                    bounds.add(leftBounds);
+                }
+                scrollRectToVisible(bounds);
                 getComponent(lastComponentIndex).repaint();
             }
 
@@ -3379,7 +3385,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 arrowLabel.setForeground(foreground);
                 arrowLabel.setIcon(expandedIcon);
             }
-            
+
             arrowLabel.setVisible(!getModel().isLeaf(value));
 
             boolean isExpanded = false;
