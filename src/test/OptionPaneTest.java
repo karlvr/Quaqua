@@ -1,5 +1,5 @@
 /*
- * @(#)OptionPaneTest.java  1.0  13 February 2005
+ * @(#)OptionPaneTest.java  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,15 +13,16 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 /**
  * OptionPaneTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class OptionPaneTest extends javax.swing.JPanel {
     
@@ -58,9 +59,11 @@ public class OptionPaneTest extends javax.swing.JPanel {
         othersLabel = new javax.swing.JLabel();
         optionPaneAlertsPanel1 = new javax.swing.JPanel();
         confirmDialogButton1 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         FormListener formListener = new FormListener();
 
+        setBorder(javax.swing.BorderFactory.createEmptyBorder(12, 20, 20, 20));
         setLayout(new java.awt.GridBagLayout());
 
         javaAlertsLabel.setText("Java Look and Feel Guidelines:");
@@ -89,6 +92,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         javaAlertsPanel.add(infoAlertButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(javaAlertsPanel, gridBagConstraints);
 
@@ -110,6 +114,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         ahigAlertsPanel.add(saveChangesAlertButton);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(ahigAlertsPanel, gridBagConstraints);
 
@@ -118,6 +123,8 @@ public class OptionPaneTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(optionPaneAlertsLabel, gridBagConstraints);
+
+        optionPaneAlertsPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         confirmDialogButton.setText("Confirm Dialog");
         confirmDialogButton.addActionListener(formListener);
@@ -137,6 +144,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(optionPaneAlertsPanel, gridBagConstraints);
 
@@ -146,13 +154,23 @@ public class OptionPaneTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(othersLabel, gridBagConstraints);
 
+        optionPaneAlertsPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
         confirmDialogButton1.setText("JLabels Alert");
         confirmDialogButton1.addActionListener(formListener);
         optionPaneAlertsPanel1.add(confirmDialogButton1);
 
+        jButton1.setText("JTable Alert");
+        jButton1.addActionListener(formListener);
+        optionPaneAlertsPanel1.add(jButton1);
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.weighty = 1.0;
         add(optionPaneAlertsPanel1, gridBagConstraints);
     }
 
@@ -193,6 +211,9 @@ public class OptionPaneTest extends javax.swing.JPanel {
             }
             else if (evt.getSource() == confirmDialogButton1) {
                 OptionPaneTest.this.showJLabelsAlert(evt);
+            }
+            else if (evt.getSource() == jButton1) {
+                OptionPaneTest.this.showJTableAlert(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
@@ -390,6 +411,36 @@ public class OptionPaneTest extends javax.swing.JPanel {
                 "Appointment - MetalButler", JOptionPane.INFORMATION_MESSAGE
                 );
     }//GEN-LAST:event_infoAlert
+
+    private void showJTableAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJTableAlert
+       final DefaultTableModel tableModel = new DefaultTableModel (new Integer [ ]
+[ ] { {1}, {2}},
+                                                                new String [ ]
+{"header"});
+     JTable table = new JTable (tableModel);
+     JScrollPane sp = new JScrollPane (table);
+     final JOptionPane op = new JOptionPane (sp);
+     final JDialog d = new JDialog (SwingUtilities.getWindowAncestor(this) );
+    d.add (op);
+    d.setSize (600, 400);
+    d.setLocationRelativeTo (this);
+    d.setModal (true);
+    op.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent event) {
+                // Let the defaultCloseOperation handle the closing
+                // if the user closed the window without selecting a button
+                // (newValue = null in that case).  Otherwise, close the dialog.
+                if (d.isVisible() && event.getSource() == op &&
+                  (event.getPropertyName().equals(JOptionPane.VALUE_PROPERTY)) &&
+                  event.getNewValue() != null &&
+                  event.getNewValue() != JOptionPane.UNINITIALIZED_VALUE) {
+                    d.setVisible(false);
+                }
+            }
+        });
+    d.setVisible (true);
+
+    }//GEN-LAST:event_showJTableAlert
     
     private void analyzeOption(int option) {
         switch (option) {
@@ -423,6 +474,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
     private javax.swing.JButton errorAlertButton;
     private javax.swing.JButton infoAlertButton;
     private javax.swing.JButton inputDialogButton;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel javaAlertsLabel;
     private javax.swing.JPanel javaAlertsPanel;
     private javax.swing.JButton longMessageDialogButton;

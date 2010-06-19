@@ -48,6 +48,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     /**
      * Implementation of ComboPopup.show().
      */
+    @Override
     public void show() {
         //System.out.println("QuaquaComboPopup@"+hashCode()+".show()");
         setListSelection(comboBox.getSelectedIndex());
@@ -67,12 +68,14 @@ public class QuaquaComboPopup extends BasicComboPopup {
     /**
      * Implementation of ComboPopup.hide().
      */
+    @Override
     public void hide() {
         //System.out.println("QuaquaComboPopup@"+hashCode()+".hide()");
         super.hide();
     //removeListenersAndResetFocus();
     }
 
+    @Override
     public void setVisible(boolean newValue) {
         super.setVisible(newValue);
         if (newValue) {
@@ -301,6 +304,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      * Configures the popup portion of the combo box. This method is called
      * when the UI class is created.
      */
+    @Override
     protected void configurePopup() {
         super.configurePopup();
         // FIXME - We need to convert the border into a non-UIResource object.
@@ -310,6 +314,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
         setFocusable(true);
     }
 
+    @Override
     protected void configureList() {
         super.configureList();
         list.setBackground(UIManager.getColor("PopupMenu.background"));
@@ -329,6 +334,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      * @return a <code>MouseListener</code> which will be added to
      * the combo box or null
      */
+    @Override
     protected MouseListener createMouseListener() {
         return getHandler();
     }
@@ -344,6 +350,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      * @return a <code>MouseMotionListener</code> which will be added to
      *         the combo box or null
      */
+    @Override
     protected MouseMotionListener createMouseMotionListener() {
         return getHandler();
     }
@@ -354,6 +361,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return a <code>KeyListener</code> or null
      */
+    @Override
     protected KeyListener createKeyListener() {
         return getHandler();
     }
@@ -365,6 +373,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of a <code>ListSelectionListener</code> or null
      */
+    @Override
     protected ListSelectionListener createListSelectionListener() {
         return null;
     }
@@ -376,6 +385,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of a <code>ListDataListener</code> or null
      */
+    @Override
     protected ListDataListener createListDataListener() {
         return null;
     }
@@ -387,6 +397,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of a <code>MouseListener</code> or null
      */
+    @Override
     protected MouseListener createListMouseListener() {
         return getHandler();
     }
@@ -398,6 +409,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of a <code>MouseMotionListener</code> or null
      */
+    @Override
     protected MouseMotionListener createListMouseMotionListener() {
         return getHandler();
     }
@@ -409,6 +421,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of a <code>PropertyChangeListener</code> or null
      */
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }
@@ -423,6 +436,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
      *
      * @return an instance of an <code>ItemListener</code> or null
      */
+    @Override
     protected ItemListener createItemListener() {
         return getHandler();
     }
