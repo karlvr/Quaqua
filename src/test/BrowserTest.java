@@ -14,6 +14,9 @@
 package test;
 
 import ch.randelshofer.quaqua.DefaultBrowserCellRenderer;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
 
 /**
  * BrowserTest.
@@ -26,10 +29,48 @@ public class BrowserTest extends javax.swing.JPanel {
     /** Creates new form. */
     public BrowserTest() {
         initComponents();
-        
+        browser1.setModel(createDefaultTreeModel());
+        browser2.setModel(createDefaultTreeModel());
         browser2.setCellRenderer(new DefaultBrowserCellRenderer());
     }
-    
+
+protected static TreeModel createDefaultTreeModel() {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("JBrowser");
+        DefaultMutableTreeNode parent;
+         DefaultMutableTreeNode node;
+
+        parent = new DefaultMutableTreeNode("colors");
+        root.add(parent);
+        parent.add(createSequence("blue"));
+        parent.add(createSequence("violet"));
+        parent.add(createSequence("red"));
+        parent.add(createSequence("yellow"));
+
+        parent = new DefaultMutableTreeNode("sports");
+        root.add(parent);
+        parent.add(createSequence("basketball"));
+        parent.add(createSequence("soccer"));
+        parent.add(createSequence("football"));
+        parent.add(createSequence("hockey"));
+
+        parent = new DefaultMutableTreeNode("food");
+        root.add(parent);
+        parent.add(createSequence("hotdogs"));
+        parent.add(createSequence("pizza"));
+        parent.add(createSequence("ravioli"));
+        parent.add(createSequence("bananas"));
+        return new DefaultTreeModel(root);
+    }
+
+    private static DefaultMutableTreeNode createSequence(String str) {
+        DefaultMutableTreeNode root=new DefaultMutableTreeNode(""+str.charAt(0));
+        DefaultMutableTreeNode node=root;
+        for (int i=1;i<str.length();i++) {
+            node.add(node=new DefaultMutableTreeNode(""+str.charAt(i)));
+        }
+        return root;
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
