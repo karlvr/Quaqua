@@ -79,7 +79,7 @@ public class FileChooserTest extends javax.swing.JPanel {
     /** Creates new form. */
     public FileChooserTest() {
         initComponents();
-
+hiddenFilesItem.setSelected(UIManager.get("FileChooser.fileHidingEnabled")!=null&&!UIManager.getBoolean("FileChooser.fileHidingEnabled"));
         setSelectedFileField.setText(QuaquaManager.getProperty("user.home"));
     }
 
@@ -128,6 +128,7 @@ public class FileChooserTest extends javax.swing.JPanel {
                 selectFilesOnlyItem.isSelected() ? JFileChooser.FILES_ONLY : (selectDirectoriesOnlyItem.isSelected() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_AND_DIRECTORIES));
         fileChooser.setFileHidingEnabled(!hiddenFilesItem.isSelected());
         fileChooser.setMultiSelectionEnabled(multiSelectionItem.isSelected());
+        fileChooser.putClientProperty("Quaqua.FileChooser", ui);
         if (accessoryCheckBox.isSelected()) {
             if (!(fileChooser.getAccessory() instanceof Accessory)) {
                 Accessory pa = new Accessory(fileChooser);
@@ -281,6 +282,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         settingsPanel.add(selectFilesOnlyItem, gridBagConstraints);
 
         selectionTypeGroup.add(selectDirectoriesOnlyItem);

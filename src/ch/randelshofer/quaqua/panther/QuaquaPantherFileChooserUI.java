@@ -47,7 +47,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     private Action directoryComboBoxAction = new DirectoryComboBoxAction();
     private FileView fileView;
     private FilterComboBoxModel filterComboBoxModel;
-    private AliasFileSystemTreeModel model = null;
+    private FileSystemTreeModel model = null;
     private SubtreeTreeModel subtreeModel = null;
     // Labels, mnemonics, and tooltips (oh my!)
     private int fileNameLabelMnemonic = 0;
@@ -63,7 +63,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
-    private final static File computer = AliasFileSystemTreeModel.COMPUTER;
+    private final static File computer = FileSystemTreeModel.COMPUTER;
     private SidebarListModel sidebarListModel;
     /**
      * This listener is used to determine whether the JFileChooser is showing.
@@ -203,9 +203,11 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         super(filechooser);
     }
 
+    @Override
     public void installComponents(JFileChooser fc) {
         sidebarList = new javax.swing.JList() {
 
+            @Override
             public Dimension getPreferredSize() {
                 Dimension d = super.getPreferredSize();
                 d.width = 10;
@@ -644,6 +646,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         fc.doLayout();
     }
 
+    @Override
     public void uninstallComponents(JFileChooser fc) {
         fc.removeAll();
 
@@ -660,6 +663,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
      * We install the same listeners as BasicFileChooserUI plus an
      * AncestorListener and a property change listener.
      */
+    @Override
     protected void installListeners(JFileChooser fc) {
         super.installListeners(fc);
         ancestorListener = createAncestorListener(fc);
@@ -669,6 +673,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         fc.addPropertyChangeListener(filterComboBoxModel);
     }
 
+    @Override
     protected void uninstallListeners(JFileChooser fc) {
         super.uninstallListeners(fc);
         if (ancestorListener != null) {
@@ -685,6 +690,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     protected void installStrings(JFileChooser fc) {
         super.installStrings(fc);
 
@@ -740,6 +746,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     /**
      * FIXME - This could be moved up to BasicFileChooserUI.
      */
+    @Override
     public JPanel getAccessoryPanel() {
         return accessoryPanel;
     }
@@ -761,6 +768,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         return new FileChooserAncestorListener();
     }
 
+    @Override
     public void createModel() {
         JFileChooser fc = getFileChooser();
 
@@ -777,15 +785,16 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
         fc.setFileView(fileView);
 
-        model = new AliasFileSystemTreeModel(fc);
+        model = new FileSystemTreeModel(fc);
         subtreeModel = new SubtreeTreeModel(model);
+        subtreeModel.setPathToRoot(model.toPath(new File(QuaquaManager.getProperty("user.home")), null));
     }
 
     public SubtreeTreeModel getTreeModel() {
         return subtreeModel;
     }
 
-    public AliasFileSystemTreeModel getFileSystemTreeModel() {
+    public FileSystemTreeModel getFileSystemTreeModel() {
         return model;
     }
 
@@ -856,7 +865,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 file,
                 subtreeModel.toFullPath(browser.getSelectionPath())
                 );*/
-                AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) fullPath.getLastPathComponent();
+                FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) fullPath.getLastPathComponent();
 
                 boolean isDirectory = !node.isLeaf();
                 if (isDirectory) {
@@ -901,7 +910,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             }
 
             if (files.length == 1) {
-                AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) fullPath.getLastPathComponent();
+                FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) fullPath.getLastPathComponent();
                 if (node.isLeaf() || !files[0].exists()) {
                     setFileName(files[0].getName());
                 }
@@ -909,7 +918,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
 
         if (fullPath != null && fullPath.getPathCount() > 0) {
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) fullPath.getLastPathComponent();
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) fullPath.getLastPathComponent();
 
             directoryComboBoxModel.setPath(
                     (node.isLeaf()) ? fullPath.getParentPath() : fullPath);
@@ -1011,7 +1020,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         File[] files = new File[(paths == null) ? 0 : paths.length];
         ArrayList list = new ArrayList(files.length);
         for (int i = 0; i < files.length; i++) {
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) paths[i].getLastPathComponent();
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) paths[i].getLastPathComponent();
             File file = node.lazyGetResolvedFile();
             if (file != null && fc.accept(file)) {
                 boolean isDirectory = !node.isLeaf();
@@ -1091,12 +1100,12 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 TreePath sidebarPath = model.toPath(sidebarFileInfo.getResolvedFile(), selectionPath);
                 subtreeModel.setPathToRoot(sidebarPath);
                 sidebarList.setSelectedIndex(sidebarSelectionIndex);
-                dirPath = subtreeModel.toSubPath(dirPath);
             } else {
                 subtreeModel.setPathToRoot(new TreePath(model.getRoot()));
                 sidebarList.clearSelection();
             }
         }
+        dirPath = subtreeModel.toSubPath(dirPath);
 
         directoryComboBoxModel.setPath(fullDirPath);
         browser.setSelectionPath(dirPath);
@@ -1132,7 +1141,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     private void doFileSystemViewChanged(PropertyChangeEvent e) {
         JFileChooser fc = getFileChooser();
 
-        model = new AliasFileSystemTreeModel(fc);
+        model = new FileSystemTreeModel(fc);
         subtreeModel = new SubtreeTreeModel(model);
 
         browser.setModel(getTreeModel());
@@ -1241,6 +1250,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
      * Listen for filechooser property changes, such as
      * the selected file changing, or the type of the dialog changing.
      */
+    @Override
     public PropertyChangeListener createPropertyChangeListener(final JFileChooser fc) {
         return new PropertyChangeListener() {
 
@@ -1319,7 +1329,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     private void ensurePathIsVisible(TreePath path) {
         if (!subtreeModel.isDescendant(path.getPath())) {
             isAdjusting++;
-            if (((AliasFileSystemTreeModel.Node) path.getLastPathComponent()).isLeaf()) {
+            if (((FileSystemTreeModel.Node) path.getLastPathComponent()).isLeaf()) {
                 subtreeModel.setPathToRoot(path.getParentPath().getPath());
             } else {
                 subtreeModel.setPathToRoot(path.getPath());
@@ -1329,6 +1339,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         browser.ensurePathIsVisible(path);
     }
 
+    @Override
     public String getFileName() {
         if (fileNameTextField != null) {
             return fileNameTextField.getText();
@@ -1337,6 +1348,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     public void setFileName(String filename) {
         if (fileNameTextField != null &&
                 !fileNameTextField.hasFocus() &&
@@ -1370,6 +1382,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             separator.setPreferredSize(new Dimension(9, 9));
         }
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected,
                 boolean cellHasFocus) {
@@ -1388,7 +1401,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 setText(value + " " + index);
                 return this;
             }
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) value;
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) value;
             if (node == null) {
                 return separator;
                 /*
@@ -1422,6 +1435,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         private Border border = new EmptyBorder(1, 3, 2, 0);
         private JComponent separator = new JComponent() {
 
+            @Override
             public void paintComponent(Graphics g) {
                 Dimension s = getSize();
                 g.setColor(UIManager.getColor("List.background"));
@@ -1441,10 +1455,12 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
          */
 
+        @Override
         protected void paintBorder(Graphics g) {
             // empty
         }
 
+        @Override
         protected void paintComponent(Graphics gr) {
             // Note: We draw here over the border insets
             //       This saves having borders for all three possible states
@@ -1480,6 +1496,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             super.paintComponent(g);
         }
 
+        @Override
         public Component getListCellRendererComponent(JList list, Object value,
                 int index, boolean isSelected,
                 boolean cellHasFocus) {
@@ -1550,7 +1567,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             implements ComboBoxModel {
 
         TreePath path;
-        AliasFileSystemTreeModel.Node selectedDirectory = null;
+        FileSystemTreeModel.Node selectedDirectory = null;
         JFileChooser chooser = getFileChooser();
         FileSystemView fsv = chooser.getFileSystemView();
 
@@ -1559,7 +1576,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
         /**
          * Sets the path of the directory combo box.
-         * TreePath<AliasFileSystemTreeModel.Node>
+         * TreePath<FileSystemTreeModel.Node>
          */
         private void setPath(TreePath path) {
             if (this.path != null && this.path.getPathCount() > 0) {
@@ -1573,7 +1590,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
 
         public void setSelectedItem(Object selectedItem) {
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) selectedItem;
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) selectedItem;
             this.selectedDirectory = node;
             fireContentsChanged(this, -1, -1);
         }
@@ -1603,6 +1620,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
      */
     public class FilterComboBoxRenderer extends DefaultListCellRenderer {
 
+        @Override
         public Component getListCellRendererComponent(JList list,
                 Object value, int index, boolean isSelected,
                 boolean cellHasFocus) {
@@ -1716,7 +1734,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 return;
             }
 
-            AliasFileSystemTreeModel.Node chosenNode = (AliasFileSystemTreeModel.Node) directoryComboBox.getSelectedItem();
+            FileSystemTreeModel.Node chosenNode = (FileSystemTreeModel.Node) directoryComboBox.getSelectedItem();
             if (chosenNode != null) {
 
                 JFileChooser fc = getFileChooser();
@@ -1759,16 +1777,19 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         }
     }
 
+    @Override
     protected JButton getApproveButton(JFileChooser fc) {
         return approveButton;
     }
 
+    @Override
     public Action getApproveSelectionAction() {
         return approveSelectionAction;
     }
 
     protected class DoubleClickListener extends MouseAdapter {
 
+        @Override
         public void mouseClicked(MouseEvent e) {
             // Note: We must not react on mouse clicks with clickCount=1.
             //       Because this interfers with the mouse handling code in
@@ -1804,12 +1825,12 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             TreePath[] selectedPaths = browser.getSelectionPaths();
             if (filename != null) {
                 selectedFiles = new File[]{
-                            new File(((AliasFileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(), filename)
+                            new File(((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(), filename)
                         };
             } else {
                 selectedFiles = new File[selectedPaths.length];
                 for (int i = 0; i < selectedPaths.length; i++) {
-                    selectedFiles[i] = ((AliasFileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
+                    selectedFiles[i] = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
                 }
             }
 
@@ -1825,7 +1846,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 // Abort we cannot approve empty selection
                 return;
             }
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) selectionPath.getLastPathComponent();
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) selectionPath.getLastPathComponent();
             selectedFile = node.getResolvedFile();
             if (filename != null) {
                 selectedFile = new File((!node.isLeaf()) ? selectedFile : selectedFile.getParentFile(), filename);
@@ -1858,6 +1879,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     // *****************************
     // ***** Directory Actions *****
     // *****************************
+    @Override
     public Action getNewFolderAction() {
         return newFolderAction;
     }
@@ -1892,7 +1914,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
             if (newFolderName != null) {
 
                 File newFolder;
-                AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) browser.getSelectionPath().getLastPathComponent();
+                FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) browser.getSelectionPath().getLastPathComponent();
                 File currentFile = node.getResolvedFile();
                 if (node.isLeaf()) {
                     currentFile = currentFile.getParentFile();
@@ -1959,7 +1981,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
                 public void run() {
                     JFileChooser fc = getFileChooser();
-                    AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) browser.getSelectionPath().getLastPathComponent();
+                    FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) browser.getSelectionPath().getLastPathComponent();
                     File file = node.getResolvedFile();
                     if (fileNameTextField.getText().length() != 0) {
                         if (!node.isLeaf()) {
@@ -2029,6 +2051,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public void ensureFileIsVisible(JFileChooser fc, final File f) {
         if (browser.getSelectionPaths() != null) {
             TreePath[] paths = browser.getSelectionPaths();
@@ -2055,6 +2078,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public String getApproveButtonText(JFileChooser fc) {
         String buttonText = fc.getApproveButtonText();
         if (buttonText != null) {
@@ -2073,6 +2097,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public FileView getFileView(JFileChooser fc) {
         return fileView;
     }
@@ -2080,6 +2105,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     /**
      * API method of FileChooserUI.
      */
+    @Override
     public void rescanCurrentDirectory(JFileChooser fc) {
         // Validation is only necessary, when the JFileChooser is showing.
         if (fc.isShowing()) {
@@ -2097,6 +2123,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
     // ********** BasicFileChooserUI PLAF methods ************
     // *******************************************************
 
+    @Override
     public void clearIconCache() {
         try {
             fileView.getClass().getMethod("clearIconCache", new Class[0]).invoke(fileView, new Object[0]);

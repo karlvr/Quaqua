@@ -1,5 +1,5 @@
 /*
- * @(#)AliasFileSystemTreeModel.java 
+ * @(#)FileSystemTreeModel.java
  *
  * Copyright (c) 2003-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -26,7 +26,7 @@ import javax.swing.tree.*;
 import javax.swing.filechooser.*;
 
 /**
- * The AliasFileSystemTreeModel provides the data model for the file system in a
+ * The FileSystemTreeModel provides the data model for the file system in a
  * QuaquaFileChooserUI.
  * <p>
  * It is capable of resolving aliases to files, and it updates its content
@@ -35,7 +35,7 @@ import javax.swing.filechooser.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class AliasFileSystemTreeModel implements TreeModel {
+public class FileSystemTreeModel implements TreeModel {
 
     private final static boolean DEBUG = false;
     public final static File COMPUTER = new File("/");
@@ -61,11 +61,11 @@ public class AliasFileSystemTreeModel implements TreeModel {
     /**
      * This node holds the root of the file system.
      */
-    private AliasFileSystemTreeModel.RootNode root;
+    private FileSystemTreeModel.RootNode root;
     /**
      * This comparator is used to compare the user name of two files.
      * The comparator is able to compare instances of java.io.File and
-     * instances of AliasFileSystemTreeModel.Node.
+     * instances of FileSystemTreeModel.Node.
      */
     private Comparator nodeComparator;
     /**
@@ -113,7 +113,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
      * @param fileChooser The JFileChooser is used to determine the user
      * presentable (localized) names of the files.
      */
-    public AliasFileSystemTreeModel(JFileChooser fileChooser) {
+    public FileSystemTreeModel(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
         root = new RootNode();
 
@@ -148,7 +148,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
             removedChildren[i] = root.getChildAt(0);
             root.remove(0);
         }
-        fireTreeNodesRemoved(AliasFileSystemTreeModel.this, new Object[]{root}, removedIndices, removedChildren);
+        fireTreeNodesRemoved(FileSystemTreeModel.this, new Object[]{root}, removedIndices, removedChildren);
     }
 
     public void dispose() {
@@ -157,24 +157,24 @@ public class AliasFileSystemTreeModel implements TreeModel {
     }
 
     public Node getPrototypeValue() {
-        return new Node(new File(QuaquaManager.getProperty("user.home")), "Prototype");
+        return new Node(new File(QuaquaManager.getProperty("user.home")), "Prototype", false);
     }
 
     public Object getChild(Object parent, int index) {
-        return ((AliasFileSystemTreeModel.Node) parent).getChildAt(index);
+        return ((FileSystemTreeModel.Node) parent).getChildAt(index);
     }
 
     public int getChildCount(Object parent) {
-        return ((AliasFileSystemTreeModel.Node) parent).getChildCount();
+        return ((FileSystemTreeModel.Node) parent).getChildCount();
     }
 
     public int getIndexOfChild(Object parent, Object child) {
-        return ((AliasFileSystemTreeModel.Node) parent).getIndex((AliasFileSystemTreeModel.Node) child);
+        return ((FileSystemTreeModel.Node) parent).getIndex((FileSystemTreeModel.Node) child);
     }
 
-    private int getIndexOfChildForFile(AliasFileSystemTreeModel.Node parent, File file) {
+    private int getIndexOfChildForFile(FileSystemTreeModel.Node parent, File file) {
         for (int i = 0; i < parent.getChildCount(); i++) {
-            if (((AliasFileSystemTreeModel.Node) parent.getChildAt(i)).getResolvedFile().equals(file)) {
+            if (((FileSystemTreeModel.Node) parent.getChildAt(i)).getResolvedFile().equals(file)) {
                 return i;
             }
         }
@@ -184,13 +184,13 @@ public class AliasFileSystemTreeModel implements TreeModel {
     /**
      * Creates a comparator which is able to compare the user names of two files.
      * The comparator is able to compare instances of java.io.File and
-     * instances of AliasFileSystemTreeModel.Node. Both kinds can by mixed freely.
+     * instances of FileSystemTreeModel.Node. Both kinds can by mixed freely.
      */
     private Comparator getNodeComparator() {
         if (nodeComparator == null) {
             nodeComparator = UIManager.getBoolean("FileChooser.orderByType")
-                    ? (Comparator) new NodeTypeComparator()
-                    : (Comparator) new NodeNameComparator();
+                    ? (Comparator) new FoldersFirstComparator()
+                    : (Comparator) new ByNameComparator();
         }
         return nodeComparator;
     }
@@ -209,7 +209,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         return collator;
     }
 
-    private int getInsertionIndexForNode(AliasFileSystemTreeModel.Node parent, AliasFileSystemTreeModel.Node child) {
+    private int getInsertionIndexForNode(FileSystemTreeModel.Node parent, FileSystemTreeModel.Node child) {
         Comparator comparator = getNodeComparator();
         int i;
         for (i = 0; i < parent.getChildCount(); i++) {
@@ -226,8 +226,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
      * event. This is the preferred way to add children as it will create
      * the appropriate event.
      */
-    private void insertNodeInto(AliasFileSystemTreeModel.Node newChild,
-            AliasFileSystemTreeModel.Node parent, int index) {
+    private void insertNodeInto(FileSystemTreeModel.Node newChild,
+            FileSystemTreeModel.Node parent, int index) {
         parent.insert(newChild, index);
 
         int[] newIndices = new int[1];
@@ -261,6 +261,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
         File resolvedFile = null;
         int fileType = OSXFile.getFileType(f);
         boolean isDirectory = false;
+        boolean isHidden = getFileSystemView().isHiddenFile(f);
         boolean isAlias = fileType == OSXFile.FILE_TYPE_ALIAS;
         if (isAlias) {
             // XXX - Fixme !!!
@@ -284,15 +285,15 @@ public class AliasFileSystemTreeModel implements TreeModel {
         Node node;
         if (isAlias) {
             if (isDirectory && isTraversable) {
-                node = new AliasDirectoryNode(f, resolvedFile);
+                node = new AliasDirectoryNode(f, resolvedFile, isHidden);
             } else {
-                node = new AliasNode(f, resolvedFile);
+                node = new AliasNode(f, resolvedFile, isHidden);
             }
         } else {
             if (isDirectory && isTraversable) {
-                node = new DirectoryNode(f);
+                node = new DirectoryNode(f, isHidden);
             } else {
-                node = new Node(f);
+                node = new Node(f, isHidden);
             }
         }
 
@@ -430,7 +431,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
     }
 
     public boolean isLeaf(Object node) {
-        return ((AliasFileSystemTreeModel.Node) node).isLeaf();
+        return ((FileSystemTreeModel.Node) node).isLeaf();
     }
 
     /**
@@ -599,8 +600,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
      * @param node the node being changed
      * @see EventListenerList
      */
-    protected void fireTreeNodeChanged(AliasFileSystemTreeModel.Node node) {
-        AliasFileSystemTreeModel.Node parent = (AliasFileSystemTreeModel.Node) node.getParent();
+    protected void fireTreeNodeChanged(FileSystemTreeModel.Node node) {
+        FileSystemTreeModel.Node parent = (FileSystemTreeModel.Node) node.getParent();
         if (parent != null) {
             fireTreeNodesChanged(
                     this,
@@ -768,13 +769,6 @@ public class AliasFileSystemTreeModel implements TreeModel {
     }
 
     /**
-     * Returns true, if the file is accepted for inclusion in the file chooser.
-     */
-    private boolean isHidden(File f) {
-        return fileChooser.isFileHidingEnabled() && getFileSystemView().isHiddenFile(f);
-    }
-
-    /**
      * This is the implementation for a file node (a leaf node).
      */
     public class Node implements MutableTreeNode, FileInfo {
@@ -806,15 +800,20 @@ public class AliasFileSystemTreeModel implements TreeModel {
          * Contains null, if the acceptance has not been determined yet.
          */
         protected Boolean isAcceptable;
+        /**
+         * Contains the hidden state of the file
+         */
+        protected boolean isHidden;
 
-        public Node(File f) {
+        public Node(File f, boolean isHidden) {
             //this(f, fileChooser.getName(f));
-            this(f, null);
+            this(f, null, isHidden);
         }
 
-        public Node(File f, String userName) {
+        public Node(File f, String userName, boolean isHidden) {
             this.file = f;
             this.userName = userName;
+            this.isHidden=isHidden;
             //update();
         }
 
@@ -882,6 +881,10 @@ public class AliasFileSystemTreeModel implements TreeModel {
             return isAcceptable.booleanValue();
         }
 
+        public boolean isHidden() {
+            return isHidden;
+        }
+
         public String getFileKind() {
             if (file.isDirectory()) {
                 String path = file.getPath();
@@ -938,7 +941,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         // Fire a TreeNodeChanged only, if validation was
                         // successful, and if we are still part of the tree
                         if (value == Boolean.TRUE
-                                && getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
+                                && getRoot() == FileSystemTreeModel.this.getRoot()) {
                             fireTreeNodeChanged(Node.this);
                         }
                         infoState = VALID;
@@ -1208,11 +1211,15 @@ public class AliasFileSystemTreeModel implements TreeModel {
                 //          - Create a fresh node for the file
                 boolean isDirectoriesOnly = fileChooser.getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY;
                 ArrayList freshNodeList = new ArrayList(freshFiles.length);
+                boolean isFileHidingEnabled=fileChooser.isFileHidingEnabled();
+                QuaquaFileSystemView fsv = getFileSystemView();
                 for (int i = 0; i < freshFiles.length; i++) {
+                    File freshFile = freshFiles[i];
+
                     // Resolve alias and determine if fresh file is traversable
                     // and if it is a directory.
                     boolean freshIsTraversable;
-                    int freshFileType = OSXFile.getFileType(freshFiles[i]);
+                    int freshFileType = OSXFile.getFileType(freshFile);
                     boolean freshIsDirectory = freshFileType == OSXFile.FILE_TYPE_DIRECTORY;
                     File resolvedFreshFile = null;
                     boolean freshIsAlias;
@@ -1222,19 +1229,19 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         freshIsAlias = false;
                     }
                     if (freshIsAlias) {
-                        resolvedFreshFile = OSXFile.resolveAlias(freshFiles[i], true);
+                        resolvedFreshFile = OSXFile.resolveAlias(freshFile, true);
                         if (resolvedFreshFile == null) {
                             freshIsTraversable = freshIsDirectory = false;
                         } else {
                             freshIsTraversable = freshIsDirectory = fileChooser.isTraversable(resolvedFreshFile);
                         }
                     } else {
-                        freshIsTraversable = freshIsDirectory = fileChooser.isTraversable(freshFiles[i]);
-                        resolvedFreshFile = freshFiles[i];
+                        freshIsTraversable = freshIsDirectory = fileChooser.isTraversable(freshFile);
+                        resolvedFreshFile = freshFile;
                     }
-
+                    boolean freshIsHidden=fsv.isHiddenFile(freshFile);
                     // Skip the fresh file if it is hidden
-                    if ((!isDirectoriesOnly || freshIsDirectory && freshIsTraversable) && !isHidden(freshFiles[i])) {
+                    if ((!isDirectoriesOnly || freshIsDirectory && freshIsTraversable) && (!isFileHidingEnabled || !freshIsHidden)) {
 
                         // Note: The following code is redundant with method
                         //       createNode().
@@ -1242,15 +1249,15 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         //       be done in the other method.
                         if (freshIsAlias) {
                             if (freshIsDirectory && freshIsTraversable) {
-                                freshNodeList.add(new AliasDirectoryNode(freshFiles[i], resolvedFreshFile));
+                                freshNodeList.add(new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden));
                             } else {
-                                freshNodeList.add(new AliasNode(freshFiles[i], resolvedFreshFile));
+                                freshNodeList.add(new AliasNode(freshFile, resolvedFreshFile, freshIsHidden));
                             }
                         } else {
                             if (freshIsDirectory && freshIsTraversable) {
-                                freshNodeList.add(new DirectoryNode(freshFiles[i]));
+                                freshNodeList.add(new DirectoryNode(freshFile, freshIsHidden));
                             } else {
-                                freshNodeList.add(new Node(freshFiles[i]));
+                                freshNodeList.add(new Node(freshFile, freshIsHidden));
                             }
                         }
                     }
@@ -1278,7 +1285,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
                     public void run() {
                         // Check if we have become obsolete
-                        if (DirectoryValidator.this != validator || getRoot() != AliasFileSystemTreeModel.this.getRoot()) {
+                        if (DirectoryValidator.this != validator || getRoot() != FileSystemTreeModel.this.getRoot()) {
                             return;
                         }
 
@@ -1349,7 +1356,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         // If the directory denoted by this Node does not exist,
                         // we lazily refresh our parent node.
                         if (!exists) {
-                            Node parent = AliasFileSystemTreeModel.DirectoryNode.this;
+                            Node parent = FileSystemTreeModel.DirectoryNode.this;
                             while ((parent = (Node) parent.getParent()) != null) {
                                 parent.lazyInvalidateChildren();
                                 parent.validateChildren();
@@ -1377,19 +1384,19 @@ public class AliasFileSystemTreeModel implements TreeModel {
                             // and replace the children with the merged children
                             if (newChildren.size() > 0 && deletedChildren.size() == 0) {
                                 children = mergedChildren;
-                                fireTreeNodesInserted(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(newChildIndices, 0, newChildren.size()), newChildren.toArray());
+                                fireTreeNodesInserted(FileSystemTreeModel.this, getPath(), ArrayUtil.truncate(newChildIndices, 0, newChildren.size()), newChildren.toArray());
                             } else if (newChildren.size() == 0 && deletedChildren.size() > 0) {
                                 children = mergedChildren;
-                                fireTreeNodesRemoved(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(deletedChildIndices, 0, deletedChildren.size()), deletedChildren.toArray());
+                                fireTreeNodesRemoved(FileSystemTreeModel.this, getPath(), ArrayUtil.truncate(deletedChildIndices, 0, deletedChildren.size()), deletedChildren.toArray());
                             } else if (newChildren.size() > 0 && deletedChildren.size() > 0) {
                                 // Instead of firing tree structure changed, we
                                 // split the insertion and removal into two steps.
                                 // This is needed, to update the selection in the
                                 // JBrower properly.
                                 removeAll(deletedChildren);
-                                fireTreeNodesRemoved(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(deletedChildIndices, 0, deletedChildren.size()), deletedChildren.toArray());
+                                fireTreeNodesRemoved(FileSystemTreeModel.this, getPath(), ArrayUtil.truncate(deletedChildIndices, 0, deletedChildren.size()), deletedChildren.toArray());
                                 children = mergedChildren;
-                                fireTreeNodesInserted(AliasFileSystemTreeModel.this, getPath(), ArrayUtil.truncate(newChildIndices, 0, newChildren.size()), newChildren.toArray());
+                                fireTreeNodesInserted(FileSystemTreeModel.this, getPath(), ArrayUtil.truncate(newChildIndices, 0, newChildren.size()), newChildren.toArray());
                             }
                         }
 
@@ -1440,8 +1447,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
          */
         private long bestBeforeTimeMillis = 0;
 
-        public DirectoryNode(File file) {
-            super(file);
+        public DirectoryNode(File file, boolean isHidden) {
+            super(file, isHidden);
             // No need to check for exists() && isTraversable in the code below,
             // because we are only creating DirectoryNode's for files of which we
             // know that they exist, and that they are traversable
@@ -1667,7 +1674,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
     private class RootNode extends DirectoryNode {
 
         public RootNode() {
-            super(COMPUTER);
+            super(COMPUTER, false);
         }
 
         @Override
@@ -1732,8 +1739,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
         private File resolvedFile;
         private Worker<File> resolver;
 
-        public AliasNode(File aliasFile, File resolvedFile) {
-            super(aliasFile);
+        public AliasNode(File aliasFile, File resolvedFile, boolean isHidden) {
+            super(aliasFile, isHidden);
             this.resolvedFile = resolvedFile;
         }
 
@@ -1756,9 +1763,9 @@ public class AliasFileSystemTreeModel implements TreeModel {
                         resolver = null;
 
                         // only fire events, if we are still part of the tree
-                        if (getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
+                        if (getRoot() == FileSystemTreeModel.this.getRoot()) {
                             fireTreeNodeChanged(AliasNode.this);
-                            fireTreeStructureChanged(AliasFileSystemTreeModel.this, getPath());
+                            fireTreeStructureChanged(FileSystemTreeModel.this, getPath());
                         }
                     }
                 };
@@ -1782,7 +1789,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         @Override
         public boolean isAlias() {
-            return false;
+            return true;
         }
     }
 
@@ -1794,8 +1801,8 @@ public class AliasFileSystemTreeModel implements TreeModel {
          */
         private Worker<File> resolver;
 
-        public AliasDirectoryNode(File aliasFile, File resolvedFile) {
-            super(aliasFile);
+        public AliasDirectoryNode(File aliasFile, File resolvedFile, boolean isHidden) {
+            super(aliasFile, isHidden);
             this.resolvedFile = resolvedFile;
         }
 
@@ -1806,7 +1813,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
 
         @Override
         public boolean isAlias() {
-            return false;
+            return true;
         }
 
         @Override
@@ -1827,7 +1834,7 @@ public class AliasFileSystemTreeModel implements TreeModel {
                     public void finished() {
                         resolver = null;
                         // only fire events, if we are still part of the tree
-                        if (getRoot() == AliasFileSystemTreeModel.this.getRoot()) {
+                        if (getRoot() == FileSystemTreeModel.this.getRoot()) {
                             fireTreeNodeChanged(AliasDirectoryNode.this);
                         }
                     }
@@ -1854,13 +1861,13 @@ public class AliasFileSystemTreeModel implements TreeModel {
     /**
      * This comparator compares two nodes by their name collation key.
      */
-    private static class NodeNameComparator implements Comparator {
+    private static class ByNameComparator implements Comparator {
 
         /**
          * Compares two nodes using their collation keys.
          *
-         * @param o1 An instance of AliasFileSystemTreeModel.Node.
-         * @param o2 An instance of AliasFileSystemTreeModel.Node.
+         * @param o1 An instance of FileSystemTreeModel.Node.
+         * @param o2 An instance of FileSystemTreeModel.Node.
          */
         public int compare(Object o1, Object o2) {
             return ((Node) o1).getCollationKey().compareTo(((Node) o2).getCollationKey());
@@ -1868,16 +1875,16 @@ public class AliasFileSystemTreeModel implements TreeModel {
     }
 
     /**
-     * This comparator compares two by their type and then by their name
+     * This comparator compares two nodes by their type and then by their name
      * collation key.
      */
-    private static class NodeTypeComparator implements Comparator {
+    private static class FoldersFirstComparator implements Comparator {
 
         /**
          * Compares two nodes using their collation keys.
          *
-         * @param o1 An instance of AliasFileSystemTreeModel.Node.
-         * @param o2 An instance of AliasFileSystemTreeModel.Node.
+         * @param o1 An instance of FileSystemTreeModel.Node.
+         * @param o2 An instance of FileSystemTreeModel.Node.
          */
         public int compare(Object o1, Object o2) {
             Node n1 = (Node) o1;

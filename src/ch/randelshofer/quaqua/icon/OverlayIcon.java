@@ -49,7 +49,9 @@ public class OverlayIcon implements Icon {
     
     public void paintIcon(Component c, Graphics g, int x, int y) {
         for (int i=0; i < icons.length; i++) {
+            if (icons[i]!=null) {
             icons[i].paintIcon(c, g, x, y);
+            }
         }
     }    
 }

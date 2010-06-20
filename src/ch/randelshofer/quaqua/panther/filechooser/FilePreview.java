@@ -12,7 +12,6 @@
  */
 package ch.randelshofer.quaqua.panther.filechooser;
 
-import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
@@ -379,7 +378,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
                     new Object[]{nf.format(paths.length)}));
             TreeMap kinds = new TreeMap();
             for (int i = 0; i < paths.length; i++) {
-                info = (AliasFileSystemTreeModel.Node) paths[i].getLastPathComponent();
+                info = (FileSystemTreeModel.Node) paths[i].getLastPathComponent();
                 if (fileLength != -1) {
                     if (info.getFileLength() == -1) {
                         fileLength = -1;

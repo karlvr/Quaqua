@@ -146,7 +146,7 @@ public class XMLElement
      *     <li>The keySet().iterator and the values are strings.
      * </ul></dd></dl>
      */
-    private HashMap attributes;
+    private HashMap<String,String> attributes;
 
 
     /**
@@ -159,7 +159,7 @@ public class XMLElement
      *         or a subclass of <code>XMLElement</code>.
      * </ul></dd></dl>
      */
-    private ArrayList children;
+    private ArrayList<XMLElement> children;
 
 
     /**

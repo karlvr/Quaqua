@@ -19,14 +19,19 @@ import java.io.*;
 import java.util.*;
 
 /**
- * Utility class for accessing Mac OS X System OSXPreferences.
+ * Utility class for accessing Mac OS X Preferences.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
 public class OSXPreferences {
 
-    private static HashMap prefs;
+    /** Path to global preferences. */
+    public final static File GLOBAL_PREFERENCES = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/.GlobalPreferences.plist");
+    /** Path to finder preferences. */
+    public final static File FINDER_PREFERENCES = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.finder.plist");
+    /** Each entry in this hash map represents a cached preferences file. */
+    private static HashMap<File, HashMap<String, Object>> cachedFiles;
 
     /**
      * Creates a new instance.
@@ -34,67 +39,105 @@ public class OSXPreferences {
     public OSXPreferences() {
     }
 
-    public static String getString(String key) {
-        return (String) get(key);
+    public static String getString(File file, String key) {
+        return (String) get(file, key);
     }
 
-    public static String getString(String key, String defaultValue) {
-        return prefs.containsKey(key) ? (String) get(key) : defaultValue;
+    public static String getString(File file, String key, String defaultValue) {
+        return (String) get(file, key, defaultValue);
     }
 
-    public static Object get(String key) {
-        if (prefs == null) {
-            prefs = new HashMap();
-            loadGlobalPreferences();
+    public static Object get(File file, String key) {
+        ensureCached(file);
+        return cachedFiles.get(file).get(key);
+    }
+
+    /**
+     *
+     * @param file
+     * @param key Keys are separated by \t characters.
+     * @param defaultValue
+     * @return
+     */
+    public static Object get(File file, String key, Object defaultValue) {
+        ensureCached(file);
+        return (cachedFiles.get(file).containsKey(key)) ? cachedFiles.get(file).get(key) : defaultValue;
+    }
+
+    private static void ensureCached(File file) {
+        if (cachedFiles == null) {
+            cachedFiles = new HashMap<File, HashMap<String, Object>>();
         }
-        return prefs.get(key);
+        if (!cachedFiles.containsKey(file)) {
+            HashMap<String, Object> cache = new HashMap<String, Object>();
+            cachedFiles.put(file, cache);
+            updateCache(file, cache);
+        }
     }
 
-    private static void loadGlobalPreferences() {
-        // Load Mac OS X global preferences
-        // --------------------------------
-
-        // Fill preferences with default values, in case we fail to read them
-
-        // Appearance: "1"=Blue, "6"=Graphite
-        prefs.put("AppleAquaColorVariant", "1");
-        // Highlight Color: (RGB float values)
-        prefs.put("AppleHighlightColor", "0.709800 0.835300 1.000000");
-        // Collation order: (Language code)
-        prefs.put("AppleCollationOrder", "en");
-        // Place scroll arrows: "Single"=At top and bottom, "DoubleMax"=Together
-        prefs.put("AppleScrollBarVariant", "DoubleMax");
-        // Click in the scroll bar to: "true"=Jump to here, "false"=Jump to next page
-        prefs.put("AppleScrollerPagingBehavior", "false");
-        // Keyboard UI mode: "1"=Tab moves to text boxes and lists only, "3"=Tab moves to all controls
-        prefs.put("AppleKeyboardUIMode", "3");
+    private static void updateCache(File file, HashMap<String, Object> cache) {
+        cache.clear();
 
         if (QuaquaManager.isOSX()) {
             try {
-                File globalPrefsFile = new File(
-                        QuaquaManager.getProperty("user.home") + "/Library/Preferences/.GlobalPreferences.plist");
-                XMLElement xml = readPList(globalPrefsFile);
-                for (Iterator i0 = xml.iterateChildren(); i0.hasNext();) {
-                    XMLElement xml1 = (XMLElement) i0.next();
+                XMLElement plist = readPList(file);
 
-                    String key = null;
-                    for (Iterator i1 = xml1.iterateChildren(); i1.hasNext();) {
-                        XMLElement xml2 = (XMLElement) i1.next();
-                        if (xml2.getName().equals("key")) {
-                            key = xml2.getContent();
-                        } else {
-                            if (key != null) {
-                                prefs.put(key, xml2.getContent());
-                            }
-                            key = null;
-                        }
-                    }
-                }
+                Stack<String> keyPath=new Stack<String>();
+                readNode(plist, keyPath, cache);
             } catch (Throwable e) {
-                System.err.println("Warning: ch.randelshofer.quaqua.util.Preferences failed to load Mac OS X global system preferences");
+                System.err.println("Warning: ch.randelshofer.quaqua.util.OSXPreferences failed to load " + file);
                 e.printStackTrace();
             }
         }
+    }
+
+    private static void readNode(XMLElement node, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
+        String name = node.getName();
+        if (name.equals("plist")) {
+            readPList(node,keyPath,cache);
+        } else if (name.equals("dict")) {
+            readDict(node,keyPath,cache);
+        } else if (name.equals("array")) {
+            readArray(node,keyPath,cache);
+        } else {
+            readValue(node,keyPath,cache);
+        }
+    }
+    private static void readPList(XMLElement plist, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
+        ArrayList<XMLElement>children=plist.getChildren();
+        for (int i=0,n=children.size();i<n;i++) {
+            readNode(children.get(i),keyPath,cache);
+        }
+    }
+    private static void readDict(XMLElement dict, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
+        ArrayList<XMLElement>children=dict.getChildren();
+        for (int i=0,n=children.size();i<n;i+=2) {
+            XMLElement keyElem = children.get(i);
+            if (!keyElem.getName().equals("key")) {
+                throw new IOException("missing dictionary key at"+keyPath);
+            }
+            keyPath.push(keyElem.getContent());
+            readNode(children.get(i+1),keyPath,cache);
+            keyPath.pop();
+        }
+    }
+    private static void readArray(XMLElement array, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
+        ArrayList<XMLElement>children=array.getChildren();
+        for (int i=0,n=children.size();i<n;i++) {
+            keyPath.push(Integer.toString(i));
+            readNode(children.get(i),keyPath,cache);
+            keyPath.pop();
+        }
+    }
+    private static void readValue(XMLElement value, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
+        StringBuffer key=new StringBuffer();
+        for (Iterator<String> i=keyPath.iterator();i.hasNext();) {
+            key.append(i.next());
+            if (i.hasNext()) {
+                key.append('\t');
+            }
+        }
+        cache.put(key.toString(), value.getContent());
     }
 
     /**

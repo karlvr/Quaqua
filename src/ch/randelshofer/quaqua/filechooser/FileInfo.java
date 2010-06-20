@@ -43,6 +43,10 @@ public interface FileInfo {
      */
     public boolean isTraversable();
     /**
+     * Returns true, if the file object is hidden.
+     */
+    public boolean isHidden();
+    /**
      * Returns true, if the file object is acceptable, i.e. selectable in
      * the JFileChooser.
      */
