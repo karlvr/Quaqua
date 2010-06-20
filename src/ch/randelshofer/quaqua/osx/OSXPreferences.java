@@ -53,11 +53,12 @@ public class OSXPreferences {
     }
 
     /**
-     *
-     * @param file
-     * @param key Keys are separated by \t characters.
-     * @param defaultValue
-     * @return
+     * Get a value from a Mac OS X preferences file.
+     * 
+     * @param file The preferences file.
+     * @param key Hierarchical keys are separated by \t characters.
+     * @param defaultValue This value is returned when the key does not exist.
+     * @return Returns the preferences value.
      */
     public static Object get(File file, String key, Object defaultValue) {
         ensureCached(file);
