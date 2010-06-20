@@ -35,6 +35,62 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
+  <h3>Version 7.1<br />
+    <font size="-1">2010-06-20</font></h3>
+  <p>Fixes</p>
+  <ul>
+    <li>JBrowser:
+      <ul>
+        <li>Issue 100: Scrolling to the left should reveal two columns. Tooltip texts should be created using &quot;convertValueToText&quot;. </li>
+      </ul>
+    </li>
+    <li>JComboBox:
+      <ul>
+        <li>Issue 61: Lists with very long lines were wider than the screen.</li>
+      </ul>
+    </li>
+    <li>JFileChooser:
+      <ul>
+        <li>Issue 95: The default value for &quot;fileHidingEnabled&quot; should be read from the Finder preferences.</li>
+        <li>The default value for the sort order (by name or folders first) should be read from the Finder preferences.</li>
+        <li>Some hidden directories were not displayed even if &quot;fileHidingEnable&quot; was set to false.</li>
+        <li>The &quot;/opt&quot; directory was always displayed even if &quot;fileHidingEnable&quot; was set to true.S</li>
+      </ul>
+    </li>
+    <li>JOptionPane:
+      <ul>
+        <li>Issue 111: Components were cut off.</li>
+      </ul>
+    </li>
+    <li>JRadioButton:
+      <ul>
+        <li>Issue 107: A radio buttons should request focus when a button in the same button group already has focus.</li>
+      </ul>
+    </li>
+    <li>JSlider:
+      <ul>
+        <li>Issue 73: Fixed NullPointerException in method getIconWidth.</li>
+      </ul>
+    </li>
+    <li>JSpinner rendered poorly when ButtonUI and TextFieldUI was excluded.</li>
+    <li>JTabbedPane:
+      <ul>
+        <li>Issue 52: Titles were not properly updated when they contained HTML text.</li>
+      </ul>
+    </li>
+    <li>JTable:
+      <ul>
+        <li>Issue 48: Implemented mouse handler with drag and drop support.</li>
+      </ul>
+    </li>
+    <li>JTree supports now the &quot;sidebar&quot; style on Tiger.</li>
+    <li>Package of SwingUtilies2 changed in J2SE6.</li>
+    <li>BinaryPListParser could not read UId's.</li>
+  </ul>
+  <p>Changes</p>
+  <ul>
+    <li>Removed  SwingWorker class.</li>
+  </ul>
   <h3>Version 7.0.1<br />
     <font size="-1">2010-06-13</font></h3>
   <p>Changes</p>
