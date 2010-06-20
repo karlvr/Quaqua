@@ -48,7 +48,7 @@ public class Images {
     }
     public static Image createImage(URL resource) {
         Image image = Toolkit.getDefaultToolkit().createImage(resource);
-        if (OSXPreferences.getString("AppleAquaColorVariant").equals("6")) {
+        if (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES,"AppleAquaColorVariant","1").equals("6")) {
             if (canGraphite(resource)) {
                 image = toGraphite(image);
             }

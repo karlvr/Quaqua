@@ -1,5 +1,5 @@
 /*
- * @(#)DarwinLeopardFileSystemView.java  4.0  2008-05-09
+ * @(#)DarwinLeopardFileSystemView.java  
  *
  * Copyright (c) 2007-2010 Werner Randelshofer
  * Hausmatt 10, CH-6405 Immensee, Switzerland
@@ -12,22 +12,16 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
-import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import java.io.*;
 import java.util.Arrays;
 import java.util.HashSet;
-import javax.swing.*;
-import javax.swing.filechooser.FileSystemView;
 
 /**
  * DarwinLeopardFileSystemView.
  * 
  * @author Werner Randelshofer
- * @version 4.0 2008-05-09 If native code is available, use OSXFile.isTraversable
- * to determine whether a file is traversable.
- * <br>1.1 2008-05-09 
- * <br>1.0 November 24, 2007 Created.
+ * @version $Id$
  */
 public class DarwinLeopardFileSystemView extends QuaquaFileSystemView {
 
@@ -62,6 +56,7 @@ public class DarwinLeopardFileSystemView extends QuaquaFileSystemView {
             "mach_kernel.ctfsys",
             "mach.sym",
             "net",
+            "opt",
             "private",
             "sbin",
             "Temporary Items",

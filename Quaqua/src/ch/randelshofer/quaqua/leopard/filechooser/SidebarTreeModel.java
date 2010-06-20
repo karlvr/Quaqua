@@ -51,7 +51,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private TreePath volumesPath;
     /**
-     * Holds the AliasFileSystemTreeModel.
+     * Holds the FileSystemTreeModel.
      */
     private TreeModel model;
     /**
@@ -227,7 +227,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
     }
 
     private void updateDevicesNode() {
-        AliasFileSystemTreeModel.Node modelDevicesNode = (AliasFileSystemTreeModel.Node) volumesPath.getLastPathComponent();
+        FileSystemTreeModel.Node modelDevicesNode = (FileSystemTreeModel.Node) volumesPath.getLastPathComponent();
 
         // Remove nodes from the view which are not present in the model
         for (int i = devicesNode.getChildCount() - 1; i >= 0; i--) {
@@ -240,7 +240,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         // Add nodes to the view, wich are present in the model, but not
         // in the view. Only add non-leaf nodes
         for (int i = 0, n = modelDevicesNode.getChildCount(); i < n; i++) {
-            AliasFileSystemTreeModel.Node modelNode = (AliasFileSystemTreeModel.Node) modelDevicesNode.getChildAt(i);
+            FileSystemTreeModel.Node modelNode = (FileSystemTreeModel.Node) modelDevicesNode.getChildAt(i);
             if (!modelNode.isLeaf()) {
                 boolean isInView = false;
                 for (int j = 0, m = devicesNode.getChildCount(); j < m; j++) {
@@ -505,7 +505,11 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private abstract class Node extends DefaultMutableTreeNode implements FileInfo {
 
+        @Override
         public boolean getAllowsChildren() {
+            return false;
+        }
+        public boolean isHidden() {
             return false;
         }
     }
@@ -625,9 +629,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
     private class SidebarViewToModelNode extends Node implements Comparable {
 
-        private AliasFileSystemTreeModel.Node target;
+        private FileSystemTreeModel.Node target;
 
-        public SidebarViewToModelNode(AliasFileSystemTreeModel.Node target) {
+        public SidebarViewToModelNode(FileSystemTreeModel.Node target) {
             this.target = target;
         }
 
@@ -675,7 +679,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return target.isValidating();
         }
 
-        public AliasFileSystemTreeModel.Node getTarget() {
+        public FileSystemTreeModel.Node getTarget() {
             return target;
         }
 
@@ -688,8 +692,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         }
 
         public int compareTo(SidebarViewToModelNode that) {
-            AliasFileSystemTreeModel.Node o1 = this.getTarget();
-            AliasFileSystemTreeModel.Node o2 = that.getTarget();
+            FileSystemTreeModel.Node o1 = this.getTarget();
+            FileSystemTreeModel.Node o2 = that.getTarget();
 
             SystemItemInfo i1 = (SystemItemInfo) systemItemsMap.get(o1.getUserName());
             if (i1 == null && o1.getResolvedFile().getName().equals("")) {

@@ -12,7 +12,6 @@
  */
 package ch.randelshofer.quaqua.snow_leopard.filechooser;
 
-import ch.randelshofer.quaqua.leopard.filechooser.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import java.io.*;
@@ -104,6 +103,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
             "mach_kernel.ctfsys",
             "mach.sym",
             "net",
+            "opt",
             "private",
             "sbin",
             "Temporary Items",
@@ -131,6 +131,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
      * Returns the parent directory of dir.
      * This method returns the system volume instead of the computer folder ("/").
      */
+    @Override
     public File getParentDirectory(File dir) {
         File parent = (isRoot(dir)) ? null : super.getParentDirectory(dir);
         if (parent != null && parent.equals(computer)) {
@@ -145,6 +146,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
      * The computer folder ("/") is considered as hidden and not
      * returned by this method.
      */
+    @Override
     public File[] getRoots() {
         File[] fileArray;
         ArrayList roots = new ArrayList();
@@ -169,6 +171,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
     /**
      * Returns whether a file is hidden or not.
      */
+    @Override
     public boolean isHiddenFile(File f) {
         if (f.isHidden()) {
             return true;
@@ -197,6 +200,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
     /**
      * Determines if the given file is a root partition or drive.
      */
+    @Override
     public boolean isRoot(File aFile) {
         return aFile.equals(computer) || aFile.equals(networkFolder) || aFile.getParentFile() != null && aFile.getParentFile().equals(volumesFolder);
     }
@@ -211,6 +215,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
      * @param file a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
+    @Override
     public boolean isParent(File folder, File file) {
         if (folder == null || file == null) {
             return false;
@@ -228,6 +233,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
      * special folders, in which case the <code>File</code> is a wrapper containing
      * a <code>ShellFolder</code> object.
      */
+    @Override
     public File getChild(File parent, String fileName) {
         return new File(parent, fileName);
     }
@@ -240,6 +246,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
      * @return <code>true</code> if <code>f</code> is a root of a filesystem
      * @see #isRoot
      */
+    @Override
     public boolean isFileSystemRoot(File dir) {
         File parentFile = dir.getParentFile();
         return parentFile == null || parentFile.equals(volumesFolder);
@@ -250,6 +257,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
     // because most OS file systems will likely be able to use this
     // code. If a given OS can't, override these methods in its
     // implementation.
+    @Override
     public File getHomeDirectory() {
         return createFileObject(System.getProperty("user.home"));
     }

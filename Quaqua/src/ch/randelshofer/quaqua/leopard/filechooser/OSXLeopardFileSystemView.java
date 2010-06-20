@@ -81,7 +81,6 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      */
     private final static HashSet hiddenTopLevelNames = new HashSet();
     private final static HashSet hiddenDirectoryNames = new HashSet();
-    
 
     static {
         String[] names = {
@@ -100,6 +99,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
             "mach_kernel.ctfsys",
             "mach.sym",
             "net",
+            "opt",
             "private",
             "sbin",
             "Temporary Items",
@@ -110,22 +110,23 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
             "usr",
             "var",
             "Volumes",
-            "\u0003\u0002\u0001Move&Rename",
-        };
+            "\u0003\u0002\u0001Move&Rename",};
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
-        names = new String[] {
-            "$RECYCLE.BIN"
-        };
+        names = new String[]{
+                    "$RECYCLE.BIN"
+                };
 
         hiddenDirectoryNames.addAll(Arrays.asList(names));
     }
+
     ;
 
     /**
      * Returns the parent directory of dir.
      * This method returns the system volume instead of the computer folder ("/").
      */
+    @Override
     public File getParentDirectory(File dir) {
         File parent = (isRoot(dir)) ? null : super.getParentDirectory(dir);
         if (parent != null && parent.equals(computer)) {
@@ -140,6 +141,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      * The computer folder ("/") is considered as hidden and not
      * returned by this method.
      */
+    @Override
     public File[] getRoots() {
         File[] fileArray;
         ArrayList roots = new ArrayList();
@@ -153,7 +155,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
         fileArray = volumesFolder.listFiles();
         if (fileArray != null) {
             roots.addAll(Arrays.asList(fileArray));
-        //roots.remove(getSystemVolume());
+            //roots.remove(getSystemVolume());
         }
         //roots.add(networkFolder);
 
@@ -164,6 +166,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
     /**
      * Returns whether a file is hidden or not.
      */
+    @Override
     public boolean isHiddenFile(File f) {
         if (f.isHidden()) {
             return true;
@@ -192,10 +195,12 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
     /**
      * Determines if the given file is a root partition or drive.
      */
+    @Override
     public boolean isRoot(File aFile) {
-        return aFile.equals(computer) || aFile.equals(networkFolder) || aFile.getParentFile() != null && aFile.getParentFile().equals(volumesFolder);
+        return aFile.equals(computer) //
+                || aFile.equals(networkFolder)//
+                || aFile.getParentFile() != null && aFile.getParentFile().equals(volumesFolder);
     }
-
 
     /**
      * On Windows, a file can appear in multiple folders, other than its
@@ -206,6 +211,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      * @param file a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
+    @Override
     public boolean isParent(File folder, File file) {
         if (folder == null || file == null) {
             return false;
@@ -223,6 +229,7 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      * special folders, in which case the <code>File</code> is a wrapper containing
      * a <code>ShellFolder</code> object.
      */
+    @Override
     public File getChild(File parent, String fileName) {
         return new File(parent, fileName);
     }
@@ -235,16 +242,17 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
      * @return <code>true</code> if <code>f</code> is a root of a filesystem
      * @see #isRoot
      */
+    @Override
     public boolean isFileSystemRoot(File dir) {
         File parentFile = dir.getParentFile();
         return parentFile == null || parentFile.equals(volumesFolder);
     }
 
-
     // Providing default implementations for the remaining methods
     // because most OS file systems will likely be able to use this
     // code. If a given OS can't, override these methods in its
     // implementation.
+    @Override
     public File getHomeDirectory() {
         return createFileObject(System.getProperty("user.home"));
     }

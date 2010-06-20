@@ -16,7 +16,6 @@ import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import ch.randelshofer.quaqua.*;
 
 /**
@@ -75,36 +74,47 @@ public class FileRenderer extends JComponent implements ListCellRenderer {
     }
 
     // Overridden for performance reasons.
+    @Override
     public void validate() {
     }
 
+    @Override
     public void revalidate() {
     }
 
+    @Override
     public void repaint(long tm, int x, int y, int width, int height) {
     }
 
+    @Override
     public void repaint(Rectangle r) {
     }
 
+    @Override
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, short oldValue, short newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, int oldValue, int newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, long oldValue, long newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, float oldValue, float newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, double oldValue, double newValue) {
     }
 
+    @Override
     public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
     }
 
@@ -116,14 +126,13 @@ public class FileRenderer extends JComponent implements ListCellRenderer {
         FileInfo info = (FileInfo) value;
         File file = info.getFile();
 
-        boolean isGrayed =
-                (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG && !info.isTraversable()) ||
-                !info.isAcceptable();
+        isGrayed = info.isHidden()
+                || !info.isAcceptable();
 
         labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
         labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
 
-        this.isSelected = isSelected && !isGrayed;
+        this.isSelected = isSelected;
         if (this.isSelected) {
             if (list.hasFocus() && QuaquaUtilities.isOnActiveWindow(list)) {
                 setBackground(UIManager.getColor("Browser.selectionBackground"));

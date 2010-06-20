@@ -14,7 +14,6 @@ package ch.randelshofer.quaqua.filechooser;
 
 import java.beans.*;
 import java.util.*;
-import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 
@@ -46,8 +45,11 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     }
 
     public void setPathToRoot(Object[] newValue) {
+System.out.println("SubtreeTreeModel newpath: "+Arrays.toString(newValue));
+new Throwable().printStackTrace();
         Object[] oldValue = this.rootPath;
         if (!Arrays.equals(oldValue, newValue)) {
+System.out.println("SubtreeTreeModel newpath STORED: "+Arrays.toString(newValue));
             this.rootPath = newValue;
             this.subtreeRoot = newValue[newValue.length - 1];
             changeSupport.firePropertyChange("rootPath", oldValue, newValue);
@@ -72,6 +74,7 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     }
 
     public Object getRoot() {
+System.out.println("SubtreeTreeModel root: "+subtreeRoot);
         return subtreeRoot;
     }
 

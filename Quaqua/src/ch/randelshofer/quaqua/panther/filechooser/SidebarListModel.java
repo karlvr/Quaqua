@@ -52,7 +52,7 @@ public class SidebarListModel
      */
     private TreePath path;
     /**
-     * Holds the AliasFileSystemTreeModel.
+     * Holds the FileSystemTreeModel.
      */
     private TreeModel model;
     /**
@@ -148,7 +148,7 @@ public class SidebarListModel
     }
 
     private void sortSystemItems() {
-        AliasFileSystemTreeModel.Node parent = (AliasFileSystemTreeModel.Node) path.getLastPathComponent();
+        FileSystemTreeModel.Node parent = (FileSystemTreeModel.Node) path.getLastPathComponent();
         if (modelToView.length != parent.getChildCount()) {
             viewToModel = new Row[parent.getChildCount()];
             modelToView = new int[viewToModel.length];
@@ -164,7 +164,7 @@ public class SidebarListModel
         // remove leaf nodes from system items
         int j = 0;
         for (int i = 0; i < viewToModel.length; i++) {
-            AliasFileSystemTreeModel.Node node = (AliasFileSystemTreeModel.Node) parent.getChildAt(viewToModel[i].modelIndex);
+            FileSystemTreeModel.Node node = (FileSystemTreeModel.Node) parent.getChildAt(viewToModel[i].modelIndex);
             if (!node.isLeaf()) {
                 viewToModel[j] = viewToModel[i];
                 modelToView[viewToModel[j].modelIndex] = i;
@@ -184,7 +184,7 @@ public class SidebarListModel
                 return path.getPathComponent(0);
 
             } else if (row <= viewToModel.length) {
-                return ((AliasFileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), viewToModel[row - 1].modelIndex));
+                return ((FileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), viewToModel[row - 1].modelIndex));
 
             } else {
                 return userItems.get(row - viewToModel.length - 1);
@@ -192,7 +192,7 @@ public class SidebarListModel
             }
         } else {
             return (row < viewToModel.length)
-                    ? ((AliasFileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), viewToModel[row].modelIndex))
+                    ? ((FileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), viewToModel[row].modelIndex))
                     : userItems.get(row - viewToModel.length);
         }
     }
@@ -331,6 +331,10 @@ public class SidebarListModel
         public boolean isValidating() {
             return false;
         }
+
+        public boolean isHidden() {
+            return false;
+        }
     }
 
     /**
@@ -428,6 +432,10 @@ public class SidebarListModel
         }
 
         public boolean isValidating() {
+            return false;
+        }
+
+        public boolean isHidden() {
             return false;
         }
     }
@@ -625,8 +633,8 @@ public class SidebarListModel
             int row1 = modelIndex;
             int row2 = ((Row) o).modelIndex;
 
-            AliasFileSystemTreeModel.Node o1 = ((AliasFileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), row1));
-            AliasFileSystemTreeModel.Node o2 = ((AliasFileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), row2));
+            FileSystemTreeModel.Node o1 = ((FileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), row1));
+            FileSystemTreeModel.Node o2 = ((FileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), row2));
 
             SystemItemInfo i1 = (SystemItemInfo) systemItemsMap.get(o1.getUserName());
             if (i1 == null && o1.getResolvedFile().getName().equals("")) {

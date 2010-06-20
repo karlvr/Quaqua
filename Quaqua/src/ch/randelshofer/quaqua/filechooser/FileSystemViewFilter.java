@@ -52,6 +52,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return <code>true</code> if <code>f</code> is a root in the navigatable tree.
      * @see #isFileSystemRoot
      */
+    @Override
     public boolean isRoot(File f) {
         return target.isRoot(f);
     }
@@ -65,6 +66,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @see JFileChooser#isTraversable
      * @see FileView#isTraversable
      */
+    @Override
     public Boolean isTraversable(File f) {
 	return target.isTraversable(f);
     }
@@ -80,6 +82,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return the file name as it would be displayed by a native file chooser
      * @see JFileChooser#getName
      */
+    @Override
     public String getSystemDisplayName(File f) {
         return target.getSystemDisplayName(f);
     }
@@ -96,6 +99,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * or null if no native information is available.
      * @see JFileChooser#getTypeDescription
      */
+    @Override
     public String getSystemTypeDescription(File f) {
 	return target.getSystemTypeDescription(f);
     }
@@ -111,6 +115,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return an icon as it would be displayed by a native file chooser
      * @see JFileChooser#getIcon
      */
+    @Override
     public Icon getSystemIcon(File f) {
         return target.getSystemIcon(f);
     }
@@ -124,6 +129,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @param file a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
+    @Override
     public boolean isParent(File folder, File file) {
         return target.isParent(folder, file);
     }
@@ -137,6 +143,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * special folders, in which case the <code>File</code> is a wrapper containing
      * a <code>ShellFolder</code> object.
      */
+    @Override
     public File getChild(File parent, String fileName) {
         return target.getChild(parent, fileName);
     }
@@ -150,6 +157,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @param f a <code>File</code> object
      * @return <code>true</code> if <code>f</code> is a real file or directory.
      */
+    @Override
     public boolean isFileSystem(File f) {
         return target.isFileSystem(f);
     }
@@ -157,6 +165,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     /**
      * Returns whether a file is hidden or not.
      */
+    @Override
     public boolean isHiddenFile(File f) {
 	return target.isHiddenFile(f);
     }
@@ -169,6 +178,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return <code>true</code> if <code>f</code> is a root of a filesystem
      * @see #isRoot
      */
+    @Override
     public boolean isFileSystemRoot(File dir) {
 	return target.isFileSystemRoot(dir);
     }
@@ -182,6 +192,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @param dir a directory
      * @return <code>false</code> always
      */
+    @Override
     public boolean isDrive(File dir) {
 	return target.isDrive(dir);
     }
@@ -195,6 +206,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @param dir a directory
      * @return <code>false</code> always
      */
+    @Override
     public boolean isFloppyDrive(File dir) {
 	return target.isFloppyDrive(dir);
     }
@@ -208,6 +220,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @param dir a directory
      * @return <code>false</code> always
      */
+    @Override
     public boolean isComputerNode(File dir) {
 	return target.isComputerNode(dir);
     }
@@ -218,6 +231,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * Windows, this would be the "Desktop" folder, while on DOS this
      * would be the A: through Z: drives.
      */
+    @Override
     public File[] getRoots() {
         return target.getRoots();
     }
@@ -228,6 +242,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     // code. If a given OS can't, override these methods in its
     // implementation.
 
+    @Override
     public File getHomeDirectory() {
 	return target.getHomeDirectory();
     }
@@ -238,6 +253,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return a <code>File</code> object representing the default
      *         starting folder
      */
+    @Override
     public abstract File getDefaultDirectory();
     /*
     public File getDefaultDirectory() {
@@ -247,6 +263,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     /**
      * Returns a File object constructed in dir from the given filename.
      */
+    @Override
     public File createFileObject(File dir, String filename) {
         return target.createFileObject(dir, filename);
     }
@@ -254,6 +271,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     /**
      * Returns a File object constructed from the given path string.
      */
+    @Override
     public File createFileObject(String path) {
         return target.createFileObject(path);
     }
@@ -262,6 +280,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
     /**
      * Gets the list of shown (i.e. not hidden) files.
      */
+    @Override
     public File[] getFiles(File dir, boolean useFileHiding) {
         return target.getFiles(dir, useFileHiding);
     }
@@ -274,6 +293,7 @@ public abstract class FileSystemViewFilter extends FileSystemView {
      * @return the parent directory of <code>dir</code>, or
      *   <code>null</code> if <code>dir</code> is <code>null</code>
      */
+    @Override
     public File getParentDirectory(File dir) {
         return target.getParentDirectory(dir);
     }

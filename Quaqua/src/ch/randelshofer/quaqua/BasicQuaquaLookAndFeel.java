@@ -30,7 +30,8 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
  * @version $Id$
  */
 public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
-BasicLookAndFeel a;
+
+    BasicLookAndFeel a;
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
@@ -155,7 +156,7 @@ BasicLookAndFeel a;
         ColorUIResource inactiveSelectionBackground = new ColorUIResource(0xd0d0d0);
 
         // Get text selection background from Mac OS X system preferences
-        String colorValues = OSXPreferences.getString("AppleHighlightColor");
+        String colorValues = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleHighlightColor", "0.709800 0.835300 1.000000");
         try {
             float[] rgb = new float[3];
             StringTokenizer tt = new StringTokenizer(colorValues);
@@ -200,7 +201,7 @@ BasicLookAndFeel a;
             }
         }
 
-        boolean isGraphite = OSXPreferences.getString("AppleAquaColorVariant").equals("6");
+        boolean isGraphite = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleAquaColorVariant", "1").equals("6");
 
 
         Object[] uiDefaults = {
@@ -275,7 +276,7 @@ BasicLookAndFeel a;
                 ((Color) inactiveSelectionForeground).getRGB());
 
         ColorUIResource listSelectionBorderColor = (ColorUIResource) table.get("listHighlightBorder");
-        ColorUIResource listAlternateBackground = OSXPreferences.get("AppleAquaColorVariant").equals("6") ? new ColorUIResource(0xf0f0f0) : new ColorUIResource(0xedf3fe);
+        ColorUIResource listAlternateBackground = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleAquaColorVariant", "1").equals("6") ? new ColorUIResource(0xf0f0f0) : new ColorUIResource(0xedf3fe);
 
 
 
@@ -1380,7 +1381,7 @@ BasicLookAndFeel a;
             "List.cellNoFocusBorder",
             new UIDefaults.ProxyLazyValue(
             "javax.swing.plaf.BorderUIResource$EmptyBorderUIResource",
-            new Object[]{1,1,1,1}),
+            new Object[]{1, 1, 1, 1}),
             "Menu.acceleratorFont", menuFont,
             "Menu.font", menuFont,
             "MenuBar.font", menuFont,
@@ -1486,9 +1487,19 @@ BasicLookAndFeel a;
 
         // True if all controls are focusable,
         // false if only text boxes and listes are focusable.
+        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "3");
         Boolean allControlsFocusable =//
                 QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true")//
-                || OSXPreferences.getString("AppleKeyboardUIMode", "3").equals("3");
+                || prefValue.equals("3");
+
+        // True if file choosers orders by type
+        prefValue = OSXPreferences.getString(OSXPreferences.FINDER_PREFERENCES, "StandardViewOptions\tColumnViewOptions\tArrangeBy", "dnam");
+        boolean isOrderFilesByType = prefValue.equals("kipl");
+        // True if file choosers shows all files by default
+        prefValue = OSXPreferences.getString(//
+                OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
+                .toLowerCase();
+        boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1630,18 +1641,8 @@ BasicLookAndFeel a;
             "EditorPane.margin", new InsetsUIResource(1, 3, 1, 3),
             "EditorPane.popupHandler", textComponentPopupHandler,
             //
-            "FileChooser.homeFolderIcon", makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
             "FileChooser.autovalidate", autovalidate,
-            "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
-            "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
-            "FileChooser.splitPaneDividerSize", four,
-            "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 1),
-            "FileChooser.previewLabelDelimiter", ":",
-            "FileChooser.speed", new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.speed").equals("true")),
-            "FileView.computerIcon", makeIcon(getClass(), commonDir + "FileView.computerIcon.png"),
-            "FileView.fileIcon", makeIcon(getClass(), commonDir + "FileView.fileIcon.png"),
-            "FileView.directoryIcon", makeIcon(getClass(), commonDir + "FileView.directoryIcon.png"),
-            "FileChooser.orderByType", new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.orderByType").equals("true")),
+            //
             "FileChooser.browserFocusCellHighlightBorder",
             new UIDefaults.ProxyLazyValue(
             "javax.swing.plaf.BorderUIResource$LineBorderUIResource",
@@ -1652,6 +1653,22 @@ BasicLookAndFeel a;
             new Object[]{new Insets(1, 1, 1, 1)}),
             "FileChooser.disclosureButtonIcon", makeButtonStateIcon(
             leopardDir + "FileChooser.disclosureButtonIcons.png", 10),
+            //
+            "FileChooser.fileHidingEnabled", isFileHidingEnabled,
+            "FileChooser.homeFolderIcon", makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
+            "FileChooser.orderByType", isOrderFilesByType,
+            "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
+            "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
+            "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 1),
+            "FileChooser.previewLabelDelimiter", ":",
+            "FileChooser.splitPaneDividerSize", four,
+            "FileChooser.speed", new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.speed").equals("true")),
+            //
+            "FileView.computerIcon", makeIcon(getClass(), commonDir + "FileView.computerIcon.png"),
+            "FileView.directoryIcon", makeIcon(getClass(), commonDir + "FileView.directoryIcon.png"),
+            "FileView.fileIcon", makeIcon(getClass(), commonDir + "FileView.fileIcon.png"),
+            "FileView.aliasBadge", makeIcon(getClass(), commonDir + "FileView.aliasBadge.png"),
+            //
             "FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
             "FormattedTextField.focusHandler", textFieldFocusHandler,
@@ -1746,13 +1763,13 @@ BasicLookAndFeel a;
             "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(OSXPreferences.getString("AppleScrollBarVariant").equals("DoubleMax"));
+            return new Boolean(OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
         }
     },
             "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(OSXPreferences.getString("AppleScrollerPagingBehavior").equals("true"));
+            return new Boolean(OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
         }
     },
             "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
@@ -1917,9 +1934,9 @@ BasicLookAndFeel a;
         putDefaults(table, uiDefaults);
 
         // Support for org.jdesktop.layout.GroupLayout
-            uiDefaults = new Object[]{
-                        "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
-                        "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
+        uiDefaults = new Object[]{
+                    "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
+                    "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
         putDefaults(table, uiDefaults);
     }
 
