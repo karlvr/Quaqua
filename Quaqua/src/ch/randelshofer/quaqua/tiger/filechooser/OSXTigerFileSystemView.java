@@ -1,5 +1,5 @@
 /*
- * @(#)OSXTigerFileSystemView.java 4.0  2008-05-10
+ * @(#)OSXTigerFileSystemView.java 
  *
  * Copyright (c) 2006-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,9 +14,6 @@
 package ch.randelshofer.quaqua.tiger.filechooser;
 
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
 import java.io.*;
 import java.util.*;
 /**
@@ -25,14 +22,7 @@ import java.util.*;
  * Note: This file system view only works on top of Apple's Macintosh Runtime for Java.
  *
  * @author  Werner Randelshofer
- * @version 4.0 2008-05-10 If native code is available, use native methods from
- * Files class to retrieve file infos. If no native code is available, fall back
- * to FileSystemView.getFileSystemView() rather than relying on Apple's FileView
- * class.
- * <br>1.2 2007-01-24 Determine system volume lazily. Create FileView
- * lazily.
- * <br>1.1 2006-09-23 Don't include "Computer" in getRoots().
- * <br>1.0 2006-05-07 Created.
+ * @version $Id$
  */
 public class OSXTigerFileSystemView extends QuaquaFileSystemView {
     private static final File volumesFolder = new File("/Volumes");
@@ -111,6 +101,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
             "mach_kernel.ctfsys",
             "mach.sym",
             "net",
+            "opt",
             "private",
             "sbin",
             "Temporary Items",
@@ -132,6 +123,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * Returns the parent directory of dir.
      * This method returns the system volume instead of the computer folder ("/").
      */
+    @Override
     public File getParentDirectory(File dir) {
         File parent = (isRoot(dir)) ? null : super.getParentDirectory(dir);
         if (parent != null && parent.equals(computer)) {
@@ -146,6 +138,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * The computer folder ("/") is considered as hidden and not
      * returned by this method.
      */
+    @Override
     public File[] getRoots() {
         File[] fileArray;
         ArrayList roots = new ArrayList();
@@ -170,6 +163,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
     /**
      * Returns whether a file is hidden or not.
      */
+    @Override
     public boolean isHiddenFile(File f) {
         if (f.isHidden()) {
             return true;
@@ -194,6 +188,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
     /**
      * Determines if the given file is a root partition or drive.
      */
+    @Override
     public boolean isRoot(File aFile) {
         return aFile.equals(computer)
         || aFile.equals(networkFolder)
@@ -209,6 +204,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * @param file a <code>File</code> object
      * @return <code>true</code> if <code>folder</code> is a directory or special folder and contains <code>file</code>.
      */
+    @Override
     public boolean isParent(File folder, File file) {
         if (folder == null || file == null) {
             return false;
@@ -226,6 +222,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * special folders, in which case the <code>File</code> is a wrapper containing
      * a <code>ShellFolder</code> object.
      */
+    @Override
     public File getChild(File parent, String fileName) {
         return new File(parent, fileName);
     }
@@ -239,6 +236,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * @return <code>true</code> if <code>f</code> is a root of a filesystem
      * @see #isRoot
      */
+    @Override
     public boolean isFileSystemRoot(File dir) {
         File parentFile = dir.getParentFile();
         return parentFile == null || parentFile.equals(volumesFolder);
@@ -249,6 +247,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
     // code. If a given OS can't, override these methods in its
     // implementation.
     
+    @Override
     public File getHomeDirectory() {
         return createFileObject(System.getProperty("user.home"));
     }
