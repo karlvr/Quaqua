@@ -28,6 +28,9 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.util.*;
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleContext;
+import javax.accessibility.AccessibleValue;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
@@ -1142,12 +1145,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         firePropertyChange(SELECTION_MODEL_PROPERTY, oldValue,
                 this.selectionModel);
-        /*
-        if (accessibleContext != null) {
-        accessibleContext.firePropertyChange(
-        AccessibleContext.ACCESSIBLE_SELECTION_PROPERTY,
-        Boolean.valueOf(false), Boolean.valueOf(true));
-        }*/
     }
 
     /**
@@ -3276,7 +3273,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @author Werner Randelshofer
      * @version 1.0 Mar 22, 2008 Created.
      */
-    private class BrowserCellRendererWrapper extends JPanel implements ListCellRenderer {
+    private class BrowserCellRendererWrapper extends JPanel implements ListCellRenderer, Accessible {
 
         private BrowserCellRenderer browserCellRenderer;
         private Component browserCellRendererComponent;

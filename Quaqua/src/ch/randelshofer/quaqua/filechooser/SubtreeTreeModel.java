@@ -71,7 +71,6 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     }
 
     public Object getRoot() {
-System.out.println("SubtreeTreeModel root: "+subtreeRoot);
         return subtreeRoot;
     }
 

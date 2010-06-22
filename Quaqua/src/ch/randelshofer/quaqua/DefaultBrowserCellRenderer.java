@@ -13,11 +13,8 @@ package ch.randelshofer.quaqua;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.basic.BasicGraphicsUtils;
 import java.awt.*;
-import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
 
 /**
  * DefaultBrowserCellRenderer.

@@ -18,6 +18,7 @@ import java.io.*;
 import javax.swing.*;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
+import javax.accessibility.Accessible;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -26,7 +27,7 @@ import ch.randelshofer.quaqua.filechooser.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class LeopardFileRenderer extends JComponent implements ListCellRenderer {
+public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
 
     private Color labelForeground, labelDisabledForeground;
     private Icon selectedExpandingIcon;
