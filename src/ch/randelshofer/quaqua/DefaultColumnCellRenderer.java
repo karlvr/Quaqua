@@ -16,6 +16,8 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.image.*;
+import javax.accessibility.Accessible;
+import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -25,9 +27,8 @@ import javax.swing.border.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class DefaultColumnCellRenderer implements ListCellRenderer {
+public class DefaultColumnCellRenderer extends JPanel implements ListCellRenderer {
 
-    private JPanel panel;
     private JLabel textLabel;
     private JLabel arrowLabel;
     private JBrowser browser;
@@ -36,7 +37,7 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
     protected Icon focusedSelectedExpandedIcon = null;
     protected Icon expandingIcon = null;
     private static final Border DEFAULT_NO_FOCUS_BORDER = new EmptyBorder(1, 1, 1, 1);
-    private static final Color TRANSPARENT_COLOR=new Color(0,true);
+    private static final Color TRANSPARENT_COLOR = new Color(0, true);
 
     public DefaultColumnCellRenderer(JBrowser browser) {
         this.browser = browser;
@@ -56,63 +57,20 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
             focusedSelectedExpandedIcon = new ImageIcon(iconImages[2]);
         }
 
-        panel = new JPanel(new BorderLayout()) {
-            // Overridden for performance reasons.
-            //public void validate() {}
-
-            @Override
-            public void revalidate() {
-            }
-
-            @Override
-            public void repaint(long tm, int x, int y, int width, int height) {
-            }
-
-            @Override
-            public void repaint(Rectangle r) {
-            }
-
-            @Override
-            protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, int oldValue, int newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-            }
-
-            @Override
-            public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-            }
-        };
+        setLayout(new BorderLayout());
 
         textLabel = new LabelRenderer();
         arrowLabel = new LabelRenderer();
-        panel.setOpaque(true);
+        setOpaque(true);
 
         textLabel.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
         textLabel.setOpaque(false);
         arrowLabel.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
         arrowLabel.setOpaque(false);
 
-        panel.add(textLabel, BorderLayout.CENTER);
+        add(textLabel, BorderLayout.CENTER);
         arrowLabel.setIcon(expandedIcon);
-        panel.add(arrowLabel, BorderLayout.EAST);
+        add(arrowLabel, BorderLayout.EAST);
     }
 
     public Component getListCellRendererComponent(JList list, Object value,
@@ -122,13 +80,13 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
         boolean isFocused = QuaquaUtilities.isFocused(list);
 
         if (isSelected) {
-            panel.setBackground(list.getSelectionBackground());
+            setBackground(list.getSelectionBackground());
             Color foreground = (!isFocused && UIManager.getColor("List.inactiveSelectionForeground") != null) ? UIManager.getColor("List.inactiveSelectionForeground") : list.getSelectionForeground();
             textLabel.setForeground(foreground);
             arrowLabel.setForeground(foreground);
             arrowLabel.setIcon(isFocused ? focusedSelectedExpandedIcon : selectedExpandedIcon);
         } else {
-            panel.setBackground(TRANSPARENT_COLOR);
+            setBackground(TRANSPARENT_COLOR);
             Color foreground = list.getForeground();
             textLabel.setForeground(foreground);
             arrowLabel.setForeground(foreground);
@@ -149,11 +107,56 @@ public class DefaultColumnCellRenderer implements ListCellRenderer {
         if (border == null) {
             border = DEFAULT_NO_FOCUS_BORDER;
         }
-        panel.setBorder(border);
+        setBorder(border);
 
-        return panel;
+        return this;
     }
 
+    // Overridden for performance reasons.
+    //public void validate() {}
+    @Override
+    public void revalidate() {
+    }
+
+    @Override
+    public void repaint(long tm, int x, int y, int width, int height) {
+    }
+
+    @Override
+    public void repaint(Rectangle r) {
+    }
+
+    @Override
+    protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, short oldValue, short newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, long oldValue, long newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, float oldValue, float newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, double oldValue, double newValue) {
+    }
+
+    @Override
+    public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+    }
+
+    //
+    // Inner classes
+    //
     public static class UIResource extends DefaultColumnCellRenderer implements javax.swing.plaf.UIResource {
 
         public UIResource(JBrowser browser) {

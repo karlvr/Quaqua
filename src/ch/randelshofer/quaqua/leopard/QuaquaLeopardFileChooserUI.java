@@ -921,7 +921,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     }
                     if (parentPath == null && commonParentPath == null || parentPath != null && commonParentPath != null && parentPath.equals(commonParentPath)) {
                         list.add(subPath);
-                        System.out.println("QuaquaLeopardFileChooserUI SubPath:" + subPath);
                     }
                 }
             }

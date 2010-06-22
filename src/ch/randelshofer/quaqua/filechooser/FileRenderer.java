@@ -25,7 +25,7 @@ import ch.randelshofer.quaqua.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class FileRenderer extends JComponent implements ListCellRenderer {
+public class FileRenderer extends JPanel implements ListCellRenderer {
 
     private Color labelForeground, labelDisabledForeground;
     private Icon selectedExpandingIcon;

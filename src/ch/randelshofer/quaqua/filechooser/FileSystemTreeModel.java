@@ -1212,7 +1212,6 @@ public class FileSystemTreeModel implements TreeModel {
                 boolean isDirectoriesOnly = fileChooser.getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY;
                 ArrayList freshNodeList = new ArrayList(freshFiles.length);
                 boolean isFileHidingEnabled=fileChooser.isFileHidingEnabled();
-System.out.println("FileSystemTreeModel fileHidingEnabled:"+isFileHidingEnabled);
                 QuaquaFileSystemView fsv = getFileSystemView();
                 for (int i = 0; i < freshFiles.length; i++) {
                     File freshFile = freshFiles[i];
