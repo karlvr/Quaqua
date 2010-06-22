@@ -480,6 +480,15 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     }
 
     @Override
+    protected void installDefaults(JFileChooser fc) {
+        super.installDefaults(fc);
+
+        Object value = UIManager.get("FileChooser.fileHidingEnabled");
+        boolean booleanValue = (value instanceof Boolean) ? ((Boolean)value).booleanValue() : true;
+        fc.setFileHidingEnabled(booleanValue);
+    }
+
+    @Override
     protected void installStrings(JFileChooser fc) {
         super.installStrings(fc);
 

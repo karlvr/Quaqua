@@ -725,8 +725,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
     @Override
     protected void installDefaults(JFileChooser fc) {
         super.installDefaults(fc);
-        fc.setFileHidingEnabled(UIManager.getBoolean("FileChooser.fileHidingEnabled"));
-        System.out.println("QuaquaLeopardFileChooserUI " + subtreeModel.getPathToRoot());
+
+        Object value = UIManager.get("FileChooser.fileHidingEnabled");
+        boolean booleanValue = (value instanceof Boolean) ? ((Boolean)value).booleanValue() : true;
+        fc.setFileHidingEnabled(booleanValue);
     }
 
     @Override

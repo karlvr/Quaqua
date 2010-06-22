@@ -79,7 +79,9 @@ public class FileChooserTest extends javax.swing.JPanel {
     /** Creates new form. */
     public FileChooserTest() {
         initComponents();
-hiddenFilesItem.setSelected(UIManager.get("FileChooser.fileHidingEnabled")!=null&&!UIManager.getBoolean("FileChooser.fileHidingEnabled"));
+        hiddenFilesItem.setSelected(//
+                UIManager.get("FileChooser.fileHidingEnabled") != null //
+                && !UIManager.getBoolean("FileChooser.fileHidingEnabled"));
         setSelectedFileField.setText(QuaquaManager.getProperty("user.home"));
     }
 
