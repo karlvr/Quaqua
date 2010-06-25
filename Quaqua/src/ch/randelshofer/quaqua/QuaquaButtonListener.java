@@ -98,78 +98,49 @@ public class QuaquaButtonListener extends BasicButtonListener {
             // Support for multiClickThreshhold
             if (shouldDiscardRelease) {
                 shouldDiscardRelease = false;
-
-
                 return;
-
-
             }
             AbstractButton b = (AbstractButton) e.getSource();
             ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);
-
-
         }
     }
-
-    ;
 
     @Override
     public void mouseEntered(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
 
-
         if (b.isRolloverEnabled()) {
             model.setRollover(true);
-
-
         }
         if (model.isPressed()) {
             model.setArmed(true);
         }
-
-
     }
-
-    ;
 
     @Override
     public void mouseExited(MouseEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
         ButtonModel model = b.getModel();
 
-
         if (b.isRolloverEnabled()) {
             model.setRollover(false);
-
-
         }
         model.setArmed(false);
-
-
     }
-
-    ;
 
     @Override
     public void focusGained(FocusEvent e) {
         AbstractButton b = (AbstractButton) e.getSource();
 
-
         if (b instanceof JButton && ((JButton) b).isDefaultCapable()) {
             JRootPane root = b.getRootPane();
-
-
-
 
             if (root != null) {
                 QuaquaButtonUI ui = (QuaquaButtonUI) QuaquaUtilities.getUIOfType(
                         ((AbstractButton) b).getUI(), QuaquaButtonUI.class);
-
-
-
 
                 if (ui != null
                         && UIManager.get(ui.getPropertyPrefix() + "defaultButtonFollowsFocus") != Boolean.FALSE) {
@@ -178,13 +149,8 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     root.putClientProperty("temporaryDefaultButton", null);
                 }
             }
-
         }
-
-
         b.repaint();
-
-
     }
 
     @Override
@@ -192,36 +158,21 @@ public class QuaquaButtonListener extends BasicButtonListener {
         AbstractButton b = (AbstractButton) e.getSource();
         JRootPane root = b.getRootPane();
 
-
         if (root != null) {
             JButton initialDefault = (JButton) root.getClientProperty("initialDefaultButton");
-
-
-
 
             if (b != initialDefault) {
                 QuaquaButtonUI ui = (QuaquaButtonUI) QuaquaUtilities.getUIOfType(
                         ((AbstractButton) b).getUI(), QuaquaButtonUI.class);
-
-
-
-
-
-
-
 
                 if (ui != null
                         && UIManager.get(ui.getPropertyPrefix() + "defaultButtonFollowsFocus") != Boolean.FALSE) {
                     root.setDefaultButton(initialDefault);
                 }
             }
-
-
         }
 
         b.getModel().setArmed(false);
-
         b.repaint();
-
     }
 }

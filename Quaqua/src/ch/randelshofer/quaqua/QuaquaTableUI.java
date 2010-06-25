@@ -466,25 +466,28 @@ public class QuaquaTableUI extends BasicTableUI
         if (table.isEditing() && table.getEditingRow() == row
                 && table.getEditingColumn() == column) {
             Component component = table.getEditorComponent();
-
             // Unless a font has been explicitly set on the editor, we
             // set the font used by the table.
             if (component.getFont() instanceof UIResource) {
-            component.setFont(table.getFont());
+                component.setFont(table.getFont());
             }
+            /*
+            if ( (component instanceof JComponent)) {
+            ((JComponent) component).setOpaque(true);
+            }*/
+
             component.setBounds(cellRect);
             component.validate();
         } else {
             TableCellRenderer renderer = table.getCellRenderer(row, column);
             Component component = table.prepareRenderer(renderer, row, column);
 
-            if (isStriped) {
-                g.setColor(getAlternateColor(row % 2));
-                g.fillRect(cellRect.x - spacing.width, cellRect.y, cellRect.width + spacing.width * 2, cellRect.height + spacing.height);
-            }
-            if (/*!table.isEditing() &&*/table.isCellSelected(row, column)) {
+            if (table.isCellSelected(row, column)) {
                 g.setColor(background);
                 g.fillRect(cellRect.x - spacing.width, cellRect.y, cellRect.width + spacing.width * 2, cellRect.height);
+            } else if (isStriped) {
+                g.setColor(getAlternateColor(row % 2));
+                g.fillRect(cellRect.x - spacing.width, cellRect.y, cellRect.width + spacing.width * 2, cellRect.height + spacing.height);
             }
 
             if ((component instanceof UIResource) && (component instanceof JComponent)) {
@@ -757,6 +760,17 @@ public class QuaquaTableUI extends BasicTableUI
         }
 
         public void mousePressed(MouseEvent e) {
+            if (QuaquaUtilities.shouldIgnore(e, table)) {
+                return;
+            }
+            if (table.isEditing() && !table.getCellEditor().stopCellEditing()) {
+                Component editorComponent = table.getEditorComponent();
+                if (editorComponent != null && !editorComponent.hasFocus()) {
+                    QuaquaUtilities.compositeRequestFocus(editorComponent);
+                }
+                return;
+            }
+
             mouseDragAction = MOUSE_DRAG_DOES_NOTHING;
             mouseReleaseDeselects = false;
             toggledRow = toggledColumn = -1;
@@ -766,14 +780,11 @@ public class QuaquaTableUI extends BasicTableUI
             int column = table.columnAtPoint(p);
 
             if (table.isEnabled()) {
-                // Note: We must check for table.editCellAt, regardless whether
-                // the table is currently editing or not.
-                //---if (! table.isEditing()) {
                 if (table.editCellAt(row, column, e)) {
                     setDispatchComponent(e);
                     repostEvent(e);
+                    return;
                 }
-                //---}
 
                 // Note: Some applications depend on selection changes only occuring
                 // on focused components. Maybe we must not do any changes to the
@@ -814,26 +825,20 @@ public class QuaquaTableUI extends BasicTableUI
 
                 table.getSelectionModel().setValueIsAdjusting(mouseDragAction != MOUSE_DRAG_DOES_NOTHING);
             }
-            /*
-            if (e.isConsumed()) {
-            selectedOnPress = false;
-            return;
-            }
-            selectedOnPress = true;
-            mouseReleaseDeselects = true;
-            adjustFocusAndSelection(e);
-             */
         }
 
         public void mouseReleased(MouseEvent e) {
+            if (QuaquaUtilities.shouldIgnore(e, table)) {
+                return;
+            }
+            int row = table.rowAtPoint(e.getPoint());
+            int column = table.columnAtPoint(e.getPoint());
             repostEvent(e);
 
             if (table.isEnabled()) {
 
                 mouseDragAction = MOUSE_DRAG_DOES_NOTHING;
                 if (mouseReleaseDeselects) {
-                    int row = table.rowAtPoint(e.getPoint());
-                    int column = table.columnAtPoint(e.getPoint());
                     table.changeSelection(row, column, false, false);
                 }
                 table.getSelectionModel().setValueIsAdjusting(false);

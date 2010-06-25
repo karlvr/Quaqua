@@ -12,6 +12,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
@@ -49,6 +50,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     //        Install PLAF
     // ********************************
 
+    @Override
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         if (!defaults_initialized) {
@@ -64,29 +66,33 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     // ********************************
     //        Uninstall PLAF
     // ********************************
+    @Override
     protected void uninstallDefaults(AbstractButton b) {
         super.uninstallDefaults(b);
         defaults_initialized = false;
     }
 
+    @Override
     protected void installListeners(AbstractButton b) {
         super.installListeners(b);
         b.addPropertyChangeListener(propertyChangeListener);
     }
 
+    @Override
     protected void uninstallListeners(AbstractButton b) {
         super.uninstallListeners(b);
         b.removePropertyChangeListener(propertyChangeListener);
     }
 
+    @Override
     protected BasicButtonListener createButtonListener(AbstractButton b) {
         return new QuaquaButtonListener(b);
     }
 
     private boolean isSmall(JComponent c) {
-        return QuaquaUtilities.isSmallSizeVariant(c) ||
-                (c instanceof TableCellRenderer) ||
-                (c instanceof TableCellEditor);
+        return QuaquaUtilities.isSmallSizeVariant(c)
+                || (c instanceof TableCellRenderer)
+                || (c instanceof TableCellEditor);
     }
 
     public Icon getDefaultIcon(JComponent c) {
@@ -104,6 +110,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     private static Rectangle textR = new Rectangle();
     private static Insets viewInsets = new Insets(0, 0, 0, 0);
 
+    @Override
     public void paint(Graphics g, JComponent c) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         AbstractButton b = (AbstractButton) c;
@@ -188,8 +195,8 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
                 v.paint(g, textR);
             } else {
                 paintText(g, b, textR, text);
-                if (b.hasFocus() && b.isFocusPainted() &&
-                        textR.width > 0 && textR.height > 0) {
+                if (b.hasFocus() && b.isFocusPainted()
+                        && textR.width > 0 && textR.height > 0) {
                     paintFocus(g, textR, size);
                 }
             }
@@ -240,8 +247,9 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
             AbstractButton src = (AbstractButton) evt.getSource();
             if (name.equals("Frame.active") && src.isSelected()) {
                 src.repaint();
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(src);
+            } else if (name.equals("JComponent.sizeVariant")) {
+                QuaquaUtilities.applySizeVariant(src);
+
             }
         }
     }
