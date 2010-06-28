@@ -20,8 +20,6 @@ import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
@@ -60,6 +58,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         return new QuaquaToolBarUI();
     }
 
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 
@@ -70,6 +69,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         floatingToolBar = null;
     }
 
+    @Override
     public void uninstallUI(JComponent c) {
         super.uninstallUI(c);
         dragWindow0 = null;
@@ -77,6 +77,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         floatingToolBar = null;
     }
 
+    @Override
     protected void installDefaults() {
         if (rolloverBorder == null) {
             rolloverBorder = createRolloverBorder();
@@ -88,6 +89,10 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             nonRolloverToggleBorder = createNonRolloverToggleBorder();
         }
         super.installDefaults();
+        
+        // The toolbar is not opaque, because its background color may have
+        // an alpha channel.
+        toolBar.setOpaque(false);
     }
 
     private Handler getHandler() {
@@ -97,27 +102,33 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         return handler;
     }
 
+    @Override
     protected ContainerListener createToolBarContListener() {
         return getHandler();
     }
 
+    @Override
     protected FocusListener createToolBarFocusListener() {
         return getHandler();
     }
 
+    @Override
     protected PropertyChangeListener createPropertyListener() {
         return getHandler();
     }
 
+    @Override
     protected MouseInputListener createDockingListener() {
         getHandler().tb = toolBar;
         return getHandler();
     }
 
+    @Override
     protected WindowListener createFrameListener() {
         return new FrameListener();
     }
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         if (c.isOpaque()) {
             Graphics2D g = (Graphics2D) gr;
@@ -138,6 +149,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * @throws NullPointerException is <code>g</code> is null
      * @since 1.5
      */
+    @Override
     protected void paintDragWindow(Graphics g) {
         int w = dragWindow0.getWidth();
         int h = dragWindow0.getHeight();
@@ -158,6 +170,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * dragged out from its container
      * @return a <code>RootPaneContainer</code> object, containing the toolbar.
      */
+    @Override
     protected RootPaneContainer createFloatingWindow(JToolBar toolbar) {
         class ToolBarDialog extends JDialog {
 
@@ -171,11 +184,13 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
 
             // Override createRootPane() to automatically resize
             // the frame when contents change
+            @Override
             protected JRootPane createRootPane() {
                 JRootPane rootPane = new JRootPane() {
 
                     private boolean packing = false;
 
+                    @Override
                     public void validate() {
                         putClientProperty(
                                 "Quaqua.RootPane.isVertical",
@@ -238,6 +253,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      *
      * @since 1.4
      */
+    @Override
     protected Border createRolloverBorder() {
         return new BackgroundBorderUIResource(new QuaquaButtonBorder("toolBarRollover"));
     }
@@ -251,6 +267,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      *
      * @since 1.4
      */
+    @Override
     protected Border createNonRolloverBorder() {
         return new BackgroundBorderUIResource(new QuaquaButtonBorder("toolBar"));
     }
@@ -296,6 +313,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * @see #createRolloverBorder
      * @since 1.4
      */
+    @Override
     protected void setBorderToRollover(Component c) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
@@ -323,6 +341,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * @see #createNonRolloverBorder
      * @since 1.4
      */
+    @Override
     protected void setBorderToNonRollover(Component c) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
@@ -354,6 +373,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * @see #createNonRolloverBorder
      * @since 1.4
      */
+    @Override
     protected void setBorderToNormal(Component c) {
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
@@ -368,15 +388,18 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         }
     }
 
+    @Override
     public void setFloatingLocation(int x, int y) {
         floatingX = x;
         floatingY = y;
     }
 
+    @Override
     public boolean isFloating() {
         return floating;
     }
 
+    @Override
     public void setFloating(boolean b, Point p) {
         if (toolBar.isFloatable() == true) {
             if (dragWindow0 != null) {
@@ -472,7 +495,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
                 BorderLayout blm = (BorderLayout) lm;
                 Component c = null;
                 try {
-                    c = (Component) Methods.invoke(blm,"getLayoutComponent", new Class[] {Container.class, Object.class}, new Object[]{cont,constraint});
+                    c = (Component) Methods.invoke(blm, "getLayoutComponent", new Class[]{Container.class, Object.class}, new Object[]{cont, constraint});
                 } catch (Throwable ex) {
                     //ex.printStackTrace();
                 }
@@ -482,6 +505,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         return false;
     }
 
+    @Override
     protected void dragTo(Point position, Point origin) {
         if (toolBar.isFloatable() == true) {
             try {
@@ -541,6 +565,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         }
     }
 
+    @Override
     protected void floatAt(Point position, Point origin) {
         if (toolBar.isFloatable() == true) {
             try {
@@ -585,6 +610,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         return orientation;
     }
 
+    @Override
     public void setOrientation(int orientation) {
         toolBar.setOrientation(orientation);
 
@@ -599,7 +625,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         if (lm instanceof BorderLayout) {
             BorderLayout bl = (BorderLayout) lm;
             try {
-               constraint = (String) Methods.invoke(bl, "getConstraints", new Class[]{Component.class}, new Object[]{toolBar});
+                constraint = (String) Methods.invoke(bl, "getConstraints", new Class[]{Component.class}, new Object[]{toolBar});
             } catch (Throwable ex) {
                 // Suppress silently
                 //ex.printStackTrace();
@@ -770,6 +796,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
 
     protected class FrameListener extends WindowAdapter {
 
+        @Override
         public void windowClosing(WindowEvent w) {
             if (toolBar.isFloatable() == true) {
                 if (dragWindow0 != null) {
@@ -861,12 +888,14 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             return this.borderColor;
         }
 
+        @Override
         public void paint(Graphics g) {
             paintDragWindow(g);
             // Paint the children
             super.paint(g);
         }
 
+        @Override
         public Insets getInsets() {
             return new Insets(1, 1, 1, 1);
         }

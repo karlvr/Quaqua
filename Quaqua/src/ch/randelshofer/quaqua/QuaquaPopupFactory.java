@@ -79,8 +79,8 @@ public class QuaquaPopupFactory extends PopupFactory {
                     "Popup.getPopup must be passed non-null contents");
         }
 
-        int popupType = getPopupType(owner, contents, x, y);
-        Popup popup = getPopup(owner, contents, x, y, popupType);
+        int pType = getPopupType(owner, contents, x, y);
+        Popup popup = getPopup(owner, contents, x, y, pType);
 
         if (popup == null) {
             // Didn't fit, force to heavy.
@@ -155,6 +155,8 @@ public class QuaquaPopupFactory extends PopupFactory {
         int y;
         // the component which represents the popup
         Component component;
+        // the component which represents the contents
+        Component contents;
 
         /**
          * Returns the <code>Component</code> returned from
@@ -173,15 +175,15 @@ public class QuaquaPopupFactory extends PopupFactory {
 
         @Override
         public void hide() {
-            Component component = getComponent();
+            Component c = getComponent();
 
-            if (component != null) {
-                Container parent = component.getParent();
+            if (c != null) {
+                Container parent = c.getParent();
 
                 if (parent != null) {
-                    Rectangle bounds = component.getBounds();
+                    Rectangle bounds = c.getBounds();
 
-                    parent.remove(component);
+                    parent.remove(c);
                     parent.repaint(bounds.x, bounds.y, bounds.width,
                             bounds.height);
                 }
@@ -190,10 +192,10 @@ public class QuaquaPopupFactory extends PopupFactory {
         }
 
         public void pack() {
-            Component component = getComponent();
+            Component c = getComponent();
 
-            if (component != null) {
-                component.setSize(component.getPreferredSize());
+            if (c != null) {
+                c.setSize(c.getPreferredSize());
             }
         }
 
@@ -210,18 +212,19 @@ public class QuaquaPopupFactory extends PopupFactory {
             x = ownerX;
             y = ownerY;
             this.owner = owner;
+            this.contents = contents;
         }
 
         boolean overlappedByOwnedWindow() {
-            Component component = getComponent();
-            if (owner != null && component != null) {
+            Component c = getComponent();
+            if (owner != null && c != null) {
                 Window w = SwingUtilities.getWindowAncestor(owner);
                 if (w == null) {
                     return false;
                 }
                 Window[] ownedWindows = w.getOwnedWindows();
                 if (ownedWindows != null) {
-                    Rectangle bnd = component.getBounds();
+                    Rectangle bnd = c.getBounds();
                     for (int i = 0; i < ownedWindows.length; i++) {
                         Window owned = ownedWindows[i];
                         if (owned.isVisible()
@@ -239,12 +242,12 @@ public class QuaquaPopupFactory extends PopupFactory {
          * Returns true if the Popup can fit on the screen.
          */
         boolean fitsOnScreen() {
-            Component component = getComponent();
+            Component c = getComponent();
 
-            if (owner != null && component != null) {
+            if (owner != null && c != null) {
                 Container parent;
-                int width = component.getWidth();
-                int height = component.getHeight();
+                int width = c.getWidth();
+                int height = c.getHeight();
                 for (parent = owner.getParent(); parent != null;
                         parent = parent.getParent()) {
                     if (parent instanceof JFrame
@@ -325,9 +328,9 @@ public class QuaquaPopupFactory extends PopupFactory {
         public void hide() {
             super.hide();
 
-            Container component = (Container) getComponent();
+            Container c = (Container) getComponent();
 
-            component.removeAll();
+            c.removeAll();
         }
 
         @Override
@@ -362,23 +365,23 @@ public class QuaquaPopupFactory extends PopupFactory {
 
             Point p = /*SwingUtilities.*/ convertScreenLocationToParent(parent, x,
                     y);
-            Component component = getComponent();
+            Component c = getComponent();
 
-            component.setLocation(p.x, p.y);
+            c.setLocation(p.x, p.y);
             if (parent instanceof JLayeredPane) {
-                ((JLayeredPane) parent).add(component,
+                ((JLayeredPane) parent).add(c,
                         JLayeredPane.POPUP_LAYER, 0);
             } else {
-                parent.add(component);
+                parent.add(c);
             }
         }
 
         @Override
         Component createComponent(Component owner) {
-            JComponent component = new JPanel(new BorderLayout(), true);
-            component.setBorder(new LineBorder(new Color(0xb2b2b2)));
-            component.setOpaque(true);
-            return component;
+            JComponent c = new JPanel(new BorderLayout(), true);
+            c.setBorder(new LineBorder(new Color(0xb2b2b2)));
+            c.setOpaque(true);
+            return c;
         }
 
         //
@@ -392,10 +395,10 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
-            JComponent component = (JComponent) getComponent();
+            JComponent c = (JComponent) getComponent();
 
-            component.setLocation(ownerX, ownerY);
-            component.add(contents, BorderLayout.CENTER);
+            c.setLocation(ownerX, ownerY);
+            c.add(contents, BorderLayout.CENTER);
             contents.invalidate();
             pack();
         }
@@ -444,7 +447,7 @@ public class QuaquaPopupFactory extends PopupFactory {
 
         @Override
         public void show() {
-            Component component = getComponent();
+            Component c = getComponent();
             Container parent = null;
 
             if (owner != null) {
@@ -467,24 +470,24 @@ public class QuaquaPopupFactory extends PopupFactory {
                 parent = ((RootPaneContainer) parent).getLayeredPane();
                 Point p = convertScreenLocationToParent(parent,
                         x, y);
-                component.setVisible(false);
-                component.setLocation(p.x, p.y);
-                ((JLayeredPane) parent).add(component, JLayeredPane.POPUP_LAYER,
+                c.setVisible(false);
+                c.setLocation(p.x, p.y);
+                ((JLayeredPane) parent).add(c, JLayeredPane.POPUP_LAYER,
                         0);
             } else {
                 Point p = convertScreenLocationToParent(parent,
                         x, y);
 
-                component.setLocation(p.x, p.y);
-                component.setVisible(false);
-                parent.add(component);
+                c.setLocation(p.x, p.y);
+                c.setVisible(false);
+                parent.add(c);
             }
-            component.setVisible(true);
+            c.setVisible(true);
         }
 
         @Override
         Component createComponent(Component owner) {
-            Panel component = new Panel(new BorderLayout());
+            Panel c = new Panel(new BorderLayout());
 
             rootPane = new JRootPane();
             // NOTE: this uses setOpaque vs LookAndFeel.installProperty as
@@ -493,8 +496,8 @@ public class QuaquaPopupFactory extends PopupFactory {
             // RootPane can also be opaque.
             // MacOSX back this change out because it causes problems
             // rootPane.setOpaque(true);
-            component.add(rootPane, BorderLayout.CENTER);
-            return component;
+            c.add(rootPane, BorderLayout.CENTER);
+            return c;
         }
 
         /**
@@ -505,12 +508,12 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
-            Component component = getComponent();
+            Component c = getComponent();
 
-            component.setLocation(ownerX, ownerY);
+            c.setLocation(ownerX, ownerY);
             rootPane.getContentPane().add(contents, BorderLayout.CENTER);
             contents.invalidate();
-            component.validate();
+            c.validate();
             pack();
         }
     }
@@ -565,9 +568,14 @@ public class QuaquaPopupFactory extends PopupFactory {
         @Override
         Component createComponent(Component owner) {
             final JWindow wnd;
-            Component component = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
+            Component c = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
             wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
             wnd.getRootPane().putClientProperty("Window.alpha", new Float(0.948));
+            Float windowAlpha = null;
+            if (contents instanceof JComponent) {
+                windowAlpha = (Float) ((JComponent)contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
+            }
+            wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha==null?new Float(0.948):windowAlpha);
             wnd.setBackground(new Color(0xffffff, true));
             wnd.addWindowListener(new WindowAdapter() {
 
@@ -576,7 +584,7 @@ public class QuaquaPopupFactory extends PopupFactory {
                     wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", new Long(System.currentTimeMillis()));
                 }
             });
-            return component;
+            return c;
         }
 
         @Override
@@ -598,10 +606,10 @@ public class QuaquaPopupFactory extends PopupFactory {
          */
         @Override
         public void show() {
-            Component component = getComponent();
+            Component c = getComponent();
 
-            if (component != null) {
-                component.show();
+            if (c != null) {
+                c.show();
             }
         }
 
@@ -615,11 +623,11 @@ public class QuaquaPopupFactory extends PopupFactory {
          */
         @Override
         public void hide() {
-            Component component = getComponent();
+            Component c = getComponent();
 
-            if (component instanceof JWindow) {
-                component.hide();
-                ((JWindow) component).getContentPane().removeAll();
+            if (c instanceof JWindow) {
+                c.hide();
+                ((JWindow) c).getContentPane().removeAll();
 
             }
             dispose();
@@ -629,12 +637,12 @@ public class QuaquaPopupFactory extends PopupFactory {
          * Frees any resources the <code>Popup</code> may be holding onto.
          */
         void dispose() {
-            Component component = getComponent();
-            Window window = SwingUtilities.getWindowAncestor(component);
+            Component c = getComponent();
+            Window window = SwingUtilities.getWindowAncestor(c);
 
-            if (component instanceof JWindow) {
-                ((Window) component).dispose();
-                component = null;
+            if (c instanceof JWindow) {
+                ((Window) c).dispose();
+                c = null;
             }
         }
     }

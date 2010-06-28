@@ -22,7 +22,6 @@ import javax.swing.*;
 import javax.swing.colorchooser.*;
 import javax.swing.event.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
 import java.security.*;
 import java.util.*;
 /**
@@ -45,6 +44,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
         return new QuaquaColorChooserUI();
     }
     
+    @Override
     public void installUI( JComponent c ) {
         chooser = (JColorChooser)c;
                 AbstractColorChooserPanel[] oldPanels = chooser.getChooserPanels();
@@ -70,28 +70,28 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
     }
     
     protected AbstractColorChooserPanel[] createDefaultChoosers() {
-        String[] defaultChoosers = (String[]) UIManager.get("ColorChooser.defaultChoosers");
-        ArrayList panels = new ArrayList(defaultChoosers.length);
-        for (int i=0; i < defaultChoosers.length; i++) {
+        String[] defaultChooserNames = (String[]) UIManager.get("ColorChooser.defaultChoosers");
+        ArrayList panels = new ArrayList(defaultChooserNames.length);
+        for (int i=0; i < defaultChooserNames.length; i++) {
             try {
                 
                 //panels.add(Class.forName(defaultChoosers[i]).newInstance());
-                panels.add(Methods.newInstance(defaultChoosers[i]));
+                panels.add(Methods.newInstance(defaultChooserNames[i]));
             } catch (AccessControlException e) {
                 // suppress
-                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChoosers[i]);
+                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChooserNames[i]);
                 e.printStackTrace();
             } catch (Exception e) {
                 // throw new InternalError("Unable to instantiate "+defaultChoosers[i]);
                 // suppress
-                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChoosers[i]);
+                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChooserNames[i]);
                 e.printStackTrace();
             } catch (UnsupportedClassVersionError e) {
                 // suppress
-                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChoosers[i]);
+                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChooserNames[i]);
                 //e.printStackTrace();
             } catch (Throwable t) {
-                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChoosers[i]);
+                System.err.println("Quaqua13ColorChooserUI warning: unable to instantiate "+defaultChooserNames[i]);
             }
         }
         //AbstractColorChooserPanel[] panels = new AbstractColorChooserPanel[defaultChoosers.length];
@@ -99,6 +99,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
     }
     
     
+    @Override
     public void uninstallUI( JComponent c ) {
         chooser.remove(mainPanel);
         
@@ -141,6 +142,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
         chooser.getSelectionModel().addChangeListener(previewListener);
 
         previewMouseListener = new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent e) {
                 if (chooser.getDragEnabled()) {
                     TransferHandler th = chooser.getTransferHandler();
