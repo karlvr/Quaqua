@@ -1,5 +1,5 @@
 /*
- * @(#)RGBChooser.java  1.4  2007-02-24
+ * @(#)RGBChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,28 +14,20 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.border.*;
 import javax.swing.colorchooser.*;
 import javax.swing.plaf.*;
 /**
  * RGBChooser.
  *
  * @author  Werner Randelshofer
- * @version 1.4 2007-02-24 Select text in text fields when they gain focus.
- * Fields where too short for J2SE 1.3
- * <br>1.3 2006-04-23 Retrieve labels directly from UIManager. 
- * <br>1.2 2005-11-22 Moved handler for text fields into separate class.
- * <br>1.1.1 2005-11-07 Get "Labels" resource bundle from UIManager.
- * <br>1.1 2005-09-05 Get font, spacing and icon from UIManager.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class RGBChooser extends AbstractColorChooserPanel implements UIResource {
     private ColorSliderModel ccModel = new RGBColorSliderModel();
+    private int updateRecursion;
     
     /** Creates new form. */
     public RGBChooser() {
@@ -89,7 +81,10 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
 
         ccModel.addChangeListener(new ChangeListener() {
             public void stateChanged(ChangeEvent evt) {
+                if (updateRecursion++==0) {
                 setColorToModel(ccModel.getColor());
+                }
+                updateRecursion--;
             }
         });
         redField.setMinimumSize(redField.getPreferredSize());
@@ -116,12 +111,12 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     }
     
     public void updateChooser() {
-        if (getColorFromModel().equals(new Color(0,166,0))) {
-            new Throwable().printStackTrace();
-        }
+        updateRecursion++;
         ccModel.setColor(getColorFromModel());
+        updateRecursion--;
     }
     public void setColorToModel(Color color) {
+new Throwable().printStackTrace();
         getColorSelectionModel().setSelectedColor(color);
     }
     

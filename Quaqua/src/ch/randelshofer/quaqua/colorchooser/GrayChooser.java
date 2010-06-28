@@ -17,6 +17,7 @@ package ch.randelshofer.quaqua.colorchooser;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
+import java.awt.color.ColorSpace;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.event.*;
@@ -38,7 +39,7 @@ import javax.swing.plaf.*;
  * <br>1.0  29 March 2005  Created.
  */
 public class GrayChooser extends AbstractColorChooserPanel implements UIResource {
-    private ColorSliderModel ccModel = new GrayColorSliderModel();
+    private GrayColorSliderModel ccModel = new GrayColorSliderModel();
     
     /** Creates new form. */
     public GrayChooser() {
@@ -102,6 +103,13 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         fiftyPercentButton.setPreferredSize(d);
         seventyFivePercentButton.setPreferredSize(d);
         hundredPercentButton.setPreferredSize(d);
+
+        ColorSpace cs = ccModel.getColorSpace();
+        zeroPercentButton.setBackground(new Color(cs, new float[]{0f}, 1f));
+        twentyFivePercentButton.setBackground(new Color(cs, new float[]{0.25f}, 1f));
+        fiftyPercentButton.setBackground(new Color(cs, new float[]{0.5f}, 1f));
+        seventyFivePercentButton.setBackground(new Color(cs, new float[]{0.75f}, 1f));
+        hundredPercentButton.setBackground(new Color(cs, new float[]{1f}, 1f));
     }
     
     protected void buildChooser() {
