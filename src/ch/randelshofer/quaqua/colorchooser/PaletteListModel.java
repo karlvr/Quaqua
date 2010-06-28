@@ -1,5 +1,5 @@
 /*
- * @(#)PaletteListModel.java  1.0  19 septembre 2005
+ * @(#)PaletteListModel.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,13 +15,11 @@ package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
 import javax.swing.*;
-import java.util.*;
-import java.io.*;
 /**
  * PaletteListModel manages a list of PaletteEntry.
  *
  * @author  Werner Randelshofer
- * @version 1.0 19 septembre 2005 Created.
+ * @version $Id$
  */
 public class PaletteListModel extends AbstractListModel {
     /**
@@ -77,6 +75,7 @@ public class PaletteListModel extends AbstractListModel {
      * Used for displaying the name of the palette in the combo box
      * of the ColorPalettesChooser.
      */
+    @Override
     public String toString() {
         return getName();
     }

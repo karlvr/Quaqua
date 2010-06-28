@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaColorPreviewPanel.java  1.3  2007-12-23
+ * @(#)QuaquaColorPreviewPanel.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,7 +13,6 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -22,11 +21,7 @@ import javax.swing.plaf.*;
  * QuaquaColorPreviewPanel.
  *
  * @author  Werner Randelshofer
- * @version 1.3 2007-12-23 Removed visual margin. 
- * <br>1.2 2005-12-18 Tweaked insets.
- * <br>1.1 2005-09-20 Added tooltip. This is not what the native 
- * NSColorPicker does, but it is very useful.
- * <br>1.0  30 March 2005  Created.
+ * @version $Id$
  */
 public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
     private final static Color previewBorderColor = new Color(0x949494);
@@ -38,6 +33,7 @@ public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
         setToolTipText("on"); // set dummy text, to switch tooltip on
     }
     
+    @Override
     public void paintComponent(Graphics g) {
         Insets insets = getInsets();
         int x = insets.left;
@@ -52,6 +48,7 @@ public class QuaquaColorPreviewPanel extends JPanel implements UIResource {
         g.fillRect(x+2,y+2,w-4,h-4);
     }
     
+    @Override
     public String getToolTipText(MouseEvent evt) {
         Color color = getForeground();
         return (color == null) ? null : color.getRed()+", "+ color.getGreen() + ", " + color.getBlue();
