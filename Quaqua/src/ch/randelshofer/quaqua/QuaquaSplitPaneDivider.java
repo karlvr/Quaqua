@@ -12,7 +12,6 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -49,6 +48,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
     /**
      * Sets the SplitPaneUI that is using the receiver.
      */
+    @Override
     public void setBasicSplitPaneUI(BasicSplitPaneUI newUI) {
         if (splitPane != null) {
             splitPane.removePropertyChangeListener(this);
@@ -84,6 +84,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
     /**
      * Paints the divider.
      */
+    @Override
     public void paint(Graphics g) {
         Dimension size = getSize();
         Insets insets = getInsets();
@@ -144,9 +145,11 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
      * Creates and return an instance of JButton that can be used to
      * collapse the left component in the split pane.
      */
+    @Override
     protected JButton createLeftOneTouchButton() {
         JButton b = new JButton() {
 
+            @Override
             public Icon getIcon() {
                 return UIManager.getIcon(
                         (splitPane.getOrientation() == VERTICAL) ? "SplitPane.leftArrow" : "SplitPane.upArrow");
@@ -166,9 +169,11 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
      * Creates and return an instance of JButton that can be used to
      * collapse the right component in the split pane.
      */
+    @Override
     protected JButton createRightOneTouchButton() {
         JButton b = new JButton() {
 
+            @Override
             public Icon getIcon() {
                 return UIManager.getIcon(
                         (splitPane.getOrientation() == VERTICAL) ? "SplitPane.rightArrow" : "SplitPane.downArrow");
@@ -303,6 +308,7 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
         /**
          * If dragger is not null it is messaged with completeDrag.
          */
+        @Override
         public void mouseReleased(MouseEvent e) {
             // The following code is needed, because the mouseReleased implementation
             // in the superclass changes the divider location even when the
@@ -320,8 +326,9 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
          * If it is already at the bottom most or leftmost position, it is moved
          * to its last location.
          */
+        @Override
         public void mouseClicked(MouseEvent evt) {
-            if (evt.getClickCount() == 2) {
+            if (evt.getClickCount() == 2 && splitPane.isOneTouchExpandable()) {
                 boolean isHorizontal = splitPane.getOrientation() == JSplitPane.HORIZONTAL_SPLIT;
 
                 Component leftC = splitPane.getLeftComponent();
