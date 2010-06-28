@@ -87,6 +87,7 @@ public class QuaquaToolBarBorder
         }
     };
 
+    @Override
     public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
         String style = getStyle(component);
         Color bright = UIManager.getColor("ToolBar.borderBright");
@@ -158,6 +159,7 @@ public class QuaquaToolBarBorder
         }
     }
 
+    @Override
     public Insets getBorderInsets(Component c) {
         return getBorderInsets(c, new Insets(0, 0, 0, 0));
     }
@@ -203,6 +205,7 @@ public class QuaquaToolBarBorder
         return -1;
     }
 
+    @Override
     public Insets getBorderInsets(Component component, Insets newInsets) {
         if ((component instanceof JToolBar) && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
             JToolBar c = (JToolBar) component;

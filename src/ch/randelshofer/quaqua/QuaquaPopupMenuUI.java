@@ -25,6 +25,7 @@ import javax.swing.plaf.basic.*;
  * @version $Id$
  */
 public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPainterClient {
+    public static String WINDOW_ALPHA_PROPERTY = "Quaqua.PopupMenu.windowAlpha";
 
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaPopupMenuUI();
@@ -61,8 +62,9 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
      * @return Popup that will show the JPopupMenu
      * @since 1.4
      *//*
+    @Override
     public Popup getPopup(JPopupMenu popup, int x, int y) {
-            PopupFactory popupFactory = QuaquaPopupFactory.getSharedInstance();
+            PopupFactory popupFactory = PopupFactory.getSharedInstance();
             return popupFactory.getPopup(popup.getInvoker(), popup, x, y);
     }*/
 }

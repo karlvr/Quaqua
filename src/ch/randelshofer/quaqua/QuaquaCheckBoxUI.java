@@ -12,7 +12,6 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
@@ -205,6 +204,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
         Debug.paint(g, c, this);
     }
 
+    @Override
     protected void paintFocus(Graphics g, Rectangle textRect, Dimension size) {
     }
 
@@ -217,6 +217,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
      * @param text String to render
      * @since 1.4
      */
+    @Override
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
@@ -257,6 +258,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     /**
      * The preferred size of the radio button
      */
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         if (c.getComponentCount() > 0) {
             return null;
@@ -348,6 +350,7 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
                 Methods.invokeGetter(c, "getIconTextGap", 4));
     }
 
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;

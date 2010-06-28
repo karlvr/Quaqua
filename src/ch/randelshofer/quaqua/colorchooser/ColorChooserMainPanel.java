@@ -38,8 +38,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
     public ColorChooserMainPanel() {
         initComponents();
         toolBar.putClientProperty("Quaqua.ToolBar.isDividerDrawn",Boolean.TRUE);
-        toolBar.putClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY,"footer");
-        toolBar.setOpaque(true);
+        toolBar.putClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY,"title");
         setOpaque(false);
     }
     
