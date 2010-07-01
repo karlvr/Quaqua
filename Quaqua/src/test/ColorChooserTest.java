@@ -14,8 +14,11 @@ package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
+import java.awt.event.AWTEventListener;
+import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ChangeEvent;
@@ -129,10 +132,64 @@ public class ColorChooserTest extends javax.swing.JPanel {
 
     private void popupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupActionPerformed
         if (popupMenu == null) {
-            popupMenu = new JPopupMenu();
-            popupMenu.putClientProperty("Quaqua.PopupMenu.windowAlpha", 1.0f);
+            // Create a JPopupMenu which can hold a component which in turn
+            // creates JPopupMenus.
+            popupMenu = new JPopupMenu() {
 
+                private AWTEventListener mouseGrabber = new AWTEventListener() {
+
+                    public void eventDispatched(AWTEvent ev) {
+                        if (!(ev instanceof MouseEvent) || !(ev.getSource() instanceof Component)) {
+                            // We are interested in MouseEvents only
+                            return;
+                        }
+                        MouseEvent me = (MouseEvent) ev;
+                        Component src = (Component) ev.getSource();
+
+                        // Dismiss popup only on mouse press on a component which has
+                        // the same window ancestor as our popup, but is not in the
+                        // popup layer itself.
+                        if (ev.getID() == MouseEvent.MOUSE_PRESSED) {
+                            if (SwingUtilities.getWindowAncestor(src)
+                                    == SwingUtilities.getWindowAncestor(popupButton)) {
+                                JLayeredPane srcLP = (JLayeredPane) SwingUtilities.getAncestorOfClass(JLayeredPane.class, src);
+                                Component srcLPChild = src;
+                                while (srcLPChild.getParent() != srcLP) {
+                                    srcLPChild = srcLPChild.getParent();
+                                }
+                                if (srcLPChild == null || srcLP.getLayer(srcLPChild) < JLayeredPane.POPUP_LAYER) {
+
+                                    popupMenu.setVisible(false);
+                                }
+                            }
+                        } else {
+                        }
+                    }
+                };
+
+                @Override
+                public void menuSelectionChanged(boolean isIncluded) {
+                    // Don't let the MenuSelectionManager hide this popup.
+                    return;
+                }
+
+                @Override
+                public void setVisible(boolean newValue) {
+                    // Attach/detach AWTEventListener on "visible" property change.
+                    if (isVisible() != newValue) {
+                        if (newValue) {
+                            Toolkit.getDefaultToolkit().addAWTEventListener(mouseGrabber, AWTEvent.MOUSE_EVENT_MASK);
+                        } else {
+                            Toolkit.getDefaultToolkit().removeAWTEventListener(mouseGrabber);
+                        }
+                        super.setVisible(newValue);
+                    }
+                }
+            };
+
+            popupMenu.putClientProperty("Quaqua.PopupMenu.windowAlpha", 1.0f);
             final JColorChooser c = new JColorChooser();
+            c.setPreviewPanel(new JPanel());
             popupMenu.add(c);
             c.getSelectionModel().addChangeListener(new ChangeListener() {
 
@@ -140,6 +197,8 @@ public class ColorChooserTest extends javax.swing.JPanel {
                     popupButton.setBackground(c.getColor());
                 }
             });
+
+
         }
         popupMenu.show(popupButton, 0, popupButton.getHeight());
 

@@ -116,7 +116,6 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         updateRecursion--;
     }
     public void setColorToModel(Color color) {
-new Throwable().printStackTrace();
         getColorSelectionModel().setSelectedColor(color);
     }
     
