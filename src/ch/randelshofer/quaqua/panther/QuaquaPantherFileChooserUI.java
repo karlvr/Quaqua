@@ -98,8 +98,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         KeyStroke.getKeyStroke(KeyEvent.VK_K, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
         KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
         KeyStroke.getKeyStroke(KeyEvent.VK_BACK_QUOTE, 0),
-        KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),
-    };
+        KeyStroke.getKeyStroke(KeyEvent.VK_SLASH, 0),};
     private AbstractAction keyListenerAction = new AbstractAction() {
 
         public void actionPerformed(ActionEvent ae) {
@@ -695,7 +694,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         super.installDefaults(fc);
 
         Object value = UIManager.get("FileChooser.fileHidingEnabled");
-        boolean booleanValue = (value instanceof Boolean) ? ((Boolean)value).booleanValue() : true;
+        boolean booleanValue = (value instanceof Boolean) ? ((Boolean) value).booleanValue() : true;
         fc.setFileHidingEnabled(booleanValue);
     }
 
@@ -1156,6 +1155,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         browser.setModel(getTreeModel());
         sidebarList.setModel(sidebarListModel = new SidebarListModel(fc, new TreePath(getFileSystemTreeModel().getRoot()), getFileSystemTreeModel()));
     }
+
     private void doPreviewComponentChanged(PropertyChangeEvent e) {
         JFileChooser fc = getFileChooser();
         final Component pv = (Component) fc.getClientProperty("Quaqua.FileChooser.preview");
@@ -1166,8 +1166,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                     return pv;
                 }
             });
-            browser.setPreviewColumnWidth(Math.max(browser.getFixedCellWidth()
-                    ,pv.getPreferredSize().width));
+            browser.setPreviewColumnWidth(Math.max(browser.getFixedCellWidth(), pv.getPreferredSize().width));
         } else {
             boolean isSave = isFileNameFieldVisible();
             browser.setPreviewRenderer((isSave) ? null : new FilePreview(fc));
@@ -1285,8 +1284,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                     doAccessoryChanged(e);
                 } else if (s.equals(JFileChooser.CHOOSABLE_FILE_FILTER_CHANGED_PROPERTY)) {
                     doChoosableFilterChanged(e);
-                } else if (s.equals(JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY) ||
-                        s.equals(JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY)) {
+                } else if (s.equals(JFileChooser.APPROVE_BUTTON_TEXT_CHANGED_PROPERTY)
+                        || s.equals(JFileChooser.APPROVE_BUTTON_TOOL_TIP_TEXT_CHANGED_PROPERTY)) {
                     doApproveButtonTextChanged(e);
                 } else if (s.equals(JFileChooser.DIALOG_TYPE_CHANGED_PROPERTY)) {
                     doDialogTypeChanged(e);
@@ -1359,9 +1358,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
     @Override
     public void setFileName(String filename) {
-        if (fileNameTextField != null &&
-                !fileNameTextField.hasFocus() &&
-                (filename == null || !fileNameTextField.getText().equals(filename))) {
+        if (fileNameTextField != null
+                && !fileNameTextField.hasFocus()
+                && (filename == null || !fileNameTextField.getText().equals(filename))) {
             fileNameTextField.setText(filename);
         }
     }
@@ -1833,13 +1832,28 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         if (fc.isMultiSelectionEnabled()) {
             TreePath[] selectedPaths = browser.getSelectionPaths();
             if (filename != null) {
-                selectedFiles = new File[]{
-                            new File(((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(), filename)
-                        };
+                File f = new File(
+                        ((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(),
+                        filename);
+                if (fc.accept(f)) {
+                    selectedFiles = new File[]{f};
+                } else {
+                    // Ignore double click on non-acceptable file.
+                    return;
+                }
             } else {
-                selectedFiles = new File[selectedPaths.length];
+                ArrayList<File> a = new ArrayList<File>();
                 for (int i = 0; i < selectedPaths.length; i++) {
-                    selectedFiles[i] = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
+                    File f = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
+                    if (fc.accept(f)) {
+                        a.add(f);
+                    }
+                }
+                if (a.size() > 0) {
+                    selectedFiles = a.toArray(new File[a.size()]);
+                } else {
+                    // Ignore double click on non-acceptable file.
+                    return;
                 }
             }
 
@@ -1861,6 +1875,10 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 selectedFile = new File((!node.isLeaf()) ? selectedFile : selectedFile.getParentFile(), filename);
             } else if (fc.getFileSelectionMode() == JFileChooser.FILES_ONLY && !node.isLeaf()) {
                 // Abort we cannot approve a directory
+                return;
+            }
+            if (!fc.accept(selectedFile)) {
+                // Ignore double click on non-acceptable file.
                 return;
             }
         }
