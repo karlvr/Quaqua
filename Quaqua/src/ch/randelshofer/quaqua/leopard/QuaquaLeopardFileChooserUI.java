@@ -727,7 +727,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         super.installDefaults(fc);
 
         Object value = UIManager.get("FileChooser.fileHidingEnabled");
-        boolean booleanValue = (value instanceof Boolean) ? ((Boolean)value).booleanValue() : true;
+        boolean booleanValue = (value instanceof Boolean) ? ((Boolean) value).booleanValue() : true;
         fc.setFileHidingEnabled(booleanValue);
     }
 
@@ -1866,13 +1866,28 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         if (fc.isMultiSelectionEnabled()) {
             TreePath[] selectedPaths = browser.getSelectionPaths();
             if (filename != null) {
-                selectedFiles = new File[]{
-                            new File(((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(), filename)
-                        };
+                File f = new File(
+                        ((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(),
+                        filename);
+                if (fc.accept(f)) {
+                    selectedFiles = new File[]{f};
+                } else {
+                    // Ignore double click on non-acceptable file.
+                    return;
+                }
             } else {
-                selectedFiles = new File[selectedPaths.length];
+                ArrayList<File> a = new ArrayList<File>();
                 for (int i = 0; i < selectedPaths.length; i++) {
-                    selectedFiles[i] = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
+                    File f = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
+                    if (fc.accept(f)) {
+                        a.add(f);
+                    }
+                }
+                if (a.size() > 0) {
+                    selectedFiles = a.toArray(new File[a.size()]);
+                } else {
+                    // Ignore double click on non-acceptable files.
+                    return;
                 }
             }
 
@@ -1894,6 +1909,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 selectedFile = new File((!node.isLeaf()) ? selectedFile : selectedFile.getParentFile(), filename);
             } else if (fc.getFileSelectionMode() == JFileChooser.FILES_ONLY && !node.isLeaf()) {
                 // Abort we cannot approve a directory
+                return;
+            }
+
+            if (!fc.accept(selectedFile)) {
+                // Ignore double click on non-acceptable file.
                 return;
             }
         }

@@ -146,7 +146,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         if (this.isSelected) {
             if (list.hasFocus() && QuaquaUtilities.isOnActiveWindow(list)) {
                 setBackground(UIManager.getColor("Browser.selectionBackground"));
-                setForeground(UIManager.getColor("Browser.selectionForeground"));
+                setForeground((isGrayed) ? labelDisabledForeground :UIManager.getColor("Browser.selectionForeground"));
             } else {
                 setBackground(UIManager.getColor("Browser.inactiveSelectionBackground"));
                 setForeground(UIManager.getColor("Browser.inactiveSelectionForeground"));
