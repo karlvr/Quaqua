@@ -14,6 +14,8 @@ package ch.randelshofer.quaqua;
 
 import java.applet.Applet;
 import java.awt.*;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
@@ -570,18 +572,33 @@ public class QuaquaPopupFactory extends PopupFactory {
             final JWindow wnd;
             Component c = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
             wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
-            wnd.getRootPane().putClientProperty("Window.alpha", new Float(0.948));
-            Float windowAlpha = null;
+            Float windowAlpha = new Float(0.948);
             if (contents instanceof JComponent) {
-                windowAlpha = (Float) ((JComponent)contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
+                Object value= ((JComponent)contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
+                if (value instanceof Float) {
+                    windowAlpha = (Float)value;
+                }
             }
-            wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha==null?new Float(0.948):windowAlpha);
+            wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha);
             wnd.setBackground(new Color(0xffffff, true));
-            wnd.addWindowListener(new WindowAdapter() {
+            wnd.addComponentListener(new ComponentListener() {
+                private void updateShadow() {
+                    Object oldValue=wnd.getRootPane().getClientProperty("apple.awt.windowShadow.revalidateNow");
+                    wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", (oldValue instanceof Integer)?((Integer)oldValue)+1:1);
+                }
 
-                @Override
-                public void windowOpened(WindowEvent e) {
-                    wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", new Long(System.currentTimeMillis()));
+                public void componentResized(ComponentEvent e) {
+                    updateShadow();
+                }
+
+                public void componentMoved(ComponentEvent e) {
+                }
+
+                public void componentShown(ComponentEvent e) {
+                    updateShadow();
+                }
+
+                public void componentHidden(ComponentEvent e) {
                 }
             });
             return c;

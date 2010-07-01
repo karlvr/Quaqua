@@ -11,7 +11,6 @@
  * accordance with the terms of the license agreement you entecyan into
  * with Werner Randelshofer.
  */
-
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
@@ -22,6 +21,7 @@ import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.colorchooser.*;
 import javax.swing.plaf.*;
+
 /**
  * A color chooser with CMYK color sliders.
  *
@@ -29,22 +29,22 @@ import javax.swing.plaf.*;
  * @version $Id$
  */
 public class CMYKChooser
-extends AbstractColorChooserPanel
-implements UIResource {
+        extends AbstractColorChooserPanel
+        implements UIResource {
+
     private ColorSliderModel ccModel;
     private int updateRecursion = 0;
-    
-    
+
     /** Creates new form. */
     public CMYKChooser() {
         initComponents();
-        
+
         if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
             magentaField.setColumns(4);
             yellowField.setColumns(4);
             cyanField.setColumns(4);
             blackField.setColumns(4);
-        } 
+        }
         //
         Font font = UIManager.getFont("ColorChooser.font");
         cyanLabel.setFont(font);
@@ -66,7 +66,7 @@ implements UIResource {
         //
         int textSliderGap = UIManager.getInt("ColorChooser.textSliderGap");
         if (textSliderGap != 0) {
-            Border fieldBorder = new EmptyBorder(0,textSliderGap,0,0);
+            Border fieldBorder = new EmptyBorder(0, textSliderGap, 0, 0);
             cyanFieldPanel.setBorder(fieldBorder);
             magentaFieldPanel.setBorder(fieldBorder);
             yellowFieldPanel.setBorder(fieldBorder);
@@ -75,7 +75,7 @@ implements UIResource {
 
         // The NominalCMYKColorSliderModel works fine:
         // ccModel = new NominalCMYKColorSliderModel();
-        
+
         /* Unfortunately the following does not work due to Java bug #4760025 as
          * described at http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4760025*/
         InputStream in = null;
@@ -84,17 +84,19 @@ implements UIResource {
             in = getClass().getResourceAsStream("Generic CMYK Profile.icc");
             ccModel = new ICC_CMYKColorSliderModel(in);
         } catch (IOException e) {
-            System.err.println("Warning: "+getClass()+" couldn't load \"Generic CMYK Profile.icc\".");            
+            System.err.println("Warning: " + getClass() + " couldn't load \"Generic CMYK Profile.icc\".");
             //e.printStackTrace();
             ccModel = new NominalCMYKColorSliderModel();
         } finally {
             try {
-                if (in != null) in.close();
+                if (in != null) {
+                    in.close();
+                }
             } catch (IOException e) {
                 // suppress
             }
         }
-        
+
         ccModel.configureColorSlider(0, cyanSlider);
         ccModel.configureColorSlider(1, magentaSlider);
         ccModel.configureColorSlider(2, yellowSlider);
@@ -105,63 +107,63 @@ implements UIResource {
         blackField.setText(Integer.toString(blackSlider.getValue()));
         Insets borderMargin = (Insets) UIManager.getInsets("Component.visualMargin").clone();
         borderMargin.left = 3 - borderMargin.left;
-        cyanFieldLabel.putClientProperty("Quaqua.Component.visualMargin",borderMargin);
-        magentaFieldLabel.putClientProperty("Quaqua.Component.visualMargin",borderMargin);
-        yellowFieldLabel.putClientProperty("Quaqua.Component.visualMargin",borderMargin);
-        blackFieldLabel.putClientProperty("Quaqua.Component.visualMargin",borderMargin);
-        
+        cyanFieldLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
+        magentaFieldLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
+        yellowFieldLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
+        blackFieldLabel.putClientProperty("Quaqua.Component.visualMargin", borderMargin);
+
         new ColorSliderTextFieldHandler(cyanField, ccModel, 0);
         new ColorSliderTextFieldHandler(magentaField, ccModel, 1);
         new ColorSliderTextFieldHandler(yellowField, ccModel, 2);
         new ColorSliderTextFieldHandler(blackField, ccModel, 3);
-        
+
         ccModel.addChangeListener(new ChangeListener() {
+
             public void stateChanged(ChangeEvent evt) {
-                setColorToModel(ccModel.getColor());
+                if (updateRecursion++ == 0) {
+                    setColorToModel(ccModel.getColor());
+                }
+                updateRecursion--;
             }
         });
         cyanField.setMinimumSize(cyanField.getPreferredSize());
         magentaField.setMinimumSize(magentaField.getPreferredSize());
         yellowField.setMinimumSize(yellowField.getPreferredSize());
         blackField.setMinimumSize(blackField.getPreferredSize());
-        
-        VisualMargin bm = new VisualMargin(false,false,true,false);
+
+        VisualMargin bm = new VisualMargin(false, false, true, false);
         cyanLabel.setBorder(bm);
         magentaLabel.setBorder(bm);
         yellowLabel.setBorder(bm);
         blackLabel.setBorder(bm);
     }
-    
+
     protected void buildChooser() {
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.cmykSliders");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
-        if (updateRecursion == 0) {
-            updateRecursion++;
+        if (updateRecursion++ == 0) {
             ccModel.setColor(getColorFromModel());
-            updateRecursion--;
         }
+        updateRecursion--;
     }
+
     public void setColorToModel(Color color) {
-        if (updateRecursion == 0) {
-            updateRecursion++;
             getColorSelectionModel().setSelectedColor(color);
-            updateRecursion--;
-        }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -378,26 +380,24 @@ implements UIResource {
     }// </editor-fold>//GEN-END:initComponents
 
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
-((JTextField) evt.getSource()).selectAll();
+        ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
-    
+
     private void blackFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_blackFieldFocusLost
         blackField.setText(Integer.toString(ccModel.getBoundedRangeModel(3).getValue()));
     }//GEN-LAST:event_blackFieldFocusLost
-    
+
     private void yellowFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_yellowFieldFocusLost
         yellowField.setText(Integer.toString(ccModel.getBoundedRangeModel(2).getValue()));
     }//GEN-LAST:event_yellowFieldFocusLost
-    
+
     private void magentaFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_magentaFieldFocusLost
         magentaField.setText(Integer.toString(ccModel.getBoundedRangeModel(1).getValue()));
     }//GEN-LAST:event_magentaFieldFocusLost
-    
+
     private void cyanFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cyanFieldFocusLost
         cyanField.setText(Integer.toString(ccModel.getBoundedRangeModel(0).getValue()));
     }//GEN-LAST:event_cyanFieldFocusLost
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField blackField;
     private javax.swing.JLabel blackFieldLabel;
@@ -421,5 +421,4 @@ implements UIResource {
     private javax.swing.JLabel yellowLabel;
     private javax.swing.JSlider yellowSlider;
     // End of variables declaration//GEN-END:variables
-    
 }

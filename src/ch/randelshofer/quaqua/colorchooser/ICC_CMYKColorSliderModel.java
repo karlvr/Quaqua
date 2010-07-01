@@ -15,6 +15,7 @@ package ch.randelshofer.quaqua.colorchooser;
 import java.awt.*;
 import java.awt.color.*;
 import java.io.*;
+import java.util.Arrays;
 import javax.swing.*;
 
 /**
@@ -104,6 +105,7 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
         return 0xff000000 | ((int) (rgb[0] * 255f) << 16) | ((int) (rgb[1] * 255f) << 8) | (int) (rgb[2] * 255f);
     }
 
+    @Override
     public Color getColor() {
         cmyk[0] = components[0].getValue() / 100f;
         cmyk[1] = components[1].getValue() / 100f;
@@ -112,13 +114,13 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
         return new Color(colorSpace, cmyk, 1f);
     }
 
+    @Override
     public void setColor(Color color) {
         if (color.getColorSpace().equals(colorSpace)) {
             cmyk = color.getColorComponents(cmyk);
         } else {
             cmyk = color.getColorComponents(colorSpace, cmyk);
         }
-        rgb = colorSpace.toRGB(cmyk);
         components[0].setValue((int) (cmyk[0] * 100f));
         components[1].setValue((int) (cmyk[1] * 100f));
         components[2].setValue((int) (cmyk[2] * 100f));
