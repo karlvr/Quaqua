@@ -1042,8 +1042,34 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
         </java>
     </target>
+    <target depends="init" name="run Quaqua 1.5 OS X 10.2 Jaguar w/o ScreenMenuBar">
+        <java classname="test.Main"
+                classpath="${classpath}"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
+                failonerror="true" fork="true"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-DQuaqua.design=jaguar"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
     <target depends="init" name="run Quaqua 1.5 OS X 10.3 Panther">
         <java classname="test.Main" 
+                classpath="${classpath}"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
+                failonerror="true" fork="true"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-DQuaqua.design=panther"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.5 OS X 10.3 Panther w/o ScreenMenuBar">
+        <java classname="test.Main"
                 classpath="${classpath}"
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.5/Home/bin/java"
                 failonerror="true" fork="true"

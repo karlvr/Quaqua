@@ -153,11 +153,11 @@ public class QuaquaMenuItemUI extends BasicMenuItemUI
                 g.fillRect(0, 0, menuWidth, menuHeight);
             }
             g.setColor(oldColor);
-        }        
-        
+        }
+/*
         if (component.getBorder() instanceof BackgroundBorder) {
             Border b = ((BackgroundBorder) component.getBorder()).getBackgroundBorder();
             b.paintBorder(component, g, 0, 0, component.getWidth(), component.getHeight());
-        }
-    }
+    }*/
+}
 }

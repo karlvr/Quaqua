@@ -35,6 +35,7 @@ public class QuaquaMenuBarUI extends BasicMenuBarUI {
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaMenuBarUI();
     }
+    @Override
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         int w = c.getWidth();
