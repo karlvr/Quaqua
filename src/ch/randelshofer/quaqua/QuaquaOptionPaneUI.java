@@ -50,6 +50,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                     }
                 });
     }
+    private Handler handler;
 
     /**
      * Creates a new QuaquaOptionPaneUI instance.
@@ -74,7 +75,14 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
     @Override
     protected PropertyChangeListener createPropertyChangeListener() {
-        return new QuaquaPropertyChangeHandler();
+        return getHandler();
+    }
+
+    private Handler getHandler() {
+        if (handler == null) {
+            handler = new Handler();
+        }
+        return handler;
     }
 
     @Override
@@ -106,6 +114,11 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
         Methods.invokeIfExists(
                 optionPane, "applyComponentOrientation", ComponentOrientation.class,
                 optionPane.getComponentOrientation());
+    }
+    @Override
+    protected void uninstallListeners() {
+        super.uninstallListeners();
+        handler = null;
     }
 
     /**
@@ -255,7 +268,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                         JButton defaultB = (JButton) initialFocusComponent;
                         // For some strange reason, the default button must be
                         // focusable.
-                        Methods.invokeIfExists(defaultB, "setFocusable", true);
+                        defaultB.setFocusable(true);
                         defaultB.addAncestorListener(new AncestorListener() {
 
                             public void ancestorAdded(AncestorEvent e) {
@@ -523,6 +536,94 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
 
             }
             return suppliedOptions;
+        }
+        return null;
+    }
+
+    /**
+     * Returns the message to display from the JOptionPane the receiver is
+     * providing the look and feel for.
+     */
+    @Override
+    protected Object getMessage() {
+        inputComponent = null;
+        if (optionPane != null) {
+            if (optionPane.getWantsInput()) {
+                /* Create a user component to capture the input. If the
+                selectionValues are non null the component and there
+                are < 20 values it'll be a combobox, if non null and
+                >= 20, it'll be a list, otherwise it'll be a textfield. */
+                Object message = optionPane.getMessage();
+                Object[] sValues = optionPane.getSelectionValues();
+                Object inputValue = optionPane.getInitialSelectionValue();
+                JComponent toAdd;
+
+                if (sValues != null) {
+                    if (sValues.length < 20) {
+                        JComboBox cBox = new JComboBox();
+
+                        cBox.setName("OptionPane.comboBox");
+                        for (int counter = 0, maxCounter = sValues.length;
+                                counter < maxCounter; counter++) {
+                            cBox.addItem(sValues[counter]);
+                        }
+                        if (inputValue != null) {
+                            cBox.setSelectedItem(inputValue);
+                        }
+                        inputComponent = cBox;
+                        toAdd = cBox;
+
+                    } else {
+                        JList list = new JList(sValues);
+                        JScrollPane sp = new JScrollPane(list);
+
+                        sp.setName("OptionPane.scrollPane");
+                        list.setName("OptionPane.list");
+                        list.setVisibleRowCount(10);
+                        list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+                        if (inputValue != null) {
+                            list.setSelectedValue(inputValue, true);
+                        }
+                        list.addMouseListener(getHandler());
+                        toAdd = sp;
+                        inputComponent = list;
+                    }
+
+                } else {
+                    MultiplexingTextField tf = new MultiplexingTextField(20);
+
+                    tf.setName("OptionPane.textField");
+                    tf.setKeyStrokes(new KeyStroke[]{
+                                KeyStroke.getKeyStroke("ENTER")});
+
+                    if (optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument") instanceof Document) {
+                        tf.setDocument((Document)optionPane.getClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument"));
+                    }
+
+                    if (inputValue != null) {
+                        String inputString = inputValue.toString();
+                        tf.setText(inputString);
+                        tf.setSelectionStart(0);
+                        tf.setSelectionEnd(inputString.length());
+                    }
+                    tf.addActionListener(getHandler());
+                    toAdd = inputComponent = tf;
+                }
+
+                Object[] newMessage;
+
+                if (message == null) {
+                    newMessage = new Object[1];
+                    newMessage[0] = toAdd;
+
+                } else {
+                    newMessage = new Object[2];
+                    newMessage[0] = message;
+                    newMessage[1] = toAdd;
+                }
+                return newMessage;
+            }
+            return optionPane.getMessage();
         }
         return null;
     }
@@ -860,21 +961,124 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicOptionPaneUI.
      */
-    public class QuaquaPropertyChangeHandler extends BasicOptionPaneUI.PropertyChangeHandler {
+    private class Handler implements ActionListener, MouseListener,
+            PropertyChangeListener {
 
-        /**
-         * If the source of the PropertyChangeEvent <code>e</code> equals the
-         * optionPane and is one of the ICON_PROPERTY, MESSAGE_PROPERTY,
-         * OPTIONS_PROPERTY or INITIAL_VALUE_PROPERTY,
-         * validateComponent is invoked.
-         */
-        @Override
-        public void propertyChange(PropertyChangeEvent evt) {
-            super.propertyChange(evt);
-            if (evt.getSource() == optionPane) {
-                // Client Property
-                if ("Quaqua.OptionPane.destructiveOption" == evt.getPropertyName()) {
-                    Integer value = (Integer) evt.getNewValue();
+        //
+        // ActionListener
+        //
+        public void actionPerformed(ActionEvent e) {
+            optionPane.setInputValue(((JTextField) e.getSource()).getText());
+        }
+
+        //
+        // MouseListener
+        //
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        public void mouseReleased(MouseEvent e) {
+        }
+
+        public void mouseEntered(MouseEvent e) {
+        }
+
+        public void mouseExited(MouseEvent e) {
+        }
+
+        public void mousePressed(MouseEvent e) {
+            if (e.getClickCount() == 2) {
+                JList list = (JList) e.getSource();
+                int index = list.locationToIndex(e.getPoint());
+
+                optionPane.setInputValue(list.getModel().getElementAt(index));
+            }
+        }
+
+        //
+        // PropertyChangeListener
+        //
+        public void propertyChange(PropertyChangeEvent e) {
+            if (e.getSource() == optionPane) {
+                // Option Pane Auditory Cue Activation
+                // only respond to "ancestor" changes
+                // the idea being that a JOptionPane gets a JDialog when it is
+                // set to appear and loses it's JDialog when it is dismissed.
+                if ("ancestor" == e.getPropertyName()) {
+                    JOptionPane op = (JOptionPane) e.getSource();
+                    boolean isComingUp;
+
+                    // if the old value is null, then the JOptionPane is being
+                    // created since it didn't previously have an ancestor.
+                    if (e.getOldValue() == null) {
+                        isComingUp = true;
+                    } else {
+                        isComingUp = false;
+                    }
+
+                    // figure out what to do based on the message type
+                    /*
+                    switch (op.getMessageType()) {
+                    case JOptionPane.PLAIN_MESSAGE:
+                    if (isComingUp) {
+                    QuaquaLookAndFeel.playSound(optionPane,
+                    "OptionPane.informationSound");
+                    }
+                    break;
+                    case JOptionPane.QUESTION_MESSAGE:
+                    if (isComingUp) {
+                    QuaquaLookAndFeel.playSound(optionPane,
+                    "OptionPane.questionSound");
+                    }
+                    break;
+                    case JOptionPane.INFORMATION_MESSAGE:
+                    if (isComingUp) {
+                    QuaquaLookAndFeel.playSound(optionPane,
+                    "OptionPane.informationSound");
+                    }
+                    break;
+                    case JOptionPane.WARNING_MESSAGE:
+                    if (isComingUp) {
+                    QuaquaLookAndFeel.playSound(optionPane,
+                    "OptionPane.warningSound");
+                    }
+                    break;
+                    case JOptionPane.ERROR_MESSAGE:
+                    if (isComingUp) {
+                    QuaquaLookAndFeel.playSound(optionPane,
+                    "OptionPane.errorSound");
+                    }
+                    break;
+                    default:
+                    System.err.println("Undefined JOptionPane type: " +
+                    op.getMessageType());
+                    break;
+                    }*/
+                }
+                // Visual activity
+                String changeName = e.getPropertyName();
+
+                if (changeName == JOptionPane.OPTIONS_PROPERTY
+                        || changeName == JOptionPane.INITIAL_VALUE_PROPERTY
+                        || changeName == JOptionPane.ICON_PROPERTY
+                        || changeName == JOptionPane.MESSAGE_TYPE_PROPERTY
+                        || changeName == JOptionPane.OPTION_TYPE_PROPERTY
+                        || changeName == JOptionPane.MESSAGE_PROPERTY
+                        || changeName == JOptionPane.SELECTION_VALUES_PROPERTY
+                        || changeName == JOptionPane.INITIAL_SELECTION_VALUE_PROPERTY
+                        || changeName == JOptionPane.WANTS_INPUT_PROPERTY) {
+                    uninstallComponents();
+                    installComponents();
+                    optionPane.validate();
+                } else if (changeName == "componentOrientation") {
+                    ComponentOrientation o = (ComponentOrientation) e.getNewValue();
+                    JOptionPane op = (JOptionPane) e.getSource();
+                    if (o != (ComponentOrientation) e.getOldValue()) {
+                        op.applyComponentOrientation(o);
+                    }
+                } // Client Property
+                else if ("Quaqua.OptionPane.destructiveOption" == changeName) {
+                    Integer value = (Integer) e.getNewValue();
                     if (buttonAreaLayout != null) {
                         buttonAreaLayout.setDestructiveOption(
                                 (value == null)
@@ -883,6 +1087,47 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                     }
                 }
             }
+        }
+    }
+
+    private static class MultiplexingTextField extends JTextField {
+
+        private KeyStroke[] strokes;
+
+        public MultiplexingTextField(Document doc, String text, int columns) {
+            super(doc, text, columns);
+        }
+
+        public MultiplexingTextField(int cols) {
+            super(cols);
+        }
+
+        /**
+         * Sets the KeyStrokes that will be additional processed for
+         * ancestor bindings.
+         */
+        public void setKeyStrokes(KeyStroke[] strokes) {
+            this.strokes = strokes;
+        }
+
+        @Override
+        protected boolean processKeyBinding(KeyStroke ks, KeyEvent e,
+                int condition, boolean pressed) {
+            boolean processed = super.processKeyBinding(ks, e, condition,
+                    pressed);
+
+            if (processed && condition != JComponent.WHEN_IN_FOCUSED_WINDOW) {
+                for (int counter = strokes.length - 1; counter >= 0;
+                        counter--) {
+                    if (strokes[counter].equals(ks)) {
+                        // Returning false will allow further processing
+                        // of the bindings, eg our parent Containers will get a
+                        // crack at them.
+                        return false;
+                    }
+                }
+            }
+            return processed;
         }
     }
 }
