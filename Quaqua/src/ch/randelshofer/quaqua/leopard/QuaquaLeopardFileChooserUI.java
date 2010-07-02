@@ -587,6 +587,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         directoryComboBox.addActionListener(directoryComboBoxAction);
         newFolderButton.addActionListener(getNewFolderAction());
         fileNameTextField.addFocusListener(new SaveTextFocusListener());
+        fileNameTextField.setDocument(new FilenameDocument());
         fileNameTextField.getDocument().addDocumentListener(new SaveTextDocumentListener());
         fileNameTextField.addActionListener(getApproveSelectionAction());
         sidebarTree.addTreeSelectionListener(createSidebarSelectionListener(fc));
@@ -1960,13 +1961,26 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                     newFolderDialogPrompt,
                     JOptionPane.PLAIN_MESSAGE,
                     JOptionPane.OK_CANCEL_OPTION);
+            // Setup Input
             optionPane.setWantsInput(true);
+            optionPane.putClientProperty("PrivateQuaqua.OptionPane.InputFieldDocument",
+                    new FilenameDocument());
             optionPane.setInitialSelectionValue(newFolderDefaultName);
+
+            // Setup Options
+            optionPane.setOptions(new Object[]{
+                        UIManager.getString("FileChooser.createFolderButtonText"),
+                        UIManager.getString("FileChooser.cancelButtonText")
+                    });
+            optionPane.setInitialValue(UIManager.getString("FileChooser.createFolderButtonText"));
+
+            // Show the dialog
             JDialog dialog = optionPane.createDialog(getFileChooser(), newFolderTitleText);
             dialog.setVisible(true);
             dialog.dispose();
 
-            return (optionPane.getInputValue() == JOptionPane.UNINITIALIZED_VALUE) ? null : (String) optionPane.getInputValue();
+            return (optionPane.getValue() == UIManager.getString("FileChooser.createFolderButtonText"))
+                    ? (String) optionPane.getInputValue() : null;
         }
 
         @Override
