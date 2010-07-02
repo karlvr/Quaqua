@@ -185,7 +185,7 @@ public class Main extends javax.swing.JPanel {
         splitPane.setOneTouchExpandable(false);
         tree.putClientProperty("Quaqua.Tree.style", "sideBar");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        tree.setRequestFocusEnabled(false);
+       // tree.setRequestFocusEnabled(false);
 
         DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultMutableTreeNode n;

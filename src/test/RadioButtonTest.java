@@ -59,13 +59,17 @@ public class RadioButtonTest extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         buttonGroup1 = new javax.swing.ButtonGroup();
+        buttonGroup2 = new javax.swing.ButtonGroup();
+        buttonGroup3 = new javax.swing.ButtonGroup();
         radioButton1 = new javax.swing.JRadioButton();
         enabledLabel = new javax.swing.JLabel();
+        radioButton5 = new javax.swing.JRadioButton();
         radioButton2 = new javax.swing.JRadioButton();
         disabledLabel = new javax.swing.JLabel();
         separator = new javax.swing.JSeparator();
         radioButton3 = new javax.swing.JRadioButton();
         smallLabel = new javax.swing.JLabel();
+        radioButton6 = new javax.swing.JRadioButton();
         radioButton4 = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
         jRadioButton5 = new javax.swing.JRadioButton();
@@ -75,7 +79,6 @@ public class RadioButtonTest extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         buttonGroup1.add(radioButton1);
-        radioButton1.setSelected(true);
         radioButton1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -90,6 +93,14 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(enabledLabel, gridBagConstraints);
 
+        buttonGroup1.add(radioButton5);
+        radioButton5.setSelected(true);
+        radioButton5.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(radioButton5, gridBagConstraints);
+
         buttonGroup1.add(radioButton2);
         radioButton2.setText("Ångström H");
         radioButton2.setEnabled(false);
@@ -101,6 +112,7 @@ public class RadioButtonTest extends javax.swing.JPanel {
         disabledLabel.setText("Disabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(disabledLabel, gridBagConstraints);
@@ -111,8 +123,8 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(separator, gridBagConstraints);
 
-        buttonGroup1.add(radioButton3);
-        radioButton3.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        buttonGroup2.add(radioButton3);
+        radioButton3.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         radioButton3.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -128,8 +140,16 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        buttonGroup1.add(radioButton4);
-        radioButton4.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        buttonGroup2.add(radioButton6);
+        radioButton6.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        radioButton6.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(radioButton6, gridBagConstraints);
+
+        buttonGroup2.add(radioButton4);
+        radioButton4.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         radioButton4.setText("Ångström H");
         radioButton4.setEnabled(false);
         radioButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -148,7 +168,7 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        buttonGroup1.add(jRadioButton5);
+        buttonGroup3.add(jRadioButton5);
         jRadioButton5.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
         jRadioButton5.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -171,6 +191,8 @@ public class RadioButtonTest extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
+    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.ButtonGroup buttonGroup3;
     private javax.swing.JLabel disabledLabel;
     private javax.swing.JLabel enabledLabel;
     private javax.swing.JRadioButton jRadioButton5;
@@ -180,6 +202,8 @@ public class RadioButtonTest extends javax.swing.JPanel {
     private javax.swing.JRadioButton radioButton2;
     private javax.swing.JRadioButton radioButton3;
     private javax.swing.JRadioButton radioButton4;
+    private javax.swing.JRadioButton radioButton5;
+    private javax.swing.JRadioButton radioButton6;
     private javax.swing.JSeparator separator;
     private javax.swing.JLabel smallLabel;
     // End of variables declaration//GEN-END:variables
