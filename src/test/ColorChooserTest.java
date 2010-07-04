@@ -146,12 +146,13 @@ public class ColorChooserTest extends javax.swing.JPanel {
                         MouseEvent me = (MouseEvent) ev;
                         Component src = (Component) ev.getSource();
 
-                        // Dismiss popup only on mouse press on a component which has
-                        // the same window ancestor as our popup, but is not in the
-                        // popup layer itself.
                         if (ev.getID() == MouseEvent.MOUSE_PRESSED) {
-                            if (SwingUtilities.getWindowAncestor(src)
-                                    == SwingUtilities.getWindowAncestor(popupButton)) {
+                            // Close popup if the mouse press occured on a component which is
+                            // not descending from this popup menu, but has the same
+                            // window ancestor.
+                            if (!SwingUtilities.isDescendingFrom(src, popupMenu)
+                                    && SwingUtilities.getWindowAncestor(src)
+                                    == SwingUtilities.getWindowAncestor(popupMenu.getInvoker())) {
                                 JLayeredPane srcLP = (JLayeredPane) SwingUtilities.getAncestorOfClass(JLayeredPane.class, src);
                                 Component srcLPChild = src;
                                 while (srcLPChild.getParent() != srcLP) {

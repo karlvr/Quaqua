@@ -20,8 +20,6 @@ import java.awt.event.*;
 import java.awt.image.*;
 import java.lang.reflect.Method;
 import java.net.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -138,6 +136,9 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         boolean isOnActiveWindow;
         if (window == null) {
             isOnActiveWindow = true;
+        } else if (window instanceof JWindow) {
+            isOnActiveWindow = window.isActive()
+                    || window.getName() == "###focusableSwingPopup###";// literal strings get interned
         } else if ((window instanceof Frame) || (window instanceof Dialog)) {
             isOnActiveWindow = window.isActive();
         } else {
@@ -317,7 +318,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                 try {
                     Class.forName(swingUtilities2);
                 } catch (ClassNotFoundException ex2) {
-                    System.err.println("Warning QuaquaUtilities: Couldn't locate class "+swingUtilities2);
+                    System.err.println("Warning QuaquaUtilities: Couldn't locate class " + swingUtilities2);
                 }
             }
         }
