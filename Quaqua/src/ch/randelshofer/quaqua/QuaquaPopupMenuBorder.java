@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaMenuBorder.java  
+ * @(#)QuaquaPopupMenuBorder.java
  *
  * Copyright (c) 2003-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,7 +15,6 @@
 package ch.randelshofer.quaqua;
 
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 /**
  * A replacement for the AquaMenuBorder.
@@ -29,30 +28,14 @@ import javax.swing.border.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaMenuBorder implements Border {    
-    protected static Insets popupBorderInsets;
-    protected static Insets itemBorderInsets;
-    
+public class QuaquaPopupMenuBorder implements Border {
     public void paintBorder(Component component, Graphics g, int x,
     int y, int width, int height) {
         /* empty */
     }
     
     public Insets getBorderInsets(Component component) {
-        Insets insets;
-        
-        if (component instanceof JPopupMenu) {
-            if (popupBorderInsets == null) {
-                popupBorderInsets = new Insets(4, 0, 4, 0);
-                }
-            insets = (Insets) popupBorderInsets.clone();
-        } else {
-            if (itemBorderInsets == null) {
-                itemBorderInsets = new Insets(0, 0, 0, 0);
-                }
-            insets = (Insets) itemBorderInsets.clone();
-        }
-        return insets;
+return new Insets(4, 0, 4, 0);
     }
     
     public boolean isBorderOpaque() {

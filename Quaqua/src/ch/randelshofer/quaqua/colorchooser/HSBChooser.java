@@ -1,5 +1,5 @@
 /*
- * @(#)HSBChooser.java  1.4  2007-02-24
+ * @(#)HSBChooser.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -15,10 +15,8 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.colorchooser.*;
@@ -27,15 +25,7 @@ import javax.swing.plaf.*;
  * A ColorChooser with HSB sliders.
  *
  * @author  Werner Randelshofer
- * @version 1.4 2007-02-24 To avoid rounding errors, don't update color
- * model while updating the chooser from the color model. Select text in
- * fields when they gain focus. The fields were too short for J2SE 1.3.
- * <br>1.3 2006-04-23 Retrieve labels from UIManager. 
- * <br>1.2 2005-11-22 Moved handler for text fields into separate class.
- * <br>1.2.1 2005-11-07 Get "Labels" resource bundle from UIManager.
- * <br>1.2 2005-09-05 Get font, spacing and icon from UIManager.
- * <br>1.1.1 2005-04-23 Localized form.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class HSBChooser
 extends AbstractColorChooserPanel

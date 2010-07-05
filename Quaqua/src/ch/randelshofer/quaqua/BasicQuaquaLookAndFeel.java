@@ -2130,7 +2130,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             try {
                 PopupFactory.setSharedInstance(new QuaquaPopupFactory());
             } catch (SecurityException ex) {
-                System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
+                System.err.print("Warning: " + this + " couldn't install QuaquaPopupFactory.");
                 //ex.printStackTrace();
             }
         }
@@ -2202,5 +2202,35 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     @Override
     public LayoutStyle getLayoutStyle() {
         return QuaquaLayoutStyle.getInstance();
+    }
+
+    @Override
+    public void uninitialize() {
+        uninstallPopupFactory();
+        uninstallKeyboardFocusManager();
+        super.uninitialize();
+    }
+
+    protected void uninstallPopupFactory() {
+        try {
+            if (PopupFactory.getSharedInstance() instanceof QuaquaPopupFactory) {
+                PopupFactory.setSharedInstance(new PopupFactory());
+            }
+        } catch (SecurityException ex) {
+            System.err.print("Warning: " + this + " couldn't uninstall QuaquaPopupFactory.");
+            //ex.printStackTrace();
+        }
+    }
+    protected void uninstallKeyboardFocusManager() {
+        try {
+                if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
+                KeyboardFocusManager.setCurrentKeyboardFocusManager(new DefaultKeyboardFocusManager());
+}
+                // currentManager.
+
+        } catch (SecurityException ex) {
+            System.err.print("Warning: " + this + " couldn't uninstall QuaquaKeyboardFocusManager.");
+            //ex.printStackTrace();
+        }
     }
 }

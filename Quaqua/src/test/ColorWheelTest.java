@@ -31,7 +31,7 @@ public class ColorWheelTest extends javax.swing.JPanel {
      */
     public ColorWheelTest() {
         initComponents();
-        ColorWheel cw = new ColorWheel();
+        JColorWheel cw = new JColorWheel();
         cw.getModel().setValue(2, 100);
         add(cw);
         add(new JLabel("Color Wheel Test"), BorderLayout.SOUTH);

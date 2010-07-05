@@ -17,7 +17,7 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="7.2alpha2"/>
+        <property name="versionNumber" value="7.2alpha3"/>
         <property name="version" value="${versionNumber} 2010-07-03"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
