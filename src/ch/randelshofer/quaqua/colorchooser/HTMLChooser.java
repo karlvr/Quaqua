@@ -1,5 +1,5 @@
 /*
- * @(#)HTMLChooser.java  1.6  2007-02-24
+ * @(#)HTMLChooser.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -14,12 +14,9 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
-import javax.swing.border.*;
 import javax.swing.colorchooser.*;
 import javax.swing.plaf.*;
 import java.util.*;
@@ -27,16 +24,7 @@ import java.util.*;
  * HTMLChooser.
  *
  * @author  Werner Randelshofer
- * @version 1.6 2007-02-24 Select text in fields when they gain focus. 
- * <br>1.5 2006-04-23 Retrieve labels from UIManager. 
- * <br>1.4 2005-11-22 Moved handler for text fields into separate class.
- * <br>1.3.1 2005-11-07 Get "Labels" resource bundle from UIManager.
- * <br>1.3 2005-09-05 Get font,spacing and icon from UIManager.
- * <br>1.2 2005-08-28 Remember last selection state of "webSaveCheckBox". 
- * <br>1.1.1 2005-06-19 Sliders were not updated when a color was entered
- * into the HTML field.
- * <br>1.1 2005-04-18 Localized form.
- * <br>1.0  29 March 2005  Created.
+ * @version $Id$
  */
 public class HTMLChooser extends AbstractColorChooserPanel implements UIResource {
     private HTMLColorSliderModel ccModel = new HTMLColorSliderModel();
