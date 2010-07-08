@@ -39,8 +39,6 @@ implements UIResource {
     
     /** Creates new form. */
     public ColorSlidersChooser() {
-        initComponents();
-        slidersComboBox.setFont(UIManager.getFont("ColorChooser.font"));
     }
     
     /** This method is called from within the constructor to
@@ -63,6 +61,9 @@ implements UIResource {
     }//GEN-END:initComponents
     
     protected void buildChooser() {
+        initComponents();
+        slidersComboBox.setFont(UIManager.getFont("ColorChooser.font"));
+        
         slidersHolder.add(new GrayChooser(),UIManager.getString("ColorChooser.grayScaleSlider"));
         slidersHolder.add(new RGBChooser(),UIManager.getString("ColorChooser.rgbSliders"));
         slidersHolder.add(new CMYKChooser(),UIManager.getString("ColorChooser.cmykSliders"));

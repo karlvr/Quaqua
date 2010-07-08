@@ -150,7 +150,7 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         } else {
             if (fileChooser.getClientProperty("Quaqua.FileChooser.preview") instanceof Preview) {
-                Preview pa = (Preview) fileChooser.getAccessory();
+                Preview pa = (Preview) fileChooser.getClientProperty("Quaqua.FileChooser.preview");
                 fileChooser.putClientProperty("Quaqua.FileChooser.preview", null);
                 pa.dispose();
             }

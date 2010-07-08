@@ -228,16 +228,13 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 "RootPane.foreground",
                 "RootPane.font");
         LookAndFeel.installBorder(c, "RootPane.border");
-        // Root Pane must always be opaque
-        //LookAndFeel.installProperty(c, "opaque", UIManager.get("RootPane.opaque"));
+
+	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("RootPane.opaque"));
 
         // By default, we should delay window ordering, but
         // it does not seem to work as expected. It appears that we need to
         // at more code.
         // c.putClientProperty("apple.awt.delayWindowOrdering", Boolean.TRUE);
-
-
-        c.setOpaque(true);
     }
 
     public void update(Graphics gr, final JComponent c) {

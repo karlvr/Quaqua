@@ -37,14 +37,11 @@ public class CMYKChooser
 
     /** Creates new form. */
     public CMYKChooser() {
+    }
+
+    protected void buildChooser() {
         initComponents();
 
-        if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
-            magentaField.setColumns(4);
-            yellowField.setColumns(4);
-            cyanField.setColumns(4);
-            blackField.setColumns(4);
-        }
         //
         Font font = UIManager.getFont("ColorChooser.font");
         cyanLabel.setFont(font);
@@ -136,9 +133,6 @@ public class CMYKChooser
         magentaLabel.setBorder(bm);
         yellowLabel.setBorder(bm);
         blackLabel.setBorder(bm);
-    }
-
-    protected void buildChooser() {
     }
 
     public String getDisplayName() {

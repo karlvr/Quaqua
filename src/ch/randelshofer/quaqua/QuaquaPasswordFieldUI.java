@@ -46,12 +46,13 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         return new QuaquaPasswordFieldUI();
     }
     
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
-        //c.setOpaque(QuaquaManager.getBoolean(getPropertyPrefix()+".opaque"));
     }
     
+    @Override
     protected void installDefaults() {
         super.installDefaults();
         /* Unfortunately we can not set the echo char from the UI. :(
@@ -60,10 +61,12 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
          */
     }
     
+    @Override
     protected void uninstallDefaults() {
         super.uninstallDefaults();
     }
     
+    @Override
     protected void installListeners() {
         focusListener = createFocusListener();
         if (focusListener != null) {

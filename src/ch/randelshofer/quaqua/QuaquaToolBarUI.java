@@ -92,7 +92,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         
         // The toolbar is not opaque, because its background color may have
         // an alpha channel.
-        toolBar.setOpaque(false);
+	QuaquaUtilities.installProperty(toolBar, "opaque", UIManager.get("ToolBar.opaque"));
     }
 
     private Handler getHandler() {

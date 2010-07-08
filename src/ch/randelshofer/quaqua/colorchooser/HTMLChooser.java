@@ -72,8 +72,10 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
     
     /** Creates new form. */
     public HTMLChooser() {
+    }
+    protected void buildChooser() {
         initComponents();
-        
+
         //
         Font font = UIManager.getFont("ColorChooser.font");
         redLabel.setFont(font);
@@ -104,12 +106,12 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             gbc.insets = fieldInsets;
             layout.setConstraints(blueField, gbc);
         }
-        
+
         webSaveCheckBox.setSelected(lastWebSaveSelectionState);
         redSlider.setSnapToTicks(lastWebSaveSelectionState);
         greenSlider.setSnapToTicks(lastWebSaveSelectionState);
         blueSlider.setSnapToTicks(lastWebSaveSelectionState);
-        
+
 
         htmlListener = new ChangeListener() {
             public void stateChanged(ChangeEvent evt) {
@@ -131,9 +133,9 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
                 }
             }
         };
-        
+
         updateRecursion++;
-        
+
         ccModel = new HTMLColorSliderModel();
         ccModel.setWebSaveOnly(lastWebSaveSelectionState);
         ccModel.configureColorSlider(0, redSlider);
@@ -143,7 +145,7 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         new ColorSliderHexTextFieldHandler(greenField, ccModel, 1);
         new ColorSliderHexTextFieldHandler(blueField, ccModel, 2);
         ccModel.addChangeListener(htmlListener);
-        
+
         redFieldFocusLost(null);
         greenFieldFocusLost(null);
         blueFieldFocusLost(null);
@@ -157,8 +159,6 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         redLabel.setBorder(bm);
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
-    }
-    protected void buildChooser() {
     }
     
     public String getDisplayName() {

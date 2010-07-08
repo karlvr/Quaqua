@@ -42,39 +42,6 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
      * Creates a new instance.
      */
     public ColorPalettesChooser() {
-        initComponents();
-        //
-        Font font = UIManager.getFont("ColorChooser.font");
-        paletteLabel.setFont(font);
-        paletteCombo.setFont(font);
-        paletteScrollPane.setFont(font);
-        paletteList.setFont(font);
-        //
-        paletteList.setCellRenderer(new PaletteEntryCellRenderer());
-        //
-        DefaultComboBoxModel cbm = new DefaultComboBoxModel(loadPalettes());
-        paletteCombo.setModel(cbm);
-        //updatePaletteList();
-        
-        paletteList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            /**
-             * Called whenever the value of the selection changes.
-             * @param e the event that characterizes the change.
-             */
-            public void valueChanged(ListSelectionEvent e) {
-                PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();
-                if (entry != null) {
-                    PaletteListModel lm = (PaletteListModel) paletteList.getModel();
-                    lm.setClosestIndex(-1);
-                    setColorToModel(entry.getColor());
-                }
-            }
-        });
-        
-        paletteCombo.setSelectedIndex(lastSelectedPalette);
-        
-        loadPalettes();
-        updatePaletteList();
     }
     
     /**
@@ -152,6 +119,39 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
     }
     
     protected void buildChooser() {
+        initComponents();
+        //
+        Font font = UIManager.getFont("ColorChooser.font");
+        paletteLabel.setFont(font);
+        paletteCombo.setFont(font);
+        paletteScrollPane.setFont(font);
+        paletteList.setFont(font);
+        //
+        paletteList.setCellRenderer(new PaletteEntryCellRenderer());
+        //
+        DefaultComboBoxModel cbm = new DefaultComboBoxModel(loadPalettes());
+        paletteCombo.setModel(cbm);
+        //updatePaletteList();
+
+        paletteList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            /**
+             * Called whenever the value of the selection changes.
+             * @param e the event that characterizes the change.
+             */
+            public void valueChanged(ListSelectionEvent e) {
+                PaletteEntry entry = (PaletteEntry) paletteList.getSelectedValue();
+                if (entry != null) {
+                    PaletteListModel lm = (PaletteListModel) paletteList.getModel();
+                    lm.setClosestIndex(-1);
+                    setColorToModel(entry.getColor());
+                }
+            }
+        });
+
+        paletteCombo.setSelectedIndex(lastSelectedPalette);
+
+        loadPalettes();
+        updatePaletteList();
     }
     
     public String getDisplayName() {

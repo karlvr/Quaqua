@@ -37,12 +37,13 @@ public class QuaquaPanelUI extends BasicPanelUI {
         }
         return panelUI;
     }
+    @Override
     protected void installDefaults(JPanel p) {
         super.installDefaults(p);
 	QuaquaUtilities.installProperty(p, "opaque", UIManager.get("Panel.opaque"));
-        //p.setOpaque(QuaquaManager.getBoolean("Panel.opaque"));
     }
     
+    @Override
     protected void uninstallDefaults(JPanel p) {
         super.uninstallDefaults(p);
     }
@@ -66,6 +67,7 @@ public class QuaquaPanelUI extends BasicPanelUI {
         return false;
     }
     
+    @Override
     public void paint(Graphics gr, JComponent c) {
             Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);

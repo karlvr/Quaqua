@@ -1,5 +1,5 @@
 /*
- * @(#)SwatchesChooser.java  1.1  2006-04-23
+ * @(#)SwatchesChooser.java 
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -13,24 +13,16 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.text.*;
-import javax.swing.event.*;
-import javax.swing.border.*;
 import javax.swing.colorchooser.*;
 import javax.swing.plaf.*;
 /**
  * SwatchesChooser.
  *
  * @author  Werner Randelshofer
- * @version 1.3 2006-04-23 Retrieve labels directly from UIManager.
- * <br>1.0.2 2005-11-07 Get "Labels" ResourceBundle fro UIManager.
- * <br>1.0.1 2005-09-11 Get icon from UIManager.
- * <br>1.0  30 March 2005  Created.
+ * @version $Id$
  */
 public class SwatchesChooser
 extends AbstractColorChooserPanel
@@ -40,10 +32,6 @@ implements UIResource {
     
     /** Creates new form. */
     public SwatchesChooser() {
-        initComponents();
-        swatchPanel = new SwatchPanel();
-        initColors();
-        scrollPane.setViewportView(swatchPanel);
     }
     
     protected void initColors() {
@@ -59,6 +47,7 @@ implements UIResource {
         swatchPanel.setColors(colors);
         swatchPanel.setNumSwatches(9, 31);
         swatchPanel.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseReleased(MouseEvent e) {
                 Color c = swatchPanel.getColorForLocation(e.getX(), e.getY());
                 if (c != null) {
@@ -83,6 +72,10 @@ implements UIResource {
     }//GEN-END:initComponents
     
     protected void buildChooser() {
+        initComponents();
+        swatchPanel = new SwatchPanel();
+        initColors();
+        scrollPane.setViewportView(swatchPanel);
     }
     
     public String getDisplayName() {

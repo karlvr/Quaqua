@@ -471,10 +471,6 @@ public class QuaquaTableUI extends BasicTableUI
             if (component.getFont() instanceof UIResource) {
                 component.setFont(table.getFont());
             }
-            /*
-            if ( (component instanceof JComponent)) {
-            ((JComponent) component).setOpaque(true);
-            }*/
 
             component.setBounds(cellRect);
             component.validate();

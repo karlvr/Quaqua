@@ -38,15 +38,17 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
         return new QuaquaScrollPaneUI();
     }
     
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("ScrollPane.opaque"));
-        //c.setOpaque(QuaquaManager.getBoolean("ScrollPane.opaque"));
         c.setFocusable(UIManager.getBoolean("ScrollPane.focusable"));
     }
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return new PropertyChangeHandler(super.createPropertyChangeListener());
     }
+    @Override
     protected void installDefaults(JScrollPane scrollpane) {
         super.installDefaults(scrollpane);
         if (scrollpane.getLayout() instanceof UIResource) {
@@ -55,6 +57,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             layout.syncWithScrollPane(scrollpane);
         }
     }
+    @Override
     protected void uninstallDefaults(JScrollPane scrollpane) {
         super.uninstallDefaults(scrollpane);
         if (scrollpane.getLayout() instanceof UIResource) {

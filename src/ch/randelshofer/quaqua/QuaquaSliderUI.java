@@ -43,12 +43,13 @@ public class QuaquaSliderUI extends BasicSliderUI
         super(b);
     }
 
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
         QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Slider.opaque"));
-    //slider.setOpaque(false);
     }
     
+    @Override
     public void installDefaults(JSlider slider) {
         super.installDefaults(slider);
                 
@@ -57,11 +58,13 @@ public class QuaquaSliderUI extends BasicSliderUI
         slider.setFocusable(UIManager.getBoolean("CheckBox.focusable"));
     }
 
+    @Override
     protected void uninstallListeners(JSlider slider) {
         super.uninstallListeners(slider);
         handler = null;
     }
 
+    @Override
     protected TrackListener createTrackListener(JSlider slider) {
         return new QuaquaTrackListener();
     }

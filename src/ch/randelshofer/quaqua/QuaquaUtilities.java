@@ -35,11 +35,6 @@ import javax.swing.plaf.basic.*;
 public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstants {
 
     private final static boolean DEBUG = false;
-    /**
-     * This is set to false, if we fail to install properties
-     * directly.
-     */
-    private static boolean canInstallProperty = true;
     /** Holds the class name of SwingUtilities2 once it has been resolved. */
     private static String swingUtilities2;
 
@@ -840,37 +835,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      */
     public static void installProperty(JComponent c,
             String propertyName, Object value) {
-        if (canInstallProperty) {
-            //LookAndFeel.installProperty(c, propertyName, value);
-            try {
-                Methods.invokeStatic(LookAndFeel.class, "setUIProperty",
-                        new Class[]{JComponent.class, String.class, Object.class},
-                        new Object[]{c, propertyName, value});
-                return;
-            } catch (NoSuchMethodException e) {
-                // System.err.println("Warning: QuaquaUtilities failed to installProperty "+propertyName);
-                canInstallProperty = false;
-            }
-        }
-        if (propertyName == "opaque") {
-            c.setOpaque(((Boolean) value).booleanValue());
-        } else if (propertyName == "autoscrolls") {
-            c.setAutoscrolls(((Boolean) value).booleanValue());
-            /*
-            } else if (propertyName == "focusTraversalKeysForward") {
-            c.setFocusTraversalKeys(KeyboardFocusManager.
-            FORWARD_TRAVERSAL_KEYS,
-            (java.util.Set)value);*/
-            /*
-            } else if (propertyName == "focusTraversalKeysBackward") {
-            c.setFocusTraversalKeys(KeyboardFocusManager.
-            BACKWARD_TRAVERSAL_KEYS,
-            (java.util.Set)value);
-             */
-        } else {
-            throw new IllegalArgumentException("property \""
-                    + propertyName + "\" cannot be set using this method");
-        }
+        LookAndFeel.installProperty(c, propertyName, value);
     }
 
     /**
