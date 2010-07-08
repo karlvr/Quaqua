@@ -33,17 +33,6 @@ public class CrayonsChooser extends AbstractColorChooserPanel implements UIResou
      * Creates a new instance.
      */
     public CrayonsChooser() {
-        initComponents();
-
-        crayons = new Crayons();
-        add(crayons);
-        crayons.addPropertyChangeListener(new PropertyChangeListener() {
-            public void propertyChange(PropertyChangeEvent evt) {
-                if (evt.getPropertyName().equals("Color")) {
-                    setColorToModel(crayons.getColor());
-                }
-            }
-        });
     }
     
     /** This method is called from within the constructor to
@@ -56,6 +45,17 @@ public class CrayonsChooser extends AbstractColorChooserPanel implements UIResou
     }//GEN-END:initComponents
     
     protected void buildChooser() {
+        initComponents();
+
+        crayons = new Crayons();
+        add(crayons);
+        crayons.addPropertyChangeListener(new PropertyChangeListener() {
+            public void propertyChange(PropertyChangeEvent evt) {
+                if (evt.getPropertyName().equals("Color")) {
+                    setColorToModel(crayons.getColor());
+                }
+            }
+        });
     }
     
     public String getDisplayName() {

@@ -1896,6 +1896,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToggleButton.textIconGap", four,
             "ToggleButton.textShiftOffset", zero,
             "ToggleButton.requestFocusEnabled", isRequestFocusEnabled,
+            //
             "ToolBar.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaToolBarBorder$UIResource"),
             // The separatorSize is set to null, because we dynamically compute different
             // sizes depending on the orientation of the separator.
@@ -1907,6 +1908,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolBar.borderDividerInactive", new ColorUIResource(0x9f9f9f),
             "ToolBar.bottom.gradient", new Color[]{new Color(0xd8d8d8), new Color(0xbdbdbd), new Color(0xaeaeae), new Color(0x969696)},
             "ToolBar.bottom.gradientInactive", new Color[]{new Color(0xeeeeee), new Color(0xe4e4e4), new Color(0xcfcfcf)},
+            // The toolbar is not opaque, because its background color may have
+            // an alpha channel.
+            "ToolBar.opaque", Boolean.FALSE,
             //
             "ToolTip.border", new BorderUIResource.LineBorderUIResource(new ColorUIResource(0x303030)),
             //
@@ -2221,12 +2225,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             //ex.printStackTrace();
         }
     }
+
     protected void uninstallKeyboardFocusManager() {
         try {
-                if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
+            if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
                 KeyboardFocusManager.setCurrentKeyboardFocusManager(new DefaultKeyboardFocusManager());
-}
-                // currentManager.
+            }
+            // currentManager.
 
         } catch (SecurityException ex) {
             System.err.print("Warning: " + this + " couldn't uninstall QuaquaKeyboardFocusManager.");

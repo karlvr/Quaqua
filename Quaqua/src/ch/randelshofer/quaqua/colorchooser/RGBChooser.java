@@ -31,14 +31,16 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
     
     /** Creates new form. */
     public RGBChooser() {
+    }
+    protected void buildChooser() {
         initComponents();
-        
+
         if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
             redField.setColumns(4);
             greenField.setColumns(4);
             blueField.setColumns(4);
-        } 
-        
+        }
+
         //
         Font font = UIManager.getFont("ColorChooser.font");
         redLabel.setFont(font);
@@ -66,15 +68,15 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
             gbc.insets = fieldInsets;
             layout.setConstraints(blueField, gbc);
         }
-        
+
         ccModel.configureColorSlider(0, redSlider);
         ccModel.configureColorSlider(1, greenSlider);
         ccModel.configureColorSlider(2, blueSlider);
-        
+
         redField.setText(Integer.toString(redSlider.getValue()));
         greenField.setText(Integer.toString(greenSlider.getValue()));
         blueField.setText(Integer.toString(blueSlider.getValue()));
-        
+
         new ColorSliderTextFieldHandler(redField, ccModel, 0);
         new ColorSliderTextFieldHandler(greenField, ccModel, 1);
         new ColorSliderTextFieldHandler(blueField, ccModel, 2);
@@ -94,8 +96,6 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         redLabel.setBorder(bm);
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
-    }
-    protected void buildChooser() {
     }
     
     public String getDisplayName() {

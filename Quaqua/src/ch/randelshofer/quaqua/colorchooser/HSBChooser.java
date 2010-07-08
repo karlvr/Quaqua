@@ -36,13 +36,16 @@ implements UIResource {
     
     /** Creates new form. */
     public HSBChooser() {
+    }
+    
+    protected void buildChooser() {
         initComponents();
-        
+
         if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
             hueField.setColumns(4);
             saturationField.setColumns(4);
             brightnessField.setColumns(4);
-        } 
+        }
         //
         Font font = UIManager.getFont("ColorChooser.font");
         hueLabel.setFont(font);
@@ -65,7 +68,7 @@ implements UIResource {
             saturationFieldPanel.setBorder(fieldBorder);
             brightnessFieldPanel.setBorder(fieldBorder);
         }
-        
+
         ccModel.configureColorSlider(0, hueSlider);
         ccModel.configureColorSlider(1, saturationSlider);
         ccModel.configureColorSlider(2, brightnessSlider);
@@ -94,9 +97,6 @@ implements UIResource {
         hueLabel.setBorder(bm);
         saturationLabel.setBorder(bm);
         brightnessLabel.setBorder(bm);
-    }
-    
-    protected void buildChooser() {
     }
     
     public String getDisplayName() {

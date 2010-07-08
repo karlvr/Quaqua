@@ -49,7 +49,6 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     
     public void installUI(JComponent c) {
         super.installUI(c);
-        //c.setOpaque(QuaquaManager.getBoolean(getPropertyPrefix()+".opaque"));
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
     }
     

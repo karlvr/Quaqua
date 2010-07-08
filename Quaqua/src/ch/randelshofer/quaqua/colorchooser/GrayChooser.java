@@ -15,11 +15,9 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;
 import javax.swing.*;
-import javax.swing.text.*;
 import javax.swing.event.*;
 import javax.swing.border.*;
 import javax.swing.colorchooser.*;
@@ -43,12 +41,15 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
     
     /** Creates new form. */
     public GrayChooser() {
+    }
+    
+    protected void buildChooser() {
         initComponents();
-        
+
         if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
             brightnessField.setColumns(4);
-        } 
-        
+        }
+
         Font font = UIManager.getFont("ColorChooser.font");
         brightnessLabel.setFont(font);
         brightnessSlider.setFont(font);
@@ -64,8 +65,8 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
             Border fieldBorder = new EmptyBorder(0,textSliderGap,0,0);
             brightnessFieldPanel.setBorder(fieldBorder);
         }
-        
-        
+
+
         ccModel.configureColorSlider(0, brightnessSlider);
         brightnessField.setText(Integer.toString(brightnessSlider.getValue()));
         Insets borderMargin = (Insets) UIManager.getInsets("Component.visualMargin").clone();
@@ -82,7 +83,7 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
             }
         });
         brightnessField.setMinimumSize(brightnessField.getPreferredSize());
-        
+
         VisualMargin bm = new VisualMargin(false,false,true,false);
         brightnessLabel.setBorder(bm);
         zeroPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
@@ -110,9 +111,6 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         fiftyPercentButton.setBackground(new Color(cs, new float[]{0.5f}, 1f));
         seventyFivePercentButton.setBackground(new Color(cs, new float[]{0.75f}, 1f));
         hundredPercentButton.setBackground(new Color(cs, new float[]{1f}, 1f));
-    }
-    
-    protected void buildChooser() {
     }
     
     public String getDisplayName() {
