@@ -146,7 +146,7 @@ public class ColorChooserTest extends javax.swing.JPanel {
                         MouseEvent me = (MouseEvent) ev;
                         Component src = (Component) ev.getSource();
 
-                        if (ev.getID() == MouseEvent.MOUSE_PRESSED) {
+                        if (me.getID() == MouseEvent.MOUSE_PRESSED) {
                             // Close popup if the mouse press occured on a component which is
                             // not descending from this popup menu, but has the same
                             // window ancestor.
@@ -163,7 +163,11 @@ public class ColorChooserTest extends javax.swing.JPanel {
                                     popupMenu.setVisible(false);
                                 }
                             }
-                        } else {
+                        } else if (me.getID()==MouseEvent.MOUSE_CLICKED //
+                                && me.getClickCount()==2) {
+                            if (SwingUtilities.isDescendingFrom(src, popupMenu)) {
+                                popupMenu.setVisible(false);
+                            }
                         }
                     }
                 };
