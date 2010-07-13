@@ -128,6 +128,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      *
      * @param c the JRootPane to install state onto
      */
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
         root = (JRootPane) c;
@@ -137,7 +138,6 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         c.putClientProperty(
                 "apple.awt.windowShadow",
                 UIManager.get("RootPane.windowShadow"));
-        Window window = SwingUtilities.getWindowAncestor(c);
 
         int style = root.getWindowDecorationStyle();
         if (style != JRootPane.NONE) {
@@ -146,6 +146,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         allRootPanes.put(c, null);
     }
 
+    @Override
     public void paint(Graphics g, JComponent c) {
         Graphics2D gr = (Graphics2D) g;
         // Erase background. This is needed for semi-transparent windows.
@@ -208,6 +209,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      *
      * @param c the JRootPane to uninstall state from
      */
+    @Override
     public void uninstallUI(JComponent c) {
         super.uninstallUI(c);
         uninstallClientDecorations(root);
@@ -221,6 +223,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         allRootPanes.remove(c);
     }
 
+    @Override
     protected void installDefaults(JRootPane c) {
         super.installDefaults(c);
         LookAndFeel.installColorsAndFont(c,
@@ -237,6 +240,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         // c.putClientProperty("apple.awt.delayWindowOrdering", Boolean.TRUE);
     }
 
+    @Override
     public void update(Graphics gr, final JComponent c) {
         if (c.isOpaque()) {
             Graphics2D g = (Graphics2D) gr;
@@ -252,6 +256,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         paint(gr, c);
     }
 
+    @Override
     protected void installListeners(JRootPane root) {
         super.installListeners(root);
 
@@ -268,6 +273,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
 
     }
 
+    @Override
     protected void uninstallListeners(JRootPane root) {
         super.uninstallListeners(root);
 
@@ -284,6 +290,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
     protected ComponentListener createComponentListener() {
         return new ComponentAdapter() {
 
+            @Override
             public void componentResized(final ComponentEvent e) {
                 Timer t = new Timer(200, new ActionListener() {
 
@@ -579,6 +586,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      * indicates the <code>defaultButton</code> has changed, this will
      * reinstall the keyboard actions.
      */
+    @Override
     public void propertyChange(PropertyChangeEvent e) {
         super.propertyChange(e);
         String name = e.getPropertyName();

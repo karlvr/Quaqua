@@ -1908,9 +1908,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
             "ToolBar.borderDividerInactive", new ColorUIResource(0x9f9f9f),
             "ToolBar.bottom.gradient", new Color[]{new Color(0xd8d8d8), new Color(0xbdbdbd), new Color(0xaeaeae), new Color(0x969696)},
             "ToolBar.bottom.gradientInactive", new Color[]{new Color(0xeeeeee), new Color(0xe4e4e4), new Color(0xcfcfcf)},
-            // The toolbar is not opaque, because its background color may have
-            // an alpha channel.
-            "ToolBar.opaque", Boolean.FALSE,
+            // The toolbar is opaque because of the gradient that we want to paint.
+            "ToolBar.opaque", Boolean.TRUE,
             //
             "ToolTip.border", new BorderUIResource.LineBorderUIResource(new ColorUIResource(0x303030)),
             //
