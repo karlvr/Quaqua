@@ -1431,7 +1431,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         String javaVersion = QuaquaManager.getProperty("java.version", "");
 
         String systemFontName = getBaseSystemFont().getName();
+
+        // Focus behavior
         Boolean isRequestFocusEnabled = new Boolean(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true"));
+
+        // True if all controls are focusable,
+        // false if only text boxes and lists are focusable.
+        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "3");
+        Boolean allControlsFocusable = isRequestFocusEnabled || prefValue.equals("3");
 
         Object dialogBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorders$DialogBorder");
@@ -1481,12 +1488,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                     commonDir + "TextField.searchBorders.png",
                     commonDir + "TextField.small.searchBorders.png",});
 
-        // True if all controls are focusable,
-        // false if only text boxes and listes are focusable.
-        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "3");
-        Boolean allControlsFocusable =//
-                QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true")//
-                || prefValue.equals("3");
 
         // True if file choosers orders by type
         prefValue = OSXPreferences.getString(OSXPreferences.FINDER_PREFERENCES, "StandardViewOptions\tColumnViewOptions\tArrangeBy", "dnam");
