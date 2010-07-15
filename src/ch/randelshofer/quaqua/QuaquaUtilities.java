@@ -115,6 +115,18 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * Always returns true, if the component has no parent window.
      */
     public static boolean isOnActiveWindow(Component c) {
+        return isOnActiveWindow(c, false);
+    }
+    /**
+     * Returns true if the component is on a Dialog or a Frame, which is active,
+     * or if it is on a Window, which is focused.
+     * Always returns true, if the component has no parent window.
+     * <p>
+     * @param c The component.
+     * @param isActiveWhenSheetIsActive Set this to true, when the window should
+     * be considered as active when its sheet dialog is active.
+     */
+    public static boolean isOnActiveWindow(Component c, boolean isActiveWhenSheetIsActive) {
         // In the RootPaneUI, we set a client property on the whole component
         // tree, if the ancestor Frame gets activated or deactivated.
         if (c instanceof JComponent) {
@@ -136,6 +148,14 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                     || window.getName() == "###focusableSwingPopup###";// literal strings get interned
         } else if ((window instanceof Frame) || (window instanceof Dialog)) {
             isOnActiveWindow = window.isActive();
+            if (! isOnActiveWindow && isActiveWhenSheetIsActive) {
+                Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
+                isOnActiveWindow= focusedWindow!=null && focusedWindow.getOwner()==window;
+                
+                // we return here, because we don't want to change the "Frame.active"
+                // property.
+                return isOnActiveWindow;
+            }
         } else {
             if (window.getFocusableWindowState()) {
                 isOnActiveWindow = window.isFocused();

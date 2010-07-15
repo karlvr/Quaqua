@@ -43,7 +43,7 @@ public class QuaquaLeopardSideBarSelectionBorder implements Border, UIResource {
                     true
                     ));
         } else {
-            if (QuaquaUtilities.isOnActiveWindow(c)) {
+            if (QuaquaUtilities.isOnActiveWindow(c, true)) {
                 // top line: 0x91a0c0
             g.setColor(new Color(0x91a0c0));
             g.fillRect(x, y, width, 1);
