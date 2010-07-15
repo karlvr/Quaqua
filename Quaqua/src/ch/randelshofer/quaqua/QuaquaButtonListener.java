@@ -15,6 +15,7 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.plaf.basic.*;
 import java.beans.*;
 import java.util.Enumeration;
@@ -42,10 +43,31 @@ public class QuaquaButtonListener extends BasicButtonListener {
     @Override
     public void propertyChange(PropertyChangeEvent e) {
         String prop = e.getPropertyName();
-        if (prop.equals("Frame.active")) {
-            ((AbstractButton) e.getSource()).repaint();
+        if (e.getSource() instanceof AbstractButton) {
+            AbstractButton btn = ((AbstractButton) e.getSource());
+            if (prop.equals("Frame.active")) {
+                btn.repaint();
+            }
         }
         super.propertyChange(e);
+    }
+
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        super.stateChanged(e);
+        if (e.getSource() instanceof AbstractButton) {
+            updateFocusableState((AbstractButton) e.getSource());
+        }
+    }
+
+    public static void updateFocusableState(AbstractButton button) {
+        if (UIManager.getBoolean("Button.focusable")) {
+        ButtonModel model = button.getModel();
+        if (model instanceof DefaultButtonModel) {
+            ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+            button.setFocusable(button.isSelected());
+        }
+        }
     }
 
     @Override
@@ -219,6 +241,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
         component.getActionMap().remove(id);
     }
 
+    /** Keyboard action for selecting the next/previous button in a radio
+     * button group.
+     */
     private static class SelectPreviousNextRadioButtonAction extends AbstractAction {
 
         private final boolean isSelectNext;
@@ -244,26 +269,35 @@ public class QuaquaButtonListener extends BasicButtonListener {
                 return;
             }
 
-            final AbstractButton previousButton = getPreviousNextButton(group);
-            if (previousButton != null) {
-                previousButton.requestFocusInWindow();
-                previousButton.setSelected(true);
+            final AbstractButton btn = getPreviousNextButton(group);
+            if (btn != null) {
+                btn.doClick();
+                btn.requestFocusInWindow();
             }
         }
 
         private AbstractButton getPreviousNextButton(ButtonGroup group) {
+            AbstractButton adjacentToSelected = null;
+            AbstractButton adjacentToFocused = null;
             if (isSelectNext) {
-                boolean takeThis = false;
+                boolean takeNextSelected = false;
+                boolean takeNextFocused = false;
                 for (Enumeration i = group.getElements(); i.hasMoreElements();) {
                     final AbstractButton buttonInGroup = (AbstractButton) i.nextElement();
-                    if (buttonInGroup.isSelected()
-                            || buttonInGroup.isFocusOwner() && group.getSelection() == null) {
-                        takeThis = true;
-                        continue;
+                    if (takeNextSelected && buttonInGroup.isEnabled()) {
+                        adjacentToSelected = buttonInGroup;
+                        takeNextSelected = false;
+                    }
+                    if (takeNextFocused && buttonInGroup.isEnabled()) {
+                        adjacentToFocused = buttonInGroup;
+                        takeNextFocused = false;
                     }
 
-                    if (takeThis && buttonInGroup.isEnabled()) {
-                        return buttonInGroup;
+                    if (buttonInGroup.isSelected()) {
+                        takeNextSelected = true;
+                    }
+                    if (buttonInGroup.isFocusOwner()) {
+                        takeNextFocused = true;
                     }
                 }
             } else {
@@ -271,18 +305,18 @@ public class QuaquaButtonListener extends BasicButtonListener {
                 for (Enumeration i = group.getElements(); i.hasMoreElements();) {
                     final AbstractButton buttonInGroup = (AbstractButton) i.nextElement();
                     if (buttonInGroup.isSelected()) {
-                        return previousButton;
+                        adjacentToSelected = previousButton;
+                    }
+                    if (buttonInGroup.isFocusOwner()) {
+                        adjacentToFocused = previousButton;
                     }
 
                     if (buttonInGroup.isEnabled()) {
                         previousButton = buttonInGroup;
                     }
                 }
-
-                return previousButton;
             }
-
-            return null;
+            return (adjacentToFocused == null) ? adjacentToSelected : adjacentToFocused;
         }
     }
 }

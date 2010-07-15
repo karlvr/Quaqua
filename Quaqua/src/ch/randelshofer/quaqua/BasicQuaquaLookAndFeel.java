@@ -80,12 +80,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
         initSystemColorDefaults(table);
         initComponentDefaults(table);
 
-        // Only install our own KeyboardFocusManager, if it is wanted
-        if (QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").
-                equals("true")) {
-            installKeyboardFocusManager();
-            installPopupFactory();
-        }
+        installKeyboardFocusManager();
+        installPopupFactory();
 
         return table;
     }
@@ -2114,16 +2110,15 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     }
 
     protected void installKeyboardFocusManager() {
-        String javaVersion = QuaquaManager.getProperty("java.version", "");
-        if (javaVersion.startsWith("1.4") || javaVersion.startsWith("1.5")) {
-            try {
-                //KeyboardFocusManager currentManager = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-                // currentManager.
-
-                KeyboardFocusManager.setCurrentKeyboardFocusManager(new QuaquaKeyboardFocusManager());
-            } catch (SecurityException ex) {
-                System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
-                //ex.printStackTrace();
+        if (QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").equals("true")) {
+            String javaVersion = QuaquaManager.getProperty("java.version", "");
+            if (javaVersion.startsWith("1.5")) {
+                try {
+                    KeyboardFocusManager.setCurrentKeyboardFocusManager(new QuaquaKeyboardFocusManager());
+                } catch (SecurityException ex) {
+                    System.err.print("Warning: " + this + " couldn't install QuaquaKeyboardFocusManager.");
+                    //ex.printStackTrace();
+                }
             }
         }
     }
