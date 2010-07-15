@@ -61,12 +61,12 @@ public class QuaquaButtonListener extends BasicButtonListener {
     }
 
     public static void updateFocusableState(AbstractButton button) {
-        if (UIManager.getBoolean("Button.focusable")) {
-        ButtonModel model = button.getModel();
-        if (model instanceof DefaultButtonModel) {
-            ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
-            button.setFocusable(button.isSelected());
-        }
+        if (UIManager.getBoolean("Button.focusable") && !UIManager.getBoolean("Button.requestFocusEnabled")) {
+            ButtonModel model = button.getModel();
+            if (model instanceof DefaultButtonModel) {
+                ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                button.setFocusable(button.isSelected());
+            }
         }
     }
 
