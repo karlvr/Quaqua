@@ -95,23 +95,23 @@ public class QuaquaButtonListener extends BasicButtonListener {
                 }
                 model.setPressed(true);
                 if (!b.hasFocus()) {
-                    // request focus if one of the buttons in the button group
-                    // has focus
-                    if (model instanceof DefaultButtonModel) {
-                        ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
-                        if (grp != null) {
-                            for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
-                                AbstractButton grpButton = (AbstractButton) i.nextElement();
-                                if (grpButton.hasFocus()) {
-                                    b.setFocusable(true);
-                                    b.requestFocus();
-                                    break;
+                    if (b.isRequestFocusEnabled()) {
+                        b.requestFocus();
+                    } else {
+                        // request focus if one of the buttons in the button group
+                        // has focus
+                        if (model instanceof DefaultButtonModel) {
+                            ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                            if (grp != null) {
+                                for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
+                                    AbstractButton grpButton = (AbstractButton) i.nextElement();
+                                    if (grpButton.hasFocus()) {
+                                        b.setFocusable(true);
+                                        b.requestFocus();
+                                        break;
+                                    }
                                 }
                             }
-                        }
-                    } else {
-                        if (b.isRequestFocusEnabled()) {
-                            b.requestFocus();
                         }
                     }
                 }
