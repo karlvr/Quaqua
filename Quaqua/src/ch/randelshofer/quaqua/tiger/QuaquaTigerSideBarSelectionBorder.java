@@ -45,7 +45,7 @@ public class QuaquaTigerSideBarSelectionBorder implements Border, UIResource {
             g.setColor(new Color(0x8c98b0));
             g.fillRect(x, y + height - 1, width, 1);
         } else {
-            if (QuaquaUtilities.isOnActiveWindow(c)) {
+            if (QuaquaUtilities.isOnActiveWindow(c, true)) {
                 // top line
                 g.setColor(new Color(0xadbbd0));
                 g.fillRect(x, y, width, 1);

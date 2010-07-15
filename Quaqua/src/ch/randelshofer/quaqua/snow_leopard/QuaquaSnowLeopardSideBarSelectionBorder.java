@@ -41,7 +41,7 @@ public class QuaquaSnowLeopardSideBarSelectionBorder implements Border, UIResour
                     x, y + height - 1, new Color(0x216cb7),
                     true));
         } else {
-            if (QuaquaUtilities.isOnActiveWindow(c)) {
+            if (QuaquaUtilities.isOnActiveWindow(c, true)) {
                 // top line: 0xa2b1cb
                 g.setColor(new Color(0xa2b1cb));
                 g.fillRect(x, y, width, 1);

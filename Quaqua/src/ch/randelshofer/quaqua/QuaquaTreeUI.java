@@ -580,6 +580,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             }
         }
 
+        @Override
         public void focusLost(FocusEvent event) {
             focusGained(event);
         }
@@ -588,6 +589,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
 // Painting routines.
 //
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         if (tree != c) {
             throw new InternalError("incorrect component");
@@ -667,7 +669,11 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
         if (tree.isOpaque()) {
             if (background instanceof InactivatableColorUIResource) {
+                if (isSideBar) {
+                ((InactivatableColorUIResource) background).setActive(QuaquaUtilities.isOnActiveWindow(c,true));
+                } else {
                 ((InactivatableColorUIResource) background).setActive(isActive);
+                }
             }
 
             g.setColor(background);
