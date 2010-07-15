@@ -69,6 +69,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         //b.setOpaque(false);
         b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
         b.setFocusable(UIManager.getBoolean("RadioButton.focusable"));
+        QuaquaButtonListener.updateFocusableState(b);
     }
     
     // ********************************

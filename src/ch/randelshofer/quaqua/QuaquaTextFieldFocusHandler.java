@@ -21,7 +21,7 @@ import sun.awt.CausedFocusEvent.Cause;
 
 /**
  * QuaquaTextFieldFocusHandler. Selects all text of a JTextComponent, if
- * the user used a keyboard focus traversal key, to transfer the focus on the
+ * the user used a keyboard focus traversal key to transfer the focus on the
  * JTextComponent.
  *
  * @author Werner Randelshofer
