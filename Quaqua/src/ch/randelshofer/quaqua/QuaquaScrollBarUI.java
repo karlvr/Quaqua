@@ -571,6 +571,98 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
             setThumbBounds(thumbX, itemY, thumbW, itemH);
         }
     }
+    @Override
+    protected void scrollByUnit(int direction)	{
+        scrollByUnits(scrollbar, direction, 1, false);
+    }
+    /*
+     * Method for scrolling by a unit increment.
+     * Added for mouse wheel scrolling support, RFE 4202656.
+     *
+     * If limitByBlock is set to true, the scrollbar will scroll at least 1
+     * unit increment, but will not scroll farther than the block increment.
+     * See BasicScrollPaneUI.Handler.mouseWheelMoved().
+     */
+    static void scrollByUnits(JScrollBar scrollbar, int direction,
+                              int units, boolean limitToBlock) {
+        // This method is called from QuaquaScrollPaneUI to implement wheel
+        // scrolling, as well as from scrollByUnit().
+        int delta;
+        int limit = -1;
+
+        if (limitToBlock) {
+            if (direction < 0) {
+                limit = scrollbar.getValue() -
+                                         scrollbar.getBlockIncrement(direction);
+            }
+            else {
+                limit = scrollbar.getValue() +
+                                         scrollbar.getBlockIncrement(direction);
+            }
+        }
+
+        for (int i=0; i<units; i++) {
+            if (direction > 0) {
+                delta = scrollbar.getUnitIncrement(direction);
+            }
+            else {
+                delta = -scrollbar.getUnitIncrement(direction);
+            }
+
+            int oldValue = scrollbar.getValue();
+            int newValue = oldValue + delta;
+
+            // Check for overflow.
+            if (delta > 0 && newValue < oldValue) {
+                newValue = scrollbar.getMaximum();
+            }
+            else if (delta < 0 && newValue > oldValue) {
+                newValue = scrollbar.getMinimum();
+            }
+            if (oldValue == newValue) {
+                break;
+            }
+
+            if (limitToBlock && i > 0) {
+                assert limit != -1;
+                if ((direction < 0 && newValue < limit) ||
+                    (direction > 0 && newValue > limit)) {
+                    break;
+                }
+            }
+            scrollbar.setValue(newValue);
+        }
+    }
+    @Override
+    protected void scrollByBlock(int direction)
+    {
+        scrollByBlock(scrollbar, direction);
+	    trackHighlight = direction > 0 ? INCREASE_HIGHLIGHT : DECREASE_HIGHLIGHT;
+	    Rectangle dirtyRect = getTrackBounds();
+	    scrollbar.repaint(dirtyRect.x, dirtyRect.y, dirtyRect.width, dirtyRect.height);
+    }
+    /*
+     * Method for scrolling by a block increment.
+     * Added for mouse wheel scrolling support, RFE 4202656.
+     */
+    static void scrollByBlock(JScrollBar scrollbar, int direction) {
+        // This method is called from BasicScrollPaneUI to implement wheel
+        // scrolling, and also from scrollByBlock().
+	    int oldValue = scrollbar.getValue();
+	    int blockIncrement = scrollbar.getBlockIncrement(direction);
+	    int delta = blockIncrement * ((direction > 0) ? +1 : -1);
+	    int newValue = oldValue + delta;
+
+	    // Check for overflow.
+	    if (delta > 0 && newValue < oldValue) {
+		newValue = scrollbar.getMaximum();
+	    }
+	    else if (delta < 0 && newValue > oldValue) {
+		newValue = scrollbar.getMinimum();
+	    }
+
+	    scrollbar.setValue(newValue);
+    }
 
     protected class QuaquaTrackListener extends TrackListener {
         protected transient int offset;

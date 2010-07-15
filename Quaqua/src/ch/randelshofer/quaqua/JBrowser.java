@@ -1594,7 +1594,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Returns the amount to increment when scrolling. The amount is
+     * Returns the amount to increment when scrolling. The amount is 10 or
      * the width of the first/last displayed column that isn't completely in
      * view or, if it is totally displayed, the width of the next column in the
      * scrolling direction.
@@ -1621,7 +1621,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                             >= 0; i--) {
                         Rectangle cbounds = components[i].getBounds();
                         if (cbounds.x + cbounds.width > visibleRect.x + visibleRect.width) {
-                            increment = cbounds.x + cbounds.width - visibleRect.x - visibleRect.width;
+                            increment = Math.min(10, cbounds.x + cbounds.width - visibleRect.x - visibleRect.width);
                         }
 
                     }
@@ -1638,7 +1638,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                             < components.length; i++) {
                         Rectangle cbounds = components[i].getBounds();
                         if (cbounds.x < visibleRect.x) {
-                            increment = visibleRect.x - cbounds.x;
+                            increment = Math.min(10, visibleRect.x - cbounds.x);
                         }
 
                     }
