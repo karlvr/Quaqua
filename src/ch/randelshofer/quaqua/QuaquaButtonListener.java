@@ -65,7 +65,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
             ButtonModel model = button.getModel();
             if (model instanceof DefaultButtonModel) {
                 ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
-                button.setFocusable(button.isSelected());
+                if (grp != null) {
+                    button.setFocusable(button.isSelected());
+                }
             }
         }
     }
