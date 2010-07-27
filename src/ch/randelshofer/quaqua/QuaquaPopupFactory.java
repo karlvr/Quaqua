@@ -570,6 +570,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             final JWindow wnd;
             Component c = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
             wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
+            wnd.setAlwaysOnTop(true);
             Float windowAlpha = new Float(0.948);
             if (contents instanceof JComponent) {
                 Object value= ((JComponent)contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
