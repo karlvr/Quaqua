@@ -992,8 +992,11 @@ public class QuaquaTableUI extends BasicTableUI
             int leadRow = getAdjustedLead(table, true);
             int leadColumn = getAdjustedLead(table, false);
             if (leadRow != -1 && leadColumn != -1 && !table.isEditing()) {
-                if (!table.editCellAt(leadRow, leadColumn)) {
-                    return;
+                // We only start editing if the meta key is not down.
+                if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK)==0) {
+                    if (!table.editCellAt(leadRow, leadColumn)) {
+                        return;
+                    }
                 }
             }
 

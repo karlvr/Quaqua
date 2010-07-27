@@ -109,9 +109,9 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        JFrame f = new JFrame("Quaqua ComboBox Test");
+        JFrame f = new JFrame("Quaqua Editable ComboBox Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        f.getContentPane().add(new ComboBoxTest());
+        f.getContentPane().add(new EditableComboBoxTest());
         ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9,17,17,17));
         f.pack();
         f.setVisible(true);
