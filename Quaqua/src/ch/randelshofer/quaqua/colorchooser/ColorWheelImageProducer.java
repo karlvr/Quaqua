@@ -19,8 +19,6 @@ import java.awt.image.*;
 /**
  * Produces the image of a ColorWheel.
  *
- * @see ColorWheel
- *
  * @author  Werner Randelshofer
  * @version $Id$
  */

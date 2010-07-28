@@ -162,9 +162,6 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
      * to handle mouse wheel-driven scrolling.
      *
      * @return      MouseWheelListener which implements wheel-driven scrolling
-     * @see #installUI
-     * @see MouseWheelHandler
-     * @since 1.4
      */
     @Override
     protected MouseWheelListener createMouseWheelListener() {
