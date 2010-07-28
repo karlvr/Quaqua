@@ -954,7 +954,13 @@ public class QuaquaTableUI extends BasicTableUI
             // Eat away META down keys..
             // We need to do this, because the JTable.processKeyBinding(…)
             // method does not treat VK_META as a modifier key, and starts
-            // editing a cell, whenever this key is pressed.
+            // editing a cell whenever this key is pressed.
+
+            // XXX - This is bogus but seems to work. Consider disabling
+            // automatic editing in JTable by setting the client property
+            // "JTable.autoStartsEdit" to Boolean.FALSE and doing all the
+            // processing here.
+
             if (e.getKeyCode() == KeyEvent.VK_META) {
                 e.consume();
             }
