@@ -373,12 +373,15 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             if (scrollpane.isWheelScrollingEnabled()
                     && e.getWheelRotation() != 0) {
 
-                JScrollBar toScroll = scrollpane.getVerticalScrollBar();
                 int direction = e.getWheelRotation() < 0 ? -1 : 1;
                 int orientation =
                         (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0
                         ? SwingConstants.VERTICAL //
                         : SwingConstants.HORIZONTAL;
+                JScrollBar toScroll = orientation==SwingConstants.VERTICAL
+                        ? scrollpane.getVerticalScrollBar()
+                        : scrollpane.getHorizontalScrollBar();
+
                 // If the scrollpane can not be scrolled in this direction,
                 // scroll the parent scrollpane.
                 if (orientation == SwingConstants.VERTICAL
