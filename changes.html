@@ -35,6 +35,89 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
+  <h3>Version 7.2<br />
+    <font size="-1">2010-07-28</font></h3>
+  <p>Enhancements</p>
+  <ul>
+    <li>JPopupMenu
+      <ul>
+        <li>Adds support for client property &quot;Quaqua.PopupMenu.windowAlpha&quot;.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>Fixes</p>
+  <ul>
+    <li>QuaquaLookAndFeel
+      <ul>
+        <li>Installs now QuaquaKeyboardFocusManager when running on J2SE 5.</li>
+        <li>Uninstalls now QuaquaPopupFactory and QuaquaKeyboardFocusManager when removed from the UIManager.</li>
+      </ul>
+    </li>
+    <li>JColorChooser
+      <ul>
+        <li>Fixes slider values of the &quot;Gray&quot; chooser.</li>
+        <li>Fixes inadverted color changes caused by &quot;RGB&quot; chooser.</li>
+      </ul>
+    </li>
+    <li>JFileChooser
+      <ul>
+        <li>Fixes issue 114: &quot;FileChooser allows creation of directories with a colon in the name&quot;.</li>
+        <li>Fixes issue 115: &quot;File Chooser allows files that don't match a filter to be opened with double clicking&quot;.</li>
+        <li>The foreground color of non-acceptable files stays now gray when a file is selected.</li>
+        <li>Changes the label of the approve button of the &quot;Create Folder&quot; dialog from &quot;OK&quot; to &quot;Create Folder&quot;.</li>
+      </ul>
+    </li>
+    <li>JList
+      <ul>
+        <li>Fixes the key bindings for &quot;Select All&quot; and &quot;Clear Selection&quot;.</li>
+      </ul>
+    </li>
+    <li>JMenu
+      <ul>
+        <li>Partially fixes issue 112: &quot;JMenu.setBackground() has no effect&quot;. (JMenuBar.setBackground still has no effect).</li>
+      </ul>
+    </li>
+    <li>JPopupMenu
+      <ul>
+        <li>Components on a popup menu are now rendered in their active state.</li>
+      </ul>
+    </li>
+    <li>JRadioButton
+      <ul>
+        <li>Fixes issue 107: &quot;Clicking a JRadioButton does not forward focus&quot;.</li>
+      </ul>
+    </li>
+    <li>JScrollPane
+      <ul>
+        <li>Fixes issue 117: &quot;Two finger horizontal swipe treated as vertical swipe&quot;.</li>
+      </ul>
+    </li>
+    <li>JSplitPane
+      <ul>
+        <li>Doesn't expand on double click anymore when JSplitPane is not one-touch-expandable.</li>
+      </ul>
+    </li>
+    <li>JTable:
+      <ul>
+        <li>Fixes issue 53: &quot;JTable does (not) render the background of editing cells properly&quot;.</li>
+          <li>Fixes issue 118: &quot;Paste into JTable not working properly&quot;.</li>
+          <li>Fixes flashing when cells are being edited.</li>
+      </ul>
+    </li>
+    <li>JTree
+      <ul>
+        <li>Trees with &quot;sourceList&quot; style do not turn gray anymore when a sheet dialog is opened on the parent window.</li>
+      </ul>
+    </li>
+  </ul>
+  <p>Known Issues</p>
+  <ul>
+    <li>JColorChooser
+      <ul>
+        <li>&quot;CMYK&quot; chooser doesn't pick up selected color.</li>
+      </ul>
+    </li>
+  </ul>
   <h3>Version 7.1.1<br />
     <font size="-1">2010-06-22</font></h3>
   <p>Fixes</p>
