@@ -5,20 +5,18 @@
         <!--
             Prerequisites for building the Quaqua look and feel:
 
-            - Mac OS X 10.5
-            - MacOSX10.5.skd and MacOSX10.4u.sdk installed in /Developer/SDKs
+            - Mac OS X 10.6
+            - MacOSX10.6sdk, MacOSX10.5.sdk and MacOSX10.4u.sdk installed in
+              /Developer/SDKs
+            - The Mac OS X 10.5 /System folder must be accessible in the path
+              /Users/Shared/Developer/Mac OS X 10.5/System
 
-            To build Quaqua on Mac OS X 10.6 you need a copy of the Mac OS X 10.5
-            System folder in a directory or volume somewhere (for example on
-            an alternative boot volume).
-            In case you do not have a Mac OS X 10.5 System folder available,
-            you can only build Quaqua for J2SE 6.
             -->
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="7.2"/>
-        <property name="version" value="${versionNumber} 2010-07-28"/>
+        <property name="versionNumber" value="7.2.1"/>
+        <property name="version" value="${versionNumber} 2010-08-01"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
