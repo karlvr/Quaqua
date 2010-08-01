@@ -77,7 +77,7 @@ public class QuaquaLazyActionMap extends ActionMapUIResource {
     }
 
 
-    private QuaquaLazyActionMap(Class loader) {
+    public QuaquaLazyActionMap(Class loader) {
         _loader = loader;
     }
 

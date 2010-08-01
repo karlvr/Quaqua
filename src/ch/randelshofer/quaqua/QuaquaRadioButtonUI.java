@@ -16,10 +16,13 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import java.beans.*;
+import java.util.Enumeration;
 import javax.swing.text.View;
 /**
  * QuaquaRadioButtonUI.
@@ -50,8 +53,6 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     private final static Insets smallSpacing = new Insets(6,6,6,6);
     private final static Insets miniSpacing = new Insets(5,5,5,5);
     
-    
-    
     public static ComponentUI createUI(JComponent b) {
         return checkboxUI;
     }
@@ -69,7 +70,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         //b.setOpaque(false);
         b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
         b.setFocusable(UIManager.getBoolean("RadioButton.focusable"));
-        QuaquaButtonListener.updateFocusableState(b);
+        updateFocusableState(b);
     }
     
     // ********************************
@@ -84,11 +85,13 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     protected void installListeners(AbstractButton b) {
         super.installListeners(b);
         b.addPropertyChangeListener(propertyChangeListener);
+        b.addItemListener(propertyChangeListener);
     }
     @Override
     protected void uninstallListeners(AbstractButton b) {
         super.uninstallListeners(b);
         b.removePropertyChangeListener(propertyChangeListener);
+        b.removeItemListener(propertyChangeListener);
     }
     
     public Icon getDefaultIcon(JComponent c) {
@@ -298,7 +301,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
      */
-    public static class PropertyChangeHandler implements PropertyChangeListener {
+    public static class PropertyChangeHandler implements PropertyChangeListener, ItemListener {
         public void propertyChange(PropertyChangeEvent evt) {
             String name = evt.getPropertyName();
             AbstractButton src = (AbstractButton) evt.getSource();
@@ -307,6 +310,11 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
        } else if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant(src);
             }
+        }
+
+        public void itemStateChanged(ItemEvent evt) {
+            AbstractButton src = (AbstractButton) evt.getSource();
+            updateFocusableState(src);
         }
     }
     /**
@@ -398,4 +406,20 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         }
         return rect;
     }
+    public static void updateFocusableState(AbstractButton button) {
+        if (UIManager.getBoolean("Button.focusable") && !UIManager.getBoolean("Button.requestFocusEnabled")) {
+            ButtonModel model = button.getModel();
+            if (model instanceof DefaultButtonModel) {
+                ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                /*if (grp != null) {
+                    for (Enumeration<AbstractButton> i=grp.getElements();i.hasMoreElements();){
+                        AbstractButton btn=i.nextElement();
+                    btn.setFocusable(btn.isSelected());
+                    }
+                }*/
+                    button.setFocusable(button.isSelected());
+            }
+        }
+    }
+
 }
