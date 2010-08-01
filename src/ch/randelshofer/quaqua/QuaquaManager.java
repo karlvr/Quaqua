@@ -302,15 +302,15 @@ public class QuaquaManager {
                 tt.wordChars('_', '_');
                 tt.ordinaryChar('=');
                 tt.ordinaryChar(';');
-                while (tt.nextToken() != tt.TT_EOF) {
-                    if (tt.ttype != tt.TT_WORD) {
+                while (tt.nextToken() != StreamTokenizer.TT_EOF) {
+                    if (tt.ttype != StreamTokenizer.TT_WORD) {
                         throw new IOException("Illegal token for 'design.version' in line "+tt.lineno()+" of laf.txt File");
                     }
                     String lafKey = tt.sval;
                     if (tt.nextToken() != '=') {
                         throw new IOException("Illegal token for '=' in line "+tt.lineno()+" of laf.txt File");
                     }
-                    if (tt.nextToken() != tt.TT_WORD) {
+                    if (tt.nextToken() != StreamTokenizer.TT_WORD) {
                         throw new IOException("Illegal token for 'class' in line "+tt.lineno()+" of laf.txt File at key '"+lafKey+"'");
                     }
                     String className = tt.sval;
