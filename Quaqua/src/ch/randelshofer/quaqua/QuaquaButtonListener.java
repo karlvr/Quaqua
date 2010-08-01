@@ -30,10 +30,6 @@ public class QuaquaButtonListener extends BasicButtonListener {
 
     transient long lastPressedTimestamp = -1;
     transient boolean shouldDiscardRelease = false;
-    private static final SelectPreviousNextRadioButtonAction //
-            SELECT_PREVIOUS_ACTION = new QuaquaButtonListener.SelectPreviousNextRadioButtonAction(false);
-    private static final SelectPreviousNextRadioButtonAction //
-            SELECT_NEXT_ACTION = new QuaquaButtonListener.SelectPreviousNextRadioButtonAction(true);
 
     /** Creates a new instance. */
     public QuaquaButtonListener(AbstractButton button) {
@@ -50,26 +46,6 @@ public class QuaquaButtonListener extends BasicButtonListener {
             }
         }
         super.propertyChange(e);
-    }
-
-    @Override
-    public void stateChanged(ChangeEvent e) {
-        super.stateChanged(e);
-        if (e.getSource() instanceof AbstractButton) {
-            updateFocusableState((AbstractButton) e.getSource());
-        }
-    }
-
-    public static void updateFocusableState(AbstractButton button) {
-        if (UIManager.getBoolean("Button.focusable") && !UIManager.getBoolean("Button.requestFocusEnabled")) {
-            ButtonModel model = button.getModel();
-            if (model instanceof DefaultButtonModel) {
-                ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
-                if (grp != null) {
-                    button.setFocusable(button.isSelected());
-                }
-            }
-        }
     }
 
     @Override
@@ -205,81 +181,87 @@ public class QuaquaButtonListener extends BasicButtonListener {
         b.repaint();
     }
 
-    @Override
-    public void installKeyboardActions(JComponent component) {
-        super.installKeyboardActions(component);
-        if (component instanceof JRadioButton) {
-            registerKeyboardAction(component, SELECT_PREVIOUS_ACTION, KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0), "cursor-up");
-            registerKeyboardAction(component, SELECT_PREVIOUS_ACTION, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0), "cursor-left");
-            registerKeyboardAction(component, SELECT_NEXT_ACTION, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0), "cursor-down");
-            registerKeyboardAction(component, SELECT_NEXT_ACTION, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0), "cursor-right");
-        }
-    }
-
-    @Override
-    public void uninstallKeyboardActions(JComponent component) {
-        super.uninstallKeyboardActions(component);
-        if (component instanceof JRadioButton) {
-            unregisterKeyboardAction(component, KeyStroke.getKeyStroke(KeyEvent.VK_UP, 0));
-            unregisterKeyboardAction(component, KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, 0));
-            unregisterKeyboardAction(component, KeyStroke.getKeyStroke(KeyEvent.VK_DOWN, 0));
-            unregisterKeyboardAction(component, KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, 0));
-        }
-    }
-
-    private void registerKeyboardAction(JComponent component, Action action, KeyStroke keyStroke, Object id) {
-        component.getActionMap().put(id, action);
-        component.getInputMap(JComponent.WHEN_FOCUSED).put(keyStroke, id);
-    }
-
-    private void unregisterKeyboardAction(JComponent component, KeyStroke keyStroke) {
-        final InputMap inputMap = component.getInputMap(JComponent.WHEN_FOCUSED);
-        final Object id = inputMap.get(keyStroke);
-        if (id == null) {
-            return;
-        }
-
-        inputMap.remove(keyStroke);
-
-        component.getActionMap().remove(id);
+    /**
+     * Populates Buttons actions.
+     */
+    static void loadActionMap(QuaquaLazyActionMap map) {
+        map.put(new Actions(Actions.PRESS));
+	map.put(new Actions(Actions.RELEASE));
+        map.put(new Actions(Actions.SELECT_NEXT_BUTTON));
+	map.put(new Actions(Actions.SELECT_PREVIOUS_BUTTON));
     }
 
     /** Keyboard action for selecting the next/previous button in a radio
      * button group.
      */
-    private static class SelectPreviousNextRadioButtonAction extends AbstractAction {
+    private static class Actions extends AbstractAction {
 
-        private final boolean isSelectNext;
+        private static final String PRESS = "pressed";
+        private static final String RELEASE = "released";
+        private static final String SELECT_NEXT_BUTTON = "selectNextButton";
+        private static final String SELECT_PREVIOUS_BUTTON = "selectPreviousButton";
 
-        public SelectPreviousNextRadioButtonAction(boolean isSelectNext) {
-            this.isSelectNext = isSelectNext;
+        public Actions(String name) {
+            super(name);
         }
 
-        public void actionPerformed(ActionEvent event) {
-            final Object source = event.getSource();
-            if (!(source instanceof AbstractButton)) {
-                return;
-            }
+        public String getName() {
+            return (String) getValue(Action.NAME);
+        }
 
-            final ButtonModel model = ((AbstractButton) source).getModel();
-            if (!(model instanceof DefaultButtonModel)) {
-                return;
-            }
-
-            final DefaultButtonModel defaultButtonModel = (DefaultButtonModel) model;
-            final ButtonGroup group = defaultButtonModel.getGroup();
-            if (group == null) {
-                return;
-            }
-
-            final AbstractButton btn = getPreviousNextButton(group);
-            if (btn != null) {
-                btn.doClick();
-                btn.requestFocusInWindow();
+        public void actionPerformed(ActionEvent e) {
+            AbstractButton b = (AbstractButton) e.getSource();
+            String key = getName();
+            if (key == PRESS) {
+                ButtonModel model = b.getModel();
+                model.setArmed(true);
+                model.setPressed(true);
+                if (!b.hasFocus()) {
+                    b.requestFocus();
+                }
+            } else if (key == RELEASE) {
+                ButtonModel model = b.getModel();
+                model.setPressed(false);
+                model.setArmed(false);
+            } else if (key == SELECT_NEXT_BUTTON) {
+                ButtonModel model = b.getModel();
+                if (model instanceof DefaultButtonModel) {
+                    DefaultButtonModel defaultButtonModel = (DefaultButtonModel) model;
+                    ButtonGroup group = defaultButtonModel.getGroup();
+                    if (group != null) {
+                        AbstractButton btn = getSiblingButton(group, true);
+                        if (btn != null) {
+                            btn.doClick();
+                            btn.requestFocusInWindow();
+                        }
+                    }
+                }
+            } else if (key == SELECT_PREVIOUS_BUTTON) {
+                ButtonModel model = b.getModel();
+                if (model instanceof DefaultButtonModel) {
+                    DefaultButtonModel defaultButtonModel = (DefaultButtonModel) model;
+                    ButtonGroup group = defaultButtonModel.getGroup();
+                    if (group != null) {
+                        AbstractButton btn = getSiblingButton(group, false);
+                        if (btn != null) {
+                            btn.doClick();
+                            btn.requestFocusInWindow();
+                        }
+                    }
+                }
             }
         }
 
-        private AbstractButton getPreviousNextButton(ButtonGroup group) {
+        public boolean isEnabled(Object sender) {
+            if (sender != null && (sender instanceof AbstractButton)
+                    && !((AbstractButton) sender).getModel().isEnabled()) {
+                return false;
+            } else {
+                return true;
+            }
+        }
+
+        private AbstractButton getSiblingButton(ButtonGroup group, boolean isSelectNext) {
             AbstractButton adjacentToSelected = null;
             AbstractButton adjacentToFocused = null;
             if (isSelectNext) {
