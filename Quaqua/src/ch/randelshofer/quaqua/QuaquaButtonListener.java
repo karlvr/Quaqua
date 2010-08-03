@@ -109,6 +109,24 @@ public class QuaquaButtonListener extends BasicButtonListener {
             ButtonModel model = b.getModel();
             model.setPressed(false);
             model.setArmed(false);
+
+            // restore focus in the button group
+            if (!model.isSelected() && b.hasFocus()) {
+                if (model instanceof DefaultButtonModel) {
+                    ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                    if (grp != null) {
+                        boolean groupHasFocus = false;
+                        for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
+                            AbstractButton grpButton = (AbstractButton) i.nextElement();
+                            if (grpButton.isSelected()) {
+                                b.requestFocus();
+                                break;
+                            }
+                        }
+                        b.setFocusable(false);
+                    }
+                }
+            }
         }
     }
 
@@ -186,9 +204,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
      */
     static void loadActionMap(QuaquaLazyActionMap map) {
         map.put(new Actions(Actions.PRESS));
-	map.put(new Actions(Actions.RELEASE));
+        map.put(new Actions(Actions.RELEASE));
         map.put(new Actions(Actions.SELECT_NEXT_BUTTON));
-	map.put(new Actions(Actions.SELECT_PREVIOUS_BUTTON));
+        map.put(new Actions(Actions.SELECT_PREVIOUS_BUTTON));
     }
 
     /** Keyboard action for selecting the next/previous button in a radio
