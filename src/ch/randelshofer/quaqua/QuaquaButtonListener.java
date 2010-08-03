@@ -119,7 +119,7 @@ public class QuaquaButtonListener extends BasicButtonListener {
                         for (Enumeration i = grp.getElements(); i.hasMoreElements();) {
                             AbstractButton grpButton = (AbstractButton) i.nextElement();
                             if (grpButton.isSelected()) {
-                                b.requestFocus();
+                                grpButton.requestFocus();
                                 break;
                             }
                         }
