@@ -62,6 +62,7 @@ public class TableTest extends javax.swing.JPanel {
             return data[0].length;
         }
 
+        @Override
         public String getColumnName(int column) {
             return columnNames[column];
         }
@@ -70,14 +71,17 @@ public class TableTest extends javax.swing.JPanel {
             return data[row][column];
         }
 
+        @Override
         public void setValueAt(Object value, int row, int column) {
             data[row][column] = value;
         }
 
+        @Override
         public boolean isCellEditable(int row, int column) {
             return column != 2;
         }
 
+        @Override
         public Class getColumnClass(int column) {
 
             return columnClasses[column];
@@ -116,8 +120,6 @@ public class TableTest extends javax.swing.JPanel {
         cm.getColumn(4).setCellRenderer(new DefaultCellRenderer(comboBox = new JComboBox(rendererComboModel)));
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox = new JComboBox(editorComboModel)));
         plainTable.putClientProperty("Quaqua.Table.style", "plain");
-        plainTable.getColumnModel().setColumnSelectionAllowed(true);
-        plainTable.setRowSelectionAllowed(true);
 
         stripedTable.setModel(new MyTableModel());
         rendererComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
@@ -137,13 +139,13 @@ public class TableTest extends javax.swing.JPanel {
         stripedTable.setShowHorizontalLines(false);
         stripedTable.setShowVerticalLines(true);
 
-        largeFontTable.setModel(new MyTableModel());
+        bigFontTable.setModel(new MyTableModel());
         JCheckBox cb = new JCheckBox();
         cb.setHorizontalAlignment(SwingConstants.CENTER);
-        largeFontTable.setDefaultEditor(Boolean.class, new DefaultCellEditor2(cb));
+        bigFontTable.setDefaultEditor(Boolean.class, new DefaultCellEditor2(cb));
         rendererComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
         editorComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
-        cm = largeFontTable.getColumnModel();
+        cm = bigFontTable.getColumnModel();
         cm.getColumn(0).setPreferredWidth(30);
         cm.getColumn(1).setPreferredWidth(160);
         cm.getColumn(2).setPreferredWidth(40);
@@ -154,7 +156,7 @@ public class TableTest extends javax.swing.JPanel {
         comboBox = new JComboBox(editorComboModel);
         comboBox.setEditable(true);
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox));
-        largeFontTable.setRowHeight(largeFontTable.getRowHeight() + 7);
+        bigFontTable.setRowHeight(bigFontTable.getRowHeight() + 7);
         //largeFontTable.setEnabled(false);
 
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
@@ -196,12 +198,14 @@ public class TableTest extends javax.swing.JPanel {
         stripedTable = new javax.swing.JTable();
         jLabel15 = new javax.swing.JLabel();
         jSeparator12 = new javax.swing.JSeparator();
-        largeTableScrollPane = new javax.swing.JScrollPane();
-        largeFontTable = new javax.swing.JTable();
+        bigFontTableScrollPane = new javax.swing.JScrollPane();
+        bigFontTable = new javax.swing.JTable();
         jLabel16 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        showVerticalLinesCheckBox = new javax.swing.JCheckBox();
         showHorizontalLinesCheckBox = new javax.swing.JCheckBox();
+        showVerticalLinesCheckBox = new javax.swing.JCheckBox();
+        allowRowSelectionCheckBox = new javax.swing.JCheckBox();
+        allowColumnSelectionCheckBox = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -269,12 +273,12 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
         add(jSeparator12, gridBagConstraints);
 
-        largeTableScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        largeTableScrollPane.setEnabled(false);
+        bigFontTableScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        bigFontTableScrollPane.setEnabled(false);
 
-        largeFontTable.setFont(new java.awt.Font("Lucida Grande", 0, 16));
-        largeFontTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
-        largeTableScrollPane.setViewportView(largeFontTable);
+        bigFontTable.setFont(new java.awt.Font("Lucida Grande", 0, 16));
+        bigFontTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        bigFontTableScrollPane.setViewportView(bigFontTable);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -286,9 +290,9 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
-        add(largeTableScrollPane, gridBagConstraints);
+        add(bigFontTableScrollPane, gridBagConstraints);
 
-        jLabel16.setText("Large Font");
+        jLabel16.setText("Big Font");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -302,20 +306,6 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(6, 0, 0, 0);
         add(jSeparator1, gridBagConstraints);
 
-        showVerticalLinesCheckBox.setText("Show vertical lines");
-        showVerticalLinesCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                updateShowVerticalLines(evt);
-            }
-        });
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.weightx = 0.5;
-        gridBagConstraints.insets = new java.awt.Insets(0, 12, 0, 0);
-        add(showVerticalLinesCheckBox, gridBagConstraints);
-
         showHorizontalLinesCheckBox.setText("Show horizontal lines");
         showHorizontalLinesCheckBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -324,10 +314,43 @@ public class TableTest extends javax.swing.JPanel {
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
-        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(showHorizontalLinesCheckBox, gridBagConstraints);
+
+        showVerticalLinesCheckBox.setText("Show vertical lines");
+        showVerticalLinesCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateShowVerticalLines(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(showVerticalLinesCheckBox, gridBagConstraints);
+
+        allowRowSelectionCheckBox.setSelected(true);
+        allowRowSelectionCheckBox.setText("Allow row selection");
+        allowRowSelectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateRowSelection(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(allowRowSelectionCheckBox, gridBagConstraints);
+
+        allowColumnSelectionCheckBox.setText("Allow column selection");
+        allowColumnSelectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                updateColumnSelection(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(allowColumnSelectionCheckBox, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateShowVerticalLines(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShowVerticalLines
@@ -355,15 +378,43 @@ public class TableTest extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_updateShowHorizontalLines
+
+    private void updateRowSelection(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateRowSelection
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
+            Component c = getComponent(i);
+            if (c instanceof JScrollPane) {
+                c = ((JScrollPane) c).getViewport().getView();
+            }
+            if (c instanceof JTable) {
+                JTable table = (JTable) c;
+                table.setRowSelectionAllowed(allowRowSelectionCheckBox.isSelected());
+            }
+        }
+    }//GEN-LAST:event_updateRowSelection
+
+    private void updateColumnSelection(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateColumnSelection
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
+            Component c = getComponent(i);
+            if (c instanceof JScrollPane) {
+                c = ((JScrollPane) c).getViewport().getView();
+            }
+            if (c instanceof JTable) {
+                JTable table = (JTable) c;
+                table.getColumnModel().setColumnSelectionAllowed(allowColumnSelectionCheckBox.isSelected());
+            }
+        }
+    }//GEN-LAST:event_updateColumnSelection
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox allowColumnSelectionCheckBox;
+    private javax.swing.JCheckBox allowRowSelectionCheckBox;
+    private javax.swing.JTable bigFontTable;
+    private javax.swing.JScrollPane bigFontTableScrollPane;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
-    private javax.swing.JTable largeFontTable;
-    private javax.swing.JScrollPane largeTableScrollPane;
     private javax.swing.JTable plainTable;
     private javax.swing.JScrollPane plainTableScrollPane;
     private javax.swing.JCheckBox showHorizontalLinesCheckBox;
