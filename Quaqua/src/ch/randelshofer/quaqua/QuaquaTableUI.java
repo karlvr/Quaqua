@@ -471,7 +471,15 @@ public class QuaquaTableUI extends BasicTableUI
             if (component.getFont() instanceof UIResource) {
                 component.setFont(table.getFont());
             }
-
+            // Unless a background color has been explicitly set on the editor,
+            // we set the background color used by the table.
+            if (component.getBackground() instanceof UIResource) {
+                if (isStriped) {
+                    component.setBackground(getAlternateColor(row % 2));
+                } else {
+                    component.setBackground(table.getBackground());
+                }
+            }
             component.setBounds(cellRect);
             component.validate();
         } else {
@@ -999,7 +1007,7 @@ public class QuaquaTableUI extends BasicTableUI
             int leadColumn = getAdjustedLead(table, false);
             if (leadRow != -1 && leadColumn != -1 && !table.isEditing()) {
                 // We only start editing if the meta key is not down.
-                if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK)==0) {
+                if ((e.getModifiersEx() & InputEvent.META_DOWN_MASK) == 0) {
                     if (!table.editCellAt(leadRow, leadColumn)) {
                         return;
                     }
