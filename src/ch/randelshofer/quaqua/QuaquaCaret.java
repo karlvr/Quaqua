@@ -39,11 +39,18 @@ public class QuaquaCaret extends DefaultCaret
 
     @Override
     public void setVisible(boolean bool) {
-        if (bool == true) {
-            // Don't display the caret, if text is selected
-            bool = getDot() == getMark();
-        }
+            if (bool == true) {
+            // Don't display the caret if text is selected.
+                bool = getDot() == getMark();
+            }
         super.setVisible(bool);
+    }
+
+    public boolean isVisible() {
+        boolean bool = super.isVisible();
+        // Display non-blinking caret when component is non-editable.
+        bool|= !getComponent().isEditable() && getComponent().isFocusOwner();
+        return bool;
     }
 
     @Override
@@ -54,13 +61,26 @@ public class QuaquaCaret extends DefaultCaret
         super.fireStateChanged();
     }
 
+    /**
+     * Called when the component containing the caret gains
+     * focus.  This is implemented to set the caret to visible
+     * if the component is editable.
+     *
+     * @param e the focus event
+     * @see FocusListener#focusGained
+     */
     @Override
     public void focusGained(FocusEvent focusevent) {
-        JTextComponent textComponent = getComponent();
-        if (textComponent.isEnabled()) {
+        JTextComponent component = getComponent();
+        if (component.isEnabled()) {
             isFocused = true;
         }
-        super.focusGained(focusevent);
+        if (component.isEnabled()) {
+            // if (component.isEditable()) {
+            setVisible(true);
+            // }
+            setSelectionVisible(true);
+        }
     }
 
     @Override
