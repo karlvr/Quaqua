@@ -42,7 +42,7 @@
              -->
         <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
 
-        <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5" />
+        <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0" />
         <property name="j2se5.bootclasspath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
         <property name="j2se5.classpath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
         <property name="j2se5.extdirs" value="." />
@@ -60,7 +60,20 @@
         <!-- Both srcdir and builddir should be package roots. -->
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
-        
+        <!-- Compile BasicQuaquaLookAndFeel against J2SE6 classpath -->
+        <javac bootclasspath="${j2se6.bootclasspath}"
+                classpath="${j2se6.classpath}"
+                fork="true"
+                source="1.5" target="1.5" encoding="UTF-8"
+                srcdir="${src}" destdir="${builddir}"
+                debug="${debug}" optimize="true"
+                deprecation="true"
+                extdirs="${j2se6.extdirs}"
+                >
+            <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
+            <include name="ch/randelshofer/quaqua/BasicQuaquaLookAndFeel.java"/>
+            <include name="ch/randelshofer/quaqua/LookAndFeelProxy.java"/>
+        </javac>
         <!-- Compile swing-layout for Java 1.5 -->
         <javac bootclasspath="${j2se5.bootclasspath}"
                 classpath="${j2se5.classpath}"
@@ -86,8 +99,9 @@
                 >
             <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
             <exclude name="**/*16*.java"/>
+            <exclude name="ch/randelshofer/quaqua/QuaquaTextFieldFocusHandler.java"/>
         </javac>
-        <!-- Compile classes which require Java 1.6 -->
+        <!-- Compile remaining classes -->
         <javac bootclasspath="${j2se6.bootclasspath}"
                 classpath="${j2se6.classpath}"
                 fork="true"
@@ -98,7 +112,6 @@
                 extdirs="${j2se6.extdirs}"
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
-            <include name="**/*16*.java"/>
         </javac>
 
         <!-- copy resources to the builddir -->
