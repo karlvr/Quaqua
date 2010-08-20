@@ -117,6 +117,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     public static boolean isOnActiveWindow(Component c) {
         return isOnActiveWindow(c, false);
     }
+
     /**
      * Returns true if the component is on a Dialog or a Frame, which is active,
      * or if it is on a Window, which is focused.
@@ -148,10 +149,10 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                     || window.getName() == "###focusableSwingPopup###";// literal strings get interned
         } else if ((window instanceof Frame) || (window instanceof Dialog)) {
             isOnActiveWindow = window.isActive();
-            if (! isOnActiveWindow && isActiveWhenSheetIsActive) {
+            if (!isOnActiveWindow && isActiveWhenSheetIsActive) {
                 Window focusedWindow = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
-                isOnActiveWindow= focusedWindow!=null && focusedWindow.getOwner()==window;
-                
+                isOnActiveWindow = focusedWindow != null && focusedWindow.getOwner() == window;
+
                 // we return here, because we don't want to change the "Frame.active"
                 // property.
                 return isOnActiveWindow;

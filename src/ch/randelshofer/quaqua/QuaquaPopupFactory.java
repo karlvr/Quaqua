@@ -569,21 +569,25 @@ public class QuaquaPopupFactory extends PopupFactory {
         Component createComponent(Component owner) {
             final JWindow wnd;
             Component c = wnd = new JWindow(SwingUtilities.getWindowAncestor(owner));
+            // Set window name. We need this in BasicPopupMenuUI
+            // to identify focusable popup window.
+            wnd.setName("###focusableSwingPopup###");
             wnd.getRootPane().putClientProperty("Window.shadow", Boolean.TRUE);
             wnd.setAlwaysOnTop(true);
             Float windowAlpha = new Float(0.948);
             if (contents instanceof JComponent) {
-                Object value= ((JComponent)contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
+                Object value = ((JComponent) contents).getClientProperty(QuaquaPopupMenuUI.WINDOW_ALPHA_PROPERTY);
                 if (value instanceof Float) {
-                    windowAlpha = (Float)value;
+                    windowAlpha = (Float) value;
                 }
             }
             wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha);
             wnd.setBackground(new Color(0xffffff, true));
             wnd.addComponentListener(new ComponentListener() {
+
                 private void updateShadow() {
-                    Object oldValue=wnd.getRootPane().getClientProperty("apple.awt.windowShadow.revalidateNow");
-                    wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", (oldValue instanceof Integer)?((Integer)oldValue)+1:1);
+                    Object oldValue = wnd.getRootPane().getClientProperty("apple.awt.windowShadow.revalidateNow");
+                    wnd.getRootPane().putClientProperty("apple.awt.windowShadow.revalidateNow", (oldValue instanceof Integer) ? ((Integer) oldValue) + 1 : 1);
                 }
 
                 public void componentResized(ComponentEvent e) {
