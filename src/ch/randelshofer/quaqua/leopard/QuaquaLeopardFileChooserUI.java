@@ -526,7 +526,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         browser.addMouseListener(createDoubleClickListener(fc));
         browser.setFixedCellWidth(170);
         browserScrollPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 2, 3, 2));
-        browserScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+        //browserScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
         browser.setShowCellTipOrigin((Point) UIManager.get("FileChooser.cellTipOrigin"));
         browser.setShowCellTips(true);
 
