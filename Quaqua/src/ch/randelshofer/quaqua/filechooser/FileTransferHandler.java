@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua.filechooser;
 
 import java.awt.datatransfer.*;
@@ -18,6 +17,7 @@ import java.awt.dnd.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.*;
+
 /**
  * FileTransferHandler.
  *
@@ -25,17 +25,18 @@ import javax.swing.*;
  * @version $Id$
  */
 public class FileTransferHandler implements DropTargetListener {
+
     private JFileChooser fileChooser;
-    
+
     /** Creates a new instance. */
     public FileTransferHandler(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
-    
+
     public void setFileChooser(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
     }
-    
+
     /**
      * Called while a drag operation is ongoing, when the mouse pointer enters
      * the operable part of the drop site for the <code>DropTarget</code>
@@ -45,10 +46,11 @@ public class FileTransferHandler implements DropTargetListener {
      */
     public void dragEnter(DropTargetDragEvent evt) {
         handleDrag(evt);
-        }
-    private void handleDrag(DropTargetDragEvent evt) { 
+    }
+
+    private void handleDrag(DropTargetDragEvent evt) {
         // Reject if flavor not supported
-        if (! evt.getCurrentDataFlavorsAsList().contains(DataFlavor.javaFileListFlavor)) {
+        if (!evt.getCurrentDataFlavorsAsList().contains(DataFlavor.javaFileListFlavor)) {
             evt.rejectDrag();
         }
         // Change drag operation or reject if no suitable operation available
@@ -60,7 +62,7 @@ public class FileTransferHandler implements DropTargetListener {
             }
         }
     }
-    
+
     /**
      * Called when a drag operation is ongoing, while the mouse pointer is still
      * over the operable part of the drop site for the <code>DropTarget</code>
@@ -71,7 +73,7 @@ public class FileTransferHandler implements DropTargetListener {
     public void dragOver(DropTargetDragEvent evt) {
         handleDrag(evt);
     }
-    
+
     /**
      * Called if the user has modified
      * the current drop gesture.
@@ -81,7 +83,7 @@ public class FileTransferHandler implements DropTargetListener {
     public void dropActionChanged(DropTargetDragEvent evt) {
         handleDrag(evt);
     }
-    
+
     /**
      * Called while a drag operation is ongoing, when the mouse pointer has
      * exited the operable part of the drop site for the
@@ -91,7 +93,7 @@ public class FileTransferHandler implements DropTargetListener {
      */
     public void dragExit(DropTargetEvent evt) {
     }
-    
+
     /**
      * Called when the drag operation has terminated with a drop on
      * the operable part of the drop site for the <code>DropTarget</code>
@@ -138,7 +140,37 @@ public class FileTransferHandler implements DropTargetListener {
         try {
             if (fileChooser != null) {
                 List files = (List) evt.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                fileChooser.setSelectedFiles((File[]) files.toArray(new File[files.size()]));
+                File[] fileArray = (File[]) files.toArray(new File[files.size()]);
+                if (fileArray.length > 0) {
+                    if (fileChooser.getUI() instanceof SubtreeFileChooserUI) {
+                        // The file chooser has a settable root directory.
+                        // -> Determine which directory to set as the root.
+                        File dir = fileArray[0];
+
+                        if (dir.isDirectory() && fileArray.length==1 //
+                                && fileChooser.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
+                            // The user dropped a directory on a file chooser which
+                            // only selects files
+                            // -> Make the directory the root of the file chooser.
+
+                            ((SubtreeFileChooserUI) fileChooser.getUI()).setRootDirectory(dir);
+                        } else {
+                            // The user dropped a directory on a file chooser which
+                            // selects files or directories (or both)
+                            // -> Make the parent directory the root of the file chooser.
+
+                            dir = dir.getParentFile();
+                            if (dir != null) {
+                                ((SubtreeFileChooserUI) fileChooser.getUI()).setRootDirectory(dir);
+                            }
+                            fileChooser.setSelectedFiles(fileArray);
+                        }
+                    } else {
+                        // The file chooser has not a settable root directory.
+                        // -> Just set the selected files.
+                        fileChooser.setSelectedFiles(fileArray);
+                    }
+                }
             }
             success = true;
         } catch (UnsupportedFlavorException e) {

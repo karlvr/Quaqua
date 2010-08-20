@@ -39,7 +39,7 @@ import java.util.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
+public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements SubtreeFileChooserUI {
 
     // Implementation derived from MetalFileChooserUI
     /* Models. */
@@ -1051,6 +1051,33 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
         return new BrowserSelectionListener();
     }
 
+    public void setRootDirectory(File file) {
+        if (file != null) {
+            JFileChooser fc = getFileChooser();
+            if (file.isDirectory() /*&& fc.isTraversable(file)*/) {
+                isAdjusting++;
+                TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
+                subtreeModel.setPathToRoot(fullPath);
+                getFileSystemTreeModel().lazyInvalidatePath(fullPath);
+
+                // XXX - Bogus.
+                //       We can not set a non-traversable directory as
+                //       the current directory in a JFileChooser.
+                //       But we have to be able to do this, because we
+                //       want to be able to browse the contents of a resource
+                //       bundle using the file chooser.
+                if (fc.isTraversable(file)) {
+                    fc.setCurrentDirectory(file);
+                }
+                TreePath dirPath = subtreeModel.toSubPath(fullPath);
+                browser.setSelectionPath(dirPath);
+                browser.ensurePathIsVisible(dirPath);
+                directoryComboBoxModel.setPath(fullPath);
+                isAdjusting--;
+            }
+        }
+    }
+
     /**
      * Selection listener for the list of files and directories.
      */
@@ -1748,40 +1775,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
                 JFileChooser fc = getFileChooser();
                 File dir = chosenNode.getResolvedFile();
-                isAdjusting++;
-                TreePath fullPath = getFileSystemTreeModel().toPath(dir, subtreeModel.getPathToRoot());
-                getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                fc.setCurrentDirectory(dir);
-                TreePath dirPath = subtreeModel.toSubPath(fullPath);
-                TreePath selectionPath = dirPath;
-
-                // XXX - This code occurs two times in this class - move it into a method
-                FileInfo sidebarFileInfo = null;
-                int sidebarSelectionIndex = -1;
-                for (int i = 0, n = sidebarList.getModel().getSize(); i < n; i++) {
-                    Object item = sidebarList.getModel().getElementAt(i);
-                    if (item instanceof FileInfo) {
-                        FileInfo info = (FileInfo) item;
-                        if (info.getResolvedFile() != null && info.getResolvedFile().equals(dir)) {
-                            sidebarFileInfo = info;
-                            sidebarSelectionIndex = i;
-                            break;
-                        }
-                    }
-                }
-                if (sidebarFileInfo != null) {
-                    TreePath sidebarPath = model.toPath(sidebarFileInfo.getResolvedFile(), selectionPath);
-                    subtreeModel.setPathToRoot(sidebarPath);
-                    sidebarList.setSelectedIndex(sidebarSelectionIndex);
-                    dirPath = subtreeModel.toSubPath(dirPath);
-                } else {
-                    subtreeModel.setPathToRoot(new TreePath(model.getRoot()));
-                    sidebarList.clearSelection();
-                }
-                browser.setSelectionPath(dirPath);
-                browser.ensurePathIsVisible(dirPath);
-                model.lazyInvalidatePath(dirPath);
-                isAdjusting--;
+                setRootDirectory(dir);
             }
         }
     }
@@ -1935,9 +1929,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
 
             // Setup Options
             optionPane.setOptions(new Object[]{
-                UIManager.getString("FileChooser.createFolderButtonText"),
-                UIManager.getString("FileChooser.cancelButtonText")
-            });
+                        UIManager.getString("FileChooser.createFolderButtonText"),
+                        UIManager.getString("FileChooser.cancelButtonText")
+                    });
             optionPane.setInitialValue(UIManager.getString("FileChooser.createFolderButtonText"));
 
             // Show the dialog
@@ -2192,26 +2186,20 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI {
                 if (sidebarList.getSelectedValue() instanceof FileInfo) {
                     FileInfo info = (FileInfo) sidebarList.getSelectedValue();
                     File file = info.lazyGetResolvedFile();
-                    if (file != null) {
-                        JFileChooser fc = getFileChooser();
-                        if (file.isDirectory() && fc.isTraversable(file)) {
-                            isAdjusting++;
-                            TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
-                            subtreeModel.setPathToRoot(fullPath);
-                            getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                            fc.setCurrentDirectory(file);
-                            TreePath dirPath = subtreeModel.toSubPath(fullPath);
-                            browser.setSelectionPath(dirPath);
-                            browser.ensurePathIsVisible(dirPath);
-                            isAdjusting--;
+                    setRootDirectory(file);
+                    
+                    isAdjusting++;
+                    JFileChooser fc = getFileChooser();
+                    if (file.isDirectory() && fc.isTraversable(file)) {
+                        fc.setCurrentDirectory(file);
+                    } else {
+                        if (fc.isMultiSelectionEnabled()) {
+                            fc.setSelectedFiles(new File[]{file});
                         } else {
-                            if (fc.isMultiSelectionEnabled()) {
-                                fc.setSelectedFiles(new File[]{file});
-                            } else {
-                                fc.setSelectedFile(file);
-                            }
+                            fc.setSelectedFile(file);
                         }
                     }
+                    isAdjusting--;
                 }
             }
         }

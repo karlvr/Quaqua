@@ -75,7 +75,7 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     }
 
     public boolean isLeaf(Object node) {
-        return target.isLeaf(node);
+        return node!=getRoot()&&target.isLeaf(node);
     }
 
     public TreePath toFullPath(TreePath subtreePath) {

@@ -284,14 +284,16 @@ public class FileSystemTreeModel implements TreeModel {
         // Create node
         Node node;
         if (isAlias) {
-            if (isDirectory && isTraversable) {
+            if (isDirectory) {
                 node = new AliasDirectoryNode(f, resolvedFile, isHidden);
+                node.setTraversable(isTraversable);
             } else {
                 node = new AliasNode(f, resolvedFile, isHidden);
             }
         } else {
-            if (isDirectory && isTraversable) {
+            if (isDirectory) {
                 node = new DirectoryNode(f, isHidden);
+                node.setTraversable(isTraversable);
             } else {
                 node = new Node(f, isHidden);
             }
@@ -364,7 +366,7 @@ public class FileSystemTreeModel implements TreeModel {
 
             // If the file path is not valid, we may encounter a leaf node.
             // We must not try to add a child to it, therefore we break here.
-            if (node.isLeaf() || node.isAlias()) {
+            if (!node.getAllowsChildren() || node.isAlias()) {
                 break;
             }
 
@@ -814,7 +816,6 @@ public class FileSystemTreeModel implements TreeModel {
             this.file = f;
             this.userName = userName;
             this.isHidden=isHidden;
-            //update();
         }
 
         /**
@@ -868,6 +869,13 @@ public class FileSystemTreeModel implements TreeModel {
 
         public boolean isAlias() {
             return false;
+        }
+
+        /** Changes the traversability of a directory node.
+         * This method has no effect on non-directory nodes.
+         */
+        public void setTraversable(boolean newValue) {
+
         }
 
         /**
@@ -1147,6 +1155,9 @@ public class FileSystemTreeModel implements TreeModel {
          */
         private Runnable validator;
 
+        /** Whether the directory is traversable. */
+        private boolean isTraversable=true;
+
         private class DirectoryValidator implements Runnable {
 
             /**
@@ -1231,12 +1242,12 @@ public class FileSystemTreeModel implements TreeModel {
                     if (freshIsAlias) {
                         resolvedFreshFile = OSXFile.resolveAlias(freshFile, true);
                         if (resolvedFreshFile == null) {
-                            freshIsTraversable = freshIsDirectory = false;
+                            freshIsTraversable = false;
                         } else {
-                            freshIsTraversable = freshIsDirectory = fileChooser.isTraversable(resolvedFreshFile);
+                            freshIsTraversable = fileChooser.isTraversable(resolvedFreshFile);
                         }
                     } else {
-                        freshIsTraversable = freshIsDirectory = fileChooser.isTraversable(freshFile);
+                        freshIsTraversable = fileChooser.isTraversable(freshFile);
                         resolvedFreshFile = freshFile;
                     }
                     boolean freshIsHidden=fsv.isHiddenFile(freshFile);
@@ -1248,14 +1259,18 @@ public class FileSystemTreeModel implements TreeModel {
                         //       Changes applied to this code may also have to
                         //       be done in the other method.
                         if (freshIsAlias) {
-                            if (freshIsDirectory && freshIsTraversable) {
-                                freshNodeList.add(new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden));
+                            if (freshIsDirectory ) {
+                                Node n=new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden);
+                                n.setTraversable(freshIsTraversable);
+                                freshNodeList.add(n);
                             } else {
                                 freshNodeList.add(new AliasNode(freshFile, resolvedFreshFile, freshIsHidden));
                             }
                         } else {
-                            if (freshIsDirectory && freshIsTraversable) {
-                                freshNodeList.add(new DirectoryNode(freshFile, freshIsHidden));
+                            if (freshIsDirectory) {
+                                Node n=new DirectoryNode(freshFile, freshIsHidden);
+                                n.setTraversable(freshIsTraversable);
+                                freshNodeList.add(n);
                             } else {
                                 freshNodeList.add(new Node(freshFile, freshIsHidden));
                             }
@@ -1320,7 +1335,7 @@ public class FileSystemTreeModel implements TreeModel {
                                 // when a file gets replaced by a directory of the same name
                                 // or vice versa.
                                 if (comparison == 0) {
-                                    if (freshNodes[freshIndex].isLeaf() != oldNodes[oldIndex].isLeaf()) {
+                                    if (freshNodes[freshIndex].getAllowsChildren() != oldNodes[oldIndex].getAllowsChildren()) {
                                         comparison = -1;
                                     }
                                 }
@@ -1468,6 +1483,13 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public String getFileKind() {
             return "folder";
+        }
+        /** Changes the traversability of a directory node.
+         * This method has no effect on non-directory nodes.
+         */
+        @Override
+        public void setTraversable(boolean newValue) {
+            isTraversable=newValue;
         }
 
         /**
@@ -1632,7 +1654,7 @@ public class FileSystemTreeModel implements TreeModel {
 
         @Override
         public boolean isLeaf() {
-            return false;
+            return !isTraversable;
         }
 
         @Override
