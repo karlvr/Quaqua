@@ -13,7 +13,6 @@
 package test;
 
 import ch.randelshofer.quaqua.QuaquaManager;
-import com.sun.java.swing.SwingUtilities3;
 import java.security.AccessControlException;
 import java.util.Arrays;
 import java.util.HashSet;
