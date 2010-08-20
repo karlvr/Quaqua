@@ -13,6 +13,7 @@
 
 package test;
 
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -29,6 +30,15 @@ public class OptionPaneTest extends javax.swing.JPanel {
     /** Creates new form. */
     public OptionPaneTest() {
         initComponents();
+    }
+
+    private Window getWindowAncestor(Component c) {
+        for(Container p = c.getParent(); p != null; p = p.getParent()) {
+            if (p instanceof Window) {
+                return (Window)p;
+            }
+        }
+        return null;
     }
     
     /** This method is called from within the constructor to
@@ -420,7 +430,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
      JTable table = new JTable (tableModel);
      JScrollPane sp = new JScrollPane (table);
      final JOptionPane op = new JOptionPane (sp);
-     final JDialog d = new JDialog (SwingUtilities.getWindowAncestor(this) );
+     final JDialog d = new JDialog ((Frame)getWindowAncestor(this) );
     d.add (op);
     d.setSize (600, 400);
     d.setLocationRelativeTo (this);
