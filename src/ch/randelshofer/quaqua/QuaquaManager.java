@@ -325,7 +325,7 @@ public class QuaquaManager {
             }
         } catch (IOException e) {
             System.err.println("Warning: "+QuaquaManager.class+".updateAvailableLAFs() couldn't access resource file \"laf.txt\".");
-            e.printStackTrace();
+           // e.printStackTrace();
             
             // Fall back to default values
             lafs.put("Jaguar.15","ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");

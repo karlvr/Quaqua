@@ -40,7 +40,7 @@ import java.util.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
+public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements SubtreeFileChooserUI {
     // Implementation derived from MetalFileChooserUI
     /* Models. */
 
@@ -1112,7 +1112,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
         File selectedFile = getFileChooser().getSelectedFile();
         /*
         // ignore directory changes to the directory of the selected file
-        if (dir != null && selectedFile != null && 
+        if (dir != null && selectedFile != null &&
         (dir.equals(selectedFile) || dir.equals(selectedFile.getParentFile()))) {
         return; // nothing do to
         }*/
@@ -1396,6 +1396,34 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 && !fileNameTextField.hasFocus()
                 && (filename == null || !fileNameTextField.getText().equals(filename))) {
             fileNameTextField.setText(filename);
+        }
+    }
+
+    /** Sets the root directory of the subtree. */
+    public void setRootDirectory(File file) {
+        if (file != null) {
+            JFileChooser fc = getFileChooser();
+            if (file.isDirectory() /*&& fc.isTraversable(file)*/) {
+                isAdjusting++;
+                TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
+                subtreeModel.setPathToRoot(fullPath);
+                getFileSystemTreeModel().lazyInvalidatePath(fullPath);
+                
+                // XXX - Bogus.
+                //       We can not set a non-traversable directory as
+                //       the current directory in a JFileChooser.
+                //       But we have to be able to do this, because we
+                //       want to be able to browse the contents of a resource
+                //       bundle using the file chooser.
+                if (fc.isTraversable(file)) {
+                    fc.setCurrentDirectory(file);
+                }
+                TreePath dirPath = subtreeModel.toSubPath(fullPath);
+                browser.setSelectionPath(dirPath);
+                browser.ensurePathIsVisible(dirPath);
+                directoryComboBoxModel.setPath(fullPath);
+                isAdjusting--;
+            }
         }
     }
 
@@ -1782,40 +1810,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
 
                 JFileChooser fc = getFileChooser();
                 File dir = chosenNode.getResolvedFile();
-                isAdjusting++;
-                TreePath fullPath = getFileSystemTreeModel().toPath(dir, subtreeModel.getPathToRoot());
-                getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                fc.setCurrentDirectory(dir);
-                TreePath dirPath = subtreeModel.toSubPath(fullPath);
-                TreePath selectionPath = dirPath;
-
-                TreePath sidebarSelectionPath = null;
-                FileInfo sidebarFileInfo = null;
-                // XXX - This code occurs two times in this class - move it into a method
-                for (Enumeration i = ((DefaultMutableTreeNode) sidebarTree.getModel().getRoot()).preorderEnumeration(); i.hasMoreElements();) {
-                    DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
-                    if (node instanceof FileInfo) {
-                        FileInfo info = (FileInfo) node;
-                        if (info.getResolvedFile() != null && info.getResolvedFile().equals(dir)) {
-                            sidebarFileInfo = info;
-                            sidebarSelectionPath = new TreePath(node.getPath());
-                            break;
-                        }
-                    }
-                }
-                if (sidebarFileInfo != null) {
-                    TreePath sidebarPath = model.toPath(sidebarFileInfo.getResolvedFile(), selectionPath);
-                    subtreeModel.setPathToRoot(sidebarPath);
-                    sidebarTree.setSelectionPath(sidebarSelectionPath);
-                    dirPath = subtreeModel.toSubPath(dirPath);
-                } else {
-                    subtreeModel.setPathToRoot(new TreePath(model.getRoot()));
-                    sidebarTree.clearSelection();
-                }
-                browser.setSelectionPath(dirPath);
-                browser.ensurePathIsVisible(dirPath);
-                model.lazyInvalidatePath(dirPath);
-                isAdjusting--;
+                setRootDirectory(dir);
             }
         }
     }
@@ -2241,32 +2236,26 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI {
                 if (sidebarTree.getSelectionPath().getLastPathComponent() instanceof FileInfo) {
                     FileInfo info = (FileInfo) sidebarTree.getSelectionPath().getLastPathComponent();
                     File file = info.lazyGetResolvedFile();
-                    if (file != null) {
-                        JFileChooser fc = getFileChooser();
-                        if (file.isDirectory() && fc.isTraversable(file)) {
-                            isAdjusting++;
-                            TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
-                            subtreeModel.setPathToRoot(fullPath);
-                            getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                            fc.setCurrentDirectory(file);
-                            TreePath dirPath = subtreeModel.toSubPath(fullPath);
-                            browser.setSelectionPath(dirPath);
-                            browser.ensurePathIsVisible(dirPath);
-                            isAdjusting--;
+                    setRootDirectory(file);
+
+                    isAdjusting++;
+                    JFileChooser fc = getFileChooser();
+                    if (file.isDirectory() && fc.isTraversable(file)) {
+                        fc.setCurrentDirectory(file);
+                    } else {
+                        if (fc.isMultiSelectionEnabled()) {
+                            fc.setSelectedFiles(new File[]{file});
                         } else {
-                            if (fc.isMultiSelectionEnabled()) {
-                                fc.setSelectedFiles(new File[]{file});
-                            } else {
-                                fc.setSelectedFile(file);
-                            }
+                            fc.setSelectedFile(file);
                         }
                     }
+                    isAdjusting--;
+                    /*
+                    TreePath path = subtreeModel.getPathToRoot();
+                    getFileSystemTreeModel().lazyInvalidatePath(path);
+                    getFileSystemTreeModel().validatePath(path);
+                     */
                 }
-                /*
-                TreePath path = subtreeModel.getPathToRoot();
-                getFileSystemTreeModel().lazyInvalidatePath(path);
-                getFileSystemTreeModel().validatePath(path);
-                 */
             }
         }
     }
