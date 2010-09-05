@@ -15,6 +15,7 @@ package test;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 
 /**
  * @author: Thomas Singer
@@ -29,7 +30,7 @@ public class QQToolBarTest16 {
             public void run() {
                 final JFrame frame = new JFrame("Toolbar test");
                 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-               frame.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
+                frame.getRootPane().putClientProperty("apple.awt.brushMetalLook", Boolean.TRUE);
                 frame.setContentPane(createContentPane());
                 frame.pack();
                 frame.setMinimumSize(frame.getMinimumSize());
@@ -99,8 +100,8 @@ public class QQToolBarTest16 {
         toolBar.setOpaque(false);
         toolBar.putClientProperty("Quaqua.ToolBar.isDividerDrawn", Boolean.FALSE);
 
-        final JComponent treeScroller = new JScrollPane(new JTree(new Object[]{"foo", "bar"}));
-
+        JScrollPane treeScroller = new JScrollPane(new JTree(new Object[]{"foo", "bar"}));
+        treeScroller.setBorder(null);
         return createComponent("Directories", toolBar, treeScroller);
     }
 
@@ -112,14 +113,15 @@ public class QQToolBarTest16 {
         toolBar.setOpaque(false);
         toolBar.putClientProperty("Quaqua.ToolBar.isDividerDrawn", Boolean.FALSE);
 
-        final JComponent tableScroller = new JScrollPane(new JTable(new Object[][]{
+        JScrollPane tableScroller = new JScrollPane(new JTable(new Object[][]{
                     {"a", "bc"},
                     {"d", "ef"}
                 }, new Object[]{
                     "bla", "blub"
                 }));
-
-        return createComponent("Files", toolBar, tableScroller);
+        tableScroller.setBorder(new EmptyBorder(0,0,0,0));
+        JComponent c = createComponent("Files", toolBar, tableScroller);
+        return c;
     }
 
     private static JComponent createComponent(String title, JToolBar toolBar, JComponent scroller) {
