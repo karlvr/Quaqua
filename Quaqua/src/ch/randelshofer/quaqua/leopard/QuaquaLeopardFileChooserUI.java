@@ -1834,6 +1834,15 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             //       the JBrowser which does list selection.
             JFileChooser fc = getFileChooser();
             if (SwingUtilities.isLeftMouseButton(e) && e.getClickCount() == 2 && fc.getDialogType() != JFileChooser.SAVE_DIALOG) {
+
+                // Only react on double click if all selected files are
+                // acceptable
+                for (TreePath tp:browser.getSelectionPaths()) {
+                    FileSystemTreeModel.Node n =(FileSystemTreeModel.Node)tp.getLastPathComponent();
+                    if (! fc.accept(n.getFile())) {
+                        return;
+                    }
+                }
                 maybeApproveSelection(false);
             }
         }
@@ -1865,25 +1874,15 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 File f = new File(
                         ((FileSystemTreeModel.Node) selectedPaths[0].getLastPathComponent()).getResolvedFile().getParent(),
                         filename);
-                if (fc.accept(f)) {
-                    selectedFiles = new File[]{f};
-                } else {
-                    // Ignore double click on non-acceptable file.
-                    return;
-                }
+                selectedFiles = new File[]{f};
             } else {
                 ArrayList<File> a = new ArrayList<File>();
                 for (int i = 0; i < selectedPaths.length; i++) {
                     File f = ((FileSystemTreeModel.Node) selectedPaths[i].getLastPathComponent()).getResolvedFile();
-                    if (fc.accept(f)) {
-                        a.add(f);
-                    }
+                    a.add(f);
                 }
                 if (a.size() > 0) {
                     selectedFiles = a.toArray(new File[a.size()]);
-                } else {
-                    // Ignore double click on non-acceptable files.
-                    return;
                 }
             }
 
@@ -1905,11 +1904,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 selectedFile = new File((!node.isLeaf()) ? selectedFile : selectedFile.getParentFile(), filename);
             } else if (fc.getFileSelectionMode() == JFileChooser.FILES_ONLY && !node.isLeaf()) {
                 // Abort we cannot approve a directory
-                return;
-            }
-
-            if (!fc.accept(selectedFile)) {
-                // Ignore double click on non-acceptable file.
                 return;
             }
         }
