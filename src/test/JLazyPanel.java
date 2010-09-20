@@ -65,6 +65,7 @@ public class JLazyPanel extends javax.swing.JPanel {
             System.out.println("create "+childClassName+" "+(end-start));
             childClassName = null;
             start = end;
+            applyComponentOrientation(SwingUtilities.getRoot(this).getComponentOrientation());
             validate();
             end = System.currentTimeMillis();
             System.out.println("validate "+(end-start));
