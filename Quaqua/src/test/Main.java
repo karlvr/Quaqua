@@ -15,10 +15,15 @@ package test;
 import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.security.AccessControlException;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.*;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -71,6 +76,9 @@ public class Main extends javax.swing.JPanel {
         } catch (AccessControlException e) {
             // can't do anything about this
         }
+
+        // Install Quaqua L&F
+        UIManager.installLookAndFeel("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
 
         // Use screen menu bar, if not switched off explicitly
         try {
@@ -159,6 +167,7 @@ public class Main extends javax.swing.JPanel {
                         + " " + System.getProperty("os.arch"));
                 Main ex = new Main();
                 f.add(ex);
+                f.setJMenuBar(ex.menuBar);
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
                 f.setSize(740, 480);
@@ -265,8 +274,30 @@ public class Main extends javax.swing.JPanel {
         for (int i = tree.getRowCount(); i >= 0; i--) {
             tree.expandRow(i);
         }
-    }
 
+        // Add look and feels to menu bar
+        ButtonGroup group=new ButtonGroup();
+        for(final LookAndFeelInfo info:UIManager.getInstalledLookAndFeels()) {
+           final JRadioButtonMenuItem mi=new JRadioButtonMenuItem(info.getName());
+           group.add(mi);
+            if (UIManager.getLookAndFeel().getClass().toString().equals(info.getClassName()))  {
+                mi.setSelected(true);
+            }
+            lafMenu.add(mi);
+            mi.addActionListener(new ActionListener() {
+
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(Main.this));
+                        mi.setSelected(true);
+                    } catch (Throwable ex) {
+                        mi.setEnabled(false);
+                    }
+                }
+            });
+        }
+}
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -275,6 +306,8 @@ public class Main extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        menuBar = new javax.swing.JMenuBar();
+        lafMenu = new javax.swing.JMenu();
         splitPane = new javax.swing.JSplitPane();
         treeScrollPane = new javax.swing.JScrollPane();
         tree = new javax.swing.JTree();
@@ -286,6 +319,9 @@ public class Main extends javax.swing.JPanel {
         rtlBox = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
+
+        lafMenu.setText("Look and Feel");
+        menuBar.add(lafMenu);
 
         setLayout(new java.awt.BorderLayout());
 
@@ -359,6 +395,8 @@ Container root = (Container)SwingUtilities.getRoot(this);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlPanel;
+    private javax.swing.JMenu lafMenu;
+    private javax.swing.JMenuBar menuBar;
     private javax.swing.JPanel rightPane;
     private javax.swing.JCheckBox rtlBox;
     private javax.swing.JCheckBox showClipBoundsBox;
