@@ -66,11 +66,11 @@ public class QuaquaCaret extends DefaultCaret
      * focus.  This is implemented to set the caret to visible
      * if the component is editable.
      *
-     * @param e the focus event
+     * @param evt the focus event
      * @see FocusListener#focusGained
      */
     @Override
-    public void focusGained(FocusEvent focusevent) {
+    public void focusGained(FocusEvent evt) {
         JTextComponent component = getComponent();
         if (component.isEnabled()) {
             isFocused = true;
