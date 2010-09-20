@@ -13,6 +13,8 @@
 package test;
 
 import ch.randelshofer.quaqua.QuaquaManager;
+import java.awt.ComponentOrientation;
+import java.awt.Container;
 import java.security.AccessControlException;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -253,6 +255,7 @@ public class Main extends javax.swing.JPanel {
                 viewPane.removeAll();
                 if (path != null && path.getPathCount() > 0 && (path.getLastPathComponent() instanceof Item)) {
                     viewPane.add(((Item) path.getLastPathComponent()).getComponent());
+                    viewPane.applyComponentOrientation(SwingUtilities.getRoot(Main.this).getComponentOrientation());
                 }
                 viewPane.revalidate();
                 viewPane.repaint();
@@ -280,6 +283,7 @@ public class Main extends javax.swing.JPanel {
         controlPanel = new javax.swing.JPanel();
         showClipBoundsBox = new javax.swing.JCheckBox();
         showVisualBoundsBox = new javax.swing.JCheckBox();
+        rtlBox = new javax.swing.JCheckBox();
 
         FormListener formListener = new FormListener();
 
@@ -309,6 +313,10 @@ public class Main extends javax.swing.JPanel {
         showVisualBoundsBox.addActionListener(formListener);
         controlPanel.add(showVisualBoundsBox);
 
+        rtlBox.setText("RTL");
+        rtlBox.addActionListener(formListener);
+        controlPanel.add(rtlBox);
+
         rightPane.add(controlPanel, java.awt.BorderLayout.SOUTH);
 
         splitPane.setRightComponent(rightPane);
@@ -327,6 +335,9 @@ public class Main extends javax.swing.JPanel {
             else if (evt.getSource() == showVisualBoundsBox) {
                 Main.this.showVisualBounds(evt);
             }
+            else if (evt.getSource() == rtlBox) {
+                Main.this.rtlBoxPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
@@ -339,9 +350,17 @@ public class Main extends javax.swing.JPanel {
         UIManager.put("Quaqua.Debug.showVisualBounds", showVisualBoundsBox.isSelected() ? Boolean.TRUE : Boolean.FALSE);
         repaint();
     }//GEN-LAST:event_showVisualBounds
+
+    private void rtlBoxPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rtlBoxPerformed
+Container root = (Container)SwingUtilities.getRoot(this);
+    root.applyComponentOrientation(rtlBox.isSelected()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
+    root.validate();
+    }//GEN-LAST:event_rtlBoxPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlPanel;
     private javax.swing.JPanel rightPane;
+    private javax.swing.JCheckBox rtlBox;
     private javax.swing.JCheckBox showClipBoundsBox;
     private javax.swing.JCheckBox showVisualBoundsBox;
     private javax.swing.JSplitPane splitPane;
