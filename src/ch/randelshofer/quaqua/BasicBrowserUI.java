@@ -39,10 +39,14 @@ public class BasicBrowserUI extends BrowserUI {
     //
     // Install methods
     //
+    @Override
     public void installUI(JComponent c) {
         c.setBackground(UIManager.getColor("List.background"));
         c.setFont(UIManager.getFont("List.font"));
-        sizeHandleIcon = new ImageIcon(getClass().getResource("images/Browser.sizeHandleIcon.png"));
+        sizeHandleIcon = UIManager.getIcon("Browser.sizeHandleIcon");
+        if (sizeHandleIcon == null) {
+           sizeHandleIcon = new ImageIcon(getClass().getResource("images/Browser.sizeHandleIcon.png"));
+        }
 
         browser = (JBrowser) c;
         installDefaults();
@@ -62,6 +66,7 @@ public class BasicBrowserUI extends BrowserUI {
     // Uninstall methods
     //
 
+    @Override
     public void uninstallUI(JComponent c) {
 	uninstallDefaults();
     }
@@ -71,6 +76,7 @@ public class BasicBrowserUI extends BrowserUI {
 	}
     }
     
+    @Override
     public Icon getSizeHandleIcon() {
         return sizeHandleIcon;
     }
@@ -93,6 +99,7 @@ public class BasicBrowserUI extends BrowserUI {
          * @return  The representation of the data to be transfered. 
          *  
          */
+        @Override
         protected Transferable createTransferable(JComponent c) {
             while (c != null && !(c instanceof JBrowser)) {
                 c = (c.getParent() instanceof JComponent) ? (JComponent) c.getParent() : null;

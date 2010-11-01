@@ -29,8 +29,6 @@ import javax.swing.event.*;
 import javax.swing.tree.*;
 import java.util.*;
 import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleContext;
-import javax.accessibility.AccessibleValue;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
