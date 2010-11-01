@@ -49,15 +49,17 @@ public class QuaquaToolBarBorder
 
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {
-
                 g.setPaint(
                         new GradientPaint(new Point(x, y), new Color(0xfdfdfd), new Point(x, height / 2), new Color(0xf5f5f5), true));
                 g.fillRect(x, y, width, height / 2);
                 g.setColor(new Color(0xebebeb));
                 g.fillRect(x, y + height / 2, width, height - height / 2);
+
             } else if (style.equals("bottom") && isTextured) {
                 Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
-                if (gradient.length == 2) {
+                if (gradient == null) {
+                    g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                } else if (gradient.length == 2) {
                     g.setPaint(
                             new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
                 } else if (gradient.length == 3) {
@@ -71,6 +73,9 @@ public class QuaquaToolBarBorder
                             new float[]{0f, 1.5f / height, 0.5f, 1f},
                             gradient));
                 }
+                g.fillRect(x, y, width, height);
+            } else if (style.equals("title")) {
+                g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
                 g.fillRect(x, y, width, height);
             } else {
                 g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
@@ -284,6 +289,7 @@ public class QuaquaToolBarBorder
             style = jc.getClientProperty(QuaquaToolBarUI.TOOLBAR_STYLE_PROPERTY);
         }
         if (style == null || !(style instanceof String)) {
+            /*
             boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
             if (isTextured) {
                 JRootPane rootPane = SwingUtilities.getRootPane(c);
@@ -295,7 +301,8 @@ public class QuaquaToolBarBorder
                 style = (yOffset == 0) ? "title" : "plain";
             } else {
                 style = "plain";
-            }
+            }*/
+            style = "plain";
         }
         return (String) style;
     }
