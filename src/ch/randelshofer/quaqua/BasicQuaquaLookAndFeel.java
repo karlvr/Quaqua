@@ -20,8 +20,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
-import javax.swing.plaf.basic.BasicLookAndFeel;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 
 
 /**
@@ -38,6 +36,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
     protected final static String tigerDir = "/ch/randelshofer/quaqua/tiger/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snow_leopard/images/";
+
+    private LayoutStyle layoutStyle;
 
     /** Creates a new instance. */
     public BasicQuaquaLookAndFeel(String targetClassName) {
@@ -2305,7 +2305,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
 
     @Override
     public LayoutStyle getLayoutStyle() {
-        return QuaquaLayoutStyle.getInstance();
+        if (layoutStyle == null) {
+            layoutStyle = new QuaquaLayoutStyle();
+        }
+        return layoutStyle;
     }
 
     @Override
