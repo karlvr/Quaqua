@@ -1,5 +1,5 @@
 /*
- * @(#)RadioButtonFocusTest.java  
+ * @(#)RadioButtonFocusTest16.java
  * 
  * Copyright © 2010 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,15 +13,15 @@
 package test;
 
 /**
- * RadioButtonFocusTest.
+ * RadioButtonFocusTest16.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class RadioButtonFocusTest extends javax.swing.JPanel {
+public class RadioButtonFocusTest16 extends javax.swing.JPanel {
 
-    /** Creates new form RadioButtonFocusTest */
-    public RadioButtonFocusTest() {
+    /** Creates new form RadioButtonFocusTest16 */
+    public RadioButtonFocusTest16() {
         initComponents();
     }
 
@@ -168,32 +168,32 @@ public class RadioButtonFocusTest extends javax.swing.JPanel {
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.ItemListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == requestFocusChoice) {
-                RadioButtonFocusTest.this.requestFocusChoicePerformed(evt);
-            }
-            else if (evt.getSource() == enableFieldsChoice) {
-                RadioButtonFocusTest.this.enableFieldsChoicePerformed(evt);
-            }
-            else if (evt.getSource() == option3) {
-                RadioButtonFocusTest.this.optionActionPerformed(evt);
-            }
-            else if (evt.getSource() == option1) {
-                RadioButtonFocusTest.this.optionActionPerformed(evt);
+            if (evt.getSource() == option1) {
+                RadioButtonFocusTest16.this.optionActionPerformed(evt);
             }
             else if (evt.getSource() == option2) {
-                RadioButtonFocusTest.this.optionActionPerformed(evt);
+                RadioButtonFocusTest16.this.optionActionPerformed(evt);
+            }
+            else if (evt.getSource() == option3) {
+                RadioButtonFocusTest16.this.optionActionPerformed(evt);
+            }
+            else if (evt.getSource() == requestFocusChoice) {
+                RadioButtonFocusTest16.this.requestFocusChoicePerformed(evt);
+            }
+            else if (evt.getSource() == enableFieldsChoice) {
+                RadioButtonFocusTest16.this.enableFieldsChoicePerformed(evt);
             }
         }
 
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             if (evt.getSource() == option1) {
-                RadioButtonFocusTest.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
             }
             else if (evt.getSource() == option2) {
-                RadioButtonFocusTest.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
             }
             else if (evt.getSource() == option3) {
-                RadioButtonFocusTest.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
