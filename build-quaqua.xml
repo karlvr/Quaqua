@@ -73,6 +73,7 @@
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
             <include name="ch/randelshofer/quaqua/BasicQuaquaLookAndFeel.java"/>
             <include name="ch/randelshofer/quaqua/LookAndFeelProxy.java"/>
+            <include name="ch/randelshofer/quaqua/QuaquaLayoutStyle.java"/>
         </javac>
         <!-- Compile swing-layout for Java 1.5 -->
         <javac bootclasspath="${j2se5.bootclasspath}"
