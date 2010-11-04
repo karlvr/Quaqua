@@ -38,9 +38,17 @@
   <h3>Version 7.3.2<br />
     <font size="-1">2010-11-04</font></h3>
   <p>Fixes</p>
+  <p>JBrowser</p>
+  <ul>
+    <li>BasicBrowserUI attempts now to load the &quot;Browser.sizeHandleIcon&quot; from the UIManager before falling back to lading the icon directly.</li>
+  </ul>
   <p>JRadioButton</p>
   <ul>
     <li>Fixes issue 107. On mouse clicks, radio buttons request focus <em>before</em> notifying listeners, so that listeners can request focus for a desired component. On keyboard actions, radio buttons request focus <em>after</em> notifying listeners, so that focus stays on the radio buttons regardless of focus requests performed by the listeners.</li>
+  </ul>
+  <p>JRootPane</p>
+  <ul>
+    <li>JRootPane is now opaque and uses the same background color as a JPanel.</li>
   </ul>
   <p>LayoutStyle</p>
   <ul>
