@@ -52,6 +52,23 @@ public class OSXPreferences {
         return cachedFiles.get(file).get(key);
     }
 
+    /** Returns all known keys for the specified preferences file. */
+    public static Set<String> getKeySet(File file) {
+        ensureCached(file);
+        return cachedFiles.get(file).keySet();
+    }
+
+    /** Clears all caches. */
+    public static void clearAllCaches() {
+        cachedFiles.clear();
+
+    }
+
+    /** Clears the cache for the specified preference file. */
+    public static void clearCache(File f) {
+        cachedFiles.remove(f);
+    }
+
     /**
      * Get a value from a Mac OS X preferences file.
      * 
@@ -83,7 +100,7 @@ public class OSXPreferences {
             try {
                 XMLElement plist = readPList(file);
 
-                Stack<String> keyPath=new Stack<String>();
+                Stack<String> keyPath = new Stack<String>();
                 readNode(plist, keyPath, cache);
             } catch (Throwable e) {
                 System.err.println("Warning: ch.randelshofer.quaqua.util.OSXPreferences failed to load " + file);
@@ -95,44 +112,48 @@ public class OSXPreferences {
     private static void readNode(XMLElement node, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
         String name = node.getName();
         if (name.equals("plist")) {
-            readPList(node,keyPath,cache);
+            readPList(node, keyPath, cache);
         } else if (name.equals("dict")) {
-            readDict(node,keyPath,cache);
+            readDict(node, keyPath, cache);
         } else if (name.equals("array")) {
-            readArray(node,keyPath,cache);
+            readArray(node, keyPath, cache);
         } else {
-            readValue(node,keyPath,cache);
+            readValue(node, keyPath, cache);
         }
     }
-    private static void readPList(XMLElement plist, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
-        ArrayList<XMLElement>children=plist.getChildren();
-        for (int i=0,n=children.size();i<n;i++) {
-            readNode(children.get(i),keyPath,cache);
+
+    private static void readPList(XMLElement plist, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
+        ArrayList<XMLElement> children = plist.getChildren();
+        for (int i = 0, n = children.size(); i < n; i++) {
+            readNode(children.get(i), keyPath, cache);
         }
     }
+
     private static void readDict(XMLElement dict, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
-        ArrayList<XMLElement>children=dict.getChildren();
-        for (int i=0,n=children.size();i<n;i+=2) {
+        ArrayList<XMLElement> children = dict.getChildren();
+        for (int i = 0, n = children.size(); i < n; i += 2) {
             XMLElement keyElem = children.get(i);
             if (!keyElem.getName().equals("key")) {
-                throw new IOException("missing dictionary key at"+keyPath);
+                throw new IOException("missing dictionary key at" + keyPath);
             }
             keyPath.push(keyElem.getContent());
-            readNode(children.get(i+1),keyPath,cache);
+            readNode(children.get(i + 1), keyPath, cache);
             keyPath.pop();
         }
     }
-    private static void readArray(XMLElement array, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
-        ArrayList<XMLElement>children=array.getChildren();
-        for (int i=0,n=children.size();i<n;i++) {
+
+    private static void readArray(XMLElement array, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
+        ArrayList<XMLElement> children = array.getChildren();
+        for (int i = 0, n = children.size(); i < n; i++) {
             keyPath.push(Integer.toString(i));
-            readNode(children.get(i),keyPath,cache);
+            readNode(children.get(i), keyPath, cache);
             keyPath.pop();
         }
     }
-    private static void readValue(XMLElement value, Stack<String> keyPath, HashMap<String, Object> cache)  throws IOException{
-        StringBuffer key=new StringBuffer();
-        for (Iterator<String> i=keyPath.iterator();i.hasNext();) {
+
+    private static void readValue(XMLElement value, Stack<String> keyPath, HashMap<String, Object> cache) throws IOException {
+        StringBuffer key = new StringBuffer();
+        for (Iterator<String> i = keyPath.iterator(); i.hasNext();) {
             key.append(i.next());
             if (i.hasNext()) {
                 key.append('\t');

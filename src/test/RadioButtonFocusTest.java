@@ -1,5 +1,5 @@
 /*
- * @(#)RadioButtonFocusTest16.java
+ * @(#)RadioButtonFocusTest.java
  * 
  * Copyright © 2010 Werner Randelshofer
  * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
@@ -13,15 +13,15 @@
 package test;
 
 /**
- * RadioButtonFocusTest16.
+ * RadioButtonFocusTest.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class RadioButtonFocusTest16 extends javax.swing.JPanel {
+public class RadioButtonFocusTest extends javax.swing.JPanel {
 
-    /** Creates new form RadioButtonFocusTest16 */
-    public RadioButtonFocusTest16() {
+    /** Creates new form RadioButtonFocusTest */
+    public RadioButtonFocusTest() {
         initComponents();
     }
 
@@ -107,58 +107,58 @@ public class RadioButtonFocusTest16 extends javax.swing.JPanel {
 
         itemListenerChoice.setText("Use ItemListener instead of ActionListener");
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(itemListenerChoice)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(option1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(field1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(option2)
-                        .addComponent(requestFocusChoice)
-                        .addComponent(enableFieldsChoice)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(otherLabel)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(otherField))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(option3)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(field3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addComponent(jSeparator1)))
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+                    .add(itemListenerChoice)
+                    .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING, false)
+                        .add(layout.createSequentialGroup()
+                            .add(option1)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(field1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(option2)
+                        .add(requestFocusChoice)
+                        .add(enableFieldsChoice)
+                        .add(layout.createSequentialGroup()
+                            .add(otherLabel)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(otherField))
+                        .add(layout.createSequentialGroup()
+                            .add(option3)
+                            .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                            .add(field3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                        .add(jSeparator1)))
                 .addContainerGap(22, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
+            .add(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(option1)
-                    .addComponent(field1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(option2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(option3)
-                    .addComponent(field3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(otherLabel)
-                    .addComponent(otherField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(requestFocusChoice)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(enableFieldsChoice)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(itemListenerChoice)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(option1)
+                    .add(field1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(option2)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(option3)
+                    .add(field3, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .add(18, 18, 18)
+                .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.BASELINE)
+                    .add(otherLabel)
+                    .add(otherField, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(requestFocusChoice)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(enableFieldsChoice)
+                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
+                .add(itemListenerChoice)
                 .addContainerGap(29, Short.MAX_VALUE))
         );
     }
@@ -169,31 +169,31 @@ public class RadioButtonFocusTest16 extends javax.swing.JPanel {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
             if (evt.getSource() == option1) {
-                RadioButtonFocusTest16.this.optionActionPerformed(evt);
+                RadioButtonFocusTest.this.optionActionPerformed(evt);
             }
             else if (evt.getSource() == option2) {
-                RadioButtonFocusTest16.this.optionActionPerformed(evt);
+                RadioButtonFocusTest.this.optionActionPerformed(evt);
             }
             else if (evt.getSource() == option3) {
-                RadioButtonFocusTest16.this.optionActionPerformed(evt);
+                RadioButtonFocusTest.this.optionActionPerformed(evt);
             }
             else if (evt.getSource() == requestFocusChoice) {
-                RadioButtonFocusTest16.this.requestFocusChoicePerformed(evt);
+                RadioButtonFocusTest.this.requestFocusChoicePerformed(evt);
             }
             else if (evt.getSource() == enableFieldsChoice) {
-                RadioButtonFocusTest16.this.enableFieldsChoicePerformed(evt);
+                RadioButtonFocusTest.this.enableFieldsChoicePerformed(evt);
             }
         }
 
         public void itemStateChanged(java.awt.event.ItemEvent evt) {
             if (evt.getSource() == option1) {
-                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest.this.optionItemStateChanged(evt);
             }
             else if (evt.getSource() == option2) {
-                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest.this.optionItemStateChanged(evt);
             }
             else if (evt.getSource() == option3) {
-                RadioButtonFocusTest16.this.optionItemStateChanged(evt);
+                RadioButtonFocusTest.this.optionItemStateChanged(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
