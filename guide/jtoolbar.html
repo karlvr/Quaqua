@@ -64,7 +64,8 @@ MM_reloadPage(true);
       Tool bars with this style should affect the contents of a list, tree or table.<br />
     The &quot;gradient&quot; style works best for  JTree's which have the client property &quot;Quaqua.Tree.style&quot; set to &quot;sourceList&quot;.</li>
   </ul>
-  <p><a name="FusedToolbarBehavior" id="FusedToolbarBehavior"></a>* On Mac OS X 10.5 or newer, JToolBar's with the &quot;title&quot;- and the &quot;bottom&quot;-style fuse with the frame borders of the window, if the client property &quot;apple.awt.brushMetalLook&quot; is set on the JRootPane. The window can be moved by dragging such a fused toolbar.</p>
+  <p><a name="FusedToolbarBehavior" id="FusedToolbarBehavior"></a>* On Mac OS X 10.5 or newer, JToolBar's with the &quot;title&quot;-style fuse with the frame borders of the window, if the client property &quot;apple.awt.brushMetalLook&quot; is set on the JRootPane. JToolBar's with the &quot;bottom&quot;-style always fuse with the frame borders of the window. <br />
+  Note that the window can be moved by dragging a fused toolbar.</p>
   <h4 class="doubleparagraph">Components on a JToolBar</h4>
   <p>Components added to a JToolBar inherit the style of the JToolBar. This may not always work, if components are first added to a JPanel, and then the JPanel is added to the JToolBar. In this case, it is necessary to set client properties on the components. </p>
   <p class="semiparagraph">JToggleButton's on JToolBar's support the style <code>toolBarTab</code>.
