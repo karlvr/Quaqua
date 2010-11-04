@@ -97,7 +97,7 @@ public class ToolBarTest extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        unifiedToolBarBox.setText("Unified tool bar");
+        unifiedToolBarBox.setText("Unified 'title' tool bar");
         unifiedToolBarBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unifiedToolBarPerformed(evt);
@@ -107,7 +107,7 @@ public class ToolBarTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel2.add(unifiedToolBarBox, gridBagConstraints);
 
-        unifiedStatusBarBox.setText("Unified status bar");
+        unifiedStatusBarBox.setText("Unified 'bottom' tool bar");
         unifiedStatusBarBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unifiedStatusBarPerformed(evt);
@@ -139,7 +139,7 @@ public class ToolBarTest extends javax.swing.JPanel {
         }
         cp.revalidate();
         rp.putClientProperty("apple.awt.brushMetalLook",//
-                unifiedToolBarBox.isSelected() || unifiedStatusBarBox.isSelected());
+                unifiedToolBarBox.isSelected()/* || unifiedStatusBarBox.isSelected()*/);
         Window f=(Window)rp.getParent();
         f.dispose();
         f.setVisible(true);
@@ -161,7 +161,7 @@ public class ToolBarTest extends javax.swing.JPanel {
 
         cp.revalidate();
         rp.putClientProperty("apple.awt.brushMetalLook",//
-                unifiedToolBarBox.isSelected() || unifiedStatusBarBox.isSelected());
+                unifiedToolBarBox.isSelected() /*|| unifiedStatusBarBox.isSelected()*/);
         Window f=(Window)rp.getParent();
         f.dispose();
         f.setVisible(true);

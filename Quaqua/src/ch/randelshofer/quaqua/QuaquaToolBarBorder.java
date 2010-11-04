@@ -55,7 +55,7 @@ public class QuaquaToolBarBorder
                 g.setColor(new Color(0xebebeb));
                 g.fillRect(x, y + height / 2, width, height - height / 2);
 
-            } else if (style.equals("bottom") && isTextured) {
+            } else if (style.equals("bottom") /*&& isTextured*/) {
                 Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
                 if (gradient == null) {
                     g.setPaint(PaintableColor.getPaint(c.getBackground(), c));

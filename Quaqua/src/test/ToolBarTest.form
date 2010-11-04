@@ -90,7 +90,7 @@
           <SubComponents>
             <Component class="javax.swing.JCheckBox" name="unifiedToolBarBox">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Unified tool bar"/>
+                <Property name="text" type="java.lang.String" value="Unified &apos;title&apos; tool bar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="unifiedToolBarPerformed"/>
@@ -103,7 +103,7 @@
             </Component>
             <Component class="javax.swing.JCheckBox" name="unifiedStatusBarBox">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Unified status bar"/>
+                <Property name="text" type="java.lang.String" value="Unified &apos;bottom&apos; tool bar"/>
               </Properties>
               <Events>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="unifiedStatusBarPerformed"/>
