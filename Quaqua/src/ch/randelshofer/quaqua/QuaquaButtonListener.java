@@ -71,7 +71,6 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     // button not armed, should be
                     model.setArmed(true);
                 }
-                model.setPressed(true);
                 if (!b.hasFocus()) {
                     if (b.isRequestFocusEnabled()) {
                         b.requestFocus();
@@ -93,6 +92,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
                         }
                     }
                 }
+                // Update model after focus changes have been requested, so that
+                // model can request focus changes of its own.
+                model.setPressed(true);
             }
         }
     }
@@ -249,6 +251,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     if (group != null) {
                         AbstractButton btn = getSiblingButton(group, true);
                         if (btn != null) {
+                            // Invoke doClick before requesting focus in window,
+                            // so that focus stays on button regardless of what
+                            // listeners do.
                             btn.doClick();
                             btn.requestFocusInWindow();
                         }
@@ -262,6 +267,9 @@ public class QuaquaButtonListener extends BasicButtonListener {
                     if (group != null) {
                         AbstractButton btn = getSiblingButton(group, false);
                         if (btn != null) {
+                            // Invoke doClick before requesting focus in window,
+                            // so that focus stays on button regardless of what
+                            // listeners do.
                             btn.doClick();
                             btn.requestFocusInWindow();
                         }
