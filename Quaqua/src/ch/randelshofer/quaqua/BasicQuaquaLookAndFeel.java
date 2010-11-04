@@ -29,15 +29,13 @@ import java.security.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
+public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
     protected final static String tigerDir = "/ch/randelshofer/quaqua/tiger/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snow_leopard/images/";
-
-    private LayoutStyle layoutStyle;
 
     /** Creates a new instance. */
     public BasicQuaquaLookAndFeel(String targetClassName) {
@@ -2301,14 +2299,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy {
                 table.put(keyValueList[i], keyValueList[i + 1]);
             }
         }
-    }
-
-    @Override
-    public LayoutStyle getLayoutStyle() {
-        if (layoutStyle == null) {
-            layoutStyle = new QuaquaLayoutStyle();
-        }
-        return layoutStyle;
     }
 
     @Override

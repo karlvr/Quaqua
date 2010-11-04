@@ -77,9 +77,6 @@ public class Main extends javax.swing.JPanel {
             // can't do anything about this
         }
 
-        // Install Quaqua L&F
-        UIManager.installLookAndFeel("Quaqua", "ch.randelshofer.quaqua.QuaquaLookAndFeel");
-
         // Use screen menu bar, if not switched off explicitly
         try {
             if (System.getProperty("apple.laf.useScreenMenuBar") == null
@@ -154,6 +151,7 @@ public class Main extends javax.swing.JPanel {
                         UIManager.setLookAndFeel(laf);
                         System.out.println("   LAF SET   ");
                     } catch (Exception e) {
+                        System.err.println("Error setting "+lafName+" in UIManager.");
                         e.printStackTrace();
                         // can't do anything about this
                     }
@@ -251,10 +249,11 @@ public class Main extends javax.swing.JPanel {
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
-        n.add(new Item("Radio Button Focus", "test.RadioButtonFocusTest16"));
+        n.add(new Item("Radio Button Focus", "test.RadioButtonFocusTest"));
         root.add(n = new DefaultMutableTreeNode("NATIVE CODE"));
         n.add(new Item("File System", "test.FileSystemTest"));
         n.add(new Item("Clipboard", "test.ClipboardTest"));
+        n.add(new Item("Preferences", "test.PreferencesTest"));
         DefaultTreeModel tm = new DefaultTreeModel(root);
         tree.setModel(tm);
 
