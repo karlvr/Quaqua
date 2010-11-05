@@ -112,7 +112,10 @@ public class QuaquaTableUI extends BasicTableUI
         // FIXME - Intercell spacings different from 1,1 don't work currently
         //table.setIntercellSpacing(new Dimension(4,4));
     }
-
+    @Override
+    protected void uninstallDefaults() {
+        super.uninstallDefaults();
+    }
     private void updateStriped() {
         /*if (isStriped) {
         table.setIntercellSpacing(new Dimension(1, 1));
@@ -385,7 +388,6 @@ public class QuaquaTableUI extends BasicTableUI
 
     private void paintCells(Graphics g, int rMin, int rMax, int cMin, int cMax) {
         boolean isFocused = isFocused();
-
         JTableHeader header = table.getTableHeader();
         TableColumn draggedColumn = (header == null) ? null : header.getDraggedColumn();
 
@@ -448,7 +450,7 @@ public class QuaquaTableUI extends BasicTableUI
                     && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed()));
         }
         if (foreground instanceof InactivatableColorUIResource) {
-            // Note: We must draw with inactive color, if the current cell is not selected
+            // Note: We must draw with inactive color if the current cell is not selected.
             //       Otherwise, we get white text on white background.
             ((InactivatableColorUIResource) foreground).setActive(isFocused
                     && (table.getRowSelectionAllowed() || table.getColumnSelectionAllowed())
@@ -784,16 +786,22 @@ public class QuaquaTableUI extends BasicTableUI
             int column = table.columnAtPoint(p);
 
             if (table.isEnabled()) {
+                    // Note: Some applications depend on selection changes only occuring
+                    // on focused components. Maybe we must not do any changes to the
+                    // selection changes at all, when the compnent is not focused?
+                    table.requestFocusInWindow();
+
+                // Maybe edit cell
                 if (table.editCellAt(row, column, e)) {
                     setDispatchComponent(e);
                     repostEvent(e);
-                    return;
-                }
 
-                // Note: Some applications depend on selection changes only occuring
-                // on focused components. Maybe we must not do any changes to the
-                // selection changes at all, when the compnent is not focused?
-                table.requestFocusInWindow();
+                    if (!table.getCellEditor().shouldSelectCell(e)) {
+                        return;
+                    }
+                } else {
+
+                }
 
                 if (row != -1 && column != -1) {
                     if (table.isRowSelected(row) && e.isPopupTrigger()) {
