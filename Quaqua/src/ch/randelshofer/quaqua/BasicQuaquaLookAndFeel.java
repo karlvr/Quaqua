@@ -1539,8 +1539,16 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
         // True if all controls are focusable,
         // false if only text boxes and lists are focusable.
-        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "3");
-        Boolean allControlsFocusable = isRequestFocusEnabled || prefValue.equals("3");
+        // Set this value to true if requestFocus is enabled or
+        // if bit 2 of AppleKeyboardUIMode is set.
+        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "2");
+        int intValue;
+        try {
+            intValue = Integer.valueOf(prefValue);
+        } catch (NumberFormatException e) {
+            intValue = 2;
+        }
+        Boolean allControlsFocusable = isRequestFocusEnabled || ((intValue & 2) == 2);
 
         Object dialogBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorders$DialogBorder");
