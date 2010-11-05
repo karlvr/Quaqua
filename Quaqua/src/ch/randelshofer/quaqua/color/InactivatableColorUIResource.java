@@ -16,6 +16,7 @@ package ch.randelshofer.quaqua.color;
 import java.awt.*;
 import java.awt.geom.*;
 import java.awt.image.*;
+import javax.swing.plaf.UIResource;
 
 /**
  * InactivatableColorUIResource is a color, that can be rendered using an
@@ -24,7 +25,7 @@ import java.awt.image.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class InactivatableColorUIResource extends Color {
+public class InactivatableColorUIResource extends Color implements UIResource {
     private boolean isActive;
     private boolean isTransparent;
     private int inactiveRGB;

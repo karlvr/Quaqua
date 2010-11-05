@@ -15,6 +15,9 @@ package test;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.table.*;
@@ -142,6 +145,7 @@ public class TableTest extends javax.swing.JPanel {
         bigFontTable.setModel(new MyTableModel());
         JCheckBox cb = new JCheckBox();
         cb.setHorizontalAlignment(SwingConstants.CENTER);
+        cb.putClientProperty("JComponent.sizeVariant", "small");
         bigFontTable.setDefaultEditor(Boolean.class, new DefaultCellEditor2(cb));
         rendererComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
         editorComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
@@ -162,8 +166,24 @@ public class TableTest extends javax.swing.JPanel {
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
         showVerticalLinesCheckBox.setSelected(plainTable.getShowVerticalLines());
 
+        installDefaultEditors(stripedTable);
+        installDefaultEditors(plainTable);
+        installDefaultEditors(bigFontTable);
+
         // J2SE6 only
         Methods.invokeIfExists(plainTable, "setAutoCreateRowSorter", true);
+    }
+
+    private void installDefaultEditors(JTable t) {
+       JCheckBox cb = new JCheckBox();
+        cb.setHorizontalAlignment(SwingConstants.CENTER);
+        cb.putClientProperty("JComponent.sizeVariant", "small");
+        t.setDefaultEditor(Boolean.class, new DefaultCellEditor2(cb) {
+            @Override
+            public boolean shouldSelectCell(EventObject evt) {
+                return shouldSelectCellCheckBox.isSelected();
+            }
+        });
     }
 
     public static void main(String args[]) {
@@ -206,6 +226,7 @@ public class TableTest extends javax.swing.JPanel {
         showVerticalLinesCheckBox = new javax.swing.JCheckBox();
         allowRowSelectionCheckBox = new javax.swing.JCheckBox();
         allowColumnSelectionCheckBox = new javax.swing.JCheckBox();
+        shouldSelectCellCheckBox = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -219,7 +240,7 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 300;
         gridBagConstraints.ipady = 100;
@@ -250,7 +271,7 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 300;
         gridBagConstraints.ipady = 100;
@@ -283,7 +304,7 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipadx = 300;
         gridBagConstraints.ipady = 100;
@@ -351,6 +372,14 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         add(allowColumnSelectionCheckBox, gridBagConstraints);
+
+        shouldSelectCellCheckBox.setSelected(true);
+        shouldSelectCellCheckBox.setText("Checkbox selects cell");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(shouldSelectCellCheckBox, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateShowVerticalLines(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShowVerticalLines
@@ -417,6 +446,7 @@ public class TableTest extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator12;
     private javax.swing.JTable plainTable;
     private javax.swing.JScrollPane plainTableScrollPane;
+    private javax.swing.JCheckBox shouldSelectCellCheckBox;
     private javax.swing.JCheckBox showHorizontalLinesCheckBox;
     private javax.swing.JCheckBox showVerticalLinesCheckBox;
     private javax.swing.JTable stripedTable;

@@ -238,6 +238,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 sbSize.height - sbInsets.top - sbInsets.bottom);
 
         Border trackAndButtons = getTrackAndButtonsBorder();
+        if (trackAndButtons == null) return;
         Insets tbInsets = trackAndButtons.getBorderInsets(scrollbar);
 
         if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {

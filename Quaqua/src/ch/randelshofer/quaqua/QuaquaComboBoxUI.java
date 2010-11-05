@@ -442,7 +442,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         if (margin == null) {
             margin = UIManager.getInsets("Component.visualMargin");
         }
-        return (Insets) margin.clone();
+        return (margin==null)?new Insets(0,0,0,0):(Insets) margin.clone();
     }
 
     /**
