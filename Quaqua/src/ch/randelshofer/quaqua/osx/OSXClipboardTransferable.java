@@ -50,7 +50,7 @@ public class OSXClipboardTransferable implements Transferable {
     /**
      * This variable is set to true, if native code is available.
      */
-    private static Boolean isNativeCodeAvailable;
+    private static volatile Boolean isNativeCodeAvailable;
     private static int EXPECTED_NATIVE_CODE_VERSION = 2;
 
     /**

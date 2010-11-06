@@ -56,7 +56,7 @@ public class Images {
         }
         return image;
     }
-    private static Properties canGraphite;
+    private static volatile Properties canGraphite;
 
     private static boolean canGraphite(URL resource) {
         if (canGraphite == null) {

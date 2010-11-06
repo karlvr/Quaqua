@@ -39,7 +39,7 @@ public class OSXSheetSupport {
     /**
      * This variable is set to true, if native code is available.
      */
-    private static Boolean isNativeCodeAvailable;
+    private static volatile Boolean isNativeCodeAvailable;
     /**
      * Version of the native code library.
      */
