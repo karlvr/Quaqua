@@ -178,8 +178,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
         Dimension layoutSize = new Dimension(); // fix for bug 4759306
         if (previewPanel != null) {
             layoutSize = new BorderLayout().minimumLayoutSize(previewPanel);
-            if ((chooser != null) &&
-            (layoutSize.getWidth() + layoutSize.getHeight() == 0)) {
+            if (layoutSize.getWidth() + layoutSize.getHeight() == 0) {
               return;
             }
         }
