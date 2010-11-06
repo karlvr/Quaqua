@@ -187,7 +187,7 @@ public abstract class CachedPainter {
             entries = new ArrayList(maxCount);
         }
 
-        void setMaxCount(int maxCount) {
+        synchronized void setMaxCount(int maxCount) {
             this.maxCount = maxCount;
         }
 

@@ -43,7 +43,7 @@ public class OSXFile {
      * This array holds the colors used for drawing the gradients of a file
      * label.
      */
-    private static Color[][] labelColors;
+    private static volatile Color[][] labelColors;
     /**
      * This variable is set to true, if native code is available.
      */
@@ -289,35 +289,39 @@ public class OSXFile {
      */
     public static Color getLabelColor(int label, int type) {
         if (labelColors == null) {
-            /* We use constants here, because the color values returned by the Carbon
-             * API do not match the colors used by the Finder.
-             */
-            // Colors for Mac OS X 10.3 Panther, 10.4 Tiger, and 10.5 Leopard.
-            if (QuaquaManager.getDesign() <= QuaquaManager.LEOPARD) {
-                labelColors = new Color[][]{
-                            // dark, bright, dark disabled, bright disabled
-                            {null, null, null, null}, // no label
-                            {new Color(0xb5b5b5), new Color(0xd7d7d7), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
-                            {new Color(0xbddc5a), new Color(0xdcedaa), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
-                            {new Color(0xcb9dde), new Color(0xe3cbee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
-                            {new Color(0x66b1ff), new Color(0xb6daff), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
-                            {new Color(0xf2df5a), new Color(0xfbf4aa), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
-                            {new Color(0xff756c), new Color(0xffb2ac), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
-                            {new Color(0xfab555), new Color(0xfcd6a2), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
-                        };
-            } else {
-                // Colors for Mac OS X 10.6 Snow Leopard.
-                labelColors = new Color[][]{
-                            // dark, bright, dark disabled, bright disabled
-                            {null, null, null, null}, // no label
-                            {new Color(0xb7b7b7), new Color(0xd8d8d8), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
-                            {new Color(0xc1d95e), new Color(0xdeebac), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
-                            {new Color(0xcba3df), new Color(0xe7cdee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
-                            {new Color(0x6db5fd), new Color(0xb8dbfe), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
-                            {new Color(0xf2dd60), new Color(0xfbf2ac), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
-                            {new Color(0xfb7a70), new Color(0xfcb4ad), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
-                            {new Color(0xf7b65b), new Color(0xfbd6a4), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
-                        };
+            synchronized (OSXFile.class) {
+                if (labelColors == null) {
+                    /* We use constants here, because the color values returned by the Carbon
+                     * API do not match the colors used by the Finder.
+                     */
+                    // Colors for Mac OS X 10.3 Panther, 10.4 Tiger, and 10.5 Leopard.
+                    if (QuaquaManager.getDesign() <= QuaquaManager.LEOPARD) {
+                        labelColors = new Color[][]{
+                                    // dark, bright, dark disabled, bright disabled
+                                    {null, null, null, null}, // no label
+                                    {new Color(0xb5b5b5), new Color(0xd7d7d7), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
+                                    {new Color(0xbddc5a), new Color(0xdcedaa), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
+                                    {new Color(0xcb9dde), new Color(0xe3cbee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
+                                    {new Color(0x66b1ff), new Color(0xb6daff), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
+                                    {new Color(0xf2df5a), new Color(0xfbf4aa), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
+                                    {new Color(0xff756c), new Color(0xffb2ac), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
+                                    {new Color(0xfab555), new Color(0xfcd6a2), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
+                                };
+                    } else {
+                        // Colors for Mac OS X 10.6 Snow Leopard.
+                        labelColors = new Color[][]{
+                                    // dark, bright, dark disabled, bright disabled
+                                    {null, null, null, null}, // no label
+                                    {new Color(0xb7b7b7), new Color(0xd8d8d8), new Color(0xe9e9e9), new Color(0xf3f3f3)}, // gray
+                                    {new Color(0xc1d95e), new Color(0xdeebac), new Color(0xecf5ce), new Color(0xf5fae6)}, // green
+                                    {new Color(0xcba3df), new Color(0xe7cdee), new Color(0xf0e2f6), new Color(0xf7f0fa)}, // purple
+                                    {new Color(0x6db5fd), new Color(0xb8dbfe), new Color(0xd1e8ff), new Color(0xe9f4ff)}, // blue
+                                    {new Color(0xf2dd60), new Color(0xfbf2ac), new Color(0xfcf6ce), new Color(0xfefce6)}, // yellow
+                                    {new Color(0xfb7a70), new Color(0xfcb4ad), new Color(0xffd6d3), new Color(0xffe8e6)}, // red
+                                    {new Color(0xf7b65b), new Color(0xfbd6a4), new Color(0xfee9cc), new Color(0xfff3e3)} // orange
+                                };
+                    }
+                }
             }
         }
 
