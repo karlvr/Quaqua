@@ -1261,7 +1261,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     setModel((TreeModel) event.getNewValue());
                 } else if (name != null && name.equals(JTree.ROOT_VISIBLE_PROPERTY)) {
                     setRootVisible(((Boolean) event.getNewValue()).booleanValue());
-                } else if (name.equals(JTree.SHOWS_ROOT_HANDLES_PROPERTY)) {
+                } else if (name != null && name.equals(JTree.SHOWS_ROOT_HANDLES_PROPERTY)) {
                     setShowsRootHandles(((Boolean) event.getNewValue()).booleanValue());
                 } else if (name != null && name.equals(JTree.ROW_HEIGHT_PROPERTY)) {
                     setRowHeight(((Integer) event.getNewValue()).intValue());
@@ -1289,7 +1289,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         SwingUtilities.replaceUIInputMap(tree,
                                 JComponent.WHEN_FOCUSED, km);
                     }
-                } else if (name != null && "transferHandler".equals(name)) {
+                } else if (name != null && name.equals("transferHandler")) {
                     DropTarget dropTarget = tree.getDropTarget();
                     if (dropTarget instanceof UIResource) {
                         if (defaultDropTargetListener == null) {
