@@ -1883,7 +1883,7 @@ public class FileSystemTreeModel implements TreeModel {
     /**
      * This comparator compares two nodes by their name collation key.
      */
-    private static class ByNameComparator implements Comparator {
+    private static class ByNameComparator implements Comparator, Serializable {
 
         /**
          * Compares two nodes using their collation keys.
@@ -1900,7 +1900,7 @@ public class FileSystemTreeModel implements TreeModel {
      * This comparator compares two nodes by their type and then by their name
      * collation key.
      */
-    private static class FoldersFirstComparator implements Comparator {
+    private static class FoldersFirstComparator implements Comparator, Serializable {
 
         /**
          * Compares two nodes using their collation keys.
