@@ -170,7 +170,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                         update(freshUserItems);
                     }
 
-            @Override
+                    @Override
                     public void failed(Throwable value) {
                         ArrayList freshUserItems;
 
@@ -509,6 +509,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public boolean getAllowsChildren() {
             return false;
         }
+
         public boolean isHidden() {
             return false;
         }
@@ -683,6 +684,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return target;
         }
 
+        @Override
         public String toString() {
             return target.toString();
         }
@@ -717,6 +719,16 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             }
 
             return 0;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return (o instanceof SidebarTreeModel) ? compareTo((SidebarTreeModel) o) == 0 : false;
+        }
+
+        @Override
+        public int hashCode() {
+            return getTarget()==null?0:getTarget().getUserName().hashCode();
         }
     }
 }
