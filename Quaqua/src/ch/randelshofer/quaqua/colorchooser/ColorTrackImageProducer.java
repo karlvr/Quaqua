@@ -14,7 +14,6 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.image.*;
-import javax.swing.*;
 /**
  * ColorTrackImageProducer creates the image for the track of a 
  * color slider.
@@ -27,8 +26,6 @@ import javax.swing.*;
 public class ColorTrackImageProducer extends MemoryImageSource {
     private int[] pixels;
     private int w, h;
-    private float[] baseComponents;
-    private int component;
     private int trackBuffer;
     private ColorSliderModel colorizer = new RGBColorSliderModel();
     private boolean isDirty = true;
@@ -108,16 +105,7 @@ public class ColorTrackImageProducer extends MemoryImageSource {
             }
         }
     }
-    
-    public void setBaseComponents(BoundedRangeModel[] components) {
-        isDirty = true;
-        //isDirty = isDirty || colorizer.needsRegeneration(this.baseRGB, baseRGB);
-        //this.baseRGB = baseRGB;
-        for (int i=0; i < components.length; i++) {
-            baseComponents[i] = components[i].getValue() / (float) components[i].getMaximum();
-        }
-    }
-    
+
     public void setColorSliderModel(ColorSliderModel colorizer) {
         this.colorizer = colorizer;
         isDirty = true;
