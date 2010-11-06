@@ -15,7 +15,6 @@ package ch.randelshofer.quaqua.colorchooser;
 import java.awt.*;
 import java.awt.color.*;
 import java.io.*;
-import java.util.Arrays;
 import javax.swing.*;
 
 /**
@@ -47,12 +46,22 @@ public class ICC_CMYKColorSliderModel extends ColorSliderModel {
                     new DefaultBoundedRangeModel(0, 0, 0, 100),
                     new DefaultBoundedRangeModel(0, 0, 0, 100)
                 });
+        InputStream in = ICC_CMYKColorSliderModel.class.getResourceAsStream("Generic CMYK Profile.icc");
         try {
-            read(getClass().getResourceAsStream("Generic CMYK Profile.icc"));
+
+            read(in);
         } catch (IOException e) {
             InternalError err = new InternalError("Couldn't load \"Generic CMYK Profile.icc\".");
             err.initCause(e);
             throw err;
+        } finally {
+            try {
+                in.close();
+            } catch (IOException ex) {
+                InternalError err = new InternalError("Couldn't load \"Generic CMYK Profile.icc\".");
+                err.initCause(ex);
+                throw err;
+            }
         }
 
     }
