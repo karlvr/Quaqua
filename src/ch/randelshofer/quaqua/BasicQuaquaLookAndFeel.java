@@ -1559,14 +1559,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         ColorUIResource listSelectionBorderColor = (ColorUIResource) table.get("listHighlightBorder");
         Color menuBackground = (Color) table.get("menu");
 
-        // Shared numbers
-        Integer zero = new Integer(0);
-        Integer one = new Integer(1);
-        Integer two = new Integer(2);
-        Integer three = new Integer(3);
-        Integer four = new Integer(4);
-        Integer ten = new Integer(10);
-
         // Set visual margin.
         int[] values = QuaquaManager.getProperty("Quaqua.visualMargin", new int[]{3, 3, 3, 3});
         InsetsUIResource visualMargin = new InsetsUIResource(values[0], values[1], values[2], values[3]);
@@ -1619,7 +1611,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
         Object[] uiDefaults = {
             "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
-            new Object[]{commonDir + "Browser.sizeHandleIcon.png", one, Boolean.TRUE, one}),
+            new Object[]{commonDir + "Browser.sizeHandleIcon.png", 1, Boolean.TRUE, 1}),
             //
             "Button.actionMap", new QuaquaLazyActionMap(QuaquaButtonListener.class),
             "Button.border", new UIDefaults.ProxyLazyValue(
@@ -1634,8 +1626,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // a margin that is an instanceof a UIResource.
             "Button.margin", new InsetsUIResource(0, 0, 0, 0),
             "Button.opaque", opaque,
-            "Button.textIconGap", four,
-            "Button.textShiftOffset", zero,
+            "Button.textIconGap", 4,
+            "Button.textShiftOffset", 0,
             "Button.helpIcon", makeOverlaidButtonStateIcon(
             commonDir + "Button.helpIcons.png", 10,
             commonDir + "Button.helpFocusRings.png", 2,
@@ -1658,8 +1650,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             commonDir + "CheckBox.small.icons.png", 10,
             commonDir + "CheckBox.small.focusRings.png", 2,
             new Rectangle(2, 2, 12, 12)),
-            "CheckBox.textIconGap", four,
-            "CheckBox.textShiftOffset", zero,
+            "CheckBox.textIconGap", 4,
+            "CheckBox.textShiftOffset", 0,
             "CheckBox.requestFocusEnabled", isRequestFocusEnabled,
             "CheckBoxMenuItem.borderPainted", Boolean.TRUE,
             "CheckBox.focusable", allControlsFocusable,
@@ -1683,7 +1675,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ColorChooser.swatchesSwatchSize", new DimensionUIResource(5, 5),
             "ColorChooser.resetMnemonic", new Integer(-1),
             "ColorChooser.crayonsImage", makeImage(commonDir + "ColorChooser.crayons.png"),
-            "ColorChooser.textSliderGap", zero,
+            "ColorChooser.textSliderGap", 0,
             "ColorChooser.colorPalettesIcon", makeButtonStateIcon(commonDir + "ColorChooser.colorPalettesIcons.png", 3),
             "ColorChooser.colorSlidersIcon", makeButtonStateIcon(commonDir + "ColorChooser.colorSlidersIcons.png", 3),
             "ColorChooser.colorSwatchesIcon", makeButtonStateIcon(commonDir + "ColorChooser.colorSwatchesIcons.png", 3),
@@ -1768,7 +1760,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "FileChooser.previewValueForeground", new ColorUIResource(0x000000),
             "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 1),
             "FileChooser.previewLabelDelimiter", ":",
-            "FileChooser.splitPaneDividerSize", four,
+            "FileChooser.splitPaneDividerSize", 4,
             "FileChooser.speed", new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.speed").equals("true")),
             //
             "FileView.computerIcon", makeIcon(getClass(), commonDir + "FileView.computerIcon.png"),
@@ -1832,8 +1824,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             commonDir + "RadioButton.small.focusRing.png", 1,
             new Rectangle(2, 1, 12, 13)),
             "RadioButton.opaque", opaque,
-            "RadioButton.textIconGap", four,
-            "RadioButton.textShiftOffset", zero,
+            "RadioButton.textIconGap", 4,
+            "RadioButton.textShiftOffset", 0,
             "RadioButton.requestFocusEnabled", isRequestFocusEnabled,
             "RadioButtonMenuItem.borderPainted", Boolean.TRUE,
             "RadioButton.enforceVisualMargin", enforceVisualMargin,
@@ -1951,7 +1943,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             //"SplitPane.ancestorInputMap", ???,
             "SplitPane.opaque", opaque,
             "SplitPane.border", null,
-            "SplitPane.dividerSize", ten,
+            "SplitPane.dividerSize", 10,
             "SplitPane.thumbDimple", makeIcon(getClass(), commonDir + "SplitPane.thumbDimple.png"),
             "SplitPane.barDimple", makeIcon(getClass(), commonDir + "SplitPane.barDimple.png"),
             "SplitPane.hBar", makeImageBevelBorder(commonDir + "SplitPane.hBar.png", new Insets(4, 0, 5, 0), true),
@@ -1970,9 +1962,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TabbedPane.wrap.opaque", opaque,
             "TabbedPane.scroll.opaque", opaque,
             "TabbedPane.requestFocusEnabled", isRequestFocusEnabled,
-            "TabbedPane.textIconGap", four,
-            "TabbedPane.scroll.textIconGap", four,
-            "TabbedPane.wrap.textIconGap", four,
+            "TabbedPane.textIconGap", 4,
+            "TabbedPane.scroll.textIconGap", 4,
+            "TabbedPane.wrap.textIconGap", 4,
             "Table.focusCellHighlightBorder", new BorderUIResource.LineBorderUIResource(listSelectionBorderColor),
             //"Table.focusCellHighlightBorder", new BorderUIResource.LineBorderUIResource(Color.black),
             "Table.scrollPaneBorder", scrollPaneBorder,
@@ -2001,8 +1993,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // a margin that is an instanceof a UIResource.
             "ToggleButton.margin", new InsetsUIResource(0, 0, 0, 0),
             "ToggleButton.opaque", opaque,
-            "ToggleButton.textIconGap", four,
-            "ToggleButton.textShiftOffset", zero,
+            "ToggleButton.textIconGap", 4,
+            "ToggleButton.textShiftOffset", 0,
             "ToggleButton.requestFocusEnabled", isRequestFocusEnabled,
             //
             "ToolBar.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaToolBarBorder$UIResource"),
@@ -2179,7 +2171,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected Object makeTextureColor(int rgb, String location) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.color.TextureColor$UIResource",
-                new Object[]{new Integer(rgb), location});
+                new Object[]{rgb, location});
     }
 
     /**
