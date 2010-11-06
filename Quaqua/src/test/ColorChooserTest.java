@@ -1,5 +1,5 @@
 /*
- * @(#)ColorChooserTest.java  1.0  13 February 2005
+ * @(#)ColorChooserTest.java  
  *
  * Copyright (c) 2004 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -18,7 +18,6 @@ import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.ChangeEvent;
@@ -28,7 +27,7 @@ import javax.swing.event.ChangeListener;
  * ColorChooserTest.
  *
  * @author  Werner Randelshofer
- * @version 1.0  13 February 2005  Created.
+ * @version $Id$
  */
 public class ColorChooserTest extends javax.swing.JPanel {
 
@@ -155,7 +154,7 @@ public class ColorChooserTest extends javax.swing.JPanel {
                                     == SwingUtilities.getWindowAncestor(popupMenu.getInvoker())) {
                                 JLayeredPane srcLP = (JLayeredPane) SwingUtilities.getAncestorOfClass(JLayeredPane.class, src);
                                 Component srcLPChild = src;
-                                while (srcLPChild.getParent() != srcLP) {
+                                while (srcLPChild != null && srcLPChild.getParent() != srcLP) {
                                     srcLPChild = srcLPChild.getParent();
                                 }
                                 if (srcLPChild == null || srcLP.getLayer(srcLPChild) < JLayeredPane.POPUP_LAYER) {
