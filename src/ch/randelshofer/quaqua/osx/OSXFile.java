@@ -47,7 +47,7 @@ public class OSXFile {
     /**
      * This variable is set to true, if native code is available.
      */
-    private static Boolean isNativeCodeAvailable;
+    private static volatile Boolean isNativeCodeAvailable;
 
     /**
      * Returns true if native code is available.
