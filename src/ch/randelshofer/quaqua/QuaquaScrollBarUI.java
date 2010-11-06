@@ -666,8 +666,6 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
     }
 
     protected class QuaquaTrackListener extends TrackListener {
-        protected transient int offset;
-        protected transient int currentMouseX, currentMouseY;
         protected transient int direction = +1;
 
         @Override
@@ -896,6 +894,13 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         @Override
         public void mouseMoved(MouseEvent e) {
         }
+
+        private int getCurrentMouseX() {
+            return currentMouseX;
+        }
+        private int getCurrentMouseY() {
+            return currentMouseY;
+        }
     }
 
     /**
@@ -1002,19 +1007,19 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
                     if (direction > 0) {
                         if (getThumbBounds().y + getThumbBounds().height
-                                >= trackListener.currentMouseY) {
+                                >= trackListener.getCurrentMouseY()) {
                             ((Timer) e.getSource()).stop();
                         }
-                    } else if (getThumbBounds().y <= trackListener.currentMouseY) {
+                    } else if (getThumbBounds().y <= trackListener.getCurrentMouseY()) {
                         ((Timer) e.getSource()).stop();
                     }
                 } else {
                     if (direction > 0) {
                         if (getThumbBounds().x + getThumbBounds().width
-                                >= trackListener.currentMouseX) {
+                                >= trackListener.getCurrentMouseX()) {
                             ((Timer) e.getSource()).stop();
                         }
-                    } else if (getThumbBounds().x <= trackListener.currentMouseX) {
+                    } else if (getThumbBounds().x <= trackListener.getCurrentMouseX()) {
                         ((Timer) e.getSource()).stop();
                     }
                 }
