@@ -1782,14 +1782,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "OptionPane.messageAreaBorder", new BorderUIResource.EmptyBorderUIResource(0, 0, 0, 0),
             "OptionPane.buttonAreaBorder", new BorderUIResource.EmptyBorderUIResource(16 - 3, 0, 0, 0),
             "OptionPane.errorIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{new Integer(JOptionPane.ERROR_MESSAGE)}),
+            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{JOptionPane.ERROR_MESSAGE}),
             "OptionPane.errorIconResource", "/ch/randelshofer/quaqua/images/OptionPane.errorIcon.png",
             "OptionPane.informationIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{new Integer(JOptionPane.INFORMATION_MESSAGE)}),
+            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{JOptionPane.INFORMATION_MESSAGE}),
             "OptionPane.questionIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{new Integer(JOptionPane.QUESTION_MESSAGE)}),
+            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{JOptionPane.QUESTION_MESSAGE}),
             "OptionPane.warningIcon", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{new Integer(JOptionPane.WARNING_MESSAGE)}),
+            "ch.randelshofer.quaqua.QuaquaIconFactory", "createOptionPaneIcon", new Object[]{JOptionPane.WARNING_MESSAGE}),
             "OptionPane.warningIconResource", "/ch/randelshofer/quaqua/images/OptionPane.warningIcon.png",
             "OptionPane.css", "<head>"
             + "<style type=\"text/css\">"
@@ -2075,43 +2075,43 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected static Object makeIcons(String location, int states, boolean horizontal) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
-                new Object[]{location, new Integer(states), horizontal});
+                new Object[]{location, states, horizontal});
     }
 
     public static Object makeNativeIcon(String path, int size) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
-                new Object[]{path, new Integer(size)});
+                new Object[]{path, size});
     }
 
     public static Object makeNativeIcon(String path, int width, int height) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
-                new Object[]{path, new Integer(width), new Integer(height)});
+                new Object[]{path, width, height});
     }
 
     protected static Object makeButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",
-                new Object[]{location, new Integer(states)});
+                new Object[]{location, states});
     }
 
     protected static Object makeButtonStateIcon(String location, int states, Point shift) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",
-                new Object[]{location, new Integer(states), shift});
+                new Object[]{location, states, shift});
     }
 
     protected static Object makeButtonStateIcon(String location, int states, Rectangle shift) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createButtonStateIcon",
-                new Object[]{location, new Integer(states), shift});
+                new Object[]{location, states, shift});
     }
 
     protected static Object makeFrameButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createFrameButtonStateIcon",
-                new Object[]{location, new Integer(states)});
+                new Object[]{location, states});
     }
 
     protected static Object makeSliderThumbIcon(String location) {
@@ -2127,8 +2127,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createOverlaidButtonStateIcon",
                 new Object[]{
-                    location1, new Integer(states1),
-                    location2, new Integer(states2),
+                    location1, states1,
+                    location2, states2,
                     layoutRect
                 });
     }
@@ -2164,7 +2164,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected Object makeImageBevelBorders(String location, Insets insets, int states, boolean horizontal) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
-                new Object[]{location, insets, new Integer(states), horizontal});
+                new Object[]{location, insets, states, horizontal});
     }
 
     protected Object makeTextureColor(int rgb, String location) {
