@@ -480,7 +480,9 @@ public class QuaquaPopupFactory extends PopupFactory {
 
                 c.setLocation(p.x, p.y);
                 c.setVisible(false);
-                parent.add(c);
+                if (parent != null) {
+                    parent.add(c);
+                }
             }
             c.setVisible(true);
         }
