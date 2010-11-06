@@ -1496,7 +1496,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     // CHANGE This class is rewritten after adding support for the Quaqua.Tree.style property
     // CHANGE All methods except the getTreeCellRendererComponent(...) were
     // deleted and are no longer needed
-    class SidebarRenderer extends DefaultTreeCellRenderer {
+    private static class SidebarRenderer extends DefaultTreeCellRenderer {
 
         public SidebarRenderer() {
             if (UIManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
@@ -1582,7 +1582,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     }
     final static int space = 10;
 
-    class IndentIcon implements Icon {
+    private static class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -1680,7 +1680,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     /**
      * Render different type sizes and styles.
      */
-    public class FilterComboBoxRenderer extends DefaultListCellRenderer {
+    private static class FilterComboBoxRenderer extends DefaultListCellRenderer {
 
         private Border border = new EmptyBorder(1, 0, 1, 0);
 

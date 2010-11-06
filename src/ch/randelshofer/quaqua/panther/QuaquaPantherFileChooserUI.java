@@ -1459,7 +1459,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     //
     // Renderer for Volumes list
     //
-    class SidebarRenderer extends DefaultListCellRenderer {
+    private static class SidebarRenderer extends DefaultListCellRenderer {
         /*
         private final  Border selectedBorder = new MatteBorder(1,0,1,0, new Color(7,131,216));
         private final  Border selectedBorderI = new MatteBorder(1,0,1,0, new Color(130,129,129));
@@ -1563,7 +1563,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     }
     final static int space = 10;
 
-    class IndentIcon implements Icon {
+    private static class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -1654,7 +1654,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     /**
      * Render different type sizes and styles.
      */
-    public class FilterComboBoxRenderer extends DefaultListCellRenderer {
+    private static class FilterComboBoxRenderer extends DefaultListCellRenderer {
 
         @Override
         public Component getListCellRendererComponent(JList list,
