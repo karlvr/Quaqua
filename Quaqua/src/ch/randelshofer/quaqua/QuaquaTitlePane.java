@@ -40,10 +40,6 @@ public class QuaquaTitlePane extends JComponent {
      */
     private PropertyChangeListener rootPropertyListener;
     /**
-     * JMenuBar, typically renders the system menu items.
-     */
-    private JMenuBar menuBar;
-    /**
      * Action used to close the Window.
      */
     private Action closeAction;
@@ -189,6 +185,7 @@ public class QuaquaTitlePane extends JComponent {
     /**
      * Returns the <code>JRootPane</code> this was created for.
      */
+    @Override
     public JRootPane getRootPane() {
         return rootPane;
     }
@@ -200,6 +197,7 @@ public class QuaquaTitlePane extends JComponent {
         return getRootPane().getWindowDecorationStyle();
     }
 
+    @Override
     public void addNotify() {
         super.addNotify();
 
@@ -217,6 +215,7 @@ public class QuaquaTitlePane extends JComponent {
         }
     }
 
+    @Override
     public void removeNotify() {
         super.removeNotify();
 
@@ -256,8 +255,6 @@ public class QuaquaTitlePane extends JComponent {
      * Closes the Window.
      */
     private void close() {
-        Window window = getWindow();
-
         if (window != null) {
             window.dispatchEvent(new WindowEvent(
                     window, WindowEvent.WINDOW_CLOSING));
@@ -357,6 +354,7 @@ public class QuaquaTitlePane extends JComponent {
 
         MouseListener buttonArmer = new MouseAdapter() {
 
+            @Override
             public void mouseEntered(MouseEvent evt) {
                 closeButton.putClientProperty("paintRollover", Boolean.TRUE);
                 iconifyButton.putClientProperty("paintRollover", Boolean.TRUE);
@@ -366,6 +364,7 @@ public class QuaquaTitlePane extends JComponent {
                 toggleButton.repaint();
             }
 
+            @Override
             public void mouseExited(MouseEvent e) {
                 closeButton.putClientProperty("paintRollover", Boolean.FALSE);
                 iconifyButton.putClientProperty("paintRollover", Boolean.FALSE);
@@ -459,8 +458,6 @@ public class QuaquaTitlePane extends JComponent {
         Frame frame = getFrame();
 
         if (frame != null && !isPalette) {
-            JRootPane rootPane = getRootPane();
-
             if (((state & Frame.MAXIMIZED_BOTH) != 0) &&
                     (rootPane.getBorder() == null ||
                     (rootPane.getBorder() instanceof UIResource)) &&
@@ -541,8 +538,6 @@ public class QuaquaTitlePane extends JComponent {
      * <code>JRootPane</code> is not contained in a <code>Frame</code>.
      */
     private Frame getFrame() {
-        Window window = getWindow();
-
         if (window instanceof Frame) {
             return (Frame) window;
         }
@@ -554,14 +549,13 @@ public class QuaquaTitlePane extends JComponent {
      * <code>JRootPane</code> is not contained in a <code>Frame</code>.
      */
     private Dialog getDialog() {
-        Window window = getWindow();
-
         if (window instanceof Dialog) {
             return (Dialog) window;
         }
         return null;
     }
 
+    @Override
     public Font getFont() {
         return rootPane.getFont();
         /*
@@ -596,6 +590,7 @@ public class QuaquaTitlePane extends JComponent {
     /**
      * Renders the TitlePane.
      */
+    @Override
     public void paintComponent(Graphics gr) {
         Graphics2D g = (Graphics2D) gr;
 
@@ -607,9 +602,6 @@ public class QuaquaTitlePane extends JComponent {
         if (getFrame() != null) {
             setState(getFrame().getExtendedState());
         }
-        Window window = getWindow();
-
-        JRootPane rootPane = getRootPane();
         boolean isVertical = isVertical();
         boolean isTextured = rootPane.getClientProperty("apple.awt.brushMetalLook") == Boolean.TRUE;
 
@@ -842,6 +834,7 @@ public class QuaquaTitlePane extends JComponent {
      */
     private class SystemMenuBar extends JMenuBar {
 
+        @Override
         public void paint(Graphics gr) {
             Graphics2D g = (Graphics2D) gr;
             Frame frame = getFrame();
@@ -863,10 +856,12 @@ public class QuaquaTitlePane extends JComponent {
             }
         }
 
+        @Override
         public Dimension getMinimumSize() {
             return getPreferredSize();
         }
 
+        @Override
         public Dimension getPreferredSize() {
             Dimension size = super.getPreferredSize();
 
@@ -972,9 +967,6 @@ public class QuaquaTitlePane extends JComponent {
 
             spacing = 5;
             x = leftToRight ? spacing : w - buttonWidth - spacing;
-            if (menuBar != null) {
-                menuBar.setBounds(x, y, buttonWidth, buttonHeight);
-            }
 
             x = leftToRight ? w : 0;
             spacing = (fontSize <= 11) ? 5 : 7;
@@ -1050,9 +1042,6 @@ public class QuaquaTitlePane extends JComponent {
 
         spacing = 5;
         y = spacing;
-        if (menuBar != null) {
-            menuBar.setBounds(x, y, buttonWidth, buttonHeight);
-        }
 
         if (fontSize <= 9) {
             y = 0;
@@ -1158,10 +1147,12 @@ public class QuaquaTitlePane extends JComponent {
      */
     private class WindowHandler extends WindowAdapter {
 
+        @Override
         public void windowActivated(WindowEvent ev) {
             setActive(true);
         }
 
+        @Override
         public void windowDeactivated(WindowEvent ev) {
             setActive(false);
         }
