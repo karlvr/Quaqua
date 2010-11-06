@@ -19,6 +19,7 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.plaf.UIResource;
 
 /**
  * A replacement for the AquaMenuBorder.
@@ -29,10 +30,10 @@ import javax.swing.border.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaLeopardMenuBorder implements Border {
+public class QuaquaLeopardMenuBorder implements Border, UIResource {
 
-    protected static Insets popupBorderInsets;
-    protected static Insets itemBorderInsets;
+    private static Insets popupBorderInsets;
+    private static Insets itemBorderInsets;
 
     public void paintBorder(Component component, Graphics gr, int x,
             int y, int width, int height) {
