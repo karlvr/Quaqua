@@ -75,6 +75,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         return new QuaquaTreeUI();
     }
 
+    @Override
     protected void installDefaults() {
         super.installDefaults();
 
@@ -82,6 +83,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         tree.setInvokesStopCellEditing(true);
     }
 
+    @Override
     protected void installKeyboardActions() {
         InputMap km = getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
@@ -162,11 +164,13 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Invoked after the <code>tree</code> instance variable has been
      * set, but before any defaults/listeners have been installed.
      */
+    @Override
     protected void prepareForUIInstall() {
         super.prepareForUIInstall();
         leadRow = -1;
     }
 
+    @Override
     protected void uninstallListeners() {
         super.uninstallListeners();
 
@@ -182,9 +186,11 @@ public class QuaquaTreeUI extends BasicTreeUI {
         // FIXME - We should explicitly turn the real editing component
         // opaque.
 
+        @Override
         protected Container createContainer() {
             return new DefaultTreeCellEditor.EditorContainer() {
 
+                @Override
                 public void paint(Graphics gr) {
                     Graphics2D g = (Graphics2D) gr;
                     g.setColor(UIManager.getColor("TextField.background"));
@@ -208,6 +214,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /**
      * Creates a default cell editor.
      */
+    @Override
     protected TreeCellEditor createDefaultCellEditor() {
         if (currentCellRenderer != null &&
                 (currentCellRenderer instanceof DefaultTreeCellRenderer)) {
@@ -222,6 +229,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Returns the default cell renderer that is used to do the
      * stamping of each node.
      */
+    @Override
     protected TreeCellRenderer createDefaultCellRenderer() {
         return new QuaquaTreeCellRenderer();
     }
@@ -230,6 +238,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Creates the listener reponsible for getting key events from
      * the tree.
      */
+    @Override
     protected KeyListener createKeyListener() {
         return getHandler();
     }
@@ -238,6 +247,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Creates the listener responsible for getting property change
      * events from the selection model.
      */
+    @Override
     protected PropertyChangeListener createSelectionModelPropertyChangeListener() {
         return getHandler();
     }
@@ -246,6 +256,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Creates the listener that updates the display based on selection change
      * methods.
      */
+    @Override
     protected TreeSelectionListener createTreeSelectionListener() {
         return getHandler();
     }
@@ -253,6 +264,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /**
      * Creates a listener to handle events from the current editor.
      */
+    @Override
     protected CellEditorListener createCellEditorListener() {
         return getHandler();
     }
@@ -261,6 +273,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Creates and returns the object responsible for updating the treestate
      * when nodes expanded state changes.
      */
+    @Override
     protected TreeExpansionListener createTreeExpansionListener() {
         return getHandler();
     }
@@ -269,6 +282,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Creates a listener that is responsible that updates the UI based on
      * how the tree changes.
      */
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }
@@ -284,12 +298,14 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Returning true signifies a mouse event on the node should toggle
      * the selection of only the row under mouse.
      */
+    @Override
     protected boolean isToggleSelectionEvent(MouseEvent event) {
         return event.getID() == MouseEvent.MOUSE_PRESSED &&
                 SwingUtilities.isLeftMouseButton(event) &&
                 event.isMetaDown();
     }
 
+    @Override
     protected boolean isToggleEvent(MouseEvent event) {
         if (event.getID() != MouseEvent.MOUSE_PRESSED ||
                 !SwingUtilities.isLeftMouseButton(event)) {
@@ -307,6 +323,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Returning true signifies a mouse event on the node should select
      * from the anchor point.
      */
+    @Override
     protected boolean isMultiSelectEvent(MouseEvent event) {
         return (SwingUtilities.isLeftMouseButton(event) &&
                 event.isShiftDown());
@@ -387,10 +404,12 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Regardless of what value you specify here, the Quaqua look and feel
      * always shows the root handles.
      */
+    @Override
     protected void setShowsRootHandles(boolean newValue) {
         super.setShowsRootHandles(true);
     }
 
+    @Override
     protected boolean getShowsRootHandles() {
         return true;
     }
@@ -417,6 +436,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Paints the expand (toggle) part of a row. The receiver should
      * NOT modify <code>clipBounds</code>, or <code>insets</code>.
      */
+    @Override
     protected void paintExpandControl(Graphics g,
             Rectangle clipBounds, Insets insets,
             Rectangle bounds, TreePath path,
@@ -496,6 +516,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * @return amount to indent the given row.
      * @since 1.5
      */
+    @Override
     protected int getRowX(int row, int depth) {
         boolean isSideBar = isSideBar();
 
@@ -545,10 +566,12 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /**
      * Creates the focus listener for handling keyboard navigation in the JTable.
      */
+    @Override
     protected FocusListener createFocusListener() {
         return new FocusHandler();
     }
 
+    @Override
     protected MouseListener createMouseListener() {
         return getHandler();
     }
@@ -560,6 +583,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      */
     public class FocusHandler extends BasicTreeUI.FocusHandler {
 
+        @Override
         public void focusGained(FocusEvent event) {
             if (tree != null) {
                 Rectangle pBounds = null;
@@ -948,6 +972,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * Paints the vertical part of the leg. The receiver should
      * NOT modify <code>clipBounds</code>, <code>insets</code>.<p>
      */
+    @Override
     protected void paintVerticalPartOfLeg(Graphics g, Rectangle clipBounds,
             Insets insets, TreePath path) {
         /* Never draw lines
@@ -962,6 +987,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
      * NOT modify <code>clipBounds</code>, or <code>insets</code>.<p>
      * NOTE: <code>parentRow</code> can be -1 if the root is not visible.
      */
+    @Override
     protected void paintHorizontalPartOfLeg(Graphics g, Rectangle clipBounds,
             Insets insets, Rectangle bounds,
             TreePath path, int row,
@@ -977,6 +1003,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /**
      * Paints a vertical line.
      */
+    @Override
     protected void paintVerticalLine(Graphics g, JComponent c, int x, int top,
             int bottom) {
         /*
@@ -988,6 +1015,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     /**
      * Paints a horizontal line.
      */
+    @Override
     protected void paintHorizontalLine(Graphics g, JComponent c, int y,
             int left, int right) {
         /*
@@ -1210,48 +1238,48 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 // Update the lead row in the JTree
             } else if (event.getSource() == tree) {
-                if (name == "Frame.active") {
+                if (name != null && name.equals("Frame.active")) {
                     if (tree.getClientProperty("Quaqua.Tree.style") != null && (tree.getClientProperty("Quaqua.Tree.style").equals("sideBar") || tree.getClientProperty("Quaqua.Tree.style").equals("sourceList"))) {
                         tree.repaint();
                     }
-                } else if (name == JTree.LEAD_SELECTION_PATH_PROPERTY) {
+                } else if (name != null && name.equals(JTree.LEAD_SELECTION_PATH_PROPERTY)) {
                     if (!ignoreLAChange) {
                         updateLeadRow();
                         repaintPath((TreePath) event.getOldValue());
                         repaintPath((TreePath) event.getNewValue());
                     }
-                } else if (name == JTree.ANCHOR_SELECTION_PATH_PROPERTY) {
+                } else if (name != null && name.equals(JTree.ANCHOR_SELECTION_PATH_PROPERTY)) {
                     if (!ignoreLAChange) {
                         repaintPath((TreePath) event.getOldValue());
                         repaintPath((TreePath) event.getNewValue());
                     }
                 }
-                if (name == JTree.CELL_RENDERER_PROPERTY) {
+                if (name != null && name.equals(JTree.CELL_RENDERER_PROPERTY)) {
                     setCellRenderer((TreeCellRenderer) event.getNewValue());
                     redoTheLayout();
-                } else if (name == JTree.TREE_MODEL_PROPERTY) {
+                } else if (name != null && name.equals(JTree.TREE_MODEL_PROPERTY)) {
                     setModel((TreeModel) event.getNewValue());
-                } else if (name == JTree.ROOT_VISIBLE_PROPERTY) {
+                } else if (name != null && name.equals(JTree.ROOT_VISIBLE_PROPERTY)) {
                     setRootVisible(((Boolean) event.getNewValue()).booleanValue());
-                } else if (name == JTree.SHOWS_ROOT_HANDLES_PROPERTY) {
+                } else if (name.equals(JTree.SHOWS_ROOT_HANDLES_PROPERTY)) {
                     setShowsRootHandles(((Boolean) event.getNewValue()).booleanValue());
-                } else if (name == JTree.ROW_HEIGHT_PROPERTY) {
+                } else if (name != null && name.equals(JTree.ROW_HEIGHT_PROPERTY)) {
                     setRowHeight(((Integer) event.getNewValue()).intValue());
-                } else if (name == JTree.CELL_EDITOR_PROPERTY) {
+                } else if (name != null && name.equals(JTree.CELL_EDITOR_PROPERTY)) {
                     setCellEditor((TreeCellEditor) event.getNewValue());
-                } else if (name == JTree.EDITABLE_PROPERTY) {
+                } else if (name != null && name.equals(JTree.EDITABLE_PROPERTY)) {
                     setEditable(((Boolean) event.getNewValue()).booleanValue());
-                } else if (name == JTree.LARGE_MODEL_PROPERTY) {
+                } else if (name != null && name.equals(JTree.LARGE_MODEL_PROPERTY)) {
                     setLargeModel(tree.isLargeModel());
-                } else if (name == JTree.SELECTION_MODEL_PROPERTY) {
+                } else if (name != null && name.equals(JTree.SELECTION_MODEL_PROPERTY)) {
                     setSelectionModel(tree.getSelectionModel());
-                } else if (name == "font") {
+                } else if (name != null && name.equals("font")) {
                     completeEditing();
                     if (treeState != null) {
                         treeState.invalidateSizes();
                     }
                     updateSize();
-                } else if (name == "componentOrientation") {
+                } else if (name != null && name.equals("componentOrientation")) {
                     if (tree != null) {
                         //leftToRight = QuaquaUtilities.isLeftToRight(tree);
                         redoTheLayout();
@@ -1261,7 +1289,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         SwingUtilities.replaceUIInputMap(tree,
                                 JComponent.WHEN_FOCUSED, km);
                     }
-                } else if ("transferHandler" == name) {
+                } else if (name != null && "transferHandler".equals(name)) {
                     DropTarget dropTarget = tree.getDropTarget();
                     if (dropTarget instanceof UIResource) {
                         if (defaultDropTargetListener == null) {
@@ -1273,7 +1301,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                             // should not happen... swing drop target is multicast
                         }
                     }
-                } else if (name.equals("JComponent.sizeVariant")) {
+                } else if (name != null && name.equals("JComponent.sizeVariant")) {
                     QuaquaUtilities.applySizeVariant(tree);
                 }
             }
@@ -1677,6 +1705,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
          * called to save the state of a component in case it needs to
          * be restored because a drop is not performed.
          */
+        @Override
         protected void saveComponentState(JComponent comp) {
             JTree tree = (JTree) comp;
             selectedIndices = tree.getSelectionRows();
@@ -1686,6 +1715,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
          * called to restore the state of a component
          * because a drop was not performed.
          */
+        @Override
         protected void restoreComponentState(JComponent comp) {
             JTree tree = (JTree) comp;
             tree.setSelectionRows(selectedIndices);
@@ -1695,6 +1725,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
          * called to set the insertion location to match the current
          * mouse pointer coordinates.
          */
+        @Override
         protected void updateInsertionLocation(JComponent comp, Point p) {
             JTree tree = (JTree) comp;
             BasicTreeUI ui = (BasicTreeUI) tree.getUI();
@@ -1778,9 +1809,10 @@ public class QuaquaTreeUI extends BasicTreeUI {
             super(key);
         }
 
+        @Override
         public boolean isEnabled(Object o) {
             if (o instanceof JTree) {
-                if (getName() == CANCEL_EDITING) {
+                if (getName() != null && getName().equals(CANCEL_EDITING)) {
                     return ((JTree) o).isEditing();
                 }
             }
@@ -1795,61 +1827,61 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 return;
             }
             String key = getName();
-            if (key == SELECT_PREVIOUS) {
+            if (key != null && key.equals(SELECT_PREVIOUS)) {
                 increment(tree, ui, -1, false, true);
-            } else if (key == SELECT_PREVIOUS_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_PREVIOUS_CHANGE_LEAD)) {
                 increment(tree, ui, -1, false, false);
-            } else if (key == SELECT_PREVIOUS_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SELECT_PREVIOUS_EXTEND_SELECTION)) {
                 increment(tree, ui, -1, true, true);
-            } else if (key == SELECT_NEXT) {
+            } else if (key != null && key.equals(SELECT_NEXT)) {
                 increment(tree, ui, 1, false, true);
-            } else if (key == SELECT_NEXT_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_NEXT_CHANGE_LEAD)) {
                 increment(tree, ui, 1, false, false);
-            } else if (key == SELECT_NEXT_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SELECT_NEXT_EXTEND_SELECTION)) {
                 increment(tree, ui, 1, true, true);
-            } else if (key == SELECT_CHILD) {
+            } else if (key != null && key.equals(SELECT_CHILD)) {
                 traverse(tree, ui, 1, true);
-            } else if (key == SELECT_CHILD_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_CHILD_CHANGE_LEAD)) {
                 traverse(tree, ui, 1, false);
-            } else if (key == SELECT_PARENT) {
+            } else if (key != null && key.equals(SELECT_PARENT)) {
                 traverse(tree, ui, -1, true);
-            } else if (key == SELECT_PARENT_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_PARENT_CHANGE_LEAD)) {
                 traverse(tree, ui, -1, false);
-            } else if (key == SCROLL_UP_CHANGE_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_UP_CHANGE_SELECTION)) {
                 page(tree, ui, -1, false, true);
-            } else if (key == SCROLL_UP_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SCROLL_UP_CHANGE_LEAD)) {
                 page(tree, ui, -1, false, false);
-            } else if (key == SCROLL_UP_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_UP_EXTEND_SELECTION)) {
                 page(tree, ui, -1, true, true);
-            } else if (key == SCROLL_DOWN_CHANGE_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_DOWN_CHANGE_SELECTION)) {
                 page(tree, ui, 1, false, true);
-            } else if (key == SCROLL_DOWN_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_DOWN_EXTEND_SELECTION)) {
                 page(tree, ui, 1, true, true);
-            } else if (key == SCROLL_DOWN_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SCROLL_DOWN_CHANGE_LEAD)) {
                 page(tree, ui, 1, false, false);
-            } else if (key == SELECT_FIRST) {
+            } else if (key != null && key.equals(SELECT_FIRST)) {
                 home(tree, ui, -1, false, true);
-            } else if (key == SELECT_FIRST_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_FIRST_CHANGE_LEAD)) {
                 home(tree, ui, -1, false, false);
-            } else if (key == SELECT_FIRST_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SELECT_FIRST_EXTEND_SELECTION)) {
                 home(tree, ui, -1, true, true);
-            } else if (key == SELECT_LAST) {
+            } else if (key != null && key.equals(SELECT_LAST)) {
                 home(tree, ui, 1, false, true);
-            } else if (key == SELECT_LAST_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SELECT_LAST_CHANGE_LEAD)) {
                 home(tree, ui, 1, false, false);
-            } else if (key == SELECT_LAST_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SELECT_LAST_EXTEND_SELECTION)) {
                 home(tree, ui, 1, true, true);
-            } else if (key == TOGGLE) {
+            } else if (key != null && key.equals(TOGGLE)) {
                 toggle(tree, ui);
-            } else if (key == CANCEL_EDITING) {
+            } else if (key != null && key.equals(CANCEL_EDITING)) {
                 cancelEditing(tree, ui);
-            } else if (key == START_EDITING) {
+            } else if (key != null && key.equals(START_EDITING)) {
                 startEditing(tree, ui);
-            } else if (key == SELECT_ALL) {
+            } else if (key != null && key.equals(SELECT_ALL)) {
                 selectAll(tree, ui, true);
-            } else if (key == CLEAR_SELECTION) {
+            } else if (key != null && key.equals(CLEAR_SELECTION)) {
                 selectAll(tree, ui, false);
-            } else if (key == ADD_TO_SELECTION) {
+            } else if (key != null && key.equals(ADD_TO_SELECTION)) {
                 if (ui.getRowCount(tree) > 0) {
                     int lead = ui.getLeadSelectionRow();
                     if (!tree.isRowSelected(lead)) {
@@ -1858,7 +1890,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         ui.setAnchorSelectionPath(aPath);
                     }
                 }
-            } else if (key == TOGGLE_AND_ANCHOR) {
+            } else if (key != null && key.equals(TOGGLE_AND_ANCHOR)) {
                 if (ui.getRowCount(tree) > 0) {
                     int lead = ui.getLeadSelectionRow();
                     TreePath lPath = ui.getLeadSelectionPath();
@@ -1870,30 +1902,30 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     }
                     ui.setAnchorSelectionPath(lPath);
                 }
-            } else if (key == EXTEND_TO) {
+            } else if (key != null && key.equals(EXTEND_TO)) {
                 extendSelection(tree, ui);
-            } else if (key == MOVE_SELECTION_TO) {
+            } else if (key != null && key.equals(MOVE_SELECTION_TO)) {
                 if (ui.getRowCount(tree) > 0) {
                     int lead = ui.getLeadSelectionRow();
                     tree.setSelectionInterval(lead, lead);
                 }
-            } else if (key == SCROLL_LEFT) {
+            } else if (key != null && key.equals(SCROLL_LEFT)) {
                 scroll(tree, ui, SwingConstants.HORIZONTAL, -10);
-            } else if (key == SCROLL_RIGHT) {
+            } else if (key != null && key.equals(SCROLL_RIGHT)) {
                 scroll(tree, ui, SwingConstants.HORIZONTAL, 10);
-            } else if (key == SCROLL_LEFT_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_LEFT_EXTEND_SELECTION)) {
                 scrollChangeSelection(tree, ui, -1, true, true);
-            } else if (key == SCROLL_RIGHT_EXTEND_SELECTION) {
+            } else if (key != null && key.equals(SCROLL_RIGHT_EXTEND_SELECTION)) {
                 scrollChangeSelection(tree, ui, 1, true, true);
-            } else if (key == SCROLL_RIGHT_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SCROLL_RIGHT_CHANGE_LEAD)) {
                 scrollChangeSelection(tree, ui, 1, false, false);
-            } else if (key == SCROLL_LEFT_CHANGE_LEAD) {
+            } else if (key != null && key.equals(SCROLL_LEFT_CHANGE_LEAD)) {
                 scrollChangeSelection(tree, ui, -1, false, false);
-            } else if (key == EXPAND) {
+            } else if (key != null && key.equals(EXPAND)) {
                 expand(tree, ui);
-            } else if (key == COLLAPSE) {
+            } else if (key != null && key.equals(COLLAPSE)) {
                 collapse(tree, ui);
-            } else if (key == MOVE_SELECTION_TO_PARENT) {
+            } else if (key != null && key.equals(MOVE_SELECTION_TO_PARENT)) {
                 moveSelectionToParent(tree, ui);
             }
         }
@@ -2307,6 +2339,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled());
@@ -2342,6 +2375,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled());
@@ -2379,6 +2413,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled());
@@ -2416,6 +2451,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled());
@@ -2436,6 +2472,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled());
@@ -2456,6 +2493,7 @@ new Throwable().printStackTrace();
             }
         }
 
+        @Override
         public boolean isEnabled() {
             return (tree != null &&
                     tree.isEnabled() &&
