@@ -616,32 +616,32 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
             //g.setColor( c.getBackground() );
             g.setPaint(TextureColor.getPaint(c.getBackground(), c));
             g.fillRect(0, 0, size.width, size.height);
-        /*
-        switch ( tabPlacement ) {
-        case LEFT:
-        g.fillRect( insets.left, insets.top,
-        calculateTabAreaWidth( tabPlacement, runCount, maxTabWidth ),
-        size.height - insets.bottom - insets.top );
-        break;
-        case BOTTOM:
-        int totalTabHeight = calculateTabAreaHeight( tabPlacement, runCount, maxTabHeight );
-        g.fillRect( insets.left, size.height - insets.bottom - totalTabHeight,
-        size.width - insets.left - insets.right,
-        totalTabHeight );
-        break;
-        case RIGHT:
-        int totalTabWidth = calculateTabAreaWidth( tabPlacement, runCount, maxTabWidth );
-        g.fillRect( size.width - insets.right - totalTabWidth,
-        insets.top, totalTabWidth,
-        size.height - insets.top - insets.bottom );
-        break;
-        case TOP:
-        default:
-        g.fillRect( insets.left, insets.top,
-        size.width - insets.right - insets.left,
-        calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) );
-        paintHighlightBelowTab();
-        }*/
+            /*
+            switch ( tabPlacement ) {
+            case LEFT:
+            g.fillRect( insets.left, insets.top,
+            calculateTabAreaWidth( tabPlacement, runCount, maxTabWidth ),
+            size.height - insets.bottom - insets.top );
+            break;
+            case BOTTOM:
+            int totalTabHeight = calculateTabAreaHeight( tabPlacement, runCount, maxTabHeight );
+            g.fillRect( insets.left, size.height - insets.bottom - totalTabHeight,
+            size.width - insets.left - insets.right,
+            totalTabHeight );
+            break;
+            case RIGHT:
+            int totalTabWidth = calculateTabAreaWidth( tabPlacement, runCount, maxTabWidth );
+            g.fillRect( size.width - insets.right - totalTabWidth,
+            insets.top, totalTabWidth,
+            size.height - insets.top - insets.bottom );
+            break;
+            case TOP:
+            default:
+            g.fillRect( insets.left, insets.top,
+            size.width - insets.right - insets.left,
+            calculateTabAreaHeight(tabPlacement, runCount, maxTabHeight) );
+            paintHighlightBelowTab();
+            }*/
         }
 
         int tc = tabPane.getTabCount();
@@ -744,7 +744,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         // XXX - This needs JDK 1.4 to work.
         resetMnemonics();
         for (int counter = tabPane.getTabCount() - 1; counter >= 0;
-        counter--) {
+                counter--) {
             int mnemonic = tabPane.getMnemonicAt(counter);
 
             if (mnemonic > 0) {
@@ -772,7 +772,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
         mnemonicInputMap.put(KeyStroke.getKeyStroke(mnemonic, Event.ALT_MASK),
                 "setSelectedIndex");
-        mnemonicToIndexMap.put(new Integer(mnemonic), new Integer(index));
+        mnemonicToIndexMap.put(mnemonic, index);
     }
 
     /**
@@ -1049,8 +1049,8 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
                 }
             }
         }
-        return super.calculateMaxTabHeight(tabPlacement) -
-                (tallerIcons ? (tabInsets.top + tabInsets.bottom) : 0);
+        return super.calculateMaxTabHeight(tabPlacement)
+                - (tallerIcons ? (tabInsets.top + tabInsets.bottom) : 0);
     }
 
     protected int getTabRunOverlay(int tabPlacement) {
@@ -1059,15 +1059,15 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         } else {
             return 1;
         }
-    /*
-    // Tab runs laid out vertically should overlap
-    // at least as much as the largest slant
-    if ( tabPlacement == LEFT || tabPlacement == RIGHT ) {
-    int maxTabHeight = calculateMaxTabHeight(tabPlacement);
-    return maxTabHeight / 2;
-    }
-    return 0;
-     */
+        /*
+        // Tab runs laid out vertically should overlap
+        // at least as much as the largest slant
+        if ( tabPlacement == LEFT || tabPlacement == RIGHT ) {
+        int maxTabHeight = calculateMaxTabHeight(tabPlacement);
+        return maxTabHeight / 2;
+        }
+        return 0;
+         */
     }
 
     // Don't rotate runs!
@@ -1088,9 +1088,9 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected void paintText(Graphics g, int tabPlacement,
-    Font font, FontMetrics metrics, int tabIndex,
-    String title, Rectangle textRect,
-    boolean isSelected) {
+            Font font, FontMetrics metrics, int tabIndex,
+            String title, Rectangle textRect,
+            boolean isSelected) {
 
         g.setFont(font);
 
@@ -1108,18 +1108,17 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
             if (tabPane.isEnabled() && tabPane.isEnabledAt(tabIndex)) {
                 g.setColor(tabPane.getForegroundAt(tabIndex));
                 QuaquaUtilities.drawStringUnderlineCharAt(g,
-                title, mnemIndex,
-                textRect.x, textRect.y + metrics.getAscent());
+                        title, mnemIndex,
+                        textRect.x, textRect.y + metrics.getAscent());
 
             } else { // tab disabled
                 g.setColor(disabledForeground);
                 QuaquaUtilities.drawStringUnderlineCharAt(g,
-                title, mnemIndex,
-                textRect.x, textRect.y + metrics.getAscent());
+                        title, mnemIndex,
+                        textRect.x, textRect.y + metrics.getAscent());
             }
         }
     }
-
 
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
@@ -1128,6 +1127,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      */
     public class TabbedPaneLayout extends BasicTabbedPaneUI.TabbedPaneLayout {
 
+        @Override
         protected void calculateTabRects(int tabPlacement, int tabCount) {
             Dimension size = tabPane.getSize();
             Insets insets = InsetsUtil.add(tabPane.getInsets(), getVisualMargin());
@@ -1462,19 +1462,23 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
 
         // Don't rotate runs!
+        @Override
         protected void rotateTabRuns(int tabPlacement, int selectedRun) {
         }
 
         // Don't pad selected tab
+        @Override
         protected void padSelectedTab(int tabPlacement, int selectedIndex) {
         }
 
+        @Override
         public void calculateLayoutInfo() {
             int tabCount = tabPane.getTabCount();
             assureRectsCreated(tabCount);
             calculateTabRects(tabPane.getTabPlacement(), tabCount);
         }
 
+        @Override
         protected void padTabRun(int tabPlacement, int start, int end, int max) {
             // Only pad tab runs if they are on top or bottom
             if (tabPlacement == TOP || tabPlacement == BOTTOM) {
@@ -1556,9 +1560,8 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     private int getTabAtLocation(int x, int y) {
         ensureCurrentLayout();
 
-        int tabCount = tabPane.getTabCount();
-        for (int i = 0; i <
-                tabCount; i++) {
+        int tCount = tabPane.getTabCount();
+        for (int i = 0; i < tCount; i++) {
             if (rects[i].contains(x, y)) {
                 return i;
             }
@@ -1567,17 +1570,18 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         return -1;
     }
 
+    @Override
     public int getBaseline(JComponent component, int width, int height) {
         return -1;
     }
 
+    @Override
     public void navigateSelectedTab(int direction) {
         super.navigateSelectedTab(direction);
     }
 
-    public Integer getIndexForMnemonic(
-            int mnemonic) {
-        return (Integer) mnemonicToIndexMap.get(new Integer(mnemonic));
+    public Integer getIndexForMnemonic(int mnemonic) {
+        return (Integer) mnemonicToIndexMap.get(mnemonic);
     }
 
     public boolean requestFocusForVisibleComponent() {
@@ -1625,26 +1629,29 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         // We must not call super, because with Java 1.4 and higher,
         // this would set the 'tabScroller' variable with a non-null value.
     }
+
     @Override
     protected ChangeListener createChangeListener() {
         return new TabSelectionHandler();
     }
+
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
      */
     private static class TabSelectionHandler implements ChangeListener {
+
         public void stateChanged(ChangeEvent e) {
-            JTabbedPane tabPane = (JTabbedPane)e.getSource();
+            JTabbedPane tabPane = (JTabbedPane) e.getSource();
             tabPane.revalidate();
             tabPane.repaint();
             /*
             if (tabPane.getTabLayoutPolicy() == JTabbedPane.SCROLL_TAB_LAYOUT) {
-                int index = tabPane.getSelectedIndex();
-                if (index < rects.length && index != -1) {
-                    tabScroller.tabPanel.scrollRectToVisible(rects[index]);
-                }
+            int index = tabPane.getSelectedIndex();
+            if (index < rects.length && index != -1) {
+            tabScroller.tabPanel.scrollRectToVisible(rects[index]);
+            }
             }*/
         }
     }

@@ -114,7 +114,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     private Hashtable mnemonicToIndexMap;
 
     public Integer getIndexForMnemonic(int mnemonic) {
-        return (Integer) mnemonicToIndexMap.get(new Integer(mnemonic));
+        return (Integer) mnemonicToIndexMap.get(mnemonic);
     }
     /**
      * InputMap used for mnemonics. Only non-null if the JTabbedPane has
@@ -339,13 +339,13 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
         boolean isSmall = QuaquaUtilities.isSmallSizeVariant(tabPane);
 
-        int tabCount = tabPane.getTabCount();
+        int tCount = tabPane.getTabCount();
         Insets insets;
-        if (tabCount == 1) {
+        if (tCount == 1) {
             insets = (Insets) (isSmall ? smallOuterTabInsets : outerTabInsets).clone();
         } else if (tabIndex == 0) {
             insets = isSmall ? new Insets(smallOuterTabInsets.top, smallOuterTabInsets.left, smallTabInsets.bottom, smallTabInsets.right) : new Insets(outerTabInsets.top, outerTabInsets.left, tabInsets.bottom, tabInsets.right);
-        } else if (tabIndex == tabCount - 1) {
+        } else if (tabIndex == tCount - 1) {
             insets = isSmall ? new Insets(smallTabInsets.top, smallTabInsets.left, smallOuterTabInsets.bottom, smallOuterTabInsets.right) : new Insets(tabInsets.top, tabInsets.left, outerTabInsets.bottom, outerTabInsets.right);
         } else {
             insets = (Insets) (isSmall ? smallTabInsets : tabInsets).clone();
@@ -555,13 +555,13 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             g = (Graphics2D) gr;
         }
 
-        int tabCount = tabPane.getTabCount();
+        int tCount = tabPane.getTabCount();
 
         Rectangle iconRect = new Rectangle(),
                 textRect = new Rectangle();
         Rectangle clipRect = gr.getClipBounds();
 
-        for (int j = 0; j < tabCount; j++) {
+        for (int j = 0; j < tCount; j++) {
             if (rects[j].intersects(clipRect)) {
                 paintTab(g, tabPlacement, rects, j, iconRect, textRect);
             }
@@ -807,8 +807,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             return -1;
             //translatePointToTabPanel(x, y, p);
         }
-        int tabCount = tabPane.getTabCount();
-        for (int i = 0; i < tabCount; i++) {
+        int tCount = tabPane.getTabCount();
+        for (int i = 0; i < tCount; i++) {
             if (rects[i].contains(p.x, p.y)) {
                 return i;
             }
@@ -862,8 +862,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     private int getTabAtLocation(int x, int y) {
         ensureCurrentLayout();
 
-        int tabCount = tabPane.getTabCount();
-        for (int i = 0; i < tabCount; i++) {
+        int tCount = tabPane.getTabCount();
+        for (int i = 0; i < tCount; i++) {
             if (rects[i].contains(x, y)) {
                 return i;
             }
@@ -877,8 +877,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     private int getClosestTab(int x, int y) {
         int min = 0;
-        int tabCount = Math.min(rects.length, tabPane.getTabCount());
-        int max = tabCount;
+        int tCount = Math.min(rects.length, tabPane.getTabCount());
+        int max = tCount;
         int tabPlacement = tabPane.getTabPlacement();
         boolean useX = (tabPlacement == TOP || tabPlacement == BOTTOM);
         int want = (useX) ? x : y;
@@ -903,7 +903,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             } else if (want >= maxLoc) {
                 min = current;
                 if (max - min <= 1) {
-                    return Math.max(current + 1, tabCount - 1);
+                    return Math.max(current + 1, tCount - 1);
                 }
             } else {
                 return current;
@@ -947,7 +947,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
         mnemonicInputMap.put(KeyStroke.getKeyStroke(mnemonic, Event.ALT_MASK),
                 "setSelectedIndex");
-        mnemonicToIndexMap.put(new Integer(mnemonic), new Integer(index));
+        mnemonicToIndexMap.put(mnemonic, index);
     }
 
     /**
@@ -994,29 +994,29 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             height += fontHeight;
         }
         Icon icon = getIconForTab(tabIndex);
-        Insets tabInsets = getTabInsets(tabPlacement, tabIndex);
+        Insets tInsets = getTabInsets(tabPlacement, tabIndex);
 
         if (icon != null) {
             height = Math.max(height, icon.getIconHeight());
         }
-        height += tabInsets.top + tabInsets.bottom;// + 2;
+        height += tInsets.top + tInsets.bottom;// + 2;
         return height;
     }
 
     @Override
     protected int calculateTabAreaHeight(int tabPlacement, int horizRunCount, int maxTabHeight) {
-        Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-        int tabRunOverlay = getTabRunOverlay(tabPlacement);
-        return (horizRunCount > 0 ? horizRunCount * (maxTabHeight - tabRunOverlay) + tabRunOverlay
-                + tabAreaInsets.top + tabAreaInsets.bottom : 0);
+        Insets tAreaInsets = getTabAreaInsets(tabPlacement);
+        int tRunOverlay = getTabRunOverlay(tabPlacement);
+        return (horizRunCount > 0 ? horizRunCount * (maxTabHeight - tRunOverlay) + tRunOverlay
+                + tAreaInsets.top + tAreaInsets.bottom : 0);
     }
 
     @Override
     protected int calculateTabAreaWidth(int tabPlacement, int vertRunCount, int maxTabWidth) {
-        Insets tabAreaInsets = getTabAreaInsets(tabPlacement);
-        int tabRunOverlay = getTabRunOverlay(tabPlacement);
-        int result = (vertRunCount > 0 ? vertRunCount * (maxTabWidth - tabRunOverlay) + tabRunOverlay
-                + tabAreaInsets.left + tabAreaInsets.right : 0);
+        Insets tAreaInsets = getTabAreaInsets(tabPlacement);
+        int tRunOverlay = getTabRunOverlay(tabPlacement);
+        int result = (vertRunCount > 0 ? vertRunCount * (maxTabWidth - tRunOverlay) + tRunOverlay
+                + tAreaInsets.left + tAreaInsets.right : 0);
         return result;
     }
 
@@ -1033,7 +1033,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     protected void repaintTabArea() {
         int tabPlacement = tabPane.getTabPlacement();
-        int tabCount = tabPane.getTabCount();
+        int tCount = tabPane.getTabCount();
 
         Rectangle clipRect = new Rectangle();
         Insets insets = getInsets();//InsetsUtil.add(tabPane.getInsets(), getVisualMargin());
@@ -1190,19 +1190,19 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     private Vector createHTMLVector() {
-        Vector htmlViews = new Vector();
+        Vector hViews = new Vector();
         int count = tabPane.getTabCount();
         if (count > 0) {
             for (int i = 0; i < count; i++) {
                 String title = tabPane.getTitleAt(i);
                 if (BasicHTML.isHTMLString(title)) {
-                    htmlViews.addElement(BasicHTML.createHTMLView(tabPane, title));
+                    hViews.addElement(BasicHTML.createHTMLView(tabPane, title));
                 } else {
-                    htmlViews.addElement(null);
+                    hViews.addElement(null);
                 }
             }
         }
-        return htmlViews;
+        return hViews;
     }
 
     public boolean requestFocusForVisibleComponent() {
@@ -1232,11 +1232,11 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         "TabbedPane.selectionFollowsFocus") ?
         tabPane.getSelectedIndex() : getFocusIndex();*/
         int current = tabPane.getSelectedIndex();
-        int tabCount = tabPane.getTabCount();
+        int tCount = tabPane.getTabCount();
         boolean leftToRight = QuaquaUtilities.isLeftToRight(tabPane);
 
         // If we have no tabs then don't navigate.
-        if (tabCount <= 0) {
+        if (tCount <= 0) {
             return;
         }
 
@@ -1257,11 +1257,11 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                         selectPreviousTab(current);
                         break;
                     case WEST:
-                        offset = getTabRunOffset(tabPlacement, tabCount, current, false);
+                        offset = getTabRunOffset(tabPlacement, tCount, current, false);
                         selectAdjacentRunTab(tabPlacement, current, offset);
                         break;
                     case EAST:
-                        offset = getTabRunOffset(tabPlacement, tabCount, current, true);
+                        offset = getTabRunOffset(tabPlacement, tCount, current, true);
                         selectAdjacentRunTab(tabPlacement, current, offset);
                         break;
                     default:
@@ -1282,11 +1282,11 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                         selectNextTabInRun(current);
                         break;
                     case WEST:
-                        offset = getTabRunOffset(tabPlacement, tabCount, current, false);
+                        offset = getTabRunOffset(tabPlacement, tCount, current, false);
                         selectAdjacentRunTab(tabPlacement, current, offset);
                         break;
                     case EAST:
-                        offset = getTabRunOffset(tabPlacement, tabCount, current, true);
+                        offset = getTabRunOffset(tabPlacement, tCount, current, true);
                         selectAdjacentRunTab(tabPlacement, current, offset);
                         break;
                     default:
@@ -2150,6 +2150,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         protected void padTabRun(int tabPlacement, int start, int end, int max) {
             Rectangle lastRect = rects[end];
             if (tabPlacement == TOP || tabPlacement == BOTTOM) {
@@ -2181,6 +2182,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         protected void padSelectedTab(int tabPlacement, int selectedIndex) {
 
             if (selectedIndex >= 0) {
@@ -2201,6 +2203,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     public class QuaquaMouseHandler extends BasicTabbedPaneUI.MouseHandler {
 
+        @Override
         public void mousePressed(MouseEvent evt) {
             if (!tabsCombo.isVisible()) {
                 super.mousePressed(evt);

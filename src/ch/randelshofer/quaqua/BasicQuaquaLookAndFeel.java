@@ -1633,7 +1633,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             new Rectangle(0, 0, 25, 25)),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
             // Note: Minimum width only affects regular sized buttons with push button style
-            "Button.minimumWidth", new Integer(80),
+            "Button.minimumWidth", 80,
             "Button.focusable", allControlsFocusable,
             //
             //"CheckBox.background", ...,
@@ -1672,7 +1672,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             //"ColorChooser.swatchesDefaultRecentColor", ...,
             //"ColorChooser.swatchesRecentSwatchSize", ...,
             "ColorChooser.swatchesSwatchSize", new DimensionUIResource(5, 5),
-            "ColorChooser.resetMnemonic", new Integer(-1),
+            "ColorChooser.resetMnemonic", -1,
             "ColorChooser.crayonsImage", makeImage(commonDir + "ColorChooser.crayons.png"),
             "ColorChooser.textSliderGap", 0,
             "ColorChooser.colorPalettesIcon", makeButtonStateIcon(commonDir + "ColorChooser.colorPalettesIcons.png", 3),
@@ -1686,16 +1686,16 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // Magnifying glass used as the cursor image
             "ColorChooser.colorPickerMagnifier", makeBufferedImage(commonDir + "ColorChooser.colorPickerMagnifier.png"),
             // Hot spot of the magnifier cursor
-            "ColorChooser.colorPickerHotSpot", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{new Integer(29), new Integer(29)}),
+            "ColorChooser.colorPickerHotSpot", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{29, 29}),
             // Pick point relative to hot spot
-            "ColorChooser.colorPickerPickOffset", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{new Integer(-13), new Integer(-13)}),
+            "ColorChooser.colorPickerPickOffset", new UIDefaults.ProxyLazyValue("java.awt.Point", new Object[]{-13, -13}),
             // Rectangle used for drawing the mask of the magnifying glass
-            "ColorChooser.colorPickerGlassRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{new Integer(2), new Integer(2), new Integer(29), new Integer(29)}),
+            "ColorChooser.colorPickerGlassRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{2, 2, 29, 29}),
             // Capture rectangle. Width and height must be equal sized and must be odd.
             // The position of the capture rectangle is relative to the hot spot.
-            "ColorChooser.colorPickerCaptureRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{new Integer(-15), new Integer(-15), new Integer(5), new Integer(5)}),
+            "ColorChooser.colorPickerCaptureRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{-15, -15, 5, 5}),
             // Zoomed (magnified) capture image. Width and height must be a multiple of the capture rectangles size.
-            "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{new Integer(4), new Integer(4), new Integer(25), new Integer(25)}),
+            "ColorChooser.colorPickerZoomRect", new UIDefaults.ProxyLazyValue("java.awt.Rectangle", new Object[]{4, 4, 25, 25}),
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
             //
@@ -1707,7 +1707,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
             "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
             //"ComboBox.timeFactor", ...
-            "ComboBox.maximumRowCount", new Integer(8),
+            "ComboBox.maximumRowCount", 8,
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
             "ComboBox.showPopupOnNavigation", Boolean.TRUE,
             // Set this to Boolean.TRUE to get the same preferred height for
@@ -1797,8 +1797,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             + "p { font: 11pt \"" + systemFontName + "\"; margin-top: 8px }"
             + "</style>"
             + "</head>",
-            "OptionPane.messageLabelWidth", new Integer(360),
-            "OptionPane.maxCharactersPerLineCount", new Integer(60),
+            "OptionPane.messageLabelWidth", 360,
+            "OptionPane.maxCharactersPerLineCount", 60,
             "Panel.opaque", opaque,
             //
             "PopupMenu.enableHeavyWeightPopup", Boolean.TRUE,
@@ -1854,7 +1854,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // Setting this property to null disables snapping
             // Note: snapping is only in effect for look and feel decorated
             // windows
-            "RootPane.windowSnapDistance", new Integer(10),
+            "RootPane.windowSnapDistance", 10,
             // Default value for "apple.awt.draggableWindowBackground"
             "RootPane.draggableWindowBackground", Boolean.FALSE,
             // Default value for "apple.awt.windowShadow"
@@ -2014,11 +2014,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             //
             "Tree.collapsedIcon", makeIcon(getClass(), commonDir + "Tree.collapsedIcon.png"),
             "Tree.expandedIcon", makeIcon(getClass(), commonDir + "Tree.expandedIcon.png"),
-            "Tree.leftChildIndent", new Integer(7),
+            "Tree.leftChildIndent", 7,
             "Tree.line", new AlphaColorUIResource(0x00000000),
             "Tree.paintLines", Boolean.FALSE,
-            "Tree.rightChildIndent", new Integer(13),
-            "Tree.rowHeight", new Integer(19),
+            "Tree.rightChildIndent", 13,
+            "Tree.rowHeight", 19,
             "Tree.leafIcon", makeIcon(getClass(), commonDir + "Tree.leafIcon.png"),
             "Tree.openIcon", makeIcon(getClass(), commonDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), commonDir + "Tree.closedIcon.png"),

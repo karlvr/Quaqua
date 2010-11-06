@@ -40,7 +40,7 @@ public class ArrayUtil {
     public static ArrayList asList(int[] a) {
         ArrayList list = new ArrayList(a.length);
         for (int i=0; i < a.length; i++) {
-            list.add(new Integer(a[i]));
+            list.add(a[i]);
         }
         return list;
     }/*

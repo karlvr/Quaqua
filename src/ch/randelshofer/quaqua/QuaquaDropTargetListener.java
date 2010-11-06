@@ -143,8 +143,8 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
     private void initPropertiesIfNecessary() {
         if (timer == null) {
             Toolkit t = Toolkit.getDefaultToolkit();
-            Integer initial = new Integer(100);
-            Integer interval = new Integer(100);
+            Integer initial = 100;
+            Integer interval = 100;
 
             try {
                 initial = (Integer) t.getDesktopProperty(

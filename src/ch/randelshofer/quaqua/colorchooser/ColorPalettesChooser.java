@@ -63,7 +63,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         }
         palettes.add(new PaletteListModel(
         UIManager.getString("ColorChooser.appleColors"),
-        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.appleColors"), new Integer(entries.length)}),
+        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.appleColors"), entries.length}),
         entries)
         );
         
@@ -77,7 +77,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
         }
         palettes.add(new PaletteListModel(
         UIManager.getString("ColorChooser.crayons"),
-        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.crayons"), new Integer(entries.length)}),
+        MessageFormat.format(UIManager.getString("ColorChooser.profileContainsNColors"), new Object[] {UIManager.getString("ColorChooser.crayons"), entries.length}),
         entries)
         );
         

@@ -85,7 +85,7 @@ public abstract class ColorSliderModel {
         }
         slider.setModel(getBoundedRangeModel(component));
         slider.putClientProperty("ColorSliderModel", this);
-        slider.putClientProperty("ColorComponentIndex", new Integer(component));
+        slider.putClientProperty("ColorComponentIndex", component);
         addColorSlider(slider);
     }
     
@@ -157,7 +157,7 @@ public abstract class ColorSliderModel {
     
     
     protected void fireColorChanged(int componentIndex) {
-        Integer index = new Integer(componentIndex);
+        Integer index = componentIndex;
         Color value = getColor();
         for (Iterator i = sliders.iterator(); i.hasNext(); ) {
             JSlider slider = (JSlider) i.next();

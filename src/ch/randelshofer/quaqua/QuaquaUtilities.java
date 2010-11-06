@@ -345,7 +345,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return ((Integer) Methods.invokeStatic(
                 getSwingUtilities2(), "getLeftSideBearing",
                 new Class[]{Font.class, String.class}, new Object[]{f, string},
-                new Integer(0))).intValue();
+                0)).intValue();
     }
 
     /**
