@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
 import java.awt.*;
@@ -34,7 +33,6 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      */
     protected QuaquaDropTargetListener() {
     }
-
 
     /**
      * called to save the state of a component in case it needs to
@@ -63,7 +61,6 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      */
     protected void updateInsertionLocation(JComponent c, Point p) {
     }
-
     private static final int AUTOSCROLL_INSET = 10;
 
     /**
@@ -79,29 +76,29 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      * autoscroll will not occur in that direction.
      */
     void updateAutoscrollRegion(JComponent c) {
-	// compute the outer
-	Rectangle visible = c.getVisibleRect();
-	outer.setBounds(visible.x, visible.y, visible.width, visible.height);
+        // compute the outer
+        Rectangle visible = c.getVisibleRect();
+        outer.setBounds(visible.x, visible.y, visible.width, visible.height);
 
-	// compute the insets
-	Insets i = new Insets(0, 0, 0, 0);
-	if (c instanceof Scrollable) {
+        // compute the insets
+        Insets i = new Insets(0, 0, 0, 0);
+        if (c instanceof Scrollable) {
             int minSize = 2 * AUTOSCROLL_INSET;
 
             if (visible.width >= minSize) {
                 i.left = i.right = AUTOSCROLL_INSET;
             }
-            
+
             if (visible.height >= minSize) {
                 i.top = i.bottom = AUTOSCROLL_INSET;
             }
-	}
+        }
 
-	// set the inner from the insets
-	inner.setBounds(visible.x + i.left,
-		      visible.y + i.top,
-		      visible.width - (i.left + i.right),
-		      visible.height - (i.top  + i.bottom));
+        // set the inner from the insets
+        inner.setBounds(visible.x + i.left,
+                visible.y + i.top,
+                visible.width - (i.left + i.right),
+                visible.height - (i.top + i.bottom));
     }
 
     /**
@@ -111,32 +108,32 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      * scroll.
      */
     void autoscroll(JComponent c, Point pos) {
-	if (c instanceof Scrollable) {
-	    Scrollable s = (Scrollable) c;
-	    if (pos.y < inner.y) {
-		// scroll upward
-		int dy = s.getScrollableUnitIncrement(outer, SwingConstants.VERTICAL, -1);
-		Rectangle r = new Rectangle(inner.x, outer.y - dy, inner.width, dy);
-		c.scrollRectToVisible(r);
-	    } else if (pos.y > (inner.y + inner.height)) {
-		// scroll downard
-		int dy = s.getScrollableUnitIncrement(outer, SwingConstants.VERTICAL, 1);
-		Rectangle r = new Rectangle(inner.x, outer.y + outer.height, inner.width, dy);
-		c.scrollRectToVisible(r);
-	    }
+        if (c instanceof Scrollable) {
+            Scrollable s = (Scrollable) c;
+            if (pos.y < inner.y) {
+                // scroll upward
+                int dy = s.getScrollableUnitIncrement(outer, SwingConstants.VERTICAL, -1);
+                Rectangle r = new Rectangle(inner.x, outer.y - dy, inner.width, dy);
+                c.scrollRectToVisible(r);
+            } else if (pos.y > (inner.y + inner.height)) {
+                // scroll downard
+                int dy = s.getScrollableUnitIncrement(outer, SwingConstants.VERTICAL, 1);
+                Rectangle r = new Rectangle(inner.x, outer.y + outer.height, inner.width, dy);
+                c.scrollRectToVisible(r);
+            }
 
-	    if (pos.x < inner.x) {
-		// scroll left
-		int dx = s.getScrollableUnitIncrement(outer, SwingConstants.HORIZONTAL, -1);
-		Rectangle r = new Rectangle(outer.x - dx, inner.y, dx, inner.height);
-		c.scrollRectToVisible(r);
-	    } else if (pos.x > (inner.x + inner.width)) {
-		// scroll right
-		int dx = s.getScrollableUnitIncrement(outer, SwingConstants.HORIZONTAL, 1);
-		Rectangle r = new Rectangle(outer.x + outer.width, inner.y, dx, inner.height);
-		c.scrollRectToVisible(r);
-	    }
-	}
+            if (pos.x < inner.x) {
+                // scroll left
+                int dx = s.getScrollableUnitIncrement(outer, SwingConstants.HORIZONTAL, -1);
+                Rectangle r = new Rectangle(outer.x - dx, inner.y, dx, inner.height);
+                c.scrollRectToVisible(r);
+            } else if (pos.x > (inner.x + inner.width)) {
+                // scroll right
+                int dx = s.getScrollableUnitIncrement(outer, SwingConstants.HORIZONTAL, 1);
+                Rectangle r = new Rectangle(outer.x + outer.width, inner.y, dx, inner.height);
+                c.scrollRectToVisible(r);
+            }
+        }
     }
 
     /**
@@ -145,19 +142,19 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      */
     private void initPropertiesIfNecessary() {
         if (timer == null) {
-            Toolkit t  = Toolkit.getDefaultToolkit();
-            Integer    initial  = new Integer(100);
-            Integer    interval = new Integer(100);
+            Toolkit t = Toolkit.getDefaultToolkit();
+            Integer initial = new Integer(100);
+            Integer interval = new Integer(100);
 
             try {
-                initial = (Integer)t.getDesktopProperty(
-                                     "DnD.Autoscroll.initialDelay");
+                initial = (Integer) t.getDesktopProperty(
+                        "DnD.Autoscroll.initialDelay");
             } catch (Exception e) {
                 // ignore
             }
             try {
-                interval = (Integer)t.getDesktopProperty(
-                                      "DnD.Autoscroll.interval");
+                interval = (Integer) t.getDesktopProperty(
+                        "DnD.Autoscroll.interval");
             } catch (Exception e) {
                 // ignore
             }
@@ -167,8 +164,8 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
             timer.setInitialDelay(initial.intValue());
 
             try {
-                hysteresis = ((Integer)t.getDesktopProperty(
-                             "DnD.Autoscroll.cursorHysteresis")).intValue();
+                hysteresis = ((Integer) t.getDesktopProperty(
+                        "DnD.Autoscroll.cursorHysteresis")).intValue();
             } catch (Exception e) {
                 // ignore
             }
@@ -176,12 +173,11 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
     }
 
     static JComponent getComponent(DropTargetEvent e) {
-	DropTargetContext context = e.getDropTargetContext();
-	return (JComponent) context.getComponent();
+        DropTargetContext context = e.getDropTargetContext();
+        return (JComponent) context.getComponent();
     }
 
     // --- ActionListener methods --------------------------------------
-
     /**
      * The timer fired, perform autoscroll if the pointer is within the
      * autoscroll region.
@@ -189,44 +185,45 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
      * @param e the <code>ActionEvent</code>
      */
     public synchronized void actionPerformed(ActionEvent e) {
-	updateAutoscrollRegion(component);
-	if (outer.contains(lastPosition) && !inner.contains(lastPosition)) {
-	    autoscroll(component, lastPosition);
-	}
+        updateAutoscrollRegion(component);
+        if (outer.contains(lastPosition) && !inner.contains(lastPosition)) {
+            autoscroll(component, lastPosition);
+        }
     }
 
     // --- DropTargetListener methods -----------------------------------
-
     public void dragEnter(DropTargetDragEvent e) {
-	component = getComponent(e);
-	TransferHandler th = component.getTransferHandler();
-	canImport = th.canImport(component, e.getCurrentDataFlavors());
-	if (canImport) {
-	    saveComponentState(component);
-	    lastPosition = e.getLocation();
-	    updateAutoscrollRegion(component);
+        component = getComponent(e);
+        TransferHandler th = component.getTransferHandler();
+        canImport = th.canImport(component, e.getCurrentDataFlavors());
+        if (canImport) {
+            saveComponentState(component);
+            lastPosition = e.getLocation();
+            updateAutoscrollRegion(component);
             initPropertiesIfNecessary();
-	}
+        }
     }
 
     public void dragOver(DropTargetDragEvent e) {
-	if (canImport) {
-	    Point p = e.getLocation();
-	    updateInsertionLocation(component, p);
+        if (canImport) {
+            Point p = e.getLocation();
+            updateInsertionLocation(component, p);
 
 
-	    // check autoscroll
-	    synchronized(this) {
-		if (Math.abs(p.x - lastPosition.x) > hysteresis ||
-		    Math.abs(p.y - lastPosition.y) > hysteresis) {
-		    // no autoscroll 
-		    if (timer.isRunning()) timer.stop();
-		} else {
-		    if (!timer.isRunning()) timer.start();
-		}
-		lastPosition = p;
-	    }
-	}
+            // check autoscroll
+            if (Math.abs(p.x - lastPosition.x) > hysteresis
+                    || Math.abs(p.y - lastPosition.y) > hysteresis) {
+                // no autoscroll
+                if (timer.isRunning()) {
+                    timer.stop();
+                }
+            } else {
+                if (!timer.isRunning()) {
+                    timer.start();
+                }
+            }
+            lastPosition = p;
+        }
     }
 
     public void dragExit(DropTargetEvent e) {
@@ -254,24 +251,20 @@ public class QuaquaDropTargetListener implements DropTargetListener, UIResource,
         if (timer != null) {
             timer.stop();
         }
-	component = null;
-	lastPosition = null;
+        component = null;
+        lastPosition = null;
     }
-
     // --- fields --------------------------------------------------
-	
     private Timer timer;
     private Point lastPosition;
-    private Rectangle  outer = new Rectangle();
-    private Rectangle  inner = new Rectangle();
-    private int	   hysteresis = 10;
+    private Rectangle outer = new Rectangle();
+    private Rectangle inner = new Rectangle();
+    private int hysteresis = 10;
     private boolean canImport;
-
     /** 
      * The current component. The value is cached from the drop events and used
      * by the timer. When a drag exits or a drop occurs, this value is cleared.
      */
     private JComponent component;
-
 }
 
