@@ -186,7 +186,7 @@ public class DefaultColumnCellRenderer extends JPanel implements ListCellRendere
 
         @Override
         protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-            if (propertyName.equals("text")) {
+            if (propertyName != null && propertyName.equals("text")) {
                 super.firePropertyChange(propertyName, oldValue, newValue);
             }
         }

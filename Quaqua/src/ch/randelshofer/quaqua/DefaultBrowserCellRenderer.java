@@ -453,7 +453,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
      */
     @Override
     protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-        if (propertyName.equals("text")) {
+        if (propertyName != null && propertyName.equals("text")) {
             super.firePropertyChange(propertyName, oldValue, newValue);
         }
     }
