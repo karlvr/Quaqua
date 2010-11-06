@@ -80,7 +80,7 @@ public class GraphicsUtil {
      */
     public static void drawImage(Graphics2D g2d,
             RenderedImage ri) {
-        drawImage(g2d, wrap(ri));
+        drawImage(g2d, (RenderableImage) wrap(ri));
     }
 
     /**
