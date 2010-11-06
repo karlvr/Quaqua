@@ -57,7 +57,7 @@ public abstract class QuaquaUIAction implements Action {
     }
 
     public Object getValue(String key) {
-        if (key == NAME) {
+        if (key.equals(NAME)) {
             return name;
         }
         return null;
