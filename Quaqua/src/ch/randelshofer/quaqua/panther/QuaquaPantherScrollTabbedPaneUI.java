@@ -1494,7 +1494,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      * FIXME - Actually, this listener is not needed. The combo box model
      * already does the job for us.
      */
-    private class ItemHandler implements ItemListener {
+    private static class ItemHandler implements ItemListener {
 
         public void itemStateChanged(ItemEvent e) {
             //    tabPane.setSelectedIndex(tabsCombo.getSelectedIndex());
@@ -2269,7 +2269,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
      */
-    public class QuaquaTabSelectionHandler implements ChangeListener {
+    private static class QuaquaTabSelectionHandler implements ChangeListener {
 
         public void stateChanged(ChangeEvent e) {
             JTabbedPane tabPane = (JTabbedPane) e.getSource();

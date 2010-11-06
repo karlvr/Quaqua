@@ -1118,7 +1118,7 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     }
     final static int space = 10;
 
-    class IndentIcon implements Icon {
+    private static class IndentIcon implements Icon {
 
         Icon icon = null;
         int depth = 0;
@@ -1221,8 +1221,9 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     /**
      * Render different type sizes and styles.
      */
-    public class FilterComboBoxRenderer extends DefaultListCellRenderer {
+    public static class FilterComboBoxRenderer extends DefaultListCellRenderer {
 
+        @Override
         public Component getListCellRendererComponent(JList list,
                 Object value, int index, boolean isSelected,
                 boolean cellHasFocus) {

@@ -1619,11 +1619,13 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected void installComponents() {
         // empty
         // We must not call super, because with Java 1.4 and higher,
         // this would set the 'tabScroller' variable with a non-null value.
     }
+    @Override
     protected ChangeListener createChangeListener() {
         return new TabSelectionHandler();
     }
@@ -1632,7 +1634,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
      */
-    public class TabSelectionHandler implements ChangeListener {
+    private static class TabSelectionHandler implements ChangeListener {
         public void stateChanged(ChangeEvent e) {
             JTabbedPane tabPane = (JTabbedPane)e.getSource();
             tabPane.revalidate();

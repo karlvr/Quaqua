@@ -1942,7 +1942,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
     }
 
-    protected class BrowserScrollPaneLayout extends QuaquaScrollPaneLayout {
+    protected static class BrowserScrollPaneLayout extends QuaquaScrollPaneLayout {
 
         @Override
         public void layoutContainer(Container parent) {
@@ -1962,7 +1962,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
     }
 
-    protected class BrowserLayout implements LayoutManager {
+    protected static class BrowserLayout implements LayoutManager {
 
         private int preferredWidth = 0, preferredHeight = 0;
         private boolean sizeUnknown = true;

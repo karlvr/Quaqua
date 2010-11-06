@@ -40,7 +40,7 @@ public class TableHighlightCellTest extends javax.swing.JPanel {
     /**
      * Some bogus data to populate the table.
      */
-    private class MyTableModel extends AbstractTableModel {
+    private static class MyTableModel extends AbstractTableModel {
 
         private Object[][] data;
         private Class[] columnClasses;
