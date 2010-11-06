@@ -56,7 +56,7 @@ public class ColorChooserMainPanel extends javax.swing.JPanel {
             return;
         }
         
-        if (ccp.getClass().getName().equals("ch.randelshofer.quaqua.colorchooser.Quaqua15ColorPicker")) {
+        if (ccp.getClass().getName().equals("ch.randelshofer.quaqua.colorchooser.QuaquaColorPicker")) {
             northPanel.add(ccp, BorderLayout.WEST);
         } else {
             Icon displayIcon = ccp.getLargeDisplayIcon();
