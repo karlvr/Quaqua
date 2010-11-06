@@ -13,7 +13,6 @@
  * Part of this software (as marked) has been derived from software by
  * Dustin Sacks. These parts are used under license.
  */
-
 package ch.randelshofer.quaqua;
 
 import java.awt.*;
@@ -21,6 +20,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.text.*;
 import java.util.*;
+
 /**
  * The QuaquaEditorKit extends the Swing DefaultEditorKit with Mac OS X specific
  * text editing actions.
@@ -32,72 +32,20 @@ public class QuaquaEditorKit extends DefaultEditorKit {
     // FIXME - Maybe we should rename this class OSXEditorKit and move it into
     // a separate package. Because it is not a LAF class.
     // Maybe we should move all non-LAF classes out of the quaqua package.
-    
-    /**
-     * Name of the action to delete the word that
-     * precedes the current caret position.
-     * @see #getActions
-     */
-    public static final String deletePrevWordAction = "delete-previous-word";
-    
-    /**
-     * Name of the action to delete the word that
-     * follows the current caret position.
-     * @see #getActions
-     */
-    public static final String deleteNextWordAction = "delete-next-word";
-    
+
     /**
      * Default actions of the QuaquaEditorKit.
      */
-    private static final Action[] actions;
-    static {
-        Action[] dekActions = new DefaultEditorKit().getActions();
-        HashMap dekActionMap = new HashMap();
-        for (int i=0; i < dekActions.length; i++) {
-            dekActionMap.put(dekActions[i].getValue(Action.NAME), dekActions[i]);
-        }
-        
-        HashMap actionMap = (HashMap) dekActionMap.clone();
-        actionMap.put(deleteNextWordAction, new QuaquaEditorKit.DeleteNextWordAction());
-        actionMap.put(deletePrevWordAction, new QuaquaEditorKit.DeletePrevWordAction());
-        actionMap.put(upAction, new QuaquaEditorKit.VerticalAction(
-        upAction,
-        (TextAction) dekActionMap.get(upAction),
-        (TextAction) dekActionMap.get(beginAction)
-        )
-        );
-        actionMap.put(downAction, new QuaquaEditorKit.VerticalAction(
-        downAction,
-        (TextAction) dekActionMap.get(downAction),
-        (TextAction) dekActionMap.get(endAction)
-        )
-        );
-        actionMap.put(selectionUpAction, new QuaquaEditorKit.VerticalAction(
-        selectionUpAction,
-        (TextAction) dekActionMap.get(selectionUpAction),
-        (TextAction) dekActionMap.get(selectionBeginAction)
-        )
-        );
-        actionMap.put(selectionDownAction, new QuaquaEditorKit.VerticalAction(
-        selectionDownAction,
-        (TextAction) dekActionMap.get(selectionDownAction),
-        (TextAction) dekActionMap.get(selectionEndAction)
-        )
-        );
-        
-        actions = (Action[]) actionMap.values().toArray(new Action[0]);
-        
-        // TO DO: Use this instead of the code above:
-        //actions = TextAction.augmentList(....)
-    }
-    
-    
+    private static Action[] actions;
+
+    // TO DO: Use this instead of the code above:
+    //actions = TextAction.augmentList(....)
     /**
      * Default constructor.
      */
     public QuaquaEditorKit() {
     }
+
     /**
      * Fetches the set of commands that can be used
      * on a text component that is using a model and
@@ -105,11 +53,40 @@ public class QuaquaEditorKit extends DefaultEditorKit {
      *
      * @return the command list
      */
+    @Override
     public Action[] getActions() {
-        return actions;
+        if (actions == null) {
+            Action[] dekActions = new DefaultEditorKit().getActions();
+            HashMap dekActionMap = new HashMap();
+            for (int i = 0; i < dekActions.length; i++) {
+                dekActionMap.put(dekActions[i].getValue(Action.NAME), dekActions[i]);
+            }
+
+            HashMap actionMap = (HashMap) dekActionMap.clone();
+            actionMap.put(deleteNextWordAction, new QuaquaEditorKit.DeleteNextWordAction());
+            actionMap.put(deletePrevWordAction, new QuaquaEditorKit.DeletePrevWordAction());
+            actionMap.put(upAction, new QuaquaEditorKit.VerticalAction(
+                    upAction,
+                    (TextAction) dekActionMap.get(upAction),
+                    (TextAction) dekActionMap.get(beginAction)));
+            actionMap.put(downAction, new QuaquaEditorKit.VerticalAction(
+                    downAction,
+                    (TextAction) dekActionMap.get(downAction),
+                    (TextAction) dekActionMap.get(endAction)));
+            actionMap.put(selectionUpAction, new QuaquaEditorKit.VerticalAction(
+                    selectionUpAction,
+                    (TextAction) dekActionMap.get(selectionUpAction),
+                    (TextAction) dekActionMap.get(selectionBeginAction)));
+            actionMap.put(selectionDownAction, new QuaquaEditorKit.VerticalAction(
+                    selectionDownAction,
+                    (TextAction) dekActionMap.get(selectionDownAction),
+                    (TextAction) dekActionMap.get(selectionEndAction)));
+
+            actions = (Action[]) actionMap.values().toArray(new Action[0]);
+        }
+        return actions.clone();
     }
-    
-    
+
     /*
      * Deletes the word that follows the
      * current caret position.
@@ -120,12 +97,14 @@ public class QuaquaEditorKit extends DefaultEditorKit {
      * @see QuaquaEditorKit#getActions
      */
     static class DeleteNextWordAction extends TextAction {
+
         /**
          * Creates this object with the appropriate identifier.
          */
         DeleteNextWordAction() {
             super(deleteNextWordAction);
         }
+
         public void actionPerformed(ActionEvent e) {
             JTextComponent target = getTextComponent(e);
             boolean beep = true;
@@ -135,19 +114,18 @@ public class QuaquaEditorKit extends DefaultEditorKit {
                     int offs = target.getCaretPosition();
                     int endOffs;
                     String s = target.getDocument().getText(offs, 1);
-                    if(Character.isWhitespace(s.charAt(0))) {
+                    if (Character.isWhitespace(s.charAt(0))) {
                         endOffs = Utilities.getNextWord(target, offs);
                         endOffs = Utilities.getWordEnd(target, endOffs);
                     } else {
                         endOffs = Utilities.getWordEnd(target, offs);
                     }
                     target.moveCaretPosition(endOffs);
-                    
+
                     // and then delete it
                     target.replaceSelection("");
                     beep = false;
-                }
-                catch (BadLocationException exc) {
+                } catch (BadLocationException exc) {
                     // nothing to do, because we set beep to true already
                 }
             }
@@ -156,8 +134,7 @@ public class QuaquaEditorKit extends DefaultEditorKit {
             }
         }
     }
-    
-    
+
     /*
      * Deletes the word that precedes the
      * current caret position.
@@ -168,13 +145,14 @@ public class QuaquaEditorKit extends DefaultEditorKit {
      * @see QuaquaEditorKit#getActions
      */
     static class DeletePrevWordAction extends TextAction {
+
         /**
          * Creates this object with the appropriate identifier.
          */
         DeletePrevWordAction() {
             super(deletePrevWordAction);
         }
-        
+
         public void actionPerformed(ActionEvent e) {
             JTextComponent target = getTextComponent(e);
             boolean beep = true;
@@ -202,7 +180,7 @@ public class QuaquaEditorKit extends DefaultEditorKit {
             }
         }
     }
-    
+
     /*
      * Action to move the selection up or down.
      *
@@ -220,8 +198,10 @@ public class QuaquaEditorKit extends DefaultEditorKit {
      * javax.swing.text package.
      */
     static class VerticalAction extends TextAction {
+
         private TextAction verticalAction;
         private TextAction beginEndAction;
+
         /**
          * Create this action with the appropriate identifier.
          */
@@ -230,7 +210,7 @@ public class QuaquaEditorKit extends DefaultEditorKit {
             this.verticalAction = verticalAction;
             this.beginEndAction = beginEndAction;
         }
-        
+
         /** The operation to perform when this action is triggered. */
         public void actionPerformed(ActionEvent e) {
             JTextComponent target = getTextComponent(e);
