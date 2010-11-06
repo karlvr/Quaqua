@@ -40,7 +40,6 @@ public class ColorTrackImageProducer extends MemoryImageSource {
         this.h = h;
         // trackBuffer must be even
         this.trackBuffer = (trackBuffer % 2 == 1) ? trackBuffer - 1 : trackBuffer;
-        this.componentIndex = componentIndex;
         this.isHorizontal = isHorizontal;
         newPixels(pixels, ColorModel.getRGBdefault(), 0, w);
         setAnimated(true);
