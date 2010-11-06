@@ -69,8 +69,8 @@ public class OSXFile {
                         } else {
 
                             // Use quaqua64 JNI-lib on x86_64 processors on Mac OS X 10.5 and higher
-                            libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) &&
-                                    QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
+                            libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD)
+                                    && QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
                             try {
                                 System.loadLibrary(libraryName);
                                 success = true;
@@ -358,13 +358,13 @@ public class OSXFile {
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
                 }
-                
+
                 // Scale the image
                 if (image.getWidth() != size) {
                     image = Images.toBufferedImage(image.getScaledInstance(size, size, BufferedImage.SCALE_SMOOTH));
                 }
                 return image;
-                
+
             } catch (IOException ex) {
                 return null;
             }
@@ -372,7 +372,7 @@ public class OSXFile {
             return null;
         }
     }
-    
+
     /**
      * Returns the QuickLook thumbnail image for the specified file.
      * If it could not be created, native code fetches the file's icon instead.
@@ -385,14 +385,14 @@ public class OSXFile {
         if (isNativeCodeAvailable() && file != null) {
             try {
                 byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getPath(), size);
-                
+
                 if (tiffData == null) {
                     return null;
                 }
-                
+
                 TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
-                                                                new TIFFDecodeParam());
-                
+                        new TIFFDecodeParam());
+
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
                 if (rImg instanceof BufferedImage) {
@@ -402,9 +402,9 @@ public class OSXFile {
                     WritableRaster wr = WritableRaster.createWritableRaster(r.getSampleModel(), null);
                     rImg.copyData(wr);
                     image = new BufferedImage(rImg.getColorModel(),
-                                              wr,
-                                              rImg.getColorModel().isAlphaPremultiplied(),
-                                              null);
+                            wr,
+                            rImg.getColorModel().isAlphaPremultiplied(),
+                            null);
                 }
                 return image;
             } catch (IOException ex) {
@@ -414,7 +414,7 @@ public class OSXFile {
             return null;
         }
     }
-    
+
     /**
      * Returns the icon for the specified file.
      * If the file does not exist, a generic icon is returned.
@@ -422,7 +422,7 @@ public class OSXFile {
     public static Icon getIcon(File file, int size) {
         return new ImageIcon(getIconImage(file, size));
     }
-    
+
     /**
      * Returns a QuickLook thumbnail for the specified file.
      */
@@ -445,7 +445,9 @@ public class OSXFile {
     }
 
     public static boolean isTraversable(File file) {
-        if (isNativeCodeAvailable() && file != null) {
+        if (file == null) {
+            return false;
+        } else if (isNativeCodeAvailable()) {
             int flags = nativeGetBasicItemInfoFlags(file.getPath());
             //   kLSItemInfoIsPlainFile = 0x00000001,
             //   kLSItemInfoIsPackage = 0x00000002,
@@ -540,7 +542,7 @@ public class OSXFile {
      * @return Byte array with TIFF image data or null in case of failure.
      */
     private static native byte[] nativeGetIconImage(String path, int size);
-    
+
     /**
      * Returns the QuickLook thumbnail image of a file as a byte array containing TIFF image 
      * data.
@@ -550,7 +552,7 @@ public class OSXFile {
      * @return Byte array with TIFF image data or null in case of failure.
      */
     private static native byte[] nativeGetQuickLookThumbnailImage(String path, int size);
-    
+
     /**
      * Returns the basic item-information flags of the file specified by the given path.
      * <p>
