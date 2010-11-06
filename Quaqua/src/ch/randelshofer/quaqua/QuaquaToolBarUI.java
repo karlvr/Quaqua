@@ -759,11 +759,11 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         //
         public void propertyChange(PropertyChangeEvent evt) {
             String propertyName = evt.getPropertyName();
-            if (propertyName == "Frame.active") {
+            if (propertyName != null && propertyName.equals("Frame.active")) {
                 toolBar.repaint();
-            } else if (propertyName == "lookAndFeel") {
+            } else if (propertyName != null && propertyName.equals("lookAndFeel")) {
                 toolBar.updateUI();
-            } else if (propertyName == "orientation") {
+            } else if (propertyName != null && propertyName.equals("orientation")) {
                 // Search for JSeparator components and change it's orientation
                 // to match the toolbar and flip it's orientation.
                 Component[] components = toolBar.getComponents();
@@ -787,7 +787,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
                         }
                     }
                 }
-            } else if (propertyName == IS_ROLLOVER) {
+            } else if (propertyName != null && propertyName.equals(IS_ROLLOVER)) {
                 installNormalBorders(toolBar);
                 setRolloverBorders(((Boolean) evt.getNewValue()).booleanValue());
             }
