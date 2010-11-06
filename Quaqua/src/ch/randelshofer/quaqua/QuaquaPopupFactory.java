@@ -24,7 +24,7 @@ import javax.swing.border.LineBorder;
  * on Java 1.4 in full screen mode.
  *
  * @author Werner Randelshofer
- * @version $Id$
+ * @version $Id$
  */
 public class QuaquaPopupFactory extends PopupFactory {
 
@@ -539,7 +539,7 @@ public class QuaquaPopupFactory extends PopupFactory {
             return null;
             }*/
             boolean focusPopup = false;
-            if (contents != null && contents.isFocusable()) {
+            if (contents.isFocusable()) {
                 if (contents instanceof JPopupMenu) {
                     JPopupMenu jpm = (JPopupMenu) contents;
                     Component popComps[] = jpm.getComponents();
