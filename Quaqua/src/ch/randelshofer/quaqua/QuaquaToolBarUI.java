@@ -837,7 +837,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         }
     }
 
-    protected class DragWindow0 extends Window {
+    protected class DragWindow0 extends JWindow {
 
         Color borderColor = Color.gray;
         int orientation = toolBar.getOrientation();
