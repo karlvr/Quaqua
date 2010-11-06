@@ -10,7 +10,6 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
@@ -24,6 +23,7 @@ import javax.swing.plaf.basic.*;
 import java.beans.*;
 import java.util.Enumeration;
 import javax.swing.text.View;
+
 /**
  * QuaquaRadioButtonUI.
  *
@@ -31,6 +31,7 @@ import javax.swing.text.View;
  * @version $Id$
  */
 public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyLayoutable {
+
     private final static QuaquaRadioButtonUI checkboxUI = new QuaquaRadioButtonUI();
     private final static PropertyChangeHandler propertyChangeListener = new PropertyChangeHandler();
     protected Icon smallIcon;
@@ -49,70 +50,73 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     /**
      * Preferred spacing between radio buttons and other components.
      */
-    private final static Insets regularSpacing = new Insets(6,6,6,6);
-    private final static Insets smallSpacing = new Insets(6,6,6,6);
-    private final static Insets miniSpacing = new Insets(5,5,5,5);
-    
+    private final static Insets regularSpacing = new Insets(6, 6, 6, 6);
+    private final static Insets smallSpacing = new Insets(6, 6, 6, 6);
+    private final static Insets miniSpacing = new Insets(5, 5, 5, 5);
+
     public static ComponentUI createUI(JComponent b) {
         return checkboxUI;
     }
     // ********************************
     //        Install PLAF
     // ********************************
+
     @Override
-    protected void installDefaults(AbstractButton b){
+    protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if(!defaults_initialized) {
+        if (!defaults_initialized) {
             smallIcon = UIManager.getIcon(getPropertyPrefix() + "smallIcon");
             defaults_initialized = true;
         }
-	QuaquaUtilities.installProperty(b, "opaque", UIManager.get("RadioButton.opaque"));
+        QuaquaUtilities.installProperty(b, "opaque", UIManager.get("RadioButton.opaque"));
         //b.setOpaque(false);
         b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
         b.setFocusable(UIManager.getBoolean("RadioButton.focusable"));
         updateFocusableState(b);
     }
-    
+
     // ********************************
     //        Uninstall PLAF
     // ********************************
     @Override
-    protected void uninstallDefaults(AbstractButton b){
+    protected void uninstallDefaults(AbstractButton b) {
         super.uninstallDefaults(b);
         defaults_initialized = false;
     }
+
     @Override
     protected void installListeners(AbstractButton b) {
         super.installListeners(b);
         b.addPropertyChangeListener(propertyChangeListener);
         b.addItemListener(propertyChangeListener);
     }
+
     @Override
     protected void uninstallListeners(AbstractButton b) {
         super.uninstallListeners(b);
         b.removePropertyChangeListener(propertyChangeListener);
         b.removeItemListener(propertyChangeListener);
     }
-    
+
     public Icon getDefaultIcon(JComponent c) {
         return (c.getFont().getSize() <= 11) ? smallIcon : icon;
     }
-    
+
     @Override
     protected BasicButtonListener createButtonListener(AbstractButton b) {
         return new QuaquaButtonListener(b);
     }
-    
+
     @Override
-    public void paint( Graphics g, JComponent c ) {
+    public void paint(Graphics g, JComponent c) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         AbstractButton b = (AbstractButton) c;
         ButtonModel model = b.getModel();
-        
+
         Font f = c.getFont();
         g.setFont(f);
         FontMetrics fm = g.getFontMetrics();
-        
+
         Insets i = getInsets(b, viewInsets);
         size = b.getSize(size);
         viewR.x = i.left;
@@ -121,38 +125,37 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         viewR.height = size.height - (i.bottom + viewR.y);
         iconR.x = iconR.y = iconR.width = iconR.height = 0;
         textR.x = textR.y = textR.width = textR.height = 0;
-        
+
         Icon altIcon = b.getIcon();
         Icon selectedIcon = null;
         Icon disabledIcon = null;
-        
+
         String text = layoutCL(
                 b, fm, b.getText(), altIcon != null ? altIcon : getDefaultIcon(c),
-                viewR, iconR, textR
-                );
+                viewR, iconR, textR);
         // fill background
-        if(c.isOpaque()) {
+        if (c.isOpaque()) {
             g.setColor(b.getBackground());
-            g.fillRect(0,0, size.width, size.height);
+            g.fillRect(0, 0, size.width, size.height);
         }
-        
+
         // Paint the radio button
-        if(altIcon != null) {
-            
-            if(!model.isEnabled()) {
-                if(model.isSelected()) {
+        if (altIcon != null) {
+
+            if (!model.isEnabled()) {
+                if (model.isSelected()) {
                     altIcon = b.getDisabledSelectedIcon();
                 } else {
                     altIcon = b.getDisabledIcon();
                 }
-            } else if(model.isPressed() && model.isArmed()) {
+            } else if (model.isPressed() && model.isArmed()) {
                 altIcon = b.getPressedIcon();
-                if(altIcon == null) {
+                if (altIcon == null) {
                     // Use selected icon
                     altIcon = b.getSelectedIcon();
                 }
-            } else if(model.isSelected()) {
-                if(b.isRolloverEnabled() && model.isRollover()) {
+            } else if (model.isSelected()) {
+                if (b.isRolloverEnabled() && model.isRollover()) {
                     altIcon = (Icon) b.getRolloverSelectedIcon();
                     if (altIcon == null) {
                         altIcon = (Icon) b.getSelectedIcon();
@@ -160,82 +163,82 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
                 } else {
                     altIcon = (Icon) b.getSelectedIcon();
                 }
-            } else if(b.isRolloverEnabled() && model.isRollover()) {
+            } else if (b.isRolloverEnabled() && model.isRollover()) {
                 altIcon = (Icon) b.getRolloverIcon();
             }
-            
-            if(altIcon == null) {
+
+            if (altIcon == null) {
                 altIcon = b.getIcon();
             }
-            
+
             altIcon.paintIcon(c, g, iconR.x, iconR.y);
-            
+
         } else {
             Icon defaultIcon = getDefaultIcon(c);
             if (defaultIcon != null) {
                 // Visually adjust the vertical position of the icon, if the
                 // "Small" style is used.
-                if (f.getSize() <= 11) iconR.y -= 1;
+                if (f.getSize() <= 11) {
+                    iconR.y -= 1;
+                }
                 defaultIcon.paintIcon(c, g, iconR.x, iconR.y);
             }
         }
-        
-        
+
+
         // Draw the Text
-        if(text != null) {
+        if (text != null) {
             View v = (View) c.getClientProperty(BasicHTML.propertyKey);
             if (v != null) {
                 v.paint(g, textR);
             } else {
                 paintText(g, b, textR, text);
-                if(b.hasFocus() && b.isFocusPainted() &&
-                        textR.width > 0 && textR.height > 0 ) {
+                if (b.hasFocus() && b.isFocusPainted()
+                        && textR.width > 0 && textR.height > 0) {
                     paintFocus(g, textR, size);
                 }
             }
         }
-        
+
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, c, this);
     }
-    
+
     @Override
-    protected void paintFocus(Graphics g, Rectangle textR, Dimension size){
+    protected void paintFocus(Graphics g, Rectangle textR, Dimension size) {
     }
-    
-    
+
     /**
      * The preferred size of the radio button
      */
     @Override
     public Dimension getPreferredSize(JComponent c) {
-        if(c.getComponentCount() > 0) {
+        if (c.getComponentCount() > 0) {
             return null;
         }
-        
+
         AbstractButton b = (AbstractButton) c;
-        
+
         String text = b.getText();
-        
+
         Icon buttonIcon = (Icon) b.getIcon();
-        if(buttonIcon == null) {
+        if (buttonIcon == null) {
             buttonIcon = getDefaultIcon(c);
         }
-        
+
         Font font = b.getFont();
         FontMetrics fm = c.getFontMetrics(font);
-        
+
         viewR.x = viewR.y = 0;
         viewR.width = Short.MAX_VALUE;
         viewR.height = Short.MAX_VALUE;
         iconR.x = iconR.y = iconR.width = iconR.height = 0;
         textR.x = textR.y = textR.width = textR.height = 0;
-        
+
         layoutCL(
                 b, fm, text, buttonIcon,
-                viewR, iconR, textR
-                );
-        
+                viewR, iconR, textR);
+
         // find the union of the icon and text rects (from Rectangle.java)
         int x1 = Math.min(iconR.x, textR.x);
         int x2 = Math.max(iconR.x + iconR.width,
@@ -245,14 +248,15 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
                 textR.y + textR.height);
         int width = x2 - x1;
         int height = y2 - y1;
-        
+
         viewInsets = getInsets(b, viewInsets);
-        
+
         width += viewInsets.left + viewInsets.right;
         height += viewInsets.top + viewInsets.bottom;
-        
+
         return new Dimension(width, height);
     }
+
     /**
      * Workaround for Matisse GUI builder.
      */
@@ -267,7 +271,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
         }
         return i;
     }
-    
+
     /**
      * Method which renders the text of the current button.
      * <p>
@@ -281,34 +285,35 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     protected void paintText(Graphics g, AbstractButton b, Rectangle textR, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
-        int mnemonicIndex = Methods.invokeGetter(b,"getDisplayedMnemonicIndex", -1);
-        
+        int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
+
         /* Draw the Text */
-        if(model.isEnabled()) {
+        if (model.isEnabled()) {
             /*** paint the text normally */
             g.setColor(b.getForeground());
         } else {
             Color c = UIManager.getColor("RadioButton.disabledForeground");
             g.setColor((c != null) ? c : b.getForeground());
         }
-        QuaquaUtilities.drawStringUnderlineCharAt(g,text, mnemonicIndex,
+        QuaquaUtilities.drawStringUnderlineCharAt(g, text, mnemonicIndex,
                 textR.x + getTextShiftOffset(),
                 textR.y + fm.getAscent() + getTextShiftOffset());
     }
-    
+
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
      */
     public static class PropertyChangeHandler implements PropertyChangeListener, ItemListener {
+
         public void propertyChange(PropertyChangeEvent evt) {
             String name = evt.getPropertyName();
             AbstractButton src = (AbstractButton) evt.getSource();
             if (name.equals("Frame.active") && src.isSelected()) {
                 src.repaint();
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(src);
+            } else if (name.equals("JComponent.sizeVariant")) {
+                QuaquaUtilities.applySizeVariant(src);
             }
         }
 
@@ -317,6 +322,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
             updateFocusableState(src);
         }
     }
+
     /**
      * Forwards the call to SwingUtilities.layoutCompoundLabel().
      * This method is here so that a subclass could do Label specific
@@ -344,82 +350,83 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
                 viewR,
                 iconR,
                 textR,
-                Methods.invokeGetter(c,"getIconTextGap",4)
-                );
-        
+                Methods.invokeGetter(c, "getIconTextGap", 4));
+
         if (fontMetrics.getHeight() >= 13) {
-            iconR.y-=1; // Shift the icon up by one pixel
+            iconR.y -= 1; // Shift the icon up by one pixel
         }
         return clippedText;
     }
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
     }
+
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
-        Rectangle rect = new Rectangle(0,0,width,height);
+        Rectangle rect = new Rectangle(0, 0, width, height);
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return rect;
         }
-        
-        AbstractButton b = (AbstractButton)c;
+
+        AbstractButton b = (AbstractButton) c;
         String text = b.getText();
         Icon icon = (b.isEnabled()) ? b.getIcon() : b.getDisabledIcon();
-        if(icon == null) {
+        if (icon == null) {
             icon = getDefaultIcon(b);
         }
-        
+
         if ((icon == null) && (text == null)) {
             return rect;
         }
-        
+
         FontMetrics fm = c.getFontMetrics(c.getFont());
         Insets insets = getInsets(b, viewInsets);
-        
+
         viewR.x = insets.left;
         viewR.y = insets.top;
         viewR.width = width - (insets.left + insets.right);
         viewR.height = height - (insets.top + insets.bottom);
-        
+
         iconR.x = iconR.y = iconR.width = iconR.height = 0;
         textR.x = textR.y = textR.width = textR.height = 0;
-        
+
         String clippedText =
                 layoutCL(b, fm, text, icon, viewR, iconR, textR);
-        
+
         Rectangle textBounds = Fonts.getPerceivedBounds(text, c.getFont(), c);
         int ascent = fm.getAscent();
         textR.x += textBounds.x;
         textR.width = textBounds.width;
         textR.y += ascent + textBounds.y;
         textR.height = textBounds.height;
-        
+
         // Determine rect rectangle
         switch (type) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS :
+            case VisuallyLayoutable.COMPONENT_BOUNDS:
                 rect = textR.union(iconR);
                 break;
-            case VisuallyLayoutable.TEXT_BOUNDS :
+            case VisuallyLayoutable.TEXT_BOUNDS:
                 rect.setBounds(textR);
                 break;
         }
         return rect;
     }
+
     public static void updateFocusableState(AbstractButton button) {
         if (UIManager.getBoolean("Button.focusable") && !UIManager.getBoolean("Button.requestFocusEnabled")) {
             ButtonModel model = button.getModel();
             if (model instanceof DefaultButtonModel) {
-                ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
-                /*if (grp != null) {
-                    for (Enumeration<AbstractButton> i=grp.getElements();i.hasMoreElements();){
-                        AbstractButton btn=i.nextElement();
-                    btn.setFocusable(btn.isSelected());
-                    }
+                /*ButtonGroup grp = ((DefaultButtonModel) model).getGroup();
+                if (grp != null) {
+                for (Enumeration<AbstractButton> i=grp.getElements();i.hasMoreElements();){
+                AbstractButton btn=i.nextElement();
+                btn.setFocusable(btn.isSelected());
+                }
                 }*/
-                    button.setFocusable(button.isSelected());
+                button.setFocusable(button.isSelected());
             }
         }
     }
-
 }

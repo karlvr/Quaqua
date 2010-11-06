@@ -137,6 +137,7 @@ public class QuaquaComboBoxButton extends JButton {
         super( "" );
         
         DefaultButtonModel model = new DefaultButtonModel() {
+            @Override
             public void setArmed( boolean armed ) {
                 super.setArmed( isPressed() ? true : armed );
             }
@@ -151,10 +152,12 @@ public class QuaquaComboBoxButton extends JButton {
         iconOnly = onlyIcon;
     }
     
+    @Override
     public boolean isFocusTraversable() {
         return false;
     }
     
+    @Override
     public void setBorder(Border b) {
         // Empty. We do all border handling in QuaquaComboBoxUI
     }
@@ -163,6 +166,7 @@ public class QuaquaComboBoxButton extends JButton {
         return false;
     }*/
     
+    @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         
@@ -176,17 +180,17 @@ public class QuaquaComboBoxButton extends JButton {
         }
     }
     
+    @Override
     public void paintBorder(Graphics g) {
         // Empty: We paint the border in paintComponent.
     }
     
+    @Override
     public void paintComponent(Graphics g) {
        Object savedHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         QuaquaComboBoxUI ui = (QuaquaComboBoxUI) comboBox.getUI();
         int buttonWidth = ui.getArrowWidth();
-        boolean isFrameActive = QuaquaUtilities.isOnActiveWindow(comboBox);
         boolean isTableCellEditor = ui.isTableCellEditor();
-        boolean isEditable = comboBox.isEditable();
         boolean isSmall = ui.isSmall();
         Insets insets = getInsets();
         // Paint background and borders

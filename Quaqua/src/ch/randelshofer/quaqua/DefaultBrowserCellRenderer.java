@@ -323,8 +323,6 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
         }
         int imageOffset = -1;
         if (bColor != null) {
-            Icon currentI = getIcon();
-
             imageOffset = getLabelStart();
         }
 

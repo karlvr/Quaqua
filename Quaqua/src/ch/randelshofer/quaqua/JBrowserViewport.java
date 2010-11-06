@@ -64,13 +64,13 @@ public class JBrowserViewport extends JViewport {
     /** Shared cell renderer pane. */
     private static CellRendererPane cellRendererPane = new CellRendererPane();
     
+    @Override
     public void paintComponent(Graphics g) {
         if (getView() instanceof JBrowser) {
             JBrowser browser = (JBrowser) getView();
             if (browser != null) {
                 Dimension vs = getSize();
                 Dimension bs = browser.getSize();
-                Point p = browser.getLocation();
                 
                 Dimension ss = scrollBarRenderer.getPreferredSize();
                 

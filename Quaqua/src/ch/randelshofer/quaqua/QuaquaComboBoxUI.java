@@ -280,7 +280,6 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
             int height = cb.getHeight();
 
             Insets insets = getInsets();
-            Insets margin = getMargin();
             int buttonSize = height - (insets.top + insets.bottom);
 
             Rectangle cvb;
@@ -459,7 +458,6 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 && arrowButton != null
                 && arrowButton instanceof QuaquaComboBoxButton) {
 
-            QuaquaComboBoxButton button = (QuaquaComboBoxButton) arrowButton;
             Insets buttonInsets = new Insets(4, 11, 3, getArrowWidth() + 5);
             if (isSmall()) {
                 buttonInsets.bottom -= 1;

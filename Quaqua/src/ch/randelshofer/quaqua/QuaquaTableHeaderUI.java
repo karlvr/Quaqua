@@ -47,6 +47,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
         return new QuaquaTableHeaderUI();
     }
 
+    @Override
     public void installDefaults() {
         super.installDefaults();
         if (header.getDefaultRenderer() instanceof JLabel) {
@@ -68,6 +69,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
     // Paint Methods and support
     //
 
+    @Override
     public void paint(Graphics g, JComponent c) {
         if (header.getColumnModel().getColumnCount() <= 0) {
             return;
@@ -160,6 +162,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
     /**
      * Attaches listeners to the JTableHeader.
      */
+    @Override
     protected void installListeners() {
         columnModelListener = createColumnModelListener();
 
@@ -167,6 +170,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
         super.installListeners();
     }
 
+    @Override
     protected void uninstallListeners() {
         super.uninstallListeners();
         header.getColumnModel().removeColumnModelListener(columnModelListener);
@@ -259,6 +263,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
      * by the header renderers. The preferred width is the sum of the 
      * preferred widths of each column (plus inter-cell spacing).
      */
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         long width = 0;
         Enumeration enumeration = header.getColumnModel().getColumns();
@@ -270,7 +275,6 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
     }
 
     private Dimension createHeaderSize(long width) {
-        TableColumnModel columnModel = header.getColumnModel();
         // None of the callers include the intercell spacing, do it here.
         if (width > Integer.MAX_VALUE) {
             width = Integer.MAX_VALUE;

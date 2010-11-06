@@ -127,14 +127,9 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected,
             boolean cellHasFocus) {
-        Integer viewTooltipRow = (Integer) list.getClientProperty("ViewTooltips.row");
 
         FileInfo info = (FileInfo) value;
-        File file = info.getFile();
 
-        /* boolean isGrayed =
-        (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG && !info.isTraversable()) ||
-        !info.isAcceptable();*/
         isGrayed = info.isHidden()
                 || !info.isAcceptable();
 
@@ -207,7 +202,6 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
             g.setColor(getBackground());
             g.fillRect(0, 0, width, height);
         }
-        boolean isLeftToRight = QuaquaUtilities.isLeftToRight(this);
 
         String clippedText = layoutRenderer(
                 textFM, text,

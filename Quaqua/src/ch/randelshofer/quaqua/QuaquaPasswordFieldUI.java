@@ -80,6 +80,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         super.installListeners();
     }
     
+    @Override
     protected void uninstallListeners() {
         if (focusListener != null) {
             getComponent().removeFocusListener(focusListener);
@@ -106,6 +107,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
      * @return the editor capabilities
      * @see TextUI#getEditorKit
      */
+    @Override
     public EditorKit getEditorKit(JTextComponent tc) {
         return QuaquaTextFieldUI.defaultKit;
     }
@@ -118,6 +120,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         return (margin == null) ? new Insets(0, 0, 0 ,0) : (Insets) margin.clone();
     }
     
+    @Override
     protected void paintSafely(Graphics g) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
@@ -145,11 +148,13 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
      *
      * @param g the graphics context
      */
+    @Override
     protected void paintBackground(Graphics g) {
         // This method is overriden here, to make it do nothing.
         // We already paint the background in method paintSafely();
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {
@@ -161,12 +166,14 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
             }
     }
     
+    @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
     
+    @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
@@ -176,6 +183,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
      * @param elem the element
      * @return the view
      */
+    @Override
     public View create(Element elem) {
         return new QuaquaPasswordView(elem);
     }
@@ -196,6 +204,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
      * @see #getKeymapName
      * @see javax.swing.text.JTextComponent
      */
+    @Override
     protected Keymap createKeymap() {
         String nm = getKeymapName();
         Keymap map = JTextComponent.getKeymap(nm);
@@ -211,6 +220,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         }
         return map;
     }
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent textComponent = (JTextComponent) c;
         View rootView = textComponent.getUI().getRootView(textComponent);
@@ -250,7 +260,6 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
             }
         } else {
             bounds = getVisibleEditorRect();
-            FontMetrics fm = c.getFontMetrics(c.getFont());
             
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
@@ -266,6 +275,7 @@ public class QuaquaPasswordFieldUI extends BasicPasswordFieldUI implements Visua
         }
         return bounds;
     }
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         // The following code has been derived from BasicTextUI.
 	Document doc = ((JTextComponent) c).getDocument();

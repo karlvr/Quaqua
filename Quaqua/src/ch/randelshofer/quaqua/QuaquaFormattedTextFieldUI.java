@@ -47,11 +47,13 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         return new QuaquaFormattedTextFieldUI();
     }
     
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
 	QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix()+".opaque"));
     }
     
+    @Override
     protected void installDefaults() {
         if (! QuaquaUtilities.isHeadless()) {
             oldDragState = Methods.invokeGetter(getComponent(), "getDragEnabled", true);
@@ -60,6 +62,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         super.installDefaults();
     }
     
+    @Override
     protected void uninstallDefaults() {
         if (QuaquaUtilities.isHeadless()) {
             Methods.invokeIfExists(getComponent(), "setDragEnabled", oldDragState);
@@ -67,6 +70,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         super.uninstallDefaults();
     }
     
+    @Override
     protected void installListeners() {
         focusListener = createFocusListener();
         if (focusListener != null) {
@@ -80,6 +84,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         super.installListeners();
     }
     
+    @Override
     protected void uninstallListeners() {
         if (focusListener != null) {
             getComponent().removeFocusListener(focusListener);
@@ -111,6 +116,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
      * @return the editor capabilities
      * @see TextUI#getEditorKit
      */
+    @Override
     public EditorKit getEditorKit(JTextComponent tc) {
         return QuaquaTextFieldUI.defaultKit;
     }
@@ -124,6 +130,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
     }
     
     
+    @Override
     protected void paintSafely(Graphics g) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
@@ -151,12 +158,14 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
      *
      * @param g the graphics context
      */
+    @Override
     protected void paintBackground(Graphics g) {
         // This method is overriden here, to make it do nothing.
         // We already paint the background in method paintSafely();
     }
 
     
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {
@@ -168,12 +177,14 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
             }
     }
     
+    @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
     
+    @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
@@ -194,6 +205,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
      * @see #getKeymapName
      * @see javax.swing.text.JTextComponent
      */
+    @Override
     protected Keymap createKeymap() {
         String nm = getKeymapName();
         Keymap map = JTextComponent.getKeymap(nm);
@@ -209,6 +221,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         return map;
     }
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent textComponent = (JTextComponent) c;
         View rootView = textComponent.getUI().getRootView(textComponent);
@@ -248,7 +261,6 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
             }
         } else {
             bounds = getVisibleEditorRect();
-            FontMetrics fm = c.getFontMetrics(c.getFont());
             
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
@@ -262,6 +274,7 @@ public class QuaquaFormattedTextFieldUI extends BasicFormattedTextFieldUI implem
         }
         return bounds;
     }
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         // The following code has been derived from BasicTextUI.
 	Document doc = ((JTextComponent) c).getDocument();

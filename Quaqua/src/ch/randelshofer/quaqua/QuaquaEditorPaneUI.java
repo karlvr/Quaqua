@@ -39,6 +39,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 	return new QuaquaEditorPaneUI();
     }
     
+    @Override
     protected void installListeners() {
         popupListener = createPopupListener();
         if (popupListener != null) {
@@ -47,6 +48,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         QuaquaTextCursorHandler.getInstance().installListeners(getComponent());
     }
     
+    @Override
     protected void uninstallListeners() {
         if (popupListener != null) {
             getComponent().removeMouseListener(popupListener);
@@ -59,6 +61,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         return (MouseListener) UIManager.get(getPropertyPrefix()+".popupHandler");
     }
     
+    @Override
     protected void installDefaults() {
 	if (!QuaquaUtilities.isHeadless()) {
 	    oldDragState = Methods.invokeGetter(getComponent(), "getDragEnabled", true);
@@ -67,6 +70,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 	super.installDefaults();
     }
     
+    @Override
     protected void uninstallDefaults() {
 	if (!QuaquaUtilities.isHeadless()) {
 	    Methods.invokeIfExists(getComponent(), "setDragEnabled", oldDragState);
@@ -74,6 +78,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
 	super.uninstallDefaults();
     }
 
+    @Override
     protected void paintSafely(Graphics g) {
 	Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
 	super.paintSafely(g);
@@ -81,12 +86,14 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
         Debug.paint(g, getComponent(), this);
     }
 
+    @Override
     protected Caret createCaret() {
 	Window window = SwingUtilities.getWindowAncestor(getComponent());
 	QuaquaCaret caret = new QuaquaCaret(window, getComponent());
 	return caret;
     }
     
+    @Override
     protected Highlighter createHighlighter() {
 	return new QuaquaHighlighter();
     }
@@ -100,6 +107,7 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
          */
     }
     
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent tc = (JTextComponent) c;
         Insets insets = tc.getInsets();
@@ -125,7 +133,6 @@ public class QuaquaEditorPaneUI extends BasicEditorPaneUI implements VisuallyLay
             }
         } else {
             bounds = getVisibleEditorRect();
-            FontMetrics fm = c.getFontMetrics(c.getFont());
             
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);

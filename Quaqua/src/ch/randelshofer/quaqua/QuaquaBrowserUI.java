@@ -36,6 +36,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
                  * To use this scrollBar as a renderer pane component, we have to
                  * always return true in method isShowing.
                  */
+                @Override
                 public boolean isShowing() {
                     return true;
                 }
@@ -45,6 +46,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
                  * children of the scrollbar are actually painted.
                  * This seems odd. Maybe I am missing something here.
                  */
+                @Override
                 protected void paintChildren(Graphics g) {
                     Component[] c = getComponents();
                     for (int i=0; i < c.length; i++) {
@@ -90,7 +92,6 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
     public void paintViewport(Graphics g, JViewport c) {
         Dimension vs = c.getSize();
         Dimension bs = browser.getSize();
-        Point p = browser.getLocation();
         
         JScrollBar vb = getVerticalBar();
         

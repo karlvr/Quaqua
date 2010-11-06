@@ -53,12 +53,14 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         return new QuaquaTextFieldUI();
     }
 
+    @Override
     public void installUI(JComponent c) {
         super.installUI(c);
         QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix() + ".opaque"));
     // c.setOpaque(QuaquaManager.getBoolean(getPropertyPrefix()+".opaque"));
     }
 
+    @Override
     protected void installDefaults() {
         if (!QuaquaUtilities.isHeadless()) {
             oldDragState = Methods.invokeGetter(getComponent(), "getDragEnabled", true);
@@ -67,6 +69,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         super.installDefaults();
     }
 
+    @Override
     protected void uninstallDefaults() {
         if (QuaquaUtilities.isHeadless()) {
             Methods.invokeIfExists(getComponent(), "setDragEnabled", oldDragState);
@@ -74,6 +77,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         super.uninstallDefaults();
     }
 
+    @Override
     protected void installListeners() {
         focusListener = createFocusListener();
         if (focusListener != null) {
@@ -87,6 +91,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         super.installListeners();
     }
 
+    @Override
     protected void uninstallListeners() {
         if (focusListener != null) {
             getComponent().removeFocusListener(focusListener);
@@ -115,6 +120,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
      * @return the editor capabilities
      * @see TextUI#getEditorKit
      */
+    @Override
     public EditorKit getEditorKit(JTextComponent tc) {
         return defaultKit;
     }
@@ -127,6 +133,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         return (margin == null) ? new Insets(0, 0, 0, 0) : (Insets) margin.clone();
     }
 
+    @Override
     protected void paintSafely(Graphics g) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
@@ -147,6 +154,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         Debug.paint(g, editor, this);
     }
 
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {
@@ -157,12 +165,14 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         super.propertyChange(event);
     }
 
+    @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
 
+    @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
@@ -184,6 +194,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
      * @see #getKeymapName
      * @see javax.swing.text.JTextComponent
      */
+    @Override
     protected Keymap createKeymap() {
         String nm = getKeymapName();
         Keymap map = JTextComponent.getKeymap(nm);
@@ -200,6 +211,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         return map;
     }
 
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent textComponent = (JTextComponent) c;
         View rootView = textComponent.getUI().getRootView(textComponent);
@@ -239,7 +251,6 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
             }
         } else {
             bounds = getVisibleEditorRect();
-            FontMetrics fm = c.getFontMetrics(c.getFont());
 
             int baseline = getBaseline(b, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);
@@ -256,6 +267,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         return bounds;
     }
 
+    @Override
     public Dimension getPreferredSize(JComponent c) {
         // The following code has been derived from BasicTextUI.
         Document doc = ((JTextComponent) c).getDocument();

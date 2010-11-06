@@ -118,10 +118,12 @@ public class QuaquaColorPicker extends AbstractColorChooserPanel {
 
             pickerFrame.addMouseListener(new MouseAdapter() {
 
+                @Override
                 public void mousePressed(MouseEvent evt) {
                     pickFinish();
                 }
 
+                @Override
                 public void mouseExited(MouseEvent evt) {
                     updatePicker();
                 }
@@ -129,6 +131,7 @@ public class QuaquaColorPicker extends AbstractColorChooserPanel {
 
             pickerFrame.addMouseMotionListener(new MouseMotionAdapter() {
 
+                @Override
                 public void mouseMoved(MouseEvent evt) {
                     updatePicker();
                 }
@@ -139,6 +142,7 @@ public class QuaquaColorPicker extends AbstractColorChooserPanel {
 
             pickerFrame.addKeyListener(new KeyAdapter() {
 
+                @Override
                 public void keyPressed(KeyEvent e) {
                     switch (e.getKeyCode()) {
                         case KeyEvent.VK_ESCAPE:
@@ -241,7 +245,7 @@ public class QuaquaColorPicker extends AbstractColorChooserPanel {
 
                     // We need to create a new subImage. This forces that
                     // the color picker uses the new imagery.
-                    BufferedImage subImage = cursorImage.getSubimage(0, 0, cursorImage.getWidth(), cursorImage.getHeight());
+                    cursorImage.getSubimage(0, 0, cursorImage.getWidth(), cursorImage.getHeight());
                     pickerFrame.setCursor(getToolkit().createCustomCursor(cursorImage, hotSpot, "ColorPicker"));
                 }
             }
