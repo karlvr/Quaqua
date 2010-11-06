@@ -69,22 +69,27 @@ public class QuaquaSliderUI extends BasicSliderUI
         return new QuaquaTrackListener();
     }
 
+    @Override
     protected ChangeListener createChangeListener(JSlider slider) {
         return getHandler();
     }
 
+    @Override
     protected ComponentListener createComponentListener(JSlider slider) {
         return getHandler();
     }
 
+    @Override
     protected FocusListener createFocusListener(JSlider slider) {
         return getHandler();
     }
 
+    @Override
     protected ScrollListener createScrollListener(JSlider slider) {
         return new ScrollListener();
     }
 
+    @Override
     protected PropertyChangeListener createPropertyChangeListener(
             JSlider slider) {
         return getHandler();
@@ -97,6 +102,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         return handler;
     }
 
+    @Override
     protected Dimension getThumbSize() {
         Icon thumb = getThumbIcon();
         return new Dimension(thumb.getIconWidth(), thumb.getIconHeight());
@@ -127,6 +133,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
@@ -135,6 +142,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         Debug.paint(g, c, this);
     }
 
+    @Override
     public void paintThumb(Graphics g) {
         Rectangle knobBounds = thumbRect;
         int x = knobBounds.x;
@@ -142,19 +150,23 @@ public class QuaquaSliderUI extends BasicSliderUI
         getThumbIcon().paintIcon(slider, g, x, y);
     }
 
+    @Override
     public void paintLabels(Graphics g) {
         g.setColor(slider.getForeground());
         super.paintLabels(g);
     }
 
+    @Override
     public void paintFocus(Graphics g) {
     // empty
     }
 
+    @Override
     protected void calculateGeometry() {
         focusInsets = getVisualMargin(slider);
         super.calculateGeometry();
     }
+    @Override
     protected void calculateContentRect() {
         contentRect.x = focusRect.x + focusInsets.left;
         contentRect.y = focusRect.y + focusInsets.top;
@@ -162,6 +174,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         contentRect.height = focusRect.height - (focusInsets.top + focusInsets.bottom);
     }
 
+    @Override
     protected void calculateThumbLocation() {
         if (slider.getSnapToTicks()) {
             int sliderValue = slider.getValue();
@@ -219,6 +232,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     protected void calculateLabelRect() {
         if (slider.getPaintLabels()) {
             if (slider.getOrientation() == JSlider.HORIZONTAL) {
@@ -259,6 +273,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     protected void calculateTickRect() {
         if (slider.getOrientation() == JSlider.HORIZONTAL) {
             tickRect.x = trackRect.x;
@@ -291,6 +306,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     protected void calculateTrackRect() {
         int centerSpacing = 0; // used to center sliders added using BorderLayout.CENTER (bug 4275631)
         if (slider.getOrientation() == JSlider.HORIZONTAL) {
@@ -338,6 +354,7 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     public void paintTrack(Graphics g) {
         int cx, cy, cw, ch;
         int pad;
@@ -387,18 +404,12 @@ public class QuaquaSliderUI extends BasicSliderUI
         }
     }
 
+    @Override
     public void paintTicks(Graphics g) {
         Rectangle tickBounds = tickRect;
-        int i;
-        int maj, min, max;
-        int w = tickBounds.width;
-        int h = tickBounds.height;
         int centerEffect, tickHeight;
 
         g.setColor(UIManager.getColor("Slider.tickColor"));
-
-        maj = slider.getMajorTickSpacing();
-        min = slider.getMinorTickSpacing();
 
         if (slider.getOrientation() == JSlider.HORIZONTAL) {
             g.translate(0, tickBounds.y);
@@ -602,6 +613,7 @@ public class QuaquaSliderUI extends BasicSliderUI
     public class QuaquaTrackListener extends TrackListener {
         //protected transient int offset;
         //protected transient int currentMouseX, currentMouseY;
+        @Override
         public void mouseReleased(MouseEvent e) {
             if (!slider.isEnabled()) {
                 return;
@@ -633,6 +645,7 @@ public class QuaquaSliderUI extends BasicSliderUI
          * thumb then page up if the mouse is in the upper half
          * of the track.
          */
+        @Override
         public void mousePressed(MouseEvent e) {
             if (!slider.isEnabled()) {
                 return;
@@ -711,6 +724,7 @@ public class QuaquaSliderUI extends BasicSliderUI
             }
         }
 
+        @Override
         public boolean shouldScroll(int direction) {
             Rectangle r = thumbRect;
             if (slider.getOrientation() == JSlider.VERTICAL) {
@@ -746,6 +760,7 @@ public class QuaquaSliderUI extends BasicSliderUI
          * Set the models value to the position of the top/left
          * of the thumb relative to the origin of the track.
          */
+        @Override
         public void mouseDragged(MouseEvent e) {
             int thumbMiddle = 0;
 
@@ -810,10 +825,12 @@ public class QuaquaSliderUI extends BasicSliderUI
             }
         }
 
+        @Override
         public void mouseMoved(MouseEvent e) {
         }
     }
 
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         return -1;
     }

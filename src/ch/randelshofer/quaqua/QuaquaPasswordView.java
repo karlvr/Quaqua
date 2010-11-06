@@ -49,6 +49,7 @@ public class QuaquaPasswordView extends FieldView {
      * @return the X location of the end of the range >= 0
      * @exception BadLocationException if p0 or p1 are out of range
      */
+    @Override
     protected int drawUnselectedText(Graphics g, int x, int y,
 				     int p0, int p1) throws BadLocationException {
 
@@ -75,6 +76,7 @@ public class QuaquaPasswordView extends FieldView {
     protected Color unselected;
     protected Color selected;
     
+    @Override
     public void paint(Graphics g, Shape a) {
 	JTextComponent host = (JTextComponent) getContainer();
         unselected = (host.isEnabled()) ? 
@@ -98,6 +100,7 @@ public class QuaquaPasswordView extends FieldView {
      * @return the X location of the end of the range >= 0
      * @exception BadLocationException if p0 or p1 are out of range
      */
+    @Override
     protected int drawSelectedText(Graphics g, int x,
 				   int y, int p0, int p1) throws BadLocationException {
 	g.setColor(selected);
@@ -145,6 +148,7 @@ public class QuaquaPasswordView extends FieldView {
      *   represent a valid location in the associated document
      * @see View#modelToView
      */
+    @Override
     public Shape modelToView(int pos, Shape a, Position.Bias b) throws BadLocationException {
 	Container c = getContainer();
 	if (c instanceof JPasswordField) {
@@ -175,6 +179,7 @@ public class QuaquaPasswordView extends FieldView {
      *  given point in the view
      * @see View#viewToModel
      */
+    @Override
     public int viewToModel(float fx, float fy, Shape a, Position.Bias[] bias) {
 	bias[0] = Position.Bias.Forward;
 	int n = 0;
@@ -210,6 +215,7 @@ public class QuaquaPasswordView extends FieldView {
      *           that is returned, although there is no guarantee.  
      *           The parent may choose to resize or break the view.
      */
+    @Override
     public float getPreferredSpan(int axis) {
 	switch (axis) {
 	case View.X_AXIS:
@@ -220,7 +226,7 @@ public class QuaquaPasswordView extends FieldView {
                     char echoChar = getEchoChar(f);
                     FontMetrics m = f.getFontMetrics(f.getFont());
                     Document doc = getDocument();
-                    return m.charWidth(echoChar) * getDocument().getLength();
+                    return m.charWidth(echoChar) * doc.getLength();
                 }
             }
         }

@@ -1033,7 +1033,6 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     protected void repaintTabArea() {
         int tabPlacement = tabPane.getTabPlacement();
-        int tCount = tabPane.getTabCount();
 
         Rectangle clipRect = new Rectangle();
         Insets insets = getInsets();//InsetsUtil.add(tabPane.getInsets(), getVisualMargin());

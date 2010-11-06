@@ -220,18 +220,22 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         return new QuaquaJaguarTabbedPaneUI();
     }
 
+    @Override
     protected LayoutManager createLayoutManager() {
         return new TabbedPaneLayout();
     }
 
+    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return new QuaquaPropertyChangeHandler();
     }
 
+    @Override
     protected MouseListener createMouseListener() {
         return new QuaquaMouseHandler();
     }
 
+    @Override
     protected void installDefaults() {
         super.installDefaults();
 
@@ -267,6 +271,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         tabPane.setOpaque(UIManager.getBoolean(prefix + "opaque"));
     }
 
+    @Override
     protected void paintTabBorder(Graphics g, int tabPlacement,
             int tabIndex, int x, int y, int w, int h,
             boolean isSelected) {
@@ -500,6 +505,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     public void update(Graphics g, JComponent c) {
         if (c.isOpaque()) {
             g.setColor(tabAreaBackground);
@@ -511,6 +517,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     /**
      * Overridden to do nothing for the Quaqua L&F.
      */
+    @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
             int tabIndex, int x, int y, int w, int h, boolean isSelected) {
     }
@@ -518,6 +525,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     /**
      * Overridden to do nothing for the Quaqua L&F.
      */
+    @Override
     protected int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) {
         return 0;
     }
@@ -544,6 +552,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      * Overridden to return specific shift values for the Quaqua L&F.
      * FIXME We should find another way to align the labels properly.
      */
+    @Override
     protected int getTabLabelShiftY(int tabPlacement, int tabIndex, boolean isSelected) {
         switch (tabPlacement) {
             case LEFT:
@@ -560,7 +569,6 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
     protected void repaintTabArea() {
         int tabPlacement = tabPane.getTabPlacement();
-        int tabCount = tabPane.getTabCount();
 
         Rectangle clipRect = new Rectangle();
         Insets insets = InsetsUtil.add(tabPane.getInsets(), getVisualMargin());
@@ -602,13 +610,13 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         tabPane.repaint(clipRect);
     }
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
         int tabPlacement = tabPane.getTabPlacement();
         isFrameActive = QuaquaUtilities.isOnActiveWindow(c);
 
-        Insets insets = c.getInsets();
         Dimension size = c.getSize();
 
         // Paint the background for the tab area
@@ -689,9 +697,8 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      *
      * @since 1.4
      */
+    @Override
     protected void paintTabArea(Graphics g, int tabPlacement, int selectedIndex) {
-        int tabCount = tabPane.getTabCount();
-
         Rectangle iconRect = new Rectangle(),
                 textRect = new Rectangle();
         Rectangle clipRect = g.getClipBounds();
@@ -794,12 +801,14 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     /**
      * Overridden to do nothing for the Quaqua L&F.
      */
+    @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
             Rectangle[] rects, int tabIndex,
             Rectangle iconRect, Rectangle textRect,
             boolean isSelected) {
     }
 
+    @Override
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
         if (tabPlacement == RIGHT || tabPlacement == LEFT) {
             return new Insets(tabInsets.top, 6, tabInsets.bottom, 5);
@@ -808,6 +817,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         }
     }
 
+    @Override
     protected Insets getTabAreaInsets(int tabPlacement) {
         //return currentTabAreaInsets;
         // FIXME We should change the layout code instead of adjusting the
@@ -828,6 +838,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         return i;
     }
 
+    @Override
     protected Insets getContentBorderInsets(int tabPlacement) {
         // We eliminate the insets at the tab location
         // because the content border is drawn as a shadow,
@@ -865,6 +876,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         return currentContentBorderInsets;
     }
 
+    @Override
     protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
         int width = tabPane.getWidth();
         int height = tabPane.getHeight();
@@ -928,6 +940,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         g.fillRect(x, y, width, height);
     }
 
+    @Override
     protected void paintContentBorderTopEdge(Graphics g, int tabPlacement,
             int selectedIndex,
             int x, int y, int w, int h) {
@@ -957,6 +970,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
                 7);
     }
 
+    @Override
     protected void paintContentBorderBottomEdge(Graphics g, int tabPlacement,
             int selectedIndex,
             int x, int y, int w, int h) {
@@ -987,6 +1001,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
                 6);
     }
 
+    @Override
     protected void paintContentBorderLeftEdge(Graphics g, int tabPlacement,
             int selectedIndex,
             int x, int y, int w, int h) {
@@ -1011,6 +1026,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         getBarLeftBorder(bar).paintBorder(tabPane, g, x, y + 1, 7, h - 6);
     }
 
+    @Override
     protected void paintContentBorderRightEdge(Graphics g, int tabPlacement,
             int selectedIndex,
             int x, int y, int w, int h) {
@@ -1035,6 +1051,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
         getBarRightBorder(bar).paintBorder(tabPane, g, x + w - 6, y + 1, 6, h - 6);
     }
 
+    @Override
     protected int calculateMaxTabHeight(int tabPlacement) {
         FontMetrics metrics = getFontMetrics();
         int height = metrics.getHeight();
@@ -1053,6 +1070,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
                 - (tallerIcons ? (tabInsets.top + tabInsets.bottom) : 0);
     }
 
+    @Override
     protected int getTabRunOverlay(int tabPlacement) {
         if (tabPlacement == LEFT || tabPlacement == RIGHT) {
             return 2;
@@ -1076,6 +1094,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     // Pad all tab runs if there is more than one run.
+    @Override
     protected boolean shouldPadTabRun(int tabPlacement, int run) {
         return runCount > 1;
     }
@@ -1385,6 +1404,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
             }
         }
 
+        @Override
         protected void normalizeTabRuns(int tabPlacement, int tabCount,
                 int start, int max) {
             // Only normalize the runs for top & bottom;  normalizing
@@ -1605,6 +1625,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
      */
     public class QuaquaMouseHandler extends MouseAdapter {
 
+        @Override
         public void mousePressed(MouseEvent e) {
             if (!tabPane.isEnabled()) {
                 return;

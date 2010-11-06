@@ -1085,10 +1085,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             if (isAdjusting != 0) {
                 return;
             }
-            JFileChooser fc = getFileChooser();
-            FileSystemView fsv = fc.getFileSystemView();
+            
             TreePath path = browser.getSelectionPath();
-
             if (path != null) {
                 model.lazyInvalidatePath(path);
                 model.validatePath(path);
@@ -1109,14 +1107,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
     private void doDirectoryChanged(PropertyChangeEvent e) {
         File dir = (File) e.getNewValue();
-        File selectedFile = getFileChooser().getSelectedFile();
-        /*
-        // ignore directory changes to the directory of the selected file
-        if (dir != null && selectedFile != null &&
-        (dir.equals(selectedFile) || dir.equals(selectedFile.getParentFile()))) {
-        return; // nothing do to
-        }*/
-
 
         TreePath selectionPath = (browser.getSelectionPath() == null) ? null : subtreeModel.toFullPath(browser.getSelectionPath());
         TreePath dirPath = model.toPath(dir, selectionPath);
@@ -1180,13 +1170,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     }
 
     private void doFileSelectionModeChanged(PropertyChangeEvent e) {
-        //Commented out, because there is no reason for clearing the icon cache
-        //in this situation.
-        //clearIconCache();
-
-        JFileChooser fc = getFileChooser();
-        File currentDirectory = fc.getCurrentDirectory();
-        //setFileName(null);
         updateApproveButtonText();
         updateApproveButtonState();
     }
@@ -1808,7 +1791,6 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             FileSystemTreeModel.Node chosenNode = (FileSystemTreeModel.Node) directoryComboBox.getSelectedItem();
             if (chosenNode != null) {
 
-                JFileChooser fc = getFileChooser();
                 File dir = chosenNode.getResolvedFile();
                 setRootDirectory(dir);
             }

@@ -200,7 +200,6 @@ public class QuaquaComboPopup extends BasicComboPopup {
         boolean isTableCellEditor = isTableCellEditor();
         boolean hasScrollBars = hasScrollBars();
         boolean isEditable = isEditable();
-        boolean isSmall = QuaquaUtilities.isSmallSizeVariant(comboBox);
 
         if (isTableCellEditor) {
             if (hasScrollBars) {

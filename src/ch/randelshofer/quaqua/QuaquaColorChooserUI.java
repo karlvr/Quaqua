@@ -175,7 +175,7 @@ public class QuaquaColorChooserUI extends ColorChooserUI {
         // If the previewPanel has zero size, the user wants to not display
         // a preview at all.
         // See http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=5029286
-        Dimension layoutSize = new Dimension(); // fix for bug 4759306
+        Dimension layoutSize; // fix for bug 4759306
         if (previewPanel != null) {
             layoutSize = new BorderLayout().minimumLayoutSize(previewPanel);
             if (layoutSize.getWidth() + layoutSize.getHeight() == 0) {

@@ -163,7 +163,6 @@ public class OSXApplication {
                     tiffData = nativeGetIconImage(size);
                 }
 
-                long start = System.currentTimeMillis();
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
                         new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
                         new TIFFDecodeParam());

@@ -1400,12 +1400,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "javax.swing.plaf.FontUIResource",
                 null,
                 new Object[]{baseSystemFont.deriveFont(fontPlain, nine)});
+        
         // An emphasized mini system font (Lucida Grande Bold 9 pt) is available for
         // cases in which the emphasized small system font is too large.
-        Object emphasizedMiniSystemFont = new UIDefaults.ProxyLazyValue(
-                "javax.swing.plaf.FontUIResource",
-                null,
-                new Object[]{baseSystemFont.deriveFont(fontBold, nine)});
+        ///Object emphasizedMiniSystemFont = new UIDefaults.ProxyLazyValue(
+        ///        "javax.swing.plaf.FontUIResource",
+        ///        null,
+        ///        new Object[]{baseSystemFont.deriveFont(fontBold, nine)});
+
         // If your application creates text documents, use the application font
         // (Lucida Grande Regular 13 pt) as the default font for user-created
         // content.

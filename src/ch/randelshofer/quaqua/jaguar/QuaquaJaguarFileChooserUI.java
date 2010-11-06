@@ -775,7 +775,6 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 return;
             }
             JFileChooser fc = getFileChooser();
-            FileSystemView fsv = fc.getFileSystemView();
             TreePath path = browser.getSelectionPath();
 
             if (path != null) {
@@ -903,9 +902,6 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         //in this situation.
         //clearIconCache();
 
-        JFileChooser fc = getFileChooser();
-        File currentDirectory = fc.getCurrentDirectory();
-        //setFileName(null);
         updateApproveButtonText();
         updateApproveButtonState();
     }
@@ -920,7 +916,6 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     }
 
     private void doChoosableFilterChanged(PropertyChangeEvent e) {
-        JFileChooser fc = getFileChooser();
         boolean isChooserVisible = ((FileFilter[]) e.getNewValue()).length > 1;
         formatPanel.setVisible(isChooserVisible);
         updateSeparatorPanelVisibility();

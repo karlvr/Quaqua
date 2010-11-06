@@ -807,7 +807,6 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
             BoundedRangeModel model = scrollbar.getModel();
             Rectangle thumbR = getThumbBounds();
             Rectangle trackR = getTrackBounds();
-            float trackLength;
             int thumbMin, thumbMax, thumbPos;
 
             if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
@@ -816,7 +815,6 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
                 thumbPos = Math.min(thumbMax, Math.max(thumbMin, (e.getY() - offset)));
                 setThumbBounds(thumbR.x, thumbPos, thumbR.width, thumbR.height);
-                trackLength = trackR.height;
             } else {
                 /*
                 if (scrollbar.getComponentOrientation().isLeftToRight()) {
@@ -831,7 +829,6 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
                 thumbPos = Math.min(thumbMax, Math.max(thumbMin, (e.getX() - offset)));
                 setThumbBounds(thumbPos, thumbR.y, thumbR.width, thumbR.height);
-                trackLength = getTrackBounds().width;
             }
 
             /* Set the scrollbars value.  If the thumb has reached the end of

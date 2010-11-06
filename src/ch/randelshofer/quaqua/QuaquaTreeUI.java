@@ -1933,9 +1933,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
         private void scrollChangeSelection(JTree tree, QuaquaTreeUI ui,
                 int direction, boolean addToSelection,
                 boolean changeSelection) {
-            int rowCount;
 
-            if ((rowCount = ui.getRowCount(tree)) > 0 &&
+            if (ui.getRowCount(tree) > 0 &&
                     ui.treeSelectionModel != null) {
                 TreePath newPath;
                 Rectangle visRect = tree.getVisibleRect();
@@ -2197,9 +2196,7 @@ new Throwable().printStackTrace();
                 changeSelection = true;
             }
 
-            int rowCount;
-
-            if ((rowCount = ui.getRowCount(tree)) > 0 &&
+            if (ui.getRowCount(tree) > 0 &&
                     ui.treeSelectionModel != null) {
                 Dimension maxSize = tree.getSize();
                 TreePath lead = ui.getLeadSelectionPath();

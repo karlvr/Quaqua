@@ -448,8 +448,6 @@ public class QuaquaTitlePane extends JComponent {
      * true and the state has not changed, this will update anyway.
      */
     private void setState(int state, boolean updateRegardless) {
-        Window w = getWindow();
-
         // if (w != null && getWindowDecorationStyle() == JRootPane.FRAME) {
         if (this.state == state && !updateRegardless) {
             return;
@@ -672,7 +670,6 @@ public class QuaquaTitlePane extends JComponent {
         String theTitle = getTitle();
 
         if (theTitle != null) {
-            Font f = getFont();
             FontMetrics fm = g.getFontMetrics();
 
             int yOffset = ((height - fm.getHeight()) / 2) + fm.getAscent();
@@ -919,7 +916,6 @@ public class QuaquaTitlePane extends JComponent {
         }
 
         public void layoutContainer(Container c) {
-            JRootPane rootPane = getRootPane();
             boolean isVertical = isVertical();
             if (isVertical) {
                 layoutVerticalContainer(c);
@@ -1013,7 +1009,6 @@ public class QuaquaTitlePane extends JComponent {
     }
 
     public void layoutVerticalContainer(Container c) {
-        int h = getHeight();
         int x;
         int y;
         int spacing;

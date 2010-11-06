@@ -660,7 +660,6 @@ public class QuaquaPopupFactory extends PopupFactory {
          */
         void dispose() {
             Component c = getComponent();
-            Window window = SwingUtilities.getWindowAncestor(c);
 
             if (c instanceof JWindow) {
                 ((Window) c).dispose();

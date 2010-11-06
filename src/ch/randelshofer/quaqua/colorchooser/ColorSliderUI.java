@@ -46,6 +46,7 @@ public class ColorSliderUI extends BasicSliderUI {
     public static ComponentUI createUI(JComponent b)    {
         return new ColorSliderUI((JSlider)b);
     }
+    @Override
     protected void installDefaults( JSlider slider ) {
         super.installDefaults(slider);
         focusInsets = new Insets(0,0,0,0);
@@ -59,24 +60,30 @@ public class ColorSliderUI extends BasicSliderUI {
         slider.setRequestFocusEnabled(true);
     }
     
+    @Override
     protected Dimension getThumbSize() {
         Icon thumb = getThumbIcon();
         return new Dimension(thumb.getIconWidth(), thumb.getIconHeight());
     }
+    @Override
     public Dimension getPreferredHorizontalSize() {
         return PREFERRED_HORIZONTAL_SIZE;
     }
+    @Override
     public Dimension getPreferredVerticalSize() {
         return PREFERRED_VERTICAL_SIZE;
     }
     
+    @Override
     public Dimension getMinimumHorizontalSize() {
         return MINIMUM_HORIZONTAL_SIZE;
     }
     
+    @Override
     public Dimension getMinimumVerticalSize() {
         return MINIMUM_VERTICAL_SIZE;
     }
+    @Override
     protected void calculateThumbLocation() {
         super.calculateThumbLocation();
         if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
@@ -100,6 +107,7 @@ public class ColorSliderUI extends BasicSliderUI {
             return UIManager.getIcon("ColorChooser.ColorSlider.westThumb.small");
         }
     }
+    @Override
     public void paintThumb(Graphics g)  {
         Rectangle knobBounds = thumbRect;
         int w = knobBounds.width;
@@ -111,6 +119,7 @@ public class ColorSliderUI extends BasicSliderUI {
         ((Graphics2D) g).draw(knobBounds);
          */
     }
+    @Override
     public void paintTrack(Graphics g)  {
         int cx, cy, cw, ch;
         int pad;
@@ -141,21 +150,12 @@ public class ColorSliderUI extends BasicSliderUI {
         g.drawRect(cx,cy,cw - 1,ch - 1);
         paintColorTrack(g, cx + 2, cy + 2, cw - 4, ch - 4, trackBuffer);
     }
+    @Override
     public void paintTicks(Graphics g)  {
         Rectangle tickBounds = tickRect;
-        int i;
-        int maj, min, max;
-        int w = tickBounds.width;
-        int h = tickBounds.height;
         int centerEffect, tickHeight;
-        /*
-        g.setColor(slider.getBackground());
-        g.fillRect(tickBounds.x, tickBounds.y, tickBounds.width, tickBounds.height);
-         */
+
         g.setColor(foreground);
-        
-        maj = slider.getMajorTickSpacing();
-        min = slider.getMinorTickSpacing();
         
         if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
             g.translate( 0, tickBounds.y);
@@ -230,20 +230,25 @@ public class ColorSliderUI extends BasicSliderUI {
         ((Graphics2D) g).draw(tickBounds);
          */
     }
+    @Override
     protected void paintMajorTickForHorizSlider( Graphics g, Rectangle tickBounds, int x) {
         g.drawLine(x, 0, x, tickBounds.height - 1);
     }
+    @Override
     protected void paintMinorTickForHorizSlider( Graphics g, Rectangle tickBounds, int x ) {
         //g.drawLine( x, 0, x, tickBounds.height / 2 - 1 );
         g.drawLine(x, 0, x, tickBounds.height - 1);
     }
+    @Override
     protected void paintMinorTickForVertSlider( Graphics g, Rectangle tickBounds, int y ) {
         g.drawLine( tickBounds.width / 2, y, tickBounds.width / 2 - 1, y);
     }
     
+    @Override
     protected void paintMajorTickForVertSlider( Graphics g, Rectangle tickBounds, int y ) {
         g.drawLine(0, y,  tickBounds.width - 1, y);
     }
+    @Override
     public void paintFocus(Graphics g)  {
     }
     public void paintColorTrack(Graphics g, int x, int y, int width, int height, int buffer) {
@@ -269,6 +274,7 @@ public class ColorSliderUI extends BasicSliderUI {
         }
         g.drawImage(colorTrackImage, x, y, slider);
     }
+    @Override
     protected void calculateTrackRect() {
         int centerSpacing = 0; // used to center sliders added using BorderLayout.CENTER (bug 4275631)
         if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
@@ -300,6 +306,7 @@ public class ColorSliderUI extends BasicSliderUI {
         }
         
     }
+    @Override
     protected void calculateTickRect() {
         if ( slider.getOrientation() == JSlider.HORIZONTAL ) {
             tickRect.x = trackRect.x;
@@ -340,13 +347,16 @@ public class ColorSliderUI extends BasicSliderUI {
      * determine the tick area rectangle.  If you want to give your ticks some room,
      * make this larger than you need and paint your ticks away from the sides in paintTicks().
      */
+    @Override
     protected int getTickLength() {
         return 4;
     }
+    @Override
     protected PropertyChangeListener createPropertyChangeListener( JSlider slider ) {
         return new CSUIPropertyChangeHandler();
     }
     public class CSUIPropertyChangeHandler extends BasicSliderUI.PropertyChangeHandler {
+        @Override
         public void propertyChange( PropertyChangeEvent e ) {
             String propertyName = e.getPropertyName();
             
@@ -399,6 +409,7 @@ public class ColorSliderUI extends BasicSliderUI {
             super.propertyChange(e);
         }
     }
+    @Override
     protected TrackListener createTrackListener( JSlider slider ) {
         return new QuaquaTrackListener();
     }
@@ -417,6 +428,7 @@ public class ColorSliderUI extends BasicSliderUI {
          * thumb then page up if the mouse is in the upper half
          * of the track.
          */
+        @Override
         public void mousePressed(MouseEvent e) {
             if ( !slider.isEnabled() )
                 return;
@@ -432,9 +444,6 @@ public class ColorSliderUI extends BasicSliderUI {
             if (thumbRect.contains(currentMouseX, currentMouseY) ) {
                 super.mousePressed(e);
             } else {
-                Dimension sbSize = slider.getSize();
-                int direction = POSITIVE_SCROLL;
-                
                 switch ( slider.getOrientation() ) {
                     case JSlider.VERTICAL:
                         slider.setValue(valueForYPosition(currentMouseY));

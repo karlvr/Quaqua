@@ -1087,10 +1087,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             if (isAdjusting != 0) {
                 return;
             }
-            JFileChooser fc = getFileChooser();
-            FileSystemView fsv = fc.getFileSystemView();
+            
             TreePath path = browser.getSelectionPath();
-
             if (path != null) {
                 model.lazyInvalidatePath(path);
                 model.validatePath(path);
@@ -1111,7 +1109,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
     private void doDirectoryChanged(PropertyChangeEvent e) {
         File dir = (File) e.getNewValue();
-        File selectedFile = getFileChooser().getSelectedFile();
 
         TreePath selectionPath = (browser.getSelectionPath() == null) ? null : subtreeModel.toFullPath(browser.getSelectionPath());
         TreePath dirPath = model.toPath(dir, selectionPath);
@@ -1203,13 +1200,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     }
 
     private void doFileSelectionModeChanged(PropertyChangeEvent e) {
-        //Commented out, because there is no reason for clearing the icon cache
-        //in this situation.
-        //clearIconCache();
-
-        JFileChooser fc = getFileChooser();
-        File currentDirectory = fc.getCurrentDirectory();
-        //setFileName(null);
         updateApproveButtonText();
         updateApproveButtonState();
     }
@@ -1772,8 +1762,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
             FileSystemTreeModel.Node chosenNode = (FileSystemTreeModel.Node) directoryComboBox.getSelectedItem();
             if (chosenNode != null) {
-
-                JFileChooser fc = getFileChooser();
                 File dir = chosenNode.getResolvedFile();
                 setRootDirectory(dir);
             }

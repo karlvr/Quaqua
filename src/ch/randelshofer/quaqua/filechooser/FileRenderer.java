@@ -121,10 +121,8 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected,
             boolean cellHasFocus) {
-        Integer viewTooltipRow = (Integer) list.getClientProperty("ViewTooltips.row");
 
         FileInfo info = (FileInfo) value;
-        File file = info.getFile();
 
         isGrayed = info.isHidden()
                 || !info.isAcceptable();
@@ -171,6 +169,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         return this;
     }
 
+    @Override
     protected void paintComponent(Graphics gr) {
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) gr);
         Graphics2D g = (Graphics2D) gr;
@@ -195,7 +194,6 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
             g.setColor(getBackground());
             g.fillRect(0, 0, width, height);
         }
-        boolean isLeftToRight = QuaquaUtilities.isLeftToRight(this);
 
         String clippedText = layoutRenderer(
                 textFM, text,
@@ -266,6 +264,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         r.setBounds(zeroRect);
     }
 
+    @Override
     public Dimension getPreferredSize() {
         Font textFont = getFont();
         FontMetrics textFM = getFontMetrics(textFont);

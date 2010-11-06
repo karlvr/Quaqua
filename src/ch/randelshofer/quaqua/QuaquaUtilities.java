@@ -412,7 +412,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                     System.out.println("INTERRUPTED while loading Image");
                 }
             }
-            int loadStatus = tracker.statusID(id, false);
+            ///int loadStatus = tracker.statusID(id, false);
             tracker.removeImage(image, id);
         }
     }

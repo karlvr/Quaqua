@@ -40,6 +40,7 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
         return new QuaquaTextAreaUI();
     }
     
+    @Override
     protected void installDefaults() {
         if (! QuaquaUtilities.isHeadless()) {
             oldDragState = Methods.invokeGetter(getComponent(),"getDragEnabled", true);
@@ -48,6 +49,7 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
         super.installDefaults();
     }
     
+    @Override
     protected void uninstallDefaults() {
         if (QuaquaUtilities.isHeadless()) {
             Methods.invokeIfExists(getComponent(),"setDragEnabled", oldDragState);
@@ -55,6 +57,7 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
         super.uninstallDefaults();
     }
     
+    @Override
     protected void installListeners() {
         popupListener = createPopupListener();
         if (popupListener != null) {
@@ -64,6 +67,7 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
         super.installListeners();
     }
     
+    @Override
     protected void uninstallListeners() {
         if (popupListener != null) {
             getComponent().removeMouseListener(popupListener);
@@ -85,10 +89,12 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
      * @return the editor capabilities
      * @see TextUI#getEditorKit
      */
+    @Override
     public EditorKit getEditorKit(JTextComponent tc) {
         return QuaquaTextFieldUI.defaultKit;
     }
     
+    @Override
     public void propertyChange(PropertyChangeEvent event) {
         String name = event.getPropertyName();
         if (name.equals("Frame.active")) {
@@ -100,6 +106,7 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
     }
         }
     
+    @Override
     protected void paintSafely(Graphics g) {
 	Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         super.paintSafely(g);
@@ -111,16 +118,19 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
         return new ComponentActivationHandler(getComponent());
     }*/
     
+    @Override
     protected Caret createCaret() {
         Window window = SwingUtilities.getWindowAncestor(getComponent());
         QuaquaCaret caret = new QuaquaCaret(window, getComponent());
         return caret;
     }
     
+    @Override
     protected Highlighter createHighlighter() {
         return new QuaquaHighlighter();
     }
     
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         JTextComponent tc = (JTextComponent) c;
         Insets insets = tc.getInsets();
@@ -147,7 +157,6 @@ public class QuaquaTextAreaUI extends BasicTextAreaUI implements VisuallyLayouta
             }
         } else {
             bounds = getVisibleEditorRect();
-            FontMetrics fm = c.getFontMetrics(c.getFont());
             
             int baseline = getBaseline(c, width, height);
             Rectangle textBounds = Fonts.getPerceivedBounds(b.getText(), b.getFont(), c);

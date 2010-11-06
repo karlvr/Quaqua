@@ -1997,7 +1997,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         /* Required by LayoutManager. */
         public Dimension preferredLayoutSize(Container parent) {
             Dimension dim = new Dimension(0, 0);
-            int nComps = parent.getComponentCount();
 
             setSizes(parent);
 
@@ -2023,7 +2022,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          */
         public void layoutContainer(Container parent) {
             Insets insets = parent.getInsets();
-            int maxWidth = parent.getWidth() - (insets.left + insets.right);
+            ///int maxWidth = parent.getWidth() - (insets.left + insets.right);
             int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
             int nComps = parent.getComponentCount();
             int previousWidth = 0, previousHeight = 0;
@@ -3067,8 +3066,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
              */
             // This is the only difference to DefaultListSelectionModel:
             // We _never_ select newly inserted values.
-            //boolean setInsertedValues = ((getSelectionMode() == SINGLE_SELECTION) ? false : value.get(index));
-            boolean wasSelected = value.get(index);
             boolean setInsertedValues = false;
             for (int i = insMinIndex; i <= insMaxIndex; i++) {
                 setState(i, setInsertedValues);

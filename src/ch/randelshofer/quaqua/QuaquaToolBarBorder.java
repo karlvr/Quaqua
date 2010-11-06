@@ -45,7 +45,6 @@ public class QuaquaToolBarBorder
             Graphics2D g = (Graphics2D) gr;
 
             boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-            boolean isTextured = QuaquaUtilities.isOnTexturedWindow(c);
 
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {

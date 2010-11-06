@@ -833,8 +833,6 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
          * @return a Dimension object containing the layout's maximum size
          */
         public Dimension maximumLayoutSize(Container target) {
-            boolean isVertical = isVertical(target);
-
             Dimension cpd, mbd, tpd;
             int cpWidth = Integer.MAX_VALUE;
             int cpHeight = Integer.MAX_VALUE;
@@ -939,7 +937,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 nextY += mbd.height;
             }
             if (root.getContentPane() != null) {
-                Dimension cpd = root.getContentPane().getPreferredSize();
+                //Dimension cpd = root.getContentPane().getPreferredSize();
                 root.getContentPane().setBounds(nextX, nextY, w - nextX,
                         h < nextY ? 0 : h - nextY);
             }

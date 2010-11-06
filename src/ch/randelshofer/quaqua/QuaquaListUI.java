@@ -201,7 +201,6 @@ public class QuaquaListUI extends BasicListUI {
     public void paint(Graphics g, JComponent c) {
         paintStripes(g, c);
 
-        boolean isEnabled = c.isEnabled();
         boolean isFocused = QuaquaUtilities.isFocused(c);
         Object value = c.getClientProperty("Quaqua.List.style");
         isComboPopup = value != null && value.equals("comboPopup");
