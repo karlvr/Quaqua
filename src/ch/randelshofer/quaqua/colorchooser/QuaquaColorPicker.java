@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua15ColorPicker.java  2.0  2007-06-12
+ * @(#)QuaquaColorPicker.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer
  * Hausmatt 10, Immensee, CH-6405, Switzerland.
@@ -10,30 +10,23 @@
  * accordance with the license agreement you entered into with  
  * Werner Randelshofer. For details see accompanying license terms. 
  */
-
 package ch.randelshofer.quaqua.colorchooser;
 
-import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.image.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.colorchooser.*;
-import javax.swing.event.*;
 import java.security.*;
+
 /**
- * Quaqua15ColorPicker.
- *
- *
+ * QuaquaColorPicker.
  *
  * @author Werner Randelshofer
- * @version 2.0 2007-06-12 Added support for multiple screens.
- * <br>1.2 2006-04-23 Retrieve labels from UIManager.
- * <br>1.1.1 2006-03-15 Forgot to create robot instance.
- * <br>1.1 2006-03-06 Abort picker when the user presses the Escape-Key.
- * <br>1.0 December 18, 2005 Created.
+ * @version $Id$
  */
-public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
+public class QuaquaColorPicker extends AbstractColorChooserPanel {
+
     /**
      * This frame is constantly moved to the current location of the mouse.
      * This ensures that we can trap mouse clicks while the picker cursor is
@@ -41,10 +34,7 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
      * the picker cursor (the magnifying glass) is shown.
      */
     private Dialog pickerFrame;
-    
     private Timer pickerTimer;
-    
-    
     /**
      * Holds the image of the picker cursor.
      */
@@ -53,73 +43,63 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
      * Graphics object used for drawing on the cursorImage.
      */
     private Graphics2D cursorGraphics;
-    
     /**
      * The picker cursor.
      */
     private Cursor pickerCursor;
-    
     /**
      * The hot spot of the cursor.
      */
     private Point hotSpot;
-    
     /**
      * Offset from the hot spot of the pickerCursor to the pixel that we want to pick.
      * We can't pick the color at the hotSpot of the cursor, because this point
      * is obscured by the pickerFrame.
      */
     private Point pickOffset;
-    
-    
     /**
      * The magnifying glass image.
      */
     private BufferedImage magnifierImage;
-    
     /**
      * The robot is used for creating screen captures.
      */
     private Robot robot;
-    
     /**
      * The graphics device for which we created the robot.
      */
     private GraphicsDevice captureScreen;
-    
     /**
      * This is true, if we can't capture from this screen.
      */
     private boolean isBadScreen = false;
-    
     private Color previousColor = Color.white;
     private Point previousLoc = new Point();
     private Point pickLoc = new Point();
     private Point captureOffset = new Point();
     private Rectangle captureRect;
-    private final static Color transparentColor = new Color(0,true);
+    private final static Color transparentColor = new Color(0, true);
     private Rectangle zoomRect;
     private Rectangle glassRect;
-    
+
     /**
      * Creates a new instance.
      */
-    public Quaqua15ColorPicker() {
+    public QuaquaColorPicker() {
         // Try immediately to create a screen capture in order to fail quickly, when
         // we can't provide a color picker functionality.
         try {
-            captureScreen = GraphicsEnvironment.
-                    getLocalGraphicsEnvironment().
+            captureScreen = GraphicsEnvironment.getLocalGraphicsEnvironment().
                     getDefaultScreenDevice();
-            
+
             robot = new Robot();
-            robot.createScreenCapture(new Rectangle(0,0,1,1));
+            robot.createScreenCapture(new Rectangle(0, 0, 1, 1));
         } catch (AWTException e) {
             throw new AccessControlException("Unable to capture screen");
         }
-        
+
     }
-    
+
     /**
      * Gets the picker frame.
      * If the frame does not yet exist, it is created along with all the other
@@ -135,38 +115,42 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
             } else {
                 pickerFrame = new Dialog(new JFrame());
             }
-            
+
             pickerFrame.addMouseListener(new MouseAdapter() {
+
                 public void mousePressed(MouseEvent evt) {
                     pickFinish();
                 }
+
                 public void mouseExited(MouseEvent evt) {
                     updatePicker();
                 }
             });
-            
+
             pickerFrame.addMouseMotionListener(new MouseMotionAdapter() {
+
                 public void mouseMoved(MouseEvent evt) {
                     updatePicker();
                 }
             });
-            pickerFrame.setSize(3,3);
+            pickerFrame.setSize(3, 3);
             pickerFrame.setUndecorated(true);
             pickerFrame.setAlwaysOnTop(true);
-            
+
             pickerFrame.addKeyListener(new KeyAdapter() {
+
                 public void keyPressed(KeyEvent e) {
                     switch (e.getKeyCode()) {
-                        case KeyEvent.VK_ESCAPE :
+                        case KeyEvent.VK_ESCAPE:
                             pickCancel();
                             break;
-                        case KeyEvent.VK_ENTER :
+                        case KeyEvent.VK_ENTER:
                             pickFinish();
                             break;
                     }
                 }
             });
-            
+
             magnifierImage = (BufferedImage) UIManager.get("ColorChooser.colorPickerMagnifier");
             glassRect = (Rectangle) UIManager.get("ColorChooser.colorPickerGlassRect");
             zoomRect = (Rectangle) UIManager.get("ColorChooser.colorPickerZoomRect");
@@ -177,8 +161,9 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
             cursorImage = getGraphicsConfiguration().createCompatibleImage(magnifierImage.getWidth(), magnifierImage.getHeight(), Transparency.TRANSLUCENT);
             cursorGraphics = cursorImage.createGraphics();
             cursorGraphics.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_NEAREST_NEIGHBOR);
-            
+
             pickerTimer = new Timer(5, new ActionListener() {
+
                 public void actionPerformed(ActionEvent evt) {
                     updatePicker();
                 }
@@ -186,16 +171,15 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
         }
         return pickerFrame;
     }
-    
-    
+
     /**
      * Updates the color picker.
      */
     protected void updatePicker() {
         if (pickerFrame != null && pickerFrame.isShowing()) {
             PointerInfo info = MouseInfo.getPointerInfo();
-            
-            
+
+
             // Get a robot for the screen
             GraphicsDevice screen = info.getDevice();
             if (captureScreen != screen) {
@@ -208,32 +192,32 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
                     isBadScreen = true;
                 }
             }
-            
+
             Point mouseLoc = info.getLocation();
             pickerFrame.setLocation(mouseLoc.x - pickerFrame.getWidth() / 2, mouseLoc.y - pickerFrame.getHeight() / 2);
-            
+
             pickLoc.x = mouseLoc.x + pickOffset.x;
             pickLoc.y = mouseLoc.y + pickOffset.y;
-            
+
             if (pickLoc.x >= 0 && pickLoc.y >= 0) {
                 Color c = robot.getPixelColor(pickLoc.x, pickLoc.y);
-                if (! c.equals(previousColor) || ! mouseLoc.equals(previousLoc)) {
+                if (!c.equals(previousColor) || !mouseLoc.equals(previousLoc)) {
                     previousColor = c;
                     previousLoc = mouseLoc;
-                    
+
                     captureRect.setLocation(mouseLoc.x + captureOffset.x, mouseLoc.y + captureOffset.y);
-                    if (robot != null && ! isBadScreen && captureRect.x >= 0 && captureRect.y >= 0) {
+                    if (!isBadScreen && captureRect.x >= 0 && captureRect.y >= 0) {
                         // Clear the cursor graphics
                         cursorGraphics.setComposite(AlphaComposite.Src);
                         cursorGraphics.setColor(transparentColor);
                         cursorGraphics.fillRect(0, 0, cursorImage.getWidth(), cursorImage.getHeight());
-                        
+
                         try {
                             // Fill the area for the zoomed screen capture with the
                             // color on the screen
                             cursorGraphics.setColor(robot.getPixelColor(pickLoc.x, pickLoc.y));
-                            cursorGraphics.fillOval(glassRect.x,glassRect.y,glassRect.width,glassRect.height);
-                            
+                            cursorGraphics.fillOval(glassRect.x, glassRect.y, glassRect.width, glassRect.height);
+
                             // Paint the screen capture with a zoom factor of 5
                             BufferedImage capture = robot.createScreenCapture(captureRect);
                             cursorGraphics.setComposite(AlphaComposite.SrcIn);
@@ -244,33 +228,34 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
                         }
                     }
                     if (isBadScreen) {
-                    // Fill the area for the zoomed screen capture with the
-                    // color on the screen
-                    cursorGraphics.setComposite(AlphaComposite.SrcOver);
-                    cursorGraphics.setColor(robot.getPixelColor(pickLoc.x, pickLoc.y));
-                    cursorGraphics.fillOval(glassRect.x,glassRect.y,glassRect.width,glassRect.height);
+                        // Fill the area for the zoomed screen capture with the
+                        // color on the screen
+                        cursorGraphics.setComposite(AlphaComposite.SrcOver);
+                        cursorGraphics.setColor(robot.getPixelColor(pickLoc.x, pickLoc.y));
+                        cursorGraphics.fillOval(glassRect.x, glassRect.y, glassRect.width, glassRect.height);
                     }
-                    
+
                     // Draw the magnifying glass image
                     cursorGraphics.setComposite(AlphaComposite.SrcOver);
-                    cursorGraphics.drawImage(magnifierImage, 0 , 0, this);
-                    
+                    cursorGraphics.drawImage(magnifierImage, 0, 0, this);
+
                     // We need to create a new subImage. This forces that
                     // the color picker uses the new imagery.
-                    BufferedImage subImage = cursorImage.getSubimage(0,0,cursorImage.getWidth(),cursorImage.getHeight());
+                    BufferedImage subImage = cursorImage.getSubimage(0, 0, cursorImage.getWidth(), cursorImage.getHeight());
                     pickerFrame.setCursor(getToolkit().createCustomCursor(cursorImage, hotSpot, "ColorPicker"));
                 }
             }
         }
     }
-    
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
      * always regenerated by the Form Editor.
      */
-    private void initComponents() {//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
         pickerButton = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
@@ -282,17 +267,15 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
                 pickBegin(evt);
             }
         });
-
         add(pickerButton, java.awt.BorderLayout.CENTER);
+    }// </editor-fold>//GEN-END:initComponents
 
-    }//GEN-END:initComponents
-    
     private void pickBegin(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pickBegin
         getPickerFrame();
         pickerTimer.start();
         getPickerFrame().setVisible(true);
     }//GEN-LAST:event_pickBegin
-    
+
     protected void pickFinish() {
         pickerTimer.stop();
         pickerFrame.setVisible(false);
@@ -301,33 +284,32 @@ public class Quaqua15ColorPicker extends AbstractColorChooserPanel {
         Color c = robot.getPixelColor(loc.x + pickOffset.x, loc.y + pickOffset.y);
         getColorSelectionModel().setSelectedColor(c);
     }
+
     protected void pickCancel() {
         pickerTimer.stop();
         pickerFrame.setVisible(false);
     }
-    
+
     protected void buildChooser() {
         initComponents();
         pickerButton.setIcon(UIManager.getIcon("ColorChooser.colorPickerIcon"));
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.colorPicker");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorPickerIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
     }
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton pickerButton;
     // End of variables declaration//GEN-END:variables
-    
 }

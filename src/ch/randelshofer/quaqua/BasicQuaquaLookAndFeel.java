@@ -1669,7 +1669,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.colorchooser.ColorPalettesChooser",
                 "ch.randelshofer.quaqua.colorchooser.SwatchesChooser",
                 "ch.randelshofer.quaqua.colorchooser.CrayonsChooser",
-                "ch.randelshofer.quaqua.colorchooser.Quaqua15ColorPicker",},
+                "ch.randelshofer.quaqua.colorchooser.QuaquaColorPicker",},
             //"ColorChooser.swatchesDefaultRecentColor", ...,
             //"ColorChooser.swatchesRecentSwatchSize", ...,
             "ColorChooser.swatchesSwatchSize", new DimensionUIResource(5, 5),
