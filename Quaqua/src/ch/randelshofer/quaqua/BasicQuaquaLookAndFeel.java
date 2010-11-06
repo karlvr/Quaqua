@@ -1535,7 +1535,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         String systemFontName = getBaseSystemFont().getName();
 
         // Focus behavior
-        Boolean isRequestFocusEnabled = new Boolean(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false").equals("true"));
+        Boolean isRequestFocusEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false"));
 
         // True if all controls are focusable,
         // false if only text boxes and lists are focusable.
@@ -1564,10 +1564,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         InsetsUIResource visualMargin = new InsetsUIResource(values[0], values[1], values[2], values[3]);
 
         // Opaqueness
-        Boolean opaque = new Boolean(QuaquaManager.getProperty("Quaqua.opaque", "false").equals("true"));
+        Boolean opaque = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.opaque", "false"));
 
         // Autovalidation
-        Boolean autovalidate = new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.autovalidate", "true").equals("true"));
+        Boolean autovalidate = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.autovalidate", "true"));
 
         // Popup menus for all text components
         Object textComponentPopupHandler = new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaTextComponentPopupHandler");
@@ -1578,8 +1578,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler");
 
         // TextField auto selection
-        Boolean autoselect = new Boolean(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true").
-                equals("true"));
+        Boolean autoselect = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true"));
         // *** Shared Borders
         Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaScrollPaneBorder$UIResource",
@@ -1607,7 +1606,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         // design tool for NetBeans. Matisse removes borders from some
         // components in order to workaround some ugliness in the look
         // and feels that ship with the J2SE.
-        Boolean enforceVisualMargin = new Boolean(QuaquaManager.getProperty("Quaqua.enforceVisualMargin", "false").equals("true"));
+        Boolean enforceVisualMargin = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.enforceVisualMargin", "false"));
 
         Object[] uiDefaults = {
             "Browser.sizeHandleIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
@@ -1761,7 +1760,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "FileChooser.previewLabelInsets", new InsetsUIResource(1, 0, 0, 1),
             "FileChooser.previewLabelDelimiter", ":",
             "FileChooser.splitPaneDividerSize", 4,
-            "FileChooser.speed", new Boolean(QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.speed").equals("true")),
+            "FileChooser.speed", (QuaquaManager.getProperty("Quaqua.FileChooser.speed") != null && QuaquaManager.getProperty("Quaqua.FileChooser.speed").equals("true")),
             //
             "FileView.computerIcon", makeIcon(getClass(), commonDir + "FileView.computerIcon.png"),
             "FileView.directoryIcon", makeIcon(getClass(), commonDir + "FileView.directoryIcon.png"),
@@ -1863,13 +1862,13 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
+            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
         }
     },
             "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
 
         public Object createValue(UIDefaults table) {
-            return new Boolean(OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
+            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
         }
     },
             "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
@@ -2027,9 +2026,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             //"Tree.editorBorder", new VisualMargin(3,3,3,3),
 
             "Viewport.opaque", Boolean.TRUE,
-            "Quaqua.Debug.colorizePaintEvents", new Boolean(QuaquaManager.getProperty("Quaqua.Debug.colorizePaintEvents", "false").equals("true")),
-            "Quaqua.Debug.showClipBounds", new Boolean(QuaquaManager.getProperty("Quaqua.Debug.showClipBounds", "false").equals("true")),
-            "Quaqua.Debug.showVisualBounds", new Boolean(QuaquaManager.getProperty("Quaqua.Debug.showVisualBounds", "false").equals("true")),
+            "Quaqua.Debug.colorizePaintEvents", (QuaquaManager.getProperty("Quaqua.Debug.colorizePaintEvents", "false")),
+            "Quaqua.Debug.showClipBounds", (QuaquaManager.getProperty("Quaqua.Debug.showClipBounds", "false").equals("true")),
+            "Quaqua.Debug.showVisualBounds", (QuaquaManager.getProperty("Quaqua.Debug.showVisualBounds", "false").equals("true")),
             "Quaqua.Debug.clipBoundsForeground", new AlphaColorUIResource(0, 0, 255, 128),
             "Quaqua.Debug.componentBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
             "Quaqua.Debug.textBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
@@ -2076,7 +2075,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected static Object makeIcons(String location, int states, boolean horizontal) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
-                new Object[]{location, new Integer(states), new Boolean(horizontal)});
+                new Object[]{location, new Integer(states), horizontal});
     }
 
     public static Object makeNativeIcon(String path, int size) {
@@ -2141,31 +2140,31 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected Object makeImageBevelBorder(String location, Insets insets, boolean fill) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
-                new Object[]{location, insets, new Boolean(fill)});
+                new Object[]{location, insets, fill});
     }
 
     protected Object makeImageBevelBorder(String location, Insets insets, boolean fill, Color fillColor) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
-                new Object[]{location, insets, insets, new Boolean(fill), fillColor});
+                new Object[]{location, insets, insets, fill, fillColor});
     }
 
     protected Object makeImageBevelBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
-                new Object[]{location, imageInsets, borderInsets, new Boolean(fill)});
+                new Object[]{location, imageInsets, borderInsets, fill});
     }
 
     protected Object makeImageBevelBackgroundBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "createBackgroundBorder",
-                new Object[]{location, imageInsets, borderInsets, new Boolean(fill)});
+                new Object[]{location, imageInsets, borderInsets, fill});
     }
 
     protected Object makeImageBevelBorders(String location, Insets insets, int states, boolean horizontal) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
-                new Object[]{location, insets, new Integer(states), new Boolean(horizontal)});
+                new Object[]{location, insets, new Integer(states), horizontal});
     }
 
     protected Object makeTextureColor(int rgb, String location) {
