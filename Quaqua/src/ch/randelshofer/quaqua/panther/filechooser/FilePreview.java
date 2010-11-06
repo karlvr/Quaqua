@@ -388,7 +388,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
                 }
                 String kind = info.getFileKind();
                 Integer kindCount = (Integer) kinds.get(kind);
-                kinds.put(kind, (kindCount == null) ? new Integer(1) : new Integer(kindCount.intValue() + 1));
+                kinds.put(kind, (kindCount == null) ? 1 : kindCount + 1);
             }
             StringBuffer buf = new StringBuffer();
             for (Iterator i = kinds.entrySet().iterator(); i.hasNext();) {
@@ -428,9 +428,9 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
         sizeText.setText(
                 MessageFormat.format(UIManager.getString(label), new Object[]{
-                    new Float(scaledLength),
-                    new Long(fileLength),
-                    new Integer(paths.length)
+                    scaledLength,
+                   fileLength,
+                    paths.length
                 }));
         updatePreviewIcon();
         return this;

@@ -687,7 +687,7 @@ public class BinaryPListParser {
             }
             value = (value << 8) | b;
         }
-        objectTable.add(new Long(value));
+        objectTable.add(value);
     }
 
     /**
