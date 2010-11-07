@@ -35,6 +35,30 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
+  <h3>Version 7.3.3<br />
+    <font size="-1">2010-11-07</font></h3>
+  <p>Fixes</p>
+  <p>J2SE5 compatibility</p>
+  <ul>
+    <li>Fixes J2SE5 incompatibility caused by the LayoutStyle fix made in Quaqua 7.3.2. To work on J2SE5 the Quaqua look and feel must now be retrieved from QuaquaManager or the class name &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel15&quot; must be used.</li>
+  </ul>
+  <p>JTable</p>
+  <ul>
+    <li>Fixes focus behavior of JCheckBox editors in a JTable.</li>
+    <li>Fixes flickering when selecting a JCheckBox in a JTable which currently is not focused.</li>
+    <li>Fixes the size variant of JCheckBox editors in JTable. </li>
+    <li>Selection color (InactivatiableColorUIResource) extends now UIResource.</li>
+  </ul>
+  <p></p>
+  <p>Keyboard focus traversal</p>
+  <ul>
+    <li>The setting &quot;System Preferences &gt; Keyboard &gt; Full Keyboard Access&quot; was not always picked up.</li>
+  </ul>
+  <p>Potential issues</p>
+  <ul>
+    <li>Fixes 20 correctness issues, 11 multithreaded correctness issues and 215 other potential issues reported by FindBugs.</li>
+  </ul>
+  <p></p>
   <h3>Version 7.3.2<br />
     <font size="-1">2010-11-04</font></h3>
   <p>Fixes</p>

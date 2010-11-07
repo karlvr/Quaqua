@@ -15,8 +15,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="7.3.3alpha5"/>
-        <property name="version" value="${versionNumber} 2010-11-04"/>
+        <property name="versionNumber" value="7.3.3"/>
+        <property name="version" value="${versionNumber} 2010-11-07"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
