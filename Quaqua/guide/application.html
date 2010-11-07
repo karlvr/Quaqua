@@ -94,8 +94,11 @@ example the default layout policy for tabbed<br />
         }</code></p></td>
     </tr>
   </table>
-  <p>&nbsp;</p>
-  <p>&nbsp;</p>
+  <p>Alternatively, Quaqua can be set in the UIManager using a class name String. This should be avoided, because the class name may change due to incompatible changes in the Java API.</p>
+  <ul>
+    <li>For J2SE6 the class name is &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel&quot;. </li>
+    <li>For J2SE5 the class name is &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel15&quot;. </li>
+  </ul>
   <p>The Quaqua Look and Feel can be customized using <a href="system_properties.html">System
   properties</a>, <a href="uimanager_properties.html">UIManager properties</a> and <a href="client_properties.html">Client
   properties</a>.</p>
