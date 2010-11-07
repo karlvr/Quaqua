@@ -55,29 +55,33 @@ example the default layout policy for tabbed<br />
           <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);</code></p>
           <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#666666">//
                  configure the class loader of the UIManager.<br />
-</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UIManager.put(</code></p>
-          <p><code> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ClassLoader&quot;,&nbsp;getClass().getClassLoader()</code></p>
-          <p><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
+</font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UIManager.put(</code><br />
+<code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&quot;ClassLoader&quot;,&nbsp;getClass().getClassLoader()<br />
+</code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;);<br />
             </code><code></code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#666666">//
             set the Quaqua Look and Feel in the UIManager.<br />
             </font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; UIManager.setLookAndFeel(<br />
-            </code><code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel&quot;<br />
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </code><code>);<br />
+            </code><code>&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel();<br />
+            </code><code>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; </code><code>);<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; } <strong>catch</strong> (Exception
-e) {<br />
+            e) {<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#666666">//
-take an appropriate action here</font><br />
+    take an appropriate action here</font><br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; }<br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <font color="#666666">// insert
-your application initialization code here</font><br />
+    your application initialization code here</font><br />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; ...<br />
 &nbsp;&nbsp;&nbsp;&nbsp; }<br />
-        }</code></p>
+      }</code></p>
       </td>
     </tr>
   </table>
-  <p>&nbsp;</p>
+  <p>Alternatively, Quaqua can be set in the UIManager using a class name String. This should be avoided, because the class name may change due to incompatible changes in the Java API.</p>
+  <ul>
+    <li>For J2SE6 the class name is &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel&quot;. </li>
+    <li>For J2SE5 the class name is &quot;ch.randelshofer.quaqua.QuaquaLookAndFeel15&quot;. </li>
+  </ul>
   <p class="semiparagraph">Quaqua can be customized using <a href="system_properties.html">System
     properties</a> and <a href="images">UIManager properties</a>  and <a href="client_properties.html">Client
     properties</a>.
