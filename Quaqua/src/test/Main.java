@@ -20,8 +20,6 @@ import java.awt.event.ActionListener;
 import java.security.AccessControlException;
 import java.util.Arrays;
 import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.*;
@@ -169,7 +167,7 @@ public class Main extends javax.swing.JPanel {
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
                 f.setSize(740, 480);
-                long packEnd = System.currentTimeMillis();
+                ///long packEnd = System.currentTimeMillis();
                 f.setVisible(true);
                 long end = System.currentTimeMillis();
                 System.out.println("QuaquaTest EDT latency=" + (edtEnd - start));

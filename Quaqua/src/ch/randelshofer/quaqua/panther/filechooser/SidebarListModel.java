@@ -113,7 +113,6 @@ public class SidebarListModel
     private HashMap systemItemsMap = new HashMap();
 
     private static class SystemItemInfo {
-
         String name = "";
         int sequenceNumber = 0;
         boolean isVisible = true;
@@ -520,8 +519,8 @@ public class SidebarListModel
             throw new IOException("Unable to work with aliases");
         }
 
-        HashMap systemItemsMap = new HashMap();
-        ArrayList userItems = new ArrayList();
+        HashMap sysItemsMap = new HashMap();
+        ArrayList usrItems = new ArrayList();
 
         FileReader reader = null;
         try {
@@ -562,7 +561,7 @@ public class SidebarListModel
                                                 key5 = xml5.getContent();
                                             }
 
-                                            info.sequenceNumber = systemItemsMap.size();
+                                            info.sequenceNumber = sysItemsMap.size();
                                             if (xml5.getName().equals("string") && key5.equals("Name")) {
                                                 info.name = xml5.getContent();
                                             }
@@ -571,7 +570,7 @@ public class SidebarListModel
                                             }
                                         }
                                         if (info.name != null) {
-                                            systemItemsMap.put(info.name, info);
+                                            sysItemsMap.put(info.name, info);
                                         }
                                     }
                                 }
@@ -602,9 +601,9 @@ public class SidebarListModel
                                     // Try to resolve the alias without user interaction
                                     File f = OSXFile.resolveAlias(serializedAlias, true);
                                     if (f != null) {
-                                        userItems.add(new FileItem(f));
+                                        usrItems.add(new FileItem(f));
                                     } else {
-                                        userItems.add(new AliasItem(serializedAlias, aliasName));
+                                        usrItems.add(new AliasItem(serializedAlias, aliasName));
                                     }
                                 }
                             }
@@ -617,7 +616,7 @@ public class SidebarListModel
                 reader.close();
             }
         }
-        return new Object[]{systemItemsMap, userItems};
+        return new Object[]{sysItemsMap, usrItems};
     }
 
     // Helper classes

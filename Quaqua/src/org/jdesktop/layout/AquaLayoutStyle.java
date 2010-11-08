@@ -423,7 +423,6 @@ class AquaLayoutStyle extends LayoutStyle {
                 if (subindex == -1) {
                     ComponentInsets componentInsets = (ComponentInsets)map.get(key);
                     if (componentInsets == null) {
-                        componentInsets = new ComponentInsets(values);
                         map.put(key, new ComponentInsets(values));
                     } else {
                         //assert (componentInsets.getInsets() == null);

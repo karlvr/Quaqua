@@ -815,16 +815,16 @@ public class QuaquaSpinnerUI extends BasicSpinnerUI implements VisuallyLayoutabl
                 Object ui = Methods.invokeGetter(editor, "getUI", null);
                 Insets insets = spinner.getInsets();
                 int editorHeight = height - (insets.top + insets.bottom);
-                int editorX, editorWidth;
+                int editorWidth;
                 Dimension nextD = getNextButton().getPreferredSize();
                 Dimension previousD = getPreviousButton().getPreferredSize();
                 int buttonsWidth = Math.max(nextD.width, previousD.width);
                 Insets buttonInsets = new Insets(0,0,0,0); // XXX - BAD VALUES
                 if (spinner.getComponentOrientation().isLeftToRight()) {
-                    editorX = insets.left;
+                    ///int editorX = insets.left;
                     editorWidth = width - insets.left - buttonsWidth - buttonInsets.right;
                 } else {
-                    editorX = buttonInsets.left + buttonsWidth;
+                    //int editorX = buttonInsets.left + buttonsWidth;
                     editorWidth = width - buttonInsets.left - buttonsWidth - insets.right;
                 }
                 

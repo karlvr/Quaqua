@@ -44,7 +44,6 @@ public class SplitPaneTest extends javax.swing.JPanel {
         // Launch the test program
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                long edtEnd = System.currentTimeMillis();
                 int index = argList.indexOf("-laf");
                 if (index != -1 && index < argList.size() - 1) {
                     try {
