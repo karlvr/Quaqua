@@ -119,8 +119,8 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
             drawDimple = true;
         } else {
             dimple = UIManager.getIcon("SplitPane.barDimple");
-            drawDimple = size.width >= dimple.getIconWidth() &&
-                    size.height >= dimple.getIconHeight();
+            drawDimple = size.width >= dimple.getIconWidth()
+                    && size.height >= dimple.getIconHeight();
         }
 
         if (drawDimple) {
@@ -198,22 +198,20 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
     protected class QuaquaDividerLayout implements LayoutManager {
 
         public void layoutContainer(Container c) {
-            if (leftButton != null && rightButton != null &&
-                    c == QuaquaSplitPaneDivider.this) {
+            if (leftButton != null && rightButton != null
+                    && c == QuaquaSplitPaneDivider.this) {
                 if (splitPane.isOneTouchExpandable()) {
                     Insets insets = c.getInsets();
 
                     if (orientation == JSplitPane.VERTICAL_SPLIT) {
                         //int extraX = (insets != null) ? insets.left : 0;
                         int blockSize = getHeight();
-                        if (insets != null) {
-                            blockSize -= (insets.top + insets.bottom);
-                            blockSize = Math.max(blockSize, 0);
-                        }
+                        blockSize -= (insets.top + insets.bottom);
+                        blockSize = Math.max(blockSize, 0);
                         blockSize = Math.min(blockSize, ONE_TOUCH_SIZE_);
-                        int extraX = c.getSize().width -
-                                ((insets != null) ? insets.right : 0) -
-                                ONE_TOUCH_OFFSET_ - blockSize * 4;
+                        int extraX = c.getSize().width
+                                - insets.right
+                                - ONE_TOUCH_OFFSET_ - blockSize * 4;
 
                         int y = (c.getSize().height - blockSize) / 2;
 
@@ -224,14 +222,12 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                     } else {
                         //int extraY = (insets != null) ? insets.top : 0;
                         int blockSize = getWidth();
-                        if (insets != null) {
-                            blockSize -= (insets.left + insets.right);
-                            blockSize = Math.max(blockSize, 0);
-                        }
+                        blockSize -= (insets.left + insets.right);
+                        blockSize = Math.max(blockSize, 0);
                         blockSize = Math.min(blockSize, ONE_TOUCH_SIZE_);
-                        int extraY = c.getSize().height -
-                                ((insets != null) ? insets.bottom : 0) -
-                                ONE_TOUCH_OFFSET_ - blockSize * 4;
+                        int extraY = c.getSize().height
+                                - insets.bottom
+                                - ONE_TOUCH_OFFSET_ - blockSize * 4;
 
                         int x = (c.getSize().width - blockSize) / 2;
 
@@ -342,31 +338,31 @@ public class QuaquaSplitPaneDivider extends BasicSplitPaneDivider {
                 int minLoc, maxLoc;
                 if (isHorizontal) {
                     if (leftC.isVisible()) {
-                        minLoc = leftC.getMinimumSize().width +
-                                insets.left;
+                        minLoc = leftC.getMinimumSize().width
+                                + insets.left;
                     } else {
                         minLoc = insets.left;
                     }
                     if (rightC.isVisible()) {
-                        maxLoc = splitPane.getWidth() -
-                                rightC.getMinimumSize().width -
-                                insets.right -
-                                getSize().width;
+                        maxLoc = splitPane.getWidth()
+                                - rightC.getMinimumSize().width
+                                - insets.right
+                                - getSize().width;
                     } else {
                         maxLoc = splitPane.getWidth() - insets.right;
                     }
                 } else {
                     if (leftC.isVisible()) {
-                        minLoc = leftC.getMinimumSize().height +
-                                insets.top;
+                        minLoc = leftC.getMinimumSize().height
+                                + insets.top;
                     } else {
                         minLoc = insets.top;
                     }
                     if (rightC.isVisible()) {
-                        maxLoc = splitPane.getHeight() -
-                                rightC.getMinimumSize().height -
-                                insets.bottom -
-                                getSize().height;
+                        maxLoc = splitPane.getHeight()
+                                - rightC.getMinimumSize().height
+                                - insets.bottom
+                                - getSize().height;
                     } else {
                         maxLoc = splitPane.getHeight() - insets.bottom;
                     }
