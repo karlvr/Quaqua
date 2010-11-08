@@ -41,6 +41,7 @@ public class QuaquaBaseline extends Baseline {
      * @param height Height of the component to determine baseline for.
      * @return baseline for the specified component
      */
+    @Override
     public int getComponentBaseline(JComponent component, int width, int height) {
         int baseline = getBaselineFromUI(component, width, height);
         return baseline;
@@ -55,7 +56,7 @@ public class QuaquaBaseline extends Baseline {
             }
         } catch (Exception e) {
             InternalError error = new InternalError();
-            //error.initCause(e);
+            error.initCause(e);
             throw error;
         }
         return -1;
