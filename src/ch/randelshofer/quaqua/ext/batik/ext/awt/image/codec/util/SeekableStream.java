@@ -98,7 +98,7 @@ public abstract class SeekableStream extends InputStream implements DataInput {
      * @param canSeekBackwards <code>true</code> if the ability to seek
      *        backwards in the output is required.
      * @return An instance of <code>SeekableStream</code>.
-     */
+     * /
     public static SeekableStream wrapInputStream(InputStream is,
                                                  boolean canSeekBackwards) {
         SeekableStream stream = null;
@@ -113,7 +113,7 @@ public abstract class SeekableStream extends InputStream implements DataInput {
             stream = new ForwardSeekableStream(is);
         }
         return stream;
-    }
+    }*/
 
     // Methods from InputStream
 
