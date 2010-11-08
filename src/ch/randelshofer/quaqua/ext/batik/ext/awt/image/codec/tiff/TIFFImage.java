@@ -90,7 +90,7 @@ public class TIFFImage extends AbstractRed {
     char[] colormap;
     int sampleSize;
     int compression;
-    byte[] palette;
+    ///byte[] palette;
     int numBands;
 
     int chromaSubH;
