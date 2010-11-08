@@ -215,9 +215,6 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
             // Suppress mnemonics
             int[] mnemonics = null;
 
-            if (mnemonics != null && mnemonics.length != buttons.length) {
-                mnemonics = null;
-            }
             if (sizeButtonsToSame) {
                 createdButtons = new JButton[numButtons];
             }
@@ -252,9 +249,6 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
                         aButton.addActionListener(buttonListener);
                     }
                     newComponent = aButton;
-                    if (mnemonics != null) {
-                        aButton.setMnemonic(mnemonics[counter]);
-                    }
                 }
                 if (sizeButtonsToSame && createdAll
                         && (newComponent instanceof JButton)) {
