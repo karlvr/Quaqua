@@ -639,8 +639,8 @@ public class Baseline {
                 return getAquaTabbedPaneBaseline(tp, height);
             }
             Insets insets = tp.getInsets();
-            Insets contentBorderInsets = UIManager.getInsets(
-                "TabbedPane.contentBorderInsets");
+            /*Insets contentBorderInsets = UIManager.getInsets(
+                "TabbedPane.contentBorderInsets");*/
             Insets tabAreaInsets = rotateInsets(UIManager.getInsets(
                                                  "TabbedPane.tabAreaInsets"),
                                                 tp.getTabPlacement());
@@ -803,7 +803,7 @@ public class Baseline {
                     int trackHeight = height - focusInsets.top -
                         focusInsets.bottom - insets.top - insets.bottom -
                         trackBuffer - trackBuffer;
-                    int maxValue = getMaxSliderValue(slider).intValue();
+                    ///int maxValue = getMaxSliderValue(slider).intValue();
                     int min = slider.getMinimum();
                     int max = slider.getMaximum();
                     double valueRange = (double)max - (double)min;
@@ -938,7 +938,7 @@ public class Baseline {
         int rowMargin = table.getRowMargin();
         int baseline = getLabelBaseline(label, table.getRowHeight() -
                                         rowMargin);
-        return baseline += rowMargin / 2;
+        return baseline + rowMargin / 2;
     }
 
     private static int getTextAreaBaseline(JTextArea text, int height) {

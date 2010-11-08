@@ -158,7 +158,7 @@ class AquaBaseline extends Baseline {
                 }
             }
         }
-        Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
+        ///Insets tabInsets = UIManager.getInsets("TabbedPane.tabInsets");
         height += 2;
         /*
         if (!isMetal() || !tallerIcons) {
@@ -170,8 +170,8 @@ class AquaBaseline extends Baseline {
     private int getTabbedPaneBaseline(JTabbedPane tp, int height) {
         if (tp.getTabCount() > 0) {
             Insets insets = tp.getInsets();
-            Insets contentBorderInsets = UIManager.getInsets(
-                "TabbedPane.contentBorderInsets");
+            /*Insets contentBorderInsets = UIManager.getInsets(
+                "TabbedPane.contentBorderInsets");*/
             Insets tabAreaInsets = rotateInsets(UIManager.getInsets(
                                                  "TabbedPane.tabAreaInsets"),
                                                 tp.getTabPlacement());
@@ -288,7 +288,7 @@ class AquaBaseline extends Baseline {
                     int trackHeight = height - focusInsets.top -
                         focusInsets.bottom - insets.top - insets.bottom -
                         trackBuffer - trackBuffer;
-                    int maxValue = getMaxSliderValue(slider).intValue();
+                    ///int maxValue = getMaxSliderValue(slider).intValue();
                     int min = slider.getMinimum();
                     int max = slider.getMaximum();
                     double valueRange = (double)max - (double)min;
@@ -404,7 +404,7 @@ class AquaBaseline extends Baseline {
         int rowMargin = table.getRowMargin();
         int baseline = getLabelBaseline(label, table.getRowHeight() -
                                         rowMargin);
-        return baseline += rowMargin / 2;
+        return baseline + rowMargin / 2;
     }
 
     private int getTextAreaBaseline(JTextArea text, int height) {

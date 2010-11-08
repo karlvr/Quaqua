@@ -121,7 +121,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(dateLabel, gridBagConstraints);
 
-        integerField.setValue(new Integer(42));
+        integerField.setValue(42);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;

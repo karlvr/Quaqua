@@ -472,7 +472,6 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         } else if (comboBox.isEditable()
                 && arrowButton != null
                 && editor != null) {
-            QuaquaComboBoxButton button = (QuaquaComboBoxButton) arrowButton;
             Insets buttonInsets;
             Insets insets = comboBox.getInsets();
             Insets margin = getMargin();

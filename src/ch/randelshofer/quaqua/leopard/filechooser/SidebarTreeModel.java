@@ -188,7 +188,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                     }
 
                     private void update(ArrayList freshUserItems) {
-                        int systemItemsSize = model.getChildCount(volumesPath.getLastPathComponent());
                         int oldUserItemsSize = placesNode.getChildCount();
                         if (oldUserItemsSize > 0) {
                             int[] removedIndices = new int[oldUserItemsSize];
