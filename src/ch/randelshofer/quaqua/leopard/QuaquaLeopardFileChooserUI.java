@@ -54,15 +54,15 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     // Labels, mnemonics, and tooltips (oh my!)
     private int fileNameLabelMnemonic = 0;
     private String fileNameLabelText = null;
-    private int filesOfTypeLabelMnemonic = 0;
-    private String filesOfTypeLabelText = null;
-    private String upFolderToolTipText = null;
-    private String upFolderAccessibleName = null;
-    private String homeFolderToolTipText = null;
-    private String homeFolderAccessibleName = null;
+    ///private int filesOfTypeLabelMnemonic = 0;
+    ///private String filesOfTypeLabelText = null;
+    ///private String upFolderToolTipText = null;
+    ///private String upFolderAccessibleName = null;
+    ///private String homeFolderToolTipText = null;
+    ///private String homeFolderAccessibleName = null;
     private String newFolderButtonText = null;
     private String newFolderToolTipText = null;
-    private String newFolderAccessibleName = null;
+    ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
     private final static File computer = FileSystemTreeModel.COMPUTER;
@@ -192,7 +192,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     //private javax.swing.JTable table;
     //private javax.swing.JScrollPane tableScrollPane;
     //private javax.swing.JToggleButton tableToggleButton;
-    private javax.swing.ButtonGroup viewGroup;
+    ///private javax.swing.ButtonGroup viewGroup;
     private javax.swing.JPanel viewsPanel;
     private javax.swing.JTree sidebarTree;
     private javax.swing.JScrollPane sidebarScrollPane;
@@ -224,7 +224,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         // Form definition  - do not modify
         java.awt.GridBagConstraints gridBagConstraints;
 
-        viewGroup = new javax.swing.ButtonGroup();
+        ///viewGroup = new javax.swing.ButtonGroup();
         fileNamePanel = new javax.swing.JPanel();
         fileNameLabel = new javax.swing.JLabel();
         fileNameTextField = new javax.swing.JTextField();
@@ -756,23 +756,17 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         // XXX - Localize "Save as:" text.
         //if (fileNameLabelText == null || fileNameLabelText.charAt(fileNameLabelText.length() -1) != ':') fileNameLabelText = "Save as:";
 
-        filesOfTypeLabelMnemonic = UIManager.getInt("FileChooser.filesOfTypeLabelMnemonic");
-        filesOfTypeLabelText = UIManager.getString("FileChooser.filesOfTypeLabelText"/*,l*/);
+        ///filesOfTypeLabelMnemonic = UIManager.getInt("FileChooser.filesOfTypeLabelMnemonic");
+        ///filesOfTypeLabelText = UIManager.getString("FileChooser.filesOfTypeLabelText"/*,l*/);
 
-        upFolderToolTipText = UIManager.getString("FileChooser.upFolderToolTipText"/*,l*/);
-        upFolderAccessibleName = UIManager.getString("FileChooser.upFolderAccessibleName"/*,l*/);
+        ///upFolderToolTipText = UIManager.getString("FileChooser.upFolderToolTipText"/*,l*/);
+        ///upFolderAccessibleName = UIManager.getString("FileChooser.upFolderAccessibleName"/*,l*/);
 
-        homeFolderToolTipText = UIManager.getString("FileChooser.homeFolderToolTipText"/*,l*/);
-        homeFolderAccessibleName = UIManager.getString("FileChooser.homeFolderAccessibleName"/*,l*/);
+        ///homeFolderToolTipText = UIManager.getString("FileChooser.homeFolderToolTipText"/*,l*/);
+        ///homeFolderAccessibleName = UIManager.getString("FileChooser.homeFolderAccessibleName"/*,l*/);
 
         cancelButtonText = UIManager.getString("FileChooser.cancelButtonText"/*,l*/);
         cancelButtonToolTipText = UIManager.getString("FileChooser.cancelToolTipText"/*,l*/);
-
-        newFolderButtonText = UIManager.getString("FileChooser.newFolderButtonText"/*,l*/);
-        newFolderAccessibleName = UIManager.getString("FileChooser.newFolderAccessibleName"/*,l*/);
-
-        newFolderToolTipText = UIManager.getString("FileChooser.newFolderToolTipText"/*,l*/);
-        newFolderAccessibleName = UIManager.getString("FileChooser.newFolderAccessibleName"/*,l*/);
 
         // New Folder Dialog
         newFolderErrorText = getString("FileChooser.newFolderErrorText", l, "Error occured during folder creation");
@@ -783,7 +777,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         newFolderDialogPrompt = getString("FileChooser.newFolderPromptText", l, "Name of new folder:");
         newFolderDefaultName = getString("FileChooser.untitledFolderName", l, "untitled folder");
         newFolderToolTipText = UIManager.getString("FileChooser.newFolderToolTipText"/*, l*/);
-        newFolderAccessibleName = getString("FileChooser.newFolderAccessibleName", l, newFolderTitleText);
+        ///newFolderAccessibleName = getString("FileChooser.newFolderAccessibleName", l, newFolderTitleText);
     }
 
     /**

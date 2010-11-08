@@ -61,16 +61,19 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
     private String saveInLabelText = null;
     private int fileNameLabelMnemonic = 0;
     private String fileNameLabelText = null;
-    private int filesOfTypeLabelMnemonic = 0;
-    private String filesOfTypeLabelText = null;
-    private String upFolderToolTipText = null;
-    private String upFolderAccessibleName = null;
-    private String homeFolderToolTipText = null;
-    private String homeFolderAccessibleName = null;
+    ///private int filesOfTypeLabelMnemonic = 0;
+    ///private String filesOfTypeLabelText = null;
+    ///private String upFolderToolTipText = null;
+    ///private String upFolderAccessibleName = null;
+    ///private String homeFolderToolTipText = null;
+    ///private String homeFolderAccessibleName = null;
     private String newFolderToolTipText = null;
-    private String newFolderAccessibleName = null;
+    ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
-    private String newFolderDialogPrompt,  newFolderDefaultName,  newFolderErrorText,  newFolderExistsErrorText,  newFolderButtonText,  newFolderTitleText;
+    private String newFolderDialogPrompt,  newFolderDefaultName,  newFolderErrorText,  newFolderExistsErrorText;
+    ///private String newFolderButtonText;
+    private String newFolderTitleText;
+
     /**
      * This listener is used to determine whether the JFileChooser is showing.
      */
@@ -518,28 +521,25 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
         // XXX - Localize "Save as:" text.
         //if (fileNameLabelText == null || fileNameLabelText.charAt(fileNameLabelText.length() -1) != ':') fileNameLabelText = "Save as:";
 
-        filesOfTypeLabelMnemonic = UIManager.getInt("FileChooser.filesOfTypeLabelMnemonic");
-        filesOfTypeLabelText = UIManager.getString("FileChooser.filesOfTypeLabelText"/*,l*/);
+        ///filesOfTypeLabelMnemonic = UIManager.getInt("FileChooser.filesOfTypeLabelMnemonic");
+        ///filesOfTypeLabelText = UIManager.getString("FileChooser.filesOfTypeLabelText"/*,l*/);
 
-        upFolderToolTipText = UIManager.getString("FileChooser.upFolderToolTipText"/*,l*/);
-        upFolderAccessibleName = UIManager.getString("FileChooser.upFolderAccessibleName"/*,l*/);
+        ///upFolderToolTipText = UIManager.getString("FileChooser.upFolderToolTipText"/*,l*/);
+        ///upFolderAccessibleName = UIManager.getString("FileChooser.upFolderAccessibleName"/*,l*/);
 
-        homeFolderToolTipText = UIManager.getString("FileChooser.homeFolderToolTipText"/*,l*/);
-        homeFolderAccessibleName = UIManager.getString("FileChooser.homeFolderAccessibleName"/*,l*/);
-
-        newFolderToolTipText = UIManager.getString("FileChooser.newFolderToolTipText"/*,l*/);
-        newFolderAccessibleName = UIManager.getString("FileChooser.newFolderAccessibleName"/*,l*/);
+        ///homeFolderToolTipText = UIManager.getString("FileChooser.homeFolderToolTipText"/*,l*/);
+        ///homeFolderAccessibleName = UIManager.getString("FileChooser.homeFolderAccessibleName"/*,l*/);
 
         // New Folder Dialog
         newFolderErrorText = getString("FileChooser.newFolderErrorText", l, "Error occured during folder creation");
         newFolderExistsErrorText = getString("FileChooser.newFolderExistsErrorText", l, "That name is already taken");
-        newFolderButtonText = getString("FileChooser.newFolderButtonText", l, "New");
+        ///newFolderButtonText = getString("FileChooser.newFolderButtonText", l, "New");
         newFolderTitleText = getString("FileChooser.newFolderTitleText", l, "New Folder");
         newFolderDialogPrompt = getString("FileChooser.newFolderPromptText", l, "Name of new folder:");
         newFolderDefaultName = getString("FileChooser.untitledFolderName", l, "untitled folder");
         newFolderTitleText = UIManager.getString("FileChooser.newFolderTitleText"/*, l*/);
         newFolderToolTipText = UIManager.getString("FileChooser.newFolderToolTipText"/*, l*/);
-        newFolderAccessibleName = getString("FileChooser.newFolderAccessibleName", l, newFolderTitleText);
+        ///newFolderAccessibleName = getString("FileChooser.newFolderAccessibleName", l, newFolderTitleText);
     }
 
     /**
