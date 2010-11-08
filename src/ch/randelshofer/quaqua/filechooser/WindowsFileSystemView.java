@@ -48,6 +48,10 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
         return volumesFolder;
     }
 
+    public File getDesktop() {
+        return desktop;
+    }
+
     /**
      * Returns all root partitions on this system. For example, on
      * Windows, this would be the "Desktop" folder, while on DOS this

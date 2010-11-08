@@ -54,7 +54,6 @@ public class QuaquaIconFactory {
         private HashSet repaintMe = new HashSet();
 
         public LazyOptionPaneIcon(final int messageType) {
-            this.messageType = messageType;
             worker = new Worker<ImageIcon>() {
 
                 public ImageIcon construct() {

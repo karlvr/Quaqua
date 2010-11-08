@@ -33,12 +33,11 @@ import javax.swing.plaf.basic.*;
 public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient {
     // BasicMenuUI also uses this.
     //Handler handler;
-    private int lastMnemonic = 0;
-    private static boolean crossMenuMnemonic = true;
 
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaMenuUI();
     }
+    @Override
     protected void installDefaults() {
         super.installDefaults();
 	QuaquaUtilities.installProperty(menuItem, "opaque", Boolean.TRUE);
@@ -53,6 +52,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
 	return getHandler();
     }
     */
+    @Override
     protected void paintMenuItem(Graphics g, JComponent c,
     Icon checkIcon, Icon arrowIcon, Color background,
     Color foreground, int defaultTextIconGap) {
@@ -63,6 +63,7 @@ public class QuaquaMenuUI extends BasicMenuUI implements QuaquaMenuPainterClient
         acceleratorFont);
     }
     
+    @Override
     protected Dimension getPreferredMenuItemSize(JComponent c,
     Icon checkIcon,
     Icon arrowIcon,
