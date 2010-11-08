@@ -1030,7 +1030,6 @@ public class JSheet extends JDialog {
         sheet.addWindowListener(new WindowAdapter() {
 
             private boolean gotFocus = false;
-            int count;
 
             @Override
             public void windowClosing(WindowEvent we) {

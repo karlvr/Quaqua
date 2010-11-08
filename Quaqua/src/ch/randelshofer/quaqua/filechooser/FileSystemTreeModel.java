@@ -1137,11 +1137,6 @@ public class FileSystemTreeModel implements TreeModel {
      * This is the implementation for a directory node (a composite node).
      */
     public class DirectoryNode extends Node {
-
-        /**
-         * The time when we are going to refresh our children.
-         */
-        private volatile long cacheInvalidationTime;
         /**
          * This is used to keep track of child validation.
          */

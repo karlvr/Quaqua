@@ -31,7 +31,6 @@ public class Debug {
     private Debug() {
     }
     static int rainbow=0;
-    static AWTEvent previousEvent;
     /**
      * This method is called from UI delegates at the end of its paint method.
      */
