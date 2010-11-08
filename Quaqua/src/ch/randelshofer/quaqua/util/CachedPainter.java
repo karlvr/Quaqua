@@ -38,6 +38,7 @@ import java.util.*;
  */
 public abstract class CachedPainter {
     // CacheMap maps from class to Cache.
+
     private static final Map cacheMap = new HashMap();
 
     private static Cache getCache(Object key) {
@@ -117,11 +118,11 @@ public abstract class CachedPainter {
             // Render to the passed in Graphics
             paintImage(c, g, x, y, w, h, image, args);
 
-        // If we did this 3 times and the contents are still lost
-        // assume we're painting to a VolatileImage that is bogus and
-        // give up.  Presumably we'll be called again to paint.
-        } while ((image instanceof VolatileImage) &&
-                ((VolatileImage) image).contentsLost() && ++attempts < 3);
+            // If we did this 3 times and the contents are still lost
+            // assume we're painting to a VolatileImage that is bogus and
+            // give up.  Presumably we'll be called again to paint.
+        } while ((image instanceof VolatileImage)
+                && ((VolatileImage) image).contentsLost() && ++attempts < 3);
     }
 
     /**
@@ -178,6 +179,7 @@ public abstract class CachedPainter {
      */
     private static class Cache {
         // Maximum number of entries to cache
+
         private int maxCount;
         // The entries.
         private java.util.List entries;
@@ -259,30 +261,32 @@ public abstract class CachedPainter {
                 return image;
             }
 
+            @Override
             public String toString() {
-                String value = super.toString() +
-                        "[ graphicsConfig=" + config +
-                        ", image=" + image +
-                        ", w=" + w + ", h=" + h;
+                StringBuilder value = new StringBuilder(super.toString()
+                        + "[ graphicsConfig=" + config
+                        + ", image=" + image
+                        + ", w=" + w + ", h=" + h);
                 if (args != null) {
                     for (int counter = 0; counter < args.length; counter++) {
-                        value += ", " + args[counter];
+                        value.append(", ");
+                        value.append(args[counter]);
                     }
                 }
-                value += "]";
-                return value;
+                value.append("]");
+                return value.toString();
             }
 
             public boolean equals(GraphicsConfiguration config, int w, int h,
                     Object[] args) {
-                if (this.w == w && this.h == h &&
-                        ((this.config != null && this.config.equals(config)) ||
-                        (this.config == null && config == null))) {
+                if (this.w == w && this.h == h
+                        && ((this.config != null && this.config.equals(config))
+                        || (this.config == null && config == null))) {
                     if (this.args == null && args == null) {
                         return true;
                     }
-                    if (this.args != null && args != null &&
-                            this.args.length == args.length) {
+                    if (this.args != null && args != null
+                            && this.args.length == args.length) {
                         for (int counter = args.length - 1; counter >= 0;
                                 counter--) {
                             if (!this.args[counter].equals(args[counter])) {

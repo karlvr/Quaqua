@@ -285,7 +285,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         Object[] options = { "Review Changes...", "Cancel", "Discard Changes" };
         pane.setOptions(options);
         pane.setInitialValue(options[0]);
-        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", new Integer(2));
+        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
         JDialog dialog = pane.createDialog(this, "On this alert, \"Review Changes\" should be the default action.");
         dialog.setVisible(true);
         analyzeValue(pane.getValue());
@@ -310,7 +310,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
                 JOptionPane.WARNING_MESSAGE
                 );
         Object[] options = { "Save", "Cancel", "Don't Save" };
-        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", new Integer(2));
+        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
         pane.setOptions(options);
         pane.setInitialValue(options[0]);
         JDialog dialog = pane.createDialog(this, "On this alert, \"Save\" should be the default action.");

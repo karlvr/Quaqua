@@ -196,7 +196,7 @@ private JFileChooser saveFile;
         Object[] options = { "Save", "Cancel", "Don't Save" };
         pane.setOptions(options);
         pane.setInitialValue(options[0]);
-        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", new Integer(2));
+        pane.putClientProperty("Quaqua.OptionPane.destructiveOption", 2);
         JSheet.showSheet(pane, this, new SheetListener() {
             public void optionSelected(SheetEvent evt) {
                 analyzeValue(evt.getValue());
