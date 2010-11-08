@@ -502,8 +502,8 @@ public class Baseline {
         int baseline = -1;
         try {
             baseline = ((Integer)method.invoke(c,
-                    new Object[] { new Integer(width),
-                            new Integer(height) })).intValue();
+                    new Object[] { width,
+                            height })).intValue();
         } catch (IllegalAccessException iae) {
         } catch (IllegalArgumentException iae2) {
         } catch (InvocationTargetException ite2) {
@@ -854,7 +854,7 @@ public class Baseline {
             if (max == slider.getMinimum() - 1) {
                 return null;
             }
-            return new Integer(max);
+            return max;
         }
         return null;
     }
@@ -870,7 +870,7 @@ public class Baseline {
             if (min == slider.getMaximum() + 1) {
                 return null;
             }
-            return new Integer(min);
+            return min;
         }
         return null;
     }

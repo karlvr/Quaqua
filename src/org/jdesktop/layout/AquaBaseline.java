@@ -328,7 +328,7 @@ class AquaBaseline extends Baseline {
             if (max == slider.getMinimum() - 1) {
                 return null;
             }
-            return new Integer(max);
+            return max;
         }
         return null;
     }
@@ -344,7 +344,7 @@ class AquaBaseline extends Baseline {
             if (min == slider.getMaximum() + 1) {
                 return null;
             }
-            return new Integer(min);
+            return min;
         }
         return null;
     }

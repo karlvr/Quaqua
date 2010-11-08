@@ -13,7 +13,6 @@
 
 package test;
 
-import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 /**
@@ -55,7 +54,7 @@ public class RootPaneTest extends javax.swing.JPanel {
     private void windowModifiedChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_windowModifiedChanged
        JRootPane rootPane = SwingUtilities.getRootPane(this);
        if (rootPane != null) {
-           rootPane.putClientProperty("windowModified", new Boolean(evt.getStateChange() == ItemEvent.SELECTED));
+           rootPane.putClientProperty("windowModified", evt.getStateChange() == ItemEvent.SELECTED);
        }        
     }//GEN-LAST:event_windowModifiedChanged
     

@@ -34,7 +34,7 @@ public class ScrollPaneTest extends javax.swing.JPanel {
         
         DefaultListModel lm = new DefaultListModel();
         for (int i=1; i <= 100; i++) {
-        lm.addElement(new Integer(i));
+        lm.addElement(i);
         }
         jList1.setModel(lm);
         

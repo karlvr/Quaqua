@@ -93,7 +93,7 @@ class SwingLayoutStyle extends LayoutStyle {
         try {
             return ((Integer)SWING_GET_PREFERRED_GAP_METHOD.invoke(layoutStyle,
                     new Object[] { component1, component2, componentPlacement,
-                    new Integer(position), parent })).intValue();
+                    position, parent })).intValue();
         } catch (IllegalAccessException iae) {
         } catch (InvocationTargetException ite) {
         }
@@ -106,7 +106,7 @@ class SwingLayoutStyle extends LayoutStyle {
         Object layoutStyle = getSwingLayoutStyle();
         try {
             return ((Integer)SWING_GET_CONTAINER_GAP_METHOD.invoke(layoutStyle,
-                    new Object[] { component, new Integer(position),
+                    new Object[] { component, position,
                     parent })).intValue();
         } catch (IllegalAccessException iae) {
         } catch (InvocationTargetException ite) {
