@@ -50,7 +50,7 @@ public class Crayons extends javax.swing.JPanel {
     /**
      * Crayon.
      */
-    private class Crayon {
+    private static class Crayon {
         Polygon shape;
         Color color;
         String name;

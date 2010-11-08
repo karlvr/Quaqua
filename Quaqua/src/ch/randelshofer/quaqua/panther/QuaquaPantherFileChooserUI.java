@@ -1399,7 +1399,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     //
     // Renderer for DirectoryComboBox
     //
-    class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
+    static class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
 
         IndentIcon ii = new IndentIcon();
         private Border border = new EmptyBorder(1, 0, 1, 0);
