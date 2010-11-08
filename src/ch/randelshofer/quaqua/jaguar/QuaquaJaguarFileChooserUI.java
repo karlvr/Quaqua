@@ -28,6 +28,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -1525,7 +1526,11 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
                 }
 
                 try {
-                    newFolder.mkdir();
+                    if (! newFolder.mkdir()) {
+                        if (! newFolder.isDirectory()) {
+                            throw new IOException("Couldn't create folder \""+newFolder.getName()+"\".");
+                        }
+                    }
                     fc.rescanCurrentDirectory();
                     if (fc.isMultiSelectionEnabled()) {
                         fc.setSelectedFiles(new File[]{newFolder});

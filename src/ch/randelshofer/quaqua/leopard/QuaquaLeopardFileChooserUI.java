@@ -30,6 +30,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.beans.*;
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 
 /**
@@ -1977,7 +1978,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 }
 
                 try {
-                    newFolder.mkdir();
+                    if (! newFolder.mkdir()) {
+                        if (! newFolder.isDirectory()) {
+                            throw new IOException("Couldn't create folder \""+newFolder.getName()+"\".");
+                        }
+                    }
                     fc.rescanCurrentDirectory();
                     fc.setCurrentDirectory(newFolder);
                     if (fc.isMultiSelectionEnabled()) {
