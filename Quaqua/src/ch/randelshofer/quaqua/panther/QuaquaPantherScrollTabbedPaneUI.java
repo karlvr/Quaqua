@@ -884,7 +884,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         int want = (useX) ? x : y;
 
         while (min != max) {
-            int current = (max + min) >>> 1; // Compute average avoiding overflow
+            int current = (max + min) >>> 1; // Compute average without overflow
             int minLoc;
             int maxLoc;
 
