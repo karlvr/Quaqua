@@ -16,10 +16,8 @@
 package test;
 
 import java.awt.*;
-import java.io.*;
 import javax.swing.*;
 import javax.swing.table.*;
-import javax.swing.tree.*;
 import javax.swing.border.*;
 /**
  * DefaultCellRenderer.
@@ -36,7 +34,7 @@ public class DefaultCellRenderer implements TableCellRenderer, ListCellRenderer 
      * <code>CellEditor</code>.
      */
     protected RenderDelegate delegate;
-    protected static Border noFocusBorder = new EmptyBorder(1, 1, 1, 1); 
+    protected static final Border noFocusBorder = new EmptyBorder(1, 1, 1, 1);
     
     /**
      * Constructs a <code>DefaultCellRenderer</code> that uses a text field.

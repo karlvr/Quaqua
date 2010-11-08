@@ -16,7 +16,6 @@ package test;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.border.*;
 /**
  * DesktopPaneTest.
  *
@@ -28,7 +27,7 @@ public class DesktopPaneTest extends javax.swing.JPanel {
     /** Creates new form. */
     public DesktopPaneTest() {
         initComponents();
-        toolFrame.putClientProperty("JInternalFrame.isPalette",Boolean.TRUE);
+        toolFrame.putClientProperty("JInternalFrame.isPalette", true);
     }
     
     /** This method is called from within the constructor to
@@ -420,7 +419,7 @@ System.out.println("Menu Performed "+evt);
     }//GEN-LAST:event_menuPerformed
 
     private void windowModifiedChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_windowModifiedChanged
-        smallInternalFrame.putClientProperty("windowModified", new Boolean(evt.getStateChange() == ItemEvent.SELECTED));
+        smallInternalFrame.putClientProperty("windowModified", evt.getStateChange() == ItemEvent.SELECTED);
     }//GEN-LAST:event_windowModifiedChanged
     
     

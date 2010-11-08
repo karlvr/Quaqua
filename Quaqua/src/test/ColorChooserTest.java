@@ -17,6 +17,7 @@ import java.awt.*;
 import java.awt.event.AWTEventListener;
 import java.awt.event.MouseEvent;
 import java.io.PrintWriter;
+import java.io.Serializable;
 import java.io.StringWriter;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -129,13 +130,14 @@ public class ColorChooserTest extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_dialogActionPerformed
 
+
+
     private void popupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_popupActionPerformed
         if (popupMenu == null) {
             // Create a JPopupMenu which can hold a component which in turn
             // creates JPopupMenus.
             popupMenu = new JPopupMenu() {
-
-                private AWTEventListener mouseGrabber = new AWTEventListener() {
+                 class MouseGrabber implements AWTEventListener, Serializable {
 
                     public void eventDispatched(AWTEvent ev) {
                         if (!(ev instanceof MouseEvent) || !(ev.getSource() instanceof Component)) {
@@ -170,6 +172,8 @@ public class ColorChooserTest extends javax.swing.JPanel {
                         }
                     }
                 };
+
+                private MouseGrabber mouseGrabber = new MouseGrabber();
 
                 @Override
                 public void menuSelectionChanged(boolean isIncluded) {

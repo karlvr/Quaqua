@@ -2031,7 +2031,20 @@ public class GroupLayout implements LayoutManager2 {
         public int compareTo(Object o) {
             return delta - ((SpringDelta)o).delta;
         }
+
+        @Override
+        public boolean equals(Object obj) {
+            return (obj instanceof SpringDelta) //
+                    ? compareTo(obj)==0
+                    : false;
+        }
+
+        @Override
+        public int hashCode() {
+            return this.delta;
+        }
         
+        @Override
         public String toString() {
             return super.toString() + "[index=" + index + ", delta=" +
                     delta + "]";

@@ -948,7 +948,7 @@ public class FileSystemTreeModel implements TreeModel {
                     public void done(Boolean value) {
                         // Fire a TreeNodeChanged only, if validation was
                         // successful, and if we are still part of the tree
-                        if (value == Boolean.TRUE
+                        if (value != null && Boolean.TRUE.equals(value)
                                 && getRoot() == FileSystemTreeModel.this.getRoot()) {
                             fireTreeNodeChanged(Node.this);
                         }

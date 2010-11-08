@@ -170,7 +170,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
                 gr.setComposite(comp);
             }
         } else {
-            Color background = UIManager.getColor("Frame.textured.background");
+            Color background = UIManager.getColor("RootPane.background");
             gr.setPaint(PaintableColor.getPaint(background, c));
             gr.fillRect(0, 0, c.getWidth(), c.getHeight());
         }
@@ -627,7 +627,7 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
             if (window != null) {
                 window.addWindowListener(this);
                 updateWindowModified((JRootPane) evt.getSource());
-                updateComponentTreeUIActivation(ancestor, new Boolean (window.isActive()));
+                updateComponentTreeUIActivation(ancestor, window.isActive());
 
                 if (UIManager.getBoolean("ColorChooser.unifiedTitleBar") &&
                         window.getClass().getName().equals("javax.swing.ColorChooserDialog")) {

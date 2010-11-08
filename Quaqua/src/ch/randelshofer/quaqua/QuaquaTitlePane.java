@@ -452,7 +452,8 @@ public class QuaquaTitlePane extends JComponent {
         if (this.state == state && !updateRegardless) {
             return;
         }
-        boolean isPalette = (Boolean) rootPane.getClientProperty("Quaqua.RootPane.isPalette") == Boolean.TRUE;
+        Object value = rootPane.getClientProperty("Quaqua.RootPane.isPalette");
+        boolean isPalette = value != null && Boolean.TRUE.equals(value);
         Frame frame = getFrame();
 
         if (frame != null && !isPalette) {
@@ -605,7 +606,8 @@ public class QuaquaTitlePane extends JComponent {
 
         boolean leftToRight = (window == null) ? rootPane.getComponentOrientation().isLeftToRight() : window.getComponentOrientation().isLeftToRight();
 
-        boolean isPalette = (Boolean) rootPane.getClientProperty("Quaqua.RootPane.isPalette") == Boolean.TRUE;
+        Object value = rootPane.getClientProperty("Quaqua.RootPane.isPalette");
+        boolean isPalette = value != null && Boolean.TRUE.equals(value);
         boolean isSelected = (window == null) ? false : window.isActive();
         isSelected |= isPalette;
 

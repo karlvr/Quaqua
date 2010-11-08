@@ -61,6 +61,10 @@ public class DefaultTransferable implements Transferable {
 
     /**
      * Creates a new instance using a byte array as the data source.
+     * <p>
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
      */
     public DefaultTransferable(byte[] data, String mimetype, String description) {
             this.data = data;

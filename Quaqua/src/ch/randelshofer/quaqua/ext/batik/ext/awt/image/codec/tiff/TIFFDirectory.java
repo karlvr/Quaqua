@@ -119,7 +119,7 @@ public class TIFFDirectory implements Serializable {
 
             stream.seek(ifd_offset);
             long entries = readUnsignedShort(stream);
-            stream.skip(12*entries);
+            stream.skipFully(12*entries);
 
             ifd_offset = readUnsignedInt(stream);
         }
@@ -389,6 +389,9 @@ public class TIFFDirectory implements Serializable {
     /**
      * Returns an array of TIFFFields containing all the fields
      * in this directory.
+     * <p>
+     * Note: For efficiency reasons this method returns an internally used
+     * array. Do not modify this array.
      */
     public TIFFField[] getFields() {
         return fields;
@@ -594,7 +597,7 @@ public class TIFFDirectory implements Serializable {
 
             stream.seek(offset);
             long entries = readUnsignedShort(stream, isBigEndian);
-            stream.skip(12*entries);
+            stream.skipFully(12*entries);
             offset = readUnsignedInt(stream, isBigEndian);
         }
 

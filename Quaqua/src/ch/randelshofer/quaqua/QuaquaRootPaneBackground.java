@@ -31,6 +31,12 @@ public class QuaquaRootPaneBackground extends PaintableColor {
     private Color[] activeColors;
     private Color[] inactiveColors;
 
+    /**
+     *
+     * Note: For efficiency reasons this method stores the passed in arrays
+     * internally without copying them. Do not modify these arrays after
+     * invoking this method.
+     */
     public QuaquaRootPaneBackground(int plainColor, int[] activeTextureColors, int[] inactiveTextureColors) {
         super(plainColor);
         this.activeColors = new Color[activeTextureColors.length];
@@ -43,6 +49,12 @@ public class QuaquaRootPaneBackground extends PaintableColor {
         }
     }
 
+    /**
+     *
+     * Note: For efficiency reasons this method stores the passed in arrays
+     * internally without copying them. Do not modify these arrays after
+     * invoking this method.
+     */
     public QuaquaRootPaneBackground(Color plainColor, Color[] activeTextureColors, Color[] inactiveTextureColors) {
         //super(0xa7a7a7);
         super(plainColor.getRGB());

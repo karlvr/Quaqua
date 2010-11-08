@@ -33,7 +33,7 @@ import javax.swing.plaf.basic.*;
  */
 public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
-    protected static QuaquaLabelUI labelUI = new QuaquaLabelUI();
+    protected final static QuaquaLabelUI labelUI = new QuaquaLabelUI();
     /* These rectangles/insets are allocated once for this shared LabelUI
      * implementation.  Re-using rectangles rather than allocating
      * them in each getPreferredSize call sped up the method substantially.
@@ -56,6 +56,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         return labelUI;
     }
 
+    @Override
     protected void installDefaults(JLabel b) {
         super.installDefaults(b);
 
@@ -70,6 +71,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         }
     }
 
+    @Override
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
@@ -97,6 +99,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
      * @see #paint
      * @see #paintEnabledText
      */
+    @Override
     protected void paintDisabledText(JLabel l, Graphics g, String s, int textX, int textY) {
         // Make sure we render with the right drawing properties and make sure
         // we can edit them by client properties
@@ -147,6 +150,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 textX, textY);
     }
 
+    @Override
     protected void paintEnabledText(JLabel l, Graphics g, String s, int textX, int textY) {
         int mnemIndex = l.getDisplayedMnemonicIndex();
 
@@ -214,6 +218,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
      *
      * @see SwingUtilities#layoutCompoundLabel
      */
+    @Override
     protected String layoutCL(
             JLabel label,
             FontMetrics fontMetrics,
@@ -237,6 +242,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 label.getIconTextGap());
     }
 
+    @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
         return (vb == null) ? -1 : vb.y + vb.height;
@@ -301,6 +307,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         return rect;
     }
 
+    @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String name = evt.getPropertyName();
 

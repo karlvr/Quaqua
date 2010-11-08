@@ -17,6 +17,7 @@ import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
+import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -59,7 +60,11 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     private Border[] searchBorders;
     private Border[] smallSearchBorders;
     
-    private Border textFieldBackground = new Border() {
+    private static class BgBorder implements Border, Serializable {
+        QuaquaTextFieldBorder outer;
+        public BgBorder(QuaquaTextFieldBorder outer) {
+            this.outer=outer;
+        }
         public Insets getBorderInsets(Component c) {
             return new Insets(0,0,0,0);
         }
@@ -74,7 +79,7 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
             }
             
             g.setColor(c.getBackground());
-            Insets insets = getVisualMargin(c, new Insets(0,0,0,0));
+            Insets insets = outer.getVisualMargin(c, new Insets(0,0,0,0));
             if (isSearchField(c)) {
                 int arc = Math.min(
                         width - insets.left - insets.right - 8,
@@ -97,6 +102,7 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
             }
         }
     };
+    private BgBorder textFieldBackground = new BgBorder(this);
     
     
     /** Creates a new instance. */
@@ -124,6 +130,7 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
         return false;
     }
     
+    @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         insets = getVisualMargin(c, insets);
         Insets inner = isSmall(c) ?
@@ -141,10 +148,12 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
         return insets;
     }
     
+    @Override
     public boolean isBorderOpaque() {
         return false;
     }
     
+    @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         Insets margin = getVisualMargin(c, new Insets(0,0,0,0));
         Border border = getBorder(c);

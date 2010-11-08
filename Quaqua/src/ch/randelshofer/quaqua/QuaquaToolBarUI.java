@@ -36,9 +36,9 @@ import javax.swing.event.MouseInputListener;
 public class QuaquaToolBarUI extends BasicToolBarUI {
     // Rollover button implementation.
 
-    private static String IS_ROLLOVER = "JToolBar.isRollover";
-    /*private*/ static String TOOLBAR_DRAW_DIVIDER_PROPERTY = "Quaqua.ToolBar.isDividerDrawn";
-    public static String TOOLBAR_STYLE_PROPERTY = "Quaqua.ToolBar.style";
+    private final static String IS_ROLLOVER = "JToolBar.isRollover";
+    /*private*/ final static String TOOLBAR_DRAW_DIVIDER_PROPERTY = "Quaqua.ToolBar.isDividerDrawn";
+    public final static String TOOLBAR_STYLE_PROPERTY = "Quaqua.ToolBar.style";
     private static Border rolloverBorder;
     private static Border nonRolloverBorder;
     private static Border nonRolloverToggleBorder;

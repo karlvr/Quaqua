@@ -42,6 +42,10 @@ public class PaletteListModel extends AbstractListModel {
     
     /**
      * Creates a new instance.
+     * <p>
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
      */
     public PaletteListModel(String name, String info, PaletteEntry[] entries) {
         this.name = name;

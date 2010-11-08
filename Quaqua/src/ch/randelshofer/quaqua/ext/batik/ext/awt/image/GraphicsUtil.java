@@ -18,7 +18,6 @@ limitations under the License.
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image;
 
-import java.awt.Composite;
 import java.awt.Graphics2D;
 import java.awt.GraphicsConfiguration;
 import java.awt.GraphicsDevice;
@@ -28,7 +27,6 @@ import java.awt.RenderingHints;
 import java.awt.Shape;
 import java.awt.color.ColorSpace;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorModel;
 import java.awt.image.ComponentSampleModel;
@@ -54,9 +52,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2LsRGBRed;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.Any2sRGBRed;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.BufferedImageCachableRed;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.CachableRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.FormatRed;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.RenderedImageCachableRed;
-import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.TranslateRed;
 
 /**
  * Set of utility methods for Graphics.
@@ -68,7 +64,7 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.TranslateRed;
  */
 public class GraphicsUtil {
 
-    public static AffineTransform IDENTITY = new AffineTransform();
+    public final static AffineTransform IDENTITY = new AffineTransform();
 
     /**
      * Draws <tt>ri</tt> into <tt>g2d</tt>.  It does this be

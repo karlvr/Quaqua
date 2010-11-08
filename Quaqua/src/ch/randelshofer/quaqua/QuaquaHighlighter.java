@@ -27,7 +27,7 @@ import javax.swing.text.*;
  */
 public class QuaquaHighlighter extends DefaultHighlighter implements UIResource
 {
-    public static LayeredHighlighter.LayerPainter painterInstance
+    public final static LayeredHighlighter.LayerPainter painterInstance
 	= new QuaquaHighlightPainter(null);
     
     public static class QuaquaHighlightPainter
@@ -39,6 +39,7 @@ public class QuaquaHighlighter extends DefaultHighlighter implements UIResource
 	    super(color);
 	}
 	
+        @Override
 	public Color getColor() {
 	    return highlightColor == null ? super.getColor() : highlightColor;
 	}

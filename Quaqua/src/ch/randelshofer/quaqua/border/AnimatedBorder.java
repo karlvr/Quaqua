@@ -40,7 +40,12 @@ public class AnimatedBorder implements Border {
      */
     private long delay;
     
-    /** Creates a new instance. */
+    /** Creates a new instance.
+     * <p>
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
+     */
     public AnimatedBorder(Border[] borders, long delay) {
         this.borders = borders;
         this.delay = delay;

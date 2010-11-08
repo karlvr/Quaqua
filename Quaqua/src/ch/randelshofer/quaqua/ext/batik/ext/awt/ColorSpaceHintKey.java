@@ -31,37 +31,37 @@ public final class ColorSpaceHintKey extends RenderingHints.Key {
     /**
      * Notice to source that we prefer an Alpha RGB Image.
      */
-    public static Object VALUE_COLORSPACE_ARGB  = new Object();
+    public final static Object VALUE_COLORSPACE_ARGB  = new Object();
 
     /**
      * Notice to source that we will not use Alpha Channel but
      * we still want RGB data.
      */
-    public static Object VALUE_COLORSPACE_RGB   = new Object();
+    public final static Object VALUE_COLORSPACE_RGB   = new Object();
 
     /**
      * Notice to source that we only want Greyscale data (no Alpha).
      */
-    public static Object VALUE_COLORSPACE_GREY  = new Object();
+    public final static Object VALUE_COLORSPACE_GREY  = new Object();
 
     /**
      * Notice to source that we only want Greyscale data with
      * an alpha channel.
      */
-    public static Object VALUE_COLORSPACE_AGREY = new Object();
+    public final static Object VALUE_COLORSPACE_AGREY = new Object();
 
     /**
      * Notice to source that we only want an alpha channel.
      * The source should simply render alpha (no conversion)
      */
-    public static Object VALUE_COLORSPACE_ALPHA = new Object();
+    public final static Object VALUE_COLORSPACE_ALPHA = new Object();
 
     /**
      * Notice to source that we only want an alpha channel.
      * The source should follow the SVG spec for how to
      * convert ARGB, RGB, Grey and AGrey to just an Alpha channel.
      */
-    public static Object VALUE_COLORSPACE_ALPHA_CONVERT = new Object();
+    public final static Object VALUE_COLORSPACE_ALPHA_CONVERT = new Object();
 
     public static final String PROPERTY_COLORSPACE =
         "ch.randelshofer.quaqua.ext.batik.gvt.filter.Colorspace";

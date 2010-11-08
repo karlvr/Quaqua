@@ -168,7 +168,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         // In case the activation property is true, we fix the value of the
         // client property, so that we can do a short circuit next time.
         if (isOnActiveWindow && (c instanceof JComponent)) {
-            ((JComponent) c).putClientProperty("Frame.active", new Boolean(isOnActiveWindow));
+            ((JComponent) c).putClientProperty("Frame.active", isOnActiveWindow);
         }
         return isOnActiveWindow;
     }

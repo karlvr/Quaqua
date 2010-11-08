@@ -14,6 +14,7 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
+import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.event.*;
 import java.util.*;
@@ -28,7 +29,7 @@ import java.util.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public abstract class ColorSliderModel {
+public abstract class ColorSliderModel implements Serializable {
     /**
      * JSlider's associated to this ColorSliderModel.
      */

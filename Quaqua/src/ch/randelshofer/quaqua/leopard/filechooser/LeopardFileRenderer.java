@@ -14,11 +14,10 @@ package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
-import java.io.*;
 import javax.swing.*;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.accessibility.Accessible;
+import ch.randelshofer.quaqua.icon.EmptyIcon;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -60,19 +59,8 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         this.focusedSelectedExpandedIcon = focusedSelectedExpandedIcon;
         this.textIconGap = UIManager.getInt("FileChooser.browserCellTextIconGap");
         this.textArrowIconGap = UIManager.getInt("FileChooser.browserCellTextArrowIconGap");
-        emptyIcon = new Icon() {
 
-            public int getIconWidth() {
-                return LeopardFileRenderer.this.expandedIcon.getIconWidth();
-            }
-
-            public int getIconHeight() {
-                return LeopardFileRenderer.this.expandedIcon.getIconHeight();
-            }
-
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-            }
-        };
+        emptyIcon = new EmptyIcon(expandedIcon.getIconWidth(), expandedIcon.getIconHeight());
 
         labelForeground = UIManager.getColor("Label.foreground");
         labelDisabledForeground = UIManager.getColor("Label.disabledForeground");
