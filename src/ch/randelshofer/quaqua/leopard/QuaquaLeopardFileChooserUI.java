@@ -1426,7 +1426,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     //
     // Renderer for DirectoryComboBox
     //
-    class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
+    static class DirectoryComboBoxRenderer extends DefaultListCellRenderer {
 
         private Border border = new EmptyBorder(1, 0, 1, 0);
         IndentIcon ii = new IndentIcon();
