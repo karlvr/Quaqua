@@ -105,7 +105,7 @@ public class BasicBrowserUI extends BrowserUI {
                 c = (c.getParent() instanceof JComponent) ? (JComponent) c.getParent() : null;
             }
 
-            if (c instanceof JBrowser) {
+            if (c != null) {
                 browser = (JBrowser) c;
                 TreePath[] paths = browser.getSelectionPaths();
 

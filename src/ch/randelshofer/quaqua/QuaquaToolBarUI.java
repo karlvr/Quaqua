@@ -89,10 +89,10 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             nonRolloverToggleBorder = createNonRolloverToggleBorder();
         }
         super.installDefaults();
-        
+
         // The toolbar is not opaque, because its background color may have
         // an alpha channel.
-	QuaquaUtilities.installProperty(toolBar, "opaque", UIManager.get("ToolBar.opaque"));
+        QuaquaUtilities.installProperty(toolBar, "opaque", UIManager.get("ToolBar.opaque"));
     }
 
     private Handler getHandler() {
@@ -285,7 +285,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
             Container p;
             for (p = toolBar.getParent(); p != null && !(p instanceof Window);
                     p = p.getParent());
-            if (p != null && p instanceof Window) {
+            if (p != null) {
                 frame = (Window) p;
             }
         }
@@ -297,10 +297,8 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
         }
         DragWindow0 dragW = new DragWindow0(frame);
 
-        if (dragW instanceof RootPaneContainer) {
-            JRootPane rp = ((RootPaneContainer) dragW).getRootPane();
-            rp.putClientProperty("Window.alpha", new Float(0.5f));
-        }
+        JRootPane rp = dragW.getRootPane();
+        rp.putClientProperty("Window.alpha", new Float(0.5f));
 
         return dragW;
     }
