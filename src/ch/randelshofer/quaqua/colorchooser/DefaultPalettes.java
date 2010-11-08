@@ -28,7 +28,7 @@ public class DefaultPalettes {
      * The colors are listed here in a logical sequence.
      * Do not change this sequence! Other classes depend on it.
      */
-    public final static Color[] CRAYONS = {
+    /*public*/ final static Color[] CRAYONS = {
         new Color(0x800000), //Cayenne
         new Color(0x808000), //Asparagus
         new Color(0x008000), //Clover
@@ -91,7 +91,7 @@ public class DefaultPalettes {
      * The colors are listed here in a logical sequence.
      * Do not change this sequence! Other classes depend on it.
      */
-    public final static Color[] APPLE_COLORS = {
+    /*public*/ final static Color[] APPLE_COLORS = {
         new Color(0x000000), //Black
         new Color(0x0000ff), //Blue
         new Color(0x996633), //Brown
@@ -113,7 +113,7 @@ public class DefaultPalettes {
      * (This is the sequence used by native the Microsoft Windows color dialog.)
      * Do not alter this sequence! Other classes depend on it.
      */
-    public final static Color[] WINDOWS_BASIC_COLORS = {
+    /*public*/ final static Color[] WINDOWS_BASIC_COLORS = {
         new Color(0xff8080), //salmon
         new Color(0xffff80), //pale yellow
         new Color(0x80ff80), //pale green
@@ -177,7 +177,7 @@ public class DefaultPalettes {
      * (This is the sequence used by native NSColorPicker color dialog.)
      * Do not alter this sequence! Other classes depend on it.
      */
-    public final static Color[] WEB_SAFE_COLORS = {
+    /*public*/ final static Color[] WEB_SAFE_COLORS = {
         new Color(0xffffff),
         new Color(0xcccccc),
         new Color(0x999999),
@@ -447,7 +447,7 @@ public class DefaultPalettes {
      * (This is the sequence used by native the Microsoft Office color dialog.)
      * Do not alter this sequence! Other classes depend on it.
      */
-    public final static Color[] MS_OFFICE_COLORS = {
+    /*public*/ final static Color[] MS_OFFICE_COLORS = {
         new Color(0x000000), //Black
     };
 

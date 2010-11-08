@@ -659,5 +659,30 @@ public class SidebarListModel
 
             return row1 - row2;
         }
+
+        @Override
+        public int hashCode() {
+            int row1 = modelIndex;
+
+            FileSystemTreeModel.Node o1 = ((FileSystemTreeModel.Node) model.getChild(path.getLastPathComponent(), row1));
+
+            SystemItemInfo i1 = (SystemItemInfo) systemItemsMap.get(o1.getUserName());
+            if (i1 == null && o1.getResolvedFile().getName().equals("")) {
+                i1 = (SystemItemInfo) systemItemsMap.get("Computer");
+            }
+
+            if (i1 != null) {
+                return i1.sequenceNumber;
+            }
+
+            return row1;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            return (o instanceof Row)//
+                    ? compareTo(o)==0
+                    : false;
+        }
     }
 }

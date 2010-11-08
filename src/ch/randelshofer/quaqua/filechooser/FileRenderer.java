@@ -14,9 +14,9 @@ package ch.randelshofer.quaqua.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 import java.awt.*;
-import java.io.*;
 import javax.swing.*;
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.icon.EmptyIcon;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -54,19 +54,8 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         this.selectedExpandedIcon = selectedExpandedIcon;
         this.focusedSelectedExpandingIcon = focusedSelectedExpandingIcon;
         this.focusedSelectedExpandedIcon = focusedSelectedExpandedIcon;
-        emptyIcon = new Icon() {
-
-            public int getIconWidth() {
-                return FileRenderer.this.expandedIcon.getIconWidth();
-            }
-
-            public int getIconHeight() {
-                return FileRenderer.this.expandedIcon.getIconHeight();
-            }
-
-            public void paintIcon(Component c, Graphics g, int x, int y) {
-            }
-        };
+        
+        emptyIcon = new EmptyIcon(expandedIcon.getIconWidth(), expandedIcon.getIconHeight());
 
         labelForeground = UIManager.getColor("Label.foreground");
         labelDisabledForeground = UIManager.getColor("Label.disabledForeground");

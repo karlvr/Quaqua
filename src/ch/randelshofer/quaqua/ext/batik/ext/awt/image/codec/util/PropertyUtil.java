@@ -31,7 +31,7 @@ public class PropertyUtil {
         "ch.randelshofer.quaqua.ext.batik.bridge.resources.properties";
 
 
-    protected static LocalizableSupport localizableSupport =
+    protected static final LocalizableSupport localizableSupport =
         new LocalizableSupport
         (RESOURCES, PropertyUtil.class.getClassLoader());
 

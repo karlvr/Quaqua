@@ -25,7 +25,7 @@ import javax.swing.plaf.basic.*;
  * @version $Id$
  */
 public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPainterClient {
-    public static String WINDOW_ALPHA_PROPERTY = "Quaqua.PopupMenu.windowAlpha";
+    public final static String WINDOW_ALPHA_PROPERTY = "Quaqua.PopupMenu.windowAlpha";
 
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaPopupMenuUI();

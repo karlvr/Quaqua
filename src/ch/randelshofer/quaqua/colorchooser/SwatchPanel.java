@@ -91,7 +91,12 @@ public class SwatchPanel extends javax.swing.JPanel {
             swatchSize.height = defaultSwatchSize.height;
         }
     }
-    
+
+    /**
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
+     */
     public void setColors(Color[] colors) {
         this.colors = colors;
     }

@@ -1421,8 +1421,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 // this is a dirty trick to reset the timer of the cell editor.
                 if (tree.getCellEditor() != null) {
-                    tree.getCellEditor().isCellEditable(new EventObject(this) {
-                    });
+                    tree.getCellEditor().isCellEditable(new EventObject(this));
                 }
 
                 mouseReleaseDeselects = false;
@@ -1458,8 +1457,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             isMouseReleaseStartsEditing = false;
                 // this is a dirty trick to reset the timer of the cell editor.
                 if (tree.getCellEditor() != null) {
-                    tree.getCellEditor().isCellEditable(new EventObject(this) {
-                    });
+                    tree.getCellEditor().isCellEditable(new EventObject(this));
                 }
         }
 

@@ -53,7 +53,9 @@ public class TIFFLZWDecoder {
     /**
      * Method to decode LZW compressed data.
      *
-     * @param data            The compressed data.
+     * @param data            The compressed data. For efficiency reasons this
+     *                        array is stored internally without copying it.
+     *                        Do not change the array after invoking this method.
      * @param uncompData      Array to return the uncompressed data in.
      * @param h               The number of rows the compressed data contains.
      */

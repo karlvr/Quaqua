@@ -308,6 +308,17 @@ public abstract class SeekableStream extends InputStream implements DataInput {
     }
 
     // Methods from DataInput, plus little-endian versions
+    public final void skipFully(long len) throws IOException {
+	if (len < 0)
+	    throw new IndexOutOfBoundsException();
+	long n = 0;
+	while (n < len) {
+	    long count = this.skip(len - n);
+	    if (count < 0)
+		throw new EOFException();
+	    n += count;
+	}
+    }
 
     /**
      * Attempts to skip over <code>n</code> bytes of input discarding the

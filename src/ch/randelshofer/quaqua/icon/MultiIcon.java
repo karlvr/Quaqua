@@ -50,6 +50,10 @@ public abstract class MultiIcon implements Icon {
      * All icons must have the same dimensions.
      * If an icon is null, an icon is derived for the state from the
      * other icons.
+     * <p>
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
      */
     public MultiIcon(Icon[] icons) {
         if (icons == null) {

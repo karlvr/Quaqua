@@ -71,13 +71,13 @@ public class ConcurrentDispatcher {
      * for later execution if there are no available
      * threads in the pool.
      */
-    public static int ENQUEUE_WHEN_BLOCKED = 0;
+    public static final int ENQUEUE_WHEN_BLOCKED = 0;
     /**
      * Set the policy for blocked execution to be that
      * the current thread executes the command if there
      * are no available threads in the pool.
      */
-    public static int RUN_WHEN_BLOCKED = 1;
+    public static final int RUN_WHEN_BLOCKED = 1;
     /**
      * The policy used when the maximal number of
      * threads is reached.

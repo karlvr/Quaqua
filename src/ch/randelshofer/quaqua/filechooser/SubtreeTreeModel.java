@@ -44,6 +44,11 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
         setPathToRoot(newValue.getPath());
     }
 
+    /*
+     * Note: For efficiency reasons this method stores the passed in array
+     * internally without copying it. Do not modify the array after
+     * invoking this method.
+     */
     public void setPathToRoot(Object[] newValue) {
         Object[] oldValue = this.rootPath;
         if (!Arrays.equals(oldValue, newValue)) {

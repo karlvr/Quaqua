@@ -133,9 +133,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         placesNode = new DefaultMutableTreeNode(UIManager.getString("FileChooser.places"));
         placesNode.setAllowsChildren(true);
 
-        DefaultMutableTreeNode root = (DefaultMutableTreeNode) getRoot();
-        root.add(devicesNode);
-        root.add(placesNode);
+        DefaultMutableTreeNode r = (DefaultMutableTreeNode) getRoot();
+        r.add(devicesNode);
+        r.add(placesNode);
 
         validate();
         updateDevicesNode();
@@ -162,6 +162,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                         return read();
                     }
 
+                    @Override
                     public void done(Object[] value) {
                         ArrayList freshUserItems;
 
@@ -280,7 +281,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             throw new IOException("Unable to work with aliases");
         }
 
-        HashMap systemItemsMap = new HashMap();
+        HashMap sysItemsMap = new HashMap();
         ArrayList userItems = new ArrayList();
 
         FileReader reader = null;
@@ -322,7 +323,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                                 key5 = xml5.getContent();
                                             }
 
-                                            info.sequenceNumber = systemItemsMap.size();
+                                            info.sequenceNumber = sysItemsMap.size();
                                             if (xml5.getName().equals("string") && key5.equals("Name")) {
                                                 info.name = xml5.getContent();
                                             }
@@ -331,7 +332,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                             }
                                         }
                                         if (info.name != null) {
-                                            systemItemsMap.put(info.name, info);
+                                            sysItemsMap.put(info.name, info);
                                         }
                                     }
                                 }
@@ -377,7 +378,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 reader.close();
             }
         }
-        return new Object[]{systemItemsMap, userItems};
+        return new Object[]{sysItemsMap, userItems};
     }
 
     public void treeNodesChanged(TreeModelEvent e) {
@@ -723,12 +724,14 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
         @Override
         public boolean equals(Object o) {
-            return (o instanceof SidebarTreeModel) ? compareTo((SidebarTreeModel) o) == 0 : false;
+            return (o instanceof SidebarViewToModelNode) //
+                    ? compareTo((SidebarViewToModelNode) o) == 0 //
+                    : false;
         }
 
         @Override
         public int hashCode() {
-            return getTarget()==null?0:getTarget().getUserName().hashCode();
+            return getTarget() == null ? 0 : getTarget().getUserName().hashCode();
         }
     }
 }
