@@ -51,6 +51,12 @@ public class LinuxFileSystemView extends QuaquaFileSystemView {
         return volumesFolder;
     }
 
+    public File getDesktop() {
+        return desktop;
+    }
+
+
+
     /**
      * Returns all root partitions on this system.
      * XXX - This needs more work.
