@@ -49,7 +49,6 @@ public class QuaquaIconFactory {
     private static class LazyOptionPaneIcon implements Icon {
 
         private ImageIcon realIcon;
-        private int messageType;
         private Worker<ImageIcon> worker;
         private HashSet repaintMe = new HashSet();
 

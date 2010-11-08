@@ -28,7 +28,6 @@ import javax.swing.filechooser.*;
  * @version $Id$
  */
 public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
-    private static QuaquaFileSystemView instance;
 
     /**
      * Creates a new instance.
