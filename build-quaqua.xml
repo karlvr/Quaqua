@@ -15,8 +15,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="7.3.3"/>
-        <property name="version" value="${versionNumber} 2010-11-07"/>
+        <property name="versionNumber" value="7.3.4alpha1"/>
+        <property name="version" value="${versionNumber} 2010-11-08"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -1355,6 +1355,16 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 PantherFileChooser">
+        <java classname="test.Main" classpath="${classpath}"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        failonerror="true" fork="true">
+            <jvmarg value="-DQuaqua.design=jaguar"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF"/>
         </java>
     </target>
 </project>
