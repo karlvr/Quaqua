@@ -1,8 +1,7 @@
 /*
  * @(#)TestBox.java  1.0  19 March 2005
  *
- * Copyright (c) 2004 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.

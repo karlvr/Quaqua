@@ -1,14 +1,12 @@
 /*
  * @(#)QuaquaResourceBundleUtil.java  1.3.3  2005-11-07
  *
- * Copyright (c) 2000-2010 Werner Randelshofer
- * Hausmatt 10, CH-6405 Immensee, Switzerland
+ * Copyright (c) 2000-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * You may not use, copy or modify this file, except in compliance with the
+ * license agreement you entered into with Werner Randelshofer.
+ * For details see accompanying license terms.
  */
 package ch.randelshofer.quaqua.util;
 
