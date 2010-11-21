@@ -1,8 +1,7 @@
 /*
  * @(#)DnDTest.java
  *
- * Copyright (c) 2004-2010 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.

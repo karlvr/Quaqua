@@ -1,8 +1,7 @@
 /*
  * @(#)BasicLookAndFeelImpl.java  1.0  2008-11-17
  *
- * Copyright (c) 2008 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2008 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.

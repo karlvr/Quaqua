@@ -2,14 +2,12 @@ package test;
 /*
  * @(#)GroupLayoutTest.java  1.0  June 5, 2006
  *
- * Copyright (c) 2006 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2006 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * You may not use, copy or modify this file, except in compliance with the
+ * license agreement you entered into with Werner Randelshofer.
+ * For details see accompanying license terms.
  */
 
 import org.jdesktop.layout.GroupLayout;
