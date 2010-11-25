@@ -119,6 +119,7 @@ public class OSX16SnowLeopardFileSystemView extends QuaquaFileSystemView {
         names = new String[] {
             "$RECYCLE.BIN",
             "Thumbs.db",
+            "desktop.ini",
         };
 
         hiddenDirectoryNames.addAll(Arrays.asList(names));

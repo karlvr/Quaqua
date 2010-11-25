@@ -111,9 +111,11 @@ public class OSXLeopardFileSystemView extends QuaquaFileSystemView {
             "\u0003\u0002\u0001Move&Rename",};
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
+
         names = new String[]{
-                    "$RECYCLE.BIN"
-                };
+                    "$RECYCLE.BIN",
+                    "Thumbs.db",
+                    "desktop.ini",};
 
         hiddenDirectoryNames.addAll(Arrays.asList(names));
     }

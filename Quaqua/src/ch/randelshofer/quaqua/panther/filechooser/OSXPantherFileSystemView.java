@@ -1,5 +1,5 @@
 /*
- * @(#)OSXPantherFileSystemView.java 4.0  2008-05-10
+ * @(#)OSXPantherFileSystemView.java 
  *
  * Copyright (c) 2001-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -11,9 +11,6 @@
 package ch.randelshofer.quaqua.panther.filechooser;
 
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
 import java.io.*;
 import java.util.*;
 
@@ -21,22 +18,7 @@ import java.util.*;
  * A file system view for Mac OS X 10.3 (Panther).
  *
  * @author  Werner Randelshofer
- * @version 4.0 2008-05-09 If native code is available, use native methods from
- * Files class to retrieve file infos. If no native code is available, fall back
- * to FileSystemView.getFileSystemView() rather than relying on Apple's FileView
- * class.
- * <br>3.2 2007-01-24 Determine system volume lazily. Create file view
- * lazily.
- * <br>3.1 2005-11-26 Added more hidden top level files.
- * <br>3.0 2005-08-26 Rewritten.
- * <br>2.1 2004-12-28 Added "TheVolumeSettingsFolder" to the list of
- * hiddenTopLevelNames. Removed "Desktop Folder" from the list of
- * hiddenTopLevelNames as it appears on the Finder on Mac OS X 10.3.
- * Filenames that end with 0x0d are considered as hidden.
- * <br>2.0 2004-10-31 New super class QuaquaFileSystemView.
- * <br>1.0.1 2004-10-12 Made static initializer robust against IO
- * exceptions that may occur, when we attempt to canonicalize a file name.
- * <br>1.0 2004-06-30 Created.
+ * @version $Id$
  */
 public class OSXPantherFileSystemView extends QuaquaFileSystemView {
 
@@ -97,7 +79,7 @@ public class OSXPantherFileSystemView extends QuaquaFileSystemView {
      * hide them 'manually'.
      */
     private final static HashSet hiddenTopLevelNames = new HashSet();
-    
+    private final static HashSet hiddenDirectoryNames = new HashSet();
 
     static {
         String[] names = {
@@ -127,6 +109,13 @@ public class OSXPantherFileSystemView extends QuaquaFileSystemView {
         };
 
         hiddenTopLevelNames.addAll(Arrays.asList(names));
+
+        names = new String[]{
+                    "$RECYCLE.BIN",
+                    "Thumbs.db",
+                    "desktop.ini",};
+
+        hiddenDirectoryNames.addAll(Arrays.asList(names));
     }
     ;
 
@@ -187,6 +176,8 @@ public class OSXPantherFileSystemView extends QuaquaFileSystemView {
                 // hidden
                 return true;
             } else if (hiddenTopLevelNames.contains(name) && (f.getParent() == null || isRoot(f.getParentFile()))) {
+                return true;
+            } else if (hiddenDirectoryNames.contains(name)) {
                 return true;
             } else {
                 return false;

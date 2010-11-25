@@ -262,13 +262,15 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         }
 
         // Update the view
-        int[] childIndices = new int[devicesNode.getChildCount()];
-        Object[] childNodes = new Object[devicesNode.getChildCount()];
-        for (int i = 0; i < childIndices.length; i++) {
-            childIndices[i] = i;
-            childNodes[i] = devicesNode.getChildAt(i);
+        if (devicesNode.getChildCount() > 0) {
+            int[] childIndices = new int[devicesNode.getChildCount()];
+            Object[] childNodes = new Object[devicesNode.getChildCount()];
+            for (int i = 0; i < childIndices.length; i++) {
+                childIndices[i] = i;
+                childNodes[i] = devicesNode.getChildAt(i);
+            }
+            fireTreeNodesChanged(this, devicesNode.getPath(), childIndices, childNodes);
         }
-        fireTreeNodesChanged(this, devicesNode.getPath(), childIndices, childNodes);
     }
 
     /**
