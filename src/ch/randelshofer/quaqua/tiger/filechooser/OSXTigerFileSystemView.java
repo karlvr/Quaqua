@@ -82,6 +82,7 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
      * hide them 'manually'.
      */
     private final static HashSet hiddenTopLevelNames = new HashSet();
+    private final static HashSet hiddenDirectoryNames = new HashSet();
     static {
         String[] names = {
             "AppleShare PDS",
@@ -114,6 +115,13 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
         };
         
         hiddenTopLevelNames.addAll(Arrays.asList(names));
+
+        names = new String[]{
+                    "$RECYCLE.BIN",
+                    "Thumbs.db",
+                    "desktop.ini",};
+
+        hiddenDirectoryNames.addAll(Arrays.asList(names));
     };
     
     
@@ -175,6 +183,8 @@ public class OSXTigerFileSystemView extends QuaquaFileSystemView {
                 return true;
             } else if (hiddenTopLevelNames.contains(name)
             && (f.getParent() == null || isRoot(f.getParentFile()))) {
+                return true;
+            } else if (hiddenDirectoryNames.contains(name)) {
                 return true;
             } else {
                 return false;

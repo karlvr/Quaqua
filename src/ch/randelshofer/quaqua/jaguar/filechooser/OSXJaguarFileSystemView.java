@@ -1,5 +1,5 @@
 /*
- * @(#)OSXJaguarFileSystemView.java 4.0  2008-05-10
+ * @(#)OSXJaguarFileSystemView.java 
  *
  * Copyright (c) 2001-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -12,36 +12,13 @@
 package ch.randelshofer.quaqua.jaguar.filechooser;
 
 import ch.randelshofer.quaqua.filechooser.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.filechooser.*;
 import java.io.*;
 import java.util.*;
 /**
  * A file system view for Mac OS X 10.2 (Jaguar).
  * 
  * @author Werner Randelshofer
- * @version 4.0 2008-05-10 Fall back to FileSystemView.getFileSystemView
- * instead of falling back to an instance of the Apple L&F FileView object. 
- * <br>3.1 2007-01-25 Create FileView lazily. 
- * <br>3.0 2005-08-26 Rewritten.
- * <br>2.1 2004-12-28 Added "TheVolumeSettingsFolder" to the list of
- * hiddenTopLevelNames. Filenames that end with 0x0d are considered as hidden.
- * <br>2.0 2004-10-31 New super class QuaquaFileSystemView.
- * <br>1.4 2004-06-30 Renamed from OSXFileSystemView to JagOSXJaguarFileSystemView<br>1.3.1 2004-05-20 Fixed an IndexOutOfBoundsException which occured
- * in method isHiddenFile (or more precisely in
- * javax.swing.filechooser.UnixFileSystemView.isHiddenFile), when it was
- * called with the file system root as the file.
- * <br>1.3 2004-03-13 Method createFileSystemView added and constructor
- * made private. We need an abstract factory, because of differences between
- * Mac OS X versions.
- * <br>1.2 2004-02-15 We must take into account, that
- *              FileSystemView.getFileSystemView()
- *              and method file.listFiles() can return null.
- *              Hardcoded some file names which we want to treat as hidden.
- * <br>1.1.1 2003-10-04 Network folder to roots added.
- * <br>1.1 2003-03-16 Performance of method isRoot(File) improved.
- * <br>1.0 2002-04-05 Created.
+ * @version $Id$
  */
 public class OSXJaguarFileSystemView extends QuaquaFileSystemView {
     private File volumesFolder = new File("/Volumes");
@@ -61,6 +38,7 @@ public class OSXJaguarFileSystemView extends QuaquaFileSystemView {
      * hide them 'manually'.
      */
     private final static HashSet hiddenTopLevelNames = new HashSet();
+    private final static HashSet hiddenDirectoryNames = new HashSet();
     static {
         String[] names = {
             "automount",
@@ -87,6 +65,13 @@ public class OSXJaguarFileSystemView extends QuaquaFileSystemView {
         };
         
         hiddenTopLevelNames.addAll(Arrays.asList(names));
+
+        names = new String[]{
+                    "$RECYCLE.BIN",
+                    "Thumbs.db",
+                    "desktop.ini",};
+
+        hiddenDirectoryNames.addAll(Arrays.asList(names));
     };
     
     
@@ -147,6 +132,8 @@ public class OSXJaguarFileSystemView extends QuaquaFileSystemView {
                 return true;
             } else if (hiddenTopLevelNames.contains(name)
             && (f.getParent() == null || isRoot(f.getParentFile()))) {
+                return true;
+            } else if (hiddenDirectoryNames.contains(name)) {
                 return true;
             } else {
                 return false;
