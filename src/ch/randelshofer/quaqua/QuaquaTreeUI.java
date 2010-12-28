@@ -214,8 +214,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
      */
     @Override
     protected TreeCellEditor createDefaultCellEditor() {
-        if (currentCellRenderer != null &&
-                (currentCellRenderer instanceof DefaultTreeCellRenderer)) {
+        if (currentCellRenderer != null
+                && (currentCellRenderer instanceof DefaultTreeCellRenderer)) {
             DefaultTreeCellEditor editor = new QuaquaTreeCellEditor(
                     tree, (DefaultTreeCellRenderer) currentCellRenderer);
             return editor;
@@ -293,20 +293,27 @@ public class QuaquaTreeUI extends BasicTreeUI {
     }
 
     /**
+     * Returns a listener that can update the tree when the model changes.
+     */
+    protected TreeModelListener createTreeModelListener() {
+        return getHandler();
+    }
+
+    /**
      * Returning true signifies a mouse event on the node should toggle
      * the selection of only the row under mouse.
      */
     @Override
     protected boolean isToggleSelectionEvent(MouseEvent event) {
-        return event.getID() == MouseEvent.MOUSE_PRESSED &&
-                SwingUtilities.isLeftMouseButton(event) &&
-                event.isMetaDown();
+        return event.getID() == MouseEvent.MOUSE_PRESSED
+                && SwingUtilities.isLeftMouseButton(event)
+                && event.isMetaDown();
     }
 
     @Override
     protected boolean isToggleEvent(MouseEvent event) {
-        if (event.getID() != MouseEvent.MOUSE_PRESSED ||
-                !SwingUtilities.isLeftMouseButton(event)) {
+        if (event.getID() != MouseEvent.MOUSE_PRESSED
+                || !SwingUtilities.isLeftMouseButton(event)) {
             return false;
         }
         int clickCount = tree.getToggleClickCount();
@@ -323,8 +330,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
      */
     @Override
     protected boolean isMultiSelectEvent(MouseEvent event) {
-        return (SwingUtilities.isLeftMouseButton(event) &&
-                event.isShiftDown());
+        return (SwingUtilities.isLeftMouseButton(event)
+                && event.isShiftDown());
     }
 
     private TreePath getMouseClickedClosestPathForLocation(JTree tree, int x, int y) {
@@ -392,6 +399,11 @@ public class QuaquaTreeUI extends BasicTreeUI {
         leadRow = getRowForPath(tree, getLeadSelectionPath());
     }
 
+    private void updateSize0() {
+        validCachedPreferredSize = false;
+        tree.revalidate();
+    }
+
     private int getLeadSelectionRow() {
         return tree.getLeadSelectionRow();
 //        return leadRow;
@@ -445,8 +457,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
         // Draw icons if not a leaf and either hasn't been loaded,
         // or the model child count is > 0.
-        if (!isLeaf && (!hasBeenExpanded ||
-                treeModel.getChildCount(value) > 0)) {
+        if (!isLeaf && (!hasBeenExpanded
+                || treeModel.getChildCount(value) > 0)) {
             int middleXOfKnob;
             if (QuaquaUtilities.isLeftToRight(tree)) {
                 middleXOfKnob = bounds.x - (getRightChildIndent() - 1);
@@ -549,8 +561,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
             InputMap keyMap = (InputMap) UIManager.get("Tree.focusInputMap");
             InputMap rtlKeyMap;
 
-            if (tree.getComponentOrientation().isLeftToRight() ||
-                    ((rtlKeyMap = (InputMap) UIManager.get(
+            if (tree.getComponentOrientation().isLeftToRight()
+                    || ((rtlKeyMap = (InputMap) UIManager.get(
                     "Tree.focusInputMap.RightToLeft")) == null)) {
                 return keyMap;
             } else {
@@ -692,9 +704,9 @@ public class QuaquaTreeUI extends BasicTreeUI {
         if (tree.isOpaque()) {
             if (background instanceof InactivatableColorUIResource) {
                 if (isSideBar) {
-                ((InactivatableColorUIResource) background).setActive(QuaquaUtilities.isOnActiveWindow(c,true));
+                    ((InactivatableColorUIResource) background).setActive(QuaquaUtilities.isOnActiveWindow(c, true));
                 } else {
-                ((InactivatableColorUIResource) background).setActive(isActive);
+                    ((InactivatableColorUIResource) background).setActive(isActive);
                 }
             }
 
@@ -774,9 +786,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 int startY = (bounds != null) ? bounds.y + bounds.height : 0;
 
-                for (int y = startY; y <
-                        height; y +=
-                                rheight) {
+                for (int y = startY; y < height; y += rheight) {
                     g.setColor(stripes[row % 2]);
                     g.fillRect(insets.left, y, rwidth, rheight);
                     row++;
@@ -930,9 +940,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 }
 
                 row = 0;
-                for (int y = 0; y <
-                        height; y +=
-                                rheight) {
+                for (int y = 0; y < height; y += rheight) {
                     g.setColor(stripes[row % 2]);
                     g.fillRect(insets.left, y, rwidth, rheight);
                     row++;
@@ -1087,8 +1095,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
     private boolean isSideBar() {
         Object property = tree.getClientProperty("Quaqua.Tree.style");
-        return property != null && (property.equals("sideBar") ||
-                property.equals("sourceList"));
+        return property != null && (property.equals("sideBar")
+                || property.equals("sourceList"));
     }
 
     /**
@@ -1144,10 +1152,10 @@ public class QuaquaTreeUI extends BasicTreeUI {
          */
         public void keyTyped(KeyEvent e) {
             // handle first letter navigation
-            if (tree != null && tree.getRowCount() > 0 && tree.hasFocus() &&
-                    tree.isEnabled()) {
-                if (e.isAltDown() || e.isControlDown() || e.isMetaDown() ||
-                        isNavigationKey(e)) {
+            if (tree != null && tree.getRowCount() > 0 && tree.hasFocus()
+                    && tree.isEnabled()) {
+                if (e.isAltDown() || e.isControlDown() || e.isMetaDown()
+                        || isNavigationKey(e)) {
                     return;
                 }
                 boolean startingFromSelection = true;
@@ -1368,8 +1376,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                                 mouseDragSelects = true;
                                 isMouseReleaseStartsEditing = false;
                             }
-                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK &&
-                                anchorIndex != -1) {
+                        } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK
+                                && anchorIndex != -1) {
                             tree.setSelectionInterval(anchorIndex, index);
                             setLeadSelectionPath(path);
                             mouseDragSelects = true;
@@ -1384,8 +1392,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                                 }
                             } else {
                                 tree.setSelectionInterval(index, index);
-                                if (tree.getDragEnabled() &&
-                                        getPathBounds(tree, path).contains(e.getPoint())) {
+                                if (tree.getDragEnabled()
+                                        && getPathBounds(tree, path).contains(e.getPoint())) {
                                     isDragRecognitionOngoing = QuaquaDragRecognitionSupport.mousePressed(e);
                                     mouseDragSelects = mouseReleaseDeselects = false;
                                     isMouseReleaseStartsEditing = false;
@@ -1409,8 +1417,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 }
 
                 // Do nothing if we can't stop editing.
-                if (isEditing(tree) && tree.getInvokesStopCellEditing() &&
-                        !stopEditing(tree)) {
+                if (isEditing(tree) && tree.getInvokesStopCellEditing()
+                        && !stopEditing(tree)) {
                     return;
                 }
 
@@ -1453,16 +1461,16 @@ public class QuaquaTreeUI extends BasicTreeUI {
          */
         public void mouseMoved(MouseEvent e) {
             isMouseReleaseStartsEditing = false;
-                // this is a dirty trick to reset the timer of the cell editor.
-                if (tree.getCellEditor() != null) {
-                    tree.getCellEditor().isCellEditable(new EventObject(this));
-                }
+            // this is a dirty trick to reset the timer of the cell editor.
+            if (tree.getCellEditor() != null) {
+                tree.getCellEditor().isCellEditable(new EventObject(this));
+            }
         }
 
         public void mouseReleased(MouseEvent e) {
             if (tree.isEnabled()) {
-                if (isEditing(tree) && tree.getInvokesStopCellEditing() &&
-                        !stopEditing(tree)) {
+                if (isEditing(tree) && tree.getInvokesStopCellEditing()
+                        && !stopEditing(tree)) {
                     return;
                 }
                 TreePath path = getMouseClickedClosestPathForLocation(tree, e.getX(),
@@ -1573,8 +1581,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     for (counter = 0; counter < maxCounter; counter++) {
                         nodeBounds = getPathBounds(tree,
                                 changedPaths[counter]);
-                        if (nodeBounds != null &&
-                                visRect.intersects(nodeBounds)) {
+                        if (nodeBounds != null
+                                && visRect.intersects(nodeBounds)) {
                             tree.repaint(0, nodeBounds.y, nWidth,
                                     nodeBounds.height);
                         }
@@ -1623,12 +1631,46 @@ public class QuaquaTreeUI extends BasicTreeUI {
         //
         public void treeNodesChanged(TreeModelEvent e) {
             if (treeState != null && e != null) {
-                treeState.treeNodesChanged(e);
-
-                TreePath pPath = e.getTreePath().getParentPath();
-
-                if (pPath == null || treeState.isExpanded(pPath)) {
+                TreePath parentPath = e.getTreePath();
+                int[] indices = e.getChildIndices();
+                if (indices == null || indices.length == 0) {
+                    // The root has changed
+                    treeState.treeNodesChanged(e);
                     updateSize();
+                } else if (treeState.isExpanded(parentPath)) {
+                    // Changed nodes are visible
+                    // Find the minimum index, we only need paint from there
+                    // down.
+                    int minIndex = indices[0];
+                    for (int i = indices.length - 1; i > 0; i--) {
+                        minIndex = Math.min(indices[i], minIndex);
+                    }
+                    Object minChild = treeModel.getChild(
+                            parentPath.getLastPathComponent(), minIndex);
+                    TreePath minPath = parentPath.pathByAddingChild(minChild);
+                    Rectangle minBounds = getPathBounds(tree, minPath);
+
+                    // Forward to the treestate
+                    treeState.treeNodesChanged(e);
+
+                    // Mark preferred size as bogus.
+                    updateSize0();
+
+                    // And repaint
+                    Rectangle newMinBounds = getPathBounds(tree, minPath);
+                    if (newMinBounds != null) { // prevent NPE when tree is not showing
+                        if (indices.length == 1
+                                && newMinBounds.height == minBounds.height) {
+                            tree.repaint(0, minBounds.y, tree.getWidth(),
+                                    minBounds.height);
+                        } else {
+                            tree.repaint(0, minBounds.y, tree.getWidth(),
+                                    tree.getHeight() - minBounds.y);
+                        }
+                    }
+                } else {
+                    // Nodes that changed aren't visible.  No need to paint
+                    treeState.treeNodesChanged(e);
                 }
             }
         }
@@ -1665,8 +1707,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
                 TreePath path = e.getTreePath();
 
-                if (treeState.isExpanded(path) ||
-                        treeModel.getChildCount(path.getLastPathComponent()) == 0) {
+                if (treeState.isExpanded(path)
+                        || treeModel.getChildCount(path.getLastPathComponent()) == 0) {
                     updateSize();
                 }
             }
@@ -1930,8 +1972,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 int direction, boolean addToSelection,
                 boolean changeSelection) {
 
-            if (ui.getRowCount(tree) > 0 &&
-                    ui.treeSelectionModel != null) {
+            if (ui.getRowCount(tree) > 0
+                    && ui.treeSelectionModel != null) {
                 TreePath newPath;
                 Rectangle visRect = tree.getVisibleRect();
 
@@ -1940,8 +1982,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                             visRect.y);
                     visRect.x = Math.max(0, visRect.x - visRect.width);
                 } else {
-                    visRect.x = Math.min(Math.max(0, tree.getWidth() -
-                            visRect.width), visRect.x + visRect.width);
+                    visRect.x = Math.min(Math.max(0, tree.getWidth()
+                            - visRect.width), visRect.x + visRect.width);
                     newPath = ui.getClosestPathForLocation(tree, visRect.x,
                             visRect.y + visRect.height);
                 }
@@ -2000,8 +2042,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
 
             if (rowCount > 0) {
                 if (selectAll) {
-                    if (tree.getSelectionModel().getSelectionMode() ==
-                            TreeSelectionModel.SINGLE_TREE_SELECTION) {
+                    if (tree.getSelectionModel().getSelectionMode()
+                            == TreeSelectionModel.SINGLE_TREE_SELECTION) {
 
                         int lead = ui.getLeadSelectionRow();
                         if (lead != -1) {
@@ -2038,7 +2080,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         }
 
         private void startEditing(JTree tree, QuaquaTreeUI ui) {
-new Throwable().printStackTrace();
+            new Throwable().printStackTrace();
             TreePath lead = ui.getLeadSelectionPath();
             int editRow = (lead != null) ? ui.getRowForPath(tree, lead) : -1;
 
@@ -2079,16 +2121,16 @@ new Throwable().printStackTrace();
                 boolean changeSelection) {
 
             // disable moving of lead unless in discontiguous mode
-            if (!addToSelection && !changeSelection &&
-                    tree.getSelectionModel().getSelectionMode() !=
-                    TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
+            if (!addToSelection && !changeSelection
+                    && tree.getSelectionModel().getSelectionMode()
+                    != TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
                 changeSelection = true;
             }
 
             int rowCount;
 
-            if (ui.treeSelectionModel != null &&
-                    (rowCount = tree.getRowCount()) > 0) {
+            if (ui.treeSelectionModel != null
+                    && (rowCount = tree.getRowCount()) > 0) {
                 int selIndex = ui.getLeadSelectionRow();
                 int newIndex;
 
@@ -2116,9 +2158,9 @@ new Throwable().printStackTrace();
         private void traverse(JTree tree, QuaquaTreeUI ui, int direction,
                 boolean changeSelection) {
             // disable moving of lead unless in discontiguous mode
-            if (!changeSelection &&
-                    tree.getSelectionModel().getSelectionMode() !=
-                    TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
+            if (!changeSelection
+                    && tree.getSelectionModel().getSelectionMode()
+                    != TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
                 changeSelection = true;
             }
 
@@ -2134,16 +2176,16 @@ new Throwable().printStackTrace();
                     /* Try and expand the node, otherwise go to next
                     node. */
                     if (direction == 1) {
-                        if (!ui.isLeaf(minSelIndex) &&
-                                !tree.isExpanded(minSelIndex)) {
+                        if (!ui.isLeaf(minSelIndex)
+                                && !tree.isExpanded(minSelIndex)) {
                             ui.toggleExpandState(ui.getPathForRow(tree, minSelIndex));
                             newIndex = -1;
                         } else {
                             newIndex = Math.min(minSelIndex + 1, rowCount - 1);
                         }
                     } /* Try to collapse node. */ else {
-                        if (!ui.isLeaf(minSelIndex) &&
-                                tree.isExpanded(minSelIndex)) {
+                        if (!ui.isLeaf(minSelIndex)
+                                && tree.isExpanded(minSelIndex)) {
                             ui.toggleExpandState(ui.getPathForRow(tree, minSelIndex));
                             newIndex = -1;
                         } else {
@@ -2186,14 +2228,14 @@ new Throwable().printStackTrace();
                 boolean addToSelection, boolean changeSelection) {
 
             // disable moving of lead unless in discontiguous mode
-            if (!addToSelection && !changeSelection &&
-                    tree.getSelectionModel().getSelectionMode() !=
-                    TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
+            if (!addToSelection && !changeSelection
+                    && tree.getSelectionModel().getSelectionMode()
+                    != TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
                 changeSelection = true;
             }
 
-            if (ui.getRowCount(tree) > 0 &&
-                    ui.treeSelectionModel != null) {
+            if (ui.getRowCount(tree) > 0
+                    && ui.treeSelectionModel != null) {
                 Dimension maxSize = tree.getSize();
                 TreePath lead = ui.getLeadSelectionPath();
                 TreePath newPath;
@@ -2210,13 +2252,13 @@ new Throwable().printStackTrace();
                     }
                 } else {
                     // down
-                    visRect.y = Math.min(maxSize.height, visRect.y +
-                            visRect.height - 1);
+                    visRect.y = Math.min(maxSize.height, visRect.y
+                            + visRect.height - 1);
                     newPath = tree.getClosestPathForLocation(visRect.x,
                             visRect.y);
                     if (newPath.equals(lead)) {
-                        visRect.y = Math.min(maxSize.height, visRect.y +
-                                visRect.height - 1);
+                        visRect.y = Math.min(maxSize.height, visRect.y
+                                + visRect.height - 1);
                         newPath = tree.getClosestPathForLocation(visRect.x,
                                 visRect.y);
                     }
@@ -2247,9 +2289,9 @@ new Throwable().printStackTrace();
                 boolean addToSelection, boolean changeSelection) {
 
             // disable moving of lead unless in discontiguous mode
-            if (!addToSelection && !changeSelection &&
-                    tree.getSelectionModel().getSelectionMode() !=
-                    TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
+            if (!addToSelection && !changeSelection
+                    && tree.getSelectionModel().getSelectionMode()
+                    != TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION) {
                 changeSelection = true;
             }
 
@@ -2334,8 +2376,8 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled());
+            return (tree != null
+                    && tree.isEnabled());
         }
     } // BasicTreeUI.TreeTraverseAction
 
@@ -2370,8 +2412,8 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled());
+            return (tree != null
+                    && tree.isEnabled());
         }
     } // BasicTreeUI.TreePageAction
 
@@ -2408,8 +2450,8 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled());
+            return (tree != null
+                    && tree.isEnabled());
         }
     } // End of class BasicTreeUI.TreeIncrementAction
 
@@ -2446,8 +2488,8 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled());
+            return (tree != null
+                    && tree.isEnabled());
         }
     } // End of class BasicTreeUI.TreeHomeAction
 
@@ -2467,8 +2509,8 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled());
+            return (tree != null
+                    && tree.isEnabled());
         }
     } // End of class BasicTreeUI.TreeToggleAction
 
@@ -2488,9 +2530,9 @@ new Throwable().printStackTrace();
 
         @Override
         public boolean isEnabled() {
-            return (tree != null &&
-                    tree.isEnabled() &&
-                    isEditing(tree));
+            return (tree != null
+                    && tree.isEnabled()
+                    && isEditing(tree));
         }
     } // End of class BasicTreeUI.TreeCancelEditingAction
 }
