@@ -2402,20 +2402,33 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 leadPath = columnPath.pathByAddingChild(columnList.getSelectedValue());
                 selectionModel.setSelectionPath(leadPath);
             } else {
-                leadPath = columnPath.pathByAddingChild(columnModel.getElementAt(columnList.getLeadSelectionIndex()));
-                TreePath[] paths = new TreePath[selectedIndices.length];
-                int leadPathIndex = -1;
-                for (int i = 0; i < selectedIndices.length; i++) {
-                    paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
-                    if (paths[i].equals(leadPath)) {
-                        leadPathIndex = i;
+                int leadSelectionIndex = columnList.getLeadSelectionIndex();
+                if (leadSelectionIndex < 0 || leadSelectionIndex >= columnModel.getSize()) {
+                    // The lead selection index is out of sync, but we might still
+                    // be able to update our selectionModel with the correct elements.
+                    TreePath[] paths = new TreePath[selectedIndices.length];
+                    for (int i = 0; i < selectedIndices.length; i++) {
+                        paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
                     }
+                    selectionModel.setSelectionPaths(paths);
+                } else {
+                    // The lead selection index is okay, update our selectionModel
+                    // with the correct elements, putting the lead path to the front.
+                    leadPath = columnPath.pathByAddingChild(columnModel.getElementAt(leadSelectionIndex));
+                    TreePath[] paths = new TreePath[selectedIndices.length];
+                    int leadPathIndex = -1;
+                    for (int i = 0; i < selectedIndices.length; i++) {
+                        paths[i] = columnModel.path.pathByAddingChild(columnModel.getElementAt(selectedIndices[i]));
+                        if (paths[i].equals(leadPath)) {
+                            leadPathIndex = i;
+                        }
+                    }
+                    if (leadPathIndex != -1) {
+                        paths[leadPathIndex] = paths[paths.length - 1];
+                        paths[paths.length - 1] = leadPath;
+                    }
+                    selectionModel.setSelectionPaths(paths);
                 }
-                if (leadPathIndex != -1) {
-                    paths[leadPathIndex] = paths[paths.length - 1];
-                    paths[paths.length - 1] = leadPath;
-                }
-                selectionModel.setSelectionPaths(paths);
             }
         }
 
