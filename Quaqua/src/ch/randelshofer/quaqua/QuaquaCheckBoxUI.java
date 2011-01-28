@@ -221,8 +221,15 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
         int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
+        String style = (String) b.getClientProperty("Quaqua.Label.style");
 
         /* Draw the Text */
+        if (style != null && style.equals("shadow") && model.isEnabled()) {
+            g.setColor(UIManager.getColor("Label.shadowForeground"));
+            QuaquaUtilities.drawStringUnderlineCharAt(g, text, mnemonicIndex,
+                    textRect.x + getTextShiftOffset(),
+                    textRect.y + fm.getAscent() + getTextShiftOffset() + 1);
+        }
         if (model.isEnabled()) {
             /*** paint the text normally */
             g.setColor(b.getForeground());
