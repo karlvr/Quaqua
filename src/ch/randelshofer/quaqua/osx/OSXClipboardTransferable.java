@@ -69,23 +69,31 @@ public class OSXClipboardTransferable implements Transferable {
                         if (value != null && value.equals("true")) {
                             success = true;
                         } else {
-
-                            // Use quaqua64 JNI-lib on x86_64 processors on Mac OS X 10.5 and higher
-                            libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) &&
-                                    QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
-                            try {
-                                System.loadLibrary(libraryName);
-                                success = true;
-                            } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
-                                success = false;
-                            } catch (AccessControlException e) {
-                                System.err.println("Warning: " + OSXClipboardTransferable.class + " access controller denied loading library \"" + libraryName + "\". " + e);
-                                success = false;
-                            } catch (Throwable e) {
-                                e.printStackTrace();
-                                System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + libraryName + "\". " + e);
-                                success = false;
+                            // Try to load 64-bit libraries if possible
+                            String[] libraryNames;
+                            String osArch = System.getProperty("os.arch");
+                            if (osArch.equals("x86_64")) {
+                                libraryNames = new String[]{"quaqua64"};
+                            } else {
+                                libraryNames = new String[]{"quaqua64", "quaqua"};
+                            }
+                            for (int i=0;i<libraryNames.length;i++) {
+                                libraryName=libraryNames[i];
+                                try {
+                                    System.loadLibrary(libraryName);
+                                    success = true;
+                                    break;
+                                } catch (UnsatisfiedLinkError e) {
+                                    System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                } catch (AccessControlException e) {
+                                    System.err.println("Warning: " + OSXClipboardTransferable.class + " access controller denied loading library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                } catch (Throwable e) {
+                                    e.printStackTrace();
+                                    System.err.println("Warning: " + OSXClipboardTransferable.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                }
                             }
                         }
 

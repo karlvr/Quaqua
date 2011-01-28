@@ -65,23 +65,31 @@ public class OSXFile {
                         if (value != null && value.equals("true")) {
                             success = true;
                         } else {
-
-                            // Use quaqua64 JNI-lib on x86_64 processors on Mac OS X 10.5 and higher
-                            libraryName = (QuaquaManager.getOS() >= QuaquaManager.LEOPARD)
-                                    && QuaquaManager.getProperty("os.arch").equals("x86_64") ? "quaqua64" : "quaqua";
-                            try {
-                                System.loadLibrary(libraryName);
-                                success = true;
-                            } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + libraryName + "\". " + e);
-                                success = false;
-                            } catch (AccessControlException e) {
-                                System.err.println("Warning: " + OSXFile.class + " access controller denied loading library \"" + libraryName + "\". " + e);
-                                success = false;
-                            } catch (Throwable e) {
-                                e.printStackTrace();
-                                System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + libraryName + "\". " + e);
-                                success = false;
+                            // Try to load 64-bit libraries if possible
+                            String[] libraryNames;
+                            String osArch = System.getProperty("os.arch");
+                            if (osArch.equals("x86_64")) {
+                                libraryNames = new String[]{"quaqua64"};
+                            } else {
+                                libraryNames = new String[]{"quaqua64", "quaqua"};
+                            }
+                            for (int i = 0; i < libraryNames.length; i++) {
+                                libraryName = libraryNames[i];
+                                try {
+                                    System.loadLibrary(libraryName);
+                                    success = true;
+                                    break;
+                                } catch (UnsatisfiedLinkError e) {
+                                    System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                } catch (AccessControlException e) {
+                                    System.err.println("Warning: " + OSXFile.class + " access controller denied loading library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                } catch (Throwable e) {
+                                    e.printStackTrace();
+                                    System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
+                                    success = false;
+                                }
                             }
                         }
 
@@ -102,9 +110,14 @@ public class OSXFile {
                         isNativeCodeAvailable = Boolean.valueOf(success);
                     }
                 }
+
             }
+
+
         }
         return isNativeCodeAvailable == Boolean.TRUE;
+
+
     }
 
     /** Prevent instance creation. */
@@ -126,35 +139,53 @@ public class OSXFile {
     public static File getAbsoluteFile(File f) {
         if (!f.isAbsolute()) {
             f = new File(QuaquaManager.getProperty("user.home") + File.separatorChar + f.getPath());
-        }
-        // Windows does not support relative path segments, so we quit here
+
+
+        } // Windows does not support relative path segments, so we quit here
         if (File.separatorChar == '\\') {
             return f;
-        }
 
-        // The following code assumes that absolute paths start with a
+
+        } // The following code assumes that absolute paths start with a
         // File.separatorChar.
         StringBuffer buf = new StringBuffer(f.getPath().length());
+
+
         int skip = 0;
-        for (File i = f; i != null; i = i.getParentFile()) {
+
+
+        for (File i = f; i
+                != null; i = i.getParentFile()) {
             String name = i.getName();
+
+
             if (name.equals(".")) {
                 if (skip > 0) {
                     skip--;
+
+
                 }
             } else if (name.equals("..")) {
                 skip++;
+
+
             } else {
                 if (skip > 0) {
                     skip--;
+
+
                 } else {
                     buf.insert(0, name);
                     buf.insert(0, File.separatorChar);
+
+
                 }
             }
         }
 
         return f.getPath().equals(buf.toString()) ? f : new File(buf.toString());
+
+
     }
 
     /**
@@ -162,6 +193,8 @@ public class OSXFile {
      */
     public static boolean canWorkWithAliases() {
         return isNativeCodeAvailable();
+
+
     }
 
     /**
@@ -170,8 +203,12 @@ public class OSXFile {
     public static int getFileType(File f) {
         if (isNativeCodeAvailable()) {
             return nativeGetFileType(f.getPath());
+
+
         } else {
             return (f.isDirectory()) ? 1 : ((f.isFile()) ? 0 : -1);
+
+
         }
     }
 
@@ -186,9 +223,15 @@ public class OSXFile {
     public static File resolveAlias(File alias, boolean noUI) {
         if (isNativeCodeAvailable()) {
             String path = nativeResolveAlias(alias.getPath(), noUI);
+
+
             return path == null ? null : new File(path);
+
+
         } else {
             return alias;
+
+
         }
     }
 
@@ -205,8 +248,12 @@ public class OSXFile {
     public static int resolveAliasType(File alias, boolean noUI) {
         if (isNativeCodeAvailable()) {
             return nativeResolveAliasType(alias.getPath(), noUI);
+
+
         } else {
             return (alias.isFile()) ? 0 : ((alias.isDirectory()) ? 1 : -1);
+
+
         }
     }
 
@@ -218,8 +265,12 @@ public class OSXFile {
     public static byte[] toSerializedAlias(File f) {
         if (isNativeCodeAvailable()) {
             return nativeToSerializedAlias(f.getPath());
+
+
         } else {
             return null;
+
+
         }
     }
 
@@ -233,9 +284,15 @@ public class OSXFile {
     public static File resolveAlias(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
             String path = nativeResolveAlias(serializedAlias, noUI);
+
+
             return (path == null) ? null : new File(path);
+
+
         } else {
             return null;
+
+
         }
     }
 
@@ -252,8 +309,12 @@ public class OSXFile {
     public static int resolveAliasType(byte[] serializedAlias, boolean noUI) {
         if (isNativeCodeAvailable()) {
             return nativeResolveAliasType(serializedAlias, noUI);
+
+
         } else {
             return -1;
+
+
         }
     }
 
@@ -262,6 +323,8 @@ public class OSXFile {
      */
     public static boolean canWorkWithLabels() {
         return isNativeCodeAvailable();
+
+
     }
 
     /**
@@ -273,8 +336,12 @@ public class OSXFile {
     public static int getLabel(File f) {
         if (isNativeCodeAvailable() && f != null) {
             return nativeGetLabel(f.getPath());
+
+
         } else {
             return -1;
+
+
         }
     }
 
@@ -288,7 +355,12 @@ public class OSXFile {
     public static Color getLabelColor(int label, int type) {
         if (labelColors == null) {
             synchronized (OSXFile.class) {
-                if (labelColors == null) {
+
+
+
+
+                if (labelColors
+                        == null) {
                     /* We use constants here, because the color values returned by the Carbon
                      * API do not match the colors used by the Finder.
                      */
@@ -321,9 +393,14 @@ public class OSXFile {
                     }
                 }
             }
+
         }
 
+
+
         return (label == -1) ? null : labelColors[label][type];
+
+
     }
 
     /**
@@ -337,8 +414,12 @@ public class OSXFile {
             try {
                 byte[] tiffData = nativeGetIconImage(file.getPath(), size);
 
+
+
                 if (tiffData == null) {
                     return null;
+
+
                 }
 
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
@@ -347,8 +428,12 @@ public class OSXFile {
 
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
+
+
                 if (rImg instanceof BufferedImage) {
                     image = (BufferedImage) rImg;
+
+
                 } else {
                     Raster r = rImg.getData();
                     WritableRaster wr = WritableRaster.createWritableRaster(
@@ -359,19 +444,27 @@ public class OSXFile {
                             wr,
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
-                }
 
-                // Scale the image
+
+                } // Scale the image
                 if (image.getWidth() != size) {
                     image = Images.toBufferedImage(image.getScaledInstance(size, size, BufferedImage.SCALE_SMOOTH));
+
+
                 }
                 return image;
 
+
+
             } catch (IOException ex) {
                 return null;
+
+
             }
         } else {
             return null;
+
+
         }
     }
 
@@ -388,8 +481,12 @@ public class OSXFile {
             try {
                 byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getPath(), size);
 
+
+
                 if (tiffData == null) {
                     return null;
+
+
                 }
 
                 TIFFImageDecoder decoder = new TIFFImageDecoder(new MemoryCacheSeekableStream(new ByteArrayInputStream(tiffData)),
@@ -397,8 +494,12 @@ public class OSXFile {
 
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
+
+
                 if (rImg instanceof BufferedImage) {
                     image = (BufferedImage) rImg;
+
+
                 } else {
                     Raster r = rImg.getData();
                     WritableRaster wr = WritableRaster.createWritableRaster(r.getSampleModel(), null);
@@ -407,13 +508,21 @@ public class OSXFile {
                             wr,
                             rImg.getColorModel().isAlphaPremultiplied(),
                             null);
+
+
                 }
                 return image;
+
+
             } catch (IOException ex) {
                 return null;
+
+
             }
         } else {
             return null;
+
+
         }
     }
 
@@ -423,6 +532,8 @@ public class OSXFile {
      */
     public static Icon getIcon(File file, int size) {
         return new ImageIcon(getIconImage(file, size));
+
+
     }
 
     /**
@@ -430,6 +541,8 @@ public class OSXFile {
      */
     public static Icon getQuickLookThumbnail(File file, int size) {
         return new ImageIcon(getQuickLookThumbnailImage(file, size));
+
+
     }
 
     /**
@@ -441,22 +554,34 @@ public class OSXFile {
     public static String getKindString(File file) {
         if (isNativeCodeAvailable() && file != null) {
             return nativeGetKindString(file.getPath());
+
+
         } else {
             return null;
+
+
         }
     }
 
     public static boolean isTraversable(File file) {
         if (file == null) {
             return false;
+
+
         } else if (isNativeCodeAvailable()) {
             int flags = nativeGetBasicItemInfoFlags(file.getPath());
             //   kLSItemInfoIsPlainFile = 0x00000001,
             //   kLSItemInfoIsPackage = 0x00000002,
             //   kLSItemInfoIsContainer = 0x00000008
+
+
             return (flags & (0x1 | 0x2 | 0x8)) == 8;
+
+
         } else {
             return file.isDirectory();
+
+
         }
     }
 
@@ -599,8 +724,12 @@ public class OSXFile {
     public static String getDisplayName(File f) {
         if (isNativeCodeAvailable()) {
             return nativeGetDisplayName(f.getPath());
+
+
         } else {
             return f.getName();
+
+
         }
     }
 
