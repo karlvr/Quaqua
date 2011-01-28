@@ -2075,7 +2075,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         @Override
         public String toString() {
-            StringBuffer buf = new StringBuffer();
+            StringBuilder buf = new StringBuilder();
             buf.append('{');
             for (int i = 0, n = getSize(); i < n; i++) {
                 if (i != 0) {
