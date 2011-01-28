@@ -11,8 +11,8 @@
 
 package test;
 
-import java.awt.event.*;
-import javax.swing.event.*;
+import javax.swing.JComponent;
+import javax.swing.JList;
 
 /**
  * ListTest.
@@ -26,8 +26,16 @@ public class ListTest extends javax.swing.JPanel {
     public ListTest() {
         initComponents();
         stripedList.putClientProperty("Quaqua.List.style","striped");
+       
         disabledList.setEnabled(false);
         disabledList.setSelectedIndex(1);
+        verticalRadio.putClientProperty("layoutOrientation", JList.VERTICAL);
+        hwrapRadio.putClientProperty("layoutOrientation", JList.HORIZONTAL_WRAP);
+        vwrapRadio.putClientProperty("layoutOrientation", JList.VERTICAL_WRAP);
+
+        list.setVisibleRowCount(0);
+        stripedList.setVisibleRowCount(0);
+        disabledList.setVisibleRowCount(0);
     }
     
     /** This method is called from within the constructor to
@@ -39,6 +47,7 @@ public class ListTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        layoutOrientationGroup = new javax.swing.ButtonGroup();
         jScrollPane2 = new javax.swing.JScrollPane();
         list = new javax.swing.JList();
         jLabel5 = new javax.swing.JLabel();
@@ -50,12 +59,17 @@ public class ListTest extends javax.swing.JPanel {
         jScrollPane9 = new javax.swing.JScrollPane();
         disabledList = new javax.swing.JList();
         disabled = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        verticalRadio = new javax.swing.JRadioButton();
+        hwrapRadio = new javax.swing.JRadioButton();
+        vwrapRadio = new javax.swing.JRadioButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
         list.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Apple", "Banana", "Ravioli", "Pizza" };
+            String[] strings = { "Apple", "Banana", "Cantaloupe", "Cherry", "Grape", "Lemon", "Mango", "Melon", "Orange", "Peach", "Pear", "Pineapple", "Plum", "Strawberry", " " };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -76,13 +90,13 @@ public class ListTest extends javax.swing.JPanel {
         add(jLabel5, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator10, gridBagConstraints);
 
         stripedList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Apple", "Banana", "Ravioli", "Pizza", "Basketball", "Soccer", "Football", "Hockey", "Blue", "Violet", "Red", "Yellow" };
+            String[] strings = { "Agnolotti", "Bavette", "Cannelloni", "Cappellini", "Conchiglie", "Ditalini", "Eliche", "Farfalle", "Fettuccine", "Fusilli", "Garganelli", "Gnocchi", "Lasagne", "Linguine", "Macaroni", "Orecchiette", "Orzo", "Panzarotti", "Pappardelle", "Penne", "Pizzoccheri", "Ravioli", "Rigatoni", "Spaghetti", "Tagliattelle", "Tortellini", "Trenette", "Vermicelli", "Ziti" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -103,13 +117,13 @@ public class ListTest extends javax.swing.JPanel {
         add(jLabel6, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator11, gridBagConstraints);
 
         disabledList.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Apple", "Banana", "Ravioli", "Pizza", "Basketball", "Soccer", "Football", "Hockey", "Blue", "Violet", "Red", "Yellow" };
+            String[] strings = { "Bari", "Biga", "Buccellato", "Bruschetta", "Ciabatta", "Calzone", "Casatiello", "Ciriola", "Farinata", "Focaccia", "Grissini", "Muffuletta", "Pane", "Pandoro", "Panettone", "Panino", "Penia", "Piadina", "Pita", "Pizza", "Rosetta", "Taralli", "Tortano" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });
@@ -128,21 +142,76 @@ public class ListTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 12, 0, 12);
         add(disabled, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
+        add(jSeparator1, gridBagConstraints);
+
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        layoutOrientationGroup.add(verticalRadio);
+        verticalRadio.setSelected(true);
+        verticalRadio.setText("Vertical");
+        verticalRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutOrientationRadioPerformed(evt);
+            }
+        });
+        jPanel1.add(verticalRadio);
+
+        layoutOrientationGroup.add(hwrapRadio);
+        hwrapRadio.setText("Horizontal Wrap");
+        hwrapRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutOrientationRadioPerformed(evt);
+            }
+        });
+        jPanel1.add(hwrapRadio);
+
+        layoutOrientationGroup.add(vwrapRadio);
+        vwrapRadio.setText("Vertical Wrap");
+        vwrapRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                layoutOrientationRadioPerformed(evt);
+            }
+        });
+        jPanel1.add(vwrapRadio);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void layoutOrientationRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutOrientationRadioPerformed
+       int lo= (Integer)((JComponent)evt.getSource()).getClientProperty("layoutOrientation");
+       stripedList.setLayoutOrientation(lo);
+       disabledList.setLayoutOrientation(lo);
+       list.setLayoutOrientation(lo);
+    }//GEN-LAST:event_layoutOrientationRadioPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel disabled;
     private javax.swing.JList disabledList;
+    private javax.swing.JRadioButton hwrapRadio;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
+    private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator10;
     private javax.swing.JSeparator jSeparator11;
+    private javax.swing.ButtonGroup layoutOrientationGroup;
     private javax.swing.JList list;
     private javax.swing.JList stripedList;
+    private javax.swing.JRadioButton verticalRadio;
+    private javax.swing.JRadioButton vwrapRadio;
     // End of variables declaration//GEN-END:variables
     
 }
