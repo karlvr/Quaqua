@@ -11,6 +11,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.PaintableColor;
+import ch.randelshofer.quaqua.util.Methods;
 import java.applet.Applet;
 import java.awt.AWTEvent;
 import java.awt.Color;
@@ -37,6 +38,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -64,6 +67,14 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             "javax.swing.plaf.basic.BasicPopupMenuUI.MenuKeyboardHelper");
     private transient PopupMenuListener popupMenuListener = null;
     private MenuKeyListener menuKeyListener = null;
+    /**
+     * Special mask for the UngrabEvent events, in addition to the
+     * public masks defined in AWTEvent.  Should be used as the mask
+     * value for Toolkit.addAWTEventListener.
+     * Copied here, because sun.awt.SunToolkit.GRAB_EVENT_MASK is only available
+     * from J2SE6 onwards.
+     */
+    public static final int GRAB_EVENT_MASK = 0x80000000;
 
     public static ComponentUI createUI(JComponent x) {
         return new QuaquaPopupMenuUI();
@@ -326,7 +337,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                                     AWTEvent.MOUSE_EVENT_MASK
                                     | AWTEvent.MOUSE_MOTION_EVENT_MASK
                                     | AWTEvent.MOUSE_WHEEL_EVENT_MASK
-                                    | AWTEvent.WINDOW_EVENT_MASK | sun.awt.SunToolkit.GRAB_EVENT_MASK);
+                                    | AWTEvent.WINDOW_EVENT_MASK | GRAB_EVENT_MASK);
                             return null;
                         }
                     });
@@ -340,7 +351,12 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                     : SwingUtilities.getWindowAncestor(invoker);
             if (grabbedWindow != null) {
                 if (tk instanceof sun.awt.SunToolkit) {
-                    ((sun.awt.SunToolkit) tk).grab(grabbedWindow);
+                    try {
+                    //((sun.awt.SunToolkit) tk).grab(grabbedWindow);
+                        Methods.invoke(tk, "grab", new Class[]{Window.class}, new Object[]{grabbedWindow});
+                    } catch (NoSuchMethodException ex) {
+                        //ex.printStackTrace();
+                    }
                 } else {
                     grabbedWindow.addComponentListener(this);
                     grabbedWindow.addWindowListener(this);
