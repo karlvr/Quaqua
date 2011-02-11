@@ -15,6 +15,7 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
+import java.awt.event.MouseWheelListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
@@ -665,5 +666,7 @@ public class QuaquaPopupFactory extends PopupFactory {
                 c = null;
             }
         }
+
+
     }
 }
