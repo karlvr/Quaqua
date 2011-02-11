@@ -1,7 +1,7 @@
 /*
- * @(#)Methods.java  1.4.1  2008-03-16
+ * @(#)Methods.java  
  *
- * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2005-2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -11,7 +11,10 @@
 
 package ch.randelshofer.quaqua.util;
 
+import java.awt.AWTEvent;
 import java.lang.reflect.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 /**
@@ -19,15 +22,10 @@ import javax.swing.UIManager;
  * java.lang.reflect.
  *
  * @author  Werner Randelshofer
- * @version 1.4.1 2008-03-16 Don't print stack trace in method invokeIfExistsWithEnum. 
- * <br>1.4 2007-01-17 Added additional newInstance method.
- * <br>1.3.1 2006-09-18 Fixed javadoc warnings.
- * <br>1.2 2006-08-20 Additional invokeIfExists method added.
- * <br>1.2 2006-05-07 Added invokeNew method.
- * <br>1.1 2006-02-18 Added more convenience methods.
- * <br>1.0 September 24, 2005 Created.
+ * @version $Id$
  */
 public class Methods {
+
     /**
      * Prevent instance creation.
      */
@@ -529,5 +527,15 @@ public class Methods {
         
         
     };
+    public static boolean instanceOf(AWTEvent ev, String clazz) {
+        if (ev==null) return false;
+            Class aClass;
+        try {
+            aClass = Class.forName(clazz);
+    return        aClass.isAssignableFrom(ev.getClass());
+        } catch (ClassNotFoundException ex) {
+            return false;
+        }
+    }
     
 }
