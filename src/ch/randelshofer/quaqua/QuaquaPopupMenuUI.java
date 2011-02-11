@@ -402,7 +402,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
         }
 
         public void eventDispatched(AWTEvent ev) {
-            if (ev instanceof sun.awt.UngrabEvent) {
+            if (Methods.instanceOf(ev,"sun.awt.UngrabEvent")) {
                 // Popup should be canceled in case of ungrab event
                 cancelPopupMenu();
                 return;
