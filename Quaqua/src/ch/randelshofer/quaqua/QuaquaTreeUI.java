@@ -531,7 +531,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         boolean isSideBar = isSideBar();
 
         if (isSideBar) {
-            return totalChildIndent * (Math.max(1, depth - 2) + depthOffset);
+            return totalChildIndent * (Math.max(1, depth - (tree.isRootVisible()?2:1)) + depthOffset);
         } else {
             return totalChildIndent * (depth + depthOffset);
         }
@@ -1064,8 +1064,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         boolean isSideBar = isSideBar();
         if (isSideBar && component instanceof JLabel) {
             JLabel label = (JLabel) component;
-            boolean isTopLevel = path.getPathCount() == (isRootVisible() ? 1
-                    : 2);
+            boolean isTopLevel = path.getPathCount() == (isRootVisible() ? 1 : 2);
 
             label.putClientProperty("Quaqua.Label.style",
                     isTopLevel ? isRowSelected ? (isActive ? "categorySelected" : "categoryInactiveSelected")
