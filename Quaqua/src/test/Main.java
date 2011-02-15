@@ -16,6 +16,7 @@ import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.AccessControlException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import javax.swing.*;
@@ -83,6 +84,11 @@ public class Main extends javax.swing.JPanel {
         } catch (AccessControlException e) {
             // can't do anything about this
         }
+
+        // Add Quaqua to the lafs
+ArrayList<LookAndFeelInfo> infos=  new ArrayList<LookAndFeelInfo>( Arrays.asList(     UIManager.getInstalledLookAndFeels()));
+infos.add(new LookAndFeelInfo("Quaqua", QuaquaManager.getLookAndFeelClassName()));
+UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size()]));
 
         // Turn on look and feel decoration when not running on Mac OS X or Darwin.
         // This will still not look pretty, because we haven't got cast shadows

@@ -18,7 +18,8 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
-
+import javax.swing.plaf.basic.BasicPopupMenuUI;
+import sun.awt.AppContext;
 
 /**
  * The BasicQuaquaLookAndFeel contains the look and feel properties that are
@@ -28,6 +29,7 @@ import java.security.*;
  * @version $Id$
  */
 public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
+
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
@@ -78,6 +80,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
         installKeyboardFocusManager();
         installPopupFactory();
+        installMouseGrabber();
 
         return table;
     }
@@ -1398,7 +1401,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "javax.swing.plaf.FontUIResource",
                 null,
                 new Object[]{baseSystemFont.deriveFont(fontPlain, nine)});
-        
+
         // An emphasized mini system font (Lucida Grande Bold 9 pt) is available for
         // cases in which the emphasized small system font is too large.
         ///Object emphasizedMiniSystemFont = new UIDefaults.ProxyLazyValue(
@@ -2237,6 +2240,50 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         }
     }
 
+    protected void installMouseGrabber() {
+        AppContext context = AppContext.getAppContext();
+        synchronized (QuaquaPopupMenuUI.MOUSE_GRABBER_KEY) {
+            Object mouseGrabber = context.get(
+                    QuaquaPopupMenuUI.MOUSE_GRABBER_KEY);
+            if (mouseGrabber == null) {
+                mouseGrabber = new QuaquaPopupMenuUI.MouseGrabber();
+                context.put(QuaquaPopupMenuUI.MOUSE_GRABBER_KEY, mouseGrabber);
+            }
+        }
+        synchronized (QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY) {
+            Object helper =
+                    context.get(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY);
+            if (helper == null) {
+                helper = new QuaquaPopupMenuUI.MenuKeyboardHelper();
+                context.put(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY, helper);
+                MenuSelectionManager msm = MenuSelectionManager.defaultManager();
+                msm.addChangeListener((QuaquaPopupMenuUI.MenuKeyboardHelper) helper);
+            }
+        }
+    }
+
+    protected void uninstallMouseGrabber() {
+        AppContext context = AppContext.getAppContext();
+        synchronized (QuaquaPopupMenuUI.MOUSE_GRABBER_KEY) {
+            Object mouseGrabber = context.get(
+                    QuaquaPopupMenuUI.MOUSE_GRABBER_KEY);
+            if (mouseGrabber instanceof QuaquaPopupMenuUI.MouseGrabber) {
+                ((QuaquaPopupMenuUI.MouseGrabber) mouseGrabber).uninstall();
+                context.put(QuaquaPopupMenuUI.MOUSE_GRABBER_KEY, null);
+            }
+        }
+        synchronized (QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY) {
+            Object helper =
+                    context.get(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY);
+            if (helper instanceof QuaquaPopupMenuUI.MenuKeyboardHelper) {
+                context.put(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY, null);
+                ((QuaquaPopupMenuUI.MenuKeyboardHelper) helper).uninstall();
+                MenuSelectionManager msm = MenuSelectionManager.defaultManager();
+                msm.removeChangeListener((QuaquaPopupMenuUI.MenuKeyboardHelper) helper);
+            }
+        }
+    }
+
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
@@ -2304,6 +2351,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     public void uninitialize() {
         uninstallPopupFactory();
         uninstallKeyboardFocusManager();
+        uninstallMouseGrabber();
         super.uninitialize();
     }
 
