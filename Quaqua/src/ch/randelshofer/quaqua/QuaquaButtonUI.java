@@ -112,6 +112,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style != null && style.equals("help")) {
             Insets insets = c.getInsets();
+            if (insets == null) {
+                insets = new Insets(0, 0, 0, 0);
+            }
             UIManager.getIcon("Button.helpIcon").paintIcon(c, g, insets.left, insets.top);
             return;
         }
@@ -332,7 +335,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         if (style.equals("help")) {
             Icon helpIcon = UIManager.getIcon("Button.helpIcon");
             Insets insets = b.getInsets();
-
+            if (insets == null) {
+                insets = new Insets(0, 0, 0, 0);
+            }
             return new Dimension(
                     helpIcon.getIconWidth() + insets.left + insets.right,
                     helpIcon.getIconHeight() + insets.top + insets.bottom);
@@ -368,6 +373,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
         //if (b.isBorderPainted()) {
         Insets insets = b.getInsets();
+        if (insets==null) insets=new Insets(0,0,0,0);
         r.width += insets.left + insets.right;
         r.height += insets.top + insets.bottom;
         //}
@@ -456,7 +462,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
         FontMetrics fm = c.getFontMetrics(c.getFont());
         Insets insets = c.getInsets(viewInsets);
-
+        if (insets==null) insets=new Insets(0,0,0,0);
         viewR.x = insets.left;
         viewR.y = insets.top;
         viewR.width = width - (insets.left + insets.right);
