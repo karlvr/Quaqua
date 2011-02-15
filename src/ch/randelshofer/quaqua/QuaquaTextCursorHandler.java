@@ -92,11 +92,15 @@ public class QuaquaTextCursorHandler implements MouseMotionListener, KeyListener
 
     public void keyPressed(KeyEvent e) {
         if (e.getSource() != activeComponent) {
-            if (activeComponent != null) {
-                showCursor(activeComponent);
+            if (e.getSource() instanceof JTextComponent) {
+                if (activeComponent != null) {
+                    showCursor(activeComponent);
+                }
+                activeComponent = (JTextComponent) e.getSource();
+                hideCursor(activeComponent);
+            } else {
+                activeComponent = null;
             }
-            activeComponent = (JTextComponent) e.getSource();
-            hideCursor(activeComponent);
         }
     }
 
@@ -106,7 +110,7 @@ public class QuaquaTextCursorHandler implements MouseMotionListener, KeyListener
     /** Hides the cursor. */
     private void hideCursor(JTextComponent c) {
         if (c.isEditable()) {
-        c.setCursor(invisibleCursor);
+            c.setCursor(invisibleCursor);
         }
     }
 
