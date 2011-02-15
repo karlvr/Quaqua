@@ -38,8 +38,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -95,25 +93,6 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
         }
         popupMenu.addMenuKeyListener(menuKeyListener);
 
-        AppContext context = AppContext.getAppContext();
-        synchronized (MOUSE_GRABBER_KEY) {
-            MouseGrabber mouseGrabber = (MouseGrabber) context.get(
-                    MOUSE_GRABBER_KEY);
-            if (mouseGrabber == null) {
-                mouseGrabber = new MouseGrabber();
-                context.put(MOUSE_GRABBER_KEY, mouseGrabber);
-            }
-        }
-        synchronized (MENU_KEYBOARD_HELPER_KEY) {
-            MenuKeyboardHelper helper =
-                    (MenuKeyboardHelper) context.get(MENU_KEYBOARD_HELPER_KEY);
-            if (helper == null) {
-                helper = new MenuKeyboardHelper();
-                context.put(MENU_KEYBOARD_HELPER_KEY, helper);
-                MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-                msm.addChangeListener(helper);
-            }
-        }
     }
 
     @Override
@@ -318,7 +297,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             }
         }
 
-        void uninstall() {
+        public void uninstall() {
             synchronized (QuaquaPopupMenuUI.MOUSE_GRABBER_KEY) {
                 MenuSelectionManager.defaultManager().removeChangeListener(this);
                 ungrabWindow();
