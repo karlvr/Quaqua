@@ -377,7 +377,7 @@ public class BinaryPListParser {
             elem.setContent(Base64.encodeBytes((byte[]) object));
         } else if (object instanceof XMLGregorianCalendar) {
             elem.setName("date");
-            elem.setContent(((XMLGregorianCalendar) object).toXMLFormat()+"Z");
+            elem.setContent(((XMLGregorianCalendar) object).toXMLFormat() + "Z");
         } else if (object instanceof BPLUid) {
             elem.setName("UID");
             elem.setContent(Integer.toString(((BPLUid) object).getNumber()));
@@ -733,9 +733,9 @@ public class BinaryPListParser {
      */
     private static XMLGregorianCalendar fromTimerInterval(double timerInterval) {
         GregorianCalendar gc = new GregorianCalendar();
-        gc.setTime(new Date(TIMER_INTERVAL_TIMEBASE + (long) (1000 * timerInterval)));
+        gc.setTime(new Date(TIMER_INTERVAL_TIMEBASE + (long) timerInterval * 1000L));
         XMLGregorianCalendar xmlgc = getDatatypeFactory().newXMLGregorianCalendar(gc);
-                                    xmlgc.setFractionalSecond(null);
+        xmlgc.setFractionalSecond(null);
         xmlgc.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
         return xmlgc;
     }
