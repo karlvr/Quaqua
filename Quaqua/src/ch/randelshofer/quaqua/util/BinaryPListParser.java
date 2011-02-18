@@ -16,6 +16,10 @@ import java.io.*;
 import java.math.BigInteger;
 import java.util.*;
 import java.text.*;
+import javax.xml.datatype.DatatypeConfigurationException;
+import javax.xml.datatype.DatatypeConstants;
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.XMLGregorianCalendar;
 
 /**
  * Reads a binary PList file and returns it as a NanoXML XMLElement.
@@ -37,9 +41,6 @@ import java.text.*;
  * dictionaries can contain objects not supported by the architecture, but are
  * then not property lists, and cannot be saved and restored with the various
  * property list methods.)"
- * <p>
- * XXX - This implementation can not read date values. Date values will always
- * have the current date.
  *
  * @see ch.randelshofer.quaqua.ext.nanoxml.XMLElement
  *
@@ -49,6 +50,10 @@ import java.text.*;
 public class BinaryPListParser {
 
     private final static boolean DEBUG = false;
+    /** Time interval based dates are measured in seconds from 2001-01-01. */
+    private final static long TIMER_INTERVAL_TIMEBASE = new GregorianCalendar(2001, 0, 1, 1, 0, 0).getTimeInMillis();
+    /** Factory for generating XML data types. */
+    private static DatatypeFactory datatypeFactory;
 
     /* Description of the binary plist format derived from
      * http://cvs.opendarwin.org/cgi-bin/cvsweb.cgi/~checkout~/src/CoreFoundation/Parsing.subproj/CFBinaryPList.c?rev=1.1.1.3&content-type=text/plain
@@ -370,10 +375,9 @@ public class BinaryPListParser {
         } else if (object instanceof byte[]) {
             elem.setName("data");
             elem.setContent(Base64.encodeBytes((byte[]) object));
-        } else if (object instanceof Date) {
+        } else if (object instanceof XMLGregorianCalendar) {
             elem.setName("date");
-            DateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-            elem.setContent(format.format((Date) object));
+            elem.setContent(((XMLGregorianCalendar) object).toXMLFormat()+"Z");
         } else if (object instanceof BPLUid) {
             elem.setName("UID");
             elem.setContent(Integer.toString(((BPLUid) object).getNumber()));
@@ -663,7 +667,7 @@ public class BinaryPListParser {
 
     private void parseUID(DataInputStream in, int count) throws IOException {
         if (count > 4) {
-            throw new IOException("parseUID: unsupported byte count: "+count);
+            throw new IOException("parseUID: unsupported byte count: " + count);
         }
         byte[] uid = new byte[count];
         in.readFully(uid);
@@ -708,10 +712,7 @@ public class BinaryPListParser {
      *  date	0011 0011	...		// 8 byte float follows, big-endian bytes
      */
     private void parseDate(DataInputStream in) throws IOException {
-        // XXX - This does not yield a date :(
-        double date = in.readDouble();
-        //objectTable.add(new Date((long) date));
-        objectTable.add(new Date());
+        objectTable.add(fromTimerInterval(in.readDouble()));
     }
 
     /**
@@ -724,5 +725,32 @@ public class BinaryPListParser {
         }
         String str = new String(buf);
         objectTable.add(str);
+    }
+
+    //
+    /** Timer interval based dates are measured in seconds from 1/1/2001.
+     * Timer intervals have no time zone.
+     */
+    private static XMLGregorianCalendar fromTimerInterval(double timerInterval) {
+        GregorianCalendar gc = new GregorianCalendar();
+        gc.setTime(new Date(TIMER_INTERVAL_TIMEBASE + (long) (1000 * timerInterval)));
+        XMLGregorianCalendar xmlgc = getDatatypeFactory().newXMLGregorianCalendar(gc);
+                                    xmlgc.setFractionalSecond(null);
+        xmlgc.setTimezone(DatatypeConstants.FIELD_UNDEFINED);
+        return xmlgc;
+    }
+
+    /** Gets the factory for XML data types. */
+    private static DatatypeFactory getDatatypeFactory() {
+        if (datatypeFactory == null) {
+            try {
+                datatypeFactory = DatatypeFactory.newInstance();
+            } catch (DatatypeConfigurationException ex) {
+                InternalError ie = new InternalError("Can't create XML datatype factory.");
+                ie.initCause(ex);
+                throw ie;
+            }
+        }
+        return datatypeFactory;
     }
 }
