@@ -35,6 +35,39 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
+  <h3>Version 7.4<br />
+    <font size="-1">2011-02-27</font></h3>
+  <p>&nbsp;</p>
+  <h4>Enhancements</h4>
+  <p>JLabel / JCheckBox</p>
+  <ul>
+    <li>Adds support for the client property &quot;Quaqua.Label.style&quot;.</li>
+  </ul>
+  <p>BinaryPListParser</p>
+  <ul>
+    <li>BinaryPListParser can now parse dates.</li>
+  </ul>
+  <p>General</p>
+  <ul>
+    <li>Quaqua can now load its JNI-libs when running on OpenJDK 7.</li>
+  </ul>
+  <h4>Fixes</h4>
+  <p>JButton</p>
+  <ul>
+    <li>Issue 122: Fixes a NullPointerException when switching from Nimbus L&amp;F to Quaqua L&amp;F.</li>
+  </ul>
+  <p>JPopupMenu</p>
+  <ul>
+    <li>Issue 125: Mouse wheel events on popup menus do not close the popup menu anymore.</li>
+  </ul>
+  <p>JTextComponent</p>
+  <ul>
+    <li>Issue 130: Fixes a ClassCastException in QuaquaTextCursorHandler.</li>
+  </ul>
+  <p>QuaquaLookAndFeel</p>
+  <ul>
+    <li>The Quaqua mouse grabbers and keyboard grabbers are now uninstalled when the QuaquaLookAndFeel is uninstalled.</li>
+  </ul>
   <h3>Version 7.3.4<br />
     <font size="-1">2010-12-28</font></h3>
   <p>Fixes</p>
