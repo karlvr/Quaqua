@@ -2229,35 +2229,41 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         }
     }
 
+    /** Installs the QuaquaPopupFactory if the PopupMenuUI is included. */
     protected void installPopupFactory() {
-        if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
-            try {
-                PopupFactory.setSharedInstance(new QuaquaPopupFactory());
-            } catch (SecurityException ex) {
-                System.err.print("Warning: " + this + " couldn't install QuaquaPopupFactory.");
-                //ex.printStackTrace();
+        if (isUIIncluded("PopupMenuUI")) {
+            if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
+                try {
+                    PopupFactory.setSharedInstance(new QuaquaPopupFactory());
+                } catch (SecurityException ex) {
+                    System.err.print("Warning: " + this + " couldn't install QuaquaPopupFactory.");
+                    //ex.printStackTrace();
+                }
             }
         }
     }
 
+    /** Installs the QuaquaPopupMenuUI.MouseGrabber if the PopupMenuUI is included. */
     protected void installMouseGrabber() {
-        AppContext context = AppContext.getAppContext();
-        synchronized (QuaquaPopupMenuUI.MOUSE_GRABBER_KEY) {
-            Object mouseGrabber = context.get(
-                    QuaquaPopupMenuUI.MOUSE_GRABBER_KEY);
-            if (mouseGrabber == null) {
-                mouseGrabber = new QuaquaPopupMenuUI.MouseGrabber();
-                context.put(QuaquaPopupMenuUI.MOUSE_GRABBER_KEY, mouseGrabber);
+        if (isUIIncluded("PopupMenuUI")) {
+            AppContext context = AppContext.getAppContext();
+            synchronized (QuaquaPopupMenuUI.MOUSE_GRABBER_KEY) {
+                Object mouseGrabber = context.get(
+                        QuaquaPopupMenuUI.MOUSE_GRABBER_KEY);
+                if (mouseGrabber == null) {
+                    mouseGrabber = new QuaquaPopupMenuUI.MouseGrabber();
+                    context.put(QuaquaPopupMenuUI.MOUSE_GRABBER_KEY, mouseGrabber);
+                }
             }
-        }
-        synchronized (QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY) {
-            Object helper =
-                    context.get(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY);
-            if (helper == null) {
-                helper = new QuaquaPopupMenuUI.MenuKeyboardHelper();
-                context.put(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY, helper);
-                MenuSelectionManager msm = MenuSelectionManager.defaultManager();
-                msm.addChangeListener((QuaquaPopupMenuUI.MenuKeyboardHelper) helper);
+            synchronized (QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY) {
+                Object helper =
+                        context.get(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY);
+                if (helper == null) {
+                    helper = new QuaquaPopupMenuUI.MenuKeyboardHelper();
+                    context.put(QuaquaPopupMenuUI.MENU_KEYBOARD_HELPER_KEY, helper);
+                    MenuSelectionManager msm = MenuSelectionManager.defaultManager();
+                    msm.addChangeListener((QuaquaPopupMenuUI.MenuKeyboardHelper) helper);
+                }
             }
         }
     }
@@ -2284,6 +2290,34 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         }
     }
 
+    /** Use this to test if an UI is included.
+     * An UI may be implicitly or explicitly included, or may be explicitly 
+     * excluded.  
+     * 
+     * @param ui For example "LabelUI".
+     * @return True if UI is included.
+     */
+    protected boolean isUIIncluded(String ui) {
+        Set included = QuaquaManager.getIncludedUIs();
+        Set excluded = QuaquaManager.getExcludedUIs();
+
+        if (excluded == null) {
+            // everyting is implicitly excluded
+            return false;
+        } else if (included == null && excluded.isEmpty()) {
+            // everyting is implicitly included, nothing is explicitly excluded
+            return true;
+        } else if (included != null && excluded.isEmpty()) {
+            // something is explicitly included, nothing is explicitly excluded
+            return included.contains(ui);
+        } else if (included == null) {
+            return !excluded.contains(ui);
+        } else {
+            // something is explicitly included, something is explicitly excluded
+            return included.contains(ui) && !excluded.contains(ui);
+        }
+    }
+
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
@@ -2296,12 +2330,12 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         Set excluded = QuaquaManager.getExcludedUIs();
 
         if (excluded == null) {
-            // everyting is excluded
+            // everyting is implicitly excluded
             return;
-        } else if (included == null && excluded.size() == 0) {
-            // everyting is included, nothing is explicitly excluded
+        } else if (included == null && excluded.isEmpty()) {
+            // everyting is implicitly included, nothing is explicitly excluded
             table.putDefaults(keyValueList);
-        } else if (included != null && excluded.size() == 0) {
+        } else if (included != null && excluded.isEmpty()) {
             // something is explicitly included, nothing is explicitly excluded
             for (int i = 0; i < keyValueList.length; i += 2) {
                 if (keyValueList[i] instanceof String) {
@@ -2321,7 +2355,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 }
             }
         } else if (included == null) {
-            // something is explicitly excluded, nothing is explicitly included
+            // everything is implicitly included, something is explicitly excluded
             for (int i = 0; i < keyValueList.length; i += 2) {
                 if (keyValueList[i] instanceof String) {
                     String name = (String) keyValueList[i];
@@ -2342,7 +2376,23 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         } else {
             // something is explicitly included, something is explicitly excluded
             for (int i = 0; i < keyValueList.length; i += 2) {
-                table.put(keyValueList[i], keyValueList[i + 1]);
+                if (keyValueList[i] instanceof String) {
+                    String name = (String) keyValueList[i];
+                    int p = name.indexOf('.');
+                    if (p == -1 && name.endsWith("UI")) {
+                        name = name.substring(0, name.length() - 2);
+                        p = 1;
+                    } else if (p != -1) {
+                        name = name.substring(0, p);
+                    }
+                    if (p == -1 || //
+                            (name.equals("Component") || included.contains(name))//
+                            && !excluded.contains(name)) {
+                        table.put(keyValueList[i], keyValueList[i + 1]);
+                    }
+                } else {
+                    table.put(keyValueList[i], keyValueList[i + 1]);
+                }
             }
         }
     }
