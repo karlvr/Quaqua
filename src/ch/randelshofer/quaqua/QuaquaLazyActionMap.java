@@ -69,7 +69,8 @@ public class QuaquaLazyActionMap extends ActionMapUIResource {
         ActionMap map = (ActionMap)UIManager.get(defaultsKey);
         if (map == null) {
             map = new QuaquaLazyActionMap(loaderClass);
-            UIManager.getLookAndFeelDefaults().put(defaultsKey, map);
+         UIDefaults uide=   UIManager.getLookAndFeelDefaults();
+         if (uide!=null) uide.put(defaultsKey, map);
         }
         return map;
     }

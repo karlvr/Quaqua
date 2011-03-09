@@ -682,6 +682,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="TextField"/>
         </java>
     </target>
+    <target depends="init" name="run Quaqua 1.6 Include ColorChooser">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+            <arg value="-include"/>
+            <arg value="ColorChooser"/>
+        </java>
+    </target>
     <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
@@ -1280,7 +1293,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 failonerror="true" fork="true" 
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
         >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="apple.laf.AquaLookAndFeel"/>
