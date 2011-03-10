@@ -20,6 +20,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 import javax.swing.event.ListSelectionListener;
+import static java.lang.Math.*;
 
 /**
  * QuaquaComboPopup.
@@ -35,7 +36,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     private JRootPane invokerRootPane;
     private boolean focusTraversalKeysEnabled;
     /** comboCellBorder is used to accommodate the cell in the combo popup. */
-    private final static Border comboCellBorder = new EmptyBorder(0,7,0,7);
+    private final static Border comboCellBorder = new EmptyBorder(0, 7, 0, 7);
 
     public QuaquaComboPopup(JComboBox cBox, QuaquaComboBoxUI qqui) {
         super(cBox);
@@ -70,7 +71,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     public void hide() {
         //System.out.println("QuaquaComboPopup@"+hashCode()+".hide()");
         super.hide();
-    //removeListenersAndResetFocus();
+        //removeListenersAndResetFocus();
     }
 
     @Override
@@ -92,9 +93,9 @@ public class QuaquaComboPopup extends BasicComboPopup {
                     focusTraversalKeysEnabled = invokerRootPane.getFocusTraversalKeysEnabled();
                     invokerRootPane.setFocusTraversalKeysEnabled(false);
 
-                /* InputMap menuInputMap = comboBox.getInputMap(popup, invokerRootPane);
-                addUIInputMap(invokerRootPane, menuInputMap);
-                addUIActionMap(invokerRootPane, menuActionMap);*/
+                    /* InputMap menuInputMap = comboBox.getInputMap(popup, invokerRootPane);
+                    addUIInputMap(invokerRootPane, menuInputMap);
+                    addUIActionMap(invokerRootPane, menuActionMap);*/
                 }
             }
         } else {
@@ -106,8 +107,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
                     // request focus by requestFocus() if it was not
                     // transferred from our popup.
                     Window cfw = KeyboardFocusManager.getCurrentKeyboardFocusManager().getFocusedWindow();
-                    if (cfw != null &&
-                            "###focusableSwingPopup###".equals(cfw.getName())) {
+                    if (cfw != null
+                            && "###focusableSwingPopup###".equals(cfw.getName())) {
                         lastFocused.requestFocus();
                     }
 
@@ -121,7 +122,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
                 //removeUIActionMap(invokerRootPane, menuActionMap);
                 invokerRootPane = null;
             }
-        // receivedKeyPressed = false;
+            // receivedKeyPressed = false;
         }
     }
 
@@ -192,7 +193,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     protected Rectangle computePopupBounds(int px, int py, int pw, int ph) {
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
-        Rectangle screenBounds;
+        Rectangle screen;
         int listWidth = getList().getPreferredSize().width;
         Insets margin = qqui.getMargin();
         boolean isTableCellEditor = isTableCellEditor();
@@ -223,7 +224,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
         // Take extended cell border into account which is used in
         // QuaquaListUI.
         Insets cellBorderInsets = comboCellBorder.getBorderInsets(this);
-        pw+=cellBorderInsets.left+cellBorderInsets.right;
+        pw += cellBorderInsets.left + cellBorderInsets.right;
 
         // Calculate the desktop dimensions relative to the combo box.
         GraphicsConfiguration gc = comboBox.getGraphicsConfiguration();
@@ -231,16 +232,16 @@ public class QuaquaComboPopup extends BasicComboPopup {
         SwingUtilities.convertPointFromScreen(p, comboBox);
         if (gc != null) {
             // Get the screen insets.
-            Insets screenInsets=toolkit.getScreenInsets(gc);
+            Insets screenInsets = toolkit.getScreenInsets(gc);
             // Note: We must create a new rectangle here, because method
             // getBounds does not return a copy of a rectangle on J2SE 1.3.
-            screenBounds = new Rectangle(gc.getBounds());
-            screenBounds.width -= (screenInsets.left + screenInsets.right);
-            screenBounds.height -= (screenInsets.top + screenInsets.bottom);
-            screenBounds.x += screenInsets.left;
-            screenBounds.y += screenInsets.top;
+            screen = new Rectangle(gc.getBounds());
+            screen.width -= (screenInsets.left + screenInsets.right);
+            screen.height -= (screenInsets.top + screenInsets.bottom);
+            screen.x += screenInsets.left;
+            screen.y += screenInsets.top;
         } else {
-            screenBounds = new Rectangle(p, toolkit.getScreenSize());
+            screen = new Rectangle(p, toolkit.getScreenSize());
         }
 
         if (isDropDown()) {
@@ -267,16 +268,41 @@ public class QuaquaComboPopup extends BasicComboPopup {
             }
         }
 
-        // Add the preferred scroll bar width, if the popup does not fit
-        // on the available rectangle.
-        Rectangle rect = new Rectangle(px-p.x,py-p.y,pw,ph);
-        if (screenBounds.height < ph) {
+        // Create rectangle with screen coordinates, fit it on the screen,
+        // convert coordinates back to local coordinate system.
+        Rectangle rect = new Rectangle(px - p.x, py - p.y, pw, ph);
+        if (screen.contains(rect)) {
+            // popup fits into screen bounds => nothing to do.
+        } else if (rect.width <= screen.width && rect.height <= screen.height) {
+            // popup intersects screen bounds but fits into screen => nudge into screen bounds.
+            if (rect.x < screen.x) {
+                rect.x = screen.x;
+            } else if (rect.x + rect.width > screen.x + screen.width) {
+                rect.x = screen.x + screen.width - rect.width;
+            }
+            if (rect.y < screen.y) {
+                rect.y = screen.y;
+            } else if (rect.y + rect.height > screen.y + screen.height) {
+                rect.y = screen.y + screen.height - rect.height;
+            }
+        } else {
+            // popup intersects is larger than screen bounds => maximize popup area
+            if (rect.height > screen.height) {
+                rect.y = screen.y;
+            }
+            if (rect.width > screen.width) {
+                rect.x = screen.x;
+            }
+            rect = screen.intersection(rect);
+        }
+        rect.x += p.x;
+        rect.y += p.y;
+
+        // Add the preferred scroll bar width, if the popup contents does not fit
+        // into the available rectangle.
+        if (rect.height < ph && rect.x + rect.width < screen.x+screen.width+16) {
             rect.width += 16;
         }
-        // Compute the rectangle for the popup menu
-        rect = screenBounds.intersection(rect);
-        rect.x+=p.x;
-        rect.y+=p.y;
 
         return rect;
     }
@@ -616,8 +642,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
                 }
             } else if (propertyName == "lightWeightPopupEnabled") {
                 setLightWeightPopupEnabled(comboBox.isLightWeightPopupEnabled());
-            } else if (propertyName.equals("renderer") ||
-                    propertyName.equals(QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR)) {
+            } else if (propertyName.equals("renderer")
+                    || propertyName.equals(QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR)) {
                 updateCellRenderer(e.getNewValue().equals(Boolean.TRUE));
             } else if (propertyName.equals("JComboBox.lightweightKeyboardNavigation")) {
                 // In Java 1.3 we have to use this property to guess whether we
@@ -692,4 +718,4 @@ public class QuaquaComboPopup extends BasicComboPopup {
     //
     // end Event Listeners
     //=================================================================
-    }
+}
