@@ -2166,6 +2166,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 if (sidebarList.getSelectedValue() instanceof FileInfo) {
                     FileInfo info = (FileInfo) sidebarList.getSelectedValue();
                     File file = info.lazyGetResolvedFile();
+                    if (file==null) {
+                        // the file became unavailable
+                    } else {
                     setRootDirectory(file);
 
                     isAdjusting++;
@@ -2180,6 +2183,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                         }
                     }
                     isAdjusting--;
+                    }
                 }
             }
         }

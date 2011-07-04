@@ -359,7 +359,12 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
             String kind = info.getFileKind();
             kindText.setText(OSXFile.getKindString(file));
             if (kind == "alias") {
-                originalText.setText(toOSXPath(info.lazyGetResolvedFile()));
+                File resolvedFile = info.lazyGetResolvedFile();
+                if (resolvedFile != null) {
+                    originalText.setText(toOSXPath(resolvedFile));
+                } else {
+                    originalText.setText("");
+                }
                 originalLabel.setVisible(true);
                 originalText.setVisible(true);
             } else {
@@ -427,7 +432,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         sizeText.setText(
                 MessageFormat.format(UIManager.getString(label), new Object[]{
                     scaledLength,
-                   fileLength,
+                    fileLength,
                     paths.length
                 }));
         updatePreviewIcon();
