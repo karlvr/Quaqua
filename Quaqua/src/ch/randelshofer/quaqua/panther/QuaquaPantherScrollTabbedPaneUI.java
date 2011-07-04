@@ -798,20 +798,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     @Override
     public int tabForCoordinate(JTabbedPane pane, int x, int y) {
-        ensureCurrentLayout();
-        Point p = new Point(x, y);
-
-        if (tabsCombo.isVisible()) {
-            return -1;
-            //translatePointToTabPanel(x, y, p);
-        }
-        int tCount = tabPane.getTabCount();
-        for (int i = 0; i < tCount; i++) {
-            if (rects[i].contains(p.x, p.y)) {
-                return i;
-            }
-        }
-        return -1;
+        return getTabAtLocation(x, y);
     }
 
     /**
@@ -860,10 +847,16 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
     private int getTabAtLocation(int x, int y) {
         ensureCurrentLayout();
 
-        int tCount = tabPane.getTabCount();
-        for (int i = 0; i < tCount; i++) {
-            if (rects[i].contains(x, y)) {
-                return i;
+        if (tabsCombo.isVisible()) {
+            if (tabsCombo.contains(x - tabsCombo.getX(), y - tabsCombo.getY())) {
+                return tabsCombo.getSelectedIndex();
+            }
+        } else {
+            int tCount = tabPane.getTabCount();
+            for (int i = 0; i < tCount; i++) {
+                if (rects[i].contains(x, y)) {
+                    return i;
+                }
             }
         }
         return -1;
@@ -1661,7 +1654,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
                 // In order to allow programs to use a single component
                 // as the display for multiple tabs, we will not change
-                // the visible compnent if the currently selected tab
+                // the visible component if the currently selected tab
                 // has a null component.  This is a bit dicey, as we don't
                 // explicitly state we support this in the spec, but since
                 // programs are now depending on this, we're making it work.
@@ -2261,6 +2254,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 }                                // else nada!
             }
             updateMnemonics();
+            ((TabsComboBoxModel)tabsCombo.getModel()).stateChanged(null);
         }
     }
 
@@ -2297,8 +2291,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
                 if (model.getTabCount() > 0) {
                     fireIntervalAdded(this, 0, model.getTabCount() - 1);
                 }
+                fireContentsChanged(this, 0, model.getTabCount()-1);
             }
-            fireContentsChanged(this, -1, -1);
         }
 
         public Object getElementAt(int index) {
@@ -2351,7 +2345,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
         }
 
         public void stateChanged(ChangeEvent e) {
-            fireContentsChanged(this, -1, -1);
+                fireContentsChanged(this, 0, model.getTabCount()-1);
         }
     }
 

@@ -13,6 +13,9 @@ package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.awt.event.MouseMotionListener;
 import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,6 +38,22 @@ public class TabbedPaneTestHTML extends javax.swing.JPanel {
         scrollPane.putClientProperty("Quaqua.TabbedPaneChild.contentInsets", new Insets(0,0,0,0));
         scrollPane.putClientProperty("Quaqua.TabbedPaneChild.contentBackground", Color.white);
        // tabbedPane.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
+        MouseMotionListener mml=new MouseMotionAdapter() {
+
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                indexAtLocationLabel.setText("Index at "+e.getX()+","+e.getY()+"="+tabbedPane.indexAtLocation(e.getX(), e.getY()));
+            }
+
+        };
+        tabbedPane.addMouseMotionListener(mml);
+        for (Component c:tabbedPane.getComponents()) {
+           c.addMouseMotionListener(mml);
+            if (c instanceof Container)
+        for (Component cc:((Container)c).getComponents()) {
+            cc.addMouseMotionListener(mml);
+        }
+        }
         
     }
     
@@ -59,12 +78,14 @@ public class TabbedPaneTestHTML extends javax.swing.JPanel {
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         tabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         scrollPane = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jPanel2 = new javax.swing.JPanel();
+        indexAtLocationLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
@@ -80,13 +101,22 @@ public class TabbedPaneTestHTML extends javax.swing.JPanel {
 
         add(tabbedPane, java.awt.BorderLayout.CENTER);
 
+        jPanel2.setLayout(new java.awt.GridBagLayout());
+
+        indexAtLocationLabel.setText("Index at location x,y=>-1");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        jPanel2.add(indexAtLocationLabel, gridBagConstraints);
+
         jButton1.setText("Change Tab Titles");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 toggleLabelsPerformed(evt);
             }
         });
-        jPanel2.add(jButton1);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 1;
+        jPanel2.add(jButton1, gridBagConstraints);
 
         add(jPanel2, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
@@ -98,6 +128,7 @@ public class TabbedPaneTestHTML extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel indexAtLocationLabel;
     private javax.swing.JButton jButton1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
