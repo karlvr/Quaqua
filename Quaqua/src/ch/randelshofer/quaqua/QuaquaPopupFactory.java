@@ -15,13 +15,16 @@ import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
-import java.awt.event.MouseWheelListener;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 
 /**
  * QuaquaPopupFactory to work around a bug with heavy weight popups
  * on Java 1.4 in full screen mode.
+ * <p>
+ * This class must not be used with J2SE 6 on OS X 10.6, because it causes
+ * popups to appear behind modal dialog windows if one of the ancestor windows
+ * has "isAlwaysOnTop" set to true.
  *
  * @author Werner Randelshofer
  * @version $Id$
@@ -614,10 +617,10 @@ public class QuaquaPopupFactory extends PopupFactory {
                 int ownerY) {
             super.reset(owner, contents, ownerX, ownerY);
 
-            JWindow window = (JWindow) getComponent();
+            Window window = (Window) getComponent();
 
             window.setLocation(ownerX, ownerY);
-            window.getContentPane().add(contents, BorderLayout.CENTER);
+            window.add(contents, BorderLayout.CENTER);
             contents.invalidate();
             pack();
         }
@@ -632,6 +635,7 @@ public class QuaquaPopupFactory extends PopupFactory {
 
             if (c != null) {
                 c.show();
+
             }
         }
 

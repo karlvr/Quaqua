@@ -2232,6 +2232,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
     /** Installs the QuaquaPopupFactory if the PopupMenuUI is included. */
     protected void installPopupFactory() {
+        // Fix for issue 132: Don't install QuaquaPopupFactory, because it
+        // causes popups to appear behind dialog windows if one of the window
+        // ancestors has "alwaysOnTop" set to true.
+        /*
         if (isUIIncluded("PopupMenuUI")) {
             if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
                 try {
@@ -2241,7 +2245,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                     //ex.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
     /** Installs the QuaquaPopupMenuUI.MouseGrabber if the PopupMenuUI is included. */
