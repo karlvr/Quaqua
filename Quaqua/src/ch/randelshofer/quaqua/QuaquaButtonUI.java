@@ -388,6 +388,12 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         }
         r.width += insets.left + insets.right;
         r.height += insets.top + insets.bottom;
+
+        if (!(b.getBorder() instanceof UIResource)) {
+            Insets margin = b.getMargin();
+            r.width += margin.left + margin.right;
+            r.height += margin.top + margin.bottom;
+        }
         //}
         if (!QuaquaUtilities.isSmallSizeVariant(b) && style.equals("push")
                 && b.getIcon() == null && b.getText() != null) {
