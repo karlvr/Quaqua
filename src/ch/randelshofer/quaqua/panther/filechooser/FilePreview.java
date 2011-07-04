@@ -452,7 +452,8 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
                     public Image construct() {
                         Image o = null;
-                        if (System.getProperty("os.version").compareTo("10.6") >= 0) {
+                        if (UIManager.getBoolean("FileChooser.quickLookEnabled") &&
+                                System.getProperty("os.version").compareTo("10.6") >= 0) {
                             o = OSXFile.getQuickLookThumbnailImage(file, 128);
                         }
                         if (o == null) {

@@ -18,7 +18,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
-import javax.swing.plaf.basic.BasicPopupMenuUI;
 import sun.awt.AppContext;
 
 /**
@@ -1601,6 +1600,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
                 .toLowerCase();
         boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
+        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled","true"));
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1756,6 +1756,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             leopardDir + "FileChooser.disclosureButtonIcons.png", 10),
             //
             "FileChooser.fileHidingEnabled", isFileHidingEnabled,
+            "FileChooser.quickLookEnabled", isQuickLookEnabled,
             "FileChooser.homeFolderIcon", makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
             "FileChooser.orderByType", isOrderFilesByType,
             "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
