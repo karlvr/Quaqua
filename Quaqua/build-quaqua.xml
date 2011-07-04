@@ -708,6 +708,20 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
         </java>
     </target>
+    <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard no QuickLook">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-DQuaqua.design=snowleopard"/>
+            <jvmarg value="-DQuaqua.FileChooser.quickLookEnabled=false"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
     <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard ScreenMenuBar">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
