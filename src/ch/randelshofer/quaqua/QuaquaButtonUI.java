@@ -287,7 +287,12 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         AbstractButton b = (AbstractButton) c;
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style == null) {
-            style = "push";
+            if (b.getBorder() instanceof UIResource
+                    && b.isBorderPainted()) {
+                style = "push";
+            } else {
+                style = "plain";
+            }
         }
         if (style.equals("help")) {
             return getPreferredSize(c);
@@ -309,11 +314,6 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     }
 
     @Override
-    public Dimension getPreferredSize(JComponent c) {
-        return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
-    }
-
-    @Override
     public Dimension getMaximumSize(JComponent c) {
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style != null && style.equals("help")) {
@@ -327,10 +327,20 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return d;
     }
 
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
+        return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
+    }
+
     public static Dimension getPreferredSize(AbstractButton b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
         if (style == null) {
-            style = "push";
+            if (b.getBorder() instanceof UIResource
+                    && b.isBorderPainted()) {
+                style = "push";
+            } else {
+                style = "plain";
+            }
         }
         if (style.equals("help")) {
             Icon helpIcon = UIManager.getIcon("Button.helpIcon");
