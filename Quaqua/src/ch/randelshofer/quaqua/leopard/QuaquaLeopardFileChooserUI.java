@@ -1078,7 +1078,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             if (isAdjusting != 0) {
                 return;
             }
-            
+
             TreePath path = browser.getSelectionPath();
             if (path != null) {
                 model.lazyInvalidatePath(path);
@@ -1384,7 +1384,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
                 subtreeModel.setPathToRoot(fullPath);
                 getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                
+
                 // XXX - Bogus.
                 //       We can not set a non-traversable directory as
                 //       the current directory in a JFileChooser.
@@ -1812,9 +1812,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
                 // Only react on double click if all selected files are
                 // acceptable
-                for (TreePath tp:browser.getSelectionPaths()) {
-                    FileSystemTreeModel.Node n =(FileSystemTreeModel.Node)tp.getLastPathComponent();
-                    if (! fc.accept(n.getFile())) {
+                for (TreePath tp : browser.getSelectionPaths()) {
+                    FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) tp.getLastPathComponent();
+                    if (!fc.accept(n.getFile())) {
                         return;
                     }
                 }
@@ -1970,9 +1970,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 }
 
                 try {
-                    if (! newFolder.mkdir()) {
-                        if (! newFolder.isDirectory()) {
-                            throw new IOException("Couldn't create folder \""+newFolder.getName()+"\".");
+                    if (!newFolder.mkdir()) {
+                        if (!newFolder.isDirectory()) {
+                            throw new IOException("Couldn't create folder \"" + newFolder.getName() + "\".");
                         }
                     }
                     fc.rescanCurrentDirectory();
@@ -2209,20 +2209,26 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 if (sidebarTree.getSelectionPath().getLastPathComponent() instanceof FileInfo) {
                     FileInfo info = (FileInfo) sidebarTree.getSelectionPath().getLastPathComponent();
                     File file = info.lazyGetResolvedFile();
-                    setRootDirectory(file);
+                    if (file == null) {
+                        // The file became unavailable
 
-                    isAdjusting++;
-                    JFileChooser fc = getFileChooser();
-                    if (file.isDirectory() && fc.isTraversable(file)) {
-                        fc.setCurrentDirectory(file);
                     } else {
-                        if (fc.isMultiSelectionEnabled()) {
-                            fc.setSelectedFiles(new File[]{file});
+
+                        setRootDirectory(file);
+
+                        isAdjusting++;
+                        JFileChooser fc = getFileChooser();
+                        if (file.isDirectory() && fc.isTraversable(file)) {
+                            fc.setCurrentDirectory(file);
                         } else {
-                            fc.setSelectedFile(file);
+                            if (fc.isMultiSelectionEnabled()) {
+                                fc.setSelectedFiles(new File[]{file});
+                            } else {
+                                fc.setSelectedFile(file);
+                            }
                         }
+                        isAdjusting--;
                     }
-                    isAdjusting--;
                     /*
                     TreePath path = subtreeModel.getPathToRoot();
                     getFileSystemTreeModel().lazyInvalidatePath(path);

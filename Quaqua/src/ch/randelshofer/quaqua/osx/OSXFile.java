@@ -418,8 +418,6 @@ public class OSXFile {
 
                 if (tiffData == null) {
                     return null;
-
-
                 }
 
                 TIFFImageDecoder decoder = new TIFFImageDecoder(
@@ -429,11 +427,8 @@ public class OSXFile {
                 RenderedImage rImg = decoder.decodeAsRenderedImage(0);
                 BufferedImage image;
 
-
                 if (rImg instanceof BufferedImage) {
                     image = (BufferedImage) rImg;
-
-
                 } else {
                     Raster r = rImg.getData();
                     WritableRaster wr = WritableRaster.createWritableRaster(
@@ -531,9 +526,8 @@ public class OSXFile {
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
-        return new ImageIcon(getIconImage(file, size));
-
-
+        Image img=getIconImage(file, size);
+        return (img==null)?UIManager.getIcon("FileView.fileIcon"):new ImageIcon(img);
     }
 
     /**

@@ -252,8 +252,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                 if (!isInView) {
                     SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
                     int insertionIndex = 0;
+                   SideBarViewToModelNodeComparator comparator=new SideBarViewToModelNodeComparator();
                     while (insertionIndex < devicesNode.getChildCount()
-                            && ((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex)).compareTo(newNode) < 0) {
+                            && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
                         insertionIndex++;
                     }
                     insertNodeInto(newNode, devicesNode, insertionIndex);
@@ -629,7 +630,13 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         boolean isVisible = true;
     }
 
-    private class SidebarViewToModelNode extends Node implements Comparable {
+
+
+    /** Note: SidebaViewToModelNode must not implement Comparable and must
+     * not override equals()/hashCode(), because this confuses the layout algorithm
+     * in JTree.
+     */
+    private class SidebarViewToModelNode extends Node /*implements Comparable*/ {
 
         private FileSystemTreeModel.Node target;
 
@@ -689,7 +696,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public String toString() {
             return target.toString();
         }
-
+/*
         public int compareTo(Object o) {
             return compareTo((SidebarViewToModelNode) o);
         }
@@ -732,6 +739,37 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         @Override
         public int hashCode() {
             return getTarget() == null ? 0 : getTarget().getUserName().hashCode();
+        }*/
+    }
+     private class SideBarViewToModelNodeComparator implements Comparator<SidebarViewToModelNode> {
+
+        public int compare(SidebarViewToModelNode n1, SidebarViewToModelNode n2) {
+            FileSystemTreeModel.Node o1 = n1.getTarget();
+            FileSystemTreeModel.Node o2 = n2.getTarget();
+
+            SystemItemInfo i1 = (SystemItemInfo) systemItemsMap.get(o1.getUserName());
+            if (i1 == null && o1.getResolvedFile().getName().equals("")) {
+                i1 = (SystemItemInfo) systemItemsMap.get("Computer");
+            }
+
+            SystemItemInfo i2 = (SystemItemInfo) systemItemsMap.get(o2.getUserName());
+            if (i2 == null && o2.getResolvedFile().getName().equals("")) {
+                i2 = (SystemItemInfo) systemItemsMap.get("Computer");
+            }
+
+            if (i1 != null && i2 != null) {
+                return i1.sequenceNumber - i2.sequenceNumber;
+            }
+
+            if (i1 != null) {
+                return -1;
+            }
+            if (i2 != null) {
+                return 1;
+            }
+
+            return 0;
         }
+
     }
 }
