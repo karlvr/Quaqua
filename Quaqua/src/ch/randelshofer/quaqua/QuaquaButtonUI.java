@@ -373,7 +373,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
         //if (b.isBorderPainted()) {
         Insets insets = b.getInsets();
-        if (insets==null) insets=new Insets(0,0,0,0);
+        if (insets == null) {
+            insets = new Insets(0, 0, 0, 0);
+        }
         r.width += insets.left + insets.right;
         r.height += insets.top + insets.bottom;
         //}
@@ -462,7 +464,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
         FontMetrics fm = c.getFontMetrics(c.getFont());
         Insets insets = c.getInsets(viewInsets);
-        if (insets==null) insets=new Insets(0,0,0,0);
+        if (insets == null) {
+            insets = new Insets(0, 0, 0, 0);
+        }
         viewR.x = insets.left;
         viewR.y = insets.top;
         viewR.width = width - (insets.left + insets.right);
@@ -485,6 +489,11 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         textR.height -= fm.getHeight() - textBounds.height;
 
         bounds.setBounds(textR);
+        if (type == VisuallyLayoutable.COMPONENT_BOUNDS) {
+            if (!iconR.isEmpty()) {
+                bounds.add(iconR);
+            }
+        }
         return bounds;
     }
 }
