@@ -204,7 +204,7 @@ public class QuaquaTableHeaderUI extends BasicTableHeaderUI {
             boolean isSorted = false;
             Object rowSorter = Methods.invokeGetter(header.getTable(), "getRowSorter", null);
             List sortKeys = (List) ((rowSorter == null) ? null : Methods.invokeGetter(rowSorter, "getSortKeys", null));
-            Object sortKey = (sortKeys == null || sortKeys.size() == 0) ? null : sortKeys.get(0);
+            Object sortKey = (sortKeys == null || sortKeys.isEmpty()) ? null : sortKeys.get(0);
             int sortedColumnIndex = (sortKey == null) ? -1 : Methods.invokeGetter(sortKey, "getColumn", -1);
             isSorted = sortedColumnIndex == columnIndex;
 

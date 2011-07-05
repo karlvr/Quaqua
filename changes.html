@@ -35,6 +35,41 @@
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
+  <h3>Version 7.4.2<br />
+    <font size="-1">2011-07-05</font></h3>
+  <p>&nbsp;</p>
+  <h4>Fixes</h4>
+  <p>JButton</p>
+  <ul>
+    <li>Issue 135: Fixes alignment issues with GroupLayout and borderless JButtons. Icons are now treated as part of the visual bounds of a button.</li>
+    <li>Issue 127: Fixes a layout bug when adding JButtons to a JPanel. Borderless JButtons and JButtons with custom borders can now be made smaller than the minimal button width.</li>
+  </ul>
+  <h3></h3>
+  <p>JComboBox</p>
+  <ul>
+    <li>Issue 131: Fixes Z-order issues for JComboBox popups when one of the ancestor windows has alwaysOnTop set to true. Popups appear now on top of the window.</li>
+  </ul>
+  <p>JFileChooser</p>
+  <ul>
+    <li>Issue 134: Fixes a NullPointer in the SidebarSelectionListener, when the user clicks on an item in the sidebar which has been removed from the file system.</li>
+    <li>Issue 131: Hard crashes caused by unstable QuickLook plugins can now be prevented by setting the system property <code>-DQuaqua.FileChooser.quickLookEnabled=false</code></li>
+  </ul>
+  <h3></h3>
+  <p>JOptionPane</p>
+  <ul>
+    <li>Issue 133: Adds additional text translations in French, German, Italian and Swedish.</li>
+  </ul>
+  <h3></h3>
+  <p>JTabbedPane</p>
+  <ul>
+    <li>JTabbedPane.indexAtLocation(x,y) now properly reports the tab index when all tabs are collapsed into a single JComboBox.</li>
+  </ul>
+  <h3></h3>
+  <p>JTable</p>
+  <ul>
+    <li>Improves visual fidelity of table headers on Snow Leopard.</li>
+  </ul>
+  <h3></h3>
   <h3>Version 7.4.1<br />
     <font size="-1">2011-03-10</font></h3>
   <p>&nbsp;</p>
