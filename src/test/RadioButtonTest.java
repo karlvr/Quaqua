@@ -27,10 +27,9 @@ public class RadioButtonTest extends javax.swing.JPanel {
     public RadioButtonTest() {
         initComponents();
 
-        // Leopard properties
-        if (QuaquaManager.getDesign() == QuaquaManager.LEOPARD) {
-            radioButton3.putClientProperty("JComponent.sizeVariant","small");
-            radioButton4.putClientProperty("JComponent.sizeVariant","small");
+
+        for (JComponent c:new JComponent[]{radioButton3,radioButton4,radioButton6,smallLabel}) {
+            c.putClientProperty("JComponent.sizeVariant","small");
         }
     }
     
@@ -122,14 +121,12 @@ public class RadioButtonTest extends javax.swing.JPanel {
         add(separator, gridBagConstraints);
 
         buttonGroup2.add(radioButton3);
-        radioButton3.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         radioButton3.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(radioButton3, gridBagConstraints);
 
-        smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -139,7 +136,6 @@ public class RadioButtonTest extends javax.swing.JPanel {
         add(smallLabel, gridBagConstraints);
 
         buttonGroup2.add(radioButton6);
-        radioButton6.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         radioButton6.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -147,7 +143,6 @@ public class RadioButtonTest extends javax.swing.JPanel {
         add(radioButton6, gridBagConstraints);
 
         buttonGroup2.add(radioButton4);
-        radioButton4.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         radioButton4.setText("Ångström H");
         radioButton4.setEnabled(false);
         radioButton4.addActionListener(new java.awt.event.ActionListener() {
@@ -167,7 +162,7 @@ public class RadioButtonTest extends javax.swing.JPanel {
         add(jSeparator1, gridBagConstraints);
 
         buttonGroup3.add(jRadioButton5);
-        jRadioButton5.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jRadioButton5.setFont(new java.awt.Font("Lucida Grande", 0, 24));
         jRadioButton5.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
