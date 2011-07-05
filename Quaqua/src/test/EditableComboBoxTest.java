@@ -75,6 +75,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
             }
             return l;
         }
+        @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             /*
@@ -100,6 +101,11 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         jComboBox14.setModel(new javax.swing.DefaultComboBoxModel(items));
         
         jComboBox8.putClientProperty("JComboBox.isTableCellEditor",Boolean.TRUE);
+
+        for (JComponent c:new JComponent[]{smallBox1,smallBox2,smallBox3,smallLabel}) {
+              c.putClientProperty("JComponent.sizeVariant", "small");
+        }
+        
     }
     public static void main(String args[]) {
         try {
@@ -130,10 +136,10 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         jComboBox3 = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jComboBox4 = new javax.swing.JComboBox();
-        jLabel4 = new javax.swing.JLabel();
-        jComboBox15 = new javax.swing.JComboBox();
-        jComboBox6 = new javax.swing.JComboBox();
+        smallBox1 = new javax.swing.JComboBox();
+        smallLabel = new javax.swing.JLabel();
+        smallBox2 = new javax.swing.JComboBox();
+        smallBox3 = new javax.swing.JComboBox();
         jSeparator2 = new javax.swing.JSeparator();
         jComboBox7 = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
@@ -197,42 +203,39 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        jComboBox4.setEditable(true);
-        jComboBox4.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
+        smallBox1.setEditable(true);
+        smallBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jComboBox4, gridBagConstraints);
+        add(smallBox1, gridBagConstraints);
 
-        jLabel4.setText("Small Size");
+        smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 6;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(jLabel4, gridBagConstraints);
+        add(smallLabel, gridBagConstraints);
 
-        jComboBox15.setEditable(true);
-        jComboBox15.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        jComboBox15.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
+        smallBox2.setEditable(true);
+        smallBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
-        add(jComboBox15, gridBagConstraints);
+        add(smallBox2, gridBagConstraints);
 
-        jComboBox6.setEditable(true);
-        jComboBox6.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
-        jComboBox6.setEnabled(false);
+        smallBox3.setEditable(true);
+        smallBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
+        smallBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
-        add(jComboBox6, gridBagConstraints);
+        add(smallBox3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
@@ -274,18 +277,18 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox14;
-    private javax.swing.JComboBox jComboBox15;
     private javax.swing.JComboBox jComboBox3;
-    private javax.swing.JComboBox jComboBox4;
-    private javax.swing.JComboBox jComboBox6;
     private javax.swing.JComboBox jComboBox7;
     private javax.swing.JComboBox jComboBox8;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JComboBox smallBox1;
+    private javax.swing.JComboBox smallBox2;
+    private javax.swing.JComboBox smallBox3;
+    private javax.swing.JLabel smallLabel;
     // End of variables declaration//GEN-END:variables
     
 }

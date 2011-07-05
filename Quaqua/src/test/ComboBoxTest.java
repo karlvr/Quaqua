@@ -101,10 +101,10 @@ public class ComboBoxTest extends javax.swing.JPanel {
         }
         comboBox2.setModel(new javax.swing.DefaultComboBoxModel(items));
 
-        // Setting properties for Apple's AquaLookAndFeel
-        smallComboBox1.putClientProperty("JComponent.sizeVariant", "small");
-        smallComboBox2.putClientProperty("JComponent.sizeVariant", "small");
-        smallComboBox3.putClientProperty("JComponent.sizeVariant", "small");
+
+        for (JComponent c:new JComponent[]{smallComboBox1,smallComboBox2,smallComboBox3,smallLabel}) {
+            c.putClientProperty("JComponent.sizeVariant", "small");
+        }
         
         iconComboBox.setRenderer(new ColorComboCellRenderer());
         DefaultComboBoxModel cbm = new DefaultComboBoxModel();
@@ -146,7 +146,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         comboBox3 = new javax.swing.JComboBox();
         jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        jLabel4 = new javax.swing.JLabel();
+        smallLabel = new javax.swing.JLabel();
         smallComboBox1 = new javax.swing.JComboBox();
         smallComboBox2 = new javax.swing.JComboBox();
         smallComboBox3 = new javax.swing.JComboBox();
@@ -208,15 +208,14 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        jLabel4.setText("Small Size");
+        smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(jLabel4, gridBagConstraints);
+        add(smallLabel, gridBagConstraints);
 
-        smallComboBox1.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -225,7 +224,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox1, gridBagConstraints);
 
-        smallComboBox2.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 9;
@@ -233,7 +231,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox2, gridBagConstraints);
 
-        smallComboBox3.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         smallComboBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -293,7 +290,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JLabel iconLabel;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -301,6 +297,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JComboBox smallComboBox1;
     private javax.swing.JComboBox smallComboBox2;
     private javax.swing.JComboBox smallComboBox3;
+    private javax.swing.JLabel smallLabel;
     private javax.swing.JComboBox tableComboBox;
     // End of variables declaration//GEN-END:variables
     

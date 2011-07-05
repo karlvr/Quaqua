@@ -29,9 +29,9 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         toggle3.putClientProperty("Quaqua.Button.style","toggleWest");
         toggle4.putClientProperty("Quaqua.Button.style","toggleCenter");
         toggle5.putClientProperty("Quaqua.Button.style","toggleEast");
-        toggle6.putClientProperty("Quaqua.Button.style","toggleWest");
-        toggle7.putClientProperty("Quaqua.Button.style","toggleCenter");
-        toggle8.putClientProperty("Quaqua.Button.style","toggleEast");
+        smallToggle3.putClientProperty("Quaqua.Button.style","toggleWest");
+        smallToggle4.putClientProperty("Quaqua.Button.style","toggleCenter");
+        smallToggle5.putClientProperty("Quaqua.Button.style","toggleEast");
         /*
         toggle3.setMargin(new Insets(0,0,0,0));
         toggle4.setMargin(new Insets(0,0,0,0));
@@ -47,24 +47,30 @@ public class ToggleButtonTest extends javax.swing.JPanel {
             toggle3.putClientProperty("JButton.buttonType", "segmented");
             toggle4.putClientProperty("JButton.buttonType", "segmented");
             toggle5.putClientProperty("JButton.buttonType", "segmented");
-            toggle6.putClientProperty("JButton.buttonType", "segmented");
-            toggle7.putClientProperty("JButton.buttonType", "segmented");
-            toggle8.putClientProperty("JButton.buttonType", "segmented");
-            toggle9.putClientProperty("JButton.buttonType", "segmented");
-            toggle10.putClientProperty("JButton.buttonType", "segmented");
+            smallToggle3.putClientProperty("JButton.buttonType", "segmented");
+            smallToggle4.putClientProperty("JButton.buttonType", "segmented");
+            smallToggle5.putClientProperty("JButton.buttonType", "segmented");
+            smallToggle1.putClientProperty("JButton.buttonType", "segmented");
+            smallToggle2.putClientProperty("JButton.buttonType", "segmented");
             toggle1.putClientProperty("JButton.segmentPosition","only");
             toggle2.putClientProperty("JButton.segmentPosition","only");
             toggle3.putClientProperty("JButton.segmentPosition","first");
             toggle4.putClientProperty("JButton.segmentPosition","middle");
             toggle5.putClientProperty("JButton.segmentPosition","last");
-            toggle6.putClientProperty("JButton.segmentPosition","first");
-            toggle7.putClientProperty("JButton.segmentPosition","middle");
-            toggle8.putClientProperty("JButton.segmentPosition","last");
-            toggle6.putClientProperty("JComponent.sizeVariant","small");
-            toggle7.putClientProperty("JComponent.sizeVariant","small");
-            toggle8.putClientProperty("JComponent.sizeVariant","small");
-            toggle9.putClientProperty("JButton.segmentPosition","only");
-            toggle10.putClientProperty("JButton.segmentPosition","only");
+            smallToggle3.putClientProperty("JButton.segmentPosition","first");
+            smallToggle4.putClientProperty("JButton.segmentPosition","middle");
+            smallToggle5.putClientProperty("JButton.segmentPosition","last");
+            smallToggle3.putClientProperty("JComponent.sizeVariant","small");
+            smallToggle4.putClientProperty("JComponent.sizeVariant","small");
+            smallToggle5.putClientProperty("JComponent.sizeVariant","small");
+            smallToggle1.putClientProperty("JButton.segmentPosition","only");
+            smallToggle2.putClientProperty("JButton.segmentPosition","only");
+        }
+
+        // Size properties
+        JComponent[] smallComponents= {smallToggle1,smallToggle2,smallToggle3,smallToggle4,smallToggle5,smallLabel};
+        for (JComponent c:smallComponents) {
+            c.putClientProperty("JComponent.sizeVariant","small");
         }
     }
     public static void main(String args[]) {
@@ -101,14 +107,14 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         toggle5 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
-        toggle9 = new javax.swing.JToggleButton();
-        toggle10 = new javax.swing.JToggleButton();
+        smallToggle1 = new javax.swing.JToggleButton();
+        smallToggle2 = new javax.swing.JToggleButton();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        toggle6 = new javax.swing.JToggleButton();
-        toggle7 = new javax.swing.JToggleButton();
-        toggle8 = new javax.swing.JToggleButton();
-        jLabel2 = new javax.swing.JLabel();
+        smallToggle3 = new javax.swing.JToggleButton();
+        smallToggle4 = new javax.swing.JToggleButton();
+        smallToggle5 = new javax.swing.JToggleButton();
+        smallLabel = new javax.swing.JLabel();
 
         FormListener formListener = new FormListener();
 
@@ -165,21 +171,19 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        buttonGroup1.add(toggle9);
-        toggle9.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        toggle9.setText("Ångström H");
-        toggle9.addActionListener(formListener);
+        buttonGroup1.add(smallToggle1);
+        smallToggle1.setText("Ångström H");
+        smallToggle1.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        add(toggle9, gridBagConstraints);
+        add(smallToggle1, gridBagConstraints);
 
-        buttonGroup1.add(toggle10);
-        toggle10.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        toggle10.setText("Ångström H");
-        toggle10.setEnabled(false);
+        buttonGroup1.add(smallToggle2);
+        smallToggle2.setText("Ångström H");
+        smallToggle2.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        add(toggle10, gridBagConstraints);
+        add(smallToggle2, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -189,20 +193,17 @@ public class ToggleButtonTest extends javax.swing.JPanel {
 
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup2.add(toggle6);
-        toggle6.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        toggle6.setText("West");
-        jPanel4.add(toggle6);
+        buttonGroup2.add(smallToggle3);
+        smallToggle3.setText("West");
+        jPanel4.add(smallToggle3);
 
-        buttonGroup2.add(toggle7);
-        toggle7.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        toggle7.setText("Center");
-        jPanel4.add(toggle7);
+        buttonGroup2.add(smallToggle4);
+        smallToggle4.setText("Center");
+        jPanel4.add(smallToggle4);
 
-        buttonGroup2.add(toggle8);
-        toggle8.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        toggle8.setText("East");
-        jPanel4.add(toggle8);
+        buttonGroup2.add(smallToggle5);
+        smallToggle5.setText("East");
+        jPanel4.add(smallToggle5);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -210,11 +211,10 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel4, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Lucida Grande", 0, 11));
-        jLabel2.setText("Small");
+        smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        add(jLabel2, gridBagConstraints);
+        add(smallLabel, gridBagConstraints);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -231,15 +231,15 @@ public class ToggleButtonTest extends javax.swing.JPanel {
             else if (evt.getSource() == toggle3) {
                 ToggleButtonTest.this.toggle3ActionPerformed(evt);
             }
-            else if (evt.getSource() == toggle9) {
-                ToggleButtonTest.this.toggle9ActionPerformed(evt);
+            else if (evt.getSource() == smallToggle1) {
+                ToggleButtonTest.this.smallToggle1ActionPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
     
-    private void toggle9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle9ActionPerformed
+    private void smallToggle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallToggle1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_toggle9ActionPerformed
+    }//GEN-LAST:event_smallToggle1ActionPerformed
     
     private void toggle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle1ActionPerformed
         // TODO add your handling code here:
@@ -258,22 +258,22 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel smallLabel;
+    private javax.swing.JToggleButton smallToggle1;
+    private javax.swing.JToggleButton smallToggle2;
+    private javax.swing.JToggleButton smallToggle3;
+    private javax.swing.JToggleButton smallToggle4;
+    private javax.swing.JToggleButton smallToggle5;
     private javax.swing.JToggleButton toggle1;
-    private javax.swing.JToggleButton toggle10;
     private javax.swing.JToggleButton toggle2;
     private javax.swing.JToggleButton toggle3;
     private javax.swing.JToggleButton toggle4;
     private javax.swing.JToggleButton toggle5;
-    private javax.swing.JToggleButton toggle6;
-    private javax.swing.JToggleButton toggle7;
-    private javax.swing.JToggleButton toggle8;
-    private javax.swing.JToggleButton toggle9;
     // End of variables declaration//GEN-END:variables
     
 }

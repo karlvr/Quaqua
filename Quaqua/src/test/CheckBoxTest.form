@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.1" encoding="UTF-8" ?>
 
 <Form version="1.2" maxVersion="1.2" type="org.netbeans.modules.form.forminfo.JPanelFormInfo">
   <Properties>
@@ -74,9 +74,6 @@
     </Component>
     <Component class="javax.swing.JLabel" name="smallLabel">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Lucida Grande" size="11" style="0"/>
-        </Property>
         <Property name="text" type="java.lang.String" value="Small Size"/>
       </Properties>
       <Constraints>
@@ -87,9 +84,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkBox3">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Lucida Grande" size="11" style="0"/>
-        </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="&#xc5;ngstr&#xf6;m H"/>
       </Properties>
@@ -101,9 +95,6 @@
     </Component>
     <Component class="javax.swing.JCheckBox" name="checkBox4">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Lucida Grande" size="11" style="0"/>
-        </Property>
         <Property name="selected" type="boolean" value="true"/>
         <Property name="text" type="java.lang.String" value="&#xc5;ngstr&#xf6;m H"/>
         <Property name="enabled" type="boolean" value="false"/>

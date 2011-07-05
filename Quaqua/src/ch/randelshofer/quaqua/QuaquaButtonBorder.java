@@ -100,13 +100,17 @@ public class QuaquaButtonBorder implements Border, UIResource {
         this.defaultStyle = defaultStyle;
     }
 
+    private boolean isSmall(JComponent c) {
+       return QuaquaUtilities.isSmallSizeVariant(c);
+    }
+
     public Border getBorder(JComponent c) {
         Border b = null;
         String style = getStyle(c);
 
         // Explicitly chosen styles
         if (style.equals("text") || style.equals("push")) {
-            if (c.getFont().getSize() <= 11) {
+            if (isSmall(c)) {
                 b = getSmallPushButtonBorder();
             } else {
                 b = getRegularPushButtonBorder();
@@ -259,7 +263,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
         } else if (c.getParent() instanceof JToolBar) {
             b = getSquareBorder();
         } else {
-            if (c.getFont().getSize() <= 11) {
+            if (isSmall(c)) {
                 b = getSmallPushButtonBorder();
             } else {
                 b = getRegularPushButtonBorder();
@@ -407,7 +411,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
     public Insets getDefaultMargin(JComponent c) {
         Insets margin = null;
         String style = getStyle(c);
-        boolean isSmall = QuaquaUtilities.isSmallSizeVariant(c);
+        boolean isSmall = isSmall(c);
 
         // Explicitly chosen styles
         if (style.equals("text") || style.equals("push")) {

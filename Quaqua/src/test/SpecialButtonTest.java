@@ -40,12 +40,11 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         tableHeaderButton.putClientProperty("Quaqua.Button.style", "tableHeader");
         
         // Apple AquaLookAndFeel client properties
-        if (QuaquaManager.getDesign() >= QuaquaManager.LEOPARD) {
             placardButton.putClientProperty("JButton.buttonType", "gradient");
             smallPlacardButton.putClientProperty("JButton.buttonType", "gradient");
+            smallLabel.putClientProperty("JComponent.sizeVariant","small");
             smallPlacardButton.putClientProperty("JComponent.sizeVariant","small");
             smallColorWellButton.putClientProperty("JComponent.sizeVariant","small");
-        }
     }
     /*
     public void paint(Graphics g) {
@@ -136,13 +135,11 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator2, gridBagConstraints);
 
-        smallPlacardButton.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallPlacardButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(smallPlacardButton, gridBagConstraints);
 
-        smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -150,7 +147,6 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        smallColorWellButton.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallColorWellButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
