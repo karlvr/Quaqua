@@ -646,7 +646,7 @@ public class QuaquaManager {
                     JLabel label = new JLabel(
                             "<html>"
                             + "<p align=center><b>Quaqua Look and Feel " + version + "</b><br><br>"
-                            + "Copyright 2003-2010 Werner Randelshofer<br>"
+                            + "Copyright 2003-2011 Werner Randelshofer<br>"
                             + "All Rights Reserved.<br>"
                             + "<br>"
                             + "This is a software library.<br>"
