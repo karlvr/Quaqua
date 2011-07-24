@@ -328,6 +328,7 @@
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true" 
                 srcdir="${src}" source="1.5" target="1.5"
+                includeantruntime="false"
             >
             <include name="**/QuaquaPantherFileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
@@ -348,6 +349,7 @@
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
                 srcdir="${src}" source="1.6" target="1.6"
+                includeantruntime="false"
             >
             <include name="**/QuaquaPantherFileChooserLAF.java"/>
             <include name="**/QuaquaLeopardFileChooserLAF.java"/>
@@ -871,7 +873,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-DQuaqua.design=snowleopard"/>
-            <jvmarg value="-Dapple.awt.graphics.UseQuartz=false"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
         </java>
     </target>
     <target depends="init" name="run Quaqua 1.6 OS X 10.7 Lion">
@@ -1452,6 +1454,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         <java classname="test.Main" classpath="${classpath}"
                 jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
         failonerror="true" fork="true">
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
             <jvmarg value="-DQuaqua.design=lion"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
