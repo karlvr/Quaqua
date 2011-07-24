@@ -11,6 +11,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
@@ -695,7 +696,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
             if (selectionBackground instanceof InactivatableColorUIResource) {
                 ((InactivatableColorUIResource) selectionBackground).setTransparent(true);
             }
-
+           
         } else {
             background = tree.getBackground();
             selectionBorder = null;
@@ -709,8 +710,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
                     ((InactivatableColorUIResource) background).setActive(isActive);
                 }
             }
-
-            g.setColor(background);
+            g.setPaint(PaintableColor.getPaint(background,tree,0,0,width,height));
             g.fillRect(0, 0, width, height);
         }
 
@@ -1244,7 +1244,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                 // Update the lead row in the JTree
             } else if (event.getSource() == tree) {
                 if (name != null && name.equals("Frame.active")) {
-                    if (tree.getClientProperty("Quaqua.Tree.style") != null && (tree.getClientProperty("Quaqua.Tree.style").equals("sideBar") || tree.getClientProperty("Quaqua.Tree.style").equals("sourceList"))) {
+                    if (tree.getClientProperty("Quaqua.Tree.style") != null //
+                            && (tree.getClientProperty("Quaqua.Tree.style").equals("sideBar") || tree.getClientProperty("Quaqua.Tree.style").equals("sourceList"))) {
                         tree.repaint();
                     }
                 } else if (name != null && name.equals(JTree.LEAD_SELECTION_PATH_PROPERTY)) {
@@ -1307,6 +1308,8 @@ public class QuaquaTreeUI extends BasicTreeUI {
                         }
                     }
                 } else if (name != null && name.equals("JComponent.sizeVariant")) {
+                    QuaquaUtilities.applySizeVariant(tree);
+                } else if (name != null && name.equals("Quaqua.Tree.style")) {
                     QuaquaUtilities.applySizeVariant(tree);
                 }
             }

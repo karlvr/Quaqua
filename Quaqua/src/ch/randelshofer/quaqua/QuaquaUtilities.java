@@ -902,15 +902,24 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     public static void applySizeVariant(JComponent c) {
-        String p = (String) c.getClientProperty("JComponent.sizeVariant");
-        if (p == null) {
-        } else if (p.equals("regular")) {
-            c.setFont(UIManager.getFont("SystemFont"));
-        } else if (p.equals("small")) {
-            c.setFont(UIManager.getFont("SmallSystemFont"));
-        } else if (p.equals("mini")) {
-            c.setFont(UIManager.getFont("MiniSystemFont"));
+        String psize = (String) c.getClientProperty("JComponent.sizeVariant");
+        String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
+        
+        Font font=null;
+        if (psize == null) {
+        } else if (psize.equals("regular")) {
+           font=UIManager.getFont("SystemFont");
+        } else if (psize.equals("small")) {
+           font=UIManager.getFont("SmallSystemFont");
+        } else if (psize.equals("mini")) {
+           font=UIManager.getFont("MiniSystemFont");
         }
+        
+        if (pstyle==null) {
+} else if (pstyle.equals("sidebar")) {
+font=UIManager.getFont("Tree.sideBar.selectionFont");
+}
+        c.setFont(font);
     }
 
     public static int getDragThreshold() {

@@ -23,19 +23,27 @@ import javax.swing.plaf.UIResource;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class InactivatableColorUIResource extends Color implements UIResource {
+public class InactivatableColorUIResource extends PaintableColor implements UIResource {
     private boolean isActive;
+    private Color active;
+    private Color inactive;
     private boolean isTransparent;
-    private int inactiveRGB;
     
     /** Creates a new instance. */
     public InactivatableColorUIResource(int activeRGB, int inactiveRGB) {
         super(activeRGB);
-        this.inactiveRGB = inactiveRGB | 0xff000000;
+        this.active = new Color(activeRGB);
+        this.inactive = new Color(inactiveRGB);
     }
     public InactivatableColorUIResource(int activeRGB, int inactiveRGB, boolean hasAlpha) {
         super(activeRGB, hasAlpha);
-        this.inactiveRGB = (hasAlpha) ? inactiveRGB : inactiveRGB | 0xff000000;
+        this.active = new Color(activeRGB, hasAlpha);
+        this.inactive = new Color(inactiveRGB, hasAlpha);
+    }
+    public InactivatableColorUIResource(Color active, Color inactive) {
+        super(active.getRGB(), true);
+        this.active = active;
+        this.inactive = inactive;
     }
     
     public void setActive(boolean newValue) {
@@ -45,22 +53,38 @@ public class InactivatableColorUIResource extends Color implements UIResource {
         isTransparent = newValue;
     }
     
+    @Override
     public int getTransparency() {
         return (isTransparent) ? Paint.TRANSLUCENT : super.getTransparency();
     }
     
+    @Override
     public int getAlpha() {
         return (isTransparent) ? 0x0 : super.getAlpha();
     }
     
+    @Override
     public int getRGB() {
-        return (isTransparent) ? 0x0 : ((isActive) ? super.getRGB() : inactiveRGB);
+        return (isTransparent) ? 0x0 : ((isActive) ? active.getRGB() : inactive.getRGB());
         
     }
     
+    @Override
     public PaintContext createContext(ColorModel cm, Rectangle r, Rectangle2D r2d, AffineTransform xform, RenderingHints hints) {
-        return (isActive) ? super.createContext(cm, r, r2d, xform, hints) :
-            new Color(inactiveRGB, true).createContext(cm, r, r2d, xform, hints);
+        return (isActive) ? active.createContext(cm, r, r2d, xform, hints)
+                : inactive.createContext(cm, r, r2d, xform, hints)
+                ;
+    }
+
+    @Override
+    public Paint getPaint(Component c, int x, int y, int width, int height) {
+       Color clr=(isActive) ? active
+                : inactive;
+       if (clr instanceof PaintableColor) {
+           return ((PaintableColor)clr).getPaint(c,x,y,width,height);
+       } else {
+           return clr;
+       }
     }
     
 }

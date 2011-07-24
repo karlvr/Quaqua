@@ -15,8 +15,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="7.4.2"/>
-        <property name="version" value="${versionNumber} 2011-07-05"/>
+        <property name="versionNumber" value="8.0alpha1"/>
+        <property name="version" value="${versionNumber} 2011-07-23"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -69,6 +69,7 @@
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se6.extdirs}"
+                includeantruntime="false"
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
             <include name="ch/randelshofer/quaqua/BasicQuaquaLookAndFeel.java"/>
@@ -84,6 +85,7 @@
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se5.extdirs}"
+                includeantruntime="false"
                 >
             <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
             <include name="org/jdesktop/layout/**.java"/>
@@ -97,6 +99,7 @@
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se5.extdirs}"
+                includeantruntime="false"
                 >
             <compilerarg line="-endorseddirs ${j2se5.endorseddirs}"/>
             <exclude name="**/*16*.java"/>
@@ -111,6 +114,7 @@
                 debug="${debug}" optimize="true"
                 deprecation="true"
                 extdirs="${j2se6.extdirs}"
+                includeantruntime="false"
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
         </javac>
@@ -858,6 +862,28 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel"/>
         </java>
     </target>
+    <target depends="init" name="run Quaqua 1.5 OS X 10.6 Snow Leopard">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-DQuaqua.design=snowleopard"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=false"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 OS X 10.7 Lion">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-DQuaqua.design=lion"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=false"/>
+        </java>
+    </target>
     <target depends="init" name="run Quaqua 1.5 OS X 10.5 Leopard ScreenMenuBar">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
@@ -1418,6 +1444,16 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.6 LionFileChooser">
+        <java classname="test.Main" classpath="${classpath}"
+                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        failonerror="true" fork="true">
+            <jvmarg value="-DQuaqua.design=lion"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF"/>
         </java>
     </target>
 </project>

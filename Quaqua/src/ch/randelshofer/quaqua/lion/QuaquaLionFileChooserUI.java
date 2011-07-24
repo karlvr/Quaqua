@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  
+ * @(#)QuaquaLionFileChooserUI.java  
  *
- * Copyright (c) 2007-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
  *
@@ -9,12 +9,19 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package ch.randelshofer.quaqua.leopard;
+package ch.randelshofer.quaqua.lion;
 
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.leopard.filechooser.*;
-import ch.randelshofer.quaqua.panther.filechooser.*;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
+import ch.randelshofer.quaqua.filechooser.FilenameDocument;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
+import ch.randelshofer.quaqua.filechooser.SubtreeFileChooserUI;
+import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
+import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
+import ch.randelshofer.quaqua.lion.filechooser.SidebarTreeModel;
+import ch.randelshofer.quaqua.panther.filechooser.FilePreview;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -39,7 +46,7 @@ import java.util.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements SubtreeFileChooserUI {
+public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements SubtreeFileChooserUI {
     // Implementation derived from MetalFileChooserUI
     /* Models. */
 
@@ -200,10 +207,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     //
 
     public static ComponentUI createUI(JComponent c) {
-        return new QuaquaLeopardFileChooserUI((JFileChooser) c);
+        return new QuaquaLionFileChooserUI((JFileChooser) c);
     }
 
-    public QuaquaLeopardFileChooserUI(JFileChooser filechooser) {
+    public QuaquaLionFileChooserUI(JFileChooser filechooser) {
         super(filechooser);
     }
 
@@ -453,6 +460,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             sidebarTree.setUI((TreeUI) QuaquaTreeUI.createUI(sidebarTree));
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
+        
+        // sidebarTree must use largest font used by the TreeCellRenderer
+         //   sidebarTree.setFont(UIManager.getFont("Tree.sideBar.selectionFont"));
+            
         sidebarTree.setRequestFocusEnabled(false);
 
         sidebarTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -1542,7 +1553,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 if (parentFile.equals(System.getProperty("user.home"))) {
                     // Look for user's home special folders
                     String name = file.getName();
-                    return name.equals("Applications") || name.equals("Desktop")//
+                    return name.equals("Applications") || name.equals("Desktop") //
                             || name.equals("Documents") || name.equals("Downloads")//
                             || name.equals("Library") || name.equals("Movies") //
                             || name.equals("Music") || name.equals("Pictures") //
