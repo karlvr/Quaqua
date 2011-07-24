@@ -248,6 +248,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
+    /** Turns on common rendering hints for UI delegates. */
     public static Object beginGraphics(Graphics2D graphics2d) {
         Object object = graphics2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
         if (object == RenderingHints.VALUE_TEXT_ANTIALIAS_ON) {
@@ -259,13 +260,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return object;
     }
 
-    public static final void endGraphics(Graphics2D graphics2d, Object oldHints) {
-        /*
-        if (true) {
-        graphics2d.setTransform((AffineTransform) oldHints);
-        return;
-        }*/
-
+    /** Restores rendering hints for UI delegates. */
+    public static void endGraphics(Graphics2D graphics2d, Object oldHints) {
         if (oldHints != null) {
             graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                     oldHints);
@@ -276,7 +272,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * Returns true, if the specified component is focus owner or permanent
      * focus owner and if the component is on an the active window.
      */
-    public static final boolean isFocused(Component component) {
+    public static boolean isFocused(Component component) {
         // When a component is used as a cell renderer, the focus can
         // not be determined from the component itself.
         if (component instanceof JComponent) {
@@ -706,7 +702,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @param w The Window.
      * @param value The alpha channel for the window.
      */
-    static final void setWindowAlpha(Window w, int value) {
+    static void setWindowAlpha(Window w, int value) {
         if (w == null) {
             return;
         }
@@ -722,7 +718,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    static final void setWindowAlphaOld(Window w, int value) {
+    static void setWindowAlphaOld(Window w, int value) {
         if (w == null) {
             return;
         }
