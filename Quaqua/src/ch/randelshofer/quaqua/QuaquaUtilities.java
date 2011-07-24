@@ -251,12 +251,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     /** Turns on common rendering hints for UI delegates. */
     public static Object beginGraphics(Graphics2D graphics2d) {
         Object object = graphics2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-        if (object == RenderingHints.VALUE_TEXT_ANTIALIAS_ON) {
-            graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                    RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-        }
-
-        //if (true) return savedTransform;
+        graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
         return object;
     }
 
