@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaManager.java 
  *
- * Copyright (c) 2003-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2003-2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -161,6 +161,10 @@ public class QuaquaManager {
      */
     public final static int SNOW_LEOPARD = 6;
     /**
+     * Mac OS X 10.7 Lion.
+     */
+    public final static int LION = 7;
+    /**
      * Generic Linux.
      */
     public final static int LINUX = -4;
@@ -220,8 +224,10 @@ public class QuaquaManager {
                 OS = LEOPARD;
             } else if (osVersion.equals("10.6")) {
                 OS = SNOW_LEOPARD;
+            } else if (osVersion.equals("10.7")) {
+                OS = LION;
             } else {
-                OS = LEOPARD;
+                OS = SNOW_LEOPARD;
             }
         } else if (osName.startsWith("Darwin")) {
             OS = DARWIN;
@@ -248,6 +254,8 @@ public class QuaquaManager {
             design = LEOPARD;
         } else if (osDesign.equals("snowleopard")) {
             design = SNOW_LEOPARD;
+        } else if (osDesign.equals("lion")) {
+            design = LION;
         } else {
             switch (OS) {
                 case CHEETAH:
@@ -271,8 +279,11 @@ public class QuaquaManager {
                 case SNOW_LEOPARD:
                     design = SNOW_LEOPARD;
                     break;
+                case LION:
+                    design = LION;
+                    break;
                 default:
-                    design = LEOPARD;
+                    design = SNOW_LEOPARD;
                     break;
             }
         }
@@ -347,6 +358,7 @@ public class QuaquaManager {
             lafs.put("Leopard.16", "ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("SnowLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("SnowLeopard.16", "ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel");
+            lafs.put("Lion.16", "ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF");
             lafs.put("CrossTiger.15", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
@@ -427,10 +439,13 @@ public class QuaquaManager {
                         lafKey = "Leopard.15";
                         break;
                     case SNOW_LEOPARD:
-                        lafKey = "SnowLeopard.15";
+                        lafKey = "SnowLeopard.16";
+                        break;
+                    case LION:
+                        lafKey = "Lion.16";
                         break;
                     default:
-                        lafKey = "Leopard.15";
+                        lafKey = "SnowLeopard.16";
                         break;
                 }
             } else {
@@ -450,8 +465,11 @@ public class QuaquaManager {
                     case SNOW_LEOPARD:
                         lafKey = "SnowLeopard.16";
                         break;
+                    case LION:
+                        lafKey = "Lion.16";
+                        break;
                     default:
-                        lafKey = "Leopard.16";
+                        lafKey = "SnowLeopard.16";
                         break;
                 }
             }
@@ -474,7 +492,7 @@ public class QuaquaManager {
                     lafKey = "CrossSnowLeopard.15";
                     break;
                 default:
-                    lafKey = "CrossLeopard.15";
+                    lafKey = "CrossSnowLeopard.15";
                     break;
             }
         }

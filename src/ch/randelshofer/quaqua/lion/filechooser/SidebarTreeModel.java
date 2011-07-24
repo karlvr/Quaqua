@@ -1,7 +1,7 @@
 /*
  * @(#)SidebarTreeModel.java  
  *
- * Copyright (c) 2007-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
@@ -9,7 +9,7 @@
  * accordance with the license agreement you entered into with
  * Werner Randelshofer. For details see accompanying license terms.
  */
-package ch.randelshofer.quaqua.leopard.filechooser;
+package ch.randelshofer.quaqua.lion.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
@@ -51,7 +51,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
     /**
      * Represents the "Places" node in the sidebar.
      */
-    private DefaultMutableTreeNode placesNode;
+    private DefaultMutableTreeNode favoritesNode;
     /**
      * Intervals between validations.
      */
@@ -120,12 +120,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
         devicesNode = new DefaultMutableTreeNode(UIManager.getString("FileChooser.devices"));
         devicesNode.setAllowsChildren(true);
-        placesNode = new DefaultMutableTreeNode(UIManager.getString("FileChooser.places"));
-        placesNode.setAllowsChildren(true);
+        favoritesNode = new DefaultMutableTreeNode(UIManager.getString("FileChooser.favorites"));
+        favoritesNode.setAllowsChildren(true);
 
         DefaultMutableTreeNode r = (DefaultMutableTreeNode) getRoot();
+        r.add(favoritesNode);
         r.add(devicesNode);
-        r.add(placesNode);
 
         validate();
         updateDevicesNode();
@@ -178,18 +178,18 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                     }
 
                     private void update(ArrayList freshUserItems) {
-                        int oldUserItemsSize = placesNode.getChildCount();
+                        int oldUserItemsSize = favoritesNode.getChildCount();
                         if (oldUserItemsSize > 0) {
                             int[] removedIndices = new int[oldUserItemsSize];
                             Object[] removedChildren = new Object[oldUserItemsSize];
                             for (int i = 0; i < oldUserItemsSize; i++) {
                                 removedIndices[i] = i;
-                                removedChildren[i] = placesNode.getChildAt(i);
+                                removedChildren[i] = favoritesNode.getChildAt(i);
                             }
-                            placesNode.removeAllChildren();
+                            favoritesNode.removeAllChildren();
                             fireTreeNodesRemoved(
                                     SidebarTreeModel.this,
-                                    placesNode.getPath(),
+                                    favoritesNode.getPath(),
                                     removedIndices,
                                     removedChildren);
                         }
@@ -200,14 +200,14 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                 insertedIndices[i] = i;
                                 insertedChildren[i] = freshUserItems.get(i);
                                 if (freshUserItems.get(i) == null) {
-                                    placesNode.add(new DefaultMutableTreeNode("null?"));
+                                    favoritesNode.add(new DefaultMutableTreeNode("null?"));
                                 } else {
-                                    placesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
+                                    favoritesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
                                 }
                             }
                             fireTreeNodesInserted(
                                     SidebarTreeModel.this,
-                                    placesNode.getPath(),
+                                    favoritesNode.getPath(),
                                     insertedIndices,
                                     insertedChildren);
                         }
@@ -331,7 +331,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                             }
                         }
                     }
-                    if (xml2.getName().equals("dict") && key2.equals("useritems")) {
+                    if (xml2.getName().equals("dict") && key2.equals("favorites")) {
                         for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
                             XMLElement xml3 = (XMLElement) i2.next();
                             for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
@@ -464,7 +464,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                             Object[] changedChildren = {FileNode.this};
                             SidebarTreeModel.this.fireTreeNodesChanged(
                                     SidebarTreeModel.this,
-                                    placesNode.getPath(),
+                                    favoritesNode.getPath(),
                                     changedIndices, changedChildren);
                         }
                     });

@@ -181,9 +181,9 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 // Preserve font style attributes as long as they don't interfere
                 // with the font style of the sidebar.
                 if (selected) {
-                    font = font.deriveFont(l.getFont().getStyle() | font.getStyle());
+                    font = font.deriveFont(l.getFont().getStyle()  & Font.ITALIC | font.getStyle());
                 } else {
-                    font = font.deriveFont(l.getFont().getStyle());
+                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC| font.getStyle());
                 }
 
 
@@ -310,6 +310,9 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         String name = evt.getPropertyName();
 
         if (name.equals("JComponent.sizeVariant")) {
+            QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
+        } else        if (name.equals("Quaqua.Label.style")) {
+System.out.println("QuaquaLabelUI StyleChange="+evt.getNewValue());            
             QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
         } else {
             super.propertyChange(evt);
