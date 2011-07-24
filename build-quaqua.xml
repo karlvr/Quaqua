@@ -15,7 +15,7 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="8.0alpha1"/>
+        <property name="versionNumber" value="8.0alpha2"/>
         <property name="version" value="${versionNumber} 2011-07-23"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
@@ -146,8 +146,8 @@
              specified. -->
         <arg value="-arch"/>
         <arg value="i386"/>
-        <arg value="-arch"/>
-        <arg value="ppc"/>
+        <!--arg value="-arch"/>
+        <arg value="ppc"/-->
         
         <!-- Target SDK used for cross-development. -->
         <arg value="-isysroot"/>
@@ -237,10 +237,10 @@
         <arg value="i686"/>
         <arg value="-arch"/>
         <arg value="x86_64"/>
-        <arg value="-arch"/>
+        <!--arg value="-arch"/>
         <arg value="ppc"/>
         <arg value="-arch"/>
-        <arg value="ppc64"/>
+        <arg value="ppc64"/-->
         
         <!-- SSE needs to be enabled fro i686 architecture. -->
         <arg value="-msse3"/>
@@ -414,6 +414,7 @@ Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;     
 SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 SnowLeopard.16=ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel;
+Lion.16=ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
@@ -1335,6 +1336,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
             <arg value="-laf"/>
             <arg value="apple.laf.AquaLookAndFeel"/>
         </java>

@@ -352,6 +352,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                     }
                                 }
                                 if (serializedAlias != null && aliasName != null) {
+                                    // Suppress the "All My Files" folder.
+                                    if (aliasName.equals("All My Files")) continue;
+
                                     // Try to resolve the alias without user interaction
                                     File f = OSXFile.resolveAlias(serializedAlias, true);
                                     if (f != null) {
