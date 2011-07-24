@@ -248,24 +248,12 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    public static final Object beginGraphics(Graphics2D graphics2d) {
+    public static Object beginGraphics(Graphics2D graphics2d) {
         Object object = graphics2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-
-        /*
-        AffineTransform tx = graphics2d.getTransform();
-        AffineTransform savedTransform = (AffineTransform) tx.clone();
-        tx.scale(0.9,0.9);
-        graphics2d.setTransform(tx);
-         */
-        graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-                RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//        graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-//               RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-
-
-
-        /*graphics2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
+        if (object == RenderingHints.VALUE_TEXT_ANTIALIAS_ON) {
+            graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
+                    RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+        }
 
         //if (true) return savedTransform;
         return object;
@@ -710,13 +698,6 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return text;
     }
 
-    public static void configureGraphics(Graphics gr) {
-        Graphics2D g = (Graphics2D) gr;
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        /*g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
-    }
-
     /**
      * Uses some unsupported (dangerous) API calls on the native peers to make
      * a window translucent. If the API is not found, this method leaves the
@@ -904,21 +885,21 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     public static void applySizeVariant(JComponent c) {
         String psize = (String) c.getClientProperty("JComponent.sizeVariant");
         String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
-        
-        Font font=null;
+
+        Font font = null;
         if (psize == null) {
         } else if (psize.equals("regular")) {
-           font=UIManager.getFont("SystemFont");
+            font = UIManager.getFont("SystemFont");
         } else if (psize.equals("small")) {
-           font=UIManager.getFont("SmallSystemFont");
+            font = UIManager.getFont("SmallSystemFont");
         } else if (psize.equals("mini")) {
-           font=UIManager.getFont("MiniSystemFont");
+            font = UIManager.getFont("MiniSystemFont");
         }
-        
-        if (pstyle==null) {
-} else if (pstyle.equals("sidebar")) {
-font=UIManager.getFont("Tree.sideBar.selectionFont");
-}
+
+        if (pstyle == null) {
+        } else if (pstyle.equals("sidebar")) {
+            font = UIManager.getFont("Tree.sideBar.selectionFont");
+        }
         c.setFont(font);
     }
 
