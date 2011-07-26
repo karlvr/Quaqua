@@ -15,8 +15,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="8.0alpha2"/>
-        <property name="version" value="${versionNumber} 2011-07-23"/>
+        <property name="versionNumber" value="8.0alpha3"/>
+        <property name="version" value="${versionNumber} 2011-07-26"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -40,7 +40,11 @@
              If you run on Mac OS X 10.6 this is wherever your copy of
              Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
              -->
-        <property name="osx10.5" value="/Users/Shared/Developer/Mac OS X 10.5" />
+         <condition property="osx10.5"
+                    value="/Users/Shared/Developer/Mac OS X 10.5"
+                    else="">
+                <available file="/Users/Shared/Developer/Mac OS X 10.5"/>
+         </condition>
 
         <property name="j2se5" value="${osx10.5}/System/Library/Frameworks/JavaVM.framework/Versions/1.5.0" />
         <property name="j2se5.bootclasspath" value="${j2se5}/Classes/classes.jar:${j2se5}/Classes/ui.jar" />
@@ -53,6 +57,17 @@
         <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
         <property name="j2se6.extdirs" value="." />
         <property name="j2se6.endorseddirs" value="." />
+        
+        <!-- Set the "cc" command to where your gcc-4.2 command resides.
+             In case you run this Ant task on Mac OS X 10.6, "cc" invokes gcc-4.2
+             for you. On OS X 10.7, you must have an old installation of XCode 3
+             in your /Developer-old folder.
+        -->
+         <condition property="cc"
+                    value="/Developer-old/usr/bin/gcc-4.2"
+                    else="cc">
+                <available file="/Developer-old/usr/bin/gcc-4.2"/>
+         </condition>
     </target>
    
     <target depends="init" name="compile">
@@ -132,7 +147,8 @@
      </target>
     <target depends="init" name="jnilib-32">
         <mkdir dir="${distdir}"/>
-        <exec executable="cc" failonerror="true" >
+        <!--exec executable="cc" failonerror="true" -->
+        <exec executable="${cc}" failonerror="true" >
         <!-- Overall Options. 
              For a full description see:
              http://developer.apple.com/documentation/DeveloperTools/gcc-3.3/gcc/Overall-Options.html
@@ -146,8 +162,8 @@
              specified. -->
         <arg value="-arch"/>
         <arg value="i386"/>
-        <!--arg value="-arch"/>
-        <arg value="ppc"/-->
+        <arg value="-arch"/>
+        <arg value="ppc"/>
         
         <!-- Target SDK used for cross-development. -->
         <arg value="-isysroot"/>
@@ -190,6 +206,7 @@
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
@@ -207,12 +224,19 @@
         <arg value="-framework"/>
         <arg value="JavaVM"/>
         <arg value="-framework"/>
+        <arg value="JavaRuntimeSupport"/>
+        <arg value="-framework"/>
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
+
+        <arg value="-F/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-framework"/>
+        <arg value="JavaRuntimeSupport"/>
         
         <!-- Input file -->
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXAquaPainter.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
@@ -221,7 +245,9 @@
     </target>
     <target depends="init" name="jnilib-64">
         <mkdir dir="${distdir}"/>
-        <exec executable="cc" failonerror="true" >
+        <!--exec executable="cc" failonerror="true" -->
+        <exec executable="${cc}" failonerror="true" >
+
         <!-- Overall Options. 
              For a full description see:
              http://developer.apple.com/documentation/DeveloperTools/gcc-4.0.1/gcc/Overall-Options.html      
@@ -237,10 +263,10 @@
         <arg value="i686"/>
         <arg value="-arch"/>
         <arg value="x86_64"/>
-        <!--arg value="-arch"/>
+        <arg value="-arch"/>
         <arg value="ppc"/>
         <arg value="-arch"/>
-        <arg value="ppc64"/-->
+        <arg value="ppc64"/>
         
         <!-- SSE needs to be enabled fro i686 architecture. -->
         <arg value="-msse3"/>
@@ -286,6 +312,7 @@
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
@@ -307,8 +334,13 @@
         <arg value="-framework"/>
         <arg value="Cocoa"/>
         
+        <arg value="-F/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-framework"/>
+        <arg value="JavaRuntimeSupport"/>
+        
         <!-- Input file -->
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXApplication.m"/>
+        <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXAquaPainter.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXClipboardTransferable.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXFile.m"/>
         <arg value="${src}/native/ch_randelshofer_quaqua_osx_OSXImageIO.m"/>
@@ -376,19 +408,18 @@
         <echo file="${builddir}/ch/randelshofer/quaqua/version.txt"
             message="${version}"/>
         <echo file="${builddir}/ch/randelshofer/quaqua/laf.txt"
-            message=" 
-                Jaguar.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Panther.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Tiger.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Jaguar.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Panther.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Tiger.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
-                Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-                Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-                SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-                SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-                "
-            />
+>Jaguar.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Panther.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Tiger.15=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Jaguar.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Panther.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Tiger.16=ch.randelshofer.quaqua.subset.QuaquaPantherFileChooserLAF;
+Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
+Lion.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
+</echo>
         <jar basedir="${builddir}" compress="true" 
             jarfile="${distdir}/quaqua-filechooser-only.jar" 
        >
@@ -416,7 +447,7 @@ Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;     
 SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 SnowLeopard.16=ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel;
-Lion.16=ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF;
+Lion.16=ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
@@ -497,6 +528,10 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 />
         <javah classpath="${builddir}"
                 class="ch.randelshofer.quaqua.osx.OSXSheetSupport"
+                destdir="${src}/native"
+                />
+        <javah classpath="${builddir}"
+                class="ch.randelshofer.quaqua.osx.OSXAquaPainter"
                 destdir="${src}/native"
                 />
     </target>

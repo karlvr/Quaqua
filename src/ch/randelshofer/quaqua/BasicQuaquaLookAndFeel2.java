@@ -27,7 +27,7 @@ import sun.awt.AppContext;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
+public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
@@ -38,7 +38,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
     /** Creates a new instance. */
-    public BasicQuaquaLookAndFeel(String targetClassName) {
+    public BasicQuaquaLookAndFeel2(String targetClassName) {
         try {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
         } catch (Exception e) {
@@ -1583,9 +1583,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         // TextField auto selection
         Boolean autoselect = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true"));
         // *** Shared Borders
-        Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.QuaquaScrollPaneBorder$UIResource",
-                new Object[]{commonDir + "ScrollPane.borders.png", commonDir + "TextField.borders.png"});
         Object textFieldBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaTextFieldBorder$UIResource",
                 new Object[]{commonDir + "TextField.borders.png",
@@ -1593,7 +1590,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                     commonDir + "TextField.small.searchBorders.png",});
 
 
-       
+        // True if file choosers orders by type
         boolean isOrderFilesByType = false;
         // True if file choosers shows all files by default
         prefValue = OSXPreferences.getString(//
@@ -1616,9 +1613,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             new Object[]{commonDir + "Browser.sizeHandleIcon.png", 1, Boolean.TRUE, 1}),
             //
             "Button.actionMap", new QuaquaLazyActionMap(QuaquaButtonListener.class),
-            "Button.border", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder", new Object[]{"push"}),
-            //"Button.border", new BorderUIResource.LineBorderUIResource(Color.black),
+            //"Button.border", new UIDefaults.ProxyLazyValue(
+            //"ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder", new Object[]{"push"}),
             //
             // This must be set to false to make default button on option panes
             // work as expected when running Java 1.5.
@@ -1702,7 +1698,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
             //
-            "ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
+            /*
+            //"ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,
             "ComboBox.popupIcon", makeButtonStateIcon(commonDir + "ComboBox.popupIcons.png", 6),
@@ -1725,6 +1722,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // True is needed for rendering of combo boxes in JTables.
             "ComboBox.changeEditorForeground", Boolean.TRUE,
             "ComboBox.focusable", allControlsFocusable,
+             * 
+             */
             //
             // The visual margin is used to allow each component having room
             // for a cast shadow and a focus ring, and still supporting a
@@ -1771,14 +1770,16 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "FileView.fileIcon", makeIcon(getClass(), commonDir + "FileView.fileIcon.png"),
             "FileView.aliasBadge", makeIcon(getClass(), commonDir + "FileView.aliasBadge.png"),
             //
-            "FormattedTextField.border", textFieldBorder,
+            //"FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
             "FormattedTextField.focusHandler", textFieldFocusHandler,
             "FormattedTextField.popupHandler", textComponentPopupHandler,
             "FormattedTextField.autoSelect", autoselect,
             "Label.border", new VisualMargin(0, 0, 0, 0),
             "Label.opaque", opaque,
+            //
             "List.cellRenderer", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaDefaultListCellRenderer"),
+            //
             "Menu.borderPainted", Boolean.TRUE,
             "MenuItem.borderPainted", Boolean.TRUE,
             // The negative values are used to take account for the visual margin
@@ -1807,7 +1808,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             //
             "PopupMenu.enableHeavyWeightPopup", Boolean.TRUE,
             //
-            "PasswordField.border", textFieldBorder,
+            //"PasswordField.border", textFieldBorder,
             "PasswordField.opaque", opaque,
             "PasswordField.focusHandler", textFieldFocusHandler,
             "PasswordField.popupHandler", textComponentPopupHandler,
@@ -1863,54 +1864,12 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "RootPane.draggableWindowBackground", Boolean.FALSE,
             // Default value for "apple.awt.windowShadow"
             "RootPane.windowShadow", Boolean.TRUE,
-            "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
-
-        public Object createValue(UIDefaults table) {
-            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
-        }
-    },
-            "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
-
-        public Object createValue(UIDefaults table) {
-            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
-        }
-    },
-            "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
-            "ScrollBar.smallMinimumThumbSize", new DimensionUIResource(18, 18),
-            "ScrollBar.maximumThumbSize", new DimensionUIResource(Integer.MAX_VALUE, Integer.MAX_VALUE),
-            "ScrollBar.hThumbBody", makeBufferedImage(commonDir + "ScrollBar.hThumbBody.png"),
-            "ScrollBar.hThumbLeft", makeIcons(commonDir + "ScrollBar.hThumbLeft.png", 5, false),
-            "ScrollBar.hThumbRight", makeIcons(commonDir + "ScrollBar.hThumbRight.png", 5, false),
-            "ScrollBar.hTrack", makeImageBevelBorder(commonDir + "ScrollBar.hTrack.png", new Insets(15, 0, 0, 0)),
-            "ScrollBar.ihThumb", makeImageBevelBorder(commonDir + "ScrollBar.ihThumb.png", new Insets(15, 11, 0, 11)),
-            "ScrollBar.sep.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.sep.hButtons.png", new Insets(15, 28, 0, 28), 4, false),
-            "ScrollBar.tog.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.tog.hButtons.png", new Insets(15, 18, 0, 44), 4, false),
-            "ScrollBar.vThumbBody", makeBufferedImage(commonDir + "ScrollBar.vThumbBody.png"),
-            "ScrollBar.vThumbTop", makeIcons(commonDir + "ScrollBar.vThumbTop.png", 5, true),
-            "ScrollBar.vThumbBottom", makeIcons(commonDir + "ScrollBar.vThumbBottom.png", 5, true),
-            "ScrollBar.vTrack", makeImageBevelBorder(commonDir + "ScrollBar.vTrack.png", new Insets(0, 15, 0, 0)),
-            "ScrollBar.ivThumb", makeImageBevelBorder(commonDir + "ScrollBar.ivThumb.png", new Insets(11, 15, 11, 0)),
-            "ScrollBar.sep.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.sep.vButtons.png", new Insets(28, 15, 28, 0), 4, true),
-            "ScrollBar.tog.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.tog.vButtons.png", new Insets(18, 15, 44, 0), 4, true),
-            "ScrollBar.small.hThumbBody", makeBufferedImage(commonDir + "ScrollBar.small.hThumbBody.png"),
-            "ScrollBar.small.hThumbLeft", makeIcons(commonDir + "ScrollBar.small.hThumbLeft.png", 5, false),
-            "ScrollBar.small.hThumbRight", makeIcons(commonDir + "ScrollBar.small.hThumbRight.png", 5, false),
-            "ScrollBar.small.hTrack", makeImageBevelBorder(commonDir + "ScrollBar.small.hTrack.png", new Insets(11, 0, 0, 0)),
-            "ScrollBar.small.ihThumb", makeImageBevelBorder(commonDir + "ScrollBar.small.ihThumb.png", new Insets(11, 8, 0, 8)),
-            "ScrollBar.smallSep.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallSep.hButtons.png", new Insets(11, 21, 0, 21), 4, false),
-            "ScrollBar.smallTog.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallTog.hButtons.png", new Insets(11, 14, 0, 34), 4, false),
-            "ScrollBar.small.vThumbBody", makeBufferedImage(commonDir + "ScrollBar.small.vThumbBody.png"),
-            "ScrollBar.small.vThumbTop", makeIcons(commonDir + "ScrollBar.small.vThumbTop.png", 5, true),
-            "ScrollBar.small.vThumbBottom", makeIcons(commonDir + "ScrollBar.small.vThumbBottom.png", 5, true),
-            "ScrollBar.small.vTrack", makeImageBevelBorder(commonDir + "ScrollBar.small.vTrack.png", new Insets(0, 11, 0, 0)),
-            "ScrollBar.small.ivThumb", makeImageBevelBorder(commonDir + "ScrollBar.small.ivThumb.png", new Insets(8, 11, 8, 0)),
-            "ScrollBar.smallSep.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallSep.vButtons.png", new Insets(21, 11, 21, 0), 4, true),
-            "ScrollBar.smallTog.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallTog.vButtons.png", new Insets(14, 11, 34, 0), 4, true),
             "ScrollBar.focusable", Boolean.FALSE,
-            "ScrollPane.border", scrollPaneBorder,
+            //
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
             "ScrollPane.focusable", Boolean.FALSE,
             "ScrollPane.opaque", opaque,
+            //
             "Separator.border", new VisualMargin(),
             //
             "Sheet.showAsSheet", Boolean.TRUE,
@@ -1970,18 +1929,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TabbedPane.wrap.textIconGap", 4,
             "Table.focusCellHighlightBorder", new BorderUIResource.LineBorderUIResource(listSelectionBorderColor),
             //"Table.focusCellHighlightBorder", new BorderUIResource.LineBorderUIResource(Color.black),
-            "Table.scrollPaneBorder", scrollPaneBorder,
-            "TableHeader.cellBorder", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaTableHeaderBorder$UIResource",
-            new Object[]{commonDir + "TableHeader.borders.png", new Insets(6, 1, 9, 1)}),
+            //"TableHeader.cellBorder", new UIDefaults.ProxyLazyValue(
+            //"ch.randelshofer.quaqua.QuaquaTableHeaderBorder$UIResource",
+            //new Object[]{commonDir + "TableHeader.borders.png", new Insets(6, 1, 9, 1)}),
             //
             "TextArea.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
-            "TextField.border", textFieldBorder,
-            "TextField.borderInsets", new InsetsUIResource(6, 7, 6, 7),
-            "TextField.borderInsetsSmall", new InsetsUIResource(6, 7, 5, 7),
-            
+            //"TextField.border", textFieldBorder,
             "TextField.opaque", opaque,
             "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
@@ -1990,9 +1945,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TextPane.opaque", Boolean.TRUE,
             "TextPane.popupHandler", textComponentPopupHandler,
             //
-            "ToggleButton.border", new UIDefaults.ProxyLazyValue(
-            "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder",
-            new Object[]{"toggle"}),
+            //"ToggleButton.border", new UIDefaults.ProxyLazyValue(
+            //"ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder",
+            //new Object[]{"toggle"}),
             //"ToggleButton.border", new BorderUIResource.LineBorderUIResource(Color.black),
             // The values for this margin are ignored. We dynamically compute a margin
             // for the various button styles that we support, if we encounter a

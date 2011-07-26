@@ -1671,7 +1671,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
     /**
      * Render different type sizes and styles.
      */
-    private static class FilterComboBoxRenderer extends DefaultListCellRenderer {
+    protected static class FilterComboBoxRenderer extends DefaultListCellRenderer {
 
         private Border border = new EmptyBorder(1, 0, 1, 0);
 

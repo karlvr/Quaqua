@@ -337,7 +337,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                             for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
                                 XMLElement xml4 = (XMLElement) i3.next();
                                 String aliasName = null;
+                                int entryType=0;
                                 byte[] serializedAlias = null;
+                                boolean isVisible=true;
                                 for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
                                     XMLElement xml5 = (XMLElement) i4.next();
 
@@ -350,8 +352,24 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                     if (!xml5.getName().equals("key") && key5.equals("Alias")) {
                                         serializedAlias = Base64.decode(xml5.getContent());
                                     }
+                                    if (key5.equals("EntryType")) {
+                                        // EntryType marks items which have been added
+                                        // by the System.
+                                        try {
+                                        entryType=Integer.parseInt(xml5.getContent());
+                                        } catch (NumberFormatException e) {
+                                            entryType=1;
+                                        }
+                                    }
+                                    if (key5.equals("Visibility")) {
+                                        if (xml5.getContent()!=null&&xml5.getContent().equals("NeverVisible")) {
+                                            isVisible=false;
+                                        }
+                                        
+                                    }
                                 }
-                                if (serializedAlias != null && aliasName != null) {
+                                
+                                if (serializedAlias != null && aliasName != null && entryType==0 && isVisible) {
                                     // Suppress the "All My Files" folder.
                                     if (aliasName.equals("All My Files")) continue;
 
