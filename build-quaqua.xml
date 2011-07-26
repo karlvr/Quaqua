@@ -5,11 +5,24 @@
         <!--
             Prerequisites for building the Quaqua look and feel:
 
-            - Mac OS X 10.6
-            - MacOSX10.6sdk, MacOSX10.5.sdk and MacOSX10.4u.sdk installed in
+            - Building can only be performed on Mac OS X 10.6 or Mac OS X 10.7
+            
+            - MacOSX10.7sdk, MacOSX10.6sdk, MacOSX10.5.sdk must be installed in 
               /Developer/SDKs
+              
             - The Mac OS X 10.5 /System folder must be accessible in the path
               /Users/Shared/Developer/Mac OS X 10.5/System
+              If you don't have the OS X 10.5 /System folder you can only build
+              Quaqua for OS X 10.6 and 10.7.
+              
+            - If you build on Mac OS X 10.7, Xcode 3 must be installed in
+              /Developers-old.
+              If you don't have Xcode3, you can build Quaqua only for Intel Macs.
+              To do this, remove the -arch PPC and -arch PPC64 options in the
+              "jnilib-32" target and the "jnilib-64" target.
+
+            If all prerequisites are fulfilled, you can build Quaqua using
+            the "release" target.
 
             -->
 
