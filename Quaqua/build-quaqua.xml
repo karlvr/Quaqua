@@ -101,6 +101,7 @@
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
             <include name="ch/randelshofer/quaqua/BasicQuaquaLookAndFeel.java"/>
+            <include name="ch/randelshofer/quaqua/BasicQuaquaLookAndFeel2.java"/>
             <include name="ch/randelshofer/quaqua/LookAndFeelProxy.java"/>
             <include name="ch/randelshofer/quaqua/QuaquaLayoutStyle.java"/>
         </javac>

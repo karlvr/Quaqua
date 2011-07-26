@@ -1,5 +1,5 @@
 /*
- * @(#)TextFieldTest.java  1.0  13 February 2005
+ * @(#)TextFieldTest16.java  1.0  13 February 2005
  *
  * Copyright (c) 2004 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -11,15 +11,15 @@
 
 package test;
 /**
- * TextFieldTest.
+ * TextFieldTest16.
  *
  * @author  Werner Randelshofer
  * @version 1.0  13 February 2005  Created.
  */
-public class TextFieldTest extends javax.swing.JPanel {
+public class TextFieldTest16 extends javax.swing.JPanel {
     
     /** Creates new form. */
-    public TextFieldTest() {
+    public TextFieldTest16() {
         initComponents();
         
         searchField.putClientProperty("Quaqua.TextField.style","search");
