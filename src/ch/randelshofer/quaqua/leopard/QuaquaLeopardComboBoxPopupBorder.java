@@ -30,7 +30,6 @@ public class QuaquaLeopardComboBoxPopupBorder implements Border {
 
     public void paintBorder(Component component, Graphics gr, int x,
             int y, int width, int height) {
-
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,

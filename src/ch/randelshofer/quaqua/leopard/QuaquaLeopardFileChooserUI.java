@@ -910,7 +910,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                     // All parent paths must be equal
                     TreePath parentPath = (subPath == null) ? null : subPath.getParentPath();
 
-                    if (list.size() == 0) {
+                    if (list.isEmpty()) {
                         commonParentPath = parentPath;
                     }
                     if (parentPath == null && commonParentPath == null || parentPath != null && commonParentPath != null && parentPath.equals(commonParentPath)) {
@@ -918,7 +918,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                     }
                 }
             }
-            if (list.size() == 0 && files.length > 0) {
+            if (list.isEmpty() && files.length > 0) {
                 list.add(fc.getFileSystemView().getParentDirectory(files[0]));
             }
 
@@ -1078,7 +1078,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             if (isAdjusting != 0) {
                 return;
             }
-            
+
             TreePath path = browser.getSelectionPath();
             if (path != null) {
                 model.lazyInvalidatePath(path);
@@ -1384,7 +1384,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 TreePath fullPath = getFileSystemTreeModel().toPath(file, subtreeModel.getPathToRoot());
                 subtreeModel.setPathToRoot(fullPath);
                 getFileSystemTreeModel().lazyInvalidatePath(fullPath);
-                
+
                 // XXX - Bogus.
                 //       We can not set a non-traversable directory as
                 //       the current directory in a JFileChooser.
@@ -1542,12 +1542,16 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 if (parentFile.equals(System.getProperty("user.home"))) {
                     // Look for user's home special folders
                     String name = file.getName();
-                    return name.equals("Applications") || name.equals("Desktop") || name.equals("Documents") || name.equals("Downloads") || name.equals("Library") || name.equals("Movies") || name.equals("Music") || name.equals("Pictures") || name.equals("Public") || name.equals("Sites");
+                    return name.equals("Applications") || name.equals("Desktop")//
+                            || name.equals("Documents") || name.equals("Downloads")//
+                            || name.equals("Library") || name.equals("Movies") //
+                            || name.equals("Music") || name.equals("Pictures") //
+                            || name.equals("Public") || name.equals("Sites");
                 } else if (parentFile.equals(computer.getAbsolutePath())) {
                     // Look for computer's special folders
                     String name = file.getName();
                     return name.equals("Applications") || name.equals("Library");
-                } else if (!parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
+                } else if (parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
                     // Look for Utility folder in the /Applications folder
                     return file.getName().equals("Utilities");
                 }
@@ -1812,9 +1816,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
                 // Only react on double click if all selected files are
                 // acceptable
-                for (TreePath tp:browser.getSelectionPaths()) {
-                    FileSystemTreeModel.Node n =(FileSystemTreeModel.Node)tp.getLastPathComponent();
-                    if (! fc.accept(n.getFile())) {
+                for (TreePath tp : browser.getSelectionPaths()) {
+                    FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) tp.getLastPathComponent();
+                    if (!fc.accept(n.getFile())) {
                         return;
                     }
                 }
@@ -1970,9 +1974,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 }
 
                 try {
-                    if (! newFolder.mkdir()) {
-                        if (! newFolder.isDirectory()) {
-                            throw new IOException("Couldn't create folder \""+newFolder.getName()+"\".");
+                    if (!newFolder.mkdir()) {
+                        if (!newFolder.isDirectory()) {
+                            throw new IOException("Couldn't create folder \"" + newFolder.getName() + "\".");
                         }
                     }
                     fc.rescanCurrentDirectory();
@@ -2209,20 +2213,26 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                 if (sidebarTree.getSelectionPath().getLastPathComponent() instanceof FileInfo) {
                     FileInfo info = (FileInfo) sidebarTree.getSelectionPath().getLastPathComponent();
                     File file = info.lazyGetResolvedFile();
-                    setRootDirectory(file);
+                    if (file == null) {
+                        // The file became unavailable
 
-                    isAdjusting++;
-                    JFileChooser fc = getFileChooser();
-                    if (file.isDirectory() && fc.isTraversable(file)) {
-                        fc.setCurrentDirectory(file);
                     } else {
-                        if (fc.isMultiSelectionEnabled()) {
-                            fc.setSelectedFiles(new File[]{file});
+
+                        setRootDirectory(file);
+
+                        isAdjusting++;
+                        JFileChooser fc = getFileChooser();
+                        if (file.isDirectory() && fc.isTraversable(file)) {
+                            fc.setCurrentDirectory(file);
                         } else {
-                            fc.setSelectedFile(file);
+                            if (fc.isMultiSelectionEnabled()) {
+                                fc.setSelectedFiles(new File[]{file});
+                            } else {
+                                fc.setSelectedFile(file);
+                            }
                         }
+                        isAdjusting--;
                     }
-                    isAdjusting--;
                     /*
                     TreePath path = subtreeModel.getPathToRoot();
                     getFileSystemTreeModel().lazyInvalidatePath(path);

@@ -18,7 +18,6 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
-import javax.swing.plaf.basic.BasicPopupMenuUI;
 import sun.awt.AppContext;
 
 /**
@@ -36,6 +35,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected final static String tigerDir = "/ch/randelshofer/quaqua/tiger/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snow_leopard/images/";
+    protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
     /** Creates a new instance. */
     public BasicQuaquaLookAndFeel(String targetClassName) {
@@ -1593,14 +1593,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                     commonDir + "TextField.small.searchBorders.png",});
 
 
-        // True if file choosers orders by type
-        prefValue = OSXPreferences.getString(OSXPreferences.FINDER_PREFERENCES, "StandardViewOptions\tColumnViewOptions\tArrangeBy", "dnam");
-        boolean isOrderFilesByType = prefValue.equals("kipl");
+       
+        boolean isOrderFilesByType = false;
         // True if file choosers shows all files by default
         prefValue = OSXPreferences.getString(//
                 OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
                 .toLowerCase();
         boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
+        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled","true"));
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1756,6 +1756,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             leopardDir + "FileChooser.disclosureButtonIcons.png", 10),
             //
             "FileChooser.fileHidingEnabled", isFileHidingEnabled,
+            "FileChooser.quickLookEnabled", isQuickLookEnabled,
             "FileChooser.homeFolderIcon", makeIcon(getClass(), commonDir + "FileChooser.homeFolderIcon.png"),
             "FileChooser.orderByType", isOrderFilesByType,
             "FileChooser.previewLabelForeground", new ColorUIResource(0x000000),
@@ -1978,6 +1979,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
             "TextField.border", textFieldBorder,
+            "TextField.borderInsets", new InsetsUIResource(6, 7, 6, 7),
+            "TextField.borderInsetsSmall", new InsetsUIResource(6, 7, 5, 7),
+            
             "TextField.opaque", opaque,
             "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
@@ -2231,6 +2235,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
     /** Installs the QuaquaPopupFactory if the PopupMenuUI is included. */
     protected void installPopupFactory() {
+        // Fix for issue 132: Don't install QuaquaPopupFactory, because it
+        // causes popups to appear behind dialog windows if one of the window
+        // ancestors has "alwaysOnTop" set to true.
+        /*
         if (isUIIncluded("PopupMenuUI")) {
             if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
                 try {
@@ -2240,7 +2248,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                     //ex.printStackTrace();
                 }
             }
-        }
+        }*/
     }
 
     /** Installs the QuaquaPopupMenuUI.MouseGrabber if the PopupMenuUI is included. */

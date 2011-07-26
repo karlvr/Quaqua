@@ -12,7 +12,6 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -27,10 +26,9 @@ public class CheckBoxTest extends javax.swing.JPanel {
     public CheckBoxTest() {
         initComponents();
         
-        // Leopard properties
-        if (QuaquaManager.getDesign() == QuaquaManager.LEOPARD) {
-            checkBox3.putClientProperty("JComponent.sizeVariant","small");
-            checkBox4.putClientProperty("JComponent.sizeVariant","small");
+        for (JComponent c:new JComponent[]{checkBox3,checkBox4,smallLabel}) {
+
+            c.putClientProperty("JComponent.sizeVariant","small");
         }
     }
     
@@ -108,7 +106,6 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(separator, gridBagConstraints);
 
-        smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
@@ -117,7 +114,6 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        checkBox3.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         checkBox3.setSelected(true);
         checkBox3.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -125,7 +121,6 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(checkBox3, gridBagConstraints);
 
-        checkBox4.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         checkBox4.setSelected(true);
         checkBox4.setText("Ångström H");
         checkBox4.setEnabled(false);
@@ -140,7 +135,7 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        jCheckBox5.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        jCheckBox5.setFont(new java.awt.Font("Lucida Grande", 0, 24));
         jCheckBox5.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;

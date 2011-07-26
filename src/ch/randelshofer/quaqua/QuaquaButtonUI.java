@@ -106,8 +106,25 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return new QuaquaButtonListener(b);
     }
 
+    private static boolean isSmall(JComponent c) {
+        return QuaquaUtilities.isSmallSizeVariant(c);
+    }
+
+    private static Font getFont(JComponent c) {
+        Font f = c.getFont();
+        if ((f instanceof UIResource) && QuaquaUtilities.isSmallSizeVariant(c)) {
+            Font smallFont = UIManager.getFont("SmallSystemFont");
+            if (smallFont != null) {
+                f = smallFont;
+            }
+        }
+        return f;
+    }
+
     @Override
     public void paint(Graphics g, JComponent c) {
+
+        g.setFont(getFont(c));
 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style != null && style.equals("help")) {
@@ -152,7 +169,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     @Override
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
-        FontMetrics fm = g.getFontMetrics();
+       FontMetrics fm = g.getFontMetrics();
         int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
         boolean borderHasPressedCue = borderHasPressedCue(b);
 
@@ -287,7 +304,12 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         AbstractButton b = (AbstractButton) c;
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style == null) {
-            style = "push";
+            if (b.getBorder() instanceof UIResource
+                    && b.isBorderPainted()) {
+                style = "push";
+            } else {
+                style = "plain";
+            }
         }
         if (style.equals("help")) {
             return getPreferredSize(c);
@@ -309,11 +331,6 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     }
 
     @Override
-    public Dimension getPreferredSize(JComponent c) {
-        return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
-    }
-
-    @Override
     public Dimension getMaximumSize(JComponent c) {
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style != null && style.equals("help")) {
@@ -327,10 +344,21 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return d;
     }
 
+    @Override
+    public Dimension getPreferredSize(JComponent c) {
+        return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
+    }
+
     public static Dimension getPreferredSize(AbstractButton b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
+        boolean isSmall = isSmall(b);
         if (style == null) {
-            style = "push";
+            if (b.getBorder() instanceof UIResource
+                    && b.isBorderPainted()) {
+                style = "push";
+            } else {
+                style = "plain";
+            }
         }
         if (style.equals("help")) {
             Icon helpIcon = UIManager.getIcon("Button.helpIcon");
@@ -350,7 +378,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         Icon icon = (Icon) b.getIcon();
         String text = b.getText();
 
-        Font font = b.getFont();
+        Font font = getFont(b);
         FontMetrics fm = b.getFontMetrics(font);
 
         viewR.x = viewR.y = 0;
@@ -373,11 +401,21 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
         //if (b.isBorderPainted()) {
         Insets insets = b.getInsets();
-        if (insets==null) insets=new Insets(0,0,0,0);
+        if (insets == null) {
+            insets = new Insets(0, 0, 0, 0);
+        }
         r.width += insets.left + insets.right;
         r.height += insets.top + insets.bottom;
+
+        if (!(b.getBorder() instanceof UIResource)) {
+            Insets margin = b.getMargin();
+            if (margin != null) {
+                r.width += margin.left + margin.right;
+                r.height += margin.top + margin.bottom;
+            }
+        }
         //}
-        if (!QuaquaUtilities.isSmallSizeVariant(b) && style.equals("push")
+        if (!isSmall && style.equals("push")
                 && b.getIcon() == null && b.getText() != null) {
             r.width = Math.max(r.width, UIManager.getInt("Button.minimumWidth"));
         }
@@ -460,9 +498,11 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             return null;
         }
 
-        FontMetrics fm = c.getFontMetrics(c.getFont());
+        FontMetrics fm = c.getFontMetrics(getFont(c));
         Insets insets = c.getInsets(viewInsets);
-        if (insets==null) insets=new Insets(0,0,0,0);
+        if (insets == null) {
+            insets = new Insets(0, 0, 0, 0);
+        }
         viewR.x = insets.left;
         viewR.y = insets.top;
         viewR.width = width - (insets.left + insets.right);
@@ -474,7 +514,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         String clippedText =
                 layoutCL(b, fm, text, icon, viewR, iconR, textR);
 
-        Rectangle textBounds = Fonts.getPerceivedBounds(text, c.getFont(), c);
+        Rectangle textBounds = Fonts.getPerceivedBounds(text, getFont(c), c);
         if (isEmpty) {
             textBounds.width = 0;
         }
@@ -485,6 +525,11 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         textR.height -= fm.getHeight() - textBounds.height;
 
         bounds.setBounds(textR);
+        if (type == VisuallyLayoutable.COMPONENT_BOUNDS) {
+            if (!iconR.isEmpty()) {
+                bounds.add(iconR);
+            }
+        }
         return bounds;
     }
 }

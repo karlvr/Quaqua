@@ -12,7 +12,6 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -26,7 +25,7 @@ public class PushButtonTest extends javax.swing.JPanel {
     /** Creates new form. */
     public PushButtonTest() {
         initComponents();
-        
+  /*
         Font smallFont = UIManager.getFont("SmallSystemFont");
         if (smallFont == null) {
             smallFont = new Font("LucidaGrande", Font.PLAIN, 11);
@@ -38,6 +37,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         smallLabel.setFont(smallFont);
         smallSquareButton.setFont(smallFont);
         smallSquareLabel1.setFont(smallFont);
+*/
 
         // Client properties for the Aqua Look and Feel TN2196
         // https://developer.apple.com/mac/library/technotes/tn2007/tn2196.html
@@ -48,6 +48,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         enabledButton.putClientProperty("JButton.buttonType", "text");
         helpButton.putClientProperty("JButton.buttonType", "help");
 
+        smallLabel.putClientProperty("JComponent.sizeVariant", "small");
         smallEnabledButton.putClientProperty("JComponent.sizeVariant", "small");
         smallDisabledButton.putClientProperty("JComponent.sizeVariant", "small");
         smallBevelButton.putClientProperty("JComponent.sizeVariant", "small");

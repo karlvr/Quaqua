@@ -248,36 +248,16 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    public static final Object beginGraphics(Graphics2D graphics2d) {
+    /** Turns on common rendering hints for UI delegates. */
+    public static Object beginGraphics(Graphics2D graphics2d) {
         Object object = graphics2d.getRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING);
-
-        /*
-        AffineTransform tx = graphics2d.getTransform();
-        AffineTransform savedTransform = (AffineTransform) tx.clone();
-        tx.scale(0.9,0.9);
-        graphics2d.setTransform(tx);
-         */
         graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                 RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//        graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-//               RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-
-
-
-        /*graphics2d.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-        RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
-
-        //if (true) return savedTransform;
         return object;
     }
 
-    public static final void endGraphics(Graphics2D graphics2d, Object oldHints) {
-        /*
-        if (true) {
-        graphics2d.setTransform((AffineTransform) oldHints);
-        return;
-        }*/
-
+    /** Restores rendering hints for UI delegates. */
+    public static void endGraphics(Graphics2D graphics2d, Object oldHints) {
         if (oldHints != null) {
             graphics2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
                     oldHints);
@@ -288,7 +268,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * Returns true, if the specified component is focus owner or permanent
      * focus owner and if the component is on an the active window.
      */
-    public static final boolean isFocused(Component component) {
+    public static boolean isFocused(Component component) {
         // When a component is used as a cell renderer, the focus can
         // not be determined from the component itself.
         if (component instanceof JComponent) {
@@ -710,13 +690,6 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         return text;
     }
 
-    public static void configureGraphics(Graphics gr) {
-        Graphics2D g = (Graphics2D) gr;
-        g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-        /*g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS, RenderingHints.VALUE_FRACTIONALMETRICS_ON);*/
-    }
-
     /**
      * Uses some unsupported (dangerous) API calls on the native peers to make
      * a window translucent. If the API is not found, this method leaves the
@@ -725,7 +698,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @param w The Window.
      * @param value The alpha channel for the window.
      */
-    static final void setWindowAlpha(Window w, int value) {
+    static void setWindowAlpha(Window w, int value) {
         if (w == null) {
             return;
         }
@@ -741,7 +714,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    static final void setWindowAlphaOld(Window w, int value) {
+    static void setWindowAlphaOld(Window w, int value) {
         if (w == null) {
             return;
         }
@@ -902,15 +875,24 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     public static void applySizeVariant(JComponent c) {
-        String p = (String) c.getClientProperty("JComponent.sizeVariant");
-        if (p == null) {
-        } else if (p.equals("regular")) {
-            c.setFont(UIManager.getFont("SystemFont"));
-        } else if (p.equals("small")) {
-            c.setFont(UIManager.getFont("SmallSystemFont"));
-        } else if (p.equals("mini")) {
-            c.setFont(UIManager.getFont("MiniSystemFont"));
+        String psize = (String) c.getClientProperty("JComponent.sizeVariant");
+        String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
+
+        Font font = null;
+        if (psize == null) {
+        } else if (psize.equals("regular")) {
+            font = UIManager.getFont("SystemFont");
+        } else if (psize.equals("small")) {
+            font = UIManager.getFont("SmallSystemFont");
+        } else if (psize.equals("mini")) {
+            font = UIManager.getFont("MiniSystemFont");
         }
+
+        if (pstyle == null) {
+        } else if (pstyle.equals("sidebar")) {
+            font = UIManager.getFont("Tree.sideBar.selectionFont");
+        }
+        c.setFont(font);
     }
 
     public static int getDragThreshold() {

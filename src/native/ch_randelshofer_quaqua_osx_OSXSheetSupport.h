@@ -10,7 +10,6 @@ extern "C" {
 /* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION 0L
-/* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024osx_00024OSXSheetSupport */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
  * Method:    nativeGetNativeCodeVersion
