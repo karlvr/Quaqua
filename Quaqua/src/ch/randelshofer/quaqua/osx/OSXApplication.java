@@ -47,7 +47,7 @@ public class OSXApplication {
     /**
      * Load the native code.
      */
-    private final static boolean isNativeCodeAvailable() {
+    private static boolean isNativeCodeAvailable() {
         if (isNativeCodeAvailable == null) {
             synchronized (OSXApplication.class) {
                 if (isNativeCodeAvailable == null) {

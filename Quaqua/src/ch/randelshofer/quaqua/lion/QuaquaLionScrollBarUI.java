@@ -1,17 +1,17 @@
 /*
- * @(#)QuaquaScrollBarUI.java  
+ * @(#)QuaquaLionScrollBarUI.java  
  *
- * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package ch.randelshofer.quaqua;
+package ch.randelshofer.quaqua.lion;
 
+import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Debug;
-import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
@@ -22,12 +22,12 @@ import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
 /**
- * QuaquaScrollBarUI.
+ * QuaquaLionScrollBarUI.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaScrollBarUI extends BasicScrollBarUI {
+public class QuaquaLionScrollBarUI extends BasicScrollBarUI {
 
     protected Dimension smallMinimumThumbSize;
     protected boolean isPlaceButtonsTogether;
@@ -35,11 +35,11 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
     /**
      * Creates a new instance.
      */
-    public QuaquaScrollBarUI() {
+    public QuaquaLionScrollBarUI() {
     }
 
     public static ComponentUI createUI(JComponent c) {
-        return new QuaquaScrollBarUI();
+        return new QuaquaLionScrollBarUI();
     }
 
     @Override
@@ -1003,7 +1003,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            QuaquaTrackListener trackListener = (QuaquaTrackListener) QuaquaScrollBarUI.this.trackListener;
+            QuaquaTrackListener trackListener = (QuaquaTrackListener) QuaquaLionScrollBarUI.this.trackListener;
             if (useBlockIncrement) {
                 scrollByBlock(direction);
                 // Stop scrolling if the thumb catches up with the mouse

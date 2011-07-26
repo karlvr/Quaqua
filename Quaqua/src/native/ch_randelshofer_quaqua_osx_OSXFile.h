@@ -16,10 +16,9 @@ extern "C" {
 #undef ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKOWN
 #define ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKOWN -1L
 #undef ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION
-#define ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION 4L
+#define ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION 5L
 /* Inaccessible static: labelColors */
 /* Inaccessible static: isNativeCodeAvailable */
-/* Inaccessible static: class_00024ch_00024randelshofer_00024quaqua_00024osx_00024OSXFile */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeGetFileType

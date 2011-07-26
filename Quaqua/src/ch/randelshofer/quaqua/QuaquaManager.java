@@ -358,7 +358,7 @@ public class QuaquaManager {
             lafs.put("Leopard.16", "ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("SnowLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("SnowLeopard.16", "ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel");
-            lafs.put("Lion.16", "ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF");
+            lafs.put("Lion.16", "ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel");
             lafs.put("CrossTiger.15", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossTiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");

@@ -132,8 +132,8 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     public Insets getBorderInsets(Component c, Insets insets) {
         insets = getVisualMargin(c, insets);
         Insets inner = isSmall(c) ?
-            (isSearchField(c) ? new Insets(6, 10, 5, 10) : new Insets(6, 7, 5, 7)) :
-                (isSearchField(c) ? new Insets(6, 9, 6, 9) : new Insets(6, 7, 6, 7));
+            (isSearchField(c) ? new Insets(6, 10, 5, 10) : UIManager.getInsets("TextField.borderInsetsSmall")) :
+                (isSearchField(c) ? new Insets(6, 9, 6, 9) : UIManager.getInsets("TextField.borderInsets"));
         InsetsUtil.addTo(inner, insets);
         
         if (c instanceof JTextComponent) {
