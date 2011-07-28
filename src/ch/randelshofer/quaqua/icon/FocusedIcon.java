@@ -8,70 +8,44 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-/*//
-//  AquaFocus.java
-//  Copyright (c) 2009 Apple Inc. All rights reserved.
-//*/
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.border.Painter;
-import ch.randelshofer.quaqua.border.ShadowBorder;
-import java.awt.AlphaComposite;
+import ch.randelshofer.quaqua.border.AbstractFocusedPainter;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import javax.swing.Icon;
-import javax.swing.UIManager;
 
 /**
- * {@code FocusedIcon}.
+ * Draws a focus ring around the opaque pixels of an icon.
+ * The icon must provide space for the focus ring.
  *
  * @author Werner Randelshofer
  * @version 1.0 2011-07-26 Created.
  */
-public class FocusedIcon extends ShadowBorder implements Icon {
+public class FocusedIcon extends AbstractFocusedPainter implements Icon {
 
-    final Icon icon;
-    final int slack;
+    private Icon actualIcon;
 
-    public FocusedIcon(final Icon icon, final int slack) {
-        super(
-                new Painter() {
-
-                    public void paint(Graphics g, int x, int y, int w, int h) {
-                        Graphics2D imgG = (Graphics2D) g;
-                        imgG.setComposite(AlphaComposite.Src);
-                        imgG.setColor(UIManager.getColor("Focus.color"));
-                        imgG.fillRect(x, y, w - (slack * 2), h - (slack * 2));
-                        imgG.setComposite(AlphaComposite.DstAtop);
-                        icon.paintIcon(null, imgG, x, y);
-                    }
-                },
-                new Painter() {
-
-                    public void paint(Graphics g, int x, int y, int w, int h) {
-                        ((Graphics2D) g).setComposite(AlphaComposite.SrcAtop);
-                        icon.paintIcon(null, g, x, y);
-                    }
-                },
-                slack, slack, 0.0f, 1.8f, 7);
-        this.icon = icon;
-        this.slack = slack;
+    public FocusedIcon(Icon actualIcon) {
+        this.actualIcon = actualIcon;
     }
 
     @Override
     public int getIconHeight() {
-        return icon.getIconHeight() + slack + slack;
+        return actualIcon.getIconHeight();
     }
 
     @Override
     public int getIconWidth() {
-        return icon.getIconWidth() + slack + slack;
+        return actualIcon.getIconWidth();
     }
 
     @Override
-    public void paintIcon(final Component c, final Graphics g, final int x, final int y) {
-        paintBorder(c, g, x, y, getIconWidth(), getIconHeight());
-        icon.paintIcon(c, g, x + slack, y + slack);
+    public void paintIcon( Component c,  Graphics g,  int x,  int y) {
+        paint(c, g, x, y, getIconWidth(), getIconHeight());
+    }
+    @Override
+    protected void doPaint( Component c,  Graphics g,  int x,  int y, int w, int h) {
+        actualIcon.paintIcon(c, g, x, y);
     }
 }

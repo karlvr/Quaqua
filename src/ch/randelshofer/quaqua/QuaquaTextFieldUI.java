@@ -147,7 +147,9 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
             }
         }
 
-        super.paintSafely(g);
+        Graphics g2=g.create();
+        super.paintSafely(g2);
+        g2.dispose();
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
     }

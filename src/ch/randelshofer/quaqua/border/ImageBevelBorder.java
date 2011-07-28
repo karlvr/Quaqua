@@ -124,7 +124,8 @@ public class ImageBevelBorder implements Border {
             return;
         }
 
-        if (!gr.getClipBounds().intersects(x, y, width, height)) {
+        
+        if (gr.getClipBounds()!=null&&!gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
 
@@ -262,6 +263,14 @@ public class ImageBevelBorder implements Border {
         }
 
         g.dispose();
+    }
+
+    public Image getImage() {
+        return image;
+    }
+
+    public void setImage(BufferedImage image) {
+        this.image=image;
     }
 
     public static class UIResource extends ImageBevelBorder implements javax.swing.plaf.UIResource {

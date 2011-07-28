@@ -105,7 +105,21 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         for (JComponent c:new JComponent[]{smallBox1,smallBox2,smallBox3,smallLabel}) {
               c.putClientProperty("JComponent.sizeVariant", "small");
         }
-        
+//
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }        
     }
     public static void main(String args[]) {
         try {

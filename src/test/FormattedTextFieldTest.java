@@ -15,6 +15,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 
 /**
  * FormattedTextFieldTest.
@@ -58,6 +59,27 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(doubleField, gridBagConstraints);
+        
+       // Prevent text components from becoming too small in GridBagLayout
+        for (Component c : getComponents()) {
+            if (c instanceof JTextComponent) {
+                c.setMinimumSize(c.getPreferredSize());
+            }
+        }
+                // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }
     }
     
     /** This method is called from within the constructor to
@@ -96,52 +118,52 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         editableField.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(editableField, gridBagConstraints);
 
         editableLabel.setText("Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(editableLabel, gridBagConstraints);
 
         dateField.setValue(new Date());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(dateField, gridBagConstraints);
 
         dateLabel.setText("Date Formatted");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(dateLabel, gridBagConstraints);
 
         integerField.setValue(42);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(integerField, gridBagConstraints);
 
         integerLabel.setText("Integer Formatted");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(integerLabel, gridBagConstraints);
 
         doubleField.setValue(new Double(Math.PI));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(doubleField, gridBagConstraints);
 
         doubleLabel.setText("processFocusEvent overriden");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(doubleLabel, gridBagConstraints);
 
@@ -150,13 +172,13 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(nonEditableField, gridBagConstraints);
 
         nonEditableLabel.setText("Non-Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(nonEditableLabel, gridBagConstraints);
 
@@ -165,13 +187,13 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(disabledField, gridBagConstraints);
 
         disabledLabel.setText("Disabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(disabledLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -187,14 +209,14 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 7;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallEditableField, gridBagConstraints);
 
         smallLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
@@ -204,7 +226,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallNonEditableField, gridBagConstraints);
 
         smallDisabledField.setText("Ångström H");
@@ -213,7 +235,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallDisabledField, gridBagConstraints);
 
         editableField1.setBackground(new java.awt.Color(181, 212, 107));
@@ -223,7 +245,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 18;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.weighty = 1.0;
         add(editableField1, gridBagConstraints);
 
@@ -231,7 +253,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 18;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(editableLabel1, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();

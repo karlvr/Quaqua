@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua16LionLookAndFeel.java  1.0  2011-07-25
+ * @(#)Quaqua16LionLookAndFeel.java  
  * 
  * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -26,9 +26,9 @@ import java.awt.*;
  * {@code Quaqua16LionLookAndFeel}.
  *
  * @author Werner Randelshofer
- * @version 1.0 2011-07-25 Created.
+ * @version $Id$
  */
-public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
+public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
     private LayoutStyle layoutStyle;
 
 
@@ -123,7 +123,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
             //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
             //"ToolBarUI", quaquaPrefix + "ToolBarUI",
             // "ToolTipUI", basicPrefix + "ToolTipUI",
-            //"ComboBoxUI", quaquaPrefix + "ComboBoxUI",
+            "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
             "TableUI", quaquaPrefix + "TableUI",
             //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
             // "InternalFrameUI", basicPrefix + "InternalFrameUI",
@@ -248,12 +248,13 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
                 "ch.randelshofer.quaqua.QuaquaScrollPaneBorder$UIResource",
                 new Object[]{lionDir + "ScrollPane.borders.png", lionDir + "TextField.borders.png"});
 // *** Shared Borders
+        /*
         Object textFieldBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaTextFieldBorder$UIResource",
                 new Object[]{lionDir + "TextField.borders.png",
                     commonDir + "TextField.searchBorders.png",
                     commonDir + "TextField.small.searchBorders.png",});
-
+*/
         String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Toolbar";
         String sideBarIconsEnd = "FolderIcon.icns";
 
@@ -322,7 +323,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
             "FileView.hardDriveIcon", makeIcon(getClass(), snowLeopardDir + "FileView.hardDriveIcon.png"),
             "FileView.floppyDriveIcon", makeIcon(getClass(), snowLeopardDir + "FileView.floppyDriveIcon.png"),
             //
-            "FormattedTextField.border", textFieldBorder,
+//            "FormattedTextField.border", textFieldBorder,
             //
             "Frame.titlePaneBorders", makeImageBevelBorders(snowLeopardDir + "Frame.titlePaneBorders.png", new Insets(0, 0, 22, 0), 2, true),
             "Frame.titlePaneBorders.small", makeImageBevelBorders(snowLeopardDir + "Frame.titlePaneBorders.small.png", new Insets(0, 0, 16, 0), 2, true),
@@ -362,7 +363,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
             //
             "Panel.background", panelBackground,
             //
-            "PasswordField.border", textFieldBorder,
+//            "PasswordField.border", textFieldBorder,
             //
             "PopupMenu.border", //
             new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardMenuBorder"),
@@ -466,9 +467,10 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaLookAndFeel2 {
             "Table.descendingSortIcon", makeIcon(getClass(), snowLeopardDir + "Table.descendingSortIcon.png"),
             "Table.scrollPaneBorder", scrollPaneBorder,
             //
-            "TextField.border", textFieldBorder,
-            "TextField.borderInsets", new InsetsUIResource(5,7,5,7),
-            "TextField.borderInsetsSmall", new InsetsUIResource(5, 7, 5, 7),
+//            "TextField.border", textFieldBorder,
+            "TextField.borderInsets", new InsetsUIResource(6,7,6,7),
+            "TextField.smallBorderInsets", new InsetsUIResource(6, 7, 5, 7),
+            "TextField.searchBorderInsets", new InsetsUIResource(6,12,5,12),
             //
             //"TableHeader.cellBorder", new UIDefaults.ProxyLazyValue(
             //"ch.randelshofer.quaqua.QuaquaTableHeaderBorder$UIResource",

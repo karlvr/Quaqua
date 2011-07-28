@@ -865,13 +865,27 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * @param c
      * @return true, , if the component should use the small appearance.
      */
-    public static boolean isSmallSizeVariant(JComponent c) {
-        Font f = c.getFont();
+    public static boolean isSmallSizeVariant(Component component) {
+        Font f = component.getFont();
         if (f != null && f.getSize() <= 11) {
             return true;
         }
+        if (! (component instanceof JComponent)) return false;
+        
+        JComponent c =(JComponent)component;
         String p = (String) c.getClientProperty("JComponent.sizeVariant");
         return p != null && p.equals("small");
+    }
+    public static boolean isLargeSizeVariant(Component component) {
+        Font f = component.getFont();
+        if (f != null && f.getSize() > 13) {
+            return true;
+        }
+        if (! (component instanceof JComponent)) return false;
+        
+        JComponent c =(JComponent)component;
+        String p = (String) c.getClientProperty("JComponent.sizeVariant");
+        return p != null && p.equals("large");
     }
 
     public static void applySizeVariant(JComponent c) {
@@ -892,6 +906,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         } else if (pstyle.equals("sidebar")) {
             font = UIManager.getFont("Tree.sideBar.selectionFont");
         }
+        if (font!=null)
         c.setFont(font);
     }
 

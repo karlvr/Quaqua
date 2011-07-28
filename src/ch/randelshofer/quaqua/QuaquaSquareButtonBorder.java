@@ -90,6 +90,7 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
      * @param config GraphicsConfiguration that will be
      *        rendered to, this may be null.
      */
+    @Override
     protected Image createImage(Component c, int w, int h,
                                 GraphicsConfiguration config) {
         if (config == null) {
@@ -116,7 +117,7 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
         paint(c, gr, x, y, width, height, colors);
     }    
     
-    protected void paintToImage(Component c, Graphics gr, int width, int height, Object[] args) {
+    protected void paintToImage(Component c, Graphics gr, int width, int height, Object args) {
         // Cast Graphics to Graphics2D
         // Workaround for Java 1.4 and 1.4 on Mac OS X 10.4. We create a new
         // Graphics object instead of just casting the provided one. This is

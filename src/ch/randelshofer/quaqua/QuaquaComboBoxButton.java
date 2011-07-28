@@ -8,7 +8,6 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
@@ -35,109 +34,89 @@ import ch.randelshofer.quaqua.util.Images;
  * @version $Id$
  */
 public class QuaquaComboBoxButton extends JButton {
+
     protected JComboBox comboBox;
     protected JList listBox;
     protected CellRendererPane rendererPane;
     protected Icon comboIcon;
     protected boolean iconOnly = false;
-    
     /**
      * This is the focus border painted around the button when it has focus.
      */
     private static Border focusRing;
+
     private static Border getFocusRing() {
         if (focusRing == null) {
             focusRing = QuaquaBorderFactory.create(
-            Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.focusRing.png")),
-            new Insets(4, 6, 4, 6),
-            new Insets(0, 0, 0, 0),
-            false
-            );
+                    Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.focusRing.png")),
+                    new Insets(4, 6, 4, 6),
+                    new Insets(0, 0, 0, 0),
+                    false);
         }
         return focusRing;
     }
+
     /**
      * This is the border painted around the cell area.
      */
-    private static Border cellBorder;
     private static Border getCellBorder() {
-        if (cellBorder == null) {
-            cellBorder = new ButtonStateBorder(
-            Images.split(
-            Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorders.png")),
-            10, true
-            ),
-            new Insets(10, 8, 14, 0), new Insets(1, 1, 1, 1), true
-            );
-        }
-        return cellBorder;
+        return UIManager.getBorder("ComboBox.cellBorder");
     }
+
     /**
      * This is the border painted around the button area.
      */
-    private static Border buttonBorder;
     private static Border getButtonBorder() {
-        if (buttonBorder == null) {
-            buttonBorder = new ButtonStateBorder(
-            Images.split(
-            Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorders.png")),
-            10, true
-            ),
-            new Insets(10, 1, 14, 8), new Insets(1, 1, 1, 1), true
-            );
-        }
-        return buttonBorder;
+        return UIManager.getBorder("ComboBox.buttonBorder");
     }
+
     /**
      * This is the border painted around the cell area.
      */
-    private static Border smallCellBorder;
     private static Border getSmallCellBorder() {
-        if (smallCellBorder == null) { 
-            smallCellBorder = new ButtonStateBorder(
-        Images.split(
-        Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.cellBorders.png")),
-        10, true
-        ),
-        new Insets(8, 8, 16, 0), new Insets(1, 1, 1, 1), true
-        );
-        }
-        return smallCellBorder;
+        return UIManager.getBorder("ComboBox.smallCellBorder");
     }
+
     /**
      * This is the border painted around the button area.
      */
-    private static Border smallButtonBorder;
     private static Border getSmallButtonBorder() {
-        if (smallButtonBorder == null) { 
-            smallButtonBorder = new ButtonStateBorder(
-        Images.split(
-        Images.createImage(QuaquaComboBoxButton.class.getResource("images/ComboBox.buttonBorders.png")),
-        10, true
-        ),
-        new Insets(8, 1, 16, 8), new Insets(1, 1, 1, 1), true
-        );
-        }
-        return smallButtonBorder;
+        return UIManager.getBorder("ComboBox.smallButtonBorder");
     }
-    
-    public final JComboBox getComboBox() { return comboBox;}
-    public final void setComboBox( JComboBox cb ) { comboBox = cb;}
-    
-    public final Icon getComboIcon() { return comboIcon;}
-    public final void setComboIcon( Icon i ) { comboIcon = i;}
-    
-    public final boolean isIconOnly() { return iconOnly;}
-    public final void setIconOnly( boolean isIconOnly ) { iconOnly = isIconOnly;}
-    
+
+    public final JComboBox getComboBox() {
+        return comboBox;
+    }
+
+    public final void setComboBox(JComboBox cb) {
+        comboBox = cb;
+    }
+
+    public final Icon getComboIcon() {
+        return comboIcon;
+    }
+
+    public final void setComboIcon(Icon i) {
+        comboIcon = i;
+    }
+
+    public final boolean isIconOnly() {
+        return iconOnly;
+    }
+
+    public final void setIconOnly(boolean isIconOnly) {
+        iconOnly = isIconOnly;
+    }
+
     //QuaquaComboBoxButton() {
     public QuaquaComboBoxButton(QuaquaComboBoxUI ui, JComboBox cb, Icon i, boolean onlyIcon, CellRendererPane pane, JList list) {
-        super( "" );
-        
+        super("");
+
         DefaultButtonModel model = new DefaultButtonModel() {
+
             @Override
-            public void setArmed( boolean armed ) {
-                super.setArmed( isPressed() ? true : armed );
+            public void setArmed(boolean armed) {
+                super.setArmed(isPressed() ? true : armed);
             }
         };
         setModel(model);
@@ -146,28 +125,28 @@ public class QuaquaComboBoxButton extends JButton {
         comboIcon = i;
         rendererPane = pane;
         listBox = list;
-        setEnabled( comboBox.isEnabled() );
+        setEnabled(comboBox.isEnabled());
         iconOnly = onlyIcon;
     }
-    
+
     @Override
     public boolean isFocusTraversable() {
         return false;
     }
-    
+
     @Override
     public void setBorder(Border b) {
         // Empty. We do all border handling in QuaquaComboBoxUI
     }
     /*
     public boolean isOpaque() {
-        return false;
+    return false;
     }*/
-    
+
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        
+
         // Set the background and foreground to the combobox colors.
         if (enabled) {
             setBackground(comboBox.getBackground());
@@ -177,15 +156,15 @@ public class QuaquaComboBoxButton extends JButton {
             setForeground(UIManager.getColor("ComboBox.disabledForeground"));
         }
     }
-    
+
     @Override
     public void paintBorder(Graphics g) {
         // Empty: We paint the border in paintComponent.
     }
-    
+
     @Override
     public void paintComponent(Graphics g) {
-       Object savedHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
+        Object savedHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         QuaquaComboBoxUI ui = (QuaquaComboBoxUI) comboBox.getUI();
         int buttonWidth = ui.getArrowWidth();
         boolean isTableCellEditor = ui.isTableCellEditor();
@@ -197,38 +176,50 @@ public class QuaquaComboBoxButton extends JButton {
         y = insets.top;
         width = getWidth() - insets.left - insets.right;
         height = getHeight() - insets.top - insets.bottom;
-        
+
         if (comboBox.isOpaque()) {
             g.setColor(comboBox.getBackground());
             g.fillRect(0, 0, width, height);
         }
-        if (! isTableCellEditor) {
+        if (!isTableCellEditor) {
             if (iconOnly) {
-                getButtonBorder().paintBorder(this, g, x, y, width, height);
+                Border border = getButtonBorder();
+                if (border != null) {
+                    border.paintBorder(this, g, x, y, width, height);
+                }
             } else {
-                Border border = (isSmall) ? getSmallCellBorder() : getCellBorder();
-                border.paintBorder(this, g,
-                x, y, width - buttonWidth, height
-                );
-                border = (isSmall) ? getSmallButtonBorder() : getButtonBorder();
-                border.paintBorder(this, g,
-                width - buttonWidth, y, buttonWidth, height
-                );
+                Border border;
+                border = UIManager.getBorder(isSmall?"ComboBox.smallCellAndButtonBorder":"ComboBox.cellAndButtonBorder");
+                if (border != null) {
+                    border.paintBorder(this, g, x, y, width, height);
+                } else {
+
+                    border = (isSmall) ? getSmallCellBorder() : getCellBorder();
+                    if (border != null) {
+                        border.paintBorder(this, g,
+                                x, y, width - buttonWidth, height);
+                    }
+                    border = (isSmall) ? getSmallButtonBorder() : getButtonBorder();
+                    if (border != null) {
+                        border.paintBorder(this, g,
+                                width - buttonWidth, y, buttonWidth, height);
+                    }
+                }
             }
         }
-        
-        
+
+
         boolean leftToRight = QuaquaUtilities.isLeftToRight(comboBox);
-        
-        
+
+
         // Paint the icon
         comboIcon = ui.getArrowIcon();
-        if ( comboIcon != null ) {
+        if (comboIcon != null) {
             int iconWidth = comboIcon.getIconWidth();
             int iconHeight = comboIcon.getIconHeight();
             int iconTop = 0;
             int iconLeft = 0;
-            
+
             if (iconOnly) {
                 iconLeft = x + (width - buttonWidth) / 2 + (buttonWidth - iconWidth) / 2 - 2;
                 iconTop = y + (height - iconHeight) / 2;
@@ -241,10 +232,10 @@ public class QuaquaComboBoxButton extends JButton {
                 iconTop = y + (height - iconHeight) / 2;
                 //if (isSmallSizeVariant) iconTop--;
             }
-            comboIcon.paintIcon( this, g, iconLeft, iconTop );
-            
+            comboIcon.paintIcon(this, g, iconLeft, iconTop);
+
             // Paint the focus
-            if (QuaquaUtilities.isFocused(comboBox) && ! isTableCellEditor) {
+            if (QuaquaUtilities.isFocused(comboBox) && !isTableCellEditor) {
                 Border border = null;
                 border = getFocusRing();
                 if (border != null) {
@@ -252,41 +243,41 @@ public class QuaquaComboBoxButton extends JButton {
                 }
             }
         }
-        
+
         // Let the renderer paint
-        if (! iconOnly && comboBox != null) {
+        if (!iconOnly && comboBox != null) {
             ListCellRenderer renderer = comboBox.getRenderer();
-            
+
             Component c;
             boolean renderPressed = getModel().isPressed();
             c = renderer.getListCellRendererComponent(listBox,
-            comboBox.getSelectedItem(),
-            -1,
-            renderPressed,
-            false);
+                    comboBox.getSelectedItem(),
+                    -1,
+                    renderPressed,
+                    false);
             c.setFont(comboBox.getFont());
             c.setEnabled(comboBox.isEnabled());
-            
+
             Rectangle cellBounds = ((QuaquaComboBoxUI) comboBox.getUI()).rectangleForCurrentValue();
-            
+
             // Fix for 4238829: should lay out the JPanel.
             boolean shouldValidate = false;
-            if (c instanceof JPanel)  {
+            if (c instanceof JPanel) {
                 shouldValidate = true;
             }
-            
-            
+
+
             boolean wasOpaque = c.isOpaque();
-            
+
             if (c instanceof JComponent) {
                 ((JComponent) c).setOpaque(false);
             }
             if (leftToRight) {
                 rendererPane.paintComponent(g, c, this,
-                cellBounds.x - getX(), cellBounds.y - getY(), cellBounds.width, cellBounds.height, shouldValidate);
+                        cellBounds.x - getX(), cellBounds.y - getY(), cellBounds.width, cellBounds.height, shouldValidate);
             } else {
-                rendererPane.paintComponent( g, c, this,
-                cellBounds.x, cellBounds.y, cellBounds.width, cellBounds.height, shouldValidate);
+                rendererPane.paintComponent(g, c, this,
+                        cellBounds.x, cellBounds.y, cellBounds.width, cellBounds.height, shouldValidate);
             }
             if (c instanceof JComponent) {
                 ((JComponent) c).setOpaque(wasOpaque);

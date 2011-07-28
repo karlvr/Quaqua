@@ -1,5 +1,5 @@
 /*
- * @(#)TextFieldTest16.java  1.0  13 February 2005
+ * @(#)TextFieldTest.java  1.0  13 February 2005
  *
  * Copyright (c) 2004 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -10,20 +10,28 @@
  */
 
 package test;
+
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import javax.swing.text.JTextComponent;
+
 /**
- * TextFieldTest16.
+ * TextFieldTest.
  *
  * @author  Werner Randelshofer
  * @version 1.0  13 February 2005  Created.
  */
-public class TextFieldTest16 extends javax.swing.JPanel {
+public class TextFieldTest extends javax.swing.JPanel {
     
     /** Creates new form. */
-    public TextFieldTest16() {
+    public TextFieldTest() {
         initComponents();
         
         searchField.putClientProperty("Quaqua.TextField.style","search");
         smallSearchField.putClientProperty("Quaqua.TextField.style","search");
+        searchField.putClientProperty("JTextField.variant","search");
+        smallSearchField.putClientProperty("JTextField.variant","search");
         /*
         JPopupMenu m = new JPopupMenu();
         m.add(new DefaultEditorKit.CutAction());
@@ -32,6 +40,29 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         jTextField1.setComponentPopupMenu(m);
          */
         
+        // Prevent text components from becoming too small in GridBagLayout
+        for (Component c : getComponents()) {
+            if (c instanceof JTextComponent) {
+                c.setMinimumSize(c.getPreferredSize());
+            }
+        }
+        
+        
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }
+
     }
     
     /** This method is called from within the constructor to
@@ -64,6 +95,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jTextField8 = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -72,14 +104,14 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField1, gridBagConstraints);
 
         jLabel7.setText("Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel7, gridBagConstraints);
 
@@ -88,14 +120,14 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField2, gridBagConstraints);
 
         jLabel8.setText("Non-Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel8, gridBagConstraints);
 
@@ -104,7 +136,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField3, gridBagConstraints);
 
         jLabel9.setText("Disabled");
@@ -112,7 +144,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel9, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -127,7 +159,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField4, gridBagConstraints);
 
         jLabel10.setFont(new java.awt.Font("Lucida Grande", 0, 11));
@@ -135,7 +167,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel10, gridBagConstraints);
 
@@ -145,7 +177,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 5;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField5, gridBagConstraints);
 
         jTextField6.setFont(new java.awt.Font("Lucida Grande", 0, 11));
@@ -154,7 +186,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 6;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField6, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -168,14 +200,14 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField7, gridBagConstraints);
 
         jLabel11.setText("Margin");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 8;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel11, gridBagConstraints);
 
@@ -183,14 +215,14 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(searchField, gridBagConstraints);
 
         jLabel12.setText("Search Field");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel12, gridBagConstraints);
 
@@ -199,7 +231,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallSearchField, gridBagConstraints);
 
         smallSearchLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
@@ -207,7 +239,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallSearchLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -224,17 +256,20 @@ public class TextFieldTest16 extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 17;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jTextField8, gridBagConstraints);
 
         jLabel13.setText("Borderless and Colored");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 17;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.BASELINE_LEADING;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel13, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
@@ -246,6 +281,7 @@ public class TextFieldTest16 extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;

@@ -58,10 +58,9 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
     private boolean fillContentArea;
     
     /**
-     * We don't need arguments. Instead of creating an array all the time,
-     * we cache one.
+     * We don't need arguments. We use this instance.
      */
-    private Object[] args = {this};
+    private Object args = this;
     
     /**
      * Creates a new instance with the given image and insets.
@@ -134,6 +133,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
      * @param config GraphicsConfiguration that will be
      *        rendered to, this may be null.
      */
+    @Override
     protected Image createImage(Component c, int w, int h,
                                 GraphicsConfiguration config) {
         if (config == null) {
@@ -142,7 +142,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
         return config.createCompatibleImage(w, h, Transparency.TRANSLUCENT);
     }
 
-    protected void paintToImage(Component c, Graphics gr, int width, int height, Object[] args) {
+    protected void paintToImage(Component c, Graphics gr, int width, int height, Object args) {
         // Cast Graphics to Graphics2D
         // Workaround for Java 1.4 and 1.4 on Mac OS X 10.4. We create a new
         // Graphics object instead of just casting the provided one. This is

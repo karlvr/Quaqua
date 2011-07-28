@@ -1,5 +1,5 @@
 /*
- * @(#)CachedPainter.java  1.1  2008-04-21
+ * @(#)CachedPainter.java  
  *
  * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -12,7 +12,6 @@ package ch.randelshofer.quaqua.util;
 
 import java.awt.*;
 import java.awt.image.*;
-import javax.swing.Icon;
 import java.lang.ref.SoftReference;
 import java.util.*;
 
@@ -31,8 +30,7 @@ import java.util.*;
  * This class has been derived from javax.swing.plaf.metal.CachedPainter 1.2 04/02/15 
  * 
  * @author Werner Randelshofer
- * @version 2.0 2008-04-21 Only cache small images. 
- * <br>1.0 September 7, 2005 Created.
+ * @version $Id$
  */
 public abstract class CachedPainter {
     // CacheMap maps from class to Cache.
@@ -66,7 +64,7 @@ public abstract class CachedPainter {
      * <code>paintImage</code> is invoked to paint the cached image.
      */
     protected void paint(Component c, Graphics g, int x,
-            int y, int w, int h, Object[] args) {
+            int y, int w, int h, Object args) {
         if (w <= 0 || h <= 0) {
             return;
         }
@@ -108,9 +106,7 @@ public abstract class CachedPainter {
             }
             if (draw) {
                 // Render to the Image
-                Graphics g2 = image.getGraphics();
-                paintToImage(c, g2, w, h, args);
-                g2.dispose();
+                paintToImage(c, image, w, h, args);
             }
 
             // Render to the passed in Graphics
@@ -132,8 +128,24 @@ public abstract class CachedPainter {
      * @param h Height to paint to
      * @param args Arguments supplied to <code>paint</code>
      */
+    protected void paintToImage(Component c, Image image,
+            int w, int h, Object args) {
+        Graphics g2 = image.getGraphics();
+        paintToImage(c, g2, w, h, args);
+        g2.dispose();
+    }
+
+    /**
+     * Paints the representation to cache to the supplied Graphics.
+     *
+     * @param c Component painting to
+     * @param g Graphics to paint to
+     * @param w Width to paint to
+     * @param h Height to paint to
+     * @param args Arguments supplied to <code>paint</code>
+     */
     protected abstract void paintToImage(Component c, Graphics g,
-            int w, int h, Object[] args);
+            int w, int h, Object args);
 
     /**
      * Paints the image to the specified location.
@@ -149,7 +161,7 @@ public abstract class CachedPainter {
      */
     protected void paintImage(Component c, Graphics g,
             int x, int y, int w, int h, Image image,
-            Object[] args) {
+            Object args) {
         g.drawImage(image, x, y, null);
     }
 
@@ -192,7 +204,7 @@ public abstract class CachedPainter {
         }
 
         private Entry getEntry(Object key, GraphicsConfiguration config,
-                int w, int h, Object[] args) {
+                int w, int h, Object args) {
             synchronized (this) {
                 Entry entry;
                 for (int counter = entries.size() - 1; counter >= 0; counter--) {
@@ -219,7 +231,7 @@ public abstract class CachedPainter {
          * Returns the cached Image, or null, for the specified arguments.
          */
         public Image getImage(Object key, GraphicsConfiguration config,
-                int w, int h, Object[] args) {
+                int w, int h, Object args) {
             Entry entry = getEntry(key, config, w, h, args);
             return entry.getImage();
         }
@@ -228,7 +240,7 @@ public abstract class CachedPainter {
          * Sets the cached image for the specified constraints.
          */
         public void setImage(Object key, GraphicsConfiguration config,
-                int w, int h, Object[] args, Image image) {
+                int w, int h, Object args, Image image) {
             Entry entry = getEntry(key, config, w, h, args);
             entry.setImage(image);
         }
@@ -239,12 +251,12 @@ public abstract class CachedPainter {
         private static class Entry {
 
             private GraphicsConfiguration config;
-            private Object[] args;
+            private Object args;
             private Image image;
             private int w;
             private int h;
 
-            Entry(GraphicsConfiguration config, int w, int h, Object[] args) {
+            Entry(GraphicsConfiguration config, int w, int h, Object args) {
                 this.config = config;
                 this.args = args;
                 this.w = w;
@@ -266,31 +278,28 @@ public abstract class CachedPainter {
                         + ", image=" + image
                         + ", w=" + w + ", h=" + h);
                 if (args != null) {
-                    for (int counter = 0; counter < args.length; counter++) {
-                        value.append(", ");
-                        value.append(args[counter]);
-                    }
+                    value.append(", ");
+                    value.append(args);
                 }
                 value.append("]");
                 return value.toString();
             }
 
             public boolean equals(GraphicsConfiguration config, int w, int h,
-                    Object[] args) {
+                    Object args) {
                 if (this.w == w && this.h == h
                         && ((this.config != null && this.config.equals(config))
                         || (this.config == null && config == null))) {
                     if (this.args == null && args == null) {
                         return true;
                     }
-                    if (this.args != null && args != null
-                            && this.args.length == args.length) {
-                        for (int counter = args.length - 1; counter >= 0;
-                                counter--) {
-                            if (!this.args[counter].equals(args[counter])) {
-                                return false;
-                            }
+                    if (this.args != null && args != null) {
+
+                        if (!this.args.equals(args)) {
+                            return false;
                         }
+
+
                         return true;
                     }
                 }
