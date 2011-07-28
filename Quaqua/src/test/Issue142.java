@@ -1,5 +1,5 @@
 /*
- * @(#)JComboBoxDropdown.java  1.0  2011-07-26
+ * @(#)Issue142.java  1.0  2011-07-26
  * 
  * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -21,7 +21,7 @@ import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
 
 
-public class JComboBoxDropdown {
+public class Issue142 {
 
 
     private static void createAndShowGUI() {
