@@ -161,6 +161,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 comboBox.isEditable(),
                 currentValuePane,
                 listBox);
+        button.putClientProperty("Quaqua.Component.cellRendererFor", comboBox);
         button.setMargin(new Insets(0, 1, 1, 3));
         return button;
     }
@@ -241,6 +242,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 setTableCellEditor(e.getNewValue() != null && e.getNewValue().equals("Lightweight"));
             } else if (name.equals("JComponent.sizeVariant")) {
                 QuaquaUtilities.applySizeVariant(comboBox);
+                arrowButton.putClientProperty("JComponent.sizeVariant", e.getNewValue());
             }
         }
     }
@@ -313,6 +315,11 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         } else {
             if (arrowButton != null) {
                 Insets insets = comboBox.getInsets();
+                    Insets buttonInsets=UIManager.getInsets("ComboBox.buttonInsets");
+                    if (buttonInsets!=null) {
+                        insets=new Insets(insets.top+buttonInsets.top,
+                                insets.left+buttonInsets.left,insets.bottom+buttonInsets.bottom,insets.right+buttonInsets.right);
+                    }
                 int width = comboBox.getWidth();
                 int height = comboBox.getHeight();
                 arrowButton.setBounds(insets.left, insets.top,
@@ -324,7 +331,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
     protected Icon getArrowIcon() {
         if (isTableCellEditor()) {
-            return UIManager.getIcon("ComboBox.smallPopupIcon");
+            return UIManager.getIcon("ComboBox.cellEditorPopupIcon");
             /* The following does not work as expected:
             if (comboBox.isEditable()) {
             return UIManager.getIcon("ComboBox.smallDropDownIcon");

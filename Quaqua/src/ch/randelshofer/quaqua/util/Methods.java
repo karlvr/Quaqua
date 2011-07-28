@@ -524,8 +524,18 @@ public class Methods {
         //return clazz.getConstructor(null).newInstance(null);
         return new UIDefaults.ProxyLazyValue(clazz).
                 createValue(UIManager.getDefaults());
-        
-        
+    };
+    /**
+     * Invokes the specified constructor if it exists.
+     *
+     * @param clazz The Class on which to invoke the constructor.
+     * @param types The parameter types of the constructor.
+     * @param values The parameter values of the constructor.
+     */
+    public static Object newInstance(String clazzName, Class[] types, Object[] values)
+    throws NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException, ClassNotFoundException {
+        Class clazz=Class.forName(clazzName);
+        return clazz.getConstructor(types).newInstance(values);
     };
     public static boolean instanceOf(AWTEvent ev, String clazz) {
         if (ev==null) return false;

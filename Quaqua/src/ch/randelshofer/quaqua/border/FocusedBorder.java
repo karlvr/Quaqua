@@ -10,58 +10,49 @@
  */
 package ch.randelshofer.quaqua.border;
 
-import java.awt.AlphaComposite;
 import java.awt.Component;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import javax.swing.Icon;
-import javax.swing.UIManager;
+import java.awt.Insets;
 import javax.swing.border.Border;
 
 /**
- * {@code FocusedBorder}.
+ * Draws a focus ring around the opaque pixels of a border.
+ * The border must provide space for the focus ring.
  *
  * @author Werner Randelshofer
  * @version 1.0 2011-07-26 Created.
  */
-public class FocusedBorder extends ShadowBorder {
+public class FocusedBorder extends AbstractFocusedPainter implements Border {
 
-    final Border actualBorder;
-    final int slack;
-    Component component;
+    private Border actualBorder;
 
-    public FocusedBorder(final Border icon, final int slack) {
-        super(null, null,
-                slack, slack, 0.0f, 1.8f, 7);
-
-        prePainter = new Painter() {
-
-            public void paint(Graphics g, int x, int y, int w, int h) {
-                Graphics2D imgG = (Graphics2D) g;
-                imgG.setComposite(AlphaComposite.Src);
-                imgG.setColor(UIManager.getColor("Focus.color"));
-                imgG.fillRect(x, y, w - (slack * 2), h - (slack * 2));
-                imgG.setComposite(AlphaComposite.DstAtop);
-                icon.paintBorder(component, imgG, x, y, w, h);
-            }
-        };
-        postPainter = new Painter() {
-
-            public void paint(Graphics g, int x, int y, int w, int h) {
-                ((Graphics2D) g).setComposite(AlphaComposite.SrcAtop);
-                icon.paintBorder(component, g, x, y, w, h);
-            }
-        };
-        this.actualBorder = icon;
-        this.slack = slack;
+    public FocusedBorder(Border actualBorder) {
+        this.actualBorder = actualBorder;
     }
 
     @Override
-    public void paintBorder(final Component c, final Graphics g, final int x, final int y, int width, int height) {
-        if (c.isFocusOwner()) {
-            this.component = c;
-            super.paintBorder(c, g, x, y, width, height);
+    public void paintBorder( Component c,  Graphics cgx,  int x,  int y, int width, int height) {
+        paint(c,cgx,x,y,width,height);
+    }
+    @Override
+    protected void doPaint( Component c,  Graphics cgx,  int x,  int y, int width, int height) {
+    actualBorder.    paintBorder(c,cgx,x,y,width,height);
+    }
+
+    public Insets getBorderInsets(Component c) {
+        return actualBorder.getBorderInsets(c);
+    }
+
+    public boolean isBorderOpaque() {
+        return false;
+    }
+    
+    public static class UIResource extends FocusedBorder implements javax.swing.plaf.UIResource {
+
+        public UIResource(Border actualBorder) {
+            super(actualBorder);
         }
-        actualBorder.paintBorder(c, g, x + slack, y + slack, width - (2 * slack), height - (2 * slack));
+
+               
     }
 }

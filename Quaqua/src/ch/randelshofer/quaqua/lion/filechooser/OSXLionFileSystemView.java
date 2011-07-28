@@ -1,5 +1,5 @@
 /*
- * @(#)OSX16LionFileSystemView.java
+ * @(#)OSXLionFileSystemView.java
  *
  * Copyright (c) 2009-2010 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -10,7 +10,6 @@
  */
 package ch.randelshofer.quaqua.lion.filechooser;
 
-import ch.randelshofer.quaqua.snow_leopard.filechooser.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import java.io.*;
@@ -19,19 +18,19 @@ import javax.swing.Icon;
 import javax.swing.UIManager;
 
 /**
- * OSX16LionFileSystemView.
+ * OSXLionFileSystemView.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class OSX16LionFileSystemView extends QuaquaFileSystemView {
+public class OSXLionFileSystemView extends QuaquaFileSystemView {
 
     private static final File volumesFolder = new File("/Volumes");
     private static final File networkFolder = new File("/Network");
     private static final File computer = new File("/");
     private static File systemVolume;
 
-    public OSX16LionFileSystemView() {
+    public OSXLionFileSystemView() {
     }
 
     public File getSystemVolume() {

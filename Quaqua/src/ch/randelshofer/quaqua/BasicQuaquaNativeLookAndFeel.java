@@ -1,7 +1,7 @@
 /*
- * @(#)BasicQuaquaLookAndFeel.java
+ * @(#)BasicQuaquaNativeLookAndFeel.java
  *
- * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -12,6 +12,7 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.color.*;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.text.*;
@@ -21,13 +22,13 @@ import java.security.*;
 import sun.awt.AppContext;
 
 /**
- * The BasicQuaquaLookAndFeel contains the look and feel properties that are
- * commonly uses by all the specific QuaquaLookAndFeel incarnations.
+ * The BasicQuaquaNativeLookAndFeel contains the look and feel properties that are
+ * commonly uses by QuaquaLookAndFeel classes which use native painters.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
+public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
@@ -38,7 +39,7 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
     /** Creates a new instance. */
-    public BasicQuaquaLookAndFeel2(String targetClassName) {
+    public BasicQuaquaNativeLookAndFeel(String targetClassName) {
         try {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
         } catch (Exception e) {
@@ -1576,19 +1577,17 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
         Object textComponentPopupHandler = new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaTextComponentPopupHandler");
         // Focus handler for all text fields
         Object textFieldFocusHandler = new UIDefaults.ProxyLazyValue(
-                (javaVersion.startsWith("1.5")) ?//
-                "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler15" ://
                 "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler");
 
         // TextField auto selection
         Boolean autoselect = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.TextComponent.autoSelect", "true"));
         // *** Shared Borders
-        Object textFieldBorder = new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.QuaquaTextFieldBorder$UIResource",
-                new Object[]{commonDir + "TextField.borders.png",
-                    commonDir + "TextField.searchBorders.png",
-                    commonDir + "TextField.small.searchBorders.png",});
+        Object 
 
+        textFieldBorder = new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaNativeTextFieldBorder$UIResource",
+                new Object[]{OSXAquaPainter.Widget.frameTextField, new Insets(3,3,3,3), new Insets(6,8,6,8), true});
+        
 
         // True if file choosers orders by type
         boolean isOrderFilesByType = false;
@@ -1698,17 +1697,24 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
             //
-            /*
-            //"ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
-            "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
+            "ComboBox.buttonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, 0), new Insets(0, 0, 0, 0), true),
+            "ComboBox.smallButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, 0), new Insets(0, 0, 0, 0), true),
+            "ComboBox.cellBorder", null,
+            "ComboBox.smallCellBorder", null,
+            "ComboBox.cellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 1, 0, 0), new Insets(3, 3, 3, 3), true),
+            "ComboBox.smallCellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 1, 0, 0), new Insets(3, 3, 3, 3), true),
+            "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
+            "ComboBox.border", new VisualMargin(0, 0, 0, 0),
+            "ComboBox.dropDownIcon", null,
             "ComboBox.opaque", opaque,
-            "ComboBox.popupIcon", makeButtonStateIcon(commonDir + "ComboBox.popupIcons.png", 6),
-            "ComboBox.smallPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
-            "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
-            "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
+            "ComboBox.popupIcon", null,
+            "ComboBox.smallPopupIcon", null,
+            "ComboBox.cellEditorPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
+            "ComboBox.smallDropDownIcon", null,
             //"ComboBox.timeFactor", ...
             "ComboBox.maximumRowCount", 8,
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
+             
             "ComboBox.showPopupOnNavigation", Boolean.TRUE,
             // Set this to Boolean.TRUE to get the same preferred height for
             // non-editable combo boxes and editable-combo boxes.
@@ -1721,9 +1727,10 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
             // color of the editor to the the foreground color of the JComboBox.
             // True is needed for rendering of combo boxes in JTables.
             "ComboBox.changeEditorForeground", Boolean.TRUE,
+            
             "ComboBox.focusable", allControlsFocusable,
-             * 
-             */
+             
+             
             //
             // The visual margin is used to allow each component having room
             // for a cast shadow and a focus ring, and still supporting a
@@ -1770,7 +1777,7 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
             "FileView.fileIcon", makeIcon(getClass(), commonDir + "FileView.fileIcon.png"),
             "FileView.aliasBadge", makeIcon(getClass(), commonDir + "FileView.aliasBadge.png"),
             //
-            //"FormattedTextField.border", textFieldBorder,
+           "FormattedTextField.border", textFieldBorder,
             "FormattedTextField.opaque", opaque,
             "FormattedTextField.focusHandler", textFieldFocusHandler,
             "FormattedTextField.popupHandler", textComponentPopupHandler,
@@ -1808,7 +1815,7 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
             //
             "PopupMenu.enableHeavyWeightPopup", Boolean.TRUE,
             //
-            //"PasswordField.border", textFieldBorder,
+            "PasswordField.border", textFieldBorder,
             "PasswordField.opaque", opaque,
             "PasswordField.focusHandler", textFieldFocusHandler,
             "PasswordField.popupHandler", textComponentPopupHandler,
@@ -1936,7 +1943,8 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
             "TextArea.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
-            //"TextField.border", textFieldBorder,
+            //
+            "TextField.border", textFieldBorder,
             "TextField.opaque", opaque,
             "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
@@ -2051,6 +2059,13 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, width, height});
     }
+    protected Object makeNativeButtonStateIcon(OSXAquaPainter.Widget widget, 
+            int xoffset, int yoffset, int width, int height, boolean withFocusRing) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeButtonStateIcon",
+                new Object[]{widget, xoffset, yoffset, width, height, withFocusRing });
+
+    }
 
     protected static Object makeButtonStateIcon(String location, int states) {
         return new UIDefaults.ProxyLazyValue(
@@ -2134,6 +2149,22 @@ public class BasicQuaquaLookAndFeel2 extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.color.TextureColor$UIResource",
                 new Object[]{rgb, location});
     }
+    protected Object makeButtonStateBorder(String location, int tileCount, boolean isTiledHorizontaly,
+            Insets imageInsets, Insets borderInsets, boolean fill) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonStateBorder",
+                new Object[]{location, tileCount, isTiledHorizontaly, imageInsets, borderInsets, fill});
+
+    }
+
+    protected Object makeNativeButtonStateBorder(OSXAquaPainter.Widget widget, 
+            Insets imageInsets, Insets borderInsets, boolean withFocusRing) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "createNativeButtonStateBorder",
+                new Object[]{widget, imageInsets, borderInsets, withFocusRing});
+
+    }
+
 
     /**
      * Init design specific look and feel defaults.

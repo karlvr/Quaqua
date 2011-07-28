@@ -111,33 +111,12 @@ public class VisualMargin extends AbstractBorder implements UIResource {
         isRightFixed = right;
     }
     
-    public Insets getVisualMargin(Component c) {
+    public final Insets getVisualMargin(Component c) {
         return getVisualMargin(c, new Insets(0, 0, 0, 0));
-        /*
-        Insets insets = new Insets(
-         layoutMargin.top,
-        layoutMargin.left,
-        layoutMargin.bottom,
-         layoutMargin.right
-         );
-        
-        if (c instanceof JComponent) {
-            Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(propertyName);
-            if (componentMargin == null && propertyName != null) {
-                componentMargin = UIManager.getInsets(uiManagerPropertyName);
-            }
-            if (componentMargin != null) {
-                if (! isTopFixed) insets.top = componentMargin.top;
-                if (! isLeftFixed) insets.left = componentMargin.left;
-                if (! isBottomFixed) insets.bottom = componentMargin.bottom;
-                if (! isRightFixed) insets.right = componentMargin.right;
-            }
-        }
-        return insets;
-         */
     }
     
-    public Insets getBorderInsets(Component c) {
+    @Override
+    public final Insets getBorderInsets(Component c) {
         return getBorderInsets(c, new Insets(0, 0, 0, 0));
     }
     
@@ -147,6 +126,7 @@ public class VisualMargin extends AbstractBorder implements UIResource {
      * @param insets the object to be reinitialized
      * @return the <code>insets</code> object
      */
+    @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         return getVisualMargin(c, insets);
     }

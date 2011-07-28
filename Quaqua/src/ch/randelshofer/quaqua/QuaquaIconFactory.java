@@ -15,9 +15,11 @@ import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
 import ch.randelshofer.quaqua.icon.ButtonStateIcon;
+import ch.randelshofer.quaqua.icon.FocusedIcon;
 import ch.randelshofer.quaqua.icon.FrameButtonStateIcon;
 import ch.randelshofer.quaqua.icon.OverlayIcon;
 import ch.randelshofer.quaqua.icon.SliderThumbIcon;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import java.net.*;
 import java.awt.*;
 import java.awt.image.*;
@@ -238,6 +240,12 @@ public class QuaquaIconFactory {
         } catch (IOException ex) {
             return null;
         }
+    }
+    public static Icon createNativeButtonStateIcon(OSXAquaPainter.Widget widget, int xoffset, int yoffset, int width, int height, boolean drawFocusRing) {
+        Icon icon=
+ new QuaquaNativeButtonStateIcon(widget, xoffset,yoffset,width, height);
+        if (drawFocusRing) icon=new FocusedIcon(icon);
+        return icon;
     }
 
     public static Icon createOptionPaneIcon(int messageType) {

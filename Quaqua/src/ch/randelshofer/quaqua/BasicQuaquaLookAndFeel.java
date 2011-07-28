@@ -1593,14 +1593,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                     commonDir + "TextField.small.searchBorders.png",});
 
 
-       
+
         boolean isOrderFilesByType = false;
         // True if file choosers shows all files by default
         prefValue = OSXPreferences.getString(//
                 OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
                 .toLowerCase();
         boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
-        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled","true"));
+        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled", "true"));
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1703,10 +1703,18 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
             //
             "ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
+            "ComboBox.buttonBorder", makeButtonStateBorder(commonDir + "ComboBox.buttonBorders.png", 10, true, new Insets(10, 1, 14, 8), new Insets(1, 1, 1, 1), true),
+            "ComboBox.smallButtonBorder", makeButtonStateBorder(commonDir + "ComboBox.buttonBorders.png", 10, true, new Insets(8, 1, 16, 8), new Insets(1, 1, 1, 1), true),
+            "ComboBox.cellBorder", makeButtonStateBorder(commonDir + "ComboBox.cellBorders.png", 10, true, new Insets(10, 8, 14, 0), new Insets(1, 1, 1, 1), true),
+            "ComboBox.smallCellBorder", makeButtonStateBorder(commonDir + "ComboBox.cellBorders.png", 10, true, new Insets(8, 8, 16, 0), new Insets(1, 1, 1, 1), true),
+            "ComboBox.cellAndButtonBorder", null,
+            "ComboBox.smallCellAndButtonBorder", null,
+            
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,
             "ComboBox.popupIcon", makeButtonStateIcon(commonDir + "ComboBox.popupIcons.png", 6),
             "ComboBox.smallPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
+            "ComboBox.cellEditorPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
             "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
             "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
             //"ComboBox.timeFactor", ...
@@ -1981,7 +1989,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TextField.border", textFieldBorder,
             "TextField.borderInsets", new InsetsUIResource(6, 7, 6, 7),
             "TextField.borderInsetsSmall", new InsetsUIResource(6, 7, 5, 7),
-            
             "TextField.opaque", opaque,
             "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
@@ -2044,8 +2051,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
         // Support for org.jdesktop.layout.GroupLayout
         uiDefaults = new Object[]{
-                    "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
-                    "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
+            "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
+            "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
         putDefaults(table, uiDefaults);
     }
 
@@ -2174,6 +2181,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 new Object[]{location, insets, states, horizontal});
     }
 
+    protected Object makeButtonStateBorder(String location, int tileCount, boolean isTiledHorizontaly,
+            Insets imageInsets, Insets borderInsets, boolean fill) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonStateBorder",
+                new Object[]{location, tileCount, isTiledHorizontaly, imageInsets, borderInsets, fill});
+
+    }
+
     protected Object makeTextureColor(int rgb, String location) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.color.TextureColor$UIResource",
@@ -2240,14 +2255,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         // ancestors has "alwaysOnTop" set to true.
         /*
         if (isUIIncluded("PopupMenuUI")) {
-            if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
-                try {
-                    PopupFactory.setSharedInstance(new QuaquaPopupFactory());
-                } catch (SecurityException ex) {
-                    System.err.print("Warning: " + this + " couldn't install QuaquaPopupFactory.");
-                    //ex.printStackTrace();
-                }
-            }
+        if (QuaquaManager.getOS() >= QuaquaManager.LEOPARD) {
+        try {
+        PopupFactory.setSharedInstance(new QuaquaPopupFactory());
+        } catch (SecurityException ex) {
+        System.err.print("Warning: " + this + " couldn't install QuaquaPopupFactory.");
+        //ex.printStackTrace();
+        }
+        }
         }*/
     }
 

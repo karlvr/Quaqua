@@ -8,13 +8,15 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-
 package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * ComboBoxTest.
  *
@@ -22,26 +24,27 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class ComboBoxTest extends javax.swing.JPanel {
+
     private static class ColorIcon implements Icon {
+
         private Color color = Color.white;
-        
+
         public void setColor(Color newValue) {
             color = newValue;
         }
-        
+
         public Color getColor() {
             return color;
         }
-        
-        
+
         public int getIconHeight() {
             return 12;
         }
-        
+
         public int getIconWidth() {
             return 24;
         }
-        
+
         public void paintIcon(Component c, Graphics g, int x, int y) {
             if (color != null) {
                 g.setColor(color);
@@ -50,14 +53,16 @@ public class ComboBoxTest extends javax.swing.JPanel {
                 g.drawRect(x, y, getIconWidth() - 1, getIconHeight() - 1);
             }
         }
-        
     }
-    
+
     private static class ColorComboCellRenderer extends DefaultListCellRenderer {
+
         private ColorIcon colorIcon = new ColorIcon();
+
         public ColorComboCellRenderer() {
             setIconTextGap(6);
         }
+
         @Override
         public Component getListCellRendererComponent(
                 JList list,
@@ -70,53 +75,70 @@ public class ComboBoxTest extends javax.swing.JPanel {
                 Color color = (Color) value;
                 colorIcon.setColor(color);
                 l.setIcon(colorIcon);
-                l.setText(color.getRed()+","+color.getGreen()+","+color.getBlue());
+                l.setText(color.getRed() + "," + color.getGreen() + "," + color.getBlue());
             } else {
                 l.setIcon(null);
             }
             return l;
         }
+
         @Override
         public void paintComponent(Graphics g) {
             super.paintComponent(g);
             /*
             g.setColor(new Color(0xafff00f0,true));
-           // g.fillRect(0,0,getWidth(),getHeight());
+            // g.fillRect(0,0,getWidth(),getHeight());
             Insets i = getInsets();
             System.out.println("ColorComboCellRenderer insets:"+i);
             g.fillRect(i.left,i.top,getWidth()-i.left-i.right,getHeight()-i.top-i.bottom);
              **/
         }
     }
-    
-    
-    
+
     /** Creates new form. */
     public ComboBoxTest() {
         initComponents();
-        
+
         String[] items = new String[100];
-        for (int i=0; i < items.length; i++) {
-            items[i] = "Item "+(i+1);
+        for (int i = 0; i < items.length; i++) {
+            items[i] = "Item " + (i + 1);
         }
         comboBox2.setModel(new javax.swing.DefaultComboBoxModel(items));
 
 
-        for (JComponent c:new JComponent[]{smallComboBox1,smallComboBox2,smallComboBox3,smallLabel}) {
+        for (JComponent c : new JComponent[]{smallComboBox1, smallComboBox2, smallComboBox3, smallLabel}) {
             c.putClientProperty("JComponent.sizeVariant", "small");
         }
-        
+        largeComboBox.putClientProperty("JComponent.sizeVariant", "large");
         iconComboBox.setRenderer(new ColorComboCellRenderer());
         DefaultComboBoxModel cbm = new DefaultComboBoxModel();
         cbm.addElement(Color.red);
         cbm.addElement(Color.green);
         cbm.addElement(Color.blue);
         iconComboBox.setModel(cbm);
-       
+
         //         iconComboBox.setFont(UIManager.getFont("SmallSystemFont"));
-        
-        tableComboBox.putClientProperty("JComboBox.isTableCellEditor",Boolean.TRUE);
+
+        tableComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+
+        //
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }
+
     }
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -126,11 +148,11 @@ public class ComboBoxTest extends javax.swing.JPanel {
         JFrame f = new JFrame("Quaqua ComboBox Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new ComboBoxTest());
-        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9,17,17,17));
+        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9, 17, 17, 17));
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -156,6 +178,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         iconComboBox = new javax.swing.JComboBox();
         iconLabel = new javax.swing.JLabel();
         tableComboBox = new javax.swing.JComboBox();
+        jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -181,7 +204,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(comboBox2, gridBagConstraints);
 
         comboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
@@ -190,7 +212,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(comboBox3, gridBagConstraints);
 
         jLabel3.setText("Disabled");
@@ -198,7 +219,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 20, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -221,14 +242,12 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox1, gridBagConstraints);
 
         smallComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 9;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox2, gridBagConstraints);
 
         smallComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
@@ -236,7 +255,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(smallComboBox3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -250,7 +268,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(largeComboBox, gridBagConstraints);
 
         jLabel5.setText("Large Font");
@@ -262,7 +279,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(iconComboBox, gridBagConstraints);
 
         iconLabel.setText("Icon");
@@ -275,13 +291,13 @@ public class ComboBoxTest extends javax.swing.JPanel {
         tableComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(tableComboBox, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-        
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboBox1;
     private javax.swing.JComboBox comboBox2;
@@ -291,6 +307,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JComboBox largeComboBox;
@@ -300,5 +317,4 @@ public class ComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JLabel smallLabel;
     private javax.swing.JComboBox tableComboBox;
     // End of variables declaration//GEN-END:variables
-    
 }

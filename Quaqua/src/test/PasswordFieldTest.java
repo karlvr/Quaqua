@@ -11,7 +11,11 @@
 
 package test;
 
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.*;
+import javax.swing.text.JTextComponent;
 /**
  * PasswordFieldTest.
  *
@@ -23,6 +27,27 @@ public class PasswordFieldTest extends javax.swing.JPanel {
     /** Creates new form. */
     public PasswordFieldTest() {
         initComponents();
+        
+       // Prevent text components from becoming too small in GridBagLayout
+        for (Component c : getComponents()) {
+            if (c instanceof JTextComponent) {
+                c.setMinimumSize(c.getPreferredSize());
+            }
+        }
+                      // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }        
     }
     
     /** This method is called from within the constructor to
@@ -50,6 +75,7 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jSeparator2 = new javax.swing.JSeparator();
         jPasswordField8 = new javax.swing.JPasswordField();
         jLabel12 = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -57,14 +83,14 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField1, gridBagConstraints);
 
         jLabel7.setText("Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel7, gridBagConstraints);
 
@@ -72,14 +98,14 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField2.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField2, gridBagConstraints);
 
         jLabel8.setText("Non-Editable");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel8, gridBagConstraints);
 
@@ -87,14 +113,14 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField3, gridBagConstraints);
 
         jLabel9.setText("Disabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel9, gridBagConstraints);
 
@@ -102,13 +128,13 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField7.setEchoChar('\u2023');
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField7, gridBagConstraints);
 
         jLabel11.setText("Custom echo character");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel11, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -121,31 +147,31 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField4.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField4, gridBagConstraints);
 
         jLabel10.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         jLabel10.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel10, gridBagConstraints);
 
         jPasswordField5.setEditable(false);
-        jPasswordField5.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        jPasswordField5.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         jPasswordField5.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField5, gridBagConstraints);
 
-        jPasswordField6.setFont(new java.awt.Font("Lucida Grande", 0, 11)); // NOI18N
+        jPasswordField6.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         jPasswordField6.setText("Ångström H");
         jPasswordField6.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField6, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -160,16 +186,19 @@ public class PasswordFieldTest extends javax.swing.JPanel {
         jPasswordField8.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(jPasswordField8, gridBagConstraints);
 
         jLabel12.setText("Borderless and Colored");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 16;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel12, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
@@ -180,6 +209,7 @@ public class PasswordFieldTest extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JPasswordField jPasswordField2;
     private javax.swing.JPasswordField jPasswordField3;

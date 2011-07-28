@@ -220,7 +220,7 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
         n.add(new Item("Formatted Text Field", "test.FormattedTextFieldTest"));
         n.add(new Item("Password Field", "test.PasswordFieldTest"));
         n.add(new Item("Text Area", "test.TextAreaTest"));
-        n.add(new Item("Text Field", "test.TextFieldTest16"));
+        n.add(new Item("Text Field", "test.TextFieldTest"));
         n.add(new Item("Text Pane", "test.TextPaneTest"));
         root.add(n = new DefaultMutableTreeNode("VIEWS"));
         n.add(new Item("List", "test.ListTest"));

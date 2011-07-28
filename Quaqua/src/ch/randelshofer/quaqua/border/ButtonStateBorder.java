@@ -221,4 +221,27 @@ public class ButtonStateBorder implements Border {
     private void generateMissingBorders() {
         
     }
+    
+    public static class UIResource extends ButtonStateBorder implements javax.swing.plaf.UIResource {
+        public UIResource(Border[] borders) {
+            super(borders);
+        }
+    
+    /**
+     * Creates a new instance.
+     * All borders must have the same dimensions.
+     */
+    public UIResource(Image[] images, Insets imageInsets, Insets borderInsets, boolean fill) {
+        super(images,imageInsets,borderInsets,fill);
+    }
+    
+    /**
+     * Creates a new instance.
+     * All borders must have the same dimensions.
+     */
+    public UIResource(Image tiledImage, int tileCount, boolean isTiledHorizontaly,
+    Insets imageInsets, Insets borderInsets, boolean fill) {
+           super(tiledImage,tileCount,isTiledHorizontaly,imageInsets,borderInsets,fill);
+    }
+    }
 }

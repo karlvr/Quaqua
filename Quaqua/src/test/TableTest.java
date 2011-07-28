@@ -13,8 +13,6 @@ package test;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.MouseEvent;
 import java.util.EventObject;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -39,10 +37,10 @@ public class TableTest extends javax.swing.JPanel {
 
         public MyTableModel() {
             columnClasses = new Class[]{
-                        Boolean.class,
-                        String.class, String.class, String.class, String.class,
-                        Integer.class
-                    };
+                Boolean.class,
+                String.class, String.class, String.class, String.class,
+                Integer.class
+            };
             columnNames = new String[]{"", "Name", "Time", "Artist", "Genre", "Year"};
             data = new Object[6][columnClasses.length];
             for (int i = 0; i < data.length; i++) {
@@ -96,7 +94,7 @@ public class TableTest extends javax.swing.JPanel {
         plainTable = new JTable() {
         public void repaint(long tm, int x, int y, int w, int h) {
         super.repaint(tm, x, y, w, h);
-
+        
         System.out.println("JTable.repaint("+tm+","+x+","+y+" "+w+" "+h);
         if (w == 192) {
         new Throwable().printStackTrace();
@@ -168,15 +166,18 @@ public class TableTest extends javax.swing.JPanel {
         installDefaultEditors(plainTable);
         installDefaultEditors(bigFontTable);
 
-        // J2SE6 only
-        Methods.invokeIfExists(plainTable, "setAutoCreateRowSorter", true);
+        if (QuaquaManager.getProperty("java.version").startsWith("1.5")) {
+            enableSortingBox.setVisible(false);
+        }
+
     }
 
     private void installDefaultEditors(JTable t) {
-       JCheckBox cb = new JCheckBox();
+        JCheckBox cb = new JCheckBox();
         cb.setHorizontalAlignment(SwingConstants.CENTER);
         cb.putClientProperty("JComponent.sizeVariant", "small");
         t.setDefaultEditor(Boolean.class, new DefaultCellEditor2(cb) {
+
             @Override
             public boolean shouldSelectCell(EventObject evt) {
                 return shouldSelectCellCheckBox.isSelected();
@@ -225,6 +226,7 @@ public class TableTest extends javax.swing.JPanel {
         allowRowSelectionCheckBox = new javax.swing.JCheckBox();
         allowColumnSelectionCheckBox = new javax.swing.JCheckBox();
         shouldSelectCellCheckBox = new javax.swing.JCheckBox();
+        enableSortingBox = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -375,9 +377,20 @@ public class TableTest extends javax.swing.JPanel {
         shouldSelectCellCheckBox.setText("Checkbox selects cell");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(shouldSelectCellCheckBox, gridBagConstraints);
+
+        enableSortingBox.setText("Enable row sorting");
+        enableSortingBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enableSortingPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(enableSortingBox, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateShowVerticalLines(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShowVerticalLines
@@ -431,11 +444,42 @@ public class TableTest extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_updateColumnSelection
+
+    private void enableSortingPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enableSortingPerformed
+        boolean b = enableSortingBox.isSelected();
+
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
+            Component c = getComponent(i);
+            if (c instanceof JScrollPane) {
+                c = ((JScrollPane) c).getViewport().getView();
+            }
+            if (c instanceof JTable) {
+                JTable table = (JTable) c;
+                // J2SE6 only
+                try {
+                    Methods.invokeIfExists(table, "setAutoCreateRowSorter", b);
+                        Class rsclazz = Class.forName("javax.swing.RowSorter");
+                    if (b) {
+                        for (int j = 0, m = table.getColumnCount(); j < m; j++) {
+                            Class clazz = Class.forName("javax.swing.table.TableRowSorter");
+                            Methods.invokeIfExists(table, "setRowSorter", rsclazz,
+                                    Methods.newInstance(clazz, new Class[]{TableModel.class}, new Object[]{table.getModel()}));
+                        }
+                    } else {
+                        Methods.invokeIfExists(table, "setRowSorter", rsclazz, null);
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }//GEN-LAST:event_enableSortingPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allowColumnSelectionCheckBox;
     private javax.swing.JCheckBox allowRowSelectionCheckBox;
     private javax.swing.JTable bigFontTable;
     private javax.swing.JScrollPane bigFontTableScrollPane;
+    private javax.swing.JCheckBox enableSortingBox;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
