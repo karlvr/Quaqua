@@ -587,7 +587,11 @@ public class QuaquaPopupFactory extends PopupFactory {
                 }
             }
             wnd.getRootPane().putClientProperty("Window.alpha", windowAlpha);
+            try {
             wnd.setBackground(new Color(0xffffff, true));
+            } catch (UnsupportedOperationException e) {
+                // bail
+            }
             wnd.addComponentListener(new ComponentListener() {
 
                 private void updateShadow() {

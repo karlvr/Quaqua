@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.awt.color.ColorSpace;
@@ -83,14 +84,14 @@ public class GrayChooser extends AbstractColorChooserPanel implements UIResource
         });
         brightnessField.setMinimumSize(brightnessField.getPreferredSize());
 
-        VisualMargin bm = new VisualMargin(false,false,true,false);
+        VisualMarginBorder bm = new VisualMarginBorder(false,false,true,false);
         brightnessLabel.setBorder(bm);
         zeroPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
         twentyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
         fiftyPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
         seventyFivePercentButton.putClientProperty("Quaqua.Button.style","colorWell");
         hundredPercentButton.putClientProperty("Quaqua.Button.style","colorWell");
-        Border b = new CompoundBorder(new VisualMargin(), new SmallColorWellBorder());
+        Border b = new CompoundBorder(new VisualMarginBorder(), new SmallColorWellBorder());
         zeroPercentButton.setBorder(b);
         twentyFivePercentButton.setBorder(b);
         fiftyPercentButton.setBorder(b);

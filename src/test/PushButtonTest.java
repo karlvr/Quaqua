@@ -8,12 +8,15 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-
 package test;
 
 import ch.randelshofer.quaqua.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * ButtonTest.
  *
@@ -21,67 +24,53 @@ import javax.swing.border.*;
  * @version 1.0  13 February 2005  Created.
  */
 public class PushButtonTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public PushButtonTest() {
         initComponents();
-  /*
-        Font smallFont = UIManager.getFont("SmallSystemFont");
-        if (smallFont == null) {
-            smallFont = new Font("LucidaGrande", Font.PLAIN, 11);
-        }
-        
-        smallBevelButton.setFont(smallFont);
-        smallDisabledButton.setFont(smallFont);
-        smallEnabledButton.setFont(smallFont);
-        smallLabel.setFont(smallFont);
-        smallSquareButton.setFont(smallFont);
-        smallSquareLabel1.setFont(smallFont);
-*/
 
         // Client properties for the Aqua Look and Feel TN2196
         // https://developer.apple.com/mac/library/technotes/tn2007/tn2196.html
-        squareButton.putClientProperty("JButton.buttonType", "square");
-        smallSquareButton.putClientProperty("JButton.buttonType", "square");
-        bevelButton.putClientProperty("JButton.buttonType", "bevel");
-        smallBevelButton.putClientProperty("JButton.buttonType", "bevel");
-        enabledButton.putClientProperty("JButton.buttonType", "text");
-        helpButton.putClientProperty("JButton.buttonType", "help");
+        for (JComponent c : new JComponent[]{smallDisabledButton, smallEnabledButton,
+                    smallLabel}) {
+            c.putClientProperty("JComponent.sizeVariant", "small");
+        }
+        for (JComponent c : new JComponent[]{miniDisabledButton, miniEnabledButton,
+                    miniLabel}) {
+            c.putClientProperty("JComponent.sizeVariant", "mini");
+        }
+        /*
+        for (JComponent c:new JComponent[]{largeButton,largeLabel}) {
+        c.putClientProperty("JComponent.sizeVariant","large");
+        }*/
 
-        smallLabel.putClientProperty("JComponent.sizeVariant", "small");
-        smallEnabledButton.putClientProperty("JComponent.sizeVariant", "small");
-        smallDisabledButton.putClientProperty("JComponent.sizeVariant", "small");
-        smallBevelButton.putClientProperty("JComponent.sizeVariant", "small");
-        smallSquareButton.putClientProperty("JComponent.sizeVariant", "small");
-        
-        // Client properties for the Quaqua Look and Feel
-        squareButton.putClientProperty("Quaqua.Button.style","square");
-        bevelButton.putClientProperty("Quaqua.Button.style","bevel");
-        enabledButton.putClientProperty("Quaqua.Button.style","push");
-        helpButton.putClientProperty("Quaqua.Button.style", "help");
-        smallSquareButton.putClientProperty("Quaqua.Button.style","square");
-        smallBevelButton.putClientProperty("Quaqua.Button.style","bevel");
-        
-        // Leopard properties
-        if (QuaquaManager.getDesign() == QuaquaManager.LEOPARD) {
-            smallEnabledButton.putClientProperty("JComponent.sizeVariant","small");
-            smallDisabledButton.putClientProperty("JComponent.sizeVariant","small");
-            smallBevelButton.putClientProperty("JComponent.sizeVariant","small");
-            smallSquareButton.putClientProperty("JComponent.sizeVariant","small");
-            helpButton.putClientProperty("JButton.buttonType","help");
-            helpButton.setText(" ");
-            squareButton.putClientProperty("JButton.buttonType", "square");
-            smallSquareButton.putClientProperty("JButton.buttonType", "square");
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            int BASELINE = GridBagConstraints.class.getDeclaredField("BASELINE").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                } else if (gbc.anchor == GridBagConstraints.CENTER) {
+                    gbc.anchor = BASELINE;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
         }
     }
     /*
     public void paint(Graphics g) {
-        long start = System.currentTimeMillis();
-        super.paint(g);
-        long end = System.currentTimeMillis();
-        System.out.println(end - start);
+    long start = System.currentTimeMillis();
+    super.paint(g);
+    long end = System.currentTimeMillis();
+    System.out.println(end - start);
     }*/
-    
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -91,11 +80,11 @@ public class PushButtonTest extends javax.swing.JPanel {
         JFrame f = new JFrame("Quaqua Push Button Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new PushButtonTest());
-        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9,17,17,17));
+        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9, 17, 17, 17));
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -108,24 +97,23 @@ public class PushButtonTest extends javax.swing.JPanel {
         enabledButton = new javax.swing.JButton();
         enabledLabel = new javax.swing.JLabel();
         disabledButton = new javax.swing.JButton();
-        disabledLabel = new javax.swing.JLabel();
-        squareButton = new javax.swing.JButton();
-        smallSquareLabel1 = new javax.swing.JLabel();
-        bevelButton = new javax.swing.JButton();
-        bevelLabel = new javax.swing.JLabel();
-        helpButton = new javax.swing.JButton();
-        helpLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         smallEnabledButton = new javax.swing.JButton();
         smallLabel = new javax.swing.JLabel();
         smallDisabledButton = new javax.swing.JButton();
-        smallSquareButton = new javax.swing.JButton();
-        smallBevelButton = new javax.swing.JButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        miniEnabledButton = new javax.swing.JButton();
+        miniDisabledButton = new javax.swing.JButton();
+        miniLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         largeButton = new javax.swing.JButton();
         largeLabel = new javax.swing.JLabel();
         borderlessButton = new javax.swing.JButton();
         borderlessLabel = new javax.swing.JLabel();
+        coloredButton = new javax.swing.JButton();
+        coloredLabel = new javax.swing.JLabel();
+        borderlessColoredButton = new javax.swing.JButton();
+        borderlessColoredLabel = new javax.swing.JLabel();
         springPanel = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
@@ -134,13 +122,11 @@ public class PushButtonTest extends javax.swing.JPanel {
         enabledButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 0;
         add(enabledButton, gridBagConstraints);
 
-        enabledLabel.setText("Enabled");
+        enabledLabel.setText("Regular Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(enabledLabel, gridBagConstraints);
@@ -149,58 +135,11 @@ public class PushButtonTest extends javax.swing.JPanel {
         disabledButton.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 1;
         add(disabledButton, gridBagConstraints);
-
-        disabledLabel.setText("Disabled");
-        disabledLabel.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(disabledLabel, gridBagConstraints);
-
-        squareButton.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        add(squareButton, gridBagConstraints);
-
-        smallSquareLabel1.setText("Square Style");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(smallSquareLabel1, gridBagConstraints);
-
-        bevelButton.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        add(bevelButton, gridBagConstraints);
-
-        bevelLabel.setText("Rounded Bevel Style");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(bevelLabel, gridBagConstraints);
-
-        helpButton.setText(" ");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        add(helpButton, gridBagConstraints);
-
-        helpLabel.setText("Help Style");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(helpLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator2, gridBagConstraints);
 
         smallEnabledButton.setText("Ångström H");
@@ -220,30 +159,43 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(smallDisabledButton, gridBagConstraints);
-
-        smallSquareButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        add(smallSquareButton, gridBagConstraints);
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator3, gridBagConstraints);
 
-        smallBevelButton.setText("Ångström H");
+        miniEnabledButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        add(smallBevelButton, gridBagConstraints);
+        add(miniEnabledButton, gridBagConstraints);
+
+        miniDisabledButton.setText("Ångström H");
+        miniDisabledButton.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(miniDisabledButton, gridBagConstraints);
+
+        miniLabel.setText("Mini Size");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(miniLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
         largeButton.setFont(new java.awt.Font("Dialog", 0, 24));
         largeButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(largeButton, gridBagConstraints);
 
-        largeLabel.setText("Large Size");
+        largeLabel.setText("Big Font");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -254,47 +206,69 @@ public class PushButtonTest extends javax.swing.JPanel {
         borderlessButton.setBorderPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         add(borderlessButton, gridBagConstraints);
 
         borderlessLabel.setText("Borderless");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(borderlessLabel, gridBagConstraints);
+
+        coloredButton.setBackground(new java.awt.Color(181, 212, 107));
+        coloredButton.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(coloredButton, gridBagConstraints);
+
+        coloredLabel.setText("Colored");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(coloredLabel, gridBagConstraints);
+
+        borderlessColoredButton.setBackground(new java.awt.Color(181, 212, 107));
+        borderlessColoredButton.setText("Ångström H");
+        borderlessColoredButton.setBorderPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(borderlessColoredButton, gridBagConstraints);
+
+        borderlessColoredLabel.setText("Borderless & Colored");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(borderlessColoredLabel, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.weighty = 1.0;
         add(springPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton bevelButton;
-    private javax.swing.JLabel bevelLabel;
     private javax.swing.JButton borderlessButton;
+    private javax.swing.JButton borderlessColoredButton;
+    private javax.swing.JLabel borderlessColoredLabel;
     private javax.swing.JLabel borderlessLabel;
+    private javax.swing.JButton coloredButton;
+    private javax.swing.JLabel coloredLabel;
     private javax.swing.JButton disabledButton;
-    private javax.swing.JLabel disabledLabel;
     private javax.swing.JButton enabledButton;
     private javax.swing.JLabel enabledLabel;
-    private javax.swing.JButton helpButton;
-    private javax.swing.JLabel helpLabel;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JButton largeButton;
     private javax.swing.JLabel largeLabel;
-    private javax.swing.JButton smallBevelButton;
+    private javax.swing.JButton miniDisabledButton;
+    private javax.swing.JButton miniEnabledButton;
+    private javax.swing.JLabel miniLabel;
     private javax.swing.JButton smallDisabledButton;
     private javax.swing.JButton smallEnabledButton;
     private javax.swing.JLabel smallLabel;
-    private javax.swing.JButton smallSquareButton;
-    private javax.swing.JLabel smallSquareLabel1;
     private javax.swing.JPanel springPanel;
-    private javax.swing.JButton squareButton;
     // End of variables declaration//GEN-END:variables
-    
 }

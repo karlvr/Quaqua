@@ -19,6 +19,14 @@ import java.awt.*;
  * @version $Id$
  */
 public class InsetsUtil {
+
+    public static void setTo(int top,int left , int bottom, int right, Insets i2) {
+               i2.top = top; 
+        i2.left = left; 
+        i2.bottom = bottom; 
+        i2.right = right;
+
+    }
     
     /** Prevent instance creation. */
     private InsetsUtil() {
@@ -51,6 +59,18 @@ public class InsetsUtil {
         i2.left += i1.left; 
         i2.bottom += i1.bottom; 
         i2.right += i1.right;
+    }
+    public static void setInto(Insets i1, Insets i2) {
+        i2.top = i1.top; 
+        i2.left = i1.left; 
+        i2.bottom = i1.bottom; 
+        i2.right = i1.right;
+    }
+    public static void clear(Insets i2) {
+        i2.top = 
+        i2.left =
+        i2.bottom = 
+        i2.right = 0;
     }
     public static void subtractInto(Insets i1, Rectangle r2) {
         r2.x += i1.left;

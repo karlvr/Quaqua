@@ -13,6 +13,7 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
@@ -92,7 +93,7 @@ implements UIResource {
         hueField.setMinimumSize(hueField.getPreferredSize());
         saturationField.setMinimumSize(saturationField.getPreferredSize());
         brightnessField.setMinimumSize(brightnessField.getPreferredSize());
-        VisualMargin bm = new VisualMargin(false,false,true,false);
+        VisualMarginBorder bm = new VisualMarginBorder(false,false,true,false);
         hueLabel.setBorder(bm);
         saturationLabel.setBorder(bm);
         brightnessLabel.setBorder(bm);

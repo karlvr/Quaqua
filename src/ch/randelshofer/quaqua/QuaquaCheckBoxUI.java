@@ -87,7 +87,9 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     }
 
     private boolean isSmall(JComponent c) {
-        return QuaquaUtilities.isSmallSizeVariant(c)
+        boolean isSmall=QuaquaUtilities.getSizeVariant(c)==QuaquaUtilities.SizeVariant.SMALL;
+        
+        return isSmall
                 || (c instanceof TableCellRenderer)
                 || (c instanceof TableCellEditor)
                 || (c.getParent() instanceof JTable);

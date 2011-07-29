@@ -32,6 +32,10 @@ import javax.swing.plaf.basic.*;
  */
 public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstants {
 
+    public enum SizeVariant {
+
+        LARGE,REGULAR, SMALL, MINI
+    }
     private final static boolean DEBUG = false;
     /** Holds the class name of SwingUtilities2 once it has been resolved. */
     private static String swingUtilities2;
@@ -860,53 +864,76 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    /**
-     * Returns true, if the component should use the small appearance.
-     * @param c
-     * @return true, , if the component should use the small appearance.
-     */
-    public static boolean isSmallSizeVariant(Component component) {
-        Font f = component.getFont();
-        if (f != null && f.getSize() <= 11) {
-            return true;
+    public static SizeVariant getSizeVariant(Component c) {
+        if (c == null) {
+            return SizeVariant.REGULAR;
         }
-        if (! (component instanceof JComponent)) return false;
-        
-        JComponent c =(JComponent)component;
-        String p = (String) c.getClientProperty("JComponent.sizeVariant");
-        return p != null && p.equals("small");
+        SizeVariant sv = null;
+        if (c instanceof JComponent) {
+            JComponent jc = (JComponent) c;
+            String p = (String) jc.getClientProperty("JComponent.sizeVariant");
+            if (p != null) {
+                if (p.equals("large")) {
+                    sv = SizeVariant.LARGE;
+                }else if (p.equals("regular")) {
+                    sv = SizeVariant.REGULAR;
+                } else if (p.equals("small")) {
+                    sv = SizeVariant.SMALL;
+                } else if (p.equals("mini")) {
+                    sv = SizeVariant.MINI;
+                }
+            }
+        }
+        if (sv == null) {
+            Font f = c.getFont();
+            if (f != null) {
+                int fs = f.getSize();
+                if (fs <= 9) {
+                    sv = SizeVariant.MINI;
+                } else if (fs <= 11) {
+                    sv = SizeVariant.SMALL;
+                } else if (fs <= 14) {
+                    sv = SizeVariant.REGULAR;
+                } else {
+                    sv = SizeVariant.LARGE;
+                }
+            }
+        }
+        return sv == null ? SizeVariant.REGULAR : sv;
     }
-    public static boolean isLargeSizeVariant(Component component) {
-        Font f = component.getFont();
-        if (f != null && f.getSize() > 13) {
-            return true;
+
+    public static Font getSizeVariantFont(JComponent c) {
+        Font font = c.getFont();
+        if (font == null || (font instanceof UIResource)) {
+            switch (getSizeVariant(c)) {
+                case REGULAR:
+                default:
+                    font = UIManager.getFont("SystemFont");
+                    break;
+                case SMALL:
+                    font = UIManager.getFont("SmallSystemFont");
+                    break;
+                case MINI:
+                    font = UIManager.getFont("MiniSystemFont");
+                    break;
+            }
+
+            String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
+            if (pstyle != null && pstyle.equals("sidebar")) {
+                font = UIManager.getFont("Tree.sideBar.selectionFont");
+            }
+            String bstyle=(String)c.getClientProperty("Quaqua.Button.style");
+            if (bstyle==null) bstyle=(String)c.getClientProperty("JButton.buttonType");
+            if (bstyle!=null && bstyle.equals("tableHeader")) {
+                font=UIManager.getFont("TableHeader.font");
+            }
         }
-        if (! (component instanceof JComponent)) return false;
-        
-        JComponent c =(JComponent)component;
-        String p = (String) c.getClientProperty("JComponent.sizeVariant");
-        return p != null && p.equals("large");
+        return font == null ? UIManager.getFont("SystemFont") : font;
+
     }
 
     public static void applySizeVariant(JComponent c) {
-        String psize = (String) c.getClientProperty("JComponent.sizeVariant");
-        String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
-
-        Font font = null;
-        if (psize == null) {
-        } else if (psize.equals("regular")) {
-            font = UIManager.getFont("SystemFont");
-        } else if (psize.equals("small")) {
-            font = UIManager.getFont("SmallSystemFont");
-        } else if (psize.equals("mini")) {
-            font = UIManager.getFont("MiniSystemFont");
-        }
-
-        if (pstyle == null) {
-        } else if (pstyle.equals("sidebar")) {
-            font = UIManager.getFont("Tree.sideBar.selectionFont");
-        }
-        if (font!=null)
+        Font font = getSizeVariantFont(c);
         c.setFont(font);
     }
 
@@ -999,5 +1026,25 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             isTextured = false;
         }
         return isTextured;
+    }
+    
+    /** Returns the visual bounds of the component given in the local
+     * coordinate system of the component.
+     * 
+     * @param c The component.
+     * @param type A type from {@link VisuallyLayoutable}.
+     * @return The visual bounds. Returns null if the given type is not applicable.
+     */
+    public static Rectangle getVisualBounds(Component c, int type) {
+        if (c instanceof JComponent) {
+            JComponent jc=(JComponent)c;
+            ComponentUI ui=(ComponentUI)Methods.invokeGetter(jc, "getUI",null);
+            if (ui instanceof VisuallyLayoutable) {
+                VisuallyLayoutable vl=(VisuallyLayoutable)ui;
+                return vl.getVisualBounds(jc,type,jc.getWidth(),jc.getHeight());
+                
+            }
+        }
+            return type==VisuallyLayoutable.CLIP_BOUNDS?new Rectangle(0,0,c.getWidth(),c.getHeight()):null;
     }
 }

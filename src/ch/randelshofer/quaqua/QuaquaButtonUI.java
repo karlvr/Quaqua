@@ -14,6 +14,8 @@ import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.geom.AffineTransform;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
@@ -106,18 +108,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return new QuaquaButtonListener(b);
     }
 
-    private static boolean isSmall(JComponent c) {
-        return QuaquaUtilities.isSmallSizeVariant(c);
-    }
-
     private static Font getFont(JComponent c) {
-        Font f = c.getFont();
-        if ((f instanceof UIResource) && QuaquaUtilities.isSmallSizeVariant(c)) {
-            Font smallFont = UIManager.getFont("SmallSystemFont");
-            if (smallFont != null) {
-                f = smallFont;
-            }
-        }
+
+        Font f= QuaquaUtilities.getSizeVariantFont(c);
         return f;
     }
 
@@ -127,6 +120,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         g.setFont(getFont(c));
 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
+        if (style == null) {
+            style = (String) c.getClientProperty("JButton.buttonType");
+        }
         if (style != null && style.equals("help")) {
             Insets insets = c.getInsets();
             if (insets == null) {
@@ -142,6 +138,10 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             if (b != null && b instanceof BackgroundBorder) {
                 ((BackgroundBorder) b).getBackgroundBorder().paintBorder(c, g, 0, 0, c.getWidth(), c.getHeight());
             }
+        } else {
+            g.setColor(c.getBackground());
+            Insets ins = c.getInsets();
+            g.fillRect(0, 0, c.getWidth(), c.getHeight());
         }
         super.paint(g, c);
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
@@ -169,7 +169,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     @Override
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
-       FontMetrics fm = g.getFontMetrics();
+        FontMetrics fm = g.getFontMetrics();
         int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
         boolean borderHasPressedCue = borderHasPressedCue(b);
 
@@ -304,6 +304,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         AbstractButton b = (AbstractButton) c;
         String style = (String) c.getClientProperty("Quaqua.Button.style");
         if (style == null) {
+            style = (String) c.getClientProperty("JButton.buttonType");
+        }
+        if (style == null) {
             if (b.getBorder() instanceof UIResource
                     && b.isBorderPainted()) {
                 style = "push";
@@ -321,7 +324,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
                 d.height = Math.max(d.height, p.height);
             }
         }
-        if (!QuaquaUtilities.isSmallSizeVariant(c) && style.equals("push") //
+        boolean isSmall = QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.SMALL;
+        if (!isSmall && style.equals("push") //
                 && b.getIcon() == null && b.getText() != null) {
             if (d != null) {
                 d.width = Math.max(d.width, UIManager.getInt("Button.minimumWidth"));
@@ -333,6 +337,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     @Override
     public Dimension getMaximumSize(JComponent c) {
         String style = (String) c.getClientProperty("Quaqua.Button.style");
+        if (style == null) {
+            style = (String) c.getClientProperty("JButton.buttonType");
+        }
         if (style != null && style.equals("help")) {
             return getPreferredSize(c);
         }
@@ -351,7 +358,10 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     public static Dimension getPreferredSize(AbstractButton b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
-        boolean isSmall = isSmall(b);
+        if (style == null) {
+            style = (String) b.getClientProperty("JButton.buttonType");
+        }
+        boolean isSmall = QuaquaUtilities.getSizeVariant(b) == QuaquaUtilities.SizeVariant.SMALL;
         if (style == null) {
             if (b.getBorder() instanceof UIResource
                     && b.isBorderPainted()) {
@@ -379,7 +389,16 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         String text = b.getText();
 
         Font font = getFont(b);
-        FontMetrics fm = b.getFontMetrics(font);
+
+        FontMetrics fm;
+        try {
+            fm = b.getFontMetrics(font);
+        } catch (NullPointerException e) {
+            // NPE occurs when no font render context can be found.
+            // getFontMetrics should handle that internally and just
+            // return null, but it does not.
+            return new Dimension(0, 0);
+        }
 
         viewR.x = viewR.y = 0;
         viewR.width = Short.MAX_VALUE;
@@ -472,16 +491,17 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             Border border = b.getBorder();
             if (border instanceof BackgroundBorder) {
                 border = ((BackgroundBorder) border).getBackgroundBorder();
-                if (border instanceof VisualMargin) {
-                    InsetsUtil.subtractInto(
-                            ((VisualMargin) border).getVisualMargin(c),
-                            bounds);
-                } else if (border instanceof QuaquaButtonBorder) {
-                    InsetsUtil.subtractInto(
-                            ((QuaquaButtonBorder) border).getVisualMargin(c),
-                            bounds);
-                }
             }
+            if (border instanceof VisualMargin) {
+                InsetsUtil.subtractInto(
+                        ((VisualMargin) border).getVisualMargin(c),
+                        bounds);
+            } else if (border instanceof QuaquaButtonBorder) {
+                InsetsUtil.subtractInto(
+                        ((QuaquaButtonBorder) border).getVisualMargin(c),
+                        bounds);
+            }
+
             return bounds;
         }
 
@@ -498,7 +518,13 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             return null;
         }
 
-        FontMetrics fm = c.getFontMetrics(getFont(c));
+        FontMetrics fm;
+                try {
+         fm = c.getFontMetrics(getFont(c));
+        } catch (NullPointerException e) {
+            // getFontMetrics does not handle missing font render context.
+            return null;
+        }
         Insets insets = c.getInsets(viewInsets);
         if (insets == null) {
             insets = new Insets(0, 0, 0, 0);

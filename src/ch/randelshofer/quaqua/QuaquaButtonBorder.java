@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.border.OverlayBorder;
 import ch.randelshofer.quaqua.border.FocusBorder;
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
@@ -100,20 +101,20 @@ public class QuaquaButtonBorder implements Border, UIResource {
         this.defaultStyle = defaultStyle;
     }
 
-    private boolean isSmall(JComponent c) {
-       return QuaquaUtilities.isSmallSizeVariant(c);
-    }
-
+   
     public Border getBorder(JComponent c) {
         Border b = null;
         String style = getStyle(c);
 
         // Explicitly chosen styles
         if (style.equals("text") || style.equals("push")) {
-            if (isSmall(c)) {
+            switch (QuaquaUtilities.getSizeVariant(c)) {
+                case SMALL:
                 b = getSmallPushButtonBorder();
-            } else {
+                    break;
+                default:
                 b = getRegularPushButtonBorder();
+                    break;
             }
         } else if (style.equals("toolBar")) {
             if (toolBarBorder == null) {
@@ -149,7 +150,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
         } else if (style.equals("colorWell")) {
             if (colorWellBorder == null) {
                 colorWellBorder = new CompoundBorder(
-                        new VisualMargin(0, 0, 0, 0),
+                        new VisualMarginBorder(0, 0, 0, 0),
                         new OverlayBorder(
                         //new CompoundBorder(
                         //new EmptyBorder(3,3,3,3),
@@ -171,7 +172,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new Insets(10, 9, 10, 8), borderInsets, true));
 
                 bevelBorder = new CompoundBorder(
-                        new VisualMargin(0, 0, 0, 0),
+                        new VisualMarginBorder(0, 0, 0, 0),
                         new CompoundBorder(
                         new EmptyBorder(-3, -2, -2, -2),
                         new OverlayBorder(
@@ -188,7 +189,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
             if (toggleBorder == null) {
                 Insets borderInsets = new Insets(3, 5, 3, 5);
                 toggleBorder = new CompoundBorder(
-                        new VisualMargin(2, 2, 2, 2),
+                        new VisualMarginBorder(2, 2, 2, 2),
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
@@ -202,10 +203,10 @@ public class QuaquaButtonBorder implements Border, UIResource {
             b = toggleBorder;
         } else if (style.equals("toggleEast")) {
             if (toggleEastBorder == null) {
-                VisualMargin cm;
+                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 1, 3, 5);
                 toggleEastBorder = new CompoundBorder(
-                        cm = new VisualMargin(2, 0, 2, 2),
+                        cm = new VisualMarginBorder(2, 0, 2, 2),
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.borders.png")),
@@ -220,10 +221,10 @@ public class QuaquaButtonBorder implements Border, UIResource {
             b = toggleEastBorder;
         } else if (style.equals("toggleCenter")) {
             if (toggleCenterBorder == null) {
-                VisualMargin cm;
+                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 1, 3, 1);
                 toggleCenterBorder = new CompoundBorder(
-                        cm = new VisualMargin(2, 0, 2, 0),
+                        cm = new VisualMarginBorder(2, 0, 2, 0),
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.borders.png")),
@@ -238,10 +239,10 @@ public class QuaquaButtonBorder implements Border, UIResource {
             b = toggleCenterBorder;
         } else if (style.equals("toggleWest")) {
             if (toggleWestBorder == null) {
-                VisualMargin cm;
+                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 5, 3, 1);
                 toggleWestBorder = new CompoundBorder(
-                        cm = new VisualMargin(2, 2, 2, 0),
+                        cm = new VisualMarginBorder(2, 2, 2, 0),
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.borders.png")),
@@ -256,17 +257,20 @@ public class QuaquaButtonBorder implements Border, UIResource {
             b = toggleWestBorder;
         } else if (style.equals("help")) {
             if (helpBorder == null) {
-                helpBorder = new VisualMargin(2, 3, 2, 3);
+                helpBorder = new VisualMarginBorder(2, 3, 2, 3);
             }
             b = helpBorder;
         // Implicit styles
         } else if (c.getParent() instanceof JToolBar) {
             b = getSquareBorder();
         } else {
-            if (isSmall(c)) {
+            switch (QuaquaUtilities.getSizeVariant(c)) {
+                case SMALL:
                 b = getSmallPushButtonBorder();
-            } else {
+                    break;
+                default:
                 b = getRegularPushButtonBorder();
+                    break;
             }
         }
         if (b == null) {
@@ -302,8 +306,8 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     new AnimatedBorder(borderFrames, 100));
 
             regularPushButtonBorder = new CompoundBorder(
-                    //new VisualMargin(2, 3, 2, 3),
-                    new VisualMargin(0, 0, 0, 0),
+                    //new VisualMarginBorder(2, 3, 2, 3),
+                    new VisualMarginBorder(0, 0, 0, 0),
                     new CompoundBorder(
                     new EmptyBorder(-2, -4, -2, -4),
                     new OverlayBorder(
@@ -321,7 +325,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
     private Border getSquareBorder() {
         if (squareBorder == null) {
             squareBorder = new CompoundBorder(
-                    new VisualMargin(0, 0, 0, 0),
+                    new VisualMarginBorder(0, 0, 0, 0),
                     new OverlayBorder(
                     QuaquaBorderFactory.createSquareButtonBorder(),
                     new CompoundBorder(
@@ -337,7 +341,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
     private Border getPlacardBorder() {
         if (placardBorder == null) {
             placardBorder = new CompoundBorder(
-                    new VisualMargin(0, 0, 0, 0),
+                    new VisualMarginBorder(0, 0, 0, 0),
                     new OverlayBorder(
                     new CompoundBorder(
                     new EmptyBorder(-1, 0, -1, 0),
@@ -387,8 +391,8 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     new AnimatedBorder(borderFrames, 100));
 
             smallPushButtonBorder = new CompoundBorder(
-                    //new VisualMargin(2, 2, 2, 2),
-                    new VisualMargin(0, 0, 0, 0),
+                    //new VisualMarginBorder(2, 2, 2, 2),
+                    new VisualMarginBorder(0, 0, 0, 0),
                     new CompoundBorder(
                     new EmptyBorder(-2, -3, -2, -3),
                     new OverlayBorder(
@@ -411,7 +415,8 @@ public class QuaquaButtonBorder implements Border, UIResource {
     public Insets getDefaultMargin(JComponent c) {
         Insets margin = null;
         String style = getStyle(c);
-        boolean isSmall = isSmall(c);
+        boolean isSmall =           QuaquaUtilities.getSizeVariant(c) ==QuaquaUtilities.SizeVariant.SMALL;
+
 
         // Explicitly chosen styles
         if (style.equals("text") || style.equals("push")) {

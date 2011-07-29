@@ -118,7 +118,7 @@ public class CachedImageBevelBorder extends CachedPainter implements Border {
      */
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         if (image == null) return;
-        if (! gr.getClipBounds().intersects(x, y, width, height)) {
+        if (gr.getClipBounds()!=null&&! gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
         paint(c, gr, x, y, width, height, args); 

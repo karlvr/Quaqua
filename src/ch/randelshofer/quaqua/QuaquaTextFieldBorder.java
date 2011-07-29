@@ -11,6 +11,7 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.Debug;
@@ -19,7 +20,6 @@ import java.io.Serializable;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 
 /**
  * QuaquaTextFieldBorder.
@@ -43,7 +43,7 @@ import javax.swing.plaf.*;
  * margins.
  * <br>1.0  July 4, 2004  Created.
  */
-public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBorder {
+public class QuaquaTextFieldBorder extends VisualMarginBorder implements BackgroundBorder {
     /** Location of the border images. */
     private String imagesLocation;
     private Insets imageInsets;
@@ -116,10 +116,7 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
         this.smallSearchImagesLocation = smallSearchImagesLocation;
     }
     
-    private static boolean isSmall(Component c) {
-            return QuaquaUtilities.isSmallSizeVariant((JComponent) c);
-    }
-    private static boolean isSearchField(Component c) {
+     private static boolean isSearchField(Component c) {
         if (c instanceof JComponent) {
             JComponent jc = (JComponent) c;
             return jc.getClientProperty("Quaqua.TextField.style") != null &&
@@ -131,7 +128,9 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         insets = getVisualMargin(c, insets);
-        Insets inner = isSmall(c) ?
+        boolean isSmall = QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.SMALL;
+
+        Insets inner = isSmall ?
             (isSearchField(c) ? new Insets(6, 10, 5, 10) : UIManager.getInsets("TextField.borderInsetsSmall")) :
                 (isSearchField(c) ? new Insets(6, 9, 6, 9) : UIManager.getInsets("TextField.borderInsets"));
         InsetsUtil.addTo(inner, insets);
@@ -173,7 +172,8 @@ public class QuaquaTextFieldBorder extends VisualMargin implements BackgroundBor
     private Border getBorder(Component c) {
         Border[] borders;
         if (isSearchField(c)) {
-            if (isSmall(c)) {
+                boolean isSmall =           QuaquaUtilities.getSizeVariant(c) ==QuaquaUtilities.SizeVariant.SMALL;
+            if (isSmall) {
                 if (smallSearchBorders == null) {
                     smallSearchBorders = (Border[]) QuaquaBorderFactory.create(smallSearchImagesLocation, smallSearchImageInsets, 3, true);
                 }

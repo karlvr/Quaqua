@@ -94,14 +94,20 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
         painter.setValueByKey(Key.focused, isFocused ? 1 : 0);
 
         Size size;
-        if (QuaquaUtilities.isSmallSizeVariant(c)) {
-            size = Size.small;
+       switch (QuaquaUtilities.getSizeVariant(c)) {
+            case REGULAR:default:
+            size = OSXAquaPainter.Size.regular;
+
+                break;
+            case SMALL:
+            size = OSXAquaPainter.Size.small;
             args |= 32;
-        } else if (QuaquaUtilities.isLargeSizeVariant(c)) {
-            size = Size.large;
+                break;
+            case MINI:
+            size = OSXAquaPainter.Size.mini;
             args |= 64;
-        } else {
-            size = Size.regular;
+                break;
+                
         }
         painter.setSize(size);
 

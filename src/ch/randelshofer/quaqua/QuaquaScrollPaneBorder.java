@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
@@ -23,7 +24,7 @@ import javax.swing.border.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaScrollPaneBorder extends VisualMargin {
+public class QuaquaScrollPaneBorder extends VisualMarginBorder {
 
     /** Location of the border images. */
     private String scrollPaneImagesLocation;

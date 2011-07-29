@@ -42,7 +42,6 @@ public class BasicBrowserUI extends BrowserUI {
         c.setBackground(UIManager.getColor("List.background"));
         c.setFont(UIManager.getFont("List.font"));
         sizeHandleIcon = UIManager.getIcon("Browser.sizeHandleIcon");
-System.out.println("BasicBrowserUI "+ UIManager.getIcon("Browser.sizeHandleIcon"));     
         if (sizeHandleIcon == null) {
            sizeHandleIcon = new ImageIcon(BasicBrowserUI.class.getResource("images/Browser.sizeHandleIcon.png"));
         }

@@ -335,7 +335,8 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
 
     @Override
     protected Insets getTabInsets(int tabPlacement, int tabIndex) {
-        boolean isSmall = QuaquaUtilities.isSmallSizeVariant(tabPane);
+        boolean isSmall=QuaquaUtilities.getSizeVariant(tabPane)==QuaquaUtilities.SizeVariant.SMALL;
+        
 
         int tCount = tabPane.getTabCount();
         Insets insets;

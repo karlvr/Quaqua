@@ -11,6 +11,7 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
@@ -90,7 +91,7 @@ public class RGBChooser extends AbstractColorChooserPanel implements UIResource 
         redField.setMinimumSize(redField.getPreferredSize());
         greenField.setMinimumSize(greenField.getPreferredSize());
         blueField.setMinimumSize(blueField.getPreferredSize());
-        VisualMargin bm = new VisualMargin(false,false,true,false);
+        VisualMarginBorder bm = new VisualMarginBorder(false,false,true,false);
         redLabel.setBorder(bm);
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
