@@ -107,7 +107,7 @@ public class QuaquaSliderUI extends BasicSliderUI
     }
 
     protected boolean isSmall() {
-            return QuaquaUtilities.isSmallSizeVariant(slider);
+            return QuaquaUtilities.getSizeVariant(slider)==QuaquaUtilities.SizeVariant.SMALL;
     }
 
     protected Icon getThumbIcon() {

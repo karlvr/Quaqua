@@ -26,25 +26,18 @@ public class SpecialButtonTest extends javax.swing.JPanel {
     /** Creates new form. */
     public SpecialButtonTest() {
         initComponents();
-        placardButton.putClientProperty("JButton.buttonType", "toolbar");
-        smallPlacardButton.putClientProperty("JButton.buttonType", "toolbar");
-        tableHeaderButton.putClientProperty("JButton.buttonType", "toolbar");
+        bevelButton.putClientProperty("JButton.buttonType", "bevel");
+        colorWellButton.putClientProperty("JButton.buttonType", "colorWell");
+        gradientButton.putClientProperty("JButton.buttonType", "gradient");
+        helpButton.putClientProperty("JButton.buttonType", "help");
+        recessedButton.putClientProperty("JButton.buttonType", "recessed");
+        roundRectButton.putClientProperty("JButton.buttonType", "roundRect");
+        squareButton.putClientProperty("JButton.buttonType", "square");
+        tableHeaderButton.putClientProperty("JButton.buttonType", "tableHeader");
+                texturedButton.putClientProperty("JButton.buttonType", "textured");
 
-        // Quaqua client properties
-        placardButton.putClientProperty("Quaqua.Button.style", "placard");
-        smallPlacardButton.putClientProperty("Quaqua.Button.style","placard");
-        colorWellButton.putClientProperty("Quaqua.Button.style","colorWell");
         colorWellButton.setBackground(Color.white);
-        smallColorWellButton.putClientProperty("Quaqua.Button.style","colorWell");
-        smallColorWellButton.setBackground(Color.white);
-        tableHeaderButton.putClientProperty("Quaqua.Button.style", "tableHeader");
         
-        // Apple AquaLookAndFeel client properties
-            placardButton.putClientProperty("JButton.buttonType", "gradient");
-            smallPlacardButton.putClientProperty("JButton.buttonType", "gradient");
-            smallLabel.putClientProperty("JComponent.sizeVariant","small");
-            smallPlacardButton.putClientProperty("JComponent.sizeVariant","small");
-            smallColorWellButton.putClientProperty("JComponent.sizeVariant","small");
     }
     /*
     public void paint(Graphics g) {
@@ -77,102 +70,229 @@ public class SpecialButtonTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        placardButton = new javax.swing.JButton();
-        placardLabel = new javax.swing.JLabel();
+        sizeVariantGroup = new javax.swing.ButtonGroup();
+        squareButton = new javax.swing.JButton();
+        squareLabel = new javax.swing.JLabel();
+        bevelButton = new javax.swing.JButton();
+        bevelLabel = new javax.swing.JLabel();
         colorWellButton = new javax.swing.JButton();
         colorWellLabel = new javax.swing.JLabel();
-        tableHeaderButton = new javax.swing.JToggleButton();
+        tableHeaderButton = new javax.swing.JButton();
         tableHeaderLabel = new javax.swing.JLabel();
-        jSeparator2 = new javax.swing.JSeparator();
-        smallPlacardButton = new javax.swing.JButton();
-        smallLabel = new javax.swing.JLabel();
-        smallColorWellButton = new javax.swing.JButton();
+        helpButton = new javax.swing.JButton();
+        helpLabel = new javax.swing.JLabel();
+        gradientButton = new javax.swing.JButton();
+        gradientLabel = new javax.swing.JLabel();
+        texturedButton = new javax.swing.JButton();
+        texturedLabel = new javax.swing.JLabel();
+        roundRectButton = new javax.swing.JButton();
+        recessedButton = new javax.swing.JButton();
+        roundRectLabel = new javax.swing.JLabel();
+        recessedLabel = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jPanel1 = new javax.swing.JPanel();
+        regularRadio = new javax.swing.JRadioButton();
+        smallRadio = new javax.swing.JRadioButton();
+        miniRadio = new javax.swing.JRadioButton();
         springPanel = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
-        placardButton.setText("Ångström H");
+        squareButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        add(placardButton, gridBagConstraints);
+        add(squareButton, gridBagConstraints);
 
-        placardLabel.setText("Placard Style");
+        squareLabel.setText("Square");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(placardLabel, gridBagConstraints);
+        add(squareLabel, gridBagConstraints);
+
+        bevelButton.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(bevelButton, gridBagConstraints);
+
+        bevelLabel.setText("Bevel");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(bevelLabel, gridBagConstraints);
 
         colorWellButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(colorWellButton, gridBagConstraints);
 
-        colorWellLabel.setText("Color Well Style");
+        colorWellLabel.setText("Color Well");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(colorWellLabel, gridBagConstraints);
 
-        tableHeaderButton.setFont(new java.awt.Font("Lucida Grande", 0, 11));
         tableHeaderButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(tableHeaderButton, gridBagConstraints);
 
-        tableHeaderLabel.setText("Table Header Style");
+        tableHeaderLabel.setText("Table Header");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(tableHeaderLabel, gridBagConstraints);
+
+        helpButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
-        add(jSeparator2, gridBagConstraints);
+        add(helpButton, gridBagConstraints);
 
-        smallPlacardButton.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        add(smallPlacardButton, gridBagConstraints);
-
-        smallLabel.setText("Small Size");
+        helpLabel.setText("Help");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(smallLabel, gridBagConstraints);
+        add(helpLabel, gridBagConstraints);
 
-        smallColorWellButton.setText("Ångström H");
+        gradientButton.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 1.0;
-        add(smallColorWellButton, gridBagConstraints);
+        add(gradientButton, gridBagConstraints);
+
+        gradientLabel.setText("Gradient");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(gradientLabel, gridBagConstraints);
+
+        texturedButton.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(texturedButton, gridBagConstraints);
+
+        texturedLabel.setText("Textured");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(texturedLabel, gridBagConstraints);
+
+        roundRectButton.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(roundRectButton, gridBagConstraints);
+
+        recessedButton.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(recessedButton, gridBagConstraints);
+
+        roundRectLabel.setText("Round Rect");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(roundRectLabel, gridBagConstraints);
+
+        recessedLabel.setText("Recessed");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(recessedLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator1, gridBagConstraints);
+
+        sizeVariantGroup.add(regularRadio);
+        regularRadio.setSelected(true);
+        regularRadio.setText("Regular");
+        regularRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sizeVariantPerformed(evt);
+            }
+        });
+        jPanel1.add(regularRadio);
+
+        sizeVariantGroup.add(smallRadio);
+        smallRadio.setText("Small");
+        smallRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sizeVariantPerformed(evt);
+            }
+        });
+        jPanel1.add(smallRadio);
+
+        sizeVariantGroup.add(miniRadio);
+        miniRadio.setText("Mini");
+        miniRadio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                sizeVariantPerformed(evt);
+            }
+        });
+        jPanel1.add(miniRadio);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        add(jPanel1, gridBagConstraints);
 
         springPanel.setLayout(new java.awt.BorderLayout());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
         add(springPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void sizeVariantPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sizeVariantPerformed
+       String sizeVariant="regular";
+       if (regularRadio.isSelected()) sizeVariant="regular";
+       else if (smallRadio.isSelected()) sizeVariant="small";
+      else if (miniRadio.isSelected()) sizeVariant="mini";
+       
+       for (Component c:getComponents()) {
+           JComponent jc=(JComponent)c;
+           jc.putClientProperty("JComponent.sizeVariant", sizeVariant);
+       }
+       
+    }//GEN-LAST:event_sizeVariantPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bevelButton;
+    private javax.swing.JLabel bevelLabel;
     private javax.swing.JButton colorWellButton;
     private javax.swing.JLabel colorWellLabel;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JButton placardButton;
-    private javax.swing.JLabel placardLabel;
-    private javax.swing.JButton smallColorWellButton;
-    private javax.swing.JLabel smallLabel;
-    private javax.swing.JButton smallPlacardButton;
+    private javax.swing.JButton gradientButton;
+    private javax.swing.JLabel gradientLabel;
+    private javax.swing.JButton helpButton;
+    private javax.swing.JLabel helpLabel;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JRadioButton miniRadio;
+    private javax.swing.JButton recessedButton;
+    private javax.swing.JLabel recessedLabel;
+    private javax.swing.JRadioButton regularRadio;
+    private javax.swing.JButton roundRectButton;
+    private javax.swing.JLabel roundRectLabel;
+    private javax.swing.ButtonGroup sizeVariantGroup;
+    private javax.swing.JRadioButton smallRadio;
     private javax.swing.JPanel springPanel;
-    private javax.swing.JToggleButton tableHeaderButton;
+    private javax.swing.JButton squareButton;
+    private javax.swing.JLabel squareLabel;
+    private javax.swing.JButton tableHeaderButton;
     private javax.swing.JLabel tableHeaderLabel;
+    private javax.swing.JButton texturedButton;
+    private javax.swing.JLabel texturedLabel;
     // End of variables declaration//GEN-END:variables
     
 }

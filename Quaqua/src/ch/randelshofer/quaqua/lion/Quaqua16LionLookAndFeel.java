@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua.lion;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
@@ -95,13 +96,13 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         // UI classes of the target look and feel.
         Object[] uiDefaults = {
             "BrowserUI", quaquaPrefix + "BrowserUI",
-            //"ButtonUI", quaquaPrefix + "ButtonUI",
+            "ButtonUI", quaquaPrefix + "ButtonUI",
             //"CheckBoxUI", quaquaPrefix + "CheckBoxUI",
             "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
             "FileChooserUI", quaquaLionPrefix + "FileChooserUI",
             "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
             //"RadioButtonUI", quaquaPrefix + "RadioButtonUI",
-            //"ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
+            "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
             //"SeparatorUI", quaquaPantherPrefix + "SeparatorUI",
             //"MenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
             //"ProgressBarUI", basicPrefix + "ProgressBarUI",
@@ -110,7 +111,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "SplitPaneUI", quaquaPrefix + "SplitPaneUI",
             //"SliderUI", quaquaPrefix + "SliderUI",
             //"SpinnerUI", quaquaPrefix + "SpinnerUI",
-            //"ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
+            "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
             //"PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
             "TextAreaUI", quaquaPrefix + "TextAreaUI",
             "TextFieldUI", quaquaPrefix + "TextFieldUI",
@@ -121,8 +122,8 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "LabelUI", quaquaPrefix + "LabelUI",
             "ListUI", quaquaPrefix + "ListUI",
             //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
-            //"ToolBarUI", quaquaPrefix + "ToolBarUI",
-            // "ToolTipUI", basicPrefix + "ToolTipUI",
+            "ToolBarUI", quaquaPrefix + "ToolBarUI",
+            //"ToolTipUI", basicPrefix + "ToolTipUI",
             "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
             "TableUI", quaquaPrefix + "TableUI",
             //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
@@ -419,7 +420,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Separator.highlight", new ColorUIResource(0xe3e3e3),
             "Separator.foreground", new ColorUIResource(0xd4d4d4),
             "Separator.shadow", new AlphaColorUIResource(0x0),
-            "Separator.border", new VisualMargin(),
+            "Separator.border", new VisualMarginBorder(),
             //
             "TabbedPane.disabledForeground", disabledForeground,
             "TabbedPane.tabInsets", new InsetsUIResource(1, 10, 4, 9),
@@ -468,8 +469,8 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Table.scrollPaneBorder", scrollPaneBorder,
             //
 //            "TextField.border", textFieldBorder,
-            "TextField.borderInsets", new InsetsUIResource(6,7,6,7),
-            "TextField.smallBorderInsets", new InsetsUIResource(6, 7, 5, 7),
+            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+            "TextField.smallBorderInsets", new InsetsUIResource(3, 5, 2, 5),
             "TextField.searchBorderInsets", new InsetsUIResource(6,12,5,12),
             //
             //"TableHeader.cellBorder", new UIDefaults.ProxyLazyValue(
@@ -510,7 +511,6 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Tree.rightChildIndent", 12, // 13
             "Tree.icons", makeIcons(lionDir + "Tree.icons.png", 15, true),
             "Tree.sideBar.icons", makeIcons(lionDir + "Tree.sideBar.icons.png", 15, true),
-            // CHANGE The new properties for the "sideBar" Tree style
             "Tree.sideBarCategory.foreground", new InactivatableColorUIResource(0x707e8b, 0x868b92),
             "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBarCategory.font", new FontUIResource("Lucida Grande", Font.BOLD, 11),
@@ -519,8 +519,8 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Tree.sideBar.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 11),
             "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
-            "Tree.sideBarCategory.selectionForeground",
-            new InactivatableColorUIResource(0xffffff, 0xffffff),//
+            "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),//
+            "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),
         };
 
 

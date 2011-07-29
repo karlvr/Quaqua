@@ -12,6 +12,7 @@
  */
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.io.*;
@@ -127,7 +128,7 @@ public class CMYKChooser
         yellowField.setMinimumSize(yellowField.getPreferredSize());
         blackField.setMinimumSize(blackField.getPreferredSize());
 
-        VisualMargin bm = new VisualMargin(false, false, true, false);
+        VisualMarginBorder bm = new VisualMarginBorder(false, false, true, false);
         cyanLabel.setBorder(bm);
         magentaLabel.setBorder(bm);
         yellowLabel.setBorder(bm);

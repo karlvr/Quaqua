@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua.border;
 
+import ch.randelshofer.quaqua.VisualMargin;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -22,7 +23,7 @@ import javax.swing.border.Border;
  * @author Werner Randelshofer
  * @version 1.0 2011-07-26 Created.
  */
-public class FocusedBorder extends AbstractFocusedPainter implements Border {
+public class FocusedBorder extends AbstractFocusedPainter implements Border, VisualMargin {
 
     private Border actualBorder;
 
@@ -45,6 +46,13 @@ public class FocusedBorder extends AbstractFocusedPainter implements Border {
 
     public boolean isBorderOpaque() {
         return false;
+    }
+
+    public Insets getVisualMargin(Component c) {
+        if (actualBorder instanceof VisualMargin) {
+            return ((VisualMargin)actualBorder).getVisualMargin(c);
+        }
+        return new Insets(0,0,0,0);
     }
     
     public static class UIResource extends FocusedBorder implements javax.swing.plaf.UIResource {

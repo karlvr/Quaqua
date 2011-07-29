@@ -39,7 +39,12 @@ public class QuaquaButtonListener extends BasicButtonListener {
         String prop = e.getPropertyName();
         if (e.getSource() instanceof AbstractButton) {
             AbstractButton btn = ((AbstractButton) e.getSource());
-            if (prop.equals("Frame.active")) {
+            if (prop==null||
+                    prop.equals("Frame.active")||
+                    prop.equals("Quaqua.Button.type")||
+                    prop.equals("JButton.buttonType")||
+                    prop.equals("JButton.segmentPosition")||
+                    prop.equals("JComponent.sizeVariant")) {
                 btn.repaint();
             }
         }

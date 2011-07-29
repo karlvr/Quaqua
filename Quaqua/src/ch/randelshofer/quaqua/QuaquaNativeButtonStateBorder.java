@@ -90,14 +90,19 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
 
         OSXAquaPainter.Size size;
-        if (QuaquaUtilities.isSmallSizeVariant(c)) {
+        switch (QuaquaUtilities.getSizeVariant(c)) {
+            case REGULAR:default:
+            size = OSXAquaPainter.Size.regular;
+                break;
+            case SMALL:
             size = OSXAquaPainter.Size.small;
             args |= 32;
-        } else if (QuaquaUtilities.isLargeSizeVariant(c)) {
-            size = OSXAquaPainter.Size.large;
+                break;
+            case MINI:
+            size = OSXAquaPainter.Size.mini;
             args |= 64;
-        } else {
-            size = OSXAquaPainter.Size.regular;
+                break;
+                
         }
         painter.setSize(size);
 

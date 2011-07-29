@@ -11,6 +11,7 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import java.awt.*;
 import javax.swing.*;
 /**
@@ -19,7 +20,7 @@ import javax.swing.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaComboBoxVisualMargin extends VisualMargin {
+public class QuaquaComboBoxVisualMargin extends VisualMarginBorder {
     
     /** Creates a new instance. */
     public QuaquaComboBoxVisualMargin() {
@@ -27,7 +28,7 @@ public class QuaquaComboBoxVisualMargin extends VisualMargin {
     }
     
     /**
-     * Creates a new VisualMargin.
+     * Creates a new VisualMarginBorder.
      *
      * @param top Defines the margin from the clip bounds of the
      * component to its visual bounds.
@@ -48,7 +49,7 @@ public class QuaquaComboBoxVisualMargin extends VisualMargin {
         super(ftop, fleft, fbottom, fright);
     }
     /**
-     * Creates a new VisualMargin.
+     * Creates a new VisualMarginBorder.
      *
      * @param layoutMargin Defines the margin from the clip bounds of the
      * component to its visual bounds. The margin has usually negative values!

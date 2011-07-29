@@ -11,6 +11,7 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -50,9 +51,9 @@ public class ColorSliderUI extends BasicSliderUI {
         focusInsets = new Insets(0,0,0,0);
         slider.setOpaque(false);
         if (slider.getOrientation() == JSlider.HORIZONTAL) {
-            slider.setBorder(new VisualMargin(0,1,-1,1));
+            slider.setBorder(new VisualMarginBorder(0,1,-1,1));
         } else {
-            slider.setBorder(new VisualMargin(0,0,0,1));
+            slider.setBorder(new VisualMarginBorder(0,0,0,1));
         }
         //slider.setRequestFocusEnabled(QuaquaManager.getBoolean("Slider.requestFocusEnabled"));
         slider.setRequestFocusEnabled(true);
@@ -252,7 +253,7 @@ public class ColorSliderUI extends BasicSliderUI {
     public void paintColorTrack(Graphics g, int x, int y, int width, int height, int buffer) {
         //g.setColor(Color.black);
         //g.fillRect(x, y, width, height);
-        if (colorTrackImageProducer == null
+        if (colorTrackImage==null||colorTrackImageProducer == null
         || colorTrackImageProducer.getWidth() != width
         || colorTrackImageProducer.getHeight() != height) {
             if (colorTrackImage != null) {
@@ -270,7 +271,7 @@ public class ColorSliderUI extends BasicSliderUI {
         } else {
             colorTrackImageProducer.regenerateColorTrack();
         }
-        g.drawImage(colorTrackImage, x, y, slider);
+        g.drawImage(colorTrackImage, x, y, null);
     }
     @Override
     protected void calculateTrackRect() {
@@ -398,9 +399,9 @@ public class ColorSliderUI extends BasicSliderUI {
                 }
             } else if (propertyName.equals( "Orientation" )) {
                 if (slider.getOrientation() == JSlider.HORIZONTAL) {
-                    slider.setBorder(new VisualMargin(0,1,-1,1));
+                    slider.setBorder(new VisualMarginBorder(0,1,-1,1));
                 } else {
-                    slider.setBorder(new VisualMargin(0,0,0,1));
+                    slider.setBorder(new VisualMarginBorder(0,0,0,1));
                 }
             }
             

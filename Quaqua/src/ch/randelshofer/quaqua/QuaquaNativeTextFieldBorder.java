@@ -10,12 +10,14 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.border.ImageBevelBorder;
 import javax.swing.JComponent;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.FocusedBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
+import ch.randelshofer.quaqua.util.InsetsUtil;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Component;
@@ -36,7 +38,7 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border, BackgroundBorder {
+public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements Border, BackgroundBorder {
 
     private OSXAquaPainter painter;
     private Insets imageInsets;
@@ -87,16 +89,23 @@ public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border,
             boolean isFocused = QuaquaUtilities.isFocused(c);
             args |= (isFocused) ? 16 : 0;
             painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
-
+            
             Size size;
-            if (QuaquaUtilities.isSmallSizeVariant(b)) {
-                size = Size.small;
-                args |= ARG_SMALL_SIZE;
-//            } else if (QuaquaUtilities.isLargeSizeVariant(b)) {
-//                size = Size.large;
-//                args |= 64;
-            } else {
-                size = Size.regular;
+            switch (QuaquaUtilities.getSizeVariant(c)) {
+                case REGULAR:
+                default:
+                    size = Size.regular;
+
+                    break;
+                case SMALL:
+                    size = Size.small;
+                    args |= ARG_SMALL_SIZE;
+                    break;
+                case MINI:
+                    size = Size.mini;
+                    args |= 64;
+                    break;
+
             }
             painter.setSize(size);
 
@@ -146,9 +155,9 @@ public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border,
                 ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
                 ibbg.fillRect(0, 0, ibbImg.getWidth(), ibbImg.getHeight());
                 ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
-                ibbg.setColor(c.getBackground());
-                ibbg.setColor(Color.MAGENTA);
-                ibbg.fillRect(0, 0, ibbImg.getWidth(), ibbImg.getHeight());
+                // FIXME - Find a way to fill the field with its background color
+                //ibbg.setColor(c.getBackground());
+                //ibbg.fillRect(0, 0, ibbImg.getWidth(), ibbImg.getHeight());
                 ibbg.dispose();
                 painter.paint(ibbImg,//
                         0, fixedYOffset,//
@@ -202,14 +211,14 @@ public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border,
         }
     }
 
-    public QuaquaNativeTextFieldBorder(OSXAquaPainter.Widget widget) {
-        this(widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), true);
+    public QuaquaNativeTextFieldBorder() {
+        this(new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), true);
     }
 
-    public QuaquaNativeTextFieldBorder(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets, boolean fill) {
+    public QuaquaNativeTextFieldBorder(Insets imageInsets, Insets borderInsets, boolean fill) {
         super(new Insets(0, 0, 0, 0));
         painter = new OSXAquaPainter();
-        painter.setWidget(widget);
+        painter.setWidget(Widget.frameTextField);
         this.imageInsets = imageInsets;
         //this.borderInsets = borderInsets;
     }
@@ -239,23 +248,23 @@ public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border,
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
         Insets vm = getVisualMargin(c);
-
+        boolean isSmall = QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.SMALL;
+        Insets bm;
         if (isSearchField((JComponent) c)) {
-            insets = UIManager.getInsets("TextField.searchBorderInsets");
-        } else if (QuaquaUtilities.isSmallSizeVariant(c)) {
-            insets = UIManager.getInsets("TextField.smallBorderInsets");
+            bm = UIManager.getInsets("TextField.searchBorderInsets");
+        } else if (isSmall) {
+            bm = UIManager.getInsets("TextField.smallBorderInsets");
         } else {
-            insets = UIManager.getInsets("TextField.borderInsets");
+            bm = UIManager.getInsets("TextField.borderInsets");
         }
-        //InsetsUtil.addTo(vm,insets);
-/*
-        if (c instanceof JTextComponent) {
-            Insets margin = ((JTextComponent) c).getMargin();
-            if (margin != null) {
-                InsetsUtil.addTo(margin, insets);
-            }
-        }*/
-
+        if (bm != null) {
+            InsetsUtil.setInto(bm, insets);
+        } else {
+            InsetsUtil.clear(insets);
+        }
+        if (vm != null) {
+            InsetsUtil.addTo(vm, insets);
+        }
         return insets;
     }
 
@@ -266,16 +275,16 @@ public class QuaquaNativeTextFieldBorder extends VisualMargin implements Border,
 
     public static class UIResource extends QuaquaNativeTextFieldBorder implements javax.swing.plaf.UIResource {
 
-        public UIResource(OSXAquaPainter.Widget widget) {
-            super(widget);
+        public UIResource() {
+            super();
         }
 
         /**
          * Creates a new instance.
          * All borders must have the same dimensions.
          */
-        public UIResource(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets, boolean fill) {
-            super(widget, imageInsets, borderInsets, fill);
+        public UIResource(Insets imageInsets, Insets borderInsets, boolean fill) {
+            super(imageInsets, borderInsets, fill);
         }
     }
 }

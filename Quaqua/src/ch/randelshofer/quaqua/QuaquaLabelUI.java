@@ -67,6 +67,8 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         if (b.getClass().getName().endsWith("LabelUIResource")) {
             b.setFont(UIManager.getFont("Slider.labelFont"));
         }
+        
+        QuaquaUtilities.applySizeVariant(b);
     }
 
     @Override
@@ -165,7 +167,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
             if (style.startsWith("category")) {
 
                 s = s.toUpperCase();
-                font = UIManager.getFont(selected?"Tree.sideBarCategory.selectionFont":"Tree.sideBarCategory.font");
+                font = UIManager.getFont(selected ? "Tree.sideBarCategory.selectionFont" : "Tree.sideBarCategory.font");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
@@ -181,9 +183,9 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 // Preserve font style attributes as long as they don't interfere
                 // with the font style of the sidebar.
                 if (selected) {
-                    font = font.deriveFont(l.getFont().getStyle()  & Font.ITALIC | font.getStyle());
+                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
                 } else {
-                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC| font.getStyle());
+                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
                 }
 
 
@@ -311,8 +313,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
         if (name.equals("JComponent.sizeVariant")) {
             QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
-        } else        if (name.equals("Quaqua.Label.style")) {
-System.out.println("QuaquaLabelUI StyleChange="+evt.getNewValue());            
+        } else if (name.equals("Quaqua.Label.style")) {
             QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
         } else {
             super.propertyChange(evt);

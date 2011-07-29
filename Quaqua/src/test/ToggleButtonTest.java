@@ -8,13 +8,15 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-
 package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * ToggleButtonTest.
  *
@@ -22,57 +24,46 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class ToggleButtonTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public ToggleButtonTest() {
         initComponents();
-        toggle3.putClientProperty("Quaqua.Button.style","toggleWest");
-        toggle4.putClientProperty("Quaqua.Button.style","toggleCenter");
-        toggle5.putClientProperty("Quaqua.Button.style","toggleEast");
-        smallToggle3.putClientProperty("Quaqua.Button.style","toggleWest");
-        smallToggle4.putClientProperty("Quaqua.Button.style","toggleCenter");
-        smallToggle5.putClientProperty("Quaqua.Button.style","toggleEast");
-        /*
-        toggle3.setMargin(new Insets(0,0,0,0));
-        toggle4.setMargin(new Insets(0,0,0,0));
-        toggle5.setMargin(new Insets(0,0,0,0));
-        toggle6.setMargin(new Insets(0,0,0,0));
-        toggle7.setMargin(new Insets(0,0,0,0));
-        toggle8.setMargin(new Insets(0,0,0,0));
-         */
-        // Leopard properties
-        if (QuaquaManager.getDesign() == QuaquaManager.LEOPARD) {
-            toggle1.putClientProperty("JButton.buttonType", "segmented");
-            toggle2.putClientProperty("JButton.buttonType", "segmented");
-            toggle3.putClientProperty("JButton.buttonType", "segmented");
-            toggle4.putClientProperty("JButton.buttonType", "segmented");
-            toggle5.putClientProperty("JButton.buttonType", "segmented");
-            smallToggle3.putClientProperty("JButton.buttonType", "segmented");
-            smallToggle4.putClientProperty("JButton.buttonType", "segmented");
-            smallToggle5.putClientProperty("JButton.buttonType", "segmented");
-            smallToggle1.putClientProperty("JButton.buttonType", "segmented");
-            smallToggle2.putClientProperty("JButton.buttonType", "segmented");
-            toggle1.putClientProperty("JButton.segmentPosition","only");
-            toggle2.putClientProperty("JButton.segmentPosition","only");
-            toggle3.putClientProperty("JButton.segmentPosition","first");
-            toggle4.putClientProperty("JButton.segmentPosition","middle");
-            toggle5.putClientProperty("JButton.segmentPosition","last");
-            smallToggle3.putClientProperty("JButton.segmentPosition","first");
-            smallToggle4.putClientProperty("JButton.segmentPosition","middle");
-            smallToggle5.putClientProperty("JButton.segmentPosition","last");
-            smallToggle3.putClientProperty("JComponent.sizeVariant","small");
-            smallToggle4.putClientProperty("JComponent.sizeVariant","small");
-            smallToggle5.putClientProperty("JComponent.sizeVariant","small");
-            smallToggle1.putClientProperty("JButton.segmentPosition","only");
-            smallToggle2.putClientProperty("JButton.segmentPosition","only");
+
+
+        // Segmented properties
+        LinkedList<JComponent> todo = new LinkedList<JComponent>();
+        todo.add(this);
+        while (!todo.isEmpty()) {
+            JComponent jc = todo.removeFirst();
+            if (jc instanceof JPanel) {
+                for (Component c : jc.getComponents()) {
+                    todo.add((JComponent) c);
+                }
+            } else if (jc instanceof JToggleButton) {
+                JToggleButton jb = (JToggleButton) jc;
+                jb.putClientProperty("JButton.buttonType", "segmented");
+                if (jb.getText().equals("West")) {
+                    jb.putClientProperty("JButton.segmentPosition", "first");
+                } else if (jb.getText().equals("Center")) {
+                    jb.putClientProperty("JButton.segmentPosition", "middle");
+                } else if (jb.getText().equals("East")) {
+                    jb.putClientProperty("JButton.segmentPosition", "last");
+                } else {
+                    jb.putClientProperty("JButton.segmentPosition", "only");
+                }
+            }
         }
 
+
         // Size properties
-        JComponent[] smallComponents= {smallToggle1,smallToggle2,smallToggle3,smallToggle4,smallToggle5,smallLabel};
-        for (JComponent c:smallComponents) {
-            c.putClientProperty("JComponent.sizeVariant","small");
+        for (JComponent jc : new JComponent[]{smallToggle1, smallToggle2, smallToggle3, smallToggle4, smallToggle5, smallLabel}) {
+            jc.putClientProperty("JComponent.sizeVariant", "small");
+        }
+        for (JComponent jc : new JComponent[]{miniToggle1, miniToggle2, miniToggle3, miniToggle4, miniToggle5, miniLabel}) {
+            jc.putClientProperty("JComponent.sizeVariant", "mini");
         }
     }
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
@@ -82,11 +73,11 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         JFrame f = new JFrame("Quaqua Toggle Button Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new ToggleButtonTest());
-        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9,17,17,17));
+        ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9, 17, 17, 17));
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -96,8 +87,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
+        typeGroup = new javax.swing.ButtonGroup();
         toggle1 = new javax.swing.JToggleButton();
         toggle2 = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
@@ -109,112 +99,200 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         smallToggle1 = new javax.swing.JToggleButton();
         smallToggle2 = new javax.swing.JToggleButton();
-        jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        smallLabel = new javax.swing.JLabel();
+        smallPanel = new javax.swing.JPanel();
         smallToggle3 = new javax.swing.JToggleButton();
         smallToggle4 = new javax.swing.JToggleButton();
         smallToggle5 = new javax.swing.JToggleButton();
-        smallLabel = new javax.swing.JLabel();
+        jSeparator2 = new javax.swing.JSeparator();
+        miniToggle1 = new javax.swing.JToggleButton();
+        miniToggle2 = new javax.swing.JToggleButton();
+        miniLabel = new javax.swing.JLabel();
+        miniPanel = new javax.swing.JPanel();
+        miniToggle3 = new javax.swing.JToggleButton();
+        miniToggle4 = new javax.swing.JToggleButton();
+        miniToggle5 = new javax.swing.JToggleButton();
+        jSeparator3 = new javax.swing.JSeparator();
+        jPanel3 = new javax.swing.JPanel();
+        segmentedRadio = new javax.swing.JRadioButton();
+        roundRectRadio = new javax.swing.JRadioButton();
+        texturedRadio = new javax.swing.JRadioButton();
+        capsuleRadio = new javax.swing.JRadioButton();
+        stretcherPanel = new javax.swing.JPanel();
 
         FormListener formListener = new FormListener();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
-        buttonGroup1.add(toggle1);
         toggle1.setSelected(true);
         toggle1.setText("Ångström H");
-        toggle1.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         add(toggle1, gridBagConstraints);
 
-        buttonGroup1.add(toggle2);
         toggle2.setText("Ångström H");
         toggle2.setEnabled(false);
-        toggle2.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         add(toggle2, gridBagConstraints);
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
         add(jPanel1, gridBagConstraints);
 
         jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
-        buttonGroup2.add(toggle3);
         toggle3.setText("West");
-        toggle3.addActionListener(formListener);
         jPanel2.add(toggle3);
 
-        buttonGroup2.add(toggle4);
         toggle4.setText("Center");
         jPanel2.add(toggle4);
 
-        buttonGroup2.add(toggle5);
         toggle5.setText("East");
         jPanel2.add(toggle5);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         add(jPanel2, gridBagConstraints);
 
         jLabel1.setText("Regular");
-        add(jLabel1, new java.awt.GridBagConstraints());
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(jLabel1, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
-        buttonGroup1.add(smallToggle1);
         smallToggle1.setText("Ångström H");
-        smallToggle1.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         add(smallToggle1, gridBagConstraints);
 
-        buttonGroup1.add(smallToggle2);
         smallToggle2.setText("Ångström H");
         smallToggle2.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridx = 1;
         add(smallToggle2, gridBagConstraints);
-
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
-        add(jPanel3, gridBagConstraints);
-
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
-
-        buttonGroup2.add(smallToggle3);
-        smallToggle3.setText("West");
-        jPanel4.add(smallToggle3);
-
-        buttonGroup2.add(smallToggle4);
-        smallToggle4.setText("Center");
-        jPanel4.add(smallToggle4);
-
-        buttonGroup2.add(smallToggle5);
-        smallToggle5.setText("East");
-        jPanel4.add(smallToggle5);
-
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
-        gridBagConstraints.weighty = 1.0;
-        add(jPanel4, gridBagConstraints);
 
         smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallLabel, gridBagConstraints);
+
+        smallPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+
+        smallToggle3.setText("West");
+        smallPanel.add(smallToggle3);
+
+        smallToggle4.setText("Center");
+        smallPanel.add(smallToggle4);
+
+        smallToggle5.setText("East");
+        smallPanel.add(smallToggle5);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        add(smallPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator2, gridBagConstraints);
+
+        miniToggle1.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        add(miniToggle1, gridBagConstraints);
+
+        miniToggle2.setText("Ångström H");
+        miniToggle2.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        add(miniToggle2, gridBagConstraints);
+
+        miniLabel.setText("Mini");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniLabel, gridBagConstraints);
+
+        miniPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+
+        miniToggle3.setText("West");
+        miniPanel.add(miniToggle3);
+
+        miniToggle4.setText("Center");
+        miniPanel.add(miniToggle4);
+
+        miniToggle5.setText("East");
+        miniPanel.add(miniToggle5);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        add(miniPanel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator3, gridBagConstraints);
+
+        jPanel3.setLayout(new java.awt.GridBagLayout());
+
+        typeGroup.add(segmentedRadio);
+        segmentedRadio.setSelected(true);
+        segmentedRadio.setText("Segmented");
+        segmentedRadio.setActionCommand("segmented");
+        segmentedRadio.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(segmentedRadio, gridBagConstraints);
+
+        typeGroup.add(roundRectRadio);
+        roundRectRadio.setText("Round Rect");
+        roundRectRadio.setActionCommand("segmentedRoundRect");
+        roundRectRadio.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(roundRectRadio, gridBagConstraints);
+
+        typeGroup.add(texturedRadio);
+        texturedRadio.setText("Capsule");
+        texturedRadio.setActionCommand("segmentedCapsule");
+        texturedRadio.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(texturedRadio, gridBagConstraints);
+
+        typeGroup.add(capsuleRadio);
+        capsuleRadio.setText("Textured");
+        capsuleRadio.setActionCommand("segmentedTextured");
+        capsuleRadio.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(capsuleRadio, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        add(jPanel3, gridBagConstraints);
+
+        stretcherPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.weighty = 1.0;
+        add(stretcherPanel, gridBagConstraints);
     }
 
     // Code for dispatching events from components to event handlers.
@@ -222,58 +300,72 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     private class FormListener implements java.awt.event.ActionListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == toggle1) {
-                ToggleButtonTest.this.toggle1ActionPerformed(evt);
+            if (evt.getSource() == segmentedRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
             }
-            else if (evt.getSource() == toggle2) {
-                ToggleButtonTest.this.toggle2ActionPerformed(evt);
+            else if (evt.getSource() == roundRectRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
             }
-            else if (evt.getSource() == toggle3) {
-                ToggleButtonTest.this.toggle3ActionPerformed(evt);
+            else if (evt.getSource() == texturedRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
             }
-            else if (evt.getSource() == smallToggle1) {
-                ToggleButtonTest.this.smallToggle1ActionPerformed(evt);
+            else if (evt.getSource() == capsuleRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
             }
         }
     }// </editor-fold>//GEN-END:initComponents
-    
-    private void smallToggle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallToggle1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_smallToggle1ActionPerformed
-    
-    private void toggle1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_toggle1ActionPerformed
-    
-    private void toggle2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_toggle2ActionPerformed
-    
-    private void toggle3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_toggle3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_toggle3ActionPerformed
-    
-    
+
+    private void typeRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeRadioPerformed
+       String type=typeGroup.getSelection().getActionCommand();
+       
+        // Segmented properties
+        LinkedList<JComponent> todo = new LinkedList<JComponent>();
+        todo.add(this);
+        while (!todo.isEmpty()) {
+            JComponent jc = todo.removeFirst();
+            if (jc instanceof JPanel) {
+                for (Component c : jc.getComponents()) {
+                    todo.add((JComponent) c);
+                }
+            } else if (jc instanceof JToggleButton) {
+                JToggleButton jb = (JToggleButton) jc;
+                jb.putClientProperty("JButton.buttonType", type);
+            }
+        }
+    }//GEN-LAST:event_typeRadioPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
+    private javax.swing.JRadioButton capsuleRadio;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
+    private javax.swing.JLabel miniLabel;
+    private javax.swing.JPanel miniPanel;
+    private javax.swing.JToggleButton miniToggle1;
+    private javax.swing.JToggleButton miniToggle2;
+    private javax.swing.JToggleButton miniToggle3;
+    private javax.swing.JToggleButton miniToggle4;
+    private javax.swing.JToggleButton miniToggle5;
+    private javax.swing.JRadioButton roundRectRadio;
+    private javax.swing.JRadioButton segmentedRadio;
     private javax.swing.JLabel smallLabel;
+    private javax.swing.JPanel smallPanel;
     private javax.swing.JToggleButton smallToggle1;
     private javax.swing.JToggleButton smallToggle2;
     private javax.swing.JToggleButton smallToggle3;
     private javax.swing.JToggleButton smallToggle4;
     private javax.swing.JToggleButton smallToggle5;
+    private javax.swing.JPanel stretcherPanel;
+    private javax.swing.JRadioButton texturedRadio;
     private javax.swing.JToggleButton toggle1;
     private javax.swing.JToggleButton toggle2;
     private javax.swing.JToggleButton toggle3;
     private javax.swing.JToggleButton toggle4;
     private javax.swing.JToggleButton toggle5;
+    private javax.swing.ButtonGroup typeGroup;
     // End of variables declaration//GEN-END:variables
-    
 }

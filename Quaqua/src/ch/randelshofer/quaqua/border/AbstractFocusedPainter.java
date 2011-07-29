@@ -48,9 +48,9 @@ public abstract class AbstractFocusedPainter {
         if ("true".equals(QuaquaManager.getProperty("apple.awt.graphics.UseQuartz", "false"))) {
             sum = 0.9f;
         } else {
-            sum = 0.6f;
+            sum = 0.7f;
         }
-        gaussian = gaussian(2f, 3.5f, sum);
+        gaussian = gaussian(2f, 3.25f, sum);
         gaussianVOp = new ConvolveOp(new Kernel(1, gaussian.length, gaussian));
         gaussianHOp = new ConvolveOp(new Kernel(gaussian.length, 1, gaussian));
 

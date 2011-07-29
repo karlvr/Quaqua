@@ -388,7 +388,9 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     }
 
     protected boolean isSmall() {
-        return QuaquaUtilities.isSmallSizeVariant(comboBox);
+        boolean isSmall=QuaquaUtilities.getSizeVariant(comboBox)==QuaquaUtilities.SizeVariant.SMALL;
+        
+        return isSmall;
     }
 
     /**
@@ -533,6 +535,74 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         if (layoutType == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
+        
+        if (c!=comboBox)return null;
+        
+        Rectangle buttonRect = new Rectangle();
+        Rectangle editorRect = null;
+
+        Insets insets = getInsets();
+        Insets margin = getMargin();
+        int buttonSize = height - (insets.top + insets.bottom);
+        Rectangle cvb;
+        if (arrowButton != null) {
+            if (QuaquaUtilities.isLeftToRight(comboBox)) {
+                int plusHeight = (isSmall()) ? 5 : 4;
+                buttonRect.setBounds(
+                        width - getArrowWidth() - insets.right,
+                        insets.top + margin.top - 2,
+                        getArrowWidth(),
+                        buttonSize - margin.top - margin.bottom + plusHeight);
+            } else {
+                buttonRect.setBounds(insets.left, insets.top,
+                        getArrowWidth(), buttonSize);
+            }
+        }
+        editorRect = rectangleForCurrentValue(width, height);
+
+        // FIXME we shouldn't hardcode this and determine the real visual
+        // bounds of the renderer instead.
+        // Subtract 2 from x because of the insets of the renderer
+        editorRect.x += 1;
+        editorRect.width -= 2;
+
+        switch (layoutType) {
+            case VisuallyLayoutable.COMPONENT_BOUNDS:
+                if (!isTableCellEditor()) {
+                    if (editor != null) {
+                        bounds.x += margin.left;
+                        bounds.y += margin.top;
+                        bounds.width -= margin.left + margin.right;
+                        bounds.height -= margin.top + margin.bottom + 1;
+                    } else {
+                        bounds.x += margin.left;
+                        bounds.y += margin.top;
+                        bounds.width -= margin.left + margin.right;
+                        bounds.height -= margin.top + margin.bottom;
+                                            }
+                }
+                break;
+            case VisuallyLayoutable.TEXT_BOUNDS:
+                Object renderer = (editor == null)
+                        ? (Object) comboBox.getRenderer().getListCellRendererComponent(listBox, comboBox.getSelectedItem(), comboBox.getSelectedIndex(), false, comboBox.hasFocus())
+                        : (Object) editor;
+                if ((renderer instanceof JComponent)
+                        && (Methods.invokeGetter(renderer, "getUI", null) instanceof VisuallyLayoutable)) {
+                    bounds = ((VisuallyLayoutable) Methods.invokeGetter(renderer, "getUI", null)).getVisualBounds((JComponent) renderer, layoutType, editorRect.width, editorRect.height);
+                    bounds.x += editorRect.x;
+                    bounds.y += editorRect.y;
+                } else {
+                    bounds.setBounds(editorRect);
+                }
+                break;
+        }
+        return bounds;
+    }
+    public Rectangle getVisualBoundsOLD(JComponent c, int layoutType, int width, int height) {
+        Rectangle bounds = new Rectangle(0, 0, width, height);
+        if (layoutType == VisuallyLayoutable.CLIP_BOUNDS) {
+            return bounds;
+        }
 
         JComboBox cb = (JComboBox) c;
 
@@ -596,6 +666,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         }
         return bounds;
     }
+    
 
     /**
      * This listener hides the popup when the focus is lost.  It also repaints

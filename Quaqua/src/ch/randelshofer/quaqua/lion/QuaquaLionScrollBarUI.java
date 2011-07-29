@@ -98,14 +98,15 @@ public class QuaquaLionScrollBarUI extends BasicScrollBarUI {
      * Returns true, if the scrollbar is using the small size style.
      */
     private boolean isSmall() {
-        // If we are on a JScrollPane, we also use the JScrollPane to
+        // If we are on a JScrollPane, we use the JScrollPane to
         // determine the size style.
+        QuaquaUtilities.SizeVariant sv;
         if (scrollbar.getParent() instanceof JScrollPane) {
-            return QuaquaUtilities.isSmallSizeVariant((JScrollPane) scrollbar.getParent())//
-                    || QuaquaUtilities.isSmallSizeVariant(scrollbar);
+            sv=QuaquaUtilities.getSizeVariant(scrollbar.getParent());
         } else {
-            return QuaquaUtilities.isSmallSizeVariant(scrollbar);
+            sv=QuaquaUtilities.getSizeVariant(scrollbar);
         }
+        return sv==QuaquaUtilities.SizeVariant.SMALL;
     }
 
     /**

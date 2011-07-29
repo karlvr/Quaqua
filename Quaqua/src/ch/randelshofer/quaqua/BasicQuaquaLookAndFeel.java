@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.color.*;
 import javax.swing.*;
@@ -1640,7 +1641,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "Button.focusable", allControlsFocusable,
             //
             //"CheckBox.background", ...,
-            "CheckBox.border", new VisualMargin(0, 0, 0, 0),
+            "CheckBox.border", new VisualMarginBorder(0, 0, 0, 0),
             "CheckBox.icon", makeOverlaidButtonStateIcon(
             commonDir + "CheckBox.icons.png", 10,
             commonDir + "CheckBox.focusRings.png", 2,
@@ -1784,7 +1785,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "FormattedTextField.focusHandler", textFieldFocusHandler,
             "FormattedTextField.popupHandler", textComponentPopupHandler,
             "FormattedTextField.autoSelect", autoselect,
-            "Label.border", new VisualMargin(0, 0, 0, 0),
+            "Label.border", new VisualMarginBorder(0, 0, 0, 0),
             "Label.opaque", opaque,
             "List.cellRenderer", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaDefaultListCellRenderer"),
             "Menu.borderPainted", Boolean.TRUE,
@@ -1821,7 +1822,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "PasswordField.popupHandler", textComponentPopupHandler,
             "PasswordField.autoSelect", autoselect,
             //
-            "RadioButton.border", new VisualMargin(0, 0, 0, 0),
+            "RadioButton.border", new VisualMarginBorder(0, 0, 0, 0),
             // The values for this margin are ignored. We dynamically compute a margin
             // for the various button styles that we support, if we encounter a
             // a margin that is an instanceof a UIResource.
@@ -1919,7 +1920,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
             "ScrollPane.focusable", Boolean.FALSE,
             "ScrollPane.opaque", opaque,
-            "Separator.border", new VisualMargin(),
+            "Separator.border", new VisualMarginBorder(),
             //
             "Sheet.showAsSheet", Boolean.TRUE,
             //
@@ -2009,6 +2010,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ToggleButton.textIconGap", 4,
             "ToggleButton.textShiftOffset", 0,
             "ToggleButton.requestFocusEnabled", isRequestFocusEnabled,
+            "ToggleButton.focusable", allControlsFocusable,
             //
             "ToolBar.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaToolBarBorder$UIResource"),
             // The separatorSize is set to null, because we dynamically compute different
@@ -2037,7 +2039,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "Tree.openIcon", makeIcon(getClass(), commonDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), commonDir + "Tree.closedIcon.png"),
             "Tree.showsRootHandles", Boolean.TRUE,
-            //"Tree.editorBorder", new VisualMargin(3,3,3,3),
+            //"Tree.editorBorder", new VisualMarginBorder(3,3,3,3),
 
             "Viewport.opaque", Boolean.TRUE,
             "Quaqua.Debug.colorizePaintEvents", (QuaquaManager.getProperty("Quaqua.Debug.colorizePaintEvents", "false")),

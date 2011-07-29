@@ -70,4 +70,5 @@ public interface VisuallyLayoutable {
      * @return The visual bounds in component coordinates.
      */
     public Rectangle getVisualBounds(JComponent c, int type, int width, int height);
+    
 }

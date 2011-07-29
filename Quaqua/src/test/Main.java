@@ -13,12 +13,15 @@ package test;
 import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
+import java.awt.Font;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.security.AccessControlException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -89,9 +92,9 @@ public class Main extends javax.swing.JPanel {
         }
 
         // Add Quaqua to the lafs
-ArrayList<LookAndFeelInfo> infos=  new ArrayList<LookAndFeelInfo>( Arrays.asList(     UIManager.getInstalledLookAndFeels()));
-infos.add(new LookAndFeelInfo("Quaqua", QuaquaManager.getLookAndFeelClassName()));
-UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size()]));
+        ArrayList<LookAndFeelInfo> infos = new ArrayList<LookAndFeelInfo>(Arrays.asList(UIManager.getInstalledLookAndFeels()));
+        infos.add(new LookAndFeelInfo("Quaqua", QuaquaManager.getLookAndFeelClassName()));
+        UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size()]));
 
         // Turn on look and feel decoration when not running on Mac OS X or Darwin.
         // This will still not look pretty, because we haven't got cast shadows
@@ -156,7 +159,7 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
                         UIManager.setLookAndFeel(laf);
                         System.out.println("   LAF SET   ");
                     } catch (Exception e) {
-                        System.err.println("Error setting "+lafName+" in UIManager.");
+                        System.err.println("Error setting " + lafName + " in UIManager.");
                         e.printStackTrace();
                         // can't do anything about this
                     }
@@ -198,9 +201,9 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
         splitPane.setOneTouchExpandable(false);
         tree.putClientProperty("Quaqua.Tree.style", "sideBar");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-       // tree.setRequestFocusEnabled(false);
-
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+        // tree.setRequestFocusEnabled(false);
+tree.setFont(new Font("Lucida Grande",Font.PLAIN,11)); // FIXME!!!
+       final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultMutableTreeNode n;
         root.add(n = new DefaultMutableTreeNode("BUTTONS"));
         n.add(new Item("Push Button", "test.PushButtonTest"));
@@ -247,10 +250,9 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
         n.add(new Item("Palette", "test.PaletteTest"));
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
-        n.add(new Item("Margin", "test.VisualMarginTest"));
         n.add(new Item("Matisse J2SE5", "test.MatisseTest15"));
         n.add(new Item("Matisse J2SE6", "test.MatisseTest16"));
-        n.add(new Item("Margin", "test.VisualMarginTest"));
+        n.add(new Item("Visual Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
@@ -281,11 +283,11 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
         }
 
         // Add look and feels to menu bar
-        ButtonGroup group=new ButtonGroup();
-        for(final LookAndFeelInfo info:UIManager.getInstalledLookAndFeels()) {
-           final JRadioButtonMenuItem mi=new JRadioButtonMenuItem(info.getName());
-           group.add(mi);
-            if (UIManager.getLookAndFeel().getClass().toString().equals(info.getClassName()))  {
+        ButtonGroup group = new ButtonGroup();
+        for (final LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            final JRadioButtonMenuItem mi = new JRadioButtonMenuItem(info.getName());
+            group.add(mi);
+            if (UIManager.getLookAndFeel().getClass().toString().equals(info.getClassName())) {
                 mi.setSelected(true);
             }
             lafMenu.add(mi);
@@ -296,13 +298,31 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
                         UIManager.setLookAndFeel(info.getClassName());
                         SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(Main.this));
                         mi.setSelected(true);
+
+                        Window w = SwingUtilities.getWindowAncestor(Main.this);
+                        if (w instanceof JFrame) {
+                            ((JFrame) w).setTitle(UIManager.getLookAndFeel().getName() + " "
+                                    + QuaquaManager.getVersion()
+                                    + " on Java " + System.getProperty("java.version")
+                                    + " " + System.getProperty("os.arch"));
+                        }
+                        
+                        for (Enumeration i=root.preorderEnumeration();i.hasMoreElements();) {
+                            Object o=i.nextElement();
+                            if (o instanceof Item) {
+                                Item item=(Item)o;
+                                item.component=null;
+                            }
+                        }
+                        
                     } catch (Throwable ex) {
                         mi.setEnabled(false);
                     }
                 }
             });
         }
-}
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -393,11 +413,10 @@ UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size(
     }//GEN-LAST:event_showVisualBounds
 
     private void rtlBoxPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rtlBoxPerformed
-Container root = (Container)SwingUtilities.getRoot(this);
-    root.applyComponentOrientation(rtlBox.isSelected()?ComponentOrientation.RIGHT_TO_LEFT:ComponentOrientation.LEFT_TO_RIGHT);
-    root.validate();
+        Container root = (Container) SwingUtilities.getRoot(this);
+        root.applyComponentOrientation(rtlBox.isSelected() ? ComponentOrientation.RIGHT_TO_LEFT : ComponentOrientation.LEFT_TO_RIGHT);
+        root.validate();
     }//GEN-LAST:event_rtlBoxPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel controlPanel;
     private javax.swing.JMenu lafMenu;
