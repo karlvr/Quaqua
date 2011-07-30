@@ -202,7 +202,7 @@ public class Main extends javax.swing.JPanel {
         tree.putClientProperty("Quaqua.Tree.style", "sideBar");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         // tree.setRequestFocusEnabled(false);
-tree.setFont(new Font("Lucida Grande",Font.PLAIN,11)); // FIXME!!!
+//tree.setFont(new Font("Lucida Grande",Font.PLAIN,11)); // FIXME!!!
        final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultMutableTreeNode n;
         root.add(n = new DefaultMutableTreeNode("BUTTONS"));

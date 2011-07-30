@@ -919,7 +919,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             }
 
             String pstyle = (String) c.getClientProperty("Quaqua.Tree.style");
-            if (pstyle != null && pstyle.equals("sidebar")) {
+            if (pstyle != null && (pstyle.equals("sideBar")||pstyle.equals("sourceList"))) {
                 font = UIManager.getFont("Tree.sideBar.selectionFont");
             }
             String bstyle=(String)c.getClientProperty("Quaqua.Button.style");

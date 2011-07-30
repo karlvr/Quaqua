@@ -69,6 +69,11 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // We can't set this property because it breaks the behavior of editable
         // combo boxes.
         comboBox.setFocusable(comboBox.isEditable() || UIManager.getBoolean("ComboBox.focusable"));
+        //
+ QuaquaUtilities.applySizeVariant(comboBox);
+ if(arrowButton!=null) 
+                arrowButton.putClientProperty("JComponent.sizeVariant", comboBox.getClientProperty("JComponent.sizeVariant"));
+ 
     }
 
     @Override
@@ -168,7 +173,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
     @Override
     public PropertyChangeListener createPropertyChangeListener() {
-        return new QuaquaPropertyChangeListener();
+        return new QuaquaComboBoxPropertyChangeListener();
     }
 
     private void setTableCellEditor(boolean b) {
@@ -210,7 +215,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of <FooUI>.
      */
-    public class QuaquaPropertyChangeListener extends BasicComboBoxUI.PropertyChangeHandler {
+    public class QuaquaComboBoxPropertyChangeListener extends BasicComboBoxUI.PropertyChangeHandler {
 
         @Override
         public void propertyChange(PropertyChangeEvent e) {
@@ -250,7 +255,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     /**
      * As of Java 2 platform v1.4 this method is no longer used. Do not call or
      * override. All the functionality of this method is in the
-     * QuaquaPropertyChangeListener.
+     * QuaquaComboBoxPropertyChangeListener.
      *
      * @deprecated As of Java 2 platform v1.4.
      */
@@ -419,7 +424,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 insets.left -= margin.left - 2;
                 insets.top -= margin.top - 2;
                 insets.bottom -= margin.bottom - 2;
-            }
+                }
         } else {
 
             if (isTableCellEditor()) {
@@ -428,10 +433,28 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
                 //insets.right += margin.right; no right-margin because we
                 // want no gap between button and renderer!
-                insets.left += 6;
+       
+                
+ switch (QuaquaUtilities.getSizeVariant(comboBox)) {
+                    default:
+               insets.left += 6;
                 insets.top += margin.top;
                 insets.left += margin.left;
                 insets.bottom += margin.bottom;
+                        break;
+                    case SMALL:
+                insets.left += 4;
+                insets.top += margin.top;
+                insets.left += margin.left;
+                insets.bottom += margin.bottom;
+                        break;
+                    case MINI:
+                insets.left += 3;
+                insets.top += margin.top;
+                insets.left += margin.left;
+                insets.bottom += margin.bottom;
+                        break;
+                }                
             }
 
 
@@ -466,8 +489,10 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 && arrowButton instanceof QuaquaComboBoxButton) {
 
             Insets buttonInsets = new Insets(4, 11, 3, getArrowWidth() + 5);
-            if (isSmall()) {
+            switch (QuaquaUtilities.getSizeVariant(comboBox)) {
+                case SMALL:
                 buttonInsets.bottom -= 1;
+                    break;
             }
             Insets insets = getInsets();
             size = getDisplaySize();

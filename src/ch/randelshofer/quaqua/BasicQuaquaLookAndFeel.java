@@ -1710,6 +1710,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ComboBox.smallCellBorder", makeButtonStateBorder(commonDir + "ComboBox.cellBorders.png", 10, true, new Insets(8, 8, 16, 0), new Insets(1, 1, 1, 1), true),
             "ComboBox.cellAndButtonBorder", null,
             "ComboBox.smallCellAndButtonBorder", null,
+            "ComboBox.miniCellAndButtonBorder", null,
             
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,

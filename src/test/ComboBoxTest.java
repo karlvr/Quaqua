@@ -109,6 +109,9 @@ public class ComboBoxTest extends javax.swing.JPanel {
         for (JComponent c : new JComponent[]{smallComboBox1, smallComboBox2, smallComboBox3, smallLabel}) {
             c.putClientProperty("JComponent.sizeVariant", "small");
         }
+        for (JComponent c : new JComponent[]{miniComboBox1, miniComboBox2, miniComboBox3,miniLabel}) {
+            c.putClientProperty("JComponent.sizeVariant", "mini");
+        }
         largeComboBox.putClientProperty("JComponent.sizeVariant", "large");
         iconComboBox.setRenderer(new ColorComboCellRenderer());
         DefaultComboBoxModel cbm = new DefaultComboBoxModel();
@@ -166,19 +169,24 @@ public class ComboBoxTest extends javax.swing.JPanel {
         jLabel2 = new javax.swing.JLabel();
         comboBox2 = new javax.swing.JComboBox();
         comboBox3 = new javax.swing.JComboBox();
-        jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         smallLabel = new javax.swing.JLabel();
         smallComboBox1 = new javax.swing.JComboBox();
         smallComboBox2 = new javax.swing.JComboBox();
         smallComboBox3 = new javax.swing.JComboBox();
         jSeparator2 = new javax.swing.JSeparator();
-        largeComboBox = new javax.swing.JComboBox();
+        miniLabel = new javax.swing.JLabel();
+        miniComboBox1 = new javax.swing.JComboBox();
+        miniComboBox2 = new javax.swing.JComboBox();
+        miniComboBox3 = new javax.swing.JComboBox();
+        jSeparator3 = new javax.swing.JSeparator();
         jLabel5 = new javax.swing.JLabel();
+        largeComboBox = new javax.swing.JComboBox();
         iconComboBox = new javax.swing.JComboBox();
         iconLabel = new javax.swing.JLabel();
         tableComboBox = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
+        tableLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -186,15 +194,13 @@ public class ComboBoxTest extends javax.swing.JPanel {
         comboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(comboBox1, gridBagConstraints);
 
-        jLabel2.setText("Non-Editable");
+        jLabel2.setText("Regular Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 20, 0, 0);
         add(jLabel2, gridBagConstraints);
@@ -202,7 +208,6 @@ public class ComboBoxTest extends javax.swing.JPanel {
         comboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(comboBox2, gridBagConstraints);
 
@@ -210,29 +215,17 @@ public class ComboBoxTest extends javax.swing.JPanel {
         comboBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(comboBox3, gridBagConstraints);
-
-        jLabel3.setText("Disabled");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator1, gridBagConstraints);
 
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
@@ -240,35 +233,57 @@ public class ComboBoxTest extends javax.swing.JPanel {
         smallComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 8;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallComboBox1, gridBagConstraints);
 
         smallComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallComboBox2, gridBagConstraints);
 
         smallComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         smallComboBox3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallComboBox3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
         add(jSeparator2, gridBagConstraints);
 
-        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 18));
-        largeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
+        miniLabel.setText("Mini Size");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(miniLabel, gridBagConstraints);
+
+        miniComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(largeComboBox, gridBagConstraints);
+        add(miniComboBox1, gridBagConstraints);
+
+        miniComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6", "Item 7", "Item 8", "Item 9", "Item 10" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniComboBox2, gridBagConstraints);
+
+        miniComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
+        miniComboBox3.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniComboBox3, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        add(jSeparator3, gridBagConstraints);
 
         jLabel5.setText("Large Font");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -276,6 +291,13 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(jLabel5, gridBagConstraints);
+
+        largeComboBox.setFont(new java.awt.Font("Lucida Grande", 0, 18));
+        largeComboBox.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6" }));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(largeComboBox, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -297,6 +319,13 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridy = 99;
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
+
+        tableLabel.setText("Table Cell");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(tableLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboBox1;
@@ -305,16 +334,21 @@ public class ComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JComboBox iconComboBox;
     private javax.swing.JLabel iconLabel;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JSeparator jSeparator3;
     private javax.swing.JComboBox largeComboBox;
+    private javax.swing.JComboBox miniComboBox1;
+    private javax.swing.JComboBox miniComboBox2;
+    private javax.swing.JComboBox miniComboBox3;
+    private javax.swing.JLabel miniLabel;
     private javax.swing.JComboBox smallComboBox1;
     private javax.swing.JComboBox smallComboBox2;
     private javax.swing.JComboBox smallComboBox3;
     private javax.swing.JLabel smallLabel;
     private javax.swing.JComboBox tableComboBox;
+    private javax.swing.JLabel tableLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -168,7 +168,8 @@ public class QuaquaComboBoxButton extends JButton {
         QuaquaComboBoxUI ui = (QuaquaComboBoxUI) comboBox.getUI();
         int buttonWidth = ui.getArrowWidth();
         boolean isTableCellEditor = ui.isTableCellEditor();
-        boolean isSmall = ui.isSmall();
+        QuaquaUtilities.SizeVariant sizeVariant=QuaquaUtilities.getSizeVariant(comboBox);
+        boolean isSmall = sizeVariant==QuaquaUtilities.SizeVariant.SMALL;
         Insets insets = getInsets();
         // Paint background and borders
         int x, y, width, height;
@@ -189,7 +190,17 @@ public class QuaquaComboBoxButton extends JButton {
                 }
             } else {
                 Border border;
-                border = UIManager.getBorder(isSmall?"ComboBox.smallCellAndButtonBorder":"ComboBox.cellAndButtonBorder");
+                switch (sizeVariant) {
+                    case SMALL:
+                border = UIManager.getBorder("ComboBox.smallCellAndButtonBorder");
+break;                        
+                    case MINI:
+                border = UIManager.getBorder("ComboBox.miniCellAndButtonBorder");
+break;                        
+                    default:
+                border = UIManager.getBorder("ComboBox.cellAndButtonBorder");
+break;                        
+                }
                 if (border != null) {
                     border.paintBorder(this, g, x, y, width, height);
                 } else {

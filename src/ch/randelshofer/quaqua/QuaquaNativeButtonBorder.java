@@ -14,9 +14,6 @@ import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.util.Images;
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
-import ch.randelshofer.quaqua.border.OverlayBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.CompoundBorder;
 import ch.randelshofer.quaqua.util.InsetsUtil;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.FocusedBorder;
@@ -39,8 +36,6 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
  * Native Aqua border for an {@code AbstractButton).
- * This border draws everything except the focus ring. To draw the focus
- * wring, wrap this border into a {@link ch.randelshofer.quaqua.border.FocusedBorder}.
  *
  * @author Werner Randelshofer
  * @version $Id$
@@ -151,16 +146,17 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
     /** This is the actual native button border. */
     private class NativeBGBorder extends CachedPainter implements Border, VisualMargin {
-private final static int ARG_ACTIVE=0;
-private final static int ARG_PRESSED=1;
-private final static int ARG_DISABLED=2;
-private final static int ARG_ROLLOVER=3;
-private final static int ARG_SELECTED=4;
-private final static int ARG_FOCUSED=5;
-private final static int ARG_SIZE_VARIANT=6;//2 bits
-private final static int ARG_SEGPOS=8;
-private final static int ARG_WIDGET=11;// 7 bits
-private final static int ARG_TRAILING_SEPARATOR=18;
+
+        private final static int ARG_ACTIVE = 0;
+        private final static int ARG_PRESSED = 1;
+        private final static int ARG_DISABLED = 2;
+        private final static int ARG_ROLLOVER = 3;
+        private final static int ARG_SELECTED = 4;
+        private final static int ARG_FOCUSED = 5;
+        private final static int ARG_SIZE_VARIANT = 6;//2 bits
+        private final static int ARG_SEGPOS = 8;
+        private final static int ARG_WIDGET = 11;// 7 bits
+        private final static int ARG_TRAILING_SEPARATOR = 18;
 
         public NativeBGBorder() {
             super(12);
@@ -240,7 +236,7 @@ private final static int ARG_TRAILING_SEPARATOR=18;
                 case first:
                 case middle:
                     painter.setValueByKey(Key.segmentTrailingSeparator, 1);
-                    args|=1<<ARG_TRAILING_SEPARATOR;
+                    args |= 1 << ARG_TRAILING_SEPARATOR;
                     break;
                 default:
                     painter.setValueByKey(Key.segmentTrailingSeparator, 0);
@@ -251,7 +247,7 @@ private final static int ARG_TRAILING_SEPARATOR=18;
             Widget widget = getWidget(c);
             args |= widget.getId() << ARG_WIDGET;
             painter.setWidget(widget);
-            
+
             imageInsets.left = imageInsets.top = imageInsets.right = imageInsets.bottom = 0;
             switch (widget) {
                 case buttonPush:
@@ -323,7 +319,7 @@ private final static int ARG_TRAILING_SEPARATOR=18;
                                     imageInsets.left = 0;
                                     break;
                                 case last:
-                                    imageInsets.left =0;
+                                    imageInsets.left = 0;
                                     imageInsets.right = 1;
                                     break;
                                 case only:
@@ -435,16 +431,16 @@ private final static int ARG_TRAILING_SEPARATOR=18;
                     imageInsets.left, imageInsets.top,//
                     w - imageInsets.left - imageInsets.right, //
                     h - imageInsets.top - imageInsets.bottom);
-            
+
             // Workaround for trailing separators: for some reason they are not
             // drawn, so we draw them by ourselves.
             // FIXME - The color and offsets of the saparator should not be
             // hardcoded here.
-            int args=(Integer)argso;
-            if ((args&(1<<ARG_TRAILING_SEPARATOR))!=0) {
-                Graphics2D g=((BufferedImage)img).createGraphics();
-                g.setColor(new Color(0xeabbbbbb,true));
-                g.drawLine(w-1,6,w-1,h-8);
+            int args = (Integer) argso;
+            if ((args & (1 << ARG_TRAILING_SEPARATOR)) != 0) {
+                Graphics2D g = ((BufferedImage) img).createGraphics();
+                g.setColor(new Color(0xeabbbbbb, true));
+                g.drawLine(w - 1, 6, w - 1, h - 8);
                 g.dispose();
             }
         }
