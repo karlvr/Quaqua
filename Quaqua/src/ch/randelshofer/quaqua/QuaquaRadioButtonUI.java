@@ -19,7 +19,6 @@ import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import java.beans.*;
-import java.util.Enumeration;
 import javax.swing.text.View;
 
 /**
@@ -32,7 +31,6 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
 
     private final static QuaquaRadioButtonUI checkboxUI = new QuaquaRadioButtonUI();
     private final static PropertyChangeHandler propertyChangeListener = new PropertyChangeHandler();
-    protected Icon smallIcon;
     private boolean defaults_initialized = false;
     /* These Dimensions/Rectangles are allocated once for all
      * RadioButtonUI.paint() calls.  Re-using rectangles
@@ -62,10 +60,7 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     @Override
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
-        if (!defaults_initialized) {
-            smallIcon = UIManager.getIcon(getPropertyPrefix() + "smallIcon");
             defaults_initialized = true;
-        }
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get("RadioButton.opaque"));
         //b.setOpaque(false);
         b.setRequestFocusEnabled(UIManager.getBoolean("RadioButton.requestFocusEnabled"));
@@ -97,7 +92,14 @@ public class QuaquaRadioButtonUI extends BasicRadioButtonUI implements VisuallyL
     }
 
     public Icon getDefaultIcon(JComponent c) {
-        return (c.getFont().getSize() <= 11) ? smallIcon : icon;
+        switch (QuaquaUtilities.getSizeVariant(c)) {
+            default:
+                return UIManager.getIcon("RadioButton.icon");
+            case SMALL:
+                return UIManager.getIcon("RadioButton.smallIcon");
+            case MINI:
+                return UIManager.getIcon("RadioButton.miniIcon");
+        }
     }
 
     @Override

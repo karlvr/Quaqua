@@ -45,6 +45,7 @@ public class OSXAquaPainter {
     private static volatile Boolean isNativeCodeAvailable;
     /** The handle to the native control. */
     private long handle;
+    private Widget widget;
     /**
      * Version of the native code library.
      */
@@ -117,6 +118,10 @@ public class OSXAquaPainter {
 
     public void dispose() {
         releaseControl();
+    }
+
+    public Widget getWidget() {
+        return widget;
     }
 
     /** Property keys. */
@@ -461,6 +466,7 @@ public class OSXAquaPainter {
 
     /** Sets the widget type of the JRSUIControl. */
     public void setWidget(Widget widget) {
+        this.widget=widget;
         if (createControl()) {
             nativeSetWidget(handle, widget.getId());
         }

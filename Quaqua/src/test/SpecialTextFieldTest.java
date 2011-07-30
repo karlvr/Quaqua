@@ -23,19 +23,19 @@ import javax.swing.text.JTextComponent;
  * @author  Werner Randelshofer
  * @version 1.0  13 February 2005  Created.
  */
-public class TextFieldTest extends javax.swing.JPanel {
+public class SpecialTextFieldTest extends javax.swing.JPanel {
     
     /** Creates new form. */
-    public TextFieldTest() {
+    public SpecialTextFieldTest() {
         initComponents();
         
-         
-        for (JComponent c:new JComponent[]{smallField1,smallField2,smallField3,smallLabel}) {
-            c.putClientProperty("JComponent.sizeVariant","small");
-        }
-        for (JComponent c:new JComponent[]{miniField1,miniField2,miniField3,miniLabel}) {
-            c.putClientProperty("JComponent.sizeVariant","mini");
-        }
+        searchField.putClientProperty("Quaqua.TextField.style","search");
+        smallSearchField.putClientProperty("Quaqua.TextField.style","search");
+        searchField.putClientProperty("JTextField.variant","search");
+        smallSearchField.putClientProperty("JTextField.variant","search");
+        
+        
+   
         /*
         JPopupMenu m = new JPopupMenu();
         m.add(new DefaultEditorKit.CutAction());
@@ -78,117 +78,93 @@ public class TextFieldTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        jTextField1 = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jSeparator2 = new javax.swing.JSeparator();
-        smallField1 = new javax.swing.JTextField();
-        smallLabel = new javax.swing.JLabel();
-        smallField2 = new javax.swing.JTextField();
-        smallField3 = new javax.swing.JTextField();
-        jSeparator3 = new javax.swing.JSeparator();
-        miniField1 = new javax.swing.JTextField();
-        miniLabel = new javax.swing.JLabel();
-        miniField2 = new javax.swing.JTextField();
-        miniField3 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
+        jLabel11 = new javax.swing.JLabel();
+        searchField = new javax.swing.JTextField();
+        jLabel12 = new javax.swing.JLabel();
+        smallSearchField = new javax.swing.JTextField();
+        smallSearchLabel = new javax.swing.JLabel();
+        jTextField8 = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
+        jTextField9 = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
-        jTextField1.setText("Ångström H");
+        jTextField7.setText("Ångström H");
+        jTextField7.setMargin(new java.awt.Insets(0, 20, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jTextField1, gridBagConstraints);
+        add(jTextField7, gridBagConstraints);
 
-        jLabel7.setText("Regular Size");
+        jLabel11.setText("Margin");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(jLabel7, gridBagConstraints);
+        add(jLabel11, gridBagConstraints);
 
-        jTextField2.setEditable(false);
-        jTextField2.setText("Ångström H");
+        searchField.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jTextField2, gridBagConstraints);
+        add(searchField, gridBagConstraints);
 
-        jTextField3.setText("Ångström H");
-        jTextField3.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(jTextField3, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
-        add(jSeparator2, gridBagConstraints);
-
-        smallField1.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(smallField1, gridBagConstraints);
-
-        smallLabel.setText("Small Size");
+        jLabel12.setText("Search Field");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(smallLabel, gridBagConstraints);
+        add(jLabel12, gridBagConstraints);
 
-        smallField2.setEditable(false);
-        smallField2.setText("Ångström H");
+        smallSearchField.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        smallSearchField.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(smallField2, gridBagConstraints);
+        add(smallSearchField, gridBagConstraints);
 
-        smallField3.setText("Ångström H");
-        smallField3.setEnabled(false);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(smallField3, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
-        add(jSeparator3, gridBagConstraints);
-
-        miniField1.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(miniField1, gridBagConstraints);
-
-        miniLabel.setText("Mini Size");
+        smallSearchLabel.setFont(new java.awt.Font("Lucida Grande", 0, 11));
+        smallSearchLabel.setText("Small Search Field");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(miniLabel, gridBagConstraints);
+        add(smallSearchLabel, gridBagConstraints);
 
-        miniField2.setEditable(false);
-        miniField2.setText("Ångström H");
+        jTextField8.setBackground(new java.awt.Color(181, 212, 107));
+        jTextField8.setText("Ångström H");
+        jTextField8.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(miniField2, gridBagConstraints);
+        add(jTextField8, gridBagConstraints);
 
-        miniField3.setText("Ångström H");
-        miniField3.setEnabled(false);
+        jLabel13.setText("Colored");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(jLabel13, gridBagConstraints);
+
+        jTextField9.setBackground(new java.awt.Color(181, 212, 107));
+        jTextField9.setText("Ångström H");
+        jTextField9.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
+        jTextField9.setOpaque(true);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(miniField3, gridBagConstraints);
+        add(jTextField9, gridBagConstraints);
+
+        jLabel14.setText("Borderless & Colored");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(jLabel14, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 99;
         gridBagConstraints.weighty = 1.0;
@@ -197,21 +173,17 @@ public class TextFieldTest extends javax.swing.JPanel {
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JSeparator jSeparator2;
-    private javax.swing.JSeparator jSeparator3;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField miniField1;
-    private javax.swing.JTextField miniField2;
-    private javax.swing.JTextField miniField3;
-    private javax.swing.JLabel miniLabel;
-    private javax.swing.JTextField smallField1;
-    private javax.swing.JTextField smallField2;
-    private javax.swing.JTextField smallField3;
-    private javax.swing.JLabel smallLabel;
+    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextField jTextField9;
+    private javax.swing.JTextField searchField;
+    private javax.swing.JTextField smallSearchField;
+    private javax.swing.JLabel smallSearchLabel;
     // End of variables declaration//GEN-END:variables
     
 }

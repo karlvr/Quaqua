@@ -140,6 +140,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator2, gridBagConstraints);
 
         smallEnabledButton.setText("Ångström H");
@@ -163,6 +164,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator3, gridBagConstraints);
 
         miniEnabledButton.setText("Ångström H");
@@ -186,6 +188,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
         largeButton.setFont(new java.awt.Font("Dialog", 0, 24));
@@ -195,7 +198,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(largeButton, gridBagConstraints);
 
-        largeLabel.setText("Big Font");
+        largeLabel.setText("Large Font");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;

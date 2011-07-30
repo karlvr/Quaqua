@@ -455,7 +455,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                         }
                         return;
                     }
-                    cancelPopupMenu();
+                    //cancelPopupMenu(); don't cancel the popup 
                     break;
             }
         }

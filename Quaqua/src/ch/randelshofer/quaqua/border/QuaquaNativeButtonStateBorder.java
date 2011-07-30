@@ -8,8 +8,9 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package ch.randelshofer.quaqua;
+package ch.randelshofer.quaqua.border;
 
+import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
 import java.awt.AlphaComposite;
@@ -39,6 +40,16 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
     private OSXAquaPainter painter;
     private Insets imageInsets;
     private Insets borderInsets;
+    private final static int ARG_ACTIVE = 0;
+    private final static int ARG_PRESSED = 1;
+    private final static int ARG_DISABLED = 2;
+    private final static int ARG_ROLLOVER = 3;
+    private final static int ARG_SELECTED = 4;
+    private final static int ARG_FOCUSED = 5;
+    private final static int ARG_SIZE_VARIANT = 6;//2 bits
+    private final static int ARG_SEGPOS = 8;
+    private final static int ARG_WIDGET = 11;// 7 bits
+    private final static int ARG_TRAILING_SEPARATOR = 18;
 
     public QuaquaNativeButtonStateBorder(OSXAquaPainter.Widget widget) {
         this(widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), true);
@@ -65,46 +76,51 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         OSXAquaPainter.State state;
         if (QuaquaUtilities.isOnActiveWindow(c)) {
             state = OSXAquaPainter.State.active;
-            args |= 1;
+            args |= 1 << ARG_ACTIVE;
         } else {
             state = OSXAquaPainter.State.inactive;
         }
         if (bm != null) {
             if (bm.isArmed() && bm.isPressed()) {
                 state = OSXAquaPainter.State.pressed;
-                args |= 2;
+                args |= 1 << ARG_PRESSED;
             }
             if (!bm.isEnabled()) {
                 state = OSXAquaPainter.State.disabled;
-                args |= 4;
+                args |= 1 << ARG_DISABLED;
             }
             if (bm.isRollover()) {
                 state = OSXAquaPainter.State.rollover;
-                args |= 8;
+                args |= 1 << ARG_ROLLOVER;
             }
         }
         painter.setState(state);
 
+        int value = b == null ? 1 : (b.isSelected() ? 1 : 0);
+        painter.setValueByKey(Key.value, value);
+        args |= value << ARG_SELECTED;
+
         boolean isFocused = QuaquaUtilities.isFocused(c);
-        args |= (isFocused) ? 16 : 0;
+        args |= (isFocused) ? 1 << ARG_FOCUSED : 0;
         painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
 
         OSXAquaPainter.Size size;
+
         switch (QuaquaUtilities.getSizeVariant(c)) {
-            case REGULAR:default:
-            size = OSXAquaPainter.Size.regular;
+            case REGULAR:
+            default:
+                size = OSXAquaPainter.Size.regular;
                 break;
             case SMALL:
-            size = OSXAquaPainter.Size.small;
-            args |= 32;
+                size = OSXAquaPainter.Size.small;
                 break;
             case MINI:
-            size = OSXAquaPainter.Size.mini;
-            args |= 64;
+                size = OSXAquaPainter.Size.mini;
                 break;
-                
+
         }
         painter.setSize(size);
+        args |= size.getId() << ARG_SIZE_VARIANT;
 
         paint(c, g, x, y, width, height, args);
     }

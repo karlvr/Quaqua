@@ -69,7 +69,6 @@ public class QuaquaComboPopup extends BasicComboPopup {
      */
     @Override
     public void hide() {
-        //System.out.println("QuaquaComboPopup@"+hashCode()+".hide()");
         super.hide();
         //removeListenersAndResetFocus();
     }

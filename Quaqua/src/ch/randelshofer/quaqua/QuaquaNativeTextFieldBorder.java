@@ -59,6 +59,8 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
             JTextComponent b = (JTextComponent) c;
             //ButtonModel bm = b.getModel();
 
+            boolean isEditable = b.isEditable();
+
             int args = 0;
             State state;
             if (QuaquaUtilities.isOnActiveWindow(c)) {
@@ -80,16 +82,16 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
             painter.setWidget(widget);
 
-            if (!b.isEnabled()) {
+            if (!b.isEnabled() || !isEditable) {
                 state = State.disabled;
                 args |= 4;
             }
             painter.setState(state);
 
-            boolean isFocused = QuaquaUtilities.isFocused(c);
-            args |= (isFocused) ? 16 : 0;
-            painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
-            
+            boolean isFocusedAndEditable = QuaquaUtilities.isFocused(c) && isEditable;
+            args |= (isFocusedAndEditable) ? 16 : 0;
+            painter.setValueByKey(OSXAquaPainter.Key.focused, isFocusedAndEditable ? 1 : 0);
+
             Size size;
             switch (QuaquaUtilities.getSizeVariant(c)) {
                 case REGULAR:
@@ -102,8 +104,8 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                     args |= ARG_SMALL_SIZE;
                     break;
                 case MINI:
-                    size = Size.mini;
-                    args |= 64;
+                    size = Size.small; // paint mini with small artwork
+                    args |= ARG_SMALL_SIZE;
                     break;
 
             }
@@ -247,15 +249,23 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
+       
         Insets vm = getVisualMargin(c);
-        boolean isSmall = QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.SMALL;
         Insets bm;
         if (isSearchField((JComponent) c)) {
             bm = UIManager.getInsets("TextField.searchBorderInsets");
-        } else if (isSmall) {
-            bm = UIManager.getInsets("TextField.smallBorderInsets");
         } else {
-            bm = UIManager.getInsets("TextField.borderInsets");
+            switch (QuaquaUtilities.getSizeVariant(c)) {
+                default:
+                    bm = UIManager.getInsets("TextField.borderInsets");
+                    break;
+                case SMALL:
+                    bm = UIManager.getInsets("TextField.smallBorderInsets");
+                    break;
+                case MINI:
+                    bm = UIManager.getInsets("TextField.miniBorderInsets");
+                    break;
+            }
         }
         if (bm != null) {
             InsetsUtil.setInto(bm, insets);
@@ -265,6 +275,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         if (vm != null) {
             InsetsUtil.addTo(vm, insets);
         }
+        
+        
+        if (c instanceof JTextComponent) {
+            Insets margin = ((JTextComponent) c).getMargin();
+            if (margin != null) {
+                InsetsUtil.addTo(margin, insets);
+            }
+        }
+                
         return insets;
     }
 

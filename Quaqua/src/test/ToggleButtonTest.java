@@ -167,6 +167,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
         smallToggle1.setText("Ångström H");
@@ -205,6 +206,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator2, gridBagConstraints);
 
         miniToggle1.setText("Ångström H");
@@ -243,6 +245,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator3, gridBagConstraints);
 
         jPanel3.setLayout(new java.awt.GridBagLayout());
@@ -332,6 +335,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
                 jb.putClientProperty("JButton.buttonType", type);
             }
         }
+        revalidate();
     }//GEN-LAST:event_typeRadioPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

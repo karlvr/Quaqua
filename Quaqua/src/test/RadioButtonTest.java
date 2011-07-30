@@ -12,7 +12,9 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -28,9 +30,29 @@ public class RadioButtonTest extends javax.swing.JPanel {
         initComponents();
 
 
-        for (JComponent c:new JComponent[]{radioButton3,radioButton4,radioButton6,smallLabel}) {
+        for (JComponent c:new JComponent[]{smallRadio1,smallRadio2,smallRadio3,smallLabel}) {
             c.putClientProperty("JComponent.sizeVariant","small");
         }
+        for (JComponent c:new JComponent[]{miniRadio1,miniRadio2,miniRadio3,miniLabel}) {
+            c.putClientProperty("JComponent.sizeVariant","mini");
+        }
+        
+        
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
+        }
+        
     }
     
     public static void main(String args[]) {
@@ -55,34 +77,40 @@ public class RadioButtonTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
-        buttonGroup1 = new javax.swing.ButtonGroup();
-        buttonGroup2 = new javax.swing.ButtonGroup();
-        buttonGroup3 = new javax.swing.ButtonGroup();
-        radioButton1 = new javax.swing.JRadioButton();
+        regularGroup = new javax.swing.ButtonGroup();
+        smallGroup = new javax.swing.ButtonGroup();
+        bigGroup = new javax.swing.ButtonGroup();
+        miniGroup = new javax.swing.ButtonGroup();
+        radio1 = new javax.swing.JRadioButton();
         enabledLabel = new javax.swing.JLabel();
-        radioButton5 = new javax.swing.JRadioButton();
-        radioButton2 = new javax.swing.JRadioButton();
-        disabledLabel = new javax.swing.JLabel();
+        radio2 = new javax.swing.JRadioButton();
+        radio3 = new javax.swing.JRadioButton();
         separator = new javax.swing.JSeparator();
-        radioButton3 = new javax.swing.JRadioButton();
+        smallRadio1 = new javax.swing.JRadioButton();
         smallLabel = new javax.swing.JLabel();
-        radioButton6 = new javax.swing.JRadioButton();
-        radioButton4 = new javax.swing.JRadioButton();
+        smallRadio2 = new javax.swing.JRadioButton();
+        smallRadio3 = new javax.swing.JRadioButton();
         jSeparator1 = new javax.swing.JSeparator();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        largeLabel = new javax.swing.JLabel();
+        miniRadio1 = new javax.swing.JRadioButton();
+        miniRadio2 = new javax.swing.JRadioButton();
+        miniRadio3 = new javax.swing.JRadioButton();
+        miniLabel = new javax.swing.JLabel();
+        separator1 = new javax.swing.JSeparator();
+        bigRadio = new javax.swing.JRadioButton();
+        bigLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
 
-        buttonGroup1.add(radioButton1);
-        radioButton1.setText("Ångström H");
+        regularGroup.add(radio1);
+        radio1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton1, gridBagConstraints);
+        add(radio1, gridBagConstraints);
 
-        enabledLabel.setText("Enabled");
+        enabledLabel.setText("Regular Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
@@ -90,42 +118,35 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(enabledLabel, gridBagConstraints);
 
-        buttonGroup1.add(radioButton5);
-        radioButton5.setSelected(true);
-        radioButton5.setText("Ångström H");
+        regularGroup.add(radio2);
+        radio2.setSelected(true);
+        radio2.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton5, gridBagConstraints);
+        add(radio2, gridBagConstraints);
 
-        buttonGroup1.add(radioButton2);
-        radioButton2.setText("Ångström H");
-        radioButton2.setEnabled(false);
+        regularGroup.add(radio3);
+        radio3.setText("Ångström H");
+        radio3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton2, gridBagConstraints);
-
-        disabledLabel.setText("Disabled");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(disabledLabel, gridBagConstraints);
+        add(radio3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridy = 3;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(separator, gridBagConstraints);
 
-        buttonGroup2.add(radioButton3);
-        radioButton3.setText("Ångström H");
+        smallGroup.add(smallRadio1);
+        smallRadio1.setSelected(true);
+        smallRadio1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton3, gridBagConstraints);
+        add(smallRadio1, gridBagConstraints);
 
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -135,70 +156,125 @@ public class RadioButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        buttonGroup2.add(radioButton6);
-        radioButton6.setText("Ångström H");
+        smallGroup.add(smallRadio2);
+        smallRadio2.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton6, gridBagConstraints);
+        add(smallRadio2, gridBagConstraints);
 
-        buttonGroup2.add(radioButton4);
-        radioButton4.setText("Ångström H");
-        radioButton4.setEnabled(false);
-        radioButton4.addActionListener(new java.awt.event.ActionListener() {
+        smallGroup.add(smallRadio3);
+        smallRadio3.setText("Ångström H");
+        smallRadio3.setEnabled(false);
+        smallRadio3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                radioButton4ActionPerformed(evt);
+                smallRadio3ActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(radioButton4, gridBagConstraints);
+        add(smallRadio3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
-        buttonGroup3.add(jRadioButton5);
-        jRadioButton5.setFont(new java.awt.Font("Lucida Grande", 0, 24));
-        jRadioButton5.setText("Ångström H");
+        miniGroup.add(miniRadio1);
+        miniRadio1.setSelected(true);
+        miniRadio1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        add(jRadioButton5, gridBagConstraints);
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniRadio1, gridBagConstraints);
 
-        largeLabel.setText("Large Size");
+        miniGroup.add(miniRadio2);
+        miniRadio2.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniRadio2, gridBagConstraints);
+
+        miniGroup.add(miniRadio3);
+        miniRadio3.setText("Ångström H");
+        miniRadio3.setEnabled(false);
+        miniRadio3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miniRadio3ActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniRadio3, gridBagConstraints);
+
+        miniLabel.setText("Mini Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(largeLabel, gridBagConstraints);
+        add(miniLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
+        add(separator1, gridBagConstraints);
+
+        bigGroup.add(bigRadio);
+        bigRadio.setFont(new java.awt.Font("Lucida Grande", 0, 24)); // NOI18N
+        bigRadio.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(bigRadio, gridBagConstraints);
+
+        bigLabel.setText("Large Font");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(bigLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void radioButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radioButton4ActionPerformed
+    private void smallRadio3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallRadio3ActionPerformed
 // TODO add your handling code here:
-    }//GEN-LAST:event_radioButton4ActionPerformed
+    }//GEN-LAST:event_smallRadio3ActionPerformed
+
+    private void miniRadio3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miniRadio3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_miniRadio3ActionPerformed
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.ButtonGroup buttonGroup1;
-    private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.ButtonGroup buttonGroup3;
-    private javax.swing.JLabel disabledLabel;
+    private javax.swing.ButtonGroup bigGroup;
+    private javax.swing.JLabel bigLabel;
+    private javax.swing.JRadioButton bigRadio;
     private javax.swing.JLabel enabledLabel;
-    private javax.swing.JRadioButton jRadioButton5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel largeLabel;
-    private javax.swing.JRadioButton radioButton1;
-    private javax.swing.JRadioButton radioButton2;
-    private javax.swing.JRadioButton radioButton3;
-    private javax.swing.JRadioButton radioButton4;
-    private javax.swing.JRadioButton radioButton5;
-    private javax.swing.JRadioButton radioButton6;
+    private javax.swing.ButtonGroup miniGroup;
+    private javax.swing.JLabel miniLabel;
+    private javax.swing.JRadioButton miniRadio1;
+    private javax.swing.JRadioButton miniRadio2;
+    private javax.swing.JRadioButton miniRadio3;
+    private javax.swing.JRadioButton radio1;
+    private javax.swing.JRadioButton radio2;
+    private javax.swing.JRadioButton radio3;
+    private javax.swing.ButtonGroup regularGroup;
     private javax.swing.JSeparator separator;
+    private javax.swing.JSeparator separator1;
+    private javax.swing.ButtonGroup smallGroup;
     private javax.swing.JLabel smallLabel;
+    private javax.swing.JRadioButton smallRadio1;
+    private javax.swing.JRadioButton smallRadio2;
+    private javax.swing.JRadioButton smallRadio3;
     // End of variables declaration//GEN-END:variables
     
 }

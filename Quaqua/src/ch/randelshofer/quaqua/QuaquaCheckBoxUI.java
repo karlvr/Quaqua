@@ -30,7 +30,6 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
 
     private final static QuaquaCheckBoxUI checkboxUI = new QuaquaCheckBoxUI();
     private final static PropertyChangeHandler propertyChangeListener = new PropertyChangeHandler();
-    protected Icon smallIcon;
     private boolean defaults_initialized = false;
 
     /**
@@ -51,7 +50,6 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
     protected void installDefaults(AbstractButton b) {
         super.installDefaults(b);
         if (!defaults_initialized) {
-            smallIcon = UIManager.getIcon(getPropertyPrefix() + "smallIcon");
             defaults_initialized = true;
         }
         QuaquaUtilities.installProperty(b, "opaque", UIManager.get("CheckBox.opaque"));
@@ -95,9 +93,17 @@ public class QuaquaCheckBoxUI extends BasicCheckBoxUI implements VisuallyLayouta
                 || (c.getParent() instanceof JTable);
     }
 
-    public Icon getDefaultIcon(JComponent c) {
-        return isSmall(c) ? smallIcon : icon;
+        public Icon getDefaultIcon(JComponent c) {
+        switch (QuaquaUtilities.getSizeVariant(c)) {
+            default:
+                return UIManager.getIcon("CheckBox.icon");
+            case SMALL:
+                return UIManager.getIcon("CheckBox.smallIcon");
+            case MINI:
+                return UIManager.getIcon("CheckBox.miniIcon");
+        }
     }
+
     /* These Dimensions/Rectangles are allocated once for all
      * RadioButtonUI.paint() calls.  Re-using rectangles
      * rather than allocating them in each paint call substantially
