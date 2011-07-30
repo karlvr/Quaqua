@@ -23,7 +23,6 @@ import java.util.*;
  * @version $Id$
  */
 public class AnimatedBorder implements Border {
-    private final static java.util.Timer timer = new java.util.Timer(true);
     /**
      * In this HashSet we store all components that are scheduled for repainting.
      */

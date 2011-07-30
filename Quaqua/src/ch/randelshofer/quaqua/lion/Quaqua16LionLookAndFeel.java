@@ -192,9 +192,15 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
                 "javax.swing.plaf.FontUIResource",
                 null,
                 new Object[]{"Lucida Grande", Font.PLAIN, 11});
+        Object emphasizedSmallSystemFont = new UIDefaults.ProxyLazyValue(
+                "javax.swing.plaf.FontUIResource",
+                null,
+                new Object[]{"Lucida Grande", Font.BOLD, 11});
 
         Object[] uiDefaults = {
-            "FileChooser.previewLabelFont", smallSystemFont,};
+            "FileChooser.previewLabelFont", smallSystemFont,
+            //
+        };
         putDefaults(table, uiDefaults);
     }
 
