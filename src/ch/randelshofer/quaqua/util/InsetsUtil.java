@@ -60,6 +60,16 @@ public class InsetsUtil {
         i2.bottom += i1.bottom; 
         i2.right += i1.right;
     }
+    public static void addTo(Insets i1, Rectangle i2) {
+        i2.x -= i1.top; 
+        i2.y-= i1.left; 
+        i2.height += i1.top+i1.bottom; 
+        i2.width+= i1.left+i1.right;
+    }
+    public static void addTo(Insets i1, Dimension i2) {
+        i2.height += i1.top+i1.bottom; 
+        i2.width+= i1.left+i1.right;
+    }
     public static void setInto(Insets i1, Insets i2) {
         i2.top = i1.top; 
         i2.left = i1.left; 

@@ -26,7 +26,7 @@ public class QuaquaComboBoxEditor extends BasicComboBoxEditor {
     public QuaquaComboBoxEditor() {
         super();
         //editor.removeFocusListener(this);
-        editor = new JTextField("",9) {
+        editor = new JTextField("",0) {
             // workaround for 4530952
             public void setText(String s) {
                 if (getText().equals(s)) {

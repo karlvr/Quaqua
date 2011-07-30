@@ -224,6 +224,7 @@ public class Main extends javax.swing.JPanel {
         n.add(new Item("Password Field", "test.PasswordFieldTest"));
         n.add(new Item("Text Area", "test.TextAreaTest"));
         n.add(new Item("Text Field", "test.TextFieldTest"));
+        n.add(new Item("Special Text Fields", "test.SpecialTextFieldTest"));
         n.add(new Item("Text Pane", "test.TextPaneTest"));
         root.add(n = new DefaultMutableTreeNode("VIEWS"));
         n.add(new Item("List", "test.ListTest"));

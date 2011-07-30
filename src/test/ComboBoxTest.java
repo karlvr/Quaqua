@@ -12,8 +12,6 @@ package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.border.*;
 
@@ -221,6 +219,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
         smallLabel.setText("Small Size");
@@ -252,6 +251,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator2, gridBagConstraints);
 
         miniLabel.setText("Mini Size");
@@ -283,6 +283,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator3, gridBagConstraints);
 
         jLabel5.setText("Large Font");

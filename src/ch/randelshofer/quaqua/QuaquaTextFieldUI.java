@@ -30,7 +30,6 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayoutable {
-
     boolean oldDragState = false;
     private FocusListener focusListener;
     private MouseListener popupListener;

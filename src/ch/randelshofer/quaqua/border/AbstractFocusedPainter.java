@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua.border;
 
+import javax.swing.text.JTextComponent;
 import ch.randelshofer.quaqua.QuaquaManager;
 import javax.swing.UIManager;
 import java.awt.AlphaComposite;
@@ -58,7 +59,10 @@ public abstract class AbstractFocusedPainter {
     }
 
     protected void paint(Component c, Graphics cgx, int x, int y, int width, int height) {
-        if (QuaquaUtilities.isFocused(c)) {
+        boolean isEditable;
+        if (c instanceof JTextComponent) isEditable=((JTextComponent)c).isEditable();
+                else isEditable=true;
+        if (QuaquaUtilities.isFocused(c)&&isEditable) {
 
             Graphics2D cg = (Graphics2D) cgx;
             int slack = 2;

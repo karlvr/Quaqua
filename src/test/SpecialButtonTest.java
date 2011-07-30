@@ -210,6 +210,7 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
         sizeVariantGroup.add(regularRadio);

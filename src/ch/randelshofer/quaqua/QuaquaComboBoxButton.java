@@ -66,8 +66,16 @@ public class QuaquaComboBoxButton extends JButton {
     /**
      * This is the border painted around the button area.
      */
-    private static Border getButtonBorder() {
-        return UIManager.getBorder("ComboBox.buttonBorder");
+    private Border getButtonBorder() {
+        switch (QuaquaUtilities.getSizeVariant(comboBox)) {
+            default:
+                return UIManager.getBorder("ComboBox.buttonBorder");
+            case SMALL:
+                return UIManager.getBorder("ComboBox.smallButtonBorder");
+            case MINI:
+                return UIManager.getBorder("ComboBox.miniButtonBorder");
+
+        }
     }
 
     /**
@@ -168,8 +176,8 @@ public class QuaquaComboBoxButton extends JButton {
         QuaquaComboBoxUI ui = (QuaquaComboBoxUI) comboBox.getUI();
         int buttonWidth = ui.getArrowWidth();
         boolean isTableCellEditor = ui.isTableCellEditor();
-        QuaquaUtilities.SizeVariant sizeVariant=QuaquaUtilities.getSizeVariant(comboBox);
-        boolean isSmall = sizeVariant==QuaquaUtilities.SizeVariant.SMALL;
+        QuaquaUtilities.SizeVariant sizeVariant = QuaquaUtilities.getSizeVariant(comboBox);
+        boolean isSmall = sizeVariant == QuaquaUtilities.SizeVariant.SMALL;
         Insets insets = getInsets();
         // Paint background and borders
         int x, y, width, height;
@@ -192,19 +200,19 @@ public class QuaquaComboBoxButton extends JButton {
                 Border border;
                 switch (sizeVariant) {
                     case SMALL:
-                border = UIManager.getBorder("ComboBox.smallCellAndButtonBorder");
-break;                        
+                        border = UIManager.getBorder("ComboBox.smallCellAndButtonBorder");
+                        break;
                     case MINI:
-                border = UIManager.getBorder("ComboBox.miniCellAndButtonBorder");
-break;                        
+                        border = UIManager.getBorder("ComboBox.miniCellAndButtonBorder");
+                        break;
                     default:
-                border = UIManager.getBorder("ComboBox.cellAndButtonBorder");
-break;                        
+                        border = UIManager.getBorder("ComboBox.cellAndButtonBorder");
+                        break;
                 }
                 if (border != null) {
                     border.paintBorder(this, g, x, y, width, height);
                 } else {
-
+                    // this code is used by the non-native versions of Quaqua.
                     border = (isSmall) ? getSmallCellBorder() : getCellBorder();
                     if (border != null) {
                         border.paintBorder(this, g,

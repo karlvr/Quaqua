@@ -12,6 +12,9 @@
 package test;
 
 import ch.randelshofer.quaqua.*;
+import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -26,9 +29,28 @@ public class CheckBoxTest extends javax.swing.JPanel {
     public CheckBoxTest() {
         initComponents();
         
-        for (JComponent c:new JComponent[]{checkBox3,checkBox4,smallLabel}) {
+        for (JComponent c:new JComponent[]{smallCheckBox1,smallCheckBox2,smallLabel}) {
 
             c.putClientProperty("JComponent.sizeVariant","small");
+        }
+        for (JComponent c:new JComponent[]{miniCheckBox1,miniCheckBox2,miniLabel}) {
+
+            c.putClientProperty("JComponent.sizeVariant","mini");
+        }
+        
+        // Try to get a better layout with J2SE6
+        try {
+            int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
+            GridBagLayout layout = (GridBagLayout) getLayout();
+            for (Component c : getComponents()) {
+                GridBagConstraints gbc = layout.getConstraints(c);
+                if (gbc.anchor == GridBagConstraints.WEST) {
+                    gbc.anchor = BASELINE_LEADING;
+                    layout.setConstraints(c, gbc);
+                }
+            }
+        } catch (Exception ex) {
+            // bail
         }
     }
     
@@ -56,16 +78,20 @@ public class CheckBoxTest extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         checkBox1 = new javax.swing.JCheckBox();
-        enabledLabel = new javax.swing.JLabel();
+        regularLabel = new javax.swing.JLabel();
         checkBox2 = new javax.swing.JCheckBox();
-        disabledLabel = new javax.swing.JLabel();
         separator = new javax.swing.JSeparator();
         smallLabel = new javax.swing.JLabel();
-        checkBox3 = new javax.swing.JCheckBox();
-        checkBox4 = new javax.swing.JCheckBox();
+        smallCheckBox1 = new javax.swing.JCheckBox();
+        smallCheckBox2 = new javax.swing.JCheckBox();
+        separator1 = new javax.swing.JSeparator();
+        miniLabel = new javax.swing.JLabel();
+        miniCheckBox1 = new javax.swing.JCheckBox();
+        miniCheckBox2 = new javax.swing.JCheckBox();
         jSeparator1 = new javax.swing.JSeparator();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        largeLabel = new javax.swing.JLabel();
+        bigCheckBox = new javax.swing.JCheckBox();
+        bigLabel = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -77,13 +103,12 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(checkBox1, gridBagConstraints);
 
-        enabledLabel.setText("Enabled");
+        regularLabel.setText("Regular Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(enabledLabel, gridBagConstraints);
+        add(regularLabel, gridBagConstraints);
 
         checkBox2.setSelected(true);
         checkBox2.setText("Ångström H");
@@ -92,76 +117,103 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(checkBox2, gridBagConstraints);
-
-        disabledLabel.setText("Disabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(disabledLabel, gridBagConstraints);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(separator, gridBagConstraints);
 
         smallLabel.setText("Small Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 4;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(smallLabel, gridBagConstraints);
 
-        checkBox3.setSelected(true);
-        checkBox3.setText("Ångström H");
+        smallCheckBox1.setSelected(true);
+        smallCheckBox1.setText("Ångström H");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(checkBox3, gridBagConstraints);
+        add(smallCheckBox1, gridBagConstraints);
 
-        checkBox4.setSelected(true);
-        checkBox4.setText("Ångström H");
-        checkBox4.setEnabled(false);
+        smallCheckBox2.setSelected(true);
+        smallCheckBox2.setText("Ångström H");
+        smallCheckBox2.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        add(checkBox4, gridBagConstraints);
+        add(smallCheckBox2, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
-        gridBagConstraints.insets = new java.awt.Insets(12, 0, 12, 0);
-        add(jSeparator1, gridBagConstraints);
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
+        add(separator1, gridBagConstraints);
 
-        jCheckBox5.setFont(new java.awt.Font("Lucida Grande", 0, 24));
-        jCheckBox5.setText("Ångström H");
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weighty = 1.0;
-        add(jCheckBox5, gridBagConstraints);
-
-        largeLabel.setText("Large Size");
+        miniLabel.setText("Mini Size");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(largeLabel, gridBagConstraints);
+        add(miniLabel, gridBagConstraints);
+
+        miniCheckBox1.setSelected(true);
+        miniCheckBox1.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniCheckBox1, gridBagConstraints);
+
+        miniCheckBox2.setSelected(true);
+        miniCheckBox2.setText("Ångström H");
+        miniCheckBox2.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(miniCheckBox2, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
+        add(jSeparator1, gridBagConstraints);
+
+        bigCheckBox.setFont(new java.awt.Font("Lucida Grande", 0, 24));
+        bigCheckBox.setText("Ångström H");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(bigCheckBox, gridBagConstraints);
+
+        bigLabel.setText("Large Font");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(bigLabel, gridBagConstraints);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridy = 99;
+        gridBagConstraints.weighty = 1.0;
+        add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox bigCheckBox;
+    private javax.swing.JLabel bigLabel;
     private javax.swing.JCheckBox checkBox1;
     private javax.swing.JCheckBox checkBox2;
-    private javax.swing.JCheckBox checkBox3;
-    private javax.swing.JCheckBox checkBox4;
-    private javax.swing.JLabel disabledLabel;
-    private javax.swing.JLabel enabledLabel;
-    private javax.swing.JCheckBox jCheckBox5;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
-    private javax.swing.JLabel largeLabel;
+    private javax.swing.JCheckBox miniCheckBox1;
+    private javax.swing.JCheckBox miniCheckBox2;
+    private javax.swing.JLabel miniLabel;
+    private javax.swing.JLabel regularLabel;
     private javax.swing.JSeparator separator;
+    private javax.swing.JSeparator separator1;
+    private javax.swing.JCheckBox smallCheckBox1;
+    private javax.swing.JCheckBox smallCheckBox2;
     private javax.swing.JLabel smallLabel;
     // End of variables declaration//GEN-END:variables
     

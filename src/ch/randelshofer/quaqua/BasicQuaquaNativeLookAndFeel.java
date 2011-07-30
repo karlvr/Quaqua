@@ -1365,7 +1365,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         float thirteen = 13f;
         float twelve = 12f;
         float eleven = 11f;
-        float ten = 11f;
+        float ten = 10f;
         float nine = 9f;
         int fontPlain = Font.PLAIN;
         int fontBold = Font.BOLD;
@@ -1406,10 +1406,10 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
         // An emphasized mini system font (Lucida Grande Bold 9 pt) is available for
         // cases in which the emphasized small system font is too large.
-        ///Object emphasizedMiniSystemFont = new UIDefaults.ProxyLazyValue(
-        ///        "javax.swing.plaf.FontUIResource",
-        ///        null,
-        ///        new Object[]{baseSystemFont.deriveFont(fontBold, nine)});
+        Object emphasizedMiniSystemFont = new UIDefaults.ProxyLazyValue(
+                "javax.swing.plaf.FontUIResource",
+                null,
+                new Object[]{baseSystemFont.deriveFont(fontBold, nine)});
 
         // If your application creates text documents, use the application font
         // (Lucida Grande Regular 13 pt) as the default font for user-created
@@ -1453,7 +1453,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "SmallSystemFont", smallSystemFont,
             "EmphasizedSmallSystemFont", emphasizedSmallSystemFont,
             "MiniSystemFont", miniSystemFont,
-            "EmphasizedMiniSystemFont", miniSystemFont,
+            "EmphasizedMiniSystemFont", emphasizedMiniSystemFont,
             "ApplicationFont", applicationFont,
             "LabelFont", labelFont,
             "ViewFont", viewFont,
@@ -1626,10 +1626,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "Button.opaque", opaque,
             "Button.textIconGap", 4,
             "Button.textShiftOffset", 0,
-            "Button.helpIcon", makeOverlaidButtonStateIcon(
-            commonDir + "Button.helpIcons.png", 10,
-            commonDir + "Button.helpFocusRings.png", 2,
-            new Rectangle(0, 0, 25, 25)),
+            "Button.helpIcon",  makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRoundHelp,0,0,25,25,true),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
             // Note: Minimum width only affects regular sized buttons with push button style
             "Button.minimumWidth", 80,
@@ -1637,17 +1634,12 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             //
             //"CheckBox.background", ...,
             "CheckBox.border", new VisualMarginBorder(0, 0, 0, 0),
-            "CheckBox.icon", makeOverlaidButtonStateIcon(
-            commonDir + "CheckBox.icons.png", 10,
-            commonDir + "CheckBox.focusRings.png", 2,
-            new Rectangle(2, 2, 14, 14)),
+            "CheckBox.icon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, 0,0,16,20,true),
+            "CheckBox.smallIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, 0,0,14,16,true),
+            "CheckBox.miniIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, 0,-1,10,15,true),
             "CheckBox.margin", new InsetsUIResource(0, 0, 0, 0),
             "CheckBox.opaque", opaque,
             //"CheckBox.select", ...,
-            "CheckBox.smallIcon", makeOverlaidButtonStateIcon(
-            commonDir + "CheckBox.small.icons.png", 10,
-            commonDir + "CheckBox.small.focusRings.png", 2,
-            new Rectangle(2, 2, 12, 12)),
             "CheckBox.textIconGap", 4,
             "CheckBox.textShiftOffset", 0,
             "CheckBox.requestFocusEnabled", isRequestFocusEnabled,
@@ -1698,9 +1690,11 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "ColorChooser.ColorSlider.northThumb.small", makeSliderThumbIcon(commonDir + "Slider.northThumbs.small.png"),
             "ColorChooser.ColorSlider.westThumb.small", makeSliderThumbIcon(commonDir + "Slider.westThumbs.small.png"),
             //
-            "ComboBox.buttonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, 0), new Insets(0, 0, 0, 0), true),
-            "ComboBox.smallButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, 0), new Insets(0, 0, 0, 0), true),
+            "ComboBox.buttonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, -2), new Insets(0, 0, 0, 0), true),
+            "ComboBox.smallButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -20, 0, -1), new Insets(0, 0, 0, 0), true),
+            "ComboBox.miniButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -12, 0, -2), new Insets(0, 0, 0, 0), true),
             "ComboBox.cellBorder", null,
+            "ComboBox.editorBorder", textFieldBorder,
             "ComboBox.smallCellBorder", null,
             "ComboBox.cellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 1, 0, 0), new Insets(3, 3, 3, 3), true),
             "ComboBox.smallCellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 0, 0, 0), new Insets(3, 3, 3, 3), true),
@@ -1711,12 +1705,21 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "ComboBox.opaque", opaque,
             "ComboBox.popupIcon", null,
             "ComboBox.smallPopupIcon", null,
+            "ComboBox.miniPopupIcon", null,
             "ComboBox.cellEditorPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
             "ComboBox.smallDropDownIcon", null,
-            //"ComboBox.timeFactor", ...
+            "ComboBox.miniDropDownIcon", null,
+            "ComboBox.dropDownWidth",18,
+            "ComboBox.smallDropDownWidth",16,
+            "ComboBox.miniDropDownWidth",14,
+            "ComboBox.popupWidth",19,
+            "ComboBox.smallPopupWidth",17,
+            "ComboBox.miniPopupWidth",16,
             "ComboBox.maximumRowCount", 8,
+            "ComboBox.arrowButtonInsets",new InsetsUIResource(4, 8,3,5),
+            "ComboBox.smallArrowButtonInsets",new InsetsUIResource(4, 6,3,5),
+            "ComboBox.miniArrowButtonInsets",new InsetsUIResource(4, 3,3,5),
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
-             
             "ComboBox.showPopupOnNavigation", Boolean.TRUE,
             // Set this to Boolean.TRUE to get the same preferred height for
             // non-editable combo boxes and editable-combo boxes.
@@ -1828,14 +1831,9 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             // for the various button styles that we support, if we encounter a
             // a margin that is an instanceof a UIResource.
             "RadioButton.margin", new InsetsUIResource(0, 0, 0, 0),
-            "RadioButton.icon", makeOverlaidButtonStateIcon(
-            commonDir + "RadioButton.icons.png", 10,
-            commonDir + "RadioButton.focusRing.png", 1,
-            new Rectangle(2, 2, 14, 15)),
-            "RadioButton.smallIcon", makeOverlaidButtonStateIcon(
-            commonDir + "RadioButton.small.icons.png", 10,
-            commonDir + "RadioButton.small.focusRing.png", 1,
-            new Rectangle(2, 1, 12, 13)),
+            "RadioButton.icon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRadio, 0,1,16,20,true),
+            "RadioButton.smallIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRadio, 0,1,14,17,true),
+            "RadioButton.miniIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRadio, 0,1,10,16,true),
             "RadioButton.opaque", opaque,
             "RadioButton.textIconGap", 4,
             "RadioButton.textShiftOffset", 0,

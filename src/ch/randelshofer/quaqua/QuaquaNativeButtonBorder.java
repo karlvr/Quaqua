@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaNativeButtonStateBorder.java 
+ * @(#)QuaquaNativeButtonBorder.java 
  * 
  * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -202,6 +202,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             int value = b == null ? 1 : (b.isSelected() ? 1 : 0);
             painter.setValueByKey(Key.value, value);
             args |= value << ARG_SELECTED;
+            
             boolean isFocused = QuaquaUtilities.isFocused(c);
             args |= (isFocused) ? 1 << ARG_FOCUSED : 0;
             painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
@@ -241,8 +242,6 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                 default:
                     painter.setValueByKey(Key.segmentTrailingSeparator, 0);
             }
-
-
 
             Widget widget = getWidget(c);
             args |= widget.getId() << ARG_WIDGET;

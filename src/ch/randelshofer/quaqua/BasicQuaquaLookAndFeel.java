@@ -1364,7 +1364,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         float thirteen = 13f;
         float twelve = 12f;
         float eleven = 11f;
-        float ten = 11f;
+        float ten = 10f;
         float nine = 9f;
         int fontPlain = Font.PLAIN;
         int fontBold = Font.BOLD;
@@ -1451,8 +1451,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "EmphasizedSystemFont", emphasizedSystemFont,
             "SmallSystemFont", smallSystemFont,
             "EmphasizedSmallSystemFont", emphasizedSmallSystemFont,
-            "MiniSystemFont", miniSystemFont,
-            "EmphasizedMiniSystemFont", miniSystemFont,
+            "MiniSystemFont", smallSystemFont, // we don't support mini in this L&F
+            "EmphasizedMiniSystemFont", emphasizedSmallSystemFont, // we don't support mini in this L&F
             "ApplicationFont", applicationFont,
             "LabelFont", labelFont,
             "ViewFont", viewFont,
@@ -1653,6 +1653,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             commonDir + "CheckBox.small.icons.png", 10,
             commonDir + "CheckBox.small.focusRings.png", 2,
             new Rectangle(2, 2, 12, 12)),
+            "CheckBox.miniIcon", makeOverlaidButtonStateIcon(
+            commonDir + "CheckBox.small.icons.png", 10,
+            commonDir + "CheckBox.small.focusRings.png", 2,
+            new Rectangle(2, 2, 12, 12)),
             "CheckBox.textIconGap", 4,
             "CheckBox.textShiftOffset", 0,
             "CheckBox.requestFocusEnabled", isRequestFocusEnabled,
@@ -1706,19 +1710,31 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ComboBox.border", new QuaquaComboBoxVisualMargin(2, 2, 2, 2),
             "ComboBox.buttonBorder", makeButtonStateBorder(commonDir + "ComboBox.buttonBorders.png", 10, true, new Insets(10, 1, 14, 8), new Insets(1, 1, 1, 1), true),
             "ComboBox.smallButtonBorder", makeButtonStateBorder(commonDir + "ComboBox.buttonBorders.png", 10, true, new Insets(8, 1, 16, 8), new Insets(1, 1, 1, 1), true),
+            "ComboBox.miniButtonBorder", makeButtonStateBorder(commonDir + "ComboBox.buttonBorders.png", 10, true, new Insets(8, 1, 16, 8), new Insets(1, 1, 1, 1), true),
             "ComboBox.cellBorder", makeButtonStateBorder(commonDir + "ComboBox.cellBorders.png", 10, true, new Insets(10, 8, 14, 0), new Insets(1, 1, 1, 1), true),
             "ComboBox.smallCellBorder", makeButtonStateBorder(commonDir + "ComboBox.cellBorders.png", 10, true, new Insets(8, 8, 16, 0), new Insets(1, 1, 1, 1), true),
             "ComboBox.cellAndButtonBorder", null,
             "ComboBox.smallCellAndButtonBorder", null,
             "ComboBox.miniCellAndButtonBorder", null,
-            
+            "ComboBox.editorBorder", textFieldBorder,
             "ComboBox.dropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.dropDownIcons.png", 6),
             "ComboBox.opaque", opaque,
             "ComboBox.popupIcon", makeButtonStateIcon(commonDir + "ComboBox.popupIcons.png", 6),
             "ComboBox.smallPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
+            "ComboBox.miniPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
             "ComboBox.cellEditorPopupIcon", makeButtonStateIcon(commonDir + "ComboBox.small.popupIcons.png", 6),
             "ComboBox.smallDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
+            "ComboBox.miniDropDownIcon", makeButtonStateIcon(commonDir + "ComboBox.small.dropDownIcons.png", 6),
             "ComboBox.popupBorder", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaMenuBorder"),
+            "ComboBox.dropDownWidth",19,
+            "ComboBox.smallDropDownWidth",17,
+            "ComboBox.miniDropDownWidth",17,
+            "ComboBox.popupWidth",24,
+            "ComboBox.smallPopupWidth",20,
+            "ComboBox.miniPopupWidth",20,
+            "ComboBox.arrowButtonInsets",new InsetsUIResource(4, 13,3,5),
+            "ComboBox.smallArrowButtonInsets",new InsetsUIResource(4, 9,3,5),
+            "ComboBox.miniArrowButtonInsets",new InsetsUIResource(4, 9,3,5),
             //"ComboBox.timeFactor", ...
             "ComboBox.maximumRowCount", 8,
             "ComboBox.requestFocusEnabled", isRequestFocusEnabled,
@@ -1833,6 +1849,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             commonDir + "RadioButton.focusRing.png", 1,
             new Rectangle(2, 2, 14, 15)),
             "RadioButton.smallIcon", makeOverlaidButtonStateIcon(
+            commonDir + "RadioButton.small.icons.png", 10,
+            commonDir + "RadioButton.small.focusRing.png", 1,
+            new Rectangle(2, 1, 12, 13)),
+            "RadioButton.miniIcon", makeOverlaidButtonStateIcon(
             commonDir + "RadioButton.small.icons.png", 10,
             commonDir + "RadioButton.small.focusRing.png", 1,
             new Rectangle(2, 1, 12, 13)),

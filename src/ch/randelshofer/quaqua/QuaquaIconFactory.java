@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.icon.QuaquaNativeButtonStateIcon;
 import ch.randelshofer.quaqua.icon.ShiftedIcon;
 import ch.randelshofer.quaqua.osx.OSXApplication;
 import ch.randelshofer.quaqua.util.*;

@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.QuaquaNativeButtonStateBorder;
 import ch.randelshofer.quaqua.border.CachedImageBevelBorder;
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
