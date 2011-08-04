@@ -1508,6 +1508,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
                     setIcon(info.getIcon());
                 }
             }
+            putClientProperty("Quaqua.selected", isSelected);
             return this;
         }
 
@@ -1521,9 +1522,14 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
             // Load the icon from the UIDefaults table
             Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + info.getFile().getName());
 
-            // If we somehow fail to load the icon, fall back to standard way
             if (icon == null) {
-                icon = info.getIcon();
+                if (info.getFile().getParentFile().getPath().equals("/Volumes")) {
+                icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericVolume"); 
+                }else                if (info.getFile().getParentFile().getPath().equals("/Users")) {
+                icon = UIManager.getIcon("FileChooser.sideBarIcon.Home"); 
+                } else {
+                icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder"); 
+                }
             }
 
             return icon;
@@ -1537,6 +1543,8 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
          * @return <code>true</code> if the OS is Mac OS X and the 
          */
         private boolean isSpecialFolder(FileInfo info) {
+            return true;
+            /*
             // Only allow this for Mac OS X as directory structures are different on other OSs.
             if (!QuaquaManager.isOSX()) {
                 return false;
@@ -1568,7 +1576,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
                 }
             }
             // Nothing found - return null
-            return false;
+            return false;*/
         }
     }
     final static int space = 10;
