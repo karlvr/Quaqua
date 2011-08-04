@@ -78,8 +78,9 @@ public class CheckBoxTest extends javax.swing.JPanel {
         java.awt.GridBagConstraints gridBagConstraints;
 
         checkBox1 = new javax.swing.JCheckBox();
-        regularLabel = new javax.swing.JLabel();
+        enabledLabel = new javax.swing.JLabel();
         checkBox2 = new javax.swing.JCheckBox();
+        disabledLabel = new javax.swing.JLabel();
         separator = new javax.swing.JSeparator();
         smallLabel = new javax.swing.JLabel();
         smallCheckBox1 = new javax.swing.JCheckBox();
@@ -103,12 +104,12 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(checkBox1, gridBagConstraints);
 
-        regularLabel.setText("Regular Size");
+        enabledLabel.setText("Enabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
-        add(regularLabel, gridBagConstraints);
+        add(enabledLabel, gridBagConstraints);
 
         checkBox2.setSelected(true);
         checkBox2.setText("Ångström H");
@@ -117,6 +118,13 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(checkBox2, gridBagConstraints);
+
+        disabledLabel.setText("Disabled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(disabledLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -124,7 +132,7 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(separator, gridBagConstraints);
 
-        smallLabel.setText("Small Size");
+        smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -152,7 +160,7 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(separator1, gridBagConstraints);
 
-        miniLabel.setText("Mini Size");
+        miniLabel.setText("Mini");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -204,12 +212,13 @@ public class CheckBoxTest extends javax.swing.JPanel {
     private javax.swing.JLabel bigLabel;
     private javax.swing.JCheckBox checkBox1;
     private javax.swing.JCheckBox checkBox2;
+    private javax.swing.JLabel disabledLabel;
+    private javax.swing.JLabel enabledLabel;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JCheckBox miniCheckBox1;
     private javax.swing.JCheckBox miniCheckBox2;
     private javax.swing.JLabel miniLabel;
-    private javax.swing.JLabel regularLabel;
     private javax.swing.JSeparator separator;
     private javax.swing.JSeparator separator1;
     private javax.swing.JCheckBox smallCheckBox1;

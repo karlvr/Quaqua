@@ -96,6 +96,8 @@ capsuleRadio.setVisible(false);
         toggle4 = new javax.swing.JToggleButton();
         toggle5 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         smallToggle1 = new javax.swing.JToggleButton();
         smallToggle2 = new javax.swing.JToggleButton();
@@ -161,10 +163,25 @@ capsuleRadio.setVisible(false);
         gridBagConstraints.gridx = 1;
         add(regularPanel, gridBagConstraints);
 
-        jLabel1.setText("Regular");
+        jLabel1.setText("Enabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         add(jLabel1, gridBagConstraints);
+
+        jLabel2.setText("Disabled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(jLabel2, gridBagConstraints);
+
+        jLabel3.setText("Segmented");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
+        add(jLabel3, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridwidth = 2;
@@ -187,6 +204,7 @@ capsuleRadio.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         add(smallLabel, gridBagConstraints);
 
         smallPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
@@ -226,6 +244,7 @@ capsuleRadio.setVisible(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         add(miniLabel, gridBagConstraints);
 
         miniPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
@@ -327,16 +346,16 @@ capsuleRadio.setVisible(false);
             if (evt.getSource() == segmentedRadio) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
-            else if (evt.getSource() == roundRectRadio) {
-                ToggleButtonTest.this.typeRadioPerformed(evt);
-            }
-            else if (evt.getSource() == capsuleRadio) {
-                ToggleButtonTest.this.typeRadioPerformed(evt);
-            }
             else if (evt.getSource() == texturedRadio) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
             else if (evt.getSource() == squareButton) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
+            }
+            else if (evt.getSource() == roundRectRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
+            }
+            else if (evt.getSource() == capsuleRadio) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
             else if (evt.getSource() == gradientButton) {
@@ -371,6 +390,8 @@ capsuleRadio.setVisible(false);
     private javax.swing.JRadioButton capsuleRadio;
     private javax.swing.JRadioButton gradientButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;

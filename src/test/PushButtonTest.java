@@ -97,6 +97,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         enabledButton = new javax.swing.JButton();
         enabledLabel = new javax.swing.JLabel();
         disabledButton = new javax.swing.JButton();
+        disabledLabel = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         smallEnabledButton = new javax.swing.JButton();
         smallLabel = new javax.swing.JLabel();
@@ -124,7 +125,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(enabledButton, gridBagConstraints);
 
-        enabledLabel.setText("Regular Size");
+        enabledLabel.setText("Enabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -136,6 +137,13 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(disabledButton, gridBagConstraints);
+
+        disabledLabel.setText("Disabled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(disabledLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
@@ -148,7 +156,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(smallEnabledButton, gridBagConstraints);
 
-        smallLabel.setText("Small Size");
+        smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -178,7 +186,7 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridx = 0;
         add(miniDisabledButton, gridBagConstraints);
 
-        miniLabel.setText("Mini Size");
+        miniLabel.setText("Mini");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -259,6 +267,7 @@ public class PushButtonTest extends javax.swing.JPanel {
     private javax.swing.JButton coloredButton;
     private javax.swing.JLabel coloredLabel;
     private javax.swing.JButton disabledButton;
+    private javax.swing.JLabel disabledLabel;
     private javax.swing.JButton enabledButton;
     private javax.swing.JLabel enabledLabel;
     private javax.swing.JSeparator jSeparator1;
