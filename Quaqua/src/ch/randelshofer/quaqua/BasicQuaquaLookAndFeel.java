@@ -1635,6 +1635,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             commonDir + "Button.helpIcons.png", 10,
             commonDir + "Button.helpFocusRings.png", 2,
             new Rectangle(0, 0, 25, 25)),
+            "Button.smallHelpIcon", makeOverlaidButtonStateIcon(
+            commonDir + "Button.helpIcons.png", 10,
+            commonDir + "Button.helpFocusRings.png", 2,
+            new Rectangle(0, 0, 25, 25)),
+            "Button.miniHelpIcon", makeOverlaidButtonStateIcon(
+            commonDir + "Button.helpIcons.png", 10,
+            commonDir + "Button.helpFocusRings.png", 2,
+            new Rectangle(0, 0, 25, 25)),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
             // Note: Minimum width only affects regular sized buttons with push button style
             "Button.minimumWidth", 80,
@@ -1941,6 +1949,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
             "ScrollPane.focusable", Boolean.FALSE,
             "ScrollPane.opaque", opaque,
+            "ScrollPane.growBoxSize",new DimensionUIResource(15,15),
+            //
             "Separator.border", new VisualMarginBorder(),
             //
             "Sheet.showAsSheet", Boolean.TRUE,

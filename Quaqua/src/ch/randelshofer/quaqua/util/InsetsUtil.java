@@ -70,7 +70,7 @@ public class InsetsUtil {
         i2.height += i1.top+i1.bottom; 
         i2.width+= i1.left+i1.right;
     }
-    public static void setInto(Insets i1, Insets i2) {
+    public static void setTo(Insets i1, Insets i2) {
         i2.top = i1.top; 
         i2.left = i1.left; 
         i2.bottom = i1.bottom; 
@@ -94,4 +94,11 @@ public class InsetsUtil {
         r2.width -= left + right;
         r2.height -= top + bottom;
         }
+        public static void subtractInto(Insets i1, Insets i2) {
+        i2.top -= i1.top; 
+        i2.left -= i1.left; 
+        i2.bottom -= i1.bottom; 
+        i2.right -= i1.right;
+    }
+
 }

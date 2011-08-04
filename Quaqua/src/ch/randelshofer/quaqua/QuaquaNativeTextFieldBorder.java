@@ -125,6 +125,8 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         @Override
         protected void paintToImage(Component c, Image img, int w, int h, Object argsObj) {
             int args = (Integer) argsObj;
+                        Insets vm = getVisualMargin(c);
+
             if ((args & ARG_TEXT_FIELD) == ARG_TEXT_FIELD) {
                 // => Okay: this is a hard nut to crack.
                 // The painter can not render text fields in arbitrary sizes.
@@ -171,9 +173,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
                 ig.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 imageBevelBorder.paintBorder(c, ig,//
-                        imageInsets.left, imageInsets.top,//
-                        w - imageInsets.left - imageInsets.right, //
-                        h - imageInsets.top - imageInsets.bottom);
+                    imageInsets.left-3+vm.left, //
+                    imageInsets.top-3+vm.top,//
+                    w - imageInsets.left - imageInsets.right + 6 -vm.left-vm.right, //
+                    h - imageInsets.top - imageInsets.bottom+ 6 - vm.top-vm.bottom);
                 ig.dispose();
 
             } else {
@@ -186,9 +189,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
 
                 painter.paint((BufferedImage) img,//
-                        imageInsets.left, imageInsets.top,//
-                        w - imageInsets.left - imageInsets.right, //
-                        h - imageInsets.top - imageInsets.bottom);
+                    imageInsets.left-3+vm.left, //
+                    imageInsets.top-3+vm.top,//
+                    w - imageInsets.left - imageInsets.right + 6 -vm.left-vm.right, //
+                    h - imageInsets.top - imageInsets.bottom+ 6 - vm.top-vm.bottom);
             }
         }
 
@@ -268,7 +272,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
             }
         }
         if (bm != null) {
-            InsetsUtil.setInto(bm, insets);
+            InsetsUtil.setTo(bm, insets);
         } else {
             InsetsUtil.clear(insets);
         }

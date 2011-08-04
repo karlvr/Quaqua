@@ -26,9 +26,7 @@ import javax.swing.*;
  * @version $Id$
  */
 public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
-    private final static int GROW_BOX_WIDTH = 15;
-    private final static int GROW_BOX_HEIGHT = 15;
-    /**
+     /**
      * Creates a new instance.
      */
     public QuaquaScrollPaneLayout() {
@@ -68,19 +66,23 @@ public class QuaquaScrollPaneLayout extends ScrollPaneLayout {
                     x += c.getX();
                     y += c.getY();
                 }
-                if (x + parent.getWidth() > rootPane.getWidth() - GROW_BOX_WIDTH
-                && y + parent.getHeight() > rootPane.getHeight() - GROW_BOX_HEIGHT) {
+                
+                Dimension growBox=UIManager.getDimension("ScrollPane.growBoxSize");
+                if (growBox==null)growBox=new Dimension(0,0);
+                
+                if (x + parent.getWidth() > rootPane.getWidth() - growBox.width
+                && y + parent.getHeight() > rootPane.getHeight() - growBox.height) {
                     Insets insets = parent.getInsets();
-
+               
                     if (vsbVisible) {
                         vsb.setSize(
                         vsb.getWidth(), 
-                        parent.getHeight() - insets.top - Math.max(insets.bottom, GROW_BOX_HEIGHT)
+                        parent.getHeight() - insets.top - Math.max(insets.bottom, growBox.height)
                         );
                     }
                     if (hsbVisible) {
                         hsb.setSize(
-                        parent.getWidth() - insets.left - Math.max(insets.right, GROW_BOX_WIDTH),
+                        parent.getWidth() - insets.left - Math.max(insets.right, growBox.width),
                         hsb.getHeight()
                         );
                     }

@@ -31,7 +31,7 @@ import javax.swing.plaf.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class VisualMarginBorder extends AbstractBorder implements UIResource,VisualMargin {
+public class VisualMarginBorder extends AbstractBorder implements UIResource,VisualMargin,PressedCueBorder {
     /**
      * Defines the margin from the clip bounds of the
      * component to its visually perceived borderline.
@@ -143,10 +143,15 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
         insets.bottom = -layoutMargin.bottom;
         insets.right = -layoutMargin.right;
         
+        boolean isUIResource=false;
+        
         if (c instanceof JComponent) {
             Insets componentMargin = (Insets) ((JComponent) c).getClientProperty(propertyName);
             if (componentMargin == null && propertyName != null) {
                 componentMargin = UIManager.getInsets(uiManagerPropertyName);
+                isUIResource=true;
+            } else {
+                isUIResource=componentMargin instanceof UIResource;
             }
             if (componentMargin != null) {
                 if (! isTopFixed) insets.top += componentMargin.top;
@@ -155,6 +160,14 @@ public class VisualMarginBorder extends AbstractBorder implements UIResource,Vis
                 if (! isRightFixed) insets.right += componentMargin.right;
             }
         }
+        if (isUIResource) {
+            return new InsetsUIResource(insets.top, insets.left, insets.bottom, insets.right);
+        }
+        
         return insets;
+    }
+
+    public boolean hasPressedCue(JComponent c) {
+        return false;
     }
 }

@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaToolBarBorder.java
+ * @(#)QuaquaNativeToolBarBorder.java
  *
- * Copyright (c) 2004-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 20011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -11,8 +11,11 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.border.QuaquaNativeButtonStateBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
+import ch.randelshofer.quaqua.util.InsetsUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -28,60 +31,41 @@ import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
 /**
- * QuaquaToolBarBorder.
+ * QuaquaNativeToolBarBorder.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaToolBarBorder
+public class QuaquaNativeToolBarBorder
         extends AbstractBorder
-        implements SwingConstants, BackgroundBorder {
+        implements SwingConstants, BackgroundBorder, VisualMargin {
 
+    private static Border gradientBorder;
+    private static Border bottomBorder;
+    private static Border titleBorder;
+    private static Border plainBorder;
     private final static Border backgroundBorder = new Border() {
 
-        public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
-            Graphics2D g = (Graphics2D) gr;
-
-            boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-
+        private Border getActualBorder(Component c) {
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {
-                g.setPaint(
-                        new GradientPaint(new Point(x, y), new Color(0xfdfdfd), new Point(x, height / 2), new Color(0xf5f5f5), true));
-                g.fillRect(x, y, width, height / 2);
-                g.setColor(new Color(0xebebeb));
-                g.fillRect(x, y + height / 2, width, height - height / 2);
-
+                return getGradientBorder();
             } else if (style.equals("bottom") /*&& isTextured*/) {
-                Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
-                if (gradient == null) {
-                    g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-                } else if (gradient.length == 2) {
-                    g.setPaint(
-                            new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
-                } else if (gradient.length == 3) {
-                    g.setPaint(
-                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                            new float[]{0f, 1.5f / height, 1f},
-                            gradient));
-                } else if (gradient.length == 4) {
-                    g.setPaint(
-                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                            new float[]{0f, 1.5f / height, 0.5f, 1f},
-                            gradient));
-                }
-                g.fillRect(x, y, width, height);
+                return getBottomBorder();
             } else if (style.equals("title")) {
-                g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
-                g.fillRect(x, y, width, height);
+                return getTitleBorder();
             } else {
-                g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-                g.fillRect(x, y, width, height);
+                return getPlainBorder();
             }
+
+        }
+
+        public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+            getActualBorder(c).paintBorder(c, gr, x, y, width, height);
         }
 
         public Insets getBorderInsets(Component c) {
-            return new Insets(0, 0, 0, 0);
+            return getActualBorder(c).getBorderInsets(c);
         }
 
         public boolean isBorderOpaque() {
@@ -92,6 +76,19 @@ public class QuaquaToolBarBorder
     @Override
     public void paintBorder(Component component, Graphics g, int x, int y, int w, int h) {
         String style = getStyle(component);
+        if (style.equals("gradient") || style.equals("placard")) {
+            return;
+        }
+
+        
+            Insets vm = getVisualMargin(component);
+                x += vm.left;
+                y += vm.top;
+                w -= vm.left + vm.right;
+                h -= vm.top + vm.bottom;
+        
+
+
         Color bright = UIManager.getColor("ToolBar.borderBright");
         Color dark = UIManager.getColor("ToolBar.borderDark");
         Color divider = UIManager.getColor(QuaquaUtilities.isOnActiveWindow(component) ?//
@@ -209,14 +206,23 @@ public class QuaquaToolBarBorder
 
     @Override
     public Insets getBorderInsets(Component component, Insets newInsets) {
-        if ((component instanceof JToolBar) && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
-            JToolBar c = (JToolBar) component;
-            newInsets.top = newInsets.left = newInsets.bottom = newInsets.right = 0;
-            String style = getStyle(component);
-            if (style.equals("gradient") || style.equals("placard")) {
+        if (component instanceof JComponent) {
+        Insets i=(Insets)((JComponent)component).getClientProperty("Quaqua.Border.insets");
+            if (i!=null) {
+                InsetsUtil.setTo(i,newInsets);
                 return newInsets;
             }
+        }
+        
+        newInsets.top = newInsets.left = newInsets.bottom = newInsets.right = 0;
+        String style = getStyle(component);
+        if (style.equals("gradient") || style.equals("placard")) {
+            return newInsets;
+        }
 
+
+        if ((component instanceof JToolBar) && ((((JToolBar) component).getUI()) instanceof QuaquaToolBarUI)) {
+            JToolBar c = (JToolBar) component;
             boolean isFloatable = c.isFloatable();
             if (isFloatable) {
                 if (c.getOrientation() == HORIZONTAL) {
@@ -229,6 +235,7 @@ public class QuaquaToolBarBorder
                     newInsets.top = 16;
                 }
             } else {
+
                 if (c.getOrientation() == HORIZONTAL) {
                     if (c.getComponentOrientation().isLeftToRight()) {
                         //newInsets.left = 7;
@@ -274,9 +281,12 @@ public class QuaquaToolBarBorder
                 newInsets.right += margin.right;
                 newInsets.bottom += margin.bottom;
             }
+            
+            Insets vm=getVisualMargin(component);
+            InsetsUtil.addTo(vm,newInsets);
             return newInsets;
         } else {
-            return new Insets(0, 0, 0, 0);
+            return getVisualMargin(component);
         }
     }
 
@@ -309,6 +319,107 @@ public class QuaquaToolBarBorder
         return (String) style;
     }
 
-    public static class UIResource extends QuaquaToolBarBorder implements javax.swing.plaf.UIResource {
+    private static Border getGradientBorder() {
+        if (gradientBorder == null) {
+            gradientBorder = new QuaquaNativeButtonStateBorder(Widget.buttonBevelInset,
+                    new Insets(-1, 0, -1, 0), new Insets(0, 0, 0, 0));
+        }
+        return gradientBorder;
+    }
+
+    private static Border getBottomBorder() {
+        if (bottomBorder == null) {
+            bottomBorder = new Border() {
+
+                public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+                    boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
+                    Graphics2D g = (Graphics2D) gr;
+                    Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
+                    if (gradient == null) {
+                        g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                    } else if (gradient.length == 2) {
+                        g.setPaint(
+                                new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
+                    } else if (gradient.length == 3) {
+                        g.setPaint(
+                                new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
+                                new float[]{0f, 1.5f / height, 1f},
+                                gradient));
+                    } else if (gradient.length == 4) {
+                        g.setPaint(
+                                new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
+                                new float[]{0f, 1.5f / height, 0.5f, 1f},
+                                gradient));
+                    }
+                    g.fillRect(x, y, width, height);
+                }
+
+                public Insets getBorderInsets(Component c) {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                public boolean isBorderOpaque() {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+            };
+        }
+        return bottomBorder;
+    }
+
+    private static Border getTitleBorder() {
+        if (titleBorder == null) {
+            titleBorder = new Border() {
+
+                public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+                    boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
+                    Graphics2D g = (Graphics2D) gr;
+                    g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
+                    g.fillRect(x, y, width, height);
+                }
+
+                public Insets getBorderInsets(Component c) {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                public boolean isBorderOpaque() {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+            };
+        }
+        return titleBorder;
+    }
+
+    private static Border getPlainBorder() {
+        if (plainBorder == null) {
+            plainBorder = new Border() {
+
+                public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
+                    boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
+                    Graphics2D g = (Graphics2D) gr;
+                    g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                    g.fillRect(x, y, width, height);
+                }
+
+                public Insets getBorderInsets(Component c) {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+
+                public boolean isBorderOpaque() {
+                    throw new UnsupportedOperationException("Not supported yet.");
+                }
+            };
+        }
+        return plainBorder;
+    }
+
+    public Insets getVisualMargin(Component c) {
+        Insets vm = null;
+        if (c instanceof JComponent) {
+            vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");
+        }
+        return vm == null ? new Insets(0, 0, 0, 0) : (Insets) vm.clone();
+    }
+
+    public static class UIResource extends QuaquaNativeToolBarBorder implements javax.swing.plaf.UIResource {
     }
 }

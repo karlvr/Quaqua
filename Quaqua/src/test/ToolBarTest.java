@@ -31,8 +31,11 @@ public class ToolBarTest extends javax.swing.JPanel {
     public ToolBarTest() {
         initComponents();
         setOpaque(true);
-       // toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
+        // toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
+        folderButton.putClientProperty("JButton.segmentPosition","middle");
+        fileButton.putClientProperty("JButton.segmentPosition","last");
+        
         if (unifiedToolBar != null) {
             unifiedToolBarBox.setSelected(true);
             toolBarPanel.remove(toolBar);
@@ -54,6 +57,8 @@ public class ToolBarTest extends javax.swing.JPanel {
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
+        bottomStyleGroup = new javax.swing.ButtonGroup();
+        titleStyleGroup = new javax.swing.ButtonGroup();
         statusBar = new javax.swing.JToolBar();
         statusLabel = new javax.swing.JLabel();
         toolBarPanel = new javax.swing.JPanel();
@@ -62,7 +67,13 @@ public class ToolBarTest extends javax.swing.JPanel {
         fileButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         unifiedToolBarBox = new javax.swing.JCheckBox();
+        plainTitleRadio = new javax.swing.JRadioButton();
+        unifiedTitleRadio = new javax.swing.JRadioButton();
+        gradientTitleRadio = new javax.swing.JRadioButton();
         unifiedStatusBarBox = new javax.swing.JCheckBox();
+        plainBottomRadio = new javax.swing.JRadioButton();
+        unifiedBottomRadio = new javax.swing.JRadioButton();
+        gradientBottomRadio = new javax.swing.JRadioButton();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -95,7 +106,7 @@ public class ToolBarTest extends javax.swing.JPanel {
 
         jPanel2.setLayout(new java.awt.GridBagLayout());
 
-        unifiedToolBarBox.setText("Unified 'title' tool bar");
+        unifiedToolBarBox.setText("Title tool bar");
         unifiedToolBarBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unifiedToolBarPerformed(evt);
@@ -105,7 +116,50 @@ public class ToolBarTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel2.add(unifiedToolBarBox, gridBagConstraints);
 
-        unifiedStatusBarBox.setText("Unified 'bottom' tool bar");
+        titleStyleGroup.add(plainTitleRadio);
+        plainTitleRadio.setSelected(true);
+        plainTitleRadio.setText("'plain' style");
+        plainTitleRadio.setActionCommand("plain");
+        plainTitleRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                titleStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(plainTitleRadio, gridBagConstraints);
+
+        titleStyleGroup.add(unifiedTitleRadio);
+        unifiedTitleRadio.setText("unified 'title' style");
+        unifiedTitleRadio.setActionCommand("title");
+        unifiedTitleRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                titleStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(unifiedTitleRadio, gridBagConstraints);
+
+        titleStyleGroup.add(gradientTitleRadio);
+        gradientTitleRadio.setText("'gradient' style");
+        gradientTitleRadio.setActionCommand("gradient");
+        gradientTitleRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                titleStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(gradientTitleRadio, gridBagConstraints);
+
+        unifiedStatusBarBox.setText("Bottom tool bar");
         unifiedStatusBarBox.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 unifiedStatusBarPerformed(evt);
@@ -114,7 +168,51 @@ public class ToolBarTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         jPanel2.add(unifiedStatusBarBox, gridBagConstraints);
+
+        bottomStyleGroup.add(plainBottomRadio);
+        plainBottomRadio.setSelected(true);
+        plainBottomRadio.setText("'plain' style");
+        plainBottomRadio.setActionCommand("plain");
+        plainBottomRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                bottomStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(plainBottomRadio, gridBagConstraints);
+
+        bottomStyleGroup.add(unifiedBottomRadio);
+        unifiedBottomRadio.setText("unified 'bottom' style");
+        unifiedBottomRadio.setActionCommand("bottom");
+        unifiedBottomRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                bottomStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(unifiedBottomRadio, gridBagConstraints);
+
+        bottomStyleGroup.add(gradientBottomRadio);
+        gradientBottomRadio.setText("'gradient' style");
+        gradientBottomRadio.setActionCommand("gradient");
+        gradientBottomRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                bottomStyleChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        jPanel2.add(gradientBottomRadio, gridBagConstraints);
 
         toolBarPanel.add(jPanel2, java.awt.BorderLayout.CENTER);
 
@@ -124,24 +222,33 @@ public class ToolBarTest extends javax.swing.JPanel {
     private void unifiedToolBarPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unifiedToolBarPerformed
         JRootPane rp = SwingUtilities.getRootPane(this);
         JPanel cp = (JPanel) rp.getContentPane();
+        
+        boolean isUnified=unifiedTitleRadio.isSelected();
+        
         if (unifiedToolBarBox.isSelected()) {
+            toolBar.setOrientation(JToolBar.HORIZONTAL);
             cp.add(toolBar, BorderLayout.NORTH);
-            toolBar.putClientProperty("Quaqua.ToolBar.style", "title");
             unifiedToolBar = toolBar;
             toolBar.setFloatable(false);
         } else {
+            toolBar.setOrientation(JToolBar.HORIZONTAL);
             toolBarPanel.add(toolBar, BorderLayout.NORTH);
-            toolBar.putClientProperty("Quaqua.ToolBar.style", "plain");
             toolBar.setFloatable(true);
             unifiedToolBar = null;
         }
         cp.revalidate();
+        
+       Boolean currentUnified=(Boolean) rp.getClientProperty("apple.awt.brushMetalLook");
+       if (currentUnified==null)currentUnified=false;
+        if (currentUnified!=isUnified) {
+        
         rp.putClientProperty("apple.awt.brushMetalLook",//
-                unifiedToolBarBox.isSelected()/* || unifiedStatusBarBox.isSelected()*/);
-        Window f=(Window)rp.getParent();
+                isUnified);
+        Window f = (Window) rp.getParent();
         f.dispose();
         f.setVisible(true);
-        
+        }
+       
     }//GEN-LAST:event_unifiedToolBarPerformed
 
     private void unifiedStatusBarPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unifiedStatusBarPerformed
@@ -150,30 +257,50 @@ public class ToolBarTest extends javax.swing.JPanel {
         if (unifiedStatusBarBox.isSelected()) {
             cp.add(statusBar, BorderLayout.SOUTH);
             unifiedStatusBar = statusBar;
-            statusBar.putClientProperty("Quaqua.ToolBar.style", "bottom");
         } else {
             add(statusBar, BorderLayout.SOUTH);
-            statusBar.putClientProperty("Quaqua.ToolBar.style", "plain");
             unifiedStatusBar = null;
         }
 
         cp.revalidate();
         rp.putClientProperty("apple.awt.brushMetalLook",//
                 unifiedToolBarBox.isSelected() /*|| unifiedStatusBarBox.isSelected()*/);
-        Window f=(Window)rp.getParent();
+        Window f = (Window) rp.getParent();
         f.dispose();
         f.setVisible(true);
 
     }//GEN-LAST:event_unifiedStatusBarPerformed
+
+    private void titleStyleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_titleStyleChanged
+      toolBar.putClientProperty("Quaqua.ToolBar.style", titleStyleGroup.getSelection().getActionCommand());
+      unifiedToolBarPerformed(null);
+toolBar.revalidate();
+toolBar.repaint();
+    }//GEN-LAST:event_titleStyleChanged
+
+    private void bottomStyleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_bottomStyleChanged
+     statusBar.putClientProperty("Quaqua.ToolBar.style", bottomStyleGroup.getSelection().getActionCommand());
+statusBar.revalidate();
+statusBar.repaint();
+    }//GEN-LAST:event_bottomStyleChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.ButtonGroup bottomStyleGroup;
     private javax.swing.JButton fileButton;
     private javax.swing.JButton folderButton;
+    private javax.swing.JRadioButton gradientBottomRadio;
+    private javax.swing.JRadioButton gradientTitleRadio;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JRadioButton plainBottomRadio;
+    private javax.swing.JRadioButton plainTitleRadio;
     private javax.swing.JToolBar statusBar;
     private javax.swing.JLabel statusLabel;
+    private javax.swing.ButtonGroup titleStyleGroup;
     private javax.swing.JToolBar toolBar;
     private javax.swing.JPanel toolBarPanel;
+    private javax.swing.JRadioButton unifiedBottomRadio;
     private javax.swing.JCheckBox unifiedStatusBarBox;
+    private javax.swing.JRadioButton unifiedTitleRadio;
     private javax.swing.JCheckBox unifiedToolBarBox;
     // End of variables declaration//GEN-END:variables
 }

@@ -253,7 +253,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      */
     @Override
     protected Border createRolloverBorder() {
-        return new BackgroundBorderUIResource(new QuaquaButtonBorder("toolBarRollover"));
+        return UIManager.getBorder("Button.border");
     }
 
     /**
@@ -267,14 +267,14 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      */
     @Override
     protected Border createNonRolloverBorder() {
-        return new BackgroundBorderUIResource(new QuaquaButtonBorder("toolBar"));
+        return UIManager.getBorder("Button.border");
     }
 
     /**
      * Creates a non rollover border for Toggle buttons in the toolbar.
      */
     private Border createNonRolloverToggleBorder() {
-        return new BackgroundBorderUIResource(new QuaquaButtonBorder("toolBar"));
+        return UIManager.getBorder("Button.border");
     }
 
     protected DragWindow0 createDragWindow0(JToolBar toolbar) {

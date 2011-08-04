@@ -12,6 +12,7 @@
 package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
+import javax.swing.JComponent;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 /**
@@ -26,7 +27,7 @@ import javax.swing.plaf.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class BackgroundBorderUIResource implements Border, BackgroundBorder, UIResource {
+public class BackgroundBorderUIResource implements Border, BackgroundBorder,PressedCueBorder, UIResource {
     private Border backgroundBorder;
     /**
      * Creates an EmptyBorder which has the same insets as the specified
@@ -50,5 +51,12 @@ public class BackgroundBorderUIResource implements Border, BackgroundBorder, UIR
     
     public Border getBackgroundBorder() {
         return backgroundBorder;
+    }
+
+    public boolean hasPressedCue(JComponent c) {
+        if (backgroundBorder instanceof PressedCueBorder) {
+            return ((PressedCueBorder)backgroundBorder). hasPressedCue( c);
+        }
+        return true;
     }
 }

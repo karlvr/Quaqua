@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua.border;
 
+import ch.randelshofer.quaqua.DefaultColumnCellRenderer.UIResource;
 import ch.randelshofer.quaqua.VisualMargin;
 import ch.randelshofer.quaqua.util.InsetsUtil;
 import java.awt.Component;
@@ -18,6 +19,7 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 import javax.swing.border.Border;
+import javax.swing.plaf.InsetsUIResource;
 
 /**
  * {@code CompositeVisualMarginBorder}.
@@ -99,10 +101,12 @@ public class CompositeVisualMarginBorder implements Border, VisualMargin {
     public Insets getBorderInsets(Component c, Insets insets) {
         Insets ins= getVisualMargin(c, insets);
         Insets bi=actualBorder.getBorderInsets(c);
+        
         InsetsUtil.addTo(bi,ins);
         return ins;
     }
-    public final Insets getVisualMargin(Component c) {
+    
+      public final Insets getVisualMargin(Component c) {
         return getVisualMargin(c, new Insets(0, 0, 0, 0));
     }
     

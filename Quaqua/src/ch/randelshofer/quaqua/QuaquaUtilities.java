@@ -23,6 +23,8 @@ import javax.swing.text.*;
 import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableCellRenderer;
 
 /**
  * Utility class for the Quaqua LAF.
@@ -34,7 +36,13 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
     public enum SizeVariant {
 
-        LARGE,REGULAR, SMALL, MINI
+        LARGE(3),REGULAR(2), SMALL(1), MINI(0);
+        /** id establishes an ordering between the sizes. */
+        int id;
+        SizeVariant(int id) {
+        this.id=id;
+    }
+        public int getId(){return id;}
     }
     private final static boolean DEBUG = false;
     /** Holds the class name of SwingUtilities2 once it has been resolved. */
@@ -864,6 +872,17 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
+    /** Gets the size variant of a component.
+     * <p>
+     * The size variant can be explicitly set using the client property
+     * "JComponent.sizeVariant="regular"|"small"|"mini".
+     * <p>
+     * The default size variant is "regular".
+     * If a component is a cell renderer, the default size variant is "small".
+     * 
+     * @param c
+     * @return 
+     */
     public static SizeVariant getSizeVariant(Component c) {
         if (c == null) {
             return SizeVariant.REGULAR;
@@ -884,6 +903,13 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
                 }
             }
         }
+        if (sv==null) {
+            
+              if ((c instanceof TableCellRenderer)
+                || (c instanceof TableCellEditor)
+                || (c.getParent() instanceof JTable)) sv=SizeVariant.SMALL;
+        }
+        
         if (sv == null) {
             Font f = c.getFont();
             if (f != null) {
