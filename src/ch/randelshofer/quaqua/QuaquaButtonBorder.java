@@ -15,6 +15,9 @@ import ch.randelshofer.quaqua.border.OverlayBorder;
 import ch.randelshofer.quaqua.border.FocusBorder;
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import ch.randelshofer.quaqua.border.AnimatedBorder;
+import ch.randelshofer.quaqua.border.CompositeVisualMarginBorder;
+import ch.randelshofer.quaqua.border.PressedCueBorder;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter.SegmentPosition;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -30,6 +33,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.UIResource;
 
 import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.InsetsUtil;
+import javax.swing.plaf.InsetsUIResource;
 
 /**
  * QuaquaButtonBorder.
@@ -72,7 +77,7 @@ import ch.randelshofer.quaqua.util.Images;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaButtonBorder implements Border, UIResource {
+public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource {
     // Shared borders
 
     private static Border regularPushButtonBorder;
@@ -101,9 +106,24 @@ public class QuaquaButtonBorder implements Border, UIResource {
         this.defaultStyle = defaultStyle;
     }
 
-    public Border getBorder(JComponent c) {
+    /** Returns a Border that implements the VisualMargin interface. */
+    public Border getActualBorder(Component c) {
         Border b = null;
         String style = getStyle(c);
+
+        JComponent jc = c instanceof JComponent ? (JComponent) c : null;
+        String segpos = (jc == null) ? "only" : (String) jc.getClientProperty("JButton.segmentPosition");
+        if (style.equals("toggleEast")) {
+            segpos = "first";
+        } else if (style.equals("toggleCenter")) {
+            segpos = "middle";
+        } else if (style.equals("toggleWest")) {
+            segpos = "last";
+        }
+        if (segpos == null//
+                || !segpos.equals("first") && !segpos.equals("middle") && ! !segpos.equals("last")) {
+            segpos = "only";
+        }
 
         // Explicitly chosen styles
         if (style.equals("text") || style.equals("push")) {
@@ -118,22 +138,24 @@ public class QuaquaButtonBorder implements Border, UIResource {
             }
         } else if (style.equals("toolBar")) {
             if (toolBarBorder == null) {
-                toolBarBorder = new CompoundBorder(
+                toolBarBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
                         new QuaquaToolBarButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
                         10, true,
-                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, false));
+                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, false)),//
+                        0, 0, 0, 0);
             }
             b = toolBarBorder;
         } else if (style.equals("toolBarRollover")) {
             if (toolBarRolloverBorder == null) {
-                toolBarRolloverBorder = new CompoundBorder(
+                toolBarRolloverBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
                         new QuaquaToolBarButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
                         10, true,
-                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, true));
+                        new Insets(8, 10, 15, 10), new Insets(4, 6, 4, 6), true, true)),//
+                        0, 0, 0, 0);
             }
             b = toolBarRolloverBorder;
         } else if (style.equals("toolBarTab")) {
@@ -149,18 +171,16 @@ public class QuaquaButtonBorder implements Border, UIResource {
             b = getTableHeaderBorder();
         } else if (style.equals("colorWell")) {
             if (colorWellBorder == null) {
-                colorWellBorder = new CompoundBorder(
-                        new VisualMarginBorder(0, 0, 0, 0),
+                colorWellBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
-                        //new CompoundBorder(
-                        //new EmptyBorder(3,3,3,3),
                         new QuaquaColorWellBorder() /*)*/,
                         new CompoundBorder(
                         new EmptyBorder(-2, -2, -2, -2),
                         new FocusBorder(
                         QuaquaBorderFactory.create(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                        new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))));
+                        new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),//
+                        0, 0, 0, 0);
             }
             b = colorWellBorder;
         } else if (style.equals("icon") || style.equals("bevel")) {
@@ -171,8 +191,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/RoundedBevel.focusRing.png")),
                         new Insets(10, 9, 10, 8), borderInsets, true));
 
-                bevelBorder = new CompoundBorder(
-                        new VisualMarginBorder(0, 0, 0, 0),
+                bevelBorder = new CompositeVisualMarginBorder(
                         new CompoundBorder(
                         new EmptyBorder(-3, -2, -2, -2),
                         new OverlayBorder(
@@ -182,14 +201,16 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new Insets(10, 9, 10, 8), borderInsets, true),
                         new CompoundBorder(
                         new EmptyBorder(0, -1, 0, -1),
-                        focusBorder))));
+                        focusBorder))),//
+                        0, 0, 0, 0);
             }
             b = bevelBorder;
-        } else if (style.equals("toggle") || style.equals("segmented")) {
+        } else if (segpos.equals("only") && (style.equals("toggle") || style.equals("segmented")
+                || style.equals("segmentedRoundRect") || style.equals("segmentedCapsule")
+                || style.contains("segmentedTextured"))) {
             if (toggleBorder == null) {
                 Insets borderInsets = new Insets(3, 5, 3, 5);
-                toggleBorder = new CompoundBorder(
-                        new VisualMarginBorder(2, 2, 2, 2),
+                toggleBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.borders.png")),
@@ -198,15 +219,15 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new FocusBorder(
                         QuaquaBorderFactory.create(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.focusRing.png")),
-                        new Insets(8, 10, 15, 10), borderInsets, false))));
+                        new Insets(8, 10, 15, 10), borderInsets, false))),
+                        2, 2, 2, 2);
             }
             b = toggleBorder;
-        } else if (style.equals("toggleEast")) {
+        } else if (segpos.equals("first")
+                || style.equals("toggleEast")) {
             if (toggleEastBorder == null) {
-                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 1, 3, 5);
-                toggleEastBorder = new CompoundBorder(
-                        cm = new VisualMarginBorder(2, 0, 2, 2),
+                toggleEastBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.borders.png")),
@@ -215,16 +236,14 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new FocusBorder(
                         QuaquaBorderFactory.create(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.east.focusRing.png")),
-                        new Insets(8, 4, 15, 10), borderInsets, false))));
-                cm.setFixed(false, true, false, false);
+                        new Insets(8, 4, 15, 10), borderInsets, false))),
+                        2, 0, 2, 2, false, true, false, false);
             }
             b = toggleEastBorder;
-        } else if (style.equals("toggleCenter")) {
+        } else if (segpos.equals("middle") || style.equals("toggleCenter")) {
             if (toggleCenterBorder == null) {
-                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 1, 3, 1);
-                toggleCenterBorder = new CompoundBorder(
-                        cm = new VisualMarginBorder(2, 0, 2, 0),
+                toggleCenterBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.borders.png")),
@@ -233,16 +252,14 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new FocusBorder(
                         QuaquaBorderFactory.create(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.center.focusRing.png")),
-                        new Insets(8, 4, 15, 4), borderInsets, false))));
-                cm.setFixed(false, true, false, true);
+                        new Insets(8, 4, 15, 4), borderInsets, false))),
+                        2, 0, 2, 0, false, true, false, true);
             }
             b = toggleCenterBorder;
-        } else if (style.equals("toggleWest")) {
+        } else if (segpos.equals("last") || style.equals("toggleWest")) {
             if (toggleWestBorder == null) {
-                VisualMarginBorder cm;
                 Insets borderInsets = new Insets(3, 5, 3, 1);
-                toggleWestBorder = new CompoundBorder(
-                        cm = new VisualMarginBorder(2, 2, 2, 0),
+                toggleWestBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
                         new ButtonStateBorder(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.borders.png")),
@@ -251,8 +268,8 @@ public class QuaquaButtonBorder implements Border, UIResource {
                         new FocusBorder(
                         QuaquaBorderFactory.create(
                         Images.createImage(QuaquaButtonBorder.class.getResource("images/Toggle.west.focusRing.png")),
-                        new Insets(8, 10, 15, 4), borderInsets, false))));
-                cm.setFixed(false, false, false, true);
+                        new Insets(8, 10, 15, 4), borderInsets, false))),
+                        2, 2, 2, 0, false, false, false, true);
             }
             b = toggleWestBorder;
         } else if (style.equals("help")) {
@@ -282,7 +299,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
 
     private Border getRegularPushButtonBorder() {
         if (regularPushButtonBorder == null) {
-            Insets borderInsets = new Insets(3, 8, 3, 8);
+            Insets borderInsets = new Insets(1, 5, 1, 5);
             BufferedImage[] imageFrames = Images.split(
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.default.png")),
                     12, true);
@@ -306,11 +323,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     ButtonStateBorder.DEFAULT,
                     new AnimatedBorder(borderFrames, 100));
 
-            regularPushButtonBorder = new CompoundBorder(
-                    //new VisualMarginBorder(2, 3, 2, 3),
-                    new VisualMarginBorder(0, 0, 0, 0),
-                    new CompoundBorder(
-                    new EmptyBorder(-2, -4, -2, -4),
+            regularPushButtonBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
                     buttonStateBorder,
                     new FocusBorder(
@@ -318,15 +331,15 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.focusRing.png")),
                     new Insets(12, 13, 12, 13),
                     borderInsets,
-                    false)))));
+                    false))),
+                    2, 4, 2, 4);
         }
         return regularPushButtonBorder;
     }
 
     private Border getSquareBorder() {
         if (squareBorder == null) {
-            squareBorder = new CompoundBorder(
-                    new VisualMarginBorder(0, 0, 0, 0),
+            squareBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
                     QuaquaBorderFactory.createSquareButtonBorder(),
                     new CompoundBorder(
@@ -334,15 +347,39 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     new FocusBorder(
                     QuaquaBorderFactory.create(
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))));
+                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
+                    0, 0, 0, 0) {
+
+                @Override
+                protected Insets getVisualMargin(Component c, Insets insets) {
+                    String s = getStyle(c);
+
+                    insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
+
+                    if (insets instanceof javax.swing.plaf.UIResource) {
+                        switch (getSegmentPosition(c)) {
+                            case first:
+                                insets.right = -1;
+                                break;
+                            case middle:
+                                insets.left = 0;
+                                insets.right = -1;
+                                break;
+                            case last:
+                                insets.left = 0;
+                                break;
+                        }
+                    }
+                    return insets;
+                }
+            };
         }
         return squareBorder;
     }
 
     private Border getPlacardBorder() {
         if (placardBorder == null) {
-            placardBorder = new CompoundBorder(
-                    new VisualMarginBorder(0, 0, 0, 0),
+            placardBorder = new CompositeVisualMarginBorder(
                     new OverlayBorder(
                     new CompoundBorder(
                     new EmptyBorder(-1, 0, -1, 0),
@@ -352,16 +389,51 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     new FocusBorder(
                     QuaquaBorderFactory.create(
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
-                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))));
+                    new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
+                    0, 0, 0, 0){
+
+                @Override
+                protected Insets getVisualMargin(Component c, Insets insets) {
+                    String s = getStyle(c);
+
+                    insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
+        if (insets instanceof javax.swing.plaf.UIResource) {
+            if ((s.equals("placard") || s.equals("gradient")) && (c.getParent() instanceof JToolBar)) {
+                String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                if (ts != null && (ts.equals("placard") || ts.equals("gradient"))) {
+                    InsetsUtil.clear(insets);
+                }
+            }
+        }
+
+                    if (insets instanceof javax.swing.plaf.UIResource) {
+                        switch (getSegmentPosition(c)) {
+                            case first:
+                                insets.right = -1;
+                                break;
+                            case middle:
+                                insets.left = 0;
+                                insets.right = -1;
+                                break;
+                            case last:
+                                insets.left = 0;
+                                break;
+                        }
+                    }
+                    return insets;
+                }
+            };
         }
         return placardBorder;
     }
 
     private Border getTableHeaderBorder() {
         if (tableHeaderBorder == null) {
-            tableHeaderBorder = new ButtonStateBorder(
+            tableHeaderBorder = new CompositeVisualMarginBorder(
+                    new ButtonStateBorder(
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/TableHeader.borders.png")),
-                    4, true, new Insets(7, 1, 8, 1), new Insets(1, 2, 1, 2), true);
+                    4, true, new Insets(7, 1, 8, 1), new Insets(1, 2, 1, 2), true),
+                    0, 0, 0, 0);
         }
         return tableHeaderBorder;
     }
@@ -391,9 +463,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     ButtonStateBorder.DEFAULT,
                     new AnimatedBorder(borderFrames, 100));
 
-            smallPushButtonBorder = new CompoundBorder(
-                    //new VisualMarginBorder(2, 2, 2, 2),
-                    new VisualMarginBorder(0, 0, 0, 0),
+            smallPushButtonBorder = new CompositeVisualMarginBorder(
                     new CompoundBorder(
                     new EmptyBorder(-2, -3, -2, -3),
                     new OverlayBorder(
@@ -403,7 +473,8 @@ public class QuaquaButtonBorder implements Border, UIResource {
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Button.small.focusRing.png")),
                     new Insets(9, 14, 12, 14),
                     borderInsets,
-                    false)))));
+                    false)))),
+                    0, 0, 0, 0);
         }
         return smallPushButtonBorder;
     }
@@ -503,27 +574,44 @@ public class QuaquaButtonBorder implements Border, UIResource {
         return style.equals("text") || style.equals("push") || style.startsWith("toggle");
     }
 
-    protected String getStyle(JComponent c) {
-        String style = (String) c.getClientProperty("Quaqua.Button.style");
-        if (style == null) {
-            style = (String) c.getClientProperty("JButton.buttonType");
+    protected String getStyle(Component c) {
+
+        String s = null;
+        JComponent jc = (c instanceof JComponent) ? (JComponent) c : null;
+        if (jc != null) {
+            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            if (s == null) {
+                s = (String) jc.getClientProperty("JButton.buttonType");
+            }
         }
-        if (style == null || style.equals("segmented") || style.equals("toggle")) {
-            String segmentPosition = (String) c.getClientProperty("JButton.segmentPosition");
-            if (segmentPosition != null) {
-                if (segmentPosition.equals("first")) {
-                    style = "toggleWest";
-                } else if (segmentPosition.equals("middle")) {
-                    style = "toggleCenter";
-                } else if (segmentPosition.equals("last")) {
-                    style = "toggleEast";
+        if (s == null) {
+            if (c.getParent() instanceof JToolBar) {
+                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                if (tbs != null && (tbs.equals("gradient") || tbs.equals("placard"))) {
+                    s = "gradient";
+                } else {
+                    s = "toolBar";
                 }
             }
         }
-        if (style == null) {
-            style = defaultStyle;
+        if (s == null || s.equals("segmented") || s.equals("toggle")
+                || s.equals("segmentedRoundRect") || s.equals("segmentedCapsule")
+                || s.contains("segmentedTextured")) {
+            String segmentPosition = jc == null ? null : (String) jc.getClientProperty("JButton.segmentPosition");
+            if (segmentPosition != null) {
+                if (segmentPosition.equals("first")) {
+                    s = "toggleWest";
+                } else if (segmentPosition.equals("middle")) {
+                    s = "toggleCenter";
+                } else if (segmentPosition.equals("last")) {
+                    s = "toggleEast";
+                }
+            }
         }
-        return style;
+        if (s == null) {
+            s = defaultStyle;
+        }
+        return s;
     }
 
     /**
@@ -533,23 +621,17 @@ public class QuaquaButtonBorder implements Border, UIResource {
      * it by some other means.
      */
     public boolean hasPressedCue(JComponent c) {
-        Border b = getBorder(c);
-        return b != toolBarBorder;
+        Border b = getActualBorder(c);
+        boolean haspc;
+        if (b instanceof PressedCueBorder) {
+            haspc = ((PressedCueBorder) b).hasPressedCue(c);
+        }
+        haspc = b != toolBarBorder;
+        return haspc;
     }
 
     public Insets getVisualMargin(Component c) {
-        Border b = getBorder((JComponent) c);
-        Insets visualMargin = new Insets(0, 0, 0, 0);
-
-        if (b instanceof VisualMargin) {
-            visualMargin = ((VisualMargin) b).getVisualMargin(c);
-        } else if (b instanceof CompoundBorder) {
-            b = ((CompoundBorder) b).getOutsideBorder();
-            if (b instanceof VisualMargin) {
-                visualMargin = ((VisualMargin) b).getVisualMargin(c);
-            }
-        }
-        return visualMargin;
+        return ((VisualMargin) getActualBorder(c)).getVisualMargin(c);
     }
 
     /**
@@ -578,7 +660,7 @@ public class QuaquaButtonBorder implements Border, UIResource {
         if (!isBorderPainted) {
             insets = (Insets) UIManager.getInsets("Component.visualMargin").clone();
         } else {
-            insets = getBorder((JComponent) c).getBorderInsets(c);
+            insets = getActualBorder((JComponent) c).getBorderInsets(c);
             if (c instanceof AbstractButton) {
                 AbstractButton b = (AbstractButton) c;
                 Insets margin = b.getMargin();
@@ -601,6 +683,34 @@ public class QuaquaButtonBorder implements Border, UIResource {
     }
 
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        getBorder((JComponent) c).paintBorder(c, g, x, y, width, height);
+        getActualBorder((JComponent) c).paintBorder(c, g, x, y, width, height);
+    }
+
+    private SegmentPosition getSegmentPosition(Component c) {
+        String s = null;
+        if (c instanceof JComponent) {
+            JComponent jc = (JComponent) c;
+            s = (String) jc.getClientProperty("Quaqua.Button.style");
+            if (s != null) {
+                if (s.equals("toggleWest")) {
+                    return SegmentPosition.first;
+                } else if (s.equals("toggleCenter")) {
+                    return SegmentPosition.middle;
+                } else if (s.equals("toggleEast")) {
+                    return SegmentPosition.last;
+                }
+            }
+            s = (String) jc.getClientProperty("JButton.segmentPosition");
+            if (s != null) {
+                if (s.equals("first")) {
+                    return SegmentPosition.first;
+                } else if (s.equals("middle")) {
+                    return SegmentPosition.middle;
+                } else if (s.equals("last")) {
+                    return SegmentPosition.last;
+                }
+            }
+        }
+        return SegmentPosition.only;
     }
 }

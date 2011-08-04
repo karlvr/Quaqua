@@ -12,7 +12,6 @@ package test;
 
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.LinkedList;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -28,7 +27,8 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     /** Creates new form. */
     public ToggleButtonTest() {
         initComponents();
-
+texturedRadio.setVisible(false);
+capsuleRadio.setVisible(false);
 
         // Segmented properties
         LinkedList<JComponent> todo = new LinkedList<JComponent>();
@@ -91,7 +91,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         toggle1 = new javax.swing.JToggleButton();
         toggle2 = new javax.swing.JToggleButton();
         jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
+        regularPanel = new javax.swing.JPanel();
         toggle3 = new javax.swing.JToggleButton();
         toggle4 = new javax.swing.JToggleButton();
         toggle5 = new javax.swing.JToggleButton();
@@ -115,9 +115,11 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         jSeparator3 = new javax.swing.JSeparator();
         jPanel3 = new javax.swing.JPanel();
         segmentedRadio = new javax.swing.JRadioButton();
-        roundRectRadio = new javax.swing.JRadioButton();
         texturedRadio = new javax.swing.JRadioButton();
+        squareButton = new javax.swing.JRadioButton();
+        roundRectRadio = new javax.swing.JRadioButton();
         capsuleRadio = new javax.swing.JRadioButton();
+        gradientButton = new javax.swing.JRadioButton();
         stretcherPanel = new javax.swing.JPanel();
 
         FormListener formListener = new FormListener();
@@ -144,20 +146,20 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.gridwidth = 2;
         add(jPanel1, gridBagConstraints);
 
-        jPanel2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
+        regularPanel.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.CENTER, 0, 0));
 
         toggle3.setText("West");
-        jPanel2.add(toggle3);
+        regularPanel.add(toggle3);
 
         toggle4.setText("Center");
-        jPanel2.add(toggle4);
+        regularPanel.add(toggle4);
 
         toggle5.setText("East");
-        jPanel2.add(toggle5);
+        regularPanel.add(toggle5);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        add(jPanel2, gridBagConstraints);
+        add(regularPanel, gridBagConstraints);
 
         jLabel1.setText("Regular");
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -259,31 +261,50 @@ public class ToggleButtonTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel3.add(segmentedRadio, gridBagConstraints);
 
+        typeGroup.add(texturedRadio);
+        texturedRadio.setText("Textured");
+        texturedRadio.setActionCommand("segmentedTextured");
+        texturedRadio.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(texturedRadio, gridBagConstraints);
+
+        typeGroup.add(squareButton);
+        squareButton.setText("Square");
+        squareButton.setActionCommand("square");
+        squareButton.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(squareButton, gridBagConstraints);
+
         typeGroup.add(roundRectRadio);
         roundRectRadio.setText("Round Rect");
         roundRectRadio.setActionCommand("segmentedRoundRect");
         roundRectRadio.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel3.add(roundRectRadio, gridBagConstraints);
 
-        typeGroup.add(texturedRadio);
-        texturedRadio.setText("Capsule");
-        texturedRadio.setActionCommand("segmentedCapsule");
-        texturedRadio.addActionListener(formListener);
-        gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        jPanel3.add(texturedRadio, gridBagConstraints);
-
         typeGroup.add(capsuleRadio);
-        capsuleRadio.setText("Textured");
-        capsuleRadio.setActionCommand("segmentedTextured");
+        capsuleRadio.setText("Capsule");
+        capsuleRadio.setActionCommand("segmentedCapsule");
         capsuleRadio.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel3.add(capsuleRadio, gridBagConstraints);
+
+        typeGroup.add(gradientButton);
+        gradientButton.setText("Gradient");
+        gradientButton.setActionCommand("gradient");
+        gradientButton.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel3.add(gradientButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -309,10 +330,16 @@ public class ToggleButtonTest extends javax.swing.JPanel {
             else if (evt.getSource() == roundRectRadio) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
+            else if (evt.getSource() == capsuleRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
+            }
             else if (evt.getSource() == texturedRadio) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
-            else if (evt.getSource() == capsuleRadio) {
+            else if (evt.getSource() == squareButton) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
+            }
+            else if (evt.getSource() == gradientButton) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
         }
@@ -335,14 +362,16 @@ public class ToggleButtonTest extends javax.swing.JPanel {
                 jb.putClientProperty("JButton.buttonType", type);
             }
         }
-        revalidate();
+        regularPanel.revalidate();
+        smallPanel.revalidate();
+        miniPanel.revalidate();
     }//GEN-LAST:event_typeRadioPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton capsuleRadio;
+    private javax.swing.JRadioButton gradientButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator2;
@@ -354,6 +383,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     private javax.swing.JToggleButton miniToggle3;
     private javax.swing.JToggleButton miniToggle4;
     private javax.swing.JToggleButton miniToggle5;
+    private javax.swing.JPanel regularPanel;
     private javax.swing.JRadioButton roundRectRadio;
     private javax.swing.JRadioButton segmentedRadio;
     private javax.swing.JLabel smallLabel;
@@ -363,6 +393,7 @@ public class ToggleButtonTest extends javax.swing.JPanel {
     private javax.swing.JToggleButton smallToggle3;
     private javax.swing.JToggleButton smallToggle4;
     private javax.swing.JToggleButton smallToggle5;
+    private javax.swing.JRadioButton squareButton;
     private javax.swing.JPanel stretcherPanel;
     private javax.swing.JRadioButton texturedRadio;
     private javax.swing.JToggleButton toggle1;

@@ -1626,7 +1626,9 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "Button.opaque", opaque,
             "Button.textIconGap", 4,
             "Button.textShiftOffset", 0,
-            "Button.helpIcon",  makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRoundHelp,0,0,25,25,true),
+            "Button.helpIcon",  makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRoundHelp,0,1,21,21,true),
+            "Button.smallHelpIcon",  makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRoundHelp,0,1,18,18,true),
+            "Button.miniHelpIcon",  makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonRoundHelp,1,1,15,15,true),
             "Button.requestFocusEnabled", isRequestFocusEnabled,
             // Note: Minimum width only affects regular sized buttons with push button style
             "Button.minimumWidth", 80,
@@ -1876,6 +1878,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
             "ScrollPane.focusable", Boolean.FALSE,
             "ScrollPane.opaque", opaque,
+            "ScrollPane.growBoxSize",new DimensionUIResource(0,0),
             //
             "Separator.border", new VisualMarginBorder(),
             //
@@ -1965,7 +1968,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "ToggleButton.requestFocusEnabled", isRequestFocusEnabled,
             "ToggleButton.focusable", allControlsFocusable,
             //
-            "ToolBar.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaToolBarBorder$UIResource"),
+            "ToolBar.border", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaNativeToolBarBorder$UIResource"),
             // The separatorSize is set to null, because we dynamically compute different
             // sizes depending on the orientation of the separator.
             "ToolBar.separatorSize", null,

@@ -12,10 +12,9 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.border.BackgroundBorder;
+import ch.randelshofer.quaqua.border.PressedCueBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
-import java.awt.font.FontRenderContext;
-import java.awt.geom.AffineTransform;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
@@ -110,7 +109,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     private static Font getFont(JComponent c) {
 
-        Font f= QuaquaUtilities.getSizeVariantFont(c);
+        Font f = QuaquaUtilities.getSizeVariantFont(c);
         return f;
     }
 
@@ -128,7 +127,19 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             if (insets == null) {
                 insets = new Insets(0, 0, 0, 0);
             }
-            UIManager.getIcon("Button.helpIcon").paintIcon(c, g, insets.left, insets.top);
+            QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(c);
+            switch (sv) {
+                default:
+                    UIManager.getIcon("Button.helpIcon").paintIcon(c, g, insets.left, insets.top);
+                    break;
+                case SMALL:
+                    UIManager.getIcon("Button.smallHelpIcon").paintIcon(c, g, insets.left, insets.top);
+                    break;
+                case MINI:
+                    UIManager.getIcon("Button.miniHelpIcon").paintIcon(c, g, insets.left, insets.top);
+                    break;
+            }
+            Debug.paint(g, c, this);
             return;
         }
 
@@ -275,11 +286,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     private boolean borderHasPressedCue(AbstractButton c) {
         if (c.isBorderPainted()) {
             Border b = c.getBorder();
-            if (b != null && b instanceof BackgroundBorder) {
-                b = ((BackgroundBorder) b).getBackgroundBorder();
-                if (b != null && b instanceof QuaquaButtonBorder) {
-                    return ((QuaquaButtonBorder) b).hasPressedCue(c);
-                }
+            if (b instanceof PressedCueBorder) {
+                return ((PressedCueBorder) b).hasPressedCue(c);
             }
             return b != null;
         } else {
@@ -355,23 +363,40 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     public Dimension getPreferredSize(JComponent c) {
         return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
     }
-
-    public static Dimension getPreferredSize(AbstractButton b) {
+    
+    private static String getStyle(JComponent b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
         if (style == null) {
             style = (String) b.getClientProperty("JButton.buttonType");
         }
-        boolean isSmall = QuaquaUtilities.getSizeVariant(b) == QuaquaUtilities.SizeVariant.SMALL;
         if (style == null) {
             if (b.getBorder() instanceof UIResource
-                    && b.isBorderPainted()) {
+                    && (!(b instanceof JButton)||((JButton) b).isBorderPainted())) {
                 style = "push";
             } else {
                 style = "plain";
             }
         }
+        return style;
+    }
+
+    
+    public static Dimension getPreferredSize(AbstractButton b) {
+        String style=getStyle(b);
+        QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(b);
         if (style.equals("help")) {
-            Icon helpIcon = UIManager.getIcon("Button.helpIcon");
+            Icon helpIcon;
+            switch (sv) {
+                default:
+                    helpIcon = UIManager.getIcon("Button.helpIcon");
+                    break;
+                case SMALL:
+                    helpIcon = UIManager.getIcon("Button.smallHelpIcon");
+                    break;
+                case MINI:
+                    helpIcon = UIManager.getIcon("Button.miniHelpIcon");
+                    break;
+            }
             Insets insets = b.getInsets();
             if (insets == null) {
                 insets = new Insets(0, 0, 0, 0);
@@ -434,7 +459,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             }
         }
         //}
-        if (!isSmall && style.equals("push")
+        if (sv == QuaquaUtilities.SizeVariant.REGULAR && style.equals("push")
                 && b.getIcon() == null && b.getText() != null) {
             r.width = Math.max(r.width, UIManager.getInt("Button.minimumWidth"));
         }
@@ -505,9 +530,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             return bounds;
         }
 
+        String style=getStyle(b);
 
-
-        String text = b.getText();
+        String text = style.equals("help")?null:b.getText();
         boolean isEmpty = (text == null || text.length() == 0);
         if (isEmpty) {
             text = " ";
@@ -519,8 +544,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         }
 
         FontMetrics fm;
-                try {
-         fm = c.getFontMetrics(getFont(c));
+        try {
+            fm = c.getFontMetrics(getFont(c));
         } catch (NullPointerException e) {
             // getFontMetrics does not handle missing font render context.
             return null;

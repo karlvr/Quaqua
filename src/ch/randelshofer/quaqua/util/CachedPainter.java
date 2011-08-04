@@ -36,6 +36,7 @@ public abstract class CachedPainter {
     // CacheMap maps from class to Cache.
 
     private static final Map cacheMap = new HashMap();
+    private int maxCachedImageSize = 20000;
 
     private static Cache getCache(Object key) {
         synchronized (cacheMap) {
@@ -72,7 +73,7 @@ public abstract class CachedPainter {
         // If the area is larger than 20'000 pixels, render to the passed 
         // in Graphics. 20'000 pixels is a bit larger than a rectangle of 
         // 160*120 points. 
-        if (w * h > 20000) {
+        if (w * h > maxCachedImageSize) {
             g.translate(x, y);
             paintToImage(c, g, w, h, args);
             g.translate(-x, -y);
@@ -307,4 +308,14 @@ public abstract class CachedPainter {
             }
         }
     }
+
+    public int getMaxCachedImageSize() {
+        return maxCachedImageSize;
+    }
+
+    public void setMaxCachedImageSize(int maxCachedImageSize) {
+        this.maxCachedImageSize = maxCachedImageSize;
+    }
+    
+    
 }

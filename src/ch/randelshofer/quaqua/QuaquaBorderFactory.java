@@ -122,7 +122,7 @@ public class QuaquaBorderFactory {
             Insets imageInsets, Insets borderInsets, boolean drawFocusRing) {
         try {
             Border border = new QuaquaNativeButtonStateBorder.UIResource(widget,
-                    imageInsets, borderInsets, true);
+                    imageInsets, borderInsets);
 
             if (drawFocusRing) {
                 border = new FocusedBorder.UIResource(border);

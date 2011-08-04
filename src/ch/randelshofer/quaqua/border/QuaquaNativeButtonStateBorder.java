@@ -10,6 +10,8 @@
  */
 package ch.randelshofer.quaqua.border;
 
+import ch.randelshofer.quaqua.VisualMargin;
+import javax.swing.JComponent;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.util.CachedPainter;
@@ -35,7 +37,7 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaNativeButtonStateBorder extends CachedPainter implements Border {
+public class QuaquaNativeButtonStateBorder extends CachedPainter implements Border, VisualMargin {
 
     private OSXAquaPainter painter;
     private Insets imageInsets;
@@ -52,21 +54,30 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
     private final static int ARG_TRAILING_SEPARATOR = 18;
 
     public QuaquaNativeButtonStateBorder(OSXAquaPainter.Widget widget) {
-        this(widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0), true);
+        this(widget, new Insets(0, 0, 0, 0), new Insets(0, 0, 0, 0));
     }
 
-    public QuaquaNativeButtonStateBorder(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets, boolean fill) {
+    public QuaquaNativeButtonStateBorder(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets) {
         super(12);
         painter = new OSXAquaPainter();
         painter.setWidget(widget);
         this.imageInsets = imageInsets;
         this.borderInsets = borderInsets;
+        
     }
 
     @Override
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         AbstractButton b = null;
         ButtonModel bm = null;
+        
+
+            Insets vm = getVisualMargin(c);
+                x += vm.left;
+                y += vm.top;
+                width -= vm.left + vm.right;
+                height -= vm.top + vm.bottom;
+                
         if (c instanceof AbstractButton) {
             b = (AbstractButton) c;
             bm = b.getModel();
@@ -96,7 +107,7 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         }
         painter.setState(state);
 
-        int value = b == null ? 1 : (b.isSelected() ? 1 : 0);
+        int value = b == null ? 0 : (b.isSelected() ? 1 : 0);
         painter.setValueByKey(Key.value, value);
         args |= value << ARG_SELECTED;
 
@@ -142,13 +153,17 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
         ig.dispose();
         painter.paint((BufferedImage) img,//
                 imageInsets.left, imageInsets.top,//
-                w - imageInsets.left - imageInsets.right, //
+               w - imageInsets.left - imageInsets.right, //
                 h - imageInsets.top - imageInsets.bottom);
     }
 
     @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-        // empty
+        // round up image size to reduce memory thrashing
+       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
+       paintToImage(c,img,w,h,args);
+       g.drawImage(img, 0, 0, null);
+       img.flush();
     }
 
     public Insets getBorderInsets(Component c) {
@@ -157,6 +172,13 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
 
     public boolean isBorderOpaque() {
         return false;
+    }
+public Insets getVisualMargin(Component c) {
+        Insets vm = null;
+        if (c instanceof JComponent) {
+            vm = (Insets) ((JComponent) c).getClientProperty("Quaqua.Component.visualMargin");
+        }
+        return vm == null ? new Insets(0, 0, 0, 0) : (Insets) vm.clone();
     }
 
     public static class UIResource extends QuaquaNativeButtonStateBorder implements javax.swing.plaf.UIResource {
@@ -169,8 +191,8 @@ public class QuaquaNativeButtonStateBorder extends CachedPainter implements Bord
          * Creates a new instance.
          * All borders must have the same dimensions.
          */
-        public UIResource(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets, boolean fill) {
-            super(widget, imageInsets, borderInsets, fill);
+        public UIResource(OSXAquaPainter.Widget widget, Insets imageInsets, Insets borderInsets) {
+            super(widget, imageInsets, borderInsets);
         }
     }
 }
