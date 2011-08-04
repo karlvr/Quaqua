@@ -167,6 +167,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         tableCellBox = new javax.swing.JComboBox();
         tableCellLabel = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
+        disabledLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -183,7 +184,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(box1, gridBagConstraints);
 
-        jLabel1.setText("Regular Size");
+        jLabel1.setText("Enabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -218,7 +219,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(smallBox1, gridBagConstraints);
 
-        smallLabel.setText("Small Size");
+        smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -253,7 +254,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         add(miniBox1, gridBagConstraints);
 
-        miniLabel.setText("Mini Size");
+        miniLabel.setText("Mini");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -313,6 +314,14 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.gridy = 99;
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
+
+        disabledLabel.setText("Disabled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(disabledLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
@@ -322,6 +331,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox box1;
+    private javax.swing.JLabel disabledLabel;
     private javax.swing.JComboBox jComboBox14;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;

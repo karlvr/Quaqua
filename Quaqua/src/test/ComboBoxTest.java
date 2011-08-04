@@ -185,6 +185,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         tableComboBox = new javax.swing.JComboBox();
         jPanel1 = new javax.swing.JPanel();
         tableLabel = new javax.swing.JLabel();
+        disabledLabel = new javax.swing.JLabel();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -196,7 +197,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         add(comboBox1, gridBagConstraints);
 
-        jLabel2.setText("Regular Size");
+        jLabel2.setText("Enabled");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -222,7 +223,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator1, gridBagConstraints);
 
-        smallLabel.setText("Small Size");
+        smallLabel.setText("Small");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -254,7 +255,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 8, 0);
         add(jSeparator2, gridBagConstraints);
 
-        miniLabel.setText("Mini Size");
+        miniLabel.setText("Mini");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -327,11 +328,20 @@ public class ComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(tableLabel, gridBagConstraints);
+
+        disabledLabel.setText("Disabled");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(disabledLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox comboBox1;
     private javax.swing.JComboBox comboBox2;
     private javax.swing.JComboBox comboBox3;
+    private javax.swing.JLabel disabledLabel;
     private javax.swing.JComboBox iconComboBox;
     private javax.swing.JLabel iconLabel;
     private javax.swing.JLabel jLabel2;
