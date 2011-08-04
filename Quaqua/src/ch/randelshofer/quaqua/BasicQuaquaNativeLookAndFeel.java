@@ -2052,6 +2052,11 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 new Object[]{location, states, horizontal});
     }
 
+    public static Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeSidebarIcon",
+                new Object[]{path, size, size, color, selectionColor});
+    }
     public static Object makeNativeIcon(String path, int size) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",

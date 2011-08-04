@@ -254,17 +254,15 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaScrollPaneBorder$UIResource",
                 new Object[]{lionDir + "ScrollPane.borders.png", lionDir + "TextField.borders.png"});
-// *** Shared Borders
+        
         /*
-        Object textFieldBorder = new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.QuaquaTextFieldBorder$UIResource",
-                new Object[]{lionDir + "TextField.borders.png",
-                    commonDir + "TextField.searchBorders.png",
-                    commonDir + "TextField.small.searchBorders.png",});
-*/
         String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Toolbar";
         String sideBarIconsEnd = "FolderIcon.icns";
-
+         */
+        String sideBarIconsPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
+        ColorUIResource sideBarIconColor = new ColorUIResource(125,134,147);
+        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0xffffff);
+        
         Object[] uiDefaults = {
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{lionDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
@@ -312,6 +310,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "FileChooser.browserCellTextIconGap", 6,
             "FileChooser.browserCellTextArrowIconGap", 5,
             "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
+            /*
             "FileChooser.sideBarIcon.Applications", makeNativeIcon(sideBarIconsStart + "Apps" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Desktop", makeNativeIcon(sideBarIconsStart + "Desktop" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Documents", makeNativeIcon(sideBarIconsStart + "Documents" + sideBarIconsEnd, 16),
@@ -323,6 +322,24 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "FileChooser.sideBarIcon.Public", makeNativeIcon(sideBarIconsStart + "Public" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Sites", makeNativeIcon(sideBarIconsStart + "Sites" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Utilities", makeNativeIcon(sideBarIconsStart + "Utilities" + sideBarIconsEnd, 16),
+            */
+            "FileChooser.sideBarIcon.Applications", makeNativeSidebarIcon(sideBarIconsPrefix + "ApplicationsFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Desktop", makeNativeSidebarIcon(sideBarIconsPrefix + "DesktopFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Documents", makeNativeSidebarIcon(sideBarIconsPrefix + "DocumentsFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Downloads", makeNativeSidebarIcon(sideBarIconsPrefix + "DownloadsFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Home", makeNativeSidebarIcon(sideBarIconsPrefix + "HomeFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Library", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Movies", makeNativeSidebarIcon(sideBarIconsPrefix + "MoviesFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor), // Note: no "s" in "Movie"
+            "FileChooser.sideBarIcon.Music", makeNativeSidebarIcon(sideBarIconsPrefix + "MusicFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Pictures", makeNativeSidebarIcon(sideBarIconsPrefix + "PicturesFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Public", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Shared", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Sites", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Utilities", makeNativeSidebarIcon(sideBarIconsPrefix + "UtilitiesFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericFile", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFile.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "InternalDisk.icns", 16, sideBarIconColor, sideBarIconSelectionColor),
+             
             //
             "FileView.computerIcon", makeIcon(getClass(), snowLeopardDir + "FileView.computerIcon.png"),
             "FileView.fileIcon", makeIcon(getClass(), snowLeopardDir + "FileView.fileIcon.png"),

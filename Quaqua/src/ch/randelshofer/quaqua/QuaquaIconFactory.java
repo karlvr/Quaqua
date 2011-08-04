@@ -18,6 +18,7 @@ import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
 import ch.randelshofer.quaqua.icon.ButtonStateIcon;
 import ch.randelshofer.quaqua.icon.FocusedIcon;
 import ch.randelshofer.quaqua.icon.FrameButtonStateIcon;
+import ch.randelshofer.quaqua.icon.ListStateIcon;
 import ch.randelshofer.quaqua.icon.OverlayIcon;
 import ch.randelshofer.quaqua.icon.SliderThumbIcon;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
@@ -57,14 +58,14 @@ public class QuaquaIconFactory {
             worker = new Worker<ImageIcon>() {
 
                 public ImageIcon construct() {
-                        switch (messageType) {
-                            case JOptionPane.WARNING_MESSAGE:
-                                return createWarningIcon();
-                            case JOptionPane.ERROR_MESSAGE:
-                                return createErrorIcon();
-                            default:
-                                return createApplicationIcon();
-                        }
+                    switch (messageType) {
+                        case JOptionPane.WARNING_MESSAGE:
+                            return createWarningIcon();
+                        case JOptionPane.ERROR_MESSAGE:
+                            return createErrorIcon();
+                        default:
+                            return createApplicationIcon();
+                    }
                 }
 
                 @Override
@@ -80,7 +81,7 @@ public class QuaquaIconFactory {
 
                     // Get rid of the worker and of the repaint list
                     repaintMe = null;
-                    worker=null;
+                    worker = null;
                 }
             };
             worker.start();
@@ -242,10 +243,54 @@ public class QuaquaIconFactory {
             return null;
         }
     }
+
+    public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
+        try {
+            BufferedImage img;
+            img = Images.toBufferedImage((Image)OSXImageIO.read(new File(path), width, height));
+            if (img == null) {
+                return null;
+            }
+
+            BufferedImage iconImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+            Graphics2D g = iconImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            RescaleOp rop=new RescaleOp(new float[]{1f,1f,1f,0.9f},new float[]{0f,0f,0f,0f},null);
+            g.drawImage(img, rop,0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(color);
+            g.fillRect(0, 0, width, height);
+            g.dispose();
+
+            BufferedImage whiteImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+            g = whiteImg.createGraphics();
+            g.setComposite(AlphaComposite.Src);
+            //rop=new RescaleOp(new float[]{1f,1f,1f,0.9f},new float[]{0f,0f,0f,0f},null);
+            //BandCombineOp bop=new BandCombineOp(new float[][]{{1f,0f,0f,0f,0f},{0f,1f,0f,0f,0f},{0f,0f,1f,0f,0f},{1f,0f,0f,0f,0f}},null);
+            g.drawImage(img, rop,0, 0);
+            g.setComposite(AlphaComposite.SrcIn);
+            g.setColor(selectedColor);
+            g.fillRect(0, 0, width, height);
+            g.dispose();
+            BufferedImage selectedImg = new BufferedImage(width, height+1, BufferedImage.TYPE_INT_ARGB_PRE);
+            g = selectedImg.createGraphics();
+            g.drawImage(iconImg,0,1,null);
+            g.drawImage(whiteImg,0,0,null);
+            g.dispose();
+            whiteImg.flush();
+
+            return new ListStateIcon(new ImageIcon(iconImg),new ImageIcon(selectedImg));
+        } catch (IOException ex) {
+            return null;
+        }
+    }
+
     public static Icon createNativeButtonStateIcon(OSXAquaPainter.Widget widget, int xoffset, int yoffset, int width, int height, boolean drawFocusRing) {
-        Icon icon=
- new QuaquaNativeButtonStateIcon(widget, xoffset,yoffset,width, height);
-        if (drawFocusRing) icon=new FocusedIcon(icon);
+        Icon icon =
+                new QuaquaNativeButtonStateIcon(widget, xoffset, yoffset, width, height);
+        if (drawFocusRing) {
+            icon = new FocusedIcon(icon);
+        }
         return icon;
     }
 
