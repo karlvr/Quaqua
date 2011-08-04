@@ -12,6 +12,7 @@ package ch.randelshofer.quaqua;
 
 import java.awt.*;
 import java.awt.event.*;
+import javax.swing.UIManager;
 
 import javax.swing.plaf.*;
 import javax.swing.text.*;
@@ -44,10 +45,15 @@ public class QuaquaCaret extends DefaultCaret
         super.setVisible(bool);
     }
 
+    @Override
     public boolean isVisible() {
         boolean bool = super.isVisible();
         // Display non-blinking caret when component is non-editable.
+        if (UIManager.getBoolean("TextComponent.showNonEditableCaret")) {
         bool|= !getComponent().isEditable() && getComponent().isFocusOwner();
+        }else{
+        bool&= getComponent().isEditable() && getComponent().isFocusOwner();
+        }
         return bool;
     }
 

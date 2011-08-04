@@ -45,8 +45,7 @@ MM_reloadPage(true);
   <h5 class="doubleparagraph">Common Properties</h5>
   <table width="460" border="0" cellpadding="0" cellspacing="0" class="graybox">
     <tr>
-      <th><p>Property</p>
-      </th>
+      <th><p>Property</p>      </th>
       <th>Default Value</th>
       <th>Notes</th>
     </tr>
@@ -81,8 +80,7 @@ MM_reloadPage(true);
           clicks on them.</p>
           <p class="semiparagraph">Set this to <code>true</code>, if your application
             code expects that most components request focus, when the user clicks
-            on them.</p>
-      </td>
+            on them.</p>      </td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua<br />
@@ -92,30 +90,21 @@ MM_reloadPage(true);
           JTable's and JTree's are rendered with  a dark background
           color.</p>
         <p class="semiparagraph">Change this property, if your application expects,
-          that selections are always drawn with a bright background colour, and
-          you don't want
-            to invest the time for fixing your application.</p>        
+          that selections are always drawn with a bright background colour.</p>        
         <p class="semiparagraph">Supported values are:</p>        <ul>
             <li class="semiparagraph"><code>bright</code> (uses bright selection
               background)</li>
           <li><code>dark</code> (selection backgrounds in lists, tables and
               trees are dark).</li>
-          </ul>
-      </td>
+          </ul>      </td>
     </tr>
+    
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua<br />
-    .sizeStyle</code></td>
-      <td><code>regular</code></td>
-      <td><p>Use this property to change the default size style of all components. </p>
-          <p class="semiparagraph">Supported values are:</p>
-          <ul>
-            <li><code>regular</code></li>
-            <li><code>small</code></li>
-          </ul>
-          <p>Note: Since Quaqua does not (yet) implement all component UI's,
-            you may not get consistent results with the small size style.</p>
-      </td>
+        .showNonEditableCaret</code></td>
+      <td><code>true</code></td>
+      <td><p>Quaqua shows a non-blinking caret in non-editable text components, like OS X does.</p>
+          <p class="semiparagraph">Set this property to false to turn this behavior off<code></code>.</p></td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua<br />
@@ -126,33 +115,21 @@ MM_reloadPage(true);
           <p class="semiparagraph">Set the insets to a smaller value, if your
             layouts grow too big, and you don't want to invest the time for fine
             tuning the visual margin of individual components using the client
-            property <code>Quaqua.Component.visualMargin</code>.</p>
-      </td>
+            property <code>Quaqua.Component.visualMargin</code>.</p>      </td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua<br />
     .enforceVisualMargin</code></td>
       <td><code>false</code></td>
       <td><p>Enforces the visual margin around components. Set this to true to
-          work around NetBeans Matisse issue <a href="http://www.netbeans.org/issues/show_bug.cgi?id=74522" target="_blank">#74522</a>.</p>
-      </td>
+          work around NetBeans Matisse issue <a href="http://www.netbeans.org/issues/show_bug.cgi?id=74522" target="_blank">#74522</a>.</p>      </td>
     </tr>
     <tr valign="top" bgcolor="#ffffff">
       <td><code>Quaqua<br />
       .jniIsPreloaded</code></td>
       <td><code>false</code></td>
       <td><p>Set this to true, to prevent Quaqua from loading its JNI library
-          on its own.</p>
-      </td>
-    </tr>
-    <tr valign="top" bgcolor="#ffffff">
-      <td><code>Quaqua.JNI<br />
-    .isPreloaded<br />
-    <span class="info">(<strong>deprecated</strong>, use <code>Quaqua.jniIsPreloaded</code> instead)</span>      </code></td>
-      <td><code>false</code></td>
-      <td><p>Set this to true, to prevent Quaqua from loading its JNI library
-          on its own.</p>
-      </td>
+          on its own.</p>      </td>
     </tr>
   </table>
   <h5 class="doubleparagraph">Properties for Java 1.6 only</h5>

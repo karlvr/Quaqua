@@ -933,6 +933,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-DQuaqua.design=lion"/>
+            <jvmarg value="-DQuaqua.showNonEditableCaret=true"/>
             <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
         </java>
     </target>

@@ -1947,6 +1947,8 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
             //
+            "TextComponent.showNonEditableCaret",QuaquaManager.getProperty("Quaqua.showNonEditableCaret", "true").equals("true"),
+            //
             "TextField.border", textFieldBorder,
             "TextField.opaque", opaque,
             "TextField.focusHandler", textFieldFocusHandler,

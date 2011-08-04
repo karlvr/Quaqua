@@ -1902,13 +1902,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // Default value for "apple.awt.windowShadow"
             "RootPane.windowShadow", Boolean.TRUE,
             "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
-
         public Object createValue(UIDefaults table) {
             return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
         }
     },
             "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
-
         public Object createValue(UIDefaults table) {
             return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
         }
@@ -2018,6 +2016,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TextArea.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextArea.opaque", Boolean.TRUE,
             "TextArea.popupHandler", textComponentPopupHandler,
+            //
+            "TextComponent.showNonEditableCaret",QuaquaManager.getProperty("Quaqua.showNonEditableCaret", "true").equals("true"),
+            //
             "TextField.border", textFieldBorder,
             "TextField.borderInsets", new InsetsUIResource(6, 7, 6, 7),
             "TextField.borderInsetsSmall", new InsetsUIResource(6, 7, 5, 7),
@@ -2025,6 +2026,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TextField.focusHandler", textFieldFocusHandler,
             "TextField.popupHandler", textComponentPopupHandler,
             "TextField.autoSelect", autoselect,
+            //
             "TextPane.margin", new InsetsUIResource(1, 3, 1, 3),
             "TextPane.opaque", Boolean.TRUE,
             "TextPane.popupHandler", textComponentPopupHandler,
