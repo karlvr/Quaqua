@@ -12,8 +12,11 @@ package test;
 
 import java.awt.BorderLayout;
 import java.awt.Window;
-import java.awt.event.*;
-import java.awt.peer.FramePeer;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.*;
 
 /**
@@ -26,6 +29,7 @@ public class ToolBarTest extends javax.swing.JPanel {
 
     private static JToolBar unifiedToolBar;
     private static JToolBar unifiedStatusBar;
+    private static Timer timer;
 
     /** Creates new form. */
     public ToolBarTest() {
@@ -33,9 +37,9 @@ public class ToolBarTest extends javax.swing.JPanel {
         setOpaque(true);
         // toolBar.putClientProperty("JToolBar.isRollover", Boolean.TRUE);
 
-        folderButton.putClientProperty("JButton.segmentPosition","middle");
-        fileButton.putClientProperty("JButton.segmentPosition","last");
-        
+        folderButton.putClientProperty("JButton.segmentPosition", "middle");
+        fileButton.putClientProperty("JButton.segmentPosition", "last");
+
         if (unifiedToolBar != null) {
             unifiedToolBarBox.setSelected(true);
             toolBarPanel.remove(toolBar);
@@ -46,6 +50,32 @@ public class ToolBarTest extends javax.swing.JPanel {
             remove(statusBar);
             statusBar = unifiedStatusBar;
         }
+    }
+
+    private void startTimer() {
+        if (timer==null) {
+            timer=new Timer(500,new ActionListener(){
+
+                public void actionPerformed(ActionEvent e) {
+                    updateStatusLabel();
+                }
+            });
+            timer.setRepeats(true);
+            timer.start();
+        }
+    }
+
+    private void stopTimer() {
+        
+        if (timer != null) {
+            timer.stop();
+            timer = null;
+        }
+    }
+
+    private void updateStatusLabel() {
+       DateFormat tf=new SimpleDateFormat("HH:mm:ss");
+        statusLabel.setText("A status bar " + tf.format(new Date()));
     }
 
     /** This method is called from within the constructor to
@@ -78,6 +108,16 @@ public class ToolBarTest extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
         statusBar.setFloatable(false);
+        statusBar.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                statusBarAncestorAdded(evt);
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+                statusBarAncestorRemoved(evt);
+            }
+        });
 
         statusLabel.setText("A status bar");
         statusBar.add(statusLabel);
@@ -222,9 +262,9 @@ public class ToolBarTest extends javax.swing.JPanel {
     private void unifiedToolBarPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unifiedToolBarPerformed
         JRootPane rp = SwingUtilities.getRootPane(this);
         JPanel cp = (JPanel) rp.getContentPane();
-        
-        boolean isUnified=unifiedTitleRadio.isSelected();
-        
+
+        boolean isUnified = unifiedTitleRadio.isSelected();
+
         if (unifiedToolBarBox.isSelected()) {
             toolBar.setOrientation(JToolBar.HORIZONTAL);
             cp.add(toolBar, BorderLayout.NORTH);
@@ -237,18 +277,20 @@ public class ToolBarTest extends javax.swing.JPanel {
             unifiedToolBar = null;
         }
         cp.revalidate();
-        
-       Boolean currentUnified=(Boolean) rp.getClientProperty("apple.awt.brushMetalLook");
-       if (currentUnified==null)currentUnified=false;
-        if (currentUnified!=isUnified) {
-        
-        rp.putClientProperty("apple.awt.brushMetalLook",//
-                isUnified);
-        Window f = (Window) rp.getParent();
-        f.dispose();
-        f.setVisible(true);
+
+        Boolean currentUnified = (Boolean) rp.getClientProperty("apple.awt.brushMetalLook");
+        if (currentUnified == null) {
+            currentUnified = false;
         }
-       
+        if (currentUnified != isUnified) {
+
+            rp.putClientProperty("apple.awt.brushMetalLook",//
+                    isUnified);
+            Window f = (Window) rp.getParent();
+            f.dispose();
+            f.setVisible(true);
+        }
+
     }//GEN-LAST:event_unifiedToolBarPerformed
 
     private void unifiedStatusBarPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_unifiedStatusBarPerformed
@@ -272,17 +314,25 @@ public class ToolBarTest extends javax.swing.JPanel {
     }//GEN-LAST:event_unifiedStatusBarPerformed
 
     private void titleStyleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_titleStyleChanged
-      toolBar.putClientProperty("Quaqua.ToolBar.style", titleStyleGroup.getSelection().getActionCommand());
-      unifiedToolBarPerformed(null);
-toolBar.revalidate();
-toolBar.repaint();
+        toolBar.putClientProperty("Quaqua.ToolBar.style", titleStyleGroup.getSelection().getActionCommand());
+        unifiedToolBarPerformed(null);
+        toolBar.revalidate();
+        toolBar.repaint();
     }//GEN-LAST:event_titleStyleChanged
 
     private void bottomStyleChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_bottomStyleChanged
-     statusBar.putClientProperty("Quaqua.ToolBar.style", bottomStyleGroup.getSelection().getActionCommand());
-statusBar.revalidate();
-statusBar.repaint();
+        statusBar.putClientProperty("Quaqua.ToolBar.style", bottomStyleGroup.getSelection().getActionCommand());
+        statusBar.revalidate();
+        statusBar.repaint();
     }//GEN-LAST:event_bottomStyleChanged
+
+    private void statusBarAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_statusBarAncestorAdded
+          startTimer();
+    }//GEN-LAST:event_statusBarAncestorAdded
+
+    private void statusBarAncestorRemoved(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_statusBarAncestorRemoved
+              stopTimer();
+    }//GEN-LAST:event_statusBarAncestorRemoved
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bottomStyleGroup;
