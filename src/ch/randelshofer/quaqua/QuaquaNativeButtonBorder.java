@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua;
 
+import javax.swing.JButton;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import javax.swing.JToolBar;
 import java.util.HashMap;
@@ -296,11 +297,13 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         private final static int ARG_ROLLOVER = 3;
         private final static int ARG_SELECTED = 4;
         private final static int ARG_FOCUSED = 5;
-        private final static int ARG_SIZE_VARIANT = 6;//2 bits
-        private final static int ARG_SEGPOS = 8;
-        private final static int ARG_WIDGET = 11;// 7 bits
-        private final static int ARG_TRAILING_SEPARATOR = 18;
-        private final static int ARG_TRAILING_SEPARATOR_HACK = 19;
+        private final static int ARG_PULSED = 6;
+        private final static int ARG_SIZE_VARIANT = 7;//2 bits
+        private final static int ARG_SEGPOS = 9;
+        private final static int ARG_WIDGET = 12;// 7 bits
+        private final static int ARG_TRAILING_SEPARATOR = 19;
+        private final static int ARG_TRAILING_SEPARATOR_HACK = 20;
+        private final static int ARG_ANIM_FRAME = 21;
 
         public NativeBGBorder() {
             super(12);
@@ -318,12 +321,24 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             } else if (c instanceof JComponent) {
                 jc = (JComponent) c;
             }
+            String s = getStyle(c);
+            WidgetConfig wc = wcs.get(s);
+            Widget widget = wc.widget;
 
             int args = 0;
             OSXAquaPainter.State state;
             if (QuaquaUtilities.isOnActiveWindow(c)) {
                 state = OSXAquaPainter.State.active;
                 args |= 1 << ARG_ACTIVE;
+
+                if (b instanceof JButton && ((JButton) b).isDefaultButton()) {
+                    state = OSXAquaPainter.State.pulsed;
+                    args |= 1 << ARG_PULSED;
+                    long animationTime = System.currentTimeMillis();
+                    args |= animationTime << ARG_ANIM_FRAME;
+                    painter.setValueByKey(Key.animationTime, animationTime / 1000d);
+                    b.repaint();
+                }
             } else {
                 state = OSXAquaPainter.State.inactive;
             }
@@ -340,16 +355,22 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                     state = OSXAquaPainter.State.disabled;
                     args |= 1 << ARG_DISABLED;
                 }
+
             }
             painter.setState(state);
 
             int value = b == null ? 0 : (b.isSelected() ? 1 : 0);
+
             painter.setValueByKey(Key.value, value);
             args |= value << ARG_SELECTED;
 
             boolean isFocused = QuaquaUtilities.isFocused(c);
+            painter.setValueByKey(Key.focused, isFocused ? 1 : 0);
             args |= (isFocused) ? 1 << ARG_FOCUSED : 0;
-            painter.setValueByKey(OSXAquaPainter.Key.focused, isFocused ? 1 : 0);
+
+
+
+
 
             Size size;
             switch (QuaquaUtilities.getSizeVariant(c)) {
@@ -374,9 +395,6 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             }
             painter.setSize(size);
 
-            String s = getStyle(c);
-            WidgetConfig wc = wcs.get(s);
-
             SegmentPosition segpos = getSegmentPosition(c);
             painter.setSegmentPosition(segpos);
             args |= segpos.getId() << ARG_SEGPOS;
@@ -393,7 +411,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                     painter.setValueByKey(Key.segmentTrailingSeparator, 0);
             }
 
-            Widget widget = wc.widget;
+
+
             args |= widget.getId() << ARG_WIDGET;
             painter.setWidget(widget);
 
