@@ -103,6 +103,12 @@ public class QuaquaBorderFactory {
     public static Border create(String location, Insets imageInsets, Insets borderInsets, boolean fill, Color fillColor) {
         return create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, fillColor, false);
     }
+    public static Border create(String location, Rectangle subimage, Insets imageInsets, Insets borderInsets, boolean fill) {
+        return create(QuaquaIconFactory.createBufferedImage(location, subimage), imageInsets, borderInsets, fill, null, false);
+    }
+    public static Border create(String location, Rectangle subimage, Insets imageInsets, Insets borderInsets, boolean fill, Color fillColor) {
+        return create(QuaquaIconFactory.createBufferedImage(location, subimage), imageInsets, borderInsets, fill, fillColor, false);
+    }
 
     public static Border createBackgroundBorder(String location, Insets imageInsets, Insets borderInsets, boolean fill) {
         return new BackgroundBorderUIResource(create(QuaquaIconFactory.createImage(location), imageInsets, borderInsets, fill, null, false));

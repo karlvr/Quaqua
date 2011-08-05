@@ -1,7 +1,7 @@
 /*
  * @(#)OSXPreferences.java
  *
- * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2005-2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -45,6 +45,11 @@ public class OSXPreferences {
         return (String) get(file, key, defaultValue);
     }
 
+    public static boolean isStringEqualTo(File file, String key, String defaultValue, String compareWithThisValue) {
+System.out.println("OSXPreferences.isStringEqualTo "+key+"=="+compareWithThisValue);        
+        return ((String) get(file, key, defaultValue)).equals(compareWithThisValue);
+    }
+    
     public static Object get(File file, String key) {
         ensureCached(file);
         return cachedFiles.get(file).get(key);

@@ -42,7 +42,9 @@ public class Images {
     }
 
     public static Image createImage(Class baseClass, String location) {
-        return createImage(baseClass.getResource(location));
+        URL resource=baseClass.getResource(location);
+        if (resource==null) throw new IllegalArgumentException("no resource found for location:"+location);
+        return createImage(resource);
     }
 
     public static Image createImage(URL resource) {

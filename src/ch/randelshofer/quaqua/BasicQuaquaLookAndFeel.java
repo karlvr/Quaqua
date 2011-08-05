@@ -1901,48 +1901,45 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "RootPane.draggableWindowBackground", Boolean.FALSE,
             // Default value for "apple.awt.windowShadow"
             "RootPane.windowShadow", Boolean.TRUE,
-            "ScrollBar.placeButtonsTogether", new UIDefaults.LazyValue() {
-        public Object createValue(UIDefaults table) {
-            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax").equals("DoubleMax"));
-        }
-    },
-            "ScrollBar.supportsAbsolutePositioning", new UIDefaults.LazyValue() {
-        public Object createValue(UIDefaults table) {
-            return (OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false").equals("true"));
-        }
-    },
+            "ScrollBar.placeButtonsTogether",new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",            
+                new Object[]{OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax","DoubleMax"}),
+            "ScrollBar.supportsAbsolutePositioning",new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",   
+                new Object[]{OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false","true"}),
             "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
-            "ScrollBar.smallMinimumThumbSize", new DimensionUIResource(18, 18),
+            "ScrollBar.minimumThumbSize.small", new DimensionUIResource(18, 18),
             "ScrollBar.maximumThumbSize", new DimensionUIResource(Integer.MAX_VALUE, Integer.MAX_VALUE),
-            "ScrollBar.hThumbBody", makeBufferedImage(commonDir + "ScrollBar.hThumbBody.png"),
-            "ScrollBar.hThumbLeft", makeIcons(commonDir + "ScrollBar.hThumbLeft.png", 5, false),
-            "ScrollBar.hThumbRight", makeIcons(commonDir + "ScrollBar.hThumbRight.png", 5, false),
-            "ScrollBar.hTrack", makeImageBevelBorder(commonDir + "ScrollBar.hTrack.png", new Insets(15, 0, 0, 0)),
-            "ScrollBar.ihThumb", makeImageBevelBorder(commonDir + "ScrollBar.ihThumb.png", new Insets(15, 11, 0, 11)),
-            "ScrollBar.sep.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.sep.hButtons.png", new Insets(15, 28, 0, 28), 4, false),
-            "ScrollBar.tog.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.tog.hButtons.png", new Insets(15, 18, 0, 44), 4, false),
-            "ScrollBar.vThumbBody", makeBufferedImage(commonDir + "ScrollBar.vThumbBody.png"),
-            "ScrollBar.vThumbTop", makeIcons(commonDir + "ScrollBar.vThumbTop.png", 5, true),
-            "ScrollBar.vThumbBottom", makeIcons(commonDir + "ScrollBar.vThumbBottom.png", 5, true),
-            "ScrollBar.vTrack", makeImageBevelBorder(commonDir + "ScrollBar.vTrack.png", new Insets(0, 15, 0, 0)),
-            "ScrollBar.ivThumb", makeImageBevelBorder(commonDir + "ScrollBar.ivThumb.png", new Insets(11, 15, 11, 0)),
-            "ScrollBar.sep.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.sep.vButtons.png", new Insets(28, 15, 28, 0), 4, true),
-            "ScrollBar.tog.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.tog.vButtons.png", new Insets(18, 15, 44, 0), 4, true),
-            "ScrollBar.small.hThumbBody", makeBufferedImage(commonDir + "ScrollBar.small.hThumbBody.png"),
-            "ScrollBar.small.hThumbLeft", makeIcons(commonDir + "ScrollBar.small.hThumbLeft.png", 5, false),
-            "ScrollBar.small.hThumbRight", makeIcons(commonDir + "ScrollBar.small.hThumbRight.png", 5, false),
-            "ScrollBar.small.hTrack", makeImageBevelBorder(commonDir + "ScrollBar.small.hTrack.png", new Insets(11, 0, 0, 0)),
-            "ScrollBar.small.ihThumb", makeImageBevelBorder(commonDir + "ScrollBar.small.ihThumb.png", new Insets(11, 8, 0, 8)),
-            "ScrollBar.smallSep.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallSep.hButtons.png", new Insets(11, 21, 0, 21), 4, false),
-            "ScrollBar.smallTog.hButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallTog.hButtons.png", new Insets(11, 14, 0, 34), 4, false),
-            "ScrollBar.small.vThumbBody", makeBufferedImage(commonDir + "ScrollBar.small.vThumbBody.png"),
-            "ScrollBar.small.vThumbTop", makeIcons(commonDir + "ScrollBar.small.vThumbTop.png", 5, true),
-            "ScrollBar.small.vThumbBottom", makeIcons(commonDir + "ScrollBar.small.vThumbBottom.png", 5, true),
-            "ScrollBar.small.vTrack", makeImageBevelBorder(commonDir + "ScrollBar.small.vTrack.png", new Insets(0, 11, 0, 0)),
-            "ScrollBar.small.ivThumb", makeImageBevelBorder(commonDir + "ScrollBar.small.ivThumb.png", new Insets(8, 11, 8, 0)),
-            "ScrollBar.smallSep.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallSep.vButtons.png", new Insets(21, 11, 21, 0), 4, true),
-            "ScrollBar.smallTog.vButtons", makeImageBevelBorders(commonDir + "ScrollBar.smallTog.vButtons.png", new Insets(14, 11, 34, 0), 4, true),
+            "ScrollBar.thumb.hMiddle", makeBufferedImage(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,5*15,16,15)),
+            "ScrollBar.thumb.hFirst", makeIcons(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,0,12,5*15),5, false),
+            "ScrollBar.thumb.hLast", makeIcons(commonDir + "ScrollBar.thumb.h.png", new Rectangle(12,0,12,5*15),5, false),
+            "ScrollBar.track.h", makeImageBevelBorder(commonDir + "ScrollBar.track.h.png", new Insets(8, 0, 0, 0)),
+            "ScrollBar.thumb.hInactive", makeImageBevelBorder(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,6*15,24,15),new Insets(15, 11, 0, 11),false),
+            "ScrollBar.buttons.hSep", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hSep.png", new Insets(15, 28, 0, 28), 4, false),
+            "ScrollBar.buttons.hTog", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hTog.png", new Insets(15, 18, 0, 44), 4, false),
+            "ScrollBar.thumb.vMiddle", makeBufferedImage(commonDir + "ScrollBar.thumb.v.png", new Rectangle(5*15,0,15,16)),
+            "ScrollBar.thumb.vFirst", makeIcons(commonDir + "ScrollBar.thumb.v.png", new Rectangle(0,0,5*15,12),5, true),
+            "ScrollBar.thumb.vLast", makeIcons(commonDir + "ScrollBar.thumb.v.png", new Rectangle(0,12,5*15,12),5, true),
+            "ScrollBar.track.v", makeImageBevelBorder(commonDir + "ScrollBar.track.v.png", new Insets(0, 8, 0, 0)),
+            "ScrollBar.thumb.vInactive", makeImageBevelBorder(commonDir + "ScrollBar.thumb.v.png", new Rectangle(6*15,0,15,24),new Insets(11, 15, 11, 0),false),
+            "ScrollBar.buttons.vSep", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vSep.png", new Insets(28, 15, 28, 0), 4, true),
+            "ScrollBar.buttons.vTog", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vTog.png", new Insets(18, 15, 44, 0), 4, true),
+            "ScrollBar.thumb.hMiddle.small", makeBufferedImage(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(0,5*11,12,11)),
+            "ScrollBar.thumb.hFirst.small", makeIcons(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(0,0,9,5*11),5, false),
+            "ScrollBar.thumb.hLast.small", makeIcons(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(9,0,9,5*11),5, false),
+            "ScrollBar.track.h.small", makeImageBevelBorder(commonDir + "ScrollBar.track.h.small.png", new Insets(11, 0, 0, 0)),
+            "ScrollBar.thumb.hInactive.small", makeImageBevelBorder(commonDir + "ScrollBar.thumb.h.small.png",new Rectangle(0,6*11,18,11), new Insets(11, 8, 0, 8),false),
+            "ScrollBar.buttons.hSep.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hSep.small.png", new Insets(11, 21, 0, 21), 4, false),
+            "ScrollBar.buttons.hTog.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hTog.small.png", new Insets(11, 14, 0, 34), 4, false),
+            "ScrollBar.thumb.vMiddle.small", makeBufferedImage(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(5*11,0,11,12)),
+            "ScrollBar.thumb.vFirst.small", makeIcons(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(0,0,5*11,9), 5, true),
+            "ScrollBar.thumb.vLast.small", makeIcons(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(0,9,5*11,9), 5, true),
+            "ScrollBar.track.v.small", makeImageBevelBorder(commonDir + "ScrollBar.track.v.small.png", new Insets(0, 11, 0, 0)),
+            "ScrollBar.thumb.vInactive.small", makeImageBevelBorder(commonDir + "ScrollBar.thumb.v.small.png", new Rectangle(6*11,0,11,18),new Insets(8, 11, 8, 0),false),
+            "ScrollBar.buttons.vSep.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vSep.small.png", new Insets(21, 11, 21, 0), 4, true),
+            "ScrollBar.buttons.vTog.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vTog.small.png", new Insets(14, 11, 34, 0), 4, true),
             "ScrollBar.focusable", Boolean.FALSE,
+            //
             "ScrollPane.border", scrollPaneBorder,
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
             "ScrollPane.focusable", Boolean.FALSE,
@@ -2081,7 +2078,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "Quaqua.Debug.clipBoundsForeground", new AlphaColorUIResource(0, 0, 255, 128),
             "Quaqua.Debug.componentBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
             "Quaqua.Debug.textBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
-            "ClassLoader", getClass().getClassLoader(),};
+            "ClassLoader", getClass().getClassLoader(),//
+        };
         putDefaults(table, uiDefaults);
 
         // Support for org.jdesktop.layout.GroupLayout
@@ -2101,6 +2099,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createBufferedImage",
                 new Object[]{location});
+    }
+    protected Object makeBufferedImage(String location, Rectangle subimage) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createBufferedImage",
+                new Object[]{location, subimage});
     }
 
     public static Object makeIcon(Class baseClass, String location) {
@@ -2125,6 +2128,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
                 new Object[]{location, states, horizontal});
+    }
+    protected static Object makeIcons(String location,Rectangle subimage, int states, boolean horizontal) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
+                new Object[]{location,subimage, states, horizontal});
     }
 
     public static Object makeNativeIcon(String path, int size) {
@@ -2191,6 +2199,12 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
                 new Object[]{location, insets, fill});
     }
+    protected Object makeImageBevelBorder(String location, Rectangle subimage, Insets insets, boolean fill) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
+                new Object[]{location, subimage, insets, insets, fill});
+    }
+
 
     protected Object makeImageBevelBorder(String location, Insets insets, boolean fill, Color fillColor) {
         return new UIDefaults.ProxyLazyValue(
