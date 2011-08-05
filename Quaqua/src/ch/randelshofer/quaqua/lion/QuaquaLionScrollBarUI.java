@@ -45,7 +45,7 @@ public class QuaquaLionScrollBarUI extends BasicScrollBarUI {
     @Override
     protected void installDefaults() {
         super.installDefaults();
-        smallMinimumThumbSize = (Dimension) UIManager.get("ScrollBar.smallMinimumThumbSize");
+        smallMinimumThumbSize = (Dimension) UIManager.get("ScrollBar.minimumThumbSize.small");
         updatePlaceButtonsTogether();
         LookAndFeel.installColorsAndFont(scrollbar, "ScrollBar.background", "ScrollBar.foreground", "ScrollBar.font");
         scrollbar.setFocusable(UIManager.getBoolean("ScrollBar.focusable"));
@@ -187,34 +187,34 @@ public class QuaquaLionScrollBarUI extends BasicScrollBarUI {
         if (!scrollbar.isEnabled()
                 || !QuaquaUtilities.isOnActiveWindow(scrollbar)) {
             if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                Border trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.small.ivThumb" : "ScrollBar.ivThumb");
+                Border trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.thumb.vInactive.small" : "ScrollBar.thumb.vInactive");
                 trackAndButtons.paintBorder(c, g,
                         thumbBounds.x, thumbBounds.y,
                         thumbBounds.width, thumbBounds.height);
             } else {
-                Border trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.small.ihThumb" : "ScrollBar.ihThumb");
+                Border trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.thumb.hInactive.small" : "ScrollBar.thumb.hInactive");
                 trackAndButtons.paintBorder(c, g,
                         thumbBounds.x, thumbBounds.y,
                         thumbBounds.width, thumbBounds.height);
             }
         } else {
             if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.small.vThumbTop" : "ScrollBar.vThumbTop"))[thumbBounds.y % 5];
+                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vFirst.small" : "ScrollBar.thumb.vFirst"))[thumbBounds.y % 5];
                 thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
-                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.small.vThumbBottom" : "ScrollBar.vThumbBottom"))[(thumbBounds.y + thumbBounds.height) % 5];
+                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vLast.small" : "ScrollBar.thumb.vLast"))[(thumbBounds.y + thumbBounds.height) % 5];
                 thumbEnd.paintIcon(c, g, thumbBounds.x, thumbBounds.y + thumbBounds.height - thumbEnd.getIconHeight());
-                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.small.vThumbBody" : "ScrollBar.vThumbBody");
+                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.vMiddle.small" : "ScrollBar.thumb.vMiddle");
                 TexturePaint paint = new TexturePaint(
                         img,
                         new Rectangle(thumbBounds.x, 0, img.getWidth(), img.getHeight()));
                 g.setPaint(paint);
                 g.fillRect(thumbBounds.x, thumbBounds.y + thumbBegin.getIconHeight(), getPreferredSize(c).width, thumbBounds.height - thumbBegin.getIconHeight() - thumbEnd.getIconHeight());
             } else {
-                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.small.hThumbLeft" : "ScrollBar.hThumbLeft"))[thumbBounds.x % 5];
+                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hFirst.small" : "ScrollBar.thumb.hFirst"))[thumbBounds.x % 5];
                 thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
-                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.small.hThumbRight" : "ScrollBar.hThumbRight"))[(thumbBounds.x + thumbBounds.width) % 5];
+                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hLast.small" : "ScrollBar.thumb.hLast"))[(thumbBounds.x + thumbBounds.width) % 5];
                 thumbEnd.paintIcon(c, g, thumbBounds.x + thumbBounds.width - thumbEnd.getIconWidth(), thumbBounds.y);
-                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.small.hThumbBody" : "ScrollBar.hThumbBody");
+                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.hMiddle.small" : "ScrollBar.thumb.hMiddle");
                 TexturePaint paint = new TexturePaint(
                         img,
                         new Rectangle(0, thumbBounds.y, img.getWidth(), img.getHeight()));
@@ -318,9 +318,9 @@ public class QuaquaLionScrollBarUI extends BasicScrollBarUI {
 
         Border[] borders;
         if (isPlaceButtonsTogether()) {
-            borders = (Border[]) UIManager.get(isSmall ? "ScrollBar.smallTog." + vh + "Buttons" : "ScrollBar.tog." + vh + "Buttons");
+            borders = (Border[]) UIManager.get(isSmall ? "ScrollBar.buttons." + vh + "Tog.small" : "ScrollBar.buttons." + vh + "Tog");
         } else {
-            borders = (Border[]) UIManager.get(isSmall ? "ScrollBar.smallSep." + vh + "Buttons" : "ScrollBar.sep." + vh + "Buttons");
+            borders = (Border[]) UIManager.get(isSmall ? "ScrollBar.buttons." + vh + "Sep.small" : "ScrollBar.buttons." + vh + "Sep");
         }
         return (borders == null) ? null : borders[buttonsIndex];
     }

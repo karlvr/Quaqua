@@ -1,7 +1,7 @@
 /*
  * @(#)ImageBevelBorder.java 
  *
- * Copyright (c) 2001-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2001-2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -79,8 +79,9 @@ public class ImageBevelBorder implements Border {
      * The image has different insets than the border.
      */
     public ImageBevelBorder(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
-        this(img, imageInsets,borderInsets,fillContentArea,null);
+        this(img, imageInsets, borderInsets, fillContentArea, null);
     }
+
     /**
      * Creates a new instance with the given image and insets.
      * The image has different insets than the border.
@@ -124,8 +125,8 @@ public class ImageBevelBorder implements Border {
             return;
         }
 
-        
-        if (gr.getClipBounds()!=null&&!gr.getClipBounds().intersects(x, y, width, height)) {
+
+        if (gr.getClipBounds() != null && !gr.getClipBounds().intersects(x, y, width, height)) {
             return;
         }
 
@@ -253,12 +254,15 @@ public class ImageBevelBorder implements Border {
             if (left + right < width && top + bottom < height) {
                 if (fillColor != null) {
                     g.setColor(fillColor);
+                    g.fillRect(x + left, y + top, width - right - left, height - top - bottom);
                 } else {
-                    subImg = bufImg.getSubimage(left, top, imgWidth - right - left, imgHeight - top - bottom);
-                    paint = new TexturePaint(subImg, new Rectangle(x + left, y + top, imgWidth - right - left, imgHeight - top - bottom));
-                    g.setPaint(paint);
+                    if (imgWidth - right - left > 0 && imgHeight - top - bottom > 0) {
+                        subImg = bufImg.getSubimage(left, top, imgWidth - right - left, imgHeight - top - bottom);
+                        paint = new TexturePaint(subImg, new Rectangle(x + left, y + top, imgWidth - right - left, imgHeight - top - bottom));
+                        g.setPaint(paint);
+                        g.fillRect(x + left, y + top, width - right - left, height - top - bottom);
+                    }
                 }
-                g.fillRect(x + left, y + top, width - right - left, height - top - bottom);
             }
         }
 
@@ -270,7 +274,7 @@ public class ImageBevelBorder implements Border {
     }
 
     public void setImage(BufferedImage image) {
-        this.image=image;
+        this.image = image;
     }
 
     public static class UIResource extends ImageBevelBorder implements javax.swing.plaf.UIResource {
@@ -286,6 +290,7 @@ public class ImageBevelBorder implements Border {
         public UIResource(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
             super(img, imageInsets, borderInsets, fillContentArea);
         }
+
         public UIResource(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea, Color fillColor) {
             super(img, imageInsets, borderInsets, fillContentArea, fillColor);
         }

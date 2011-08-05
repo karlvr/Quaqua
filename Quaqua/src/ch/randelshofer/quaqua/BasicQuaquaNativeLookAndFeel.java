@@ -2027,6 +2027,11 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createBufferedImage",
                 new Object[]{location});
     }
+    protected Object makeBufferedImage(String location, Rectangle subimage) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createBufferedImage",
+                new Object[]{location, subimage});
+    }
 
     public static Object makeIcon(Class baseClass, String location) {
         return new UIDefaults.ProxyLazyValue(
@@ -2050,6 +2055,11 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
                 new Object[]{location, states, horizontal});
+    }
+    protected static Object makeIcons(String location,Rectangle subimage, int states, boolean horizontal) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createIcons",
+                new Object[]{location,subimage, states, horizontal});
     }
 
     public static Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
@@ -2118,6 +2128,13 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     layoutRect
                 });
     }
+    protected Object makeImageBevelBorder(String location, Rectangle subimage, Insets insets, boolean fill) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
+                new Object[]{location, subimage, insets, insets, fill});
+    }
+
+
 
     protected Object makeImageBevelBorder(String location, Insets insets) {
         return makeImageBevelBorder(location, insets, false);

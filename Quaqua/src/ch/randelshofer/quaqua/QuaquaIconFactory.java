@@ -129,8 +129,12 @@ public class QuaquaIconFactory {
         return Images.createImage(baseClass, location);
     }
 
-    public static Image createBufferedImage(String location) {
+    public static BufferedImage createBufferedImage(String location) {
         return Images.toBufferedImage(createImage(location));
+    }
+    public static BufferedImage createBufferedImage(String location, Rectangle subimage) {
+        BufferedImage  img=Images.toBufferedImage(createImage(location));
+        return img.getSubimage(subimage.x, subimage.y, subimage.width, subimage.height);
     }
 
     public static Icon[] createIcons(String location, int count, boolean horizontal) {
@@ -138,6 +142,19 @@ public class QuaquaIconFactory {
 
         BufferedImage[] images = Images.split(
                 (Image) createImage(location),
+                count, horizontal);
+
+        for (int i = 0; i < count; i++) {
+            icons[i] = new IconUIResource(new ImageIcon(images[i]));
+        }
+        return icons;
+    }
+    public static Icon[] createIcons(String location, Rectangle subimage, int count, boolean horizontal) {
+        Icon[] icons = new Icon[count];
+        BufferedImage img=createBufferedImage(location,subimage);
+
+        BufferedImage[] images = Images.split(
+                img,
                 count, horizontal);
 
         for (int i = 0; i < count; i++) {
