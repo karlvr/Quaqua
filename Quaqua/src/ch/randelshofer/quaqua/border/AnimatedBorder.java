@@ -18,6 +18,7 @@ import java.util.*;
 /**
  * AnimatedBorder takes an array of borders and a delay value, to draw an
  * animated border.
+ * The border to be drawn is selected based on the current time.
  *
  * @author  Werner Randelshofer
  * @version $Id$
@@ -61,22 +62,6 @@ public class AnimatedBorder implements Border {
         int frame = (int) (animTime / delay);
 
         borders[frame].paintBorder(c, g, x, y, width, height);
-        
-        
-        long sleep = delay - animTime % delay;
-        if (sleep == 0) sleep = delay;
-        
-        if (! scheduledComponents.contains(c)) {
-            scheduledComponents.add(c);
-            javax.swing.Timer timer = new javax.swing.Timer((int) sleep, new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    scheduledComponents.remove(c);
-                    c.repaint();
-                }
-            });
-            timer.setRepeats(false);
-            timer.start();
-        }
     }
 }
 

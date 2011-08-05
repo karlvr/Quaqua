@@ -15,6 +15,9 @@ import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
@@ -42,6 +45,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     private static Insets viewInsets = new Insets(0, 0, 0, 0);
     // Has the shared instance defaults been initialized?
     private boolean defaults_initialized = false;
+    private static HashSet<AbstractButton> animatedComponents = new HashSet<AbstractButton>();
 
     /**
      * Push Button.
@@ -115,7 +119,10 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     @Override
     public void paint(Graphics g, JComponent c) {
-
+if (c instanceof JButton) {
+    JButton b=(JButton)c;
+    if (b.isDefaultButton()) animateButton(b);
+}
         g.setFont(getFont(c));
 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
@@ -363,7 +370,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     public Dimension getPreferredSize(JComponent c) {
         return QuaquaButtonUI.getPreferredSize((AbstractButton) c);
     }
-    
+
     private static String getStyle(JComponent b) {
         String style = (String) b.getClientProperty("Quaqua.Button.style");
         if (style == null) {
@@ -371,7 +378,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         }
         if (style == null) {
             if (b.getBorder() instanceof UIResource
-                    && (!(b instanceof JButton)||((JButton) b).isBorderPainted())) {
+                    && (!(b instanceof JButton) || ((JButton) b).isBorderPainted())) {
                 style = "push";
             } else {
                 style = "plain";
@@ -380,9 +387,8 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         return style;
     }
 
-    
     public static Dimension getPreferredSize(AbstractButton b) {
-        String style=getStyle(b);
+        String style = getStyle(b);
         QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(b);
         if (style.equals("help")) {
             Icon helpIcon;
@@ -530,9 +536,9 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             return bounds;
         }
 
-        String style=getStyle(b);
+        String style = getStyle(b);
 
-        String text = style.equals("help")?null:b.getText();
+        String text = style.equals("help") ? null : b.getText();
         boolean isEmpty = (text == null || text.length() == 0);
         if (isEmpty) {
             text = " ";
@@ -582,5 +588,20 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
             }
         }
         return bounds;
+    }
+
+    private static void animateButton(final AbstractButton b) {
+        if (animatedComponents.add(b)) {
+            Timer animationTimer;
+            long sleep = 1000 / 30; // 30 fps
+            animationTimer = new Timer((int) sleep, new ActionListener() {
+
+                public void actionPerformed(ActionEvent event) {
+                    animatedComponents.remove(b);
+                    b.repaint();
+                }
+            });
+            animationTimer.start();
+        }
     }
 }
