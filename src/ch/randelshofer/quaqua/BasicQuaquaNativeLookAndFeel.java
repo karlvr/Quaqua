@@ -1585,7 +1585,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         // *** Shared Borders
         Object textFieldBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaNativeTextFieldBorder$UIResource",
-                new Object[]{new Insets(3,3,3,3), new Insets(6,8,6,8), true});
+                new Object[]{new Insets(0,0,0,0), new Insets(6,8,6,8), true});
         
         Object buttonBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaNativeButtonBorder$UIResource"

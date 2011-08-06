@@ -192,6 +192,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
         return getHandler();
     }
 
+    @Override
     protected ChangeListener createViewportChangeListener() {
         return getHandler();
     }
@@ -209,6 +210,11 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             margin = UIManager.getInsets("Component.visualMargin");
         }
         return (margin == null) ? new Insets(0, 0, 0, 0) : margin;
+    }
+@Override
+    public void paint(Graphics g, JComponent c) {
+        super.paint(g, c);
+        Debug.paint(g, c, this);
     }
 
     public void update(Graphics g, JComponent c) {

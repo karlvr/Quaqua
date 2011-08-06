@@ -934,7 +934,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-DQuaqua.design=lion"/>
             <jvmarg value="-DQuaqua.showNonEditableCaret=true"/>
-            <jvmarg value="-Dapple.awt.graphics.UseQuartz=false"/>
+            <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
         </java>
     </target>
     <target depends="init" name="run Quaqua 1.5 OS X 10.5 Leopard ScreenMenuBar">
