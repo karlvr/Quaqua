@@ -15,7 +15,6 @@ import java.awt.Graphics;
 import java.awt.Component;
 import ch.randelshofer.quaqua.QuaquaUtilities;
 import ch.randelshofer.quaqua.border.QuaquaNativeBorder;
-import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import java.awt.Insets;
 import javax.swing.SwingConstants;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;

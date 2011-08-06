@@ -252,9 +252,15 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         BorderUIResource.CompoundBorderUIResource browserCellBorder = new BorderUIResource.CompoundBorderUIResource(
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
                 new BorderUIResource.EmptyBorderUIResource(0, 4, 1, 0));
+        /*
         Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaScrollPaneBorder$UIResource",
                 new Object[]{lionDir + "ScrollPane.borders.png", lionDir + "TextField.borders.png"});
+         * 
+         */
+        Object scrollPaneBorder = new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaNativeScrollPaneBorder"
+                ); 
         
         /*
         String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Toolbar";

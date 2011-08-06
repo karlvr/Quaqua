@@ -349,6 +349,7 @@ public class QuaquaListUI extends BasicListUI {
             // Note: Some applications depend on selection changes only occuring
             // on focused components. Maybe we must not do any changes to the
             // selection changes at all, when the compnent is not focused?
+            if (list.isEnabled()&&list.isRequestFocusEnabled())
             list.requestFocusInWindow();
 
             mouseDragSelects = false;
@@ -433,7 +434,7 @@ public class QuaquaListUI extends BasicListUI {
                 list.setSelectionInterval(index, index);
             }
             list.getSelectionModel().setValueIsAdjusting(false);
-            if (list.isRequestFocusEnabled()) {
+            if (list.isEnabled()&&list.isRequestFocusEnabled()) {
                 list.requestFocus();
             }
         }

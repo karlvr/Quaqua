@@ -101,12 +101,12 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         @Override
         public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
             int args = 0;
+                JTextComponent b = (JTextComponent) c;
+                boolean isEditable = b.isEditable();
 
             // PREPARE THE PAINTER
             // -------------------
             {
-                JTextComponent b = (JTextComponent) c;
-                boolean isEditable = b.isEditable();
                 State state;
                 if (QuaquaUtilities.isOnActiveWindow(c)) {
                     state = State.active;
@@ -169,7 +169,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 BufferedImage focusImg;
                 ImageBevelBorder ibb;
                 int fixedWidth, fixedHeight, fixedYOffset;
-                int slack = 3;
+                int slack = 6;
                 if ((args & ARG_SMALL_SIZE) == ARG_SMALL_SIZE) {
                     fixedWidth = 40 + slack * 2;
                     fixedHeight = 19 + slack * 2;
@@ -229,16 +229,16 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 ibbg.drawImage(painterImg, 0, 0, null);
 
-                if (QuaquaUtilities.isFocused(c))
+                if (QuaquaUtilities.isFocused(c)&&isEditable)
                 AbstractFocusedPainter.paintFocusRing(painterImg, focusImg, ibbg, 0, 0);
 
                 ibbg.dispose();
 
                 ibb.paintBorder(c, g,//
-                        imageInsets.left - 3 - slack + vm.left, //
-                        imageInsets.top - 3 - slack + vm.top,//
-                        width - imageInsets.left - imageInsets.right + 6 + 2 * slack - vm.left - vm.right, //
-                        height - imageInsets.top - imageInsets.bottom + 6 + 2 * slack - vm.top - vm.bottom);
+                        imageInsets.left  - slack + vm.left, //
+                        imageInsets.top  - slack + vm.top,//
+                        width - imageInsets.left - imageInsets.right  + 2 * slack - vm.left - vm.right, //
+                        height - imageInsets.top - imageInsets.bottom  + 2 * slack - vm.top - vm.bottom);
                 ibbg.dispose();
 
             }
@@ -398,10 +398,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
 
                 painter.paint((BufferedImage) img,//
-                        imageInsets.left - 3 + vm.left, //
-                        imageInsets.top - 3 + vm.top,//
-                        w - imageInsets.left - imageInsets.right + 6 - vm.left - vm.right, //
-                        h - imageInsets.top - imageInsets.bottom + 6 - vm.top - vm.bottom);
+                        imageInsets.left  + vm.left, //
+                        imageInsets.top  + vm.top,//
+                        w - imageInsets.left - imageInsets.right  - vm.left - vm.right, //
+                        h - imageInsets.top - imageInsets.bottom  - vm.top - vm.bottom);
             }
         }
 
