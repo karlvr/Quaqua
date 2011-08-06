@@ -448,10 +448,13 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "ScrollBar.trackInsets.tog", new Insets(0,0,0,0),
             "ScrollBar.trackInsets.tog.small", new Insets(0,0,0,0),
             "ScrollBar.trackInsets.tog.mini", new Insets(0,0,0,0),
-            "ScrollBar.preferredSize", new Dimension(11,11),
-            "ScrollBar.preferredSize.small", new Dimension(9,9),
+            "ScrollBar.preferredSize", new Dimension(15,15),
+            "ScrollBar.preferredSize.small", new Dimension(13,13),
             "ScrollBar.preferredSize.mini", new Dimension(9,9),
             "ScrollBar.focusable", Boolean.FALSE,
+            "ScrollBar.thumbInsets", new Insets(2,4,2,3),
+            "ScrollBar.thumbInsets.small", new Insets(2,3,2,3),
+            "ScrollBar.thumbInsets.mini", new Insets(2,3,2,2),
             //
             "ScrollPane.border", scrollPaneBorder,
             //

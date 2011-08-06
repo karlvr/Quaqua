@@ -147,10 +147,15 @@ public class QuaquaNativeButtonStateIcon extends CachedPainter implements Icon {
                 height);
     }
 
-    @Override
+       @Override
     protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-        // empty
+        // round up image size to reduce memory thrashing
+       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
+       paintToImage(c,img,w,h,args);
+       g.drawImage(img, 0, 0, null);
+       img.flush();
     }
+
 
     public int getIconWidth() {
         return width;

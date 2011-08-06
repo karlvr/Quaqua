@@ -111,7 +111,8 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         } else {
             sv = QuaquaUtilities.getSizeVariant(scrollbar);
         }
-        return sv == QuaquaUtilities.SizeVariant.SMALL;
+        return sv == QuaquaUtilities.SizeVariant.SMALL
+                ||sv == QuaquaUtilities.SizeVariant.MINI;
     }
 
     /**
