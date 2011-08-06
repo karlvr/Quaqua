@@ -11,7 +11,11 @@
 package ch.randelshofer.quaqua.lion;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import javax.swing.border.*;
 import javax.swing.plaf.UIResource;
@@ -38,10 +42,10 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
             g.setColor(new Color(0x75bae8));
             g.fillRect(x, y + 1, width, 1);
             // gradient
-            g.setPaint(new GradientPaint(
+            g.setPaint(new LinearGradientPaint(
                     x, y + 2, new Color(0x6db1e3),
-                    x, y + height - 3, new Color(0x3b89d0),
-                    true));
+                    x, y + height - 3, new Color(0x3b89d0)
+                    ));
             g.fillRect(x, y + 2, width, height - 3);
 
             // bottom line
@@ -56,10 +60,10 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
                 g.setColor(new Color(0xc3cde0));
                 g.fillRect(x, y + 1, width, 1);
                 // gradient
-                g.setPaint(new GradientPaint(
+                g.setPaint(new LinearGradientPaint(
                         x, y + 2, new Color(0xbdc7dc),
-                        x, y + height - 3, new Color(0x9dabc4),
-                        true));
+                        x, y + height - 3, new Color(0x9dabc4)
+                        ));
                 g.fillRect(x, y + 2, width, height - 3);
 
                 // bottom line
@@ -74,10 +78,10 @@ public class QuaquaLionSideBarSelectionBorder implements Border, UIResource {
                 g.setColor(new Color(0xc4ccdf));
                 g.fillRect(x, y + 1, width, 1);
                 // gradient
-                g.setPaint(new GradientPaint(
+                g.setPaint(new LinearGradientPaint(
                         x, y + 2, new Color(0xbdc7dc),
-                        x, y + height - 3, new Color(0x9dabc4),
-                        true));
+                        x, y + height - 3, new Color(0x9dabc4)
+                        ));
                 g.fillRect(x, y + 2, width, height - 3);
 
                 // bottom line

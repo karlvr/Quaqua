@@ -11,11 +11,21 @@
 package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
-import java.awt.*;
 import javax.swing.*;
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.icon.EmptyIcon;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -217,7 +227,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
                 r.height = viewRect.height - r.y + viewRect.y - i.bottom;
             }
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setPaint(new GradientPaint(r.x, r.y, labelBrightColor, r.x, r.y + r.height, labelColor));
+            g.setPaint(new LinearGradientPaint(r.x, r.y, labelBrightColor, r.x, r.y + r.height, labelColor));
             //g.setColor(labelColor);
             g.fillRoundRect(r.x, r.y, r.width, r.height, r.height, r.height);
         }

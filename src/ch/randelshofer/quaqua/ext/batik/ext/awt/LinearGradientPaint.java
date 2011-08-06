@@ -1,18 +1,18 @@
 /*
 
-   Copyright 2001-2003  The Apache Software Foundation 
+Copyright 2001-2003  The Apache Software Foundation 
 
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-       http://www.apache.org/licenses/LICENSE-2.0
+http://www.apache.org/licenses/LICENSE-2.0
 
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
 
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt;
@@ -88,8 +88,17 @@ import java.awt.image.ColorModel;
 public final class LinearGradientPaint extends MultipleGradientPaint {
 
     /** Gradient start and end points. */
-    private Point2D start, end;   
-       
+    private Point2D start, end;
+
+    public LinearGradientPaint(float x1,
+            float y1,
+            Color color1,
+            float x2,
+            float y2,
+            Color color2) {
+        this(x1, y1, x2, y2, new float[]{0f, 1f}, new Color[]{color1, color2});
+    }
+
     /**<p>
      * Constructs an <code>LinearGradientPaint</code> with the default 
      * NO_CYCLE repeating method and SRGB colorspace.
@@ -117,16 +126,16 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      * is less than 2 in size.
      *
      */
-    public LinearGradientPaint(float startX, float startY, 
-                               float endX, float endY, 
-                               float[] fractions, Color[] colors) {
+    public LinearGradientPaint(float startX, float startY,
+            float endX, float endY,
+            float[] fractions, Color[] colors) {
 
         this(new Point2D.Float(startX, startY),
-             new Point2D.Float(endX, endY), 
-             fractions, 
-             colors,
-             NO_CYCLE,
-             SRGB);
+                new Point2D.Float(endX, endY),
+                fractions,
+                colors,
+                NO_CYCLE,
+                SRGB);
     }
 
     /**<p>
@@ -157,16 +166,16 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      * is less than 2 in size.
      *
      */
-    public LinearGradientPaint(float startX, float startY, 
-                               float endX, float endY, 
-                               float[] fractions, Color[] colors, 
-                               CycleMethodEnum cycleMethod) {
-        this(new Point2D.Float(startX, startY), 
-             new Point2D.Float(endX, endY), 
-             fractions, 
-             colors,
-             cycleMethod,
-             SRGB);
+    public LinearGradientPaint(float startX, float startY,
+            float endX, float endY,
+            float[] fractions, Color[] colors,
+            CycleMethodEnum cycleMethod) {
+        this(new Point2D.Float(startX, startY),
+                new Point2D.Float(endX, endY),
+                fractions,
+                colors,
+                cycleMethod,
+                SRGB);
     }
 
     /**<p>
@@ -190,11 +199,11 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      *
      */
     public LinearGradientPaint(Point2D start, Point2D end, float[] fractions,
-                               Color[] colors) {
+            Color[] colors) {
 
         this(start, end, fractions, colors, NO_CYCLE, SRGB);
     }
-    
+
     /**<p>
      * Constructs a <code>LinearGradientPaint</code>.
      *
@@ -220,15 +229,15 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      *
      */
     public LinearGradientPaint(Point2D start, Point2D end, float[] fractions,
-                               Color[] colors, 
-                               CycleMethodEnum cycleMethod, 
-                               ColorSpaceEnum colorSpace) {
-	
-        this(start, end, fractions, colors, cycleMethod, colorSpace, 
-             new AffineTransform());
-	
+            Color[] colors,
+            CycleMethodEnum cycleMethod,
+            ColorSpaceEnum colorSpace) {
+
+        this(start, end, fractions, colors, cycleMethod, colorSpace,
+                new AffineTransform());
+
     }
-    
+
     /**<p>
      * Constructs a <code>LinearGradientPaint</code>.
      *
@@ -257,32 +266,32 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      *
      */
     public LinearGradientPaint(Point2D start, Point2D end, float[] fractions,
-                               Color[] colors,
-                               CycleMethodEnum cycleMethod, 
-                               ColorSpaceEnum colorSpace, 
-                               AffineTransform gradientTransform) {
+            Color[] colors,
+            CycleMethodEnum cycleMethod,
+            ColorSpaceEnum colorSpace,
+            AffineTransform gradientTransform) {
         super(fractions, colors, cycleMethod, colorSpace, gradientTransform);
 
         //
         // Check input parameters
         //	
         if (start == null || end == null) {
-            throw new NullPointerException("Start and end points must be" +
-                                           "non-null");
+            throw new NullPointerException("Start and end points must be"
+                    + "non-null");
         }
 
         if (start.equals(end)) {
-            throw new IllegalArgumentException("Start point cannot equal" +
-                                               "endpoint");
+            throw new IllegalArgumentException("Start point cannot equal"
+                    + "endpoint");
         }
 
         //copy the points...
-        this.start = (Point2D)start.clone();
+        this.start = (Point2D) start.clone();
 
-        this.end = (Point2D)end.clone();
-	
+        this.end = (Point2D) end.clone();
+
     }
-    
+
     /**
      * Creates and returns a PaintContext used to generate the color pattern,
      * for use by the internal rendering engine.
@@ -307,37 +316,35 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      * @see PaintContext
      */
     public PaintContext createContext(ColorModel cm,
-                                      Rectangle deviceBounds,
-                                      Rectangle2D userBounds,
-                                      AffineTransform transform,
-                                      RenderingHints hints) {
+            Rectangle deviceBounds,
+            Rectangle2D userBounds,
+            AffineTransform transform,
+            RenderingHints hints) {
 
         // Can't modify the transform passed in...
         transform = new AffineTransform(transform);
         //incorporate the gradient transform
-        transform.concatenate(gradientTransform); 
+        transform.concatenate(gradientTransform);
 
         try {
-            return new LinearGradientPaintContext(cm, 
-                                                  deviceBounds,
-                                                  userBounds, 
-                                                  transform,
-                                                  hints,
-                                                  start, 
-                                                  end,
-                                                  fractions,
-                                                  this.getColors(),
-                                                  cycleMethod,
-                                                  colorSpace);
-        }
-	
-        catch(NoninvertibleTransformException e) {
+            return new LinearGradientPaintContext(cm,
+                    deviceBounds,
+                    userBounds,
+                    transform,
+                    hints,
+                    start,
+                    end,
+                    fractions,
+                    this.getColors(),
+                    cycleMethod,
+                    colorSpace);
+        } catch (NoninvertibleTransformException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException("transform should be" + 
-                                               "invertible");
+            throw new IllegalArgumentException("transform should be"
+                    + "invertible");
         }
     }
-    
+
     /**
      * Returns a copy of the start point of the gradient axis
      * @return a {@link Point2D} object that is a copy of the point
@@ -347,7 +354,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     public Point2D getStartPoint() {
         return new Point2D.Double(start.getX(), start.getY());
     }
-    
+
     /** Returns a copy of the end point of the gradient axis
      * @return a {@link Point2D} object that is a copy of the point
      * that anchors the last color of this 
@@ -356,7 +363,4 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     public Point2D getEndPoint() {
         return new Point2D.Double(end.getX(), end.getY());
     }
-        
 }
-
-

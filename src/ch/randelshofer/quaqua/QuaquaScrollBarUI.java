@@ -11,13 +11,13 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.Debug;
-import ch.randelshofer.quaqua.util.Methods;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.ChangeEvent;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 
@@ -70,6 +70,11 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
     }
 
     @Override
+    protected ModelListener createModelListener() {
+        return new QuaquaModelListener();
+    }
+
+    @Override
     protected ArrowButtonListener createArrowButtonListener() {
         return new QuaquaArrowButtonListener();
     }
@@ -102,11 +107,11 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         // determine the size style.
         QuaquaUtilities.SizeVariant sv;
         if (scrollbar.getParent() instanceof JScrollPane) {
-            sv=QuaquaUtilities.getSizeVariant(scrollbar.getParent());
+            sv = QuaquaUtilities.getSizeVariant(scrollbar.getParent());
         } else {
-            sv= QuaquaUtilities.getSizeVariant(scrollbar);
+            sv = QuaquaUtilities.getSizeVariant(scrollbar);
         }
-        return sv==QuaquaUtilities.SizeVariant.SMALL;
+        return sv == QuaquaUtilities.SizeVariant.SMALL;
     }
 
     /**
@@ -129,28 +134,33 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
     @Override
     public Dimension getMaximumSize(JComponent c) {
-        if (isSmall()) {
-            return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
-                    ? new Dimension(11, Integer.MAX_VALUE)
-                    : new Dimension(Integer.MAX_VALUE, 11);
+        Dimension dim = getPreferredSize(c);
+
+        if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
+            dim.height = Integer.MAX_VALUE;
         } else {
-            return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
-                    ? new Dimension(15, Integer.MAX_VALUE)
-                    : new Dimension(Integer.MAX_VALUE, 15);
+            dim.width = Integer.MAX_VALUE;
         }
+        return dim;
     }
 
     @Override
     public Dimension getPreferredSize(JComponent c) {
-        if (isSmall()) {
-            return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
-                    ? new Dimension(11, 24)
-                    : new Dimension(24, 11);
-        } else {
-            return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
-                    ? new Dimension(15, 32)
-                    : new Dimension(32, 15);
+        Dimension dim;
+        switch (QuaquaUtilities.getSizeVariant(c)) {
+            default:
+            case REGULAR:
+                dim = UIManager.getDimension("ScrollBar.preferredSize");
+                break;
+            case SMALL:
+                dim = UIManager.getDimension("ScrollBar.preferredSize.small");
+                break;
+            case MINI:
+                dim = UIManager.getDimension("ScrollBar.preferredSize.mini");
+                break;
         }
+        return (scrollbar.getOrientation() == JScrollBar.VERTICAL)
+                ? (Dimension) dim.clone() : new Dimension(dim.height, dim.width);
     }
 
     /**
@@ -186,39 +196,59 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
         if (!scrollbar.isEnabled()
                 || !QuaquaUtilities.isOnActiveWindow(scrollbar)) {
-            Border trackAndButtons;
+            Border thumbBorder;
             if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.thumb.vInactive.small" : "ScrollBar.thumb.vInactive");
+                thumbBorder = UIManager.getBorder(isSmall ? "ScrollBar.thumb.vInactive.small" : "ScrollBar.thumb.vInactive");
             } else {
-                trackAndButtons = UIManager.getBorder(isSmall ? "ScrollBar.thumb.hInactive.small" : "ScrollBar.thumb.hInactive");
+                thumbBorder = UIManager.getBorder(isSmall ? "ScrollBar.thumb.hInactive.small" : "ScrollBar.thumb.hInactive");
             }
-                if (trackAndButtons!=null)
-                trackAndButtons.paintBorder(c, g,
+            if (thumbBorder != null) {
+                thumbBorder.paintBorder(c, g,
                         thumbBounds.x, thumbBounds.y,
                         thumbBounds.width, thumbBounds.height);
+            }
         } else {
+            Border thumbBorder;
             if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
-                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vFirst.small" : "ScrollBar.thumb.vFirst"))[thumbBounds.y % 5];
-                thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
-                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vLast.small" : "ScrollBar.thumb.vLast"))[(thumbBounds.y + thumbBounds.height) % 5];
-                thumbEnd.paintIcon(c, g, thumbBounds.x, thumbBounds.y + thumbBounds.height - thumbEnd.getIconHeight());
-                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.vMiddle.small" : "ScrollBar.thumb.vMiddle");
-                TexturePaint paint = new TexturePaint(
-                        img,
-                        new Rectangle(thumbBounds.x, 0, img.getWidth(), img.getHeight()));
-                g.setPaint(paint);
-                g.fillRect(thumbBounds.x, thumbBounds.y + thumbBegin.getIconHeight(), getPreferredSize(c).width, thumbBounds.height - thumbBegin.getIconHeight() - thumbEnd.getIconHeight());
+                thumbBorder = UIManager.getBorder("ScrollBar.thumb.v");
             } else {
-                Icon thumbBegin = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hFirst.small" : "ScrollBar.thumb.hFirst"))[thumbBounds.x % 5];
-                thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
-                Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hLast.small" : "ScrollBar.thumb.hLast"))[(thumbBounds.x + thumbBounds.width) % 5];
-                thumbEnd.paintIcon(c, g, thumbBounds.x + thumbBounds.width - thumbEnd.getIconWidth(), thumbBounds.y);
-                BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.hMiddle.small" : "ScrollBar.thumb.hMiddle");
-                TexturePaint paint = new TexturePaint(
-                        img,
-                        new Rectangle(0, thumbBounds.y, img.getWidth(), img.getHeight()));
-                g.setPaint(paint);
-                g.fillRect(thumbBounds.x + thumbBegin.getIconWidth(), thumbBounds.y, thumbBounds.width - thumbBegin.getIconWidth() - thumbEnd.getIconWidth(), getPreferredSize(c).height);
+                thumbBorder = UIManager.getBorder("ScrollBar.thumb.h");
+            }
+            if (thumbBorder != null) {
+                thumbBorder.paintBorder(c, g,
+                        thumbBounds.x, thumbBounds.y,
+                        thumbBounds.width, thumbBounds.height);
+                return;
+            }
+
+            if (scrollbar.getOrientation() == JScrollBar.VERTICAL) {
+                Icon[] icons = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vFirst.small" : "ScrollBar.thumb.vFirst"));
+                if (icons != null) {
+                    Icon thumbBegin = icons[thumbBounds.y % 5];
+                    thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
+                    Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.vLast.small" : "ScrollBar.thumb.vLast"))[(thumbBounds.y + thumbBounds.height) % 5];
+                    thumbEnd.paintIcon(c, g, thumbBounds.x, thumbBounds.y + thumbBounds.height - thumbEnd.getIconHeight());
+                    BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.vMiddle.small" : "ScrollBar.thumb.vMiddle");
+                    TexturePaint paint = new TexturePaint(
+                            img,
+                            new Rectangle(thumbBounds.x, 0, img.getWidth(), img.getHeight()));
+                    g.setPaint(paint);
+                    g.fillRect(thumbBounds.x, thumbBounds.y + thumbBegin.getIconHeight(), getPreferredSize(c).width, thumbBounds.height - thumbBegin.getIconHeight() - thumbEnd.getIconHeight());
+                }
+            } else {
+                Icon[] icons = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hFirst.small" : "ScrollBar.thumb.hFirst"));
+                if (icons != null) {
+                    Icon thumbBegin = icons[thumbBounds.x % 5];
+                    thumbBegin.paintIcon(c, g, thumbBounds.x, thumbBounds.y);
+                    Icon thumbEnd = ((Icon[]) UIManager.get(isSmall ? "ScrollBar.thumb.hLast.small" : "ScrollBar.thumb.hLast"))[(thumbBounds.x + thumbBounds.width) % 5];
+                    thumbEnd.paintIcon(c, g, thumbBounds.x + thumbBounds.width - thumbEnd.getIconWidth(), thumbBounds.y);
+                    BufferedImage img = (BufferedImage) UIManager.get(isSmall ? "ScrollBar.thumb.hMiddle.small" : "ScrollBar.thumb.hMiddle");
+                    TexturePaint paint = new TexturePaint(
+                            img,
+                            new Rectangle(0, thumbBounds.y, img.getWidth(), img.getHeight()));
+                    g.setPaint(paint);
+                    g.fillRect(thumbBounds.x + thumbBegin.getIconWidth(), thumbBounds.y, thumbBounds.width - thumbBegin.getIconWidth() - thumbEnd.getIconWidth(), getPreferredSize(c).height);
+                }
             }
         }
     }
@@ -294,7 +324,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 
         // Return empty track if extent of scroll bar fully visible
         if (scrollbar.getMinimum() + scrollbar.getVisibleAmount() == scrollbar.getMaximum()) {
-            return UIManager.getBorder(isSmall ? "ScrollBar.small." + vh + "Track" : "ScrollBar.track." + vh);
+            return UIManager.getBorder(isSmall ? "ScrollBar.track." + vh + ".small" : "ScrollBar.track." + vh);
         }
 
         // compute button index
@@ -321,7 +351,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         } else {
             borders = (Border[]) UIManager.get(isSmall ? "ScrollBar.buttons." + vh + "Sep.small" : "ScrollBar.buttons." + vh + "Sep");
         }
-        return (borders == null) ? null : borders[buttonsIndex];
+        return (borders == null) ? UIManager.getBorder("ScrollBar.track." + vh) : borders[buttonsIndex];
     }
 
     /**
@@ -361,7 +391,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         boolean isSmall = isSmall();
 
         int incrButtonH, decrButtonH;
-        incrButtonH = decrButtonH = (isSmall) ? 12 : 16;
+        incrButtonH = decrButtonH = UIManager.getInt((isSmall) ? "ScrollBar.buttonHeight.small" : "ScrollBar.buttonHeight");
 
         // The thumb must fit within the height left over after we
         // subtract the preferredSize of the buttons and the insets.
@@ -393,8 +423,8 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 decrButtonY = sbInsets.top;
             }
 
-            trackY = sbInsets.top + ((isSmall) ? 4 : 5); // depends on size style
-            trackH = decrButtonY - trackY + ((isSmall) ? 0 : 3); // depends on size style
+            trackY = sbInsets.top + UIManager.getInsets((isSmall) ? "ScrollBar.trackInsets.tog.small" : "ScrollBar.trackInsets.tog").top;
+            trackH = decrButtonY - trackY + UIManager.getInsets((isSmall) ? "ScrollBar.trackInsets.tog.small" : "ScrollBar.trackInsets.tog").bottom;
         } else {
             decrButtonY = sbInsets.top;
             incrButtonY = sbSize.height - (sbInsets.bottom + incrButtonH);
@@ -475,7 +505,7 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
         boolean isSmall = isSmall();
 
         int leftButtonW, rightButtonW;
-        leftButtonW = rightButtonW = (isSmall) ? 12 : 16;
+        leftButtonW = rightButtonW = UIManager.getInt((isSmall) ? "ScrollBar.buttonHeight.small" : "ScrollBar.buttonHeight");
 
         // The thumb must fit within the width left over after we
         // subtract the preferredSize of the buttons and the insets.
@@ -511,11 +541,8 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 rightButtonX = leftButtonX + leftButtonW;
             }
 
-            trackX = sbInsets.left + 5;
-            trackW = leftButtonX - trackX;
-            if (!isSmall) {
-                trackW += 1;
-            }
+            trackX = sbInsets.left + UIManager.getInsets((isSmall) ? "ScrollBar.trackInsets.tog.small" : "ScrollBar.trackInsets.tog").left;
+            trackW = leftButtonX - trackX + UIManager.getInsets((isSmall) ? "ScrollBar.trackInsets.tog.small" : "ScrollBar.trackInsets.tog").right;
         } else {
             ltr = sb.getComponentOrientation().isLeftToRight();
             if (!ltr) {
@@ -1054,6 +1081,24 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
                 QuaquaUtilities.applySizeVariant(scrollbar);
             }
             super.propertyChange(e);
+        }
+    }
+
+    /**
+     * A listener to listen for model changes.
+     *
+     */
+    protected class QuaquaModelListener extends BasicScrollBarUI.ModelListener {
+        private boolean isValueAdjusting=false;
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            super.stateChanged(e);
+            
+            boolean newValue=scrollbar.getValueIsAdjusting();
+            if (newValue!=isValueAdjusting) {
+                isValueAdjusting=newValue;
+                scrollbar.repaint();
+            }
         }
     }
 }

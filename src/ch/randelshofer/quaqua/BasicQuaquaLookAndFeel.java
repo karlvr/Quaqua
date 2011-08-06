@@ -1939,6 +1939,14 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ScrollBar.buttons.vSep.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vSep.small.png", new Insets(21, 11, 21, 0), 4, true),
             "ScrollBar.buttons.vTog.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vTog.small.png", new Insets(14, 11, 34, 0), 4, true),
             "ScrollBar.focusable", Boolean.FALSE,
+            "ScrollBar.buttonHeight", 16,
+            "ScrollBar.buttonHeight.small", 12,
+            "ScrollBar.trackInsets.tog", new Insets(5,5,3,1),
+            "ScrollBar.trackInsets.tog.small", new Insets(4,5,0,0),
+            "ScrollBar.preferredSize", new Dimension(15,15),
+            "ScrollBar.preferredSize.small", new Dimension(11,11),
+            "ScrollBar.preferredSize.mini", new Dimension(11,11),
+            
             //
             "ScrollPane.border", scrollPaneBorder,
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,

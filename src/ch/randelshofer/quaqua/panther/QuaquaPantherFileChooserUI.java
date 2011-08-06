@@ -12,8 +12,18 @@
 package ch.randelshofer.quaqua.panther;
 
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.panther.filechooser.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.Point;
 
 import javax.swing.*;
 import javax.swing.border.*;
@@ -22,7 +32,6 @@ import javax.swing.filechooser.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 import javax.swing.tree.*;
-import java.awt.*;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.beans.*;
@@ -1443,13 +1452,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     // Renderer for Volumes list
     //
     private static class SidebarRenderer extends DefaultListCellRenderer {
-        /*
-        private final  Border selectedBorder = new MatteBorder(1,0,1,0, new Color(7,131,216));
-        private final  Border selectedBorderI = new MatteBorder(1,0,1,0, new Color(130,129,129));
-        private final  Border normalBorder = new EmptyBorder(1,0,1,0);
-        private final ColorPaint selectedBackground = new ColorPaint(0,96,255, new GradientPaint(0f,0f,new Color(62,155,228),0f,22f,new Color(0,96,255)));
-        private final ColorPaint selectedBackgroundI = new ColorPaint(102,102,102, new GradientPaint(0f,0f,new Color(151,151,151),0f,22f,new Color(102,102,102)));
-         */
 
         private Border border = new EmptyBorder(1, 3, 2, 0);
         private JComponent separator = new JComponent() {
@@ -1495,7 +1497,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                     g.setColor(new Color(7, 131, 216));
                     g.fillRect(0, 0, width, 1);
                     g.setPaint(
-                            new GradientPaint(
+                            new LinearGradientPaint(
                             0f, 1f, new Color(62, 155, 228),
                             0f, height - 2, new Color(0, 96, 255)));
                     g.fillRect(0, 1, width, height - 1);
@@ -1505,7 +1507,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                     g.setColor(new Color(130, 129, 129));
                     g.fillRect(0, 0, width, 1);
                     g.setPaint(
-                            new GradientPaint(
+                            new LinearGradientPaint(
                             0f, 1f, new Color(151, 151, 151),
                             0f, height - 2, new Color(102, 102, 102)));
                     g.fillRect(0, 1, width, height - 1);

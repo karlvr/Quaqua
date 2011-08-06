@@ -15,6 +15,7 @@ import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.util.*;
 
@@ -263,6 +264,14 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
         ColorUIResource sideBarIconColor = new ColorUIResource(125,134,147);
         ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0xffffff);
         
+        //Object nativeScrollBar=new UIDefaults.ProxyLazyValue(
+        //        "ch.randelshofer.quaqua.lion.QuaquaLionNativeScrollBarBorder",            
+        //        new Object[]{OSXAquaPainter.Widget.scrollBar});
+        Object scrollBarThumb=new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.lion.QuaquaLionScrollBarThumbBorder");
+        Object scrollBarTrack=new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.lion.QuaquaLionScrollBarTrackBorder");
+        
         Object[] uiDefaults = {
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{lionDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
@@ -400,37 +409,48 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "ScrollBar.supportsAbsolutePositioning",new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",   
                 new Object[]{OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false","true"}),
-            "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
-            "ScrollBar.minimumThumbSize.small", new DimensionUIResource(18, 18),
+            "ScrollBar.minimumThumbSize", new DimensionUIResource(18, 18),
+            "ScrollBar.minimumThumbSize.small", new DimensionUIResource(14, 14),
             "ScrollBar.maximumThumbSize", new DimensionUIResource(Integer.MAX_VALUE, Integer.MAX_VALUE),
-            "ScrollBar.thumb.hMiddle", makeBufferedImage(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,5*15,16,15)),
-            "ScrollBar.thumb.hFirst", makeIcons(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,0,12,5*15),5, false),
-            "ScrollBar.thumb.hLast", makeIcons(commonDir + "ScrollBar.thumb.h.png", new Rectangle(12,0,12,5*15),5, false),
-            "ScrollBar.track.h", makeImageBevelBorder(commonDir + "ScrollBar.track.h.png", new Insets(8, 0, 0, 0)),
-            "ScrollBar.thumb.hInactive", makeImageBevelBorder(commonDir + "ScrollBar.thumb.h.png", new Rectangle(0,6*15,24,15),new Insets(15, 11, 0, 11),false),
-            "ScrollBar.buttons.hSep", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hSep.png", new Insets(15, 28, 0, 28), 4, false),
-            "ScrollBar.buttons.hTog", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hTog.png", new Insets(15, 18, 0, 44), 4, false),
-            "ScrollBar.thumb.vMiddle", makeBufferedImage(commonDir + "ScrollBar.thumb.v.png", new Rectangle(5*15,0,15,16)),
-            "ScrollBar.thumb.vFirst", makeIcons(commonDir + "ScrollBar.thumb.v.png", new Rectangle(0,0,5*15,12),5, true),
-            "ScrollBar.thumb.vLast", makeIcons(commonDir + "ScrollBar.thumb.v.png", new Rectangle(0,12,5*15,12),5, true),
-            "ScrollBar.track.v", makeImageBevelBorder(commonDir + "ScrollBar.track.v.png", new Insets(0, 8, 0, 0)),
-            "ScrollBar.thumb.vInactive", makeImageBevelBorder(commonDir + "ScrollBar.thumb.v.png", new Rectangle(6*15,0,15,24),new Insets(11, 15, 11, 0),false),
-            "ScrollBar.buttons.vSep", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vSep.png", new Insets(28, 15, 28, 0), 4, true),
-            "ScrollBar.buttons.vTog", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vTog.png", new Insets(18, 15, 44, 0), 4, true),
-            "ScrollBar.thumb.hMiddle.small", makeBufferedImage(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(0,5*11,12,11)),
-            "ScrollBar.thumb.hFirst.small", makeIcons(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(0,0,9,5*11),5, false),
-            "ScrollBar.thumb.hLast.small", makeIcons(commonDir + "ScrollBar.thumb.h.small.png", new Rectangle(9,0,9,5*11),5, false),
-            "ScrollBar.track.h.small", makeImageBevelBorder(commonDir + "ScrollBar.track.h.small.png", new Insets(11, 0, 0, 0)),
-            "ScrollBar.thumb.hInactive.small", makeImageBevelBorder(commonDir + "ScrollBar.thumb.h.small.png",new Rectangle(0,6*11,18,11), new Insets(11, 8, 0, 8),false),
-            "ScrollBar.buttons.hSep.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hSep.small.png", new Insets(11, 21, 0, 21), 4, false),
-            "ScrollBar.buttons.hTog.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.hTog.small.png", new Insets(11, 14, 0, 34), 4, false),
-            "ScrollBar.thumb.vMiddle.small", makeBufferedImage(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(5*11,0,11,12)),
-            "ScrollBar.thumb.vFirst.small", makeIcons(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(0,0,5*11,9), 5, true),
-            "ScrollBar.thumb.vLast.small", makeIcons(commonDir + "ScrollBar.thumb.v.small.png",new Rectangle(0,9,5*11,9), 5, true),
-            "ScrollBar.track.v.small", makeImageBevelBorder(commonDir + "ScrollBar.track.v.small.png", new Insets(0, 11, 0, 0)),
-            "ScrollBar.thumb.vInactive.small", makeImageBevelBorder(commonDir + "ScrollBar.thumb.v.small.png", new Rectangle(6*11,0,11,18),new Insets(8, 11, 8, 0),false),
-            "ScrollBar.buttons.vSep.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vSep.small.png", new Insets(21, 11, 21, 0), 4, true),
-            "ScrollBar.buttons.vTog.small", makeImageBevelBorders(commonDir + "ScrollBar.buttons.vTog.small.png", new Insets(14, 11, 34, 0), 4, true),
+            "ScrollBar.thumb.hMiddle", null,
+            "ScrollBar.thumb.hFirst", null,
+            "ScrollBar.thumb.hLast", null,
+            "ScrollBar.track.h", scrollBarTrack,
+            "ScrollBar.thumb.h", scrollBarThumb,
+            "ScrollBar.thumb.h.small", scrollBarThumb,
+            "ScrollBar.thumb.hInactive", scrollBarThumb,
+            "ScrollBar.buttons.hSep", null,
+            "ScrollBar.buttons.hTog", null,
+            "ScrollBar.thumb.vMiddle", null,
+            "ScrollBar.thumb.vFirst", null,
+            "ScrollBar.thumb.vLast", null,
+            "ScrollBar.track.v", scrollBarTrack,
+            "ScrollBar.thumb.v", scrollBarThumb,
+            "ScrollBar.thumb.v.small", scrollBarThumb,
+            "ScrollBar.thumb.vInactive", scrollBarThumb,
+            "ScrollBar.buttons.vSep", null,
+            "ScrollBar.buttons.vTog", null,
+            "ScrollBar.thumb.hMiddle.small", null,
+            "ScrollBar.thumb.hFirst.small", null,
+            "ScrollBar.thumb.hLast.small", null,
+            "ScrollBar.track.h.small", scrollBarTrack,
+            "ScrollBar.thumb.hInactive.small", scrollBarThumb,
+            "ScrollBar.buttons.hSep.small", null,
+            "ScrollBar.buttons.hTog.small", null,
+            "ScrollBar.thumb.vMiddle.small", null,
+            "ScrollBar.thumb.vLast.small", null,
+            "ScrollBar.track.v.small", scrollBarTrack,
+            "ScrollBar.thumb.vInactive.small", scrollBarThumb,
+            "ScrollBar.buttons.vSep.small", null,
+            "ScrollBar.buttons.vTog.small", null,
+            "ScrollBar.buttonHeight", 0,
+            "ScrollBar.buttonHeight.small", 0,
+            "ScrollBar.trackInsets.tog", new Insets(0,0,0,0),
+            "ScrollBar.trackInsets.tog.small", new Insets(0,0,0,0),
+            "ScrollBar.trackInsets.tog.mini", new Insets(0,0,0,0),
+            "ScrollBar.preferredSize", new Dimension(11,11),
+            "ScrollBar.preferredSize.small", new Dimension(9,9),
+            "ScrollBar.preferredSize.mini", new Dimension(9,9),
             "ScrollBar.focusable", Boolean.FALSE,
             //
             "ScrollPane.border", scrollPaneBorder,

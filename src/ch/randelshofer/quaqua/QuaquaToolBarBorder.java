@@ -16,7 +16,6 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
@@ -47,30 +46,32 @@ public class QuaquaToolBarBorder
             String style = getStyle(c);
             if (style.equals("gradient") || style.equals("placard")) {
                 g.setPaint(
-                        new GradientPaint(new Point(x, y), new Color(0xfdfdfd), new Point(x, height / 2), new Color(0xf5f5f5), true));
+                        new LinearGradientPaint(x, y, new Color(0xfdfdfd),x, height / 2, new Color(0xf5f5f5)));
                 g.fillRect(x, y, width, height / 2);
                 g.setColor(new Color(0xebebeb));
                 g.fillRect(x, y + height / 2, width, height - height / 2);
 
             } else if (style.equals("bottom") /*&& isTextured*/) {
                 Color[] gradient = (Color[]) UIManager.get(isActive ? "ToolBar.bottom.gradient" : "ToolBar.bottom.gradientInactive");
-                if (gradient == null) {
-                    g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-                } else if (gradient.length == 2) {
-                    g.setPaint(
-                            new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
-                } else if (gradient.length == 3) {
-                    g.setPaint(
-                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                            new float[]{0f, 1.5f / height, 1f},
-                            gradient));
-                } else if (gradient.length == 4) {
-                    g.setPaint(
-                            new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                            new float[]{0f, 1.5f / height, 0.5f, 1f},
-                            gradient));
-                }
-                g.fillRect(x, y, width, height);
+                    if (gradient == null) {
+                        g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+                    } else if (gradient.length == 2) {
+                        g.setPaint(
+                                new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                new float[]{0f, 1f},
+                                gradient));
+                    } else if (gradient.length == 3) {
+                        g.setPaint(
+                                new LinearGradientPaint(new Point2D.Float(x, y+1), new Point2D.Float(x, y+height -2),
+                                new float[]{0f, 0.25f, 1f},
+                                gradient));
+                    } else if (gradient.length == 4) {
+                        g.setPaint(
+                                new LinearGradientPaint(new Point2D.Float(x, y+1), new Point2D.Float(x, y+height -2),
+                                new float[]{0f, 0.25f, 0.5f, 1f},
+                                gradient));
+                    }
+                    g.fillRect(x, y+1, width, height-1);
             } else if (style.equals("title")) {
                 g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
                 g.fillRect(x, y, width, height);

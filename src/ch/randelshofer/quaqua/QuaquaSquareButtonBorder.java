@@ -11,8 +11,17 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.util.CachedPainter;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Transparency;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -142,7 +151,7 @@ public class QuaquaSquareButtonBorder extends CachedPainter implements Border {
         g.drawLine(1, height - 2, width - 2, height - 2); 
         
         Paint oldPaint = g.getPaint();
-        g.setPaint(new GradientPaint(0, 4, colors[5], 0, height - 6, colors[6]));
+        g.setPaint(new LinearGradientPaint(0, 4, colors[5], 0, height - 6, colors[6]));
         g.fillRect(1, 4, width - 2, height - 6);
         
         g.setColor(colors[7]);

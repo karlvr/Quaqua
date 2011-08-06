@@ -10,7 +10,11 @@
  */
 package ch.randelshofer.quaqua.color;
 
-import java.awt.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Paint;
+
 
 /**
  * GradientColor.
@@ -35,7 +39,7 @@ public class GradientColor extends PaintableColor {
     }
 
     public Paint getPaint(Component c, int x, int y, int widht, int height) {
-        return new GradientPaint(x, y, color1, x, y + height, color2, true);
+        return new LinearGradientPaint(x, y, color1, x, y + height, color2);
     }
 
     public static class UIResource extends GradientColor implements javax.swing.plaf.UIResource {
