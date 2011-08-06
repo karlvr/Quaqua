@@ -57,13 +57,9 @@ public class QuaquaLionScrollBarTrackBorder implements Border, UIResource {
         Dimension ps = sb.getUI().getPreferredSize(sb);
         Graphics2D g = (Graphics2D) gr;
         Object oldHints = QuaquaUtilities.beginGraphics(g);
-
+        
         // Draw filled gradient track if not in scroll pane
-        if (sp != null && sp.getViewport().getView()!=null) {
-            Color bg= sp.getViewport().getView().getBackground();
-            g.setPaint(PaintableColor.getPaint(bg,sp.getViewport().getView()));
-            g.fillRect(x,y,width,height);
-        } else if (sb.getOrientation() == SwingConstants.HORIZONTAL) {
+         if (sb.getOrientation() == SwingConstants.HORIZONTAL) {
             height = Math.min(ps.height, height);
             g.setColor(topColor);
             g.drawLine(x, y, x + width - 1, y);
@@ -90,7 +86,7 @@ public class QuaquaLionScrollBarTrackBorder implements Border, UIResource {
         }
 
         // Draw round rect track
-        if (sp != null) {
+        if (false &&sp != null) {
             if (sb.getValueIsAdjusting()) {
                 if (sb.getOrientation() == SwingConstants.HORIZONTAL) {
                     height = Math.min(ps.height, height);
@@ -115,7 +111,11 @@ public class QuaquaLionScrollBarTrackBorder implements Border, UIResource {
                 }
             }
         }
-
+if (false && sp != null && sp.getViewport().getView()!=null) {
+            Color bg= sp.getViewport().getView().getBackground();
+            g.setPaint(PaintableColor.getPaint(bg,sp.getViewport().getView()));
+            g.fillRect(x,y,width,height);
+        } 
         QuaquaUtilities.endGraphics(g, oldHints);
     }
 

@@ -487,10 +487,15 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             }
         }
 
-        @Override
-        protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-            // empty
-        }
+           @Override
+    protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
+        // round up image size to reduce memory thrashing
+       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
+       paintToImage(c,img,w,h,args);
+       g.drawImage(img, 0, 0, null);
+       img.flush();
+    }
+
 
         /** Returns fake insets since this is just a background border. 
          * The real insets are returned by {@link QuaquaNativeButtonBorder#getBorderInsets}.

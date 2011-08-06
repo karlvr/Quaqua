@@ -10,6 +10,12 @@
  */
 package ch.randelshofer.quaqua;
 
+import java.awt.FlowLayout;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
+import ch.randelshofer.quaqua.border.AbstractFocusedPainter;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.border.ImageBevelBorder;
 import javax.swing.JComponent;
@@ -33,25 +39,228 @@ import javax.swing.text.JTextComponent;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
- * Native Aqua border for an {@code AbstractButton).
+ * Native Aqua border for text components.
  *
  * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements Border, BackgroundBorder {
 
-    private OSXAquaPainter painter;
     private Insets imageInsets;
     // private Insets borderInsets;
-    private Border backgroundBorder;
-    private ImageBevelBorder imageBevelBorder;
+    private Border bgBorder;
     private final static int ARG_TEXT_FIELD = 2;
     private final static int ARG_SMALL_SIZE = 32;
 
-    private class BGBorder extends CachedPainter implements Border {
+    private class BGBorder implements Border {
 
-        public BGBorder() {
+        private Border searchFieldBorder;
+        private Border textFieldBorder;
+
+        private Border getActualBorder(Component c) {
+            if ((c instanceof JComponent) && isSearchField((JComponent) c)) {
+                if (searchFieldBorder == null) {
+                    searchFieldBorder = new FocusedBorder(new BGSearchFieldBorder());
+                }
+                return searchFieldBorder;
+            } else {
+                if (textFieldBorder == null) {
+                    textFieldBorder = new BGTextFieldBorder();
+                }
+                return textFieldBorder;
+            }
+        }
+
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            getActualBorder(c).paintBorder(c, g, x, y, width, height);
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return getActualBorder(c).getBorderInsets(c);
+        }
+
+        public boolean isBorderOpaque() {
+            return false;
+        }
+    }
+
+    private class BGTextFieldBorder implements Border {
+
+        private BufferedImage regularPainterImage;
+        private BufferedImage smallPainterImage;
+        private BufferedImage regularFocusImage;
+        private BufferedImage smallFocusImage;
+        private ImageBevelBorder regularIbb;
+        private ImageBevelBorder smallIbb;
+        private OSXAquaPainter painter;
+
+        public BGTextFieldBorder() {
+            painter = new OSXAquaPainter();
+        }
+
+        @Override
+        public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+            int args = 0;
+
+            // PREPARE THE PAINTER
+            // -------------------
+            {
+                JTextComponent b = (JTextComponent) c;
+                boolean isEditable = b.isEditable();
+                State state;
+                if (QuaquaUtilities.isOnActiveWindow(c)) {
+                    state = State.active;
+                    args |= 1;
+                } else {
+                    state = State.inactive;
+                }
+
+
+                Widget widget;
+                if (isSearchField(b)) {
+                    widget = Widget.frameTextFieldRound;
+                } else {
+                    args |= ARG_TEXT_FIELD;
+                    widget = Widget.frameTextField;
+                }
+
+
+                painter.setWidget(widget);
+
+                if (!b.isEnabled() || !isEditable) {
+                    state = State.disabled;
+                    args |= 4;
+                }
+                painter.setState(state);
+
+                boolean isFocusedAndEditable = QuaquaUtilities.isFocused(c) && isEditable;
+                args |= (isFocusedAndEditable) ? 16 : 0;
+                painter.setValueByKey(OSXAquaPainter.Key.focused, isFocusedAndEditable ? 1 : 0);
+
+                Size size;
+                switch (QuaquaUtilities.getSizeVariant(c)) {
+                    case REGULAR:
+                    default:
+                        size = Size.regular;
+                        break;
+                    case SMALL:
+                        size = Size.small;
+                        args |= ARG_SMALL_SIZE;
+                        break;
+                    case MINI:
+                        size = Size.small; // paint mini with small artwork
+                        args |= ARG_SMALL_SIZE;
+                        break;
+
+                }
+                painter.setSize(size);
+            }
+            // Create an ImageBevelBorder
+            // FIXME - We have a caching opportunity here!
+            // -------------------------------------------
+            {
+                Insets vm = getVisualMargin(c);
+
+                // The painter can not render text fields in arbitrary sizes.
+                // We render it first into an ImageBevelBorder, and then onto the
+                // image.
+                BufferedImage painterImg;
+                BufferedImage ibbImg;
+                BufferedImage focusImg;
+                ImageBevelBorder ibb;
+                int fixedWidth, fixedHeight, fixedYOffset;
+                int slack = 3;
+                if ((args & ARG_SMALL_SIZE) == ARG_SMALL_SIZE) {
+                    fixedWidth = 40 + slack * 2;
+                    fixedHeight = 19 + slack * 2;
+                    fixedYOffset = 3;
+
+                    if (smallPainterImage == null) {
+                        smallPainterImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                    }
+                    painterImg = smallPainterImage;
+                    if (smallFocusImage == null) {
+                        smallFocusImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                    }
+                    focusImg = smallFocusImage;
+                    if (smallIbb == null) {
+                        ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        ibb = smallIbb = new ImageBevelBorder(ibbImg, new Insets(4 + slack, 4 + slack, 4 + slack, 4 + slack), new Insets(4 + slack, 4 + slack, 4 + slack, 4 + slack));
+                    } else {
+                        ibb = smallIbb;
+                    }
+                } else {
+                    fixedWidth = 40 + slack * 2;
+                    fixedHeight = 22 + slack * 2;
+                    fixedYOffset = 3;
+
+                    if (regularPainterImage == null) {
+                        regularPainterImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                    }
+                    painterImg = regularPainterImage;
+                    if (regularFocusImage == null) {
+                        regularFocusImage = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                    }
+                    focusImg = regularFocusImage;
+                    if (regularIbb == null) {
+                        ibbImg = new BufferedImage(fixedWidth, fixedHeight, BufferedImage.TYPE_INT_ARGB_PRE);
+                        ibb = regularIbb = new ImageBevelBorder(ibbImg, new Insets(8 + slack, 8 + slack, 8 + slack, 8 + slack), new Insets(8 + slack, 8 + slack, 8 + slack, 8 + slack));
+                    } else {
+                        ibb = regularIbb;
+                    }
+                }
+                ibbImg = (BufferedImage) ibb.getImage();
+
+                Graphics2D pg = painterImg.createGraphics();
+                pg.setColor(new Color(0x0, true));
+                pg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+                pg.fillRect(0, 0, painterImg.getWidth(), painterImg.getHeight());
+                pg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+                pg.dispose();
+                painter.paint(painterImg,//
+                        slack, fixedYOffset + slack,//
+                        painterImg.getWidth() - 2 * slack, painterImg.getHeight() - 2 * slack);
+
+
+                Graphics2D ibbg = ibbImg.createGraphics();
+                ibbg.setColor(new Color(0x0, true));
+                ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC));
+                ibbg.fillRect(0, 0, painterImg.getWidth(), painterImg.getHeight());
+                ibbg.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
+                ibbg.drawImage(painterImg, 0, 0, null);
+
+                if (QuaquaUtilities.isFocused(c))
+                AbstractFocusedPainter.paintFocusRing(painterImg, focusImg, ibbg, 0, 0);
+
+                ibbg.dispose();
+
+                ibb.paintBorder(c, g,//
+                        imageInsets.left - 3 - slack + vm.left, //
+                        imageInsets.top - 3 - slack + vm.top,//
+                        width - imageInsets.left - imageInsets.right + 6 + 2 * slack - vm.left - vm.right, //
+                        height - imageInsets.top - imageInsets.bottom + 6 + 2 * slack - vm.top - vm.bottom);
+                ibbg.dispose();
+
+            }
+        }
+
+        public Insets getBorderInsets(Component c) {
+            return new Insets(0, 0, 0, 0);
+        }
+
+        public boolean isBorderOpaque() {
+            return false;
+        }
+    }
+
+    private class BGSearchFieldBorder extends CachedPainter implements Border {
+
+        private OSXAquaPainter painter;
+        private ImageBevelBorder imageBevelBorder;
+
+        public BGSearchFieldBorder() {
             super(12);
+            painter = new OSXAquaPainter();
         }
 
         @Override
@@ -125,7 +334,7 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         @Override
         protected void paintToImage(Component c, Image img, int w, int h, Object argsObj) {
             int args = (Integer) argsObj;
-                        Insets vm = getVisualMargin(c);
+            Insets vm = getVisualMargin(c);
 
             if ((args & ARG_TEXT_FIELD) == ARG_TEXT_FIELD) {
                 // => Okay: this is a hard nut to crack.
@@ -173,10 +382,10 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
                 ig.fillRect(0, 0, img.getWidth(null), img.getHeight(null));
                 ig.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER));
                 imageBevelBorder.paintBorder(c, ig,//
-                    imageInsets.left-3+vm.left, //
-                    imageInsets.top-3+vm.top,//
-                    w - imageInsets.left - imageInsets.right + 6 -vm.left-vm.right, //
-                    h - imageInsets.top - imageInsets.bottom+ 6 - vm.top-vm.bottom);
+                        imageInsets.left - 3 + vm.left, //
+                        imageInsets.top - 3 + vm.top,//
+                        w - imageInsets.left - imageInsets.right + 6 - vm.left - vm.right, //
+                        h - imageInsets.top - imageInsets.bottom + 6 - vm.top - vm.bottom);
                 ig.dispose();
 
             } else {
@@ -189,23 +398,20 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
 
                 painter.paint((BufferedImage) img,//
-                    imageInsets.left-3+vm.left, //
-                    imageInsets.top-3+vm.top,//
-                    w - imageInsets.left - imageInsets.right + 6 -vm.left-vm.right, //
-                    h - imageInsets.top - imageInsets.bottom+ 6 - vm.top-vm.bottom);
+                        imageInsets.left - 3 + vm.left, //
+                        imageInsets.top - 3 + vm.top,//
+                        w - imageInsets.left - imageInsets.right + 6 - vm.left - vm.right, //
+                        h - imageInsets.top - imageInsets.bottom + 6 - vm.top - vm.bottom);
             }
         }
 
         @Override
         protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-            // empty
-        }
-
-        public Border getBackgroundBorder() {
-            if (backgroundBorder == null) {
-                backgroundBorder = new BGBorder();
-            }
-            return backgroundBorder;
+            // round up image size to reduce memory thrashing
+            BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
+            paintToImage(c, img, w, h, args);
+            g.drawImage(img, 0, 0, null);
+            img.flush();
         }
 
         public Insets getBorderInsets(Component c) {
@@ -223,8 +429,6 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
 
     public QuaquaNativeTextFieldBorder(Insets imageInsets, Insets borderInsets, boolean fill) {
         super(new Insets(0, 0, 0, 0));
-        painter = new OSXAquaPainter();
-        painter.setWidget(Widget.frameTextField);
         this.imageInsets = imageInsets;
         //this.borderInsets = borderInsets;
     }
@@ -245,15 +449,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
     }
 
     public Border getBackgroundBorder() {
-        if (backgroundBorder == null) {
-            this.backgroundBorder = new FocusedBorder(new BGBorder());
+        if (bgBorder == null) {
+            this.bgBorder = new BGBorder();
         }
-        return backgroundBorder;
+        return bgBorder;
     }
 
     @Override
     public Insets getBorderInsets(Component c, Insets insets) {
-       
+
         Insets vm = getVisualMargin(c);
         Insets bm;
         if (isSearchField((JComponent) c)) {
@@ -279,15 +483,15 @@ public class QuaquaNativeTextFieldBorder extends VisualMarginBorder implements B
         if (vm != null) {
             InsetsUtil.addTo(vm, insets);
         }
-        
-        
+
+
         if (c instanceof JTextComponent) {
             Insets margin = ((JTextComponent) c).getMargin();
             if (margin != null) {
                 InsetsUtil.addTo(margin, insets);
             }
         }
-                
+
         return insets;
     }
 

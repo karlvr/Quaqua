@@ -66,14 +66,35 @@ public abstract class AbstractFocusedPainter {
 
             Graphics2D cg = (Graphics2D) cgx;
             int slack = 2;
+            
+            // FIXME - Can the garbage collector cope with these two images?
             BufferedImage borderImg = new BufferedImage(width + 2 * slack, height + 2 * slack, BufferedImage.TYPE_INT_ARGB_PRE);
             BufferedImage focusImg = new BufferedImage(width + 2 * slack, height + 2 * slack, BufferedImage.TYPE_INT_ARGB_PRE);
             Graphics2D bg = borderImg.createGraphics();
-            Graphics2D fg = focusImg.createGraphics();
 
             // draw the border, once into the borderImg and once onto the component
             doPaint(c, bg, slack, slack, width, height);
             cg.drawImage(borderImg, x - slack, y - slack, c);
+
+            paintFocusRing(borderImg, focusImg, cgx, x-slack,y-slack);
+            
+
+            bg.dispose();
+        } else {
+            doPaint(c, cgx, x, y, width, height);
+        }
+    }
+    
+    /** Paints an focus ring on cgx.
+     * 
+     * @param borderImg The input image which is used to compute the border.
+     * @param focusImg  A temporary image. Must have the same size as borderImg.
+     * @param cgx       The output object.
+     */
+    public static void paintFocusRing(BufferedImage borderImg, BufferedImage focusImg, Graphics cgx, int x, int y) {
+
+            Graphics2D cg = (Graphics2D) cgx;
+            Graphics2D fg = focusImg.createGraphics();
 
             // generate the focusImg from the borderImg
             fg.setComposite(AlphaComposite.SrcOver);
@@ -83,23 +104,13 @@ public abstract class AbstractFocusedPainter {
             fg.drawImage(borderImg, edgeBottomOp, 0, 0);
             fg.setComposite(AlphaComposite.SrcIn);
             fg.setColor(UIManager.getColor("Focus.color"));
-            fg.fillRect(0, 0, width + 2 * slack, height + 2 * slack);
+            fg.fillRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
 
             // draw the focusImg blurred onto the component
-            cg.drawImage(focusImg, gaussianHOp, x - slack, y - slack);
-            cg.drawImage(focusImg, gaussianVOp, x - slack, y - slack);
-            //   cg.drawImage(focusImg, x-slack, y-slack,c);
+            cg.drawImage(focusImg, gaussianHOp, x, y);
+            cg.drawImage(focusImg, gaussianVOp, x, y);
 
-            bg.dispose();
             fg.dispose();
-            // cg.drawImage(focusImg, x, y, c);
-            /*
-            cg.setComposite(AlphaComposite.SrcOver);
-            cg.setColor(Color.MAGENTA);
-            cg.drawRect(x, y, width-1, height-1);*/
-        } else {
-            doPaint(c, cgx, x, y, width, height);
-        }
     }
 
     protected abstract void doPaint(Component c, Graphics cgx, int x, int y, int width, int height);

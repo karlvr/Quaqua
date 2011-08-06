@@ -28,15 +28,33 @@ public class ScrollBarTest extends javax.swing.JPanel {
     public ScrollBarTest() {
         initComponents();
         
-        JScrollBar[] bars = {
-            scrollBar1, scrollBar2, scrollBar3, scrollBar4, scrollBar5,
-            scrollBar6, scrollBar7, scrollBar8,
-            scrollBar9, scrollBar10, scrollBar11, scrollBar12, scrollBar13,
-            scrollBar14, scrollBar15,
-            scrollBar16
+        JScrollBar[] regularBars = {
+            scrollBar1, scrollBar2, scrollBar3, scrollBar4,
+            scrollBar5, scrollBar6, scrollBar7, scrollBar8,
         };
+        JScrollBar[] smallBars = {
+            smallScrollBar1, smallScrollBar2, smallScrollBar3, smallScrollBar4,
+             smallScrollBar5,  smallScrollBar6, smallScrollBar7, smallScrollBar8,
+        };
+        JScrollBar[] miniBars = {
+            miniScrollBar1, miniScrollBar2, miniScrollBar3, miniScrollBar4,
+            miniScrollBar5, miniScrollBar6, miniScrollBar7, miniScrollBar8,
+        };
+        
+        for (JScrollBar sb:smallBars) {
+            sb.putClientProperty("JComponent.sizeVariant", "small");
+        }
+        for (JScrollBar sb:miniBars) {
+            sb.putClientProperty("JComponent.sizeVariant", "mini");
+        }
+        
+        ArrayList< JScrollBar> tmp=new ArrayList<JScrollBar>();
+        tmp.addAll(Arrays.asList(regularBars));
+        tmp.addAll(Arrays.asList(smallBars));
+        tmp.addAll(Arrays.asList(miniBars));
+        JScrollBar[] bars=tmp.toArray(new JScrollBar[tmp.size()]);
         Font smallFont = new Font("Lucida Grande", Font.PLAIN, 11);
-        for (int i=0; i < 16; i++) {
+        for (int i=0; i < bars.length; i++) {
             if (i % 8 > 3) {
                 bars[i].setFont(smallFont);
             }
@@ -99,18 +117,26 @@ public class ScrollBarTest extends javax.swing.JPanel {
         scrollBar2 = new javax.swing.JScrollBar();
         scrollBar3 = new javax.swing.JScrollBar();
         scrollBar4 = new javax.swing.JScrollBar();
-        scrollBar5 = new javax.swing.JScrollBar();
-        scrollBar6 = new javax.swing.JScrollBar();
-        scrollBar7 = new javax.swing.JScrollBar();
+        smallScrollBar1 = new javax.swing.JScrollBar();
+        smallScrollBar2 = new javax.swing.JScrollBar();
+        smallScrollBar3 = new javax.swing.JScrollBar();
+        smallScrollBar4 = new javax.swing.JScrollBar();
+        miniScrollBar1 = new javax.swing.JScrollBar();
+        miniScrollBar2 = new javax.swing.JScrollBar();
+        miniScrollBar3 = new javax.swing.JScrollBar();
+        miniScrollBar4 = new javax.swing.JScrollBar();
+        miniScrollBar8 = new javax.swing.JScrollBar();
+        miniScrollBar7 = new javax.swing.JScrollBar();
+        miniScrollBar6 = new javax.swing.JScrollBar();
+        miniScrollBar5 = new javax.swing.JScrollBar();
+        smallScrollBar8 = new javax.swing.JScrollBar();
+        smallScrollBar7 = new javax.swing.JScrollBar();
+        smallScrollBar6 = new javax.swing.JScrollBar();
+        smallScrollBar5 = new javax.swing.JScrollBar();
         scrollBar8 = new javax.swing.JScrollBar();
-        scrollBar16 = new javax.swing.JScrollBar();
-        scrollBar15 = new javax.swing.JScrollBar();
-        scrollBar14 = new javax.swing.JScrollBar();
-        scrollBar13 = new javax.swing.JScrollBar();
-        scrollBar12 = new javax.swing.JScrollBar();
-        scrollBar11 = new javax.swing.JScrollBar();
-        scrollBar10 = new javax.swing.JScrollBar();
-        scrollBar9 = new javax.swing.JScrollBar();
+        scrollBar7 = new javax.swing.JScrollBar();
+        scrollBar6 = new javax.swing.JScrollBar();
+        scrollBar5 = new javax.swing.JScrollBar();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -119,7 +145,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 8;
+        gridBagConstraints.gridheight = 12;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         add(scrollBar1, gridBagConstraints);
@@ -128,7 +154,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.gridheight = 11;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         add(scrollBar2, gridBagConstraints);
@@ -139,7 +165,7 @@ public class ScrollBarTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 6;
+        gridBagConstraints.gridheight = 10;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         add(scrollBar3, gridBagConstraints);
@@ -149,159 +175,250 @@ public class ScrollBarTest extends javax.swing.JPanel {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.gridheight = 9;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
         add(scrollBar4, gridBagConstraints);
 
-        scrollBar5.setValue(25);
-        scrollBar5.setVisibleAmount(25);
-        scrollBar5.setPreferredSize(new java.awt.Dimension(25, 48));
+        smallScrollBar1.setValue(25);
+        smallScrollBar1.setVisibleAmount(25);
+        smallScrollBar1.setPreferredSize(new java.awt.Dimension(25, 48));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 8;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(smallScrollBar1, gridBagConstraints);
+
+        smallScrollBar2.setVisibleAmount(100);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 7;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(smallScrollBar2, gridBagConstraints);
+
+        smallScrollBar3.setVisibleAmount(75);
+        smallScrollBar3.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 6;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(smallScrollBar3, gridBagConstraints);
+
+        smallScrollBar4.setValue(90);
+        smallScrollBar4.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 5;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 0.5;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(smallScrollBar4, gridBagConstraints);
+
+        miniScrollBar1.setValue(25);
+        miniScrollBar1.setVisibleAmount(25);
+        miniScrollBar1.setPreferredSize(new java.awt.Dimension(25, 48));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 4;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.EAST;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar5, gridBagConstraints);
+        add(miniScrollBar1, gridBagConstraints);
 
-        scrollBar6.setVisibleAmount(100);
+        miniScrollBar2.setVisibleAmount(100);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 5;
+        gridBagConstraints.gridx = 9;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 3;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar6, gridBagConstraints);
+        add(miniScrollBar2, gridBagConstraints);
 
-        scrollBar7.setVisibleAmount(75);
-        scrollBar7.setEnabled(false);
+        miniScrollBar3.setVisibleAmount(75);
+        miniScrollBar3.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 10;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar7, gridBagConstraints);
+        add(miniScrollBar3, gridBagConstraints);
 
-        scrollBar8.setValue(90);
-        scrollBar8.setEnabled(false);
+        miniScrollBar4.setValue(90);
+        miniScrollBar4.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 7;
+        gridBagConstraints.gridx = 11;
         gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
         gridBagConstraints.weighty = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar8, gridBagConstraints);
+        add(miniScrollBar4, gridBagConstraints);
 
-        scrollBar16.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar16.setValue(90);
-        scrollBar16.setEnabled(false);
+        miniScrollBar8.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        miniScrollBar8.setValue(90);
+        miniScrollBar8.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridx = 12;
         gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 0.5;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar16, gridBagConstraints);
+        add(miniScrollBar8, gridBagConstraints);
 
-        scrollBar15.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar15.setValue(24);
-        scrollBar15.setVisibleAmount(50);
-        scrollBar15.setEnabled(false);
+        miniScrollBar7.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        miniScrollBar7.setValue(24);
+        miniScrollBar7.setVisibleAmount(50);
+        miniScrollBar7.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 11;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(miniScrollBar7, gridBagConstraints);
+
+        miniScrollBar6.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        miniScrollBar6.setVisibleAmount(100);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 10;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(miniScrollBar6, gridBagConstraints);
+
+        miniScrollBar5.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        miniScrollBar5.setPreferredSize(new java.awt.Dimension(48, 25));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 9;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(miniScrollBar5, gridBagConstraints);
+
+        smallScrollBar8.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        smallScrollBar8.setValue(90);
+        smallScrollBar8.setEnabled(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 8;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
+        gridBagConstraints.weightx = 0.5;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
+        add(smallScrollBar8, gridBagConstraints);
+
+        smallScrollBar7.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        smallScrollBar7.setValue(24);
+        smallScrollBar7.setVisibleAmount(50);
+        smallScrollBar7.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 7;
-        gridBagConstraints.gridy = 1;
-        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar15, gridBagConstraints);
+        add(smallScrollBar7, gridBagConstraints);
 
-        scrollBar14.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar14.setVisibleAmount(100);
+        smallScrollBar6.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        smallScrollBar6.setVisibleAmount(100);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar14, gridBagConstraints);
+        add(smallScrollBar6, gridBagConstraints);
 
-        scrollBar13.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar13.setPreferredSize(new java.awt.Dimension(48, 25));
+        smallScrollBar5.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        smallScrollBar5.setPreferredSize(new java.awt.Dimension(48, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
-        gridBagConstraints.gridy = 3;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar13, gridBagConstraints);
+        add(smallScrollBar5, gridBagConstraints);
 
-        scrollBar12.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar12.setValue(90);
-        scrollBar12.setEnabled(false);
+        scrollBar8.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        scrollBar8.setValue(90);
+        scrollBar8.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 5;
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.weightx = 1.0;
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar12, gridBagConstraints);
+        add(scrollBar8, gridBagConstraints);
 
-        scrollBar11.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar11.setVisibleAmount(75);
-        scrollBar11.setEnabled(false);
+        scrollBar7.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        scrollBar7.setVisibleAmount(75);
+        scrollBar7.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
-        gridBagConstraints.gridy = 5;
-        gridBagConstraints.gridwidth = 6;
+        gridBagConstraints.gridy = 9;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar11, gridBagConstraints);
+        add(scrollBar7, gridBagConstraints);
 
-        scrollBar10.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar10.setVisibleAmount(100);
+        scrollBar6.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        scrollBar6.setVisibleAmount(100);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar10, gridBagConstraints);
+        add(scrollBar6, gridBagConstraints);
 
-        scrollBar9.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
-        scrollBar9.setValue(25);
-        scrollBar9.setVisibleAmount(25);
-        scrollBar9.setPreferredSize(new java.awt.Dimension(48, 25));
+        scrollBar5.setOrientation(javax.swing.JScrollBar.HORIZONTAL);
+        scrollBar5.setValue(25);
+        scrollBar5.setVisibleAmount(25);
+        scrollBar5.setPreferredSize(new java.awt.Dimension(48, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 7;
-        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.SOUTH;
         gridBagConstraints.insets = new java.awt.Insets(6, 6, 6, 6);
-        add(scrollBar9, gridBagConstraints);
+        add(scrollBar5, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JScrollBar miniScrollBar1;
+    private javax.swing.JScrollBar miniScrollBar2;
+    private javax.swing.JScrollBar miniScrollBar3;
+    private javax.swing.JScrollBar miniScrollBar4;
+    private javax.swing.JScrollBar miniScrollBar5;
+    private javax.swing.JScrollBar miniScrollBar6;
+    private javax.swing.JScrollBar miniScrollBar7;
+    private javax.swing.JScrollBar miniScrollBar8;
     private javax.swing.JScrollBar scrollBar1;
-    private javax.swing.JScrollBar scrollBar10;
-    private javax.swing.JScrollBar scrollBar11;
-    private javax.swing.JScrollBar scrollBar12;
-    private javax.swing.JScrollBar scrollBar13;
-    private javax.swing.JScrollBar scrollBar14;
-    private javax.swing.JScrollBar scrollBar15;
-    private javax.swing.JScrollBar scrollBar16;
     private javax.swing.JScrollBar scrollBar2;
     private javax.swing.JScrollBar scrollBar3;
     private javax.swing.JScrollBar scrollBar4;
@@ -309,7 +426,14 @@ public class ScrollBarTest extends javax.swing.JPanel {
     private javax.swing.JScrollBar scrollBar6;
     private javax.swing.JScrollBar scrollBar7;
     private javax.swing.JScrollBar scrollBar8;
-    private javax.swing.JScrollBar scrollBar9;
+    private javax.swing.JScrollBar smallScrollBar1;
+    private javax.swing.JScrollBar smallScrollBar2;
+    private javax.swing.JScrollBar smallScrollBar3;
+    private javax.swing.JScrollBar smallScrollBar4;
+    private javax.swing.JScrollBar smallScrollBar5;
+    private javax.swing.JScrollBar smallScrollBar6;
+    private javax.swing.JScrollBar smallScrollBar7;
+    private javax.swing.JScrollBar smallScrollBar8;
     // End of variables declaration//GEN-END:variables
     
 }

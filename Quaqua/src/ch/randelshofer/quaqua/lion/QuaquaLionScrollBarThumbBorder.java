@@ -19,6 +19,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import javax.swing.JScrollBar;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 
@@ -39,16 +40,37 @@ public class QuaquaLionScrollBarThumbBorder implements Border, UIResource {
         Object oldHints = QuaquaUtilities.beginGraphics(g);
         Dimension ps = sb.getUI().getPreferredSize(sb);
 
-        boolean isActive=sb.getValueIsAdjusting();
-        
-        g.setColor(isActive?activeThumbColor:thumbColor);
+        boolean isActive = sb.getValueIsAdjusting();
+        QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(c);
+        Insets ins;
+        switch (sv) {
+            default:
+            case REGULAR:
+                ins = UIManager.getInsets("ScrollBar.thumbInsets");
+                break;
+            case SMALL:
+                ins = UIManager.getInsets("ScrollBar.thumbInsets.small");
+                break;
+            case MINI:
+                ins = UIManager.getInsets("ScrollBar.thumbInsets.mini");
+                break;
+        }
+        g.setColor(isActive ? activeThumbColor : thumbColor);
 
         if (sb.getOrientation() == SwingConstants.HORIZONTAL) {
             height = Math.min(ps.height, height);
-            g.fillRoundRect(x + 2, y + 2, width - 4, height - 4, height - 4, height - 4);
+//            g.fillRoundRect(x + 2, y + 4, width - 4, height - 7, height -7, height - 6);
+            g.fillRoundRect(
+                    x + ins.top, y + ins.left, 
+                    width - ins.top - ins.bottom, height - ins.left - ins.right, 
+                    height - ins.left - ins.right, height - ins.left - ins.right);
         } else {
             width = Math.min(ps.width, width);
-            g.fillRoundRect(x + 2, y + 2, width - 4, height - 4, width - 4, width - 4);
+//            g.fillRoundRect(x + 4, y + 2, width - 7, height - 4, width - 7, width - 7);
+            g.fillRoundRect(
+                    x + ins.left, y + ins.top,
+                    width - ins.left - ins.right, height - ins.top - ins.bottom,
+                    width - ins.left - ins.right, width - ins.left - ins.right);
         }
         QuaquaUtilities.endGraphics(g, oldHints);
     }
