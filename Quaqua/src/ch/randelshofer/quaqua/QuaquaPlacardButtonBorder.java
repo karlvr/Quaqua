@@ -11,8 +11,17 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.util.CachedPainter;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Insets;
+import java.awt.Paint;
+import java.awt.Transparency;
 import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -154,13 +163,13 @@ public class QuaquaPlacardButtonBorder extends CachedPainter implements Border {
         // Note: We draw the gradient paints first, because Apple's Java 
         // 1.4.2_05 draws them 1 Pixel too wide on the left
         // draw inner border lines
-        g.setPaint(new GradientPaint(0, 2, colors[5], 0, height - 3, colors[6]));
+        g.setPaint(new LinearGradientPaint(0, 2, colors[5], 0, height - 3, colors[6]));
         g.drawLine(1, 2, 1, height - 3);
         g.drawLine(width - 2, 2, width - 2, height - 3);
         
         // draw shine box
         int sheight = (int) (height * 0.45);
-        g.setPaint(new GradientPaint(0, 2, colors[7], 0, sheight, colors[8]));
+        g.setPaint(new LinearGradientPaint(0, 2, colors[7], 0, sheight, colors[8]));
         g.fillRect(2, 2, width - 4, sheight - 1);
         
         // draw border

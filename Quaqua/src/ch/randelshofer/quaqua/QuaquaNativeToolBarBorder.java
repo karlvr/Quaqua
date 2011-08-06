@@ -19,11 +19,9 @@ import ch.randelshofer.quaqua.util.InsetsUtil;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import javax.swing.*;
@@ -80,13 +78,13 @@ public class QuaquaNativeToolBarBorder
             return;
         }
 
-        
-            Insets vm = getVisualMargin(component);
-                x += vm.left;
-                y += vm.top;
-                w -= vm.left + vm.right;
-                h -= vm.top + vm.bottom;
-        
+
+        Insets vm = getVisualMargin(component);
+        x += vm.left;
+        y += vm.top;
+        w -= vm.left + vm.right;
+        h -= vm.top + vm.bottom;
+
 
 
         Color bright = UIManager.getColor("ToolBar.borderBright");
@@ -207,13 +205,13 @@ public class QuaquaNativeToolBarBorder
     @Override
     public Insets getBorderInsets(Component component, Insets newInsets) {
         if (component instanceof JComponent) {
-        Insets i=(Insets)((JComponent)component).getClientProperty("Quaqua.Border.insets");
-            if (i!=null) {
-                InsetsUtil.setTo(i,newInsets);
+            Insets i = (Insets) ((JComponent) component).getClientProperty("Quaqua.Border.insets");
+            if (i != null) {
+                InsetsUtil.setTo(i, newInsets);
                 return newInsets;
             }
         }
-        
+
         newInsets.top = newInsets.left = newInsets.bottom = newInsets.right = 0;
         String style = getStyle(component);
         if (style.equals("gradient") || style.equals("placard")) {
@@ -281,9 +279,9 @@ public class QuaquaNativeToolBarBorder
                 newInsets.right += margin.right;
                 newInsets.bottom += margin.bottom;
             }
-            
-            Insets vm=getVisualMargin(component);
-            InsetsUtil.addTo(vm,newInsets);
+
+            Insets vm = getVisualMargin(component);
+            InsetsUtil.addTo(vm, newInsets);
             return newInsets;
         } else {
             return getVisualMargin(component);
@@ -339,19 +337,21 @@ public class QuaquaNativeToolBarBorder
                         g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
                     } else if (gradient.length == 2) {
                         g.setPaint(
-                                new GradientPaint(new Point(x, y), gradient[0], new Point(x, height), gradient[1], true));
+                                new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                new float[]{0f, 1f},
+                                gradient));
                     } else if (gradient.length == 3) {
                         g.setPaint(
-                                new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                                new float[]{0f, 1.5f / height, 1f},
+                                new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                new float[]{0f, 0.25f, 1f},
                                 gradient));
                     } else if (gradient.length == 4) {
                         g.setPaint(
-                                new LinearGradientPaint(new Point2D.Float(x, y), new Point2D.Float(x, height + 1),
-                                new float[]{0f, 1.5f / height, 0.5f, 1f},
+                                new LinearGradientPaint(new Point2D.Float(x, y + 1), new Point2D.Float(x, y + height - 2),
+                                new float[]{0f, 0.25f, 0.5f, 1f},
                                 gradient));
                     }
-                    g.fillRect(x, y, width, height);
+                    g.fillRect(x, y + 1, width, height - 1);
                 }
 
                 public Insets getBorderInsets(Component c) {

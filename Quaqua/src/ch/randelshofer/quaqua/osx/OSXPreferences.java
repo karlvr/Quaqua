@@ -46,7 +46,6 @@ public class OSXPreferences {
     }
 
     public static boolean isStringEqualTo(File file, String key, String defaultValue, String compareWithThisValue) {
-System.out.println("OSXPreferences.isStringEqualTo "+key+"=="+compareWithThisValue);        
         return ((String) get(file, key, defaultValue)).equals(compareWithThisValue);
     }
     

@@ -11,7 +11,11 @@
 package ch.randelshofer.quaqua.tiger;
 
 import ch.randelshofer.quaqua.*;
-import java.awt.*;
+import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Insets;
 import javax.swing.border.*;
 import javax.swing.plaf.UIResource;
@@ -34,10 +38,10 @@ public class QuaquaTigerSideBarSelectionBorder implements Border, UIResource {
             // top line
             g.setColor(new Color(0xadbbd0));
             g.fillRect(x, y, width, 1);
-            g.setPaint(new GradientPaint(
+            g.setPaint(new LinearGradientPaint(
                     x, y + 1, new Color(0xacbacf),
-                    x, y + height - 2, new Color(0x98aac4),
-                    true));
+                    x, y + height - 2, new Color(0x98aac4)
+                    ));
             g.fillRect(x, y + 1, width, height - 1);
             // bottom line
             g.setColor(new Color(0x8c98b0));
@@ -47,10 +51,10 @@ public class QuaquaTigerSideBarSelectionBorder implements Border, UIResource {
                 // top line
                 g.setColor(new Color(0xadbbd0));
                 g.fillRect(x, y, width, 1);
-                g.setPaint(new GradientPaint(
+                g.setPaint(new LinearGradientPaint(
                         x, y + 1, new Color(0xacbacf),
-                        x, y + height - 2, new Color(0x98aac4),
-                        true));
+                        x, y + height - 2, new Color(0x98aac4)
+                        ));
                 g.fillRect(x, y + 1, width, height - 1);
                 // bottom line
                 g.setColor(new Color(0x8c98b0));
@@ -59,10 +63,10 @@ public class QuaquaTigerSideBarSelectionBorder implements Border, UIResource {
                 // top line
                 g.setColor(new Color(0xadbbd0));
                 g.fillRect(x, y, width, 1);
-                g.setPaint(new GradientPaint(
+                g.setPaint(new LinearGradientPaint(
                         x, y + 1, new Color(0xacbacf),
-                        x, y + height - 2, new Color(0x98aac4),
-                        true));
+                        x, y + height - 2, new Color(0x98aac4)
+                        ));
                 g.fillRect(x, y + 1, width, height - 1);
                 // bottom line
                 g.setColor(new Color(0x8c98b0));

@@ -70,17 +70,19 @@ public abstract class CachedPainter {
             return;
         }
 
+        Object key = getClass();
+        
         // If the area is larger than 20'000 pixels, render to the passed 
         // in Graphics. 20'000 pixels is a bit larger than a rectangle of 
         // 160*120 points. 
-        if (w * h > maxCachedImageSize) {
+        if (getCache(key).getMaxCount()==0||w * h > maxCachedImageSize) {
             g.translate(x, y);
             paintToImage(c, g, w, h, args);
             g.translate(-x, -y);
             return;
         }
 
-        Object key = getClass();
+        
         GraphicsConfiguration config = c.getGraphicsConfiguration();
         Cache cache = getCache(key);
         Image image = cache.getImage(key, config, w, h, args);
@@ -202,7 +204,12 @@ public abstract class CachedPainter {
 
         synchronized void setMaxCount(int maxCount) {
             this.maxCount = maxCount;
+        }        
+        
+        public int getMaxCount() {
+            return maxCount; 
         }
+
 
         private Entry getEntry(Object key, GraphicsConfiguration config,
                 int w, int h, Object args) {
