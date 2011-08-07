@@ -528,7 +528,7 @@ public class Methods {
     /**
      * Invokes the specified constructor if it exists.
      *
-     * @param clazz The Class on which to invoke the constructor.
+     * @param clazzName The Class on which to invoke the constructor.
      * @param types The parameter types of the constructor.
      * @param values The parameter values of the constructor.
      */
