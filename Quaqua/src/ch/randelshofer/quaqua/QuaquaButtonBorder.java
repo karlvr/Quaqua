@@ -165,7 +165,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             b = toolBarTabBorder;
         } else if (style.equals("square") || style.equals("toolbar")) {
             b = getSquareBorder();
-        } else if (style.equals("placard") || style.equals("gradient")) {
+        } else if (style.equals("gradient")) {
             b = getPlacardBorder();
         } else if (style.equals("tableHeader")) {
             b = getTableHeaderBorder();
@@ -398,7 +398,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
                     insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
         if (insets instanceof javax.swing.plaf.UIResource) {
-            if ((s.equals("placard") || s.equals("gradient")) && (c.getParent() instanceof JToolBar)) {
+            if (s.equals("gradient") && (c.getParent() instanceof JToolBar)) {
                 String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
                 if (ts != null && (ts.equals("placard") || ts.equals("gradient"))) {
                     InsetsUtil.clear(insets);
@@ -511,7 +511,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("placard") || style.equals("gradient")) {
+        } else if (style.equals("gradient")) {
             if (isSmall) {
                 margin = new Insets(1, 6, 1, 6);
             } else {
@@ -611,6 +611,12 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (s == null) {
             s = defaultStyle;
         }
+        
+        // coerce synonyms
+        if (s.equals("placard")||s.equals("segmentedGradient")) {
+            s="gradient";
+        }
+        
         return s;
     }
 
