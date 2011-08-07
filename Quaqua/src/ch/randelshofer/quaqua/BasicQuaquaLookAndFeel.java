@@ -19,6 +19,7 @@ import javax.swing.text.*;
 import java.awt.*;
 import java.util.*;
 import java.security.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import sun.awt.AppContext;
 
 /**
@@ -29,7 +30,6 @@ import sun.awt.AppContext;
  * @version $Id$
  */
 public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
-
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
@@ -1624,10 +1624,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // This must be set to false to make default button on option panes
             // work as expected when running Java 1.5.
             "Button.defaultButtonFollowsFocus", Boolean.FALSE,
-            // The values for this margin are ignored. We dynamically compute a margin
-            // for the various button styles that we support, if we encounter a
-            // a margin that is an instanceof a UIResource.
-            "Button.margin", new InsetsUIResource(0, 0, 0, 0),
+            "Button.margin", new InsetsUIResource(2, 2, 2, 2),
             "Button.opaque", opaque,
             "Button.textIconGap", 4,
             "Button.textShiftOffset", 0,
@@ -2040,10 +2037,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ch.randelshofer.quaqua.QuaquaBorderFactory", "createButtonBorder",
             new Object[]{"toggle"}),
             //"ToggleButton.border", new BorderUIResource.LineBorderUIResource(Color.black),
-            // The values for this margin are ignored. We dynamically compute a margin
-            // for the various button styles that we support, if we encounter a
-            // a margin that is an instanceof a UIResource.
-            "ToggleButton.margin", new InsetsUIResource(0, 0, 0, 0),
+            "ToggleButton.margin", new InsetsUIResource(2, 2, 2, 2),
             "ToggleButton.opaque", opaque,
             "ToggleButton.textIconGap", 4,
             "ToggleButton.textShiftOffset", 0,

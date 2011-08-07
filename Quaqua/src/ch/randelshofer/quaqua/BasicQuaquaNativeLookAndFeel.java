@@ -1619,10 +1619,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             // This must be set to false to make default button on option panes
             // work as expected when running Java 1.5.
             "Button.defaultButtonFollowsFocus", Boolean.FALSE,
-            // The values for this margin are ignored. We dynamically compute a margin
-            // for the various button styles that we support, if we encounter a
-            // a margin that is an instanceof a UIResource.
-            "Button.margin", new InsetsUIResource(0, 0, 0, 0),
+            "Button.margin", new InsetsUIResource(2, 2, 2, 2),
             "Button.opaque", opaque,
             "Button.textIconGap", 4,
             "Button.textShiftOffset", 0,
@@ -1960,10 +1957,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "TextPane.popupHandler", textComponentPopupHandler,
             //
             "ToggleButton.border", buttonBorder,
-            // The values for this margin are ignored. We dynamically compute a margin
-            // for the various button styles that we support, if we encounter a
-            // a margin that is an instanceof a UIResource.
-            "ToggleButton.margin", new InsetsUIResource(0, 0, 0, 0),
+            "ToggleButton.margin", new InsetsUIResource(2, 2, 2, 2),
             "ToggleButton.opaque", opaque,
             "ToggleButton.textIconGap", 4,
             "ToggleButton.textShiftOffset", 0,

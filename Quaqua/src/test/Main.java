@@ -233,8 +233,7 @@ public class Main extends javax.swing.JPanel {
         n.add(new Item("Scroll Pane", "test.ScrollPaneTest"));
         n.add(new Item("Browser", "test.BrowserTest"));
         root.add(n = new DefaultMutableTreeNode("GROUPING"));
-        n.add(new Item("Scrollable Tabbed Pane", "test.TabbedPaneTestScroll"));
-        n.add(new Item("Wrapped Tabbed Pane", "test.TabbedPaneTestWrap"));
+        n.add(new Item("Tabbed Pane", "test.TabbedPaneTest"));
         n.add(new Item("Split Pane", "test.SplitPaneTest"));
         n.add(new Item("Border", "test.BorderTest"));
         n.add(new Item("Box", "test.BoxTest"));

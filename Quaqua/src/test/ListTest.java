@@ -69,7 +69,7 @@ public class ListTest extends javax.swing.JPanel {
         setLayout(new java.awt.GridBagLayout());
 
         list.setModel(new javax.swing.AbstractListModel() {
-            String[] strings = { "Apple", "Banana", "Cantaloupe", "Cherry", "Grape", "Lemon", "Mango", "Melon", "Orange", "Peach", "Pear", "Pineapple", "Plum", "Strawberry", " " };
+            String[] strings = { "Apple", "Banana", "Cantaloupe", "Cherry", "Grape", "Lemon", "Mango", "Melon", "Orange", "Peach", "Pear", "Pineapple", "Plum", "Strawberry" };
             public int getSize() { return strings.length; }
             public Object getElementAt(int i) { return strings[i]; }
         });

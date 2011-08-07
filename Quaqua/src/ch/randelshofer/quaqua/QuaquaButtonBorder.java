@@ -390,21 +390,21 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                     QuaquaBorderFactory.create(
                     Images.createImage(QuaquaButtonBorder.class.getResource("images/Square.focusRing.png")),
                     new Insets(10, 9, 10, 8), new Insets(6, 9, 6, 9), true)))),
-                    0, 0, 0, 0){
+                    0, 0, 0, 0) {
 
                 @Override
                 protected Insets getVisualMargin(Component c, Insets insets) {
                     String s = getStyle(c);
 
                     insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
-        if (insets instanceof javax.swing.plaf.UIResource) {
-            if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
-                String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (ts != null && ("placard".equals(ts) || "gradient".equals(ts))) {
-                    InsetsUtil.clear(insets);
-                }
-            }
-        }
+                    if (insets instanceof javax.swing.plaf.UIResource) {
+                        if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
+                            String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
+                            if (ts != null && ("placard".equals(ts) || "gradient".equals(ts))) {
+                                InsetsUtil.clear(insets);
+                            }
+                        }
+                    }
 
                     if (insets instanceof javax.swing.plaf.UIResource) {
                         switch (getSegmentPosition(c)) {
@@ -507,15 +507,15 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             margin = new Insets(0, 0, 0, 0);
         } else if ("square".equals(style)) {
             if (isSmall) {
-                margin = new Insets(1, 6, 1, 6);
+                margin = new Insets(3, 6, 3, 6);
             } else {
-                margin = new Insets(1, 6, 2, 6);
+                margin = new Insets(3, 6, 3, 6);
             }
         } else if ("gradient".equals(style)) {
             if (isSmall) {
-                margin = new Insets(1, 6, 1, 6);
+                margin = new Insets(2, 6, 2, 6);
             } else {
-                margin = new Insets(1, 6, 2, 6);
+                margin = new Insets(2, 6, 2, 6);
             }
         } else if ("colorWell".equals(style)) {
             if (isSmall) {
@@ -611,12 +611,12 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (s == null) {
             s = defaultStyle;
         }
-        
+
         // coerce synonyms
-        if ("placard".equals(s)||"segmentedGradient".equals(s)) {
-            s="gradient";
+        if ("placard".equals(s) || "segmentedGradient".equals(s)) {
+            s = "gradient";
         }
-        
+
         return s;
     }
 
@@ -667,20 +667,21 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             insets = (Insets) UIManager.getInsets("Component.visualMargin").clone();
         } else {
             insets = getActualBorder((JComponent) c).getBorderInsets(c);
-            if (c instanceof AbstractButton) {
-                AbstractButton b = (AbstractButton) c;
-                Insets margin = b.getMargin();
-                if (margin == null || (margin instanceof UIResource)) {
+        }
+
+        if (c instanceof AbstractButton) {
+            AbstractButton b = (AbstractButton) c;
+            Insets margin = b.getMargin();
+            if (margin == null || (margin instanceof UIResource)) {
+                if (isBorderPainted) {
                     margin = getDefaultMargin((JComponent) c);
                 }
-                if (margin != null) {
-                    insets.top += margin.top;
-                    insets.left += margin.left;
-                    insets.bottom += margin.bottom;
-                    insets.right += margin.right;
-                }
+            }
+            if (margin != null) {
+                InsetsUtil.addTo(margin, insets);
             }
         }
+
         return insets;
     }
 
