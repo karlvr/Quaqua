@@ -43,14 +43,15 @@ li li {
   <h1>Changes</h1>
 </div>
 <div id="Spalte2" style="position:absolute; left:10px; top:80px; width:460px; z-index:4;">
-  <h3>Version 8.0alpha5<br />
-    <font size="-1">2011-08-04</font></h3>
+  <h3>Version 8.0alpha6<br />
+    <font size="-1">2011-08-07</font></h3>
   <p>&nbsp;</p>
   <h4>Enhancements</h4>
   <p>OS X 10.7 Lion</p>
   <ul>
     <li>Adds a file-chooser only version of the Quaqua Look and Feel for use on Mac OS X 10.7 Lion. </li>
-    <li>Adds native renderers for text component borders, button borders and button icons.</li>
+    <li>Uses native painters for most components so that they will (hopefully) stay in synch with future updates of OS X.</li>
+    <li>Adds support for the &quot;mini&quot; size variant for most controls.</li>
     <li>Adds a preliminary  Quaqua Look and Feel for Lion.<br />
       Currently, UI delegates for the following components are provided by Quaqua:<br />
       <ul>
@@ -62,6 +63,8 @@ li li {
         <li>JFormattedTextField</li>
         <li>JPasswordField</li>
         <li>JRadioButton</li>
+        <li>JScrollBar</li>
+        <li>JScrollPane</li>
         <li>JSplitPane</li>
         <li>JTextArea</li>
         <li>JTextField</li>
@@ -81,6 +84,10 @@ li li {
     </li>
   </ul>
   
+  <p>JButton</p>
+  <ul>
+    <li>Adds support for the JButton.segmentPosition property for the following button types: &quot;segmented&quot;, &quot;segmentedRoundRect&quot;, &quot;segmentedGradient&quot;, &quot;square&quot;, &quot;gradient&quot;.</li>
+  </ul>
   <p>JTextComponent </p>
   <ul>
     <li>The non-blinking caret which is shown in non-editable text components can now be turned off by setting the system property &quot;Quaqua.showNonEditableCaret&quot; to &quot;false&quot;.</li>
@@ -90,6 +97,11 @@ li li {
   <ul>
     <li>Issue 98: Combo box popup did not work with the Leopard design.</li>
     <li>Issue 142: Combo box popup did not work with the cross-platform Leopard design. The fix may cause a regression of Issue 132. But since this regression will likely only happen on unsupported platforms, it is not critical.</li>
+    <li>The ComboBox popup stays now open when a mouse wheel event occurs.</li>
+  </ul>
+  <p>Gradients</p>
+  <ul>
+    <li>Fixes gradients when the Quartz rendering engine is used.</li>
   </ul>
   <h4>Changes</h4>
   <p>License</p>
