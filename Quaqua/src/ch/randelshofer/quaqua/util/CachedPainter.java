@@ -126,7 +126,7 @@ public abstract class CachedPainter {
      * Paints the representation to cache to the supplied Graphics.
      *
      * @param c Component painting to
-     * @param g Graphics to paint to
+     * @param image Image to paint to
      * @param w Width to paint to
      * @param h Height to paint to
      * @param args Arguments supplied to <code>paint</code>

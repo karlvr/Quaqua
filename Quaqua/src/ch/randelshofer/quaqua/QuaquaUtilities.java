@@ -883,7 +883,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * If a component is a cell renderer, the default size variant is "small".
      * 
      * @param c
-     * @return 
+     * @return size variant.
      */
     public static SizeVariant getSizeVariant(Component c) {
         if (c == null) {

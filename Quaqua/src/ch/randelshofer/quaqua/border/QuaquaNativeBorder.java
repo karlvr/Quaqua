@@ -28,9 +28,12 @@ import javax.swing.border.Border;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
- * Native Aqua border for an {@code AbstractButton).
- * This border draws everything except the focus ring. To draw the focus
- * wring, wrap this border into a {@link ch.randelshofer.quaqua.border.FocusedBorder}.
+ * Native Aqua border for an {@code AbstractButton}.
+ * This border draws everything except the focus ring.
+ * <p>
+ * To draw the focus wring, wrap this border into a
+ * {@link ch.randelshofer.quaqua.border.FocusedBorder}.
+ * <p>
  *
  * @author Werner Randelshofer
  * @version $Id$

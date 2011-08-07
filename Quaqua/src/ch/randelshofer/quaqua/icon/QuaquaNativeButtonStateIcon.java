@@ -27,7 +27,7 @@ import javax.swing.Icon;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
- * Native Aqua icon for an {@code AbstractButton).
+ * Native Aqua icon for an {@code AbstractButton}.
  * This icon draws everything except the focus ring. To draw the focus
  * wring, wrap this border into a {@link ch.randelshofer.quaqua.icon.FocusedIcon}.
 

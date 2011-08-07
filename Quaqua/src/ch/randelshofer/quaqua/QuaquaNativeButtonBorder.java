@@ -39,7 +39,7 @@ import javax.swing.border.Border;
 import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
 
 /**
- * Native Aqua border for an {@code AbstractButton).
+ * Native Aqua border for an {@code AbstractButton}.
  *
  * @author Werner Randelshofer
  * @version $Id$
