@@ -113,20 +113,20 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
         JComponent jc = c instanceof JComponent ? (JComponent) c : null;
         String segpos = (jc == null) ? "only" : (String) jc.getClientProperty("JButton.segmentPosition");
-        if (style.equals("toggleEast")) {
+        if ("toggleEast".equals(style)) {
             segpos = "first";
-        } else if (style.equals("toggleCenter")) {
+        } else if ("toggleCenter".equals(style)) {
             segpos = "middle";
-        } else if (style.equals("toggleWest")) {
+        } else if ("toggleWest".equals(style)) {
             segpos = "last";
         }
         if (segpos == null//
-                || !segpos.equals("first") && !segpos.equals("middle") && ! !segpos.equals("last")) {
+                || !"first".equals(segpos) && !"middle".equals(segpos) && ! !"last".equals(segpos)) {
             segpos = "only";
         }
 
         // Explicitly chosen styles
-        if (style.equals("text") || style.equals("push")) {
+        if ("text".equals(style) || "push".equals(style)) {
             switch (QuaquaUtilities.getSizeVariant(c)) {
                 case SMALL:
                 case MINI:
@@ -136,7 +136,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                     b = getRegularPushButtonBorder();
                     break;
             }
-        } else if (style.equals("toolBar")) {
+        } else if ("toolBar".equals(style)) {
             if (toolBarBorder == null) {
                 toolBarBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
@@ -147,7 +147,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         0, 0, 0, 0);
             }
             b = toolBarBorder;
-        } else if (style.equals("toolBarRollover")) {
+        } else if ("toolBarRollover".equals(style)) {
             if (toolBarRolloverBorder == null) {
                 toolBarRolloverBorder = new CompositeVisualMarginBorder(new CompoundBorder(
                         new EmptyBorder(-1, -1, -1, -2),
@@ -158,18 +158,18 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         0, 0, 0, 0);
             }
             b = toolBarRolloverBorder;
-        } else if (style.equals("toolBarTab")) {
+        } else if ("toolBarTab".equals(style)) {
             if (toolBarTabBorder == null) {
                 toolBarTabBorder = new QuaquaToolBarTabButtonBorder();
             }
             b = toolBarTabBorder;
-        } else if (style.equals("square") || style.equals("toolbar")) {
+        } else if ("square".equals(style) || "toolbar".equals(style)) {
             b = getSquareBorder();
-        } else if (style.equals("gradient")) {
+        } else if ("gradient".equals(style)) {
             b = getPlacardBorder();
-        } else if (style.equals("tableHeader")) {
+        } else if ("tableHeader".equals(style)) {
             b = getTableHeaderBorder();
-        } else if (style.equals("colorWell")) {
+        } else if ("colorWell".equals(style)) {
             if (colorWellBorder == null) {
                 colorWellBorder = new CompositeVisualMarginBorder(
                         new OverlayBorder(
@@ -183,7 +183,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         0, 0, 0, 0);
             }
             b = colorWellBorder;
-        } else if (style.equals("icon") || style.equals("bevel")) {
+        } else if ("icon".equals(style) || "bevel".equals(style)) {
             if (bevelBorder == null) {
                 Insets borderInsets = new Insets(4, 3, 3, 3);
                 Border focusBorder = new FocusBorder(
@@ -205,8 +205,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         0, 0, 0, 0);
             }
             b = bevelBorder;
-        } else if (segpos.equals("only") && (style.equals("toggle") || style.equals("segmented")
-                || style.equals("segmentedRoundRect") || style.equals("segmentedCapsule")
+        } else if ("only".equals(segpos) && ("toggle".equals(style) || "segmented".equals(style)
+                || "segmentedRoundRect".equals(style) || "segmentedCapsule".equals(style)
                 || style.contains("segmentedTextured"))) {
             if (toggleBorder == null) {
                 Insets borderInsets = new Insets(3, 5, 3, 5);
@@ -223,8 +223,8 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         2, 2, 2, 2);
             }
             b = toggleBorder;
-        } else if (segpos.equals("first")
-                || style.equals("toggleEast")) {
+        } else if ("first".equals(segpos)
+                || "toggleEast".equals(style)) {
             if (toggleEastBorder == null) {
                 Insets borderInsets = new Insets(3, 1, 3, 5);
                 toggleEastBorder = new CompositeVisualMarginBorder(
@@ -240,7 +240,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         2, 0, 2, 2, false, true, false, false);
             }
             b = toggleEastBorder;
-        } else if (segpos.equals("middle") || style.equals("toggleCenter")) {
+        } else if ("middle".equals(segpos) || "toggleCenter".equals(style)) {
             if (toggleCenterBorder == null) {
                 Insets borderInsets = new Insets(3, 1, 3, 1);
                 toggleCenterBorder = new CompositeVisualMarginBorder(
@@ -256,7 +256,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         2, 0, 2, 0, false, true, false, true);
             }
             b = toggleCenterBorder;
-        } else if (segpos.equals("last") || style.equals("toggleWest")) {
+        } else if ("last".equals(segpos) || "toggleWest".equals(style)) {
             if (toggleWestBorder == null) {
                 Insets borderInsets = new Insets(3, 5, 3, 1);
                 toggleWestBorder = new CompositeVisualMarginBorder(
@@ -272,7 +272,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
                         2, 2, 2, 0, false, false, false, true);
             }
             b = toggleWestBorder;
-        } else if (style.equals("help")) {
+        } else if ("help".equals(style)) {
             if (helpBorder == null) {
                 helpBorder = new VisualMarginBorder(2, 3, 2, 3);
             }
@@ -398,9 +398,9 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
                     insets = super.getVisualMargin(c, new InsetsUIResource(0, 0, 0, 0));
         if (insets instanceof javax.swing.plaf.UIResource) {
-            if (s.equals("gradient") && (c.getParent() instanceof JToolBar)) {
+            if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
                 String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (ts != null && (ts.equals("placard") || ts.equals("gradient"))) {
+                if (ts != null && ("placard".equals(ts) || "gradient".equals(ts))) {
                     InsetsUtil.clear(insets);
                 }
             }
@@ -493,67 +493,67 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
 
         // Explicitly chosen styles
-        if (style.equals("text") || style.equals("push")) {
+        if ("text".equals(style) || "push".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 3, 1, 3);
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("toolBar")) {
+        } else if ("toolBar".equals(style)) {
             margin = new Insets(0, 0, 0, 0);
-        } else if (style.equals("toolBarRollover")) {
+        } else if ("toolBarRollover".equals(style)) {
             margin = new Insets(0, 0, 0, 0);
-        } else if (style.equals("toolBarTab")) {
+        } else if ("toolBarTab".equals(style)) {
             margin = new Insets(0, 0, 0, 0);
-        } else if (style.equals("square")) {
+        } else if ("square".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 6, 1, 6);
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("gradient")) {
+        } else if ("gradient".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 6, 1, 6);
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("colorWell")) {
+        } else if ("colorWell".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 6, 1, 6);
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("icon") || style.equals("bevel")) {
+        } else if ("icon".equals(style) || "bevel".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 6, 1, 6);
             } else {
                 margin = new Insets(1, 6, 2, 6);
             }
-        } else if (style.equals("toggle")) {
+        } else if ("toggle".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 5, 1, 5);
             } else {
                 margin = new Insets(1, 5, 2, 5);
             }
-        } else if (style.equals("toggleEast")) {
+        } else if ("toggleEast".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 5, 1, 5);
             } else {
                 margin = new Insets(1, 5, 2, 5);
             }
-        } else if (style.equals("toggleCenter")) {
+        } else if ("toggleCenter".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 5, 1, 5);
             } else {
                 margin = new Insets(1, 5, 2, 5);
             }
-        } else if (style.equals("toggleWest")) {
+        } else if ("toggleWest".equals(style)) {
             if (isSmall) {
                 margin = new Insets(1, 5, 1, 5);
             } else {
                 margin = new Insets(1, 5, 2, 5);
             }
-        } else if (style.equals("help")) {
+        } else if ("help".equals(style)) {
             margin = new Insets(0, 0, 0, 0);
 
             // Implicit styles
@@ -571,7 +571,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
 
     public boolean isFixedHeight(JComponent c) {
         String style = getStyle(c).toLowerCase();
-        return style.equals("text") || style.equals("push") || style.startsWith("toggle");
+        return "text".equals(style) || "push".equals(style) || style.startsWith("toggle");
     }
 
     protected String getStyle(Component c) {
@@ -587,23 +587,23 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         if (s == null) {
             if (c.getParent() instanceof JToolBar) {
                 String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (tbs != null && (tbs.equals("gradient") || tbs.equals("placard"))) {
+                if (tbs != null && ("gradient".equals(tbs) || "placard".equals(tbs))) {
                     s = "gradient";
                 } else {
                     s = "toolBar";
                 }
             }
         }
-        if (s == null || s.equals("segmented") || s.equals("toggle")
-                || s.equals("segmentedRoundRect") || s.equals("segmentedCapsule")
+        if (s == null || "segmented".equals(s) || "toggle".equals(s)
+                || "segmentedRoundRect".equals(s) || "segmentedCapsule".equals(s)
                 || s.contains("segmentedTextured")) {
             String segmentPosition = jc == null ? null : (String) jc.getClientProperty("JButton.segmentPosition");
             if (segmentPosition != null) {
-                if (segmentPosition.equals("first")) {
+                if ("first".equals(segmentPosition)) {
                     s = "toggleWest";
-                } else if (segmentPosition.equals("middle")) {
+                } else if ("middle".equals(segmentPosition)) {
                     s = "toggleCenter";
-                } else if (segmentPosition.equals("last")) {
+                } else if ("last".equals(segmentPosition)) {
                     s = "toggleEast";
                 }
             }
@@ -613,7 +613,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
         }
         
         // coerce synonyms
-        if (s.equals("placard")||s.equals("segmentedGradient")) {
+        if ("placard".equals(s)||"segmentedGradient".equals(s)) {
             s="gradient";
         }
         
@@ -698,21 +698,21 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
             JComponent jc = (JComponent) c;
             s = (String) jc.getClientProperty("Quaqua.Button.style");
             if (s != null) {
-                if (s.equals("toggleWest")) {
+                if ("toggleWest".equals(s)) {
                     return SegmentPosition.first;
-                } else if (s.equals("toggleCenter")) {
+                } else if ("toggleCenter".equals(s)) {
                     return SegmentPosition.middle;
-                } else if (s.equals("toggleEast")) {
+                } else if ("toggleEast".equals(s)) {
                     return SegmentPosition.last;
                 }
             }
             s = (String) jc.getClientProperty("JButton.segmentPosition");
             if (s != null) {
-                if (s.equals("first")) {
+                if ("first".equals(s)) {
                     return SegmentPosition.first;
-                } else if (s.equals("middle")) {
+                } else if ("middle".equals(s)) {
                     return SegmentPosition.middle;
-                } else if (s.equals("last")) {
+                } else if ("last".equals(s)) {
                     return SegmentPosition.last;
                 }
             }
