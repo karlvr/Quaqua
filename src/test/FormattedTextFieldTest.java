@@ -66,7 +66,7 @@ public class FormattedTextFieldTest extends javax.swing.JPanel {
                 c.setMinimumSize(c.getPreferredSize());
             }
         }
-                // Try to get a better layout with J2SE6
+        // Try to get a better layout with J2SE6
         try {
             int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
             GridBagLayout layout = (GridBagLayout) getLayout();

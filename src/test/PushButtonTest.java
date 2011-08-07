@@ -109,8 +109,12 @@ public class PushButtonTest extends javax.swing.JPanel {
         jSeparator1 = new javax.swing.JSeparator();
         largeButton = new javax.swing.JButton();
         largeLabel = new javax.swing.JLabel();
+        borderNotPaintedButton = new javax.swing.JButton();
+        borderNotPaintedLabel = new javax.swing.JLabel();
         borderlessButton = new javax.swing.JButton();
         borderlessLabel = new javax.swing.JLabel();
+        zeroMarginButton = new javax.swing.JButton();
+        zeroMarginLabel = new javax.swing.JLabel();
         coloredButton = new javax.swing.JButton();
         coloredLabel = new javax.swing.JLabel();
         borderlessColoredButton = new javax.swing.JButton();
@@ -213,18 +217,44 @@ public class PushButtonTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(largeLabel, gridBagConstraints);
 
+        borderNotPaintedButton.setText("Ångström H");
+        borderNotPaintedButton.setBorderPainted(false);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(borderNotPaintedButton, gridBagConstraints);
+
+        borderNotPaintedLabel.setText("Border not painted");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(borderNotPaintedLabel, gridBagConstraints);
+
         borderlessButton.setText("Ångström H");
-        borderlessButton.setBorderPainted(false);
+        borderlessButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(borderlessButton, gridBagConstraints);
 
-        borderlessLabel.setText("Borderless");
+        borderlessLabel.setText("Empty Border");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(borderlessLabel, gridBagConstraints);
+
+        zeroMarginButton.setText("Ångström H");
+        zeroMarginButton.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(zeroMarginButton, gridBagConstraints);
+
+        zeroMarginLabel.setText("Zero Margin");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(zeroMarginLabel, gridBagConstraints);
 
         coloredButton.setBackground(new java.awt.Color(181, 212, 107));
         coloredButton.setText("Ångström H");
@@ -241,12 +271,13 @@ public class PushButtonTest extends javax.swing.JPanel {
 
         borderlessColoredButton.setBackground(new java.awt.Color(181, 212, 107));
         borderlessColoredButton.setText("Ångström H");
+        borderlessColoredButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         borderlessColoredButton.setBorderPainted(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         add(borderlessColoredButton, gridBagConstraints);
 
-        borderlessColoredLabel.setText("Borderless & Colored");
+        borderlessColoredLabel.setText("Empty Border & Colored");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
@@ -260,6 +291,8 @@ public class PushButtonTest extends javax.swing.JPanel {
         add(springPanel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton borderNotPaintedButton;
+    private javax.swing.JLabel borderNotPaintedLabel;
     private javax.swing.JButton borderlessButton;
     private javax.swing.JButton borderlessColoredButton;
     private javax.swing.JLabel borderlessColoredLabel;
@@ -282,5 +315,7 @@ public class PushButtonTest extends javax.swing.JPanel {
     private javax.swing.JButton smallEnabledButton;
     private javax.swing.JLabel smallLabel;
     private javax.swing.JPanel springPanel;
+    private javax.swing.JButton zeroMarginButton;
+    private javax.swing.JLabel zeroMarginLabel;
     // End of variables declaration//GEN-END:variables
 }
