@@ -194,9 +194,9 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
             PressedCueBorder b;
             if (wp == null || wp.widget == null) {
-                if (s.equals("colorWell")) {
+                if ("colorWell".equals(s)) {
                     b = getColorWellBorder();
-                } else if (s.equals("toolBar")) {
+                } else if ("toolBar".equals(s)) {
                     b = getToolBarBorder();
                 } else {
                     b = getBevelBorder();
@@ -553,14 +553,14 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         if (s == null) {
             if (c.getParent() instanceof JToolBar) {
                 String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (tbs != null && (tbs.equals("gradient") || tbs.equals("placard"))) {
+                if ("gradient".equals(tbs) || "placard".equals(tbs)) {
                     s = "gradient";
                 } else {
                     s = "toolBar";
                 }
             }
         }
-        if (s == null || s.equals("push")) {
+        if (s == null || "push".equals(s)) {
             // must call super here, because visualmargin is based on style
             Insets vm = super.getVisualMargin(c, new Insets(0, 0, 0, 0));
 
@@ -572,7 +572,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         }
         
         // coerce synonyms
-        if (s.equals("placard")||s.equals("segmentedGradient")) {
+        if ("placard".equals(s)||"segmentedGradient".equals("")) {
             s="gradient";
         }
 
@@ -592,21 +592,21 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             JComponent jc = (JComponent) c;
             s = (String) jc.getClientProperty("Quaqua.Button.style");
             if (s != null) {
-                if (s.equals("toggleWest")) {
+                if ("toggleWest".equals(s)) {
                     return SegmentPosition.first;
-                } else if (s.equals("toggleCenter")) {
+                } else if ("toggleCenter".equals(s)) {
                     return SegmentPosition.middle;
-                } else if (s.equals("toggleEast")) {
+                } else if ("toggleEast".equals(s)) {
                     return SegmentPosition.last;
                 }
             }
             s = (String) jc.getClientProperty("JButton.segmentPosition");
             if (s != null) {
-                if (s.equals("first")) {
+                if ("first".equals(s)) {
                     return SegmentPosition.first;
-                } else if (s.equals("middle")) {
+                } else if ("middle".equals(s)) {
                     return SegmentPosition.middle;
-                } else if (s.equals("last")) {
+                } else if ("last".equals(s)) {
                     return SegmentPosition.last;
                 }
             }
@@ -620,9 +620,9 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         insets = super.getVisualMargin(c, insets);
         if (insets instanceof javax.swing.plaf.UIResource) {
-            if (s.equals("gradient") && (c.getParent() instanceof JToolBar)) {
+            if ("gradient".equals(s) && (c.getParent() instanceof JToolBar)) {
                 String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (ts != null && (ts.equals("placard") || ts.equals("gradient"))) {
+                if ("placard".equals(ts) || "gradient".equals(ts)) {
                     InsetsUtil.clear(insets);
                 }
             }
