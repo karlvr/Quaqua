@@ -570,6 +570,11 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                 s = "bevel";
             }
         }
+        
+        // coerce synonyms
+        if (s.equals("placard")||s.equals("segmentedGradient")) {
+            s="gradient";
+        }
 
 
         return (s == null) ? "push" : s;
@@ -615,7 +620,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         insets = super.getVisualMargin(c, insets);
         if (insets instanceof javax.swing.plaf.UIResource) {
-            if ((s.equals("placard") || s.equals("gradient")) && (c.getParent() instanceof JToolBar)) {
+            if (s.equals("gradient") && (c.getParent() instanceof JToolBar)) {
                 String ts = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
                 if (ts != null && (ts.equals("placard") || ts.equals("gradient"))) {
                     InsetsUtil.clear(insets);
