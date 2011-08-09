@@ -575,49 +575,7 @@ public class QuaquaButtonBorder implements Border, PressedCueBorder, UIResource 
     }
 
     protected String getStyle(Component c) {
-
-        String s = null;
-        JComponent jc = (c instanceof JComponent) ? (JComponent) c : null;
-        if (jc != null) {
-            s = (String) jc.getClientProperty("Quaqua.Button.style");
-            if (s == null) {
-                s = (String) jc.getClientProperty("JButton.buttonType");
-            }
-        }
-        if (s == null) {
-            if (c.getParent() instanceof JToolBar) {
-                String tbs = (String) ((JToolBar) c.getParent()).getClientProperty("Quaqua.ToolBar.style");
-                if (tbs != null && ("gradient".equals(tbs) || "placard".equals(tbs))) {
-                    s = "gradient";
-                } else {
-                    s = "toolBar";
-                }
-            }
-        }
-        if (s == null || "segmented".equals(s) || "toggle".equals(s)
-                || "segmentedRoundRect".equals(s) || "segmentedCapsule".equals(s)
-                || s.contains("segmentedTextured")) {
-            String segmentPosition = jc == null ? null : (String) jc.getClientProperty("JButton.segmentPosition");
-            if (segmentPosition != null) {
-                if ("first".equals(segmentPosition)) {
-                    s = "toggleWest";
-                } else if ("middle".equals(segmentPosition)) {
-                    s = "toggleCenter";
-                } else if ("last".equals(segmentPosition)) {
-                    s = "toggleEast";
-                }
-            }
-        }
-        if (s == null) {
-            s = defaultStyle;
-        }
-
-        // coerce synonyms
-        if ("placard".equals(s) || "segmentedGradient".equals(s)) {
-            s = "gradient";
-        }
-
-        return s;
+        return QuaquaButtonUI.getStyle(c,defaultStyle);
     }
 
     /**
