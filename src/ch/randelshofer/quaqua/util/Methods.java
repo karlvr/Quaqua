@@ -465,12 +465,25 @@ public class Methods {
         }
     }
     /**
-     * Invokes the specified setter method if it exists.
+     * Invokes the specified method if it exists.
      *
      * @param obj The object on which to invoke the method.
      * @param methodName The name of the method.
      */
     public static void invokeIfExists(Object obj, String methodName, Class parameterClass, Object newValue) {
+        try {
+            invoke(obj, methodName, parameterClass, newValue);
+        } catch (NoSuchMethodException e) {
+            // ignore
+        }
+    }
+    /**
+     * Invokes the specified method if it exists.
+     *
+     * @param obj The object on which to invoke the method.
+     * @param methodName The name of the method.
+     */
+    public static void invokeIfExists(Object obj, String methodName, Class[] parameterClass, Object[] newValue) {
         try {
             invoke(obj, methodName, parameterClass, newValue);
         } catch (NoSuchMethodException e) {

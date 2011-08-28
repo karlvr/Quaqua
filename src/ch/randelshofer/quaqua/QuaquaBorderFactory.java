@@ -17,6 +17,7 @@ import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import ch.randelshofer.quaqua.border.FocusedBorder;
 import ch.randelshofer.quaqua.border.ImageBevelBorder;
+import ch.randelshofer.quaqua.border.QuaquaNativeImageBevelBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import java.awt.*;
 import javax.swing.border.*;
@@ -76,6 +77,13 @@ public class QuaquaBorderFactory {
         } else {
             return new ImageBevelBorder.UIResource(img, imageInsets, borderInsets, fillContentArea, fillColor);
         }
+    }
+    /**
+     * Creates a new instance of NativeImageBevelBorder with the given widget and insets.
+     * The image has different insets than the border.
+     */
+    public static Border createNativeImageBevelBorder(OSXAquaPainter.Widget widget, Insets painterInsets, Insets imageBevel, Insets borderInsets, boolean fillContentArea) {
+            return new QuaquaNativeImageBevelBorder.UIResource(widget, painterInsets,imageBevel, borderInsets, fillContentArea);
     }
 
     /**

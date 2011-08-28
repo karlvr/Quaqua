@@ -34,6 +34,8 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
  * To draw the focus wring, wrap this border into a
  * {@link ch.randelshofer.quaqua.border.FocusedBorder}.
  * <p>
+ * This border is not suited for large components because it creates a
+ * temporary BufferedImage with the same size of the component.
  *
  * @author Werner Randelshofer
  * @version $Id$

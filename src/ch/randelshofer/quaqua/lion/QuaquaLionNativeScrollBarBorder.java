@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLionNativeScrollBarBorder.java  1.0  2011-08-05
+ * @(#)QuaquaLionNativeScrollBarBorder.java  
  * 
  * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -23,7 +23,7 @@ import static ch.randelshofer.quaqua.osx.OSXAquaPainter.*;
  * {@code QuaquaLionNativeScrollBarBorder}.
  *
  * @author Werner Randelshofer
- * @version 1.0 2011-08-05 Created.
+ * @version $Id$
  */
 public class QuaquaLionNativeScrollBarBorder extends QuaquaNativeBorder {
 
@@ -91,7 +91,6 @@ public class QuaquaLionNativeScrollBarBorder extends QuaquaNativeBorder {
 
         if (sb.getMaximum() != sb.getMinimum()) {
             double totalSize = (double) (sb.getMaximum() - sb.getMinimum());
-System.out.println("QuaquaLionScrollBarTrackBorder min:max:"+sb.getMinimum()+" "+sb.getMaximum()+" ext:"+sb.getVisibleAmount()+"("+(float)(sb.getVisibleAmount() / totalSize)+")"+" v:"+sb.getValue());            
             painter.setValueByKey(Key.thumbProportion, sb.getVisibleAmount() / totalSize);
             painter.setValueByKey(Key.value, (sb.getValue()- sb.getMinimum())/(totalSize));
         } else {

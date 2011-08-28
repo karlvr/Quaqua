@@ -110,7 +110,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
      */
     private int tabCount;
     private Hashtable mnemonicToIndexMap;
-
+    
     public Integer getIndexForMnemonic(int mnemonic) {
         return (Integer) mnemonicToIndexMap.get(mnemonic);
     }
@@ -631,10 +631,19 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             int tabIndex,
             int x, int y, int w, int h,
             boolean isSelected) {
-        Border[] b;
-
+        
         String prefix = getPropertyPrefix();
 
+        // Native tab pane border
+        Border tb=UIManager.getBorder(prefix+"tabBorder");
+        if (tb!=null) {
+            
+            
+            return;
+        }
+        
+        // Non-native tab pane border
+        Border[] b;
         if (tabPane.getTabCount() == 1) {
             b = (Border[]) UIManager.get(prefix + "tabBorders");
         } else if (tabIndex == 0) {
@@ -673,7 +682,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI
             b[i].paintBorder(tabPane, g, x, y, w, h);
         }
     }
-
+    
     /**
      * this function draws the border around each tab
      * note that this function does now draw the background of the tab.
