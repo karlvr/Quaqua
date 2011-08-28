@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaNativeScrollPaneBorder.java  1.0  2011-08-06
+ * @(#)QuaquaNativeScrollPaneBorder.java  
  * 
  * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
  * All rights reserved.
@@ -36,7 +36,7 @@ import javax.swing.text.JTextComponent;
  * {@code QuaquaNativeScrollPaneBorder}.
  *
  * @author Werner Randelshofer
- * @version 1.0 2011-08-06 Created.
+ * @version $Id$
  */
 public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements UIResource {
 
@@ -61,7 +61,7 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
     public void paintBorder(Component cc, Graphics g, int x, int y, int width, int height) {
         int args = 0;
 
-        // Determine the component which is relevat for the border
+        // Determine which component is relevant for the state of the border
         Component c = cc;
         if (c instanceof JScrollPane) {
             JScrollPane sp = (JScrollPane) c;

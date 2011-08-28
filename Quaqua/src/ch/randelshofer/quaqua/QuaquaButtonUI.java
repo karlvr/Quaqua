@@ -406,7 +406,7 @@ if (c instanceof JButton) {
             }
         }
         if (s == null) {
-            s = defaultStyle;
+            s = (defaultStyle==null)?"push":defaultStyle;
         }
 
         // coerce synonyms
@@ -418,9 +418,9 @@ if (c instanceof JButton) {
     }
 
     public static Dimension getPreferredSize(AbstractButton b) {
-        String style = getStyle(b,null);
+        String style = getStyle(b,"push");
         QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(b);
-        if (style.equals("help")) {
+        if ("help".equals(style)) {
             Icon helpIcon;
             switch (sv) {
                 default:

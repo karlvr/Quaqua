@@ -122,7 +122,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "TreeUI", quaquaPrefix + "TreeUI",
             "LabelUI", quaquaPrefix + "LabelUI",
             "ListUI", quaquaPrefix + "ListUI",
-            //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
+            "TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
             "ToolBarUI", quaquaPrefix + "ToolBarUI",
             //"ToolTipUI", basicPrefix + "ToolTipUI",
             "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
@@ -490,10 +490,10 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "TabbedPane.scroll.smallOuterTabInsets", new InsetsUIResource(1, 9, 2, 9),
             "TabbedPane.scroll.contentBorderInsets", new InsetsUIResource(2, 2, 2, 2),
             "TabbedPane.scroll.tabAreaInsets", new InsetsUIResource(-2, 16, 1, 16),
-            "TabbedPane.scroll.contentBorder", makeImageBevelBorder(
-            commonDir + "GroupBox.png", new Insets(7, 7, 7, 7), true, new Color(0x08000000, true)),
-            "TabbedPane.scroll.emptyContentBorder", makeImageBevelBorder(
-            commonDir + "GroupBox.empty.png", new Insets(7, 7, 7, 7), true),
+            "TabbedPane.scroll.contentBorder", makeNativeImageBevelBorder(
+            OSXAquaPainter.Widget.frameGroupBox,new Insets(0,0,0,0), new Insets(7, 7, 7, 7),new Insets(7, 7, 7, 7), true),
+            "TabbedPane.scroll.emptyContentBorder", makeNativeImageBevelBorder(
+            OSXAquaPainter.Widget.frameGroupBox,new Insets(0,0,0,0), new Insets(7, 7, 7, 7),new Insets(7, 7, 7, 7), true),
             "TabbedPane.scroll.tabBorders", makeImageBevelBorders(commonDir + "Toggle.borders.png",
             new Insets(8, 10, 15, 10), 10, true),
             "TabbedPane.scroll.tabFocusRing", makeImageBevelBorder(commonDir + "Toggle.focusRing.png",

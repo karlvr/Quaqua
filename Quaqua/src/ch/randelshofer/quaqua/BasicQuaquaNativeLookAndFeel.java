@@ -2163,6 +2163,11 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "create",
                 new Object[]{location, insets, states, horizontal});
     }
+    protected Object makeNativeImageBevelBorder(OSXAquaPainter.Widget widget, Insets painterInsets, Insets imageBevelInsets, Insets borderInsets, boolean fill) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "createNativeImageBevelBorder",
+                new Object[]{widget, painterInsets, imageBevelInsets, borderInsets, fill});
+    }
 
     protected Object makeTextureColor(int rgb, String location) {
         return new UIDefaults.ProxyLazyValue(

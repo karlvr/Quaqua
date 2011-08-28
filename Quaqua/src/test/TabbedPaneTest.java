@@ -27,13 +27,13 @@ import javax.swing.border.EmptyBorder;
  * @version 1.0  12 February 2005  Created.
  */
 public class TabbedPaneTest extends javax.swing.JPanel {
+private final static        String[] strings = {"Apple", "Banana", "Cantaloupe", "Cherry", "Grape", "Lemon", "Mango", "Melon", "Orange", "Peach", "Pear", "Pineapple", "Plum", "Strawberry"};
 
     /** Creates new form. */
     public TabbedPaneTest() {
         initComponents();
         tabbedPane1.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 
-        String[] strings = {"Apple", "Banana", "Cantaloupe", "Cherry", "Grape", "Lemon", "Mango", "Melon", "Orange", "Peach", "Pear", "Pineapple", "Plum", "Strawberry"};
         for (String s : strings) {
             JPanel p = new JPanel();
             tabbedPane1.add(p, s);
@@ -81,6 +81,7 @@ public class TabbedPaneTest extends javax.swing.JPanel {
         sizeVariantGroup = new javax.swing.ButtonGroup();
         tabLayoutPolicyGroup = new javax.swing.ButtonGroup();
         tabPlacementGroup = new javax.swing.ButtonGroup();
+        tabCountGroup = new javax.swing.ButtonGroup();
         tabbedPane1 = new javax.swing.JTabbedPane();
         jSeparator1 = new javax.swing.JSeparator();
         regularRadio = new javax.swing.JRadioButton();
@@ -94,6 +95,8 @@ public class TabbedPaneTest extends javax.swing.JPanel {
         leftRadio = new javax.swing.JRadioButton();
         enabledCheck = new javax.swing.JCheckBox();
         buttonInTabs = new javax.swing.JCheckBox();
+        manyTabsRadio = new javax.swing.JRadioButton();
+        fewTabsRadio = new javax.swing.JRadioButton();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -260,6 +263,33 @@ public class TabbedPaneTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(buttonInTabs, gridBagConstraints);
+
+        tabCountGroup.add(manyTabsRadio);
+        manyTabsRadio.setSelected(true);
+        manyTabsRadio.setText("Many Tabs");
+        manyTabsRadio.setActionCommand("14");
+        manyTabsRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                tabCountChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(manyTabsRadio, gridBagConstraints);
+
+        tabCountGroup.add(fewTabsRadio);
+        fewTabsRadio.setText("Few Tabs");
+        fewTabsRadio.setActionCommand("4");
+        fewTabsRadio.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                tabCountChanged(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(fewTabsRadio, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void sizeVariantChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sizeVariantChanged
@@ -305,28 +335,45 @@ public class TabbedPaneTest extends javax.swing.JPanel {
            btn.putClientProperty("JButton.buttonType", "square");
            btn.setOpaque(false);
             p.add(btn);
-                tabbedPane1.setTabComponentAt(i, p);
+            Methods.invokeIfExists(tabbedPane1,"setTabComponentAt",new Class[]{Integer.TYPE,Component.class},new Object[]{i,p});
             }
             
         } else {
             for (int i=0,n=tabbedPane1.getTabCount();i<n;i++) {
-                tabbedPane1.setTabComponentAt(i, null);
+            Methods.invokeIfExists(tabbedPane1,"setTabComponentAt",new Class[]{Integer.TYPE,Component.class},new Object[]{i,null});
             }
         }
 
     }//GEN-LAST:event_buttonInTabsChanged
+
+    private void tabCountChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_tabCountChanged
+        String cmd = tabCountGroup.getSelection().getActionCommand();
+        int newCount=Integer.valueOf(cmd);
+        tabbedPane1.removeAll();
+        for (int i=0;i<newCount;i++) {
+                  
+            JPanel p = new JPanel();
+            tabbedPane1.add(p, strings[i]);
+       
+
+        }
+    }//GEN-LAST:event_tabCountChanged
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton bottomRadio;
     private javax.swing.JCheckBox buttonInTabs;
     private javax.swing.JCheckBox enabledCheck;
+    private javax.swing.JRadioButton fewTabsRadio;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JRadioButton leftRadio;
+    private javax.swing.JRadioButton manyTabsRadio;
     private javax.swing.JRadioButton miniRadio;
     private javax.swing.JRadioButton regularRadio;
     private javax.swing.JRadioButton rightRadio;
     private javax.swing.JRadioButton scrollRadio;
     private javax.swing.ButtonGroup sizeVariantGroup;
     private javax.swing.JRadioButton smallRadio;
+    private javax.swing.ButtonGroup tabCountGroup;
     private javax.swing.ButtonGroup tabLayoutPolicyGroup;
     private javax.swing.ButtonGroup tabPlacementGroup;
     private javax.swing.JTabbedPane tabbedPane1;
