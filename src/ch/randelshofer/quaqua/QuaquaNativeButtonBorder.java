@@ -10,6 +10,11 @@
  */
 package ch.randelshofer.quaqua;
 
+import java.util.Iterator;
+import java.util.HashSet;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import javax.swing.Timer;
 import javax.swing.JButton;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import javax.swing.JToolBar;
@@ -57,7 +62,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         Widget widget;
         /** Whether the button needs the trailing separator hack. */
         boolean needsTrailingSeparatorHack;
-        Insets[] margin=new Insets[3];
+        Insets[] margin = new Insets[3];
         /** Border insets. 
          * regular,small,mini
          */
@@ -348,14 +353,12 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             if (QuaquaUtilities.isOnActiveWindow(c)) {
                 state = OSXAquaPainter.State.active;
                 args |= 1 << ARG_ACTIVE;
-
                 if (b instanceof JButton && ((JButton) b).isDefaultButton()) {
                     state = OSXAquaPainter.State.pulsed;
                     args |= 1 << ARG_PULSED;
                     long animationTime = System.currentTimeMillis();
                     args |= animationTime << ARG_ANIM_FRAME;
                     painter.setValueByKey(Key.animationTime, animationTime / 1000d);
-                    b.repaint();
                 }
             } else {
                 state = OSXAquaPainter.State.inactive;
@@ -505,15 +508,14 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             }
         }
 
-           @Override
-    protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
-        // round up image size to reduce memory thrashing
-       BufferedImage img=(BufferedImage)createImage(c,(w/32+1)*32,(h/32+1)*32,null);
-       paintToImage(c,img,w,h,args);
-       g.drawImage(img, 0, 0, null);
-       img.flush();
-    }
-
+        @Override
+        protected void paintToImage(Component c, Graphics g, int w, int h, Object args) {
+            // round up image size to reduce memory thrashing
+            BufferedImage img = (BufferedImage) createImage(c, (w / 32 + 1) * 32, (h / 32 + 1) * 32, null);
+            paintToImage(c, img, w, h, args);
+            g.drawImage(img, 0, 0, null);
+            img.flush();
+        }
 
         /** Returns fake insets since this is just a background border. 
          * The real insets are returned by {@link QuaquaNativeButtonBorder#getBorderInsets}.
@@ -588,10 +590,10 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                 s = "bevel";
             }
         }
-        
+
         // coerce synonyms
-        if ("placard".equals(s)||"segmentedGradient".equals("")) {
-            s="gradient";
+        if ("placard".equals(s) || "segmentedGradient".equals("")) {
+            s = "gradient";
         }
 
 
@@ -701,7 +703,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         if (c instanceof AbstractButton) {
             AbstractButton b = (AbstractButton) c;
             Insets margin = b.getMargin();
-            
+
             if (margin == null || (margin instanceof javax.swing.plaf.UIResource)) {
                 if (b.isBorderPainted()) {
                     margin = wc.margin[sizeIndex];
@@ -714,7 +716,6 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         return i;
     }
-
 
     @Override
     public boolean isBorderOpaque() {
