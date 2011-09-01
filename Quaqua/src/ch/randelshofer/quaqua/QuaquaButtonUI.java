@@ -45,7 +45,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     private static Insets viewInsets = new Insets(0, 0, 0, 0);
     // Has the shared instance defaults been initialized?
     private boolean defaults_initialized = false;
-    private static HashSet<AbstractButton> animatedComponents = new HashSet<AbstractButton>();
+//    private static HashSet<AbstractButton> animatedComponents = new HashSet<AbstractButton>();
 
     /**
      * Push Button.
@@ -119,10 +119,12 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
 
     @Override
     public void paint(Graphics g, JComponent c) {
-if (c instanceof JButton) {
-    JButton b=(JButton)c;
-    if (b.isDefaultButton()) animateButton(b);
-}
+        if (c instanceof JButton) {
+            JButton b = (JButton) c;
+            if (b.isDefaultButton()) {
+                QuaquaDefaultButtonAnimator.addDefaultButton(b);
+            }
+        }
         g.setFont(getFont(c));
 
         String style = (String) c.getClientProperty("Quaqua.Button.style");
@@ -406,7 +408,7 @@ if (c instanceof JButton) {
             }
         }
         if (s == null) {
-            s = (defaultStyle==null)?"push":defaultStyle;
+            s = (defaultStyle == null) ? "push" : defaultStyle;
         }
 
         // coerce synonyms
@@ -418,7 +420,7 @@ if (c instanceof JButton) {
     }
 
     public static Dimension getPreferredSize(AbstractButton b) {
-        String style = getStyle(b,"push");
+        String style = getStyle(b, "push");
         QuaquaUtilities.SizeVariant sv = QuaquaUtilities.getSizeVariant(b);
         if ("help".equals(style)) {
             Icon helpIcon;
@@ -566,7 +568,7 @@ if (c instanceof JButton) {
             return bounds;
         }
 
-        String style = getStyle(b,null);
+        String style = getStyle(b, null);
 
         String text = style.equals("help") ? null : b.getText();
         boolean isEmpty = (text == null || text.length() == 0);
@@ -619,19 +621,19 @@ if (c instanceof JButton) {
         }
         return bounds;
     }
-
+    /*
     private static void animateButton(final AbstractButton b) {
-        if (animatedComponents.add(b)) {
-            Timer animationTimer;
-            long sleep = 1000 / 30; // 30 fps
-            animationTimer = new Timer((int) sleep, new ActionListener() {
-
-                public void actionPerformed(ActionEvent event) {
-                    animatedComponents.remove(b);
-                    b.repaint();
-                }
-            });
-            animationTimer.start();
-        }
+    if (animatedComponents.add(b)) {
+    Timer animationTimer;
+    long sleep = 1000 / 30; // 30 fps
+    animationTimer = new Timer((int) sleep, new ActionListener() {
+    
+    public void actionPerformed(ActionEvent event) {
+    animatedComponents.remove(b);
+    b.repaint();
     }
+    });
+    animationTimer.start();
+    }
+    }*/
 }
