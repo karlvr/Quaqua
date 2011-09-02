@@ -122,7 +122,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "TreeUI", quaquaPrefix + "TreeUI",
             "LabelUI", quaquaPrefix + "LabelUI",
             "ListUI", quaquaPrefix + "ListUI",
-            "TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
+            //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
             "ToolBarUI", quaquaPrefix + "ToolBarUI",
             //"ToolTipUI", basicPrefix + "ToolTipUI",
             "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
