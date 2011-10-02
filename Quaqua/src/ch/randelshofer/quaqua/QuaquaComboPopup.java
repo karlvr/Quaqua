@@ -10,6 +10,8 @@
  */
 package ch.randelshofer.quaqua;
 
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -49,6 +51,12 @@ public class QuaquaComboPopup extends BasicComboPopup {
      */
     @Override
     public void show() {
+        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible 
+        // is no longer being called from the firePopupMenuWillBecomeVisible 
+        // method within BasicComboPopup.
+        comboBox.firePopupMenuWillBecomeVisible();
+        // END FIX
+
         //System.out.println("QuaquaComboPopup@"+hashCode()+".show()");
         setListSelection(comboBox.getSelectedIndex());
 
@@ -71,6 +79,26 @@ public class QuaquaComboPopup extends BasicComboPopup {
     public void hide() {
         super.hide();
         //removeListenersAndResetFocus();
+    }
+
+    @Override
+    protected void firePopupMenuWillBecomeVisible() {
+        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible 
+        // is no longer being called from the firePopupMenuWillBecomeVisible 
+        // method within BasicComboPopup.
+        Object[] listeners = listenerList.getListenerList();
+        PopupMenuEvent e = null;
+        for (int i = listeners.length - 2; i >= 0; i -= 2) {
+            if (listeners[i] == PopupMenuListener.class) {
+                if (e == null) {
+                    e = new PopupMenuEvent(this);
+                }
+                ((PopupMenuListener) listeners[i + 1]).popupMenuWillBecomeVisible(e);
+            }
+        }
+        // comboBox.firePopupMenuWillBecomeVisible() is called from BasicComboPopup.show() method
+        // to let the user change the popup menu from the PopupMenuListener.popupMenuWillBecomeVisible()
+        // END FIX
     }
 
     @Override
@@ -299,7 +327,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
 
         // Add the preferred scroll bar width, if the popup contents does not fit
         // into the available rectangle.
-        if (rect.height < ph && rect.x + rect.width < screen.x+screen.width+16) {
+        if (rect.height < ph && rect.x + rect.width < screen.x + screen.width + 16) {
             rect.width += 16;
         }
 
