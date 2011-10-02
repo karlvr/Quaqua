@@ -706,7 +706,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
             if (margin == null || (margin instanceof javax.swing.plaf.UIResource)) {
                 if (b.isBorderPainted()) {
-                    margin = wc.margin[sizeIndex];
+                    margin = wc==null||wc.margin.length<=sizeIndex?null:wc.margin[sizeIndex];
                 }
             }
             if (margin != null) {
