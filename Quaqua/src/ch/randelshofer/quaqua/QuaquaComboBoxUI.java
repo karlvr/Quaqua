@@ -14,6 +14,8 @@ import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
@@ -51,15 +53,15 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     private boolean isDisplaySizeDirty = true;
     // Cached the size that the display needs to render the largest item
     private Dimension cachedDisplaySize = new Dimension(0, 0);
-    
     private boolean sameBaseline;
     private QuaquaComboBoxUIHandler handler;
-   /**
+    /**
      * This is tricky, this variables is needed for DefaultKeySelectionManager
      * to take into account time factor.
      */
     private long lastTime = 0L;
-    private long time = 0L;		
+    private long time = 0L;
+
     /**
      * Preferred spacing between combo boxes and other components.
      * /
@@ -195,15 +197,16 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         button.setMargin(new Insets(0, 1, 1, 3));
         return button;
     }
- /* Creates a <code>KeyListener</code> which will be added to the
+    /* Creates a <code>KeyListener</code> which will be added to the
      * combo box. If this method returns null then it will not be added
      * to the combo box.
      * 
      * @return an instance <code>KeyListener</code> or null
      */
+
     protected KeyListener createKeyListener() {
         return getHandler();
-    } 
+    }
 
     /**
      * Creates a <code>FocusListener</code> which will be added to the combo box.
@@ -237,12 +240,13 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     // same value as the combo box ToolTip text.
     private void updateToolTipTextForChildren() {
         Component[] children = comboBox.getComponents();
-        for ( int i = 0; i < children.length; ++i ) {
-            if ( children[i] instanceof JComponent ) {
-                ((JComponent)children[i]).setToolTipText( comboBox.getToolTipText() );
+        for (int i = 0; i < children.length; ++i) {
+            if (children[i] instanceof JComponent) {
+                ((JComponent) children[i]).setToolTipText(comboBox.getToolTipText());
             }
         }
     }
+
     private void setTableCellEditor(boolean b) {
         isTableCellEditor = b;
         updateTableCellEditor();
@@ -276,135 +280,132 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     @Override
     public void paintCurrentValueBackground(Graphics g, Rectangle bounds, boolean hasFocus) {
     }
- /**
+
+    /**
      * Returns whether or not the supplied keyCode maps to a key that is used for
      * navigation.  This is used for optimizing key input by only passing non-
      * navigation keys to the type-ahead mechanism.  Subclasses should override this
      * if they change the navigation keys.
      */
     @Override
-    protected boolean isNavigationKey( int keyCode ) {
-        return keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN ||
-               keyCode == KeyEvent.VK_KP_UP || keyCode == KeyEvent.VK_KP_DOWN;
-    }  
+    protected boolean isNavigationKey(int keyCode) {
+        return keyCode == KeyEvent.VK_UP || keyCode == KeyEvent.VK_DOWN
+                || keyCode == KeyEvent.VK_KP_UP || keyCode == KeyEvent.VK_KP_DOWN;
+    }
 
     private boolean isNavigationKey(int keyCode, int modifiers) {
- 	InputMap inputMap = comboBox.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
- 	KeyStroke key = KeyStroke.getKeyStroke(keyCode, modifiers);
-	
- 	if (inputMap != null && inputMap.get(key) != null) {
- 	    return true;
- 	}
- 	return false;
+        InputMap inputMap = comboBox.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        KeyStroke key = KeyStroke.getKeyStroke(keyCode, modifiers);
+
+        if (inputMap != null && inputMap.get(key) != null) {
+            return true;
+        }
+        return false;
     }
+
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of <FooUI>.
      */
- //
+    //
     // Shared Handler, implements all listeners
     //
     private class QuaquaComboBoxUIHandler implements ActionListener, FocusListener,
-                                     KeyListener, LayoutManager,
-                                     ListDataListener, PropertyChangeListener {
+            KeyListener, LayoutManager,
+            ListDataListener, PropertyChangeListener {
         //    
- //
+        //
         // PropertyChangeListener
         //
+
         private void superPropertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
-            if (e.getSource() == editor){
+            if (e.getSource() == editor) {
                 // If the border of the editor changes then this can effect
                 // the size of the editor which can cause the combo's size to
                 // become invalid so we need to clear size caches
-                if ("border".equals(propertyName)){
+                if ("border".equals(propertyName)) {
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     comboBox.revalidate();
                 }
             } else {
-                JComboBox comboBox = (JComboBox)e.getSource();
-                if ( propertyName == "model" ) {
-                    ComboBoxModel newModel = (ComboBoxModel)e.getNewValue();
-                    ComboBoxModel oldModel = (ComboBoxModel)e.getOldValue();
+                JComboBox comboBox = (JComboBox) e.getSource();
+                if (propertyName == "model") {
+                    ComboBoxModel newModel = (ComboBoxModel) e.getNewValue();
+                    ComboBoxModel oldModel = (ComboBoxModel) e.getOldValue();
 
-                    if ( oldModel != null && listDataListener != null ) {
-                        oldModel.removeListDataListener( listDataListener );
+                    if (oldModel != null && listDataListener != null) {
+                        oldModel.removeListDataListener(listDataListener);
                     }
 
-                    if ( newModel != null && listDataListener != null ) {
-                        newModel.addListDataListener( listDataListener );
+                    if (newModel != null && listDataListener != null) {
+                        newModel.addListDataListener(listDataListener);
                     }
 
-                    if ( editor != null ) {
-                        comboBox.configureEditor( comboBox.getEditor(), comboBox.getSelectedItem() );
+                    if (editor != null) {
+                        comboBox.configureEditor(comboBox.getEditor(), comboBox.getSelectedItem());
                     }
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     comboBox.revalidate();
                     comboBox.repaint();
-                }
-                else if ( propertyName == "editor" && comboBox.isEditable() ) {
+                } else if (propertyName == "editor" && comboBox.isEditable()) {
                     addEditor();
                     comboBox.revalidate();
-                }
-                else if ( propertyName == "editable" ) {
-                    if ( comboBox.isEditable() ) {
-                        comboBox.setRequestFocusEnabled( false );
+                } else if (propertyName == "editable") {
+                    if (comboBox.isEditable()) {
+                        comboBox.setRequestFocusEnabled(false);
                         addEditor();
                     } else {
-                        comboBox.setRequestFocusEnabled( true );
+                        comboBox.setRequestFocusEnabled(true);
                         removeEditor();
                     }
 
                     updateToolTipTextForChildren();
 
                     comboBox.revalidate();
-                }
-                else if ( propertyName == "enabled" ) {
+                } else if (propertyName == "enabled") {
                     boolean enabled = comboBox.isEnabled();
-                    if ( editor != null )
+                    if (editor != null) {
                         editor.setEnabled(enabled);
-                    if ( arrowButton != null )
+                    }
+                    if (arrowButton != null) {
                         arrowButton.setEnabled(enabled);
+                    }
                     comboBox.repaint();
-                }
-                else if ( propertyName == "focusable" ) {
+                } else if (propertyName == "focusable") {
                     boolean focusable = comboBox.isFocusable();
-                    if ( editor != null )
+                    if (editor != null) {
                         editor.setFocusable(focusable);
-                    if ( arrowButton != null )
+                    }
+                    if (arrowButton != null) {
                         arrowButton.setFocusable(focusable);
+                    }
                     comboBox.repaint();
-                }
-                else if ( propertyName == "maximumRowCount" ) {
-                    if ( isPopupVisible( comboBox ) ) {
+                } else if (propertyName == "maximumRowCount") {
+                    if (isPopupVisible(comboBox)) {
                         setPopupVisible(comboBox, false);
                         setPopupVisible(comboBox, true);
                     }
-                }
-                else if ( propertyName == "font" ) {
-                    listBox.setFont( comboBox.getFont() );
-                    if ( editor != null ) {
-                        editor.setFont( comboBox.getFont() );
+                } else if (propertyName == "font") {
+                    listBox.setFont(comboBox.getFont());
+                    if (editor != null) {
+                        editor.setFont(comboBox.getFont());
                     }
                     isMinimumSizeDirty = true;
                     comboBox.validate();
-                }
-                else if ( propertyName == JComponent.TOOL_TIP_TEXT_KEY ) {
+                } else if (propertyName == JComponent.TOOL_TIP_TEXT_KEY) {
                     updateToolTipTextForChildren();
-                }
-                else if ( propertyName == QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR ) {
-                    Boolean inTable = (Boolean)e.getNewValue();
+                } else if (propertyName == QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR) {
+                    Boolean inTable = (Boolean) e.getNewValue();
                     isTableCellEditor = inTable.equals(Boolean.TRUE) ? true : false;
-                }
-                else if (propertyName == "prototypeDisplayValue") {
+                } else if (propertyName == "prototypeDisplayValue") {
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     comboBox.revalidate();
-                }
-                else if (propertyName == "renderer") {
+                } else if (propertyName == "renderer") {
                     isMinimumSizeDirty = true;
                     isDisplaySizeDirty = true;
                     comboBox.revalidate();
@@ -459,7 +460,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 arrowButton.putClientProperty("JComponent.sizeVariant", e.getNewValue());
             }
         }
-   //
+        //
         // KeyListener
         //
 
@@ -467,17 +468,17 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // key.  If it finds a key event that wasn't a navigation key it
         // dispatches it to JComboBox.selectWithKeyChar() so that it can do
         // type-ahead.
-        public void keyPressed( KeyEvent e ) {
- 	    if ( isNavigationKey(e.getKeyCode(), e.getModifiers()) ) {
- 		lastTime = 0L;
- 	    } else if ( comboBox.isEnabled() && comboBox.getModel().getSize()!=0 &&
-			isTypeAheadKey( e ) && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
-		time = e.getWhen();		
-                if ( comboBox.selectWithKeyChar(e.getKeyChar()) ) {
+        public void keyPressed(KeyEvent e) {
+            if (isNavigationKey(e.getKeyCode(), e.getModifiers())) {
+                lastTime = 0L;
+            } else if (comboBox.isEnabled() && comboBox.getModel().getSize() != 0
+                    && isTypeAheadKey(e) && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
+                time = e.getWhen();
+                if (comboBox.selectWithKeyChar(e.getKeyChar())) {
                     e.consume();
                 }
             }
-        } 
+        }
 
         public void keyTyped(KeyEvent e) {
         }
@@ -485,7 +486,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         public void keyReleased(KeyEvent e) {
         }
 
-        private boolean isTypeAheadKey( KeyEvent e ) {
+        private boolean isTypeAheadKey(KeyEvent e) {
             return !e.isAltDown() && !e.isControlDown() && !e.isMetaDown();
         }
 
@@ -495,34 +496,32 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // NOTE: The class is added to both the Editor and ComboBox.
         // The combo box listener hides the popup when the focus is lost.
         // It also repaints when focus is gained or lost.
+        public void focusGained(FocusEvent e) {
+            ComboBoxEditor comboBoxEditor = comboBox.getEditor();
 
-        public void focusGained( FocusEvent e ) {
-            ComboBoxEditor comboBoxEditor = comboBox.getEditor(); 
-  
-            if ( (comboBoxEditor != null) && 
-                 (e.getSource() == comboBoxEditor.getEditorComponent()) ) { 
+            if ((comboBoxEditor != null)
+                    && (e.getSource() == comboBoxEditor.getEditorComponent())) {
                 return;
             }
             hasFocus = true;
             comboBox.repaint();
-	    
-	    if (comboBox.isEditable() && editor != null) {
-		editor.requestFocus();
-	    }
+
+            if (comboBox.isEditable() && editor != null) {
+                editor.requestFocus();
+            }
         }
 
-        public void focusLost( FocusEvent e ) {
+        public void focusLost(FocusEvent e) {
             ComboBoxEditor editor = comboBox.getEditor();
-            if ( (editor != null) &&
-                 (e.getSource() == editor.getEditorComponent()) ) {
+            if ((editor != null)
+                    && (e.getSource() == editor.getEditorComponent())) {
                 Object item = editor.getItem();
 
                 Object selectedItem = comboBox.getSelectedItem();
-                if (!e.isTemporary() && item != null && 
-                    !item.equals((selectedItem == null) ? "" : selectedItem )) {
-                    comboBox.actionPerformed
-                        (new ActionEvent(editor, 0, "",
-                                      EventQueue.getMostRecentEventTime(), 0));
+                if (!e.isTemporary() && item != null
+                        && !item.equals((selectedItem == null) ? "" : selectedItem)) {
+                    comboBox.actionPerformed(new ActionEvent(editor, 0, "",
+                            EventQueue.getMostRecentEventTime(), 0));
                 }
             }
 
@@ -536,43 +535,43 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         //
         // ListDataListener
         //
-
         // This listener watches for changes in the ComboBoxModel
-        public void contentsChanged( ListDataEvent e ) {
-	    if ( !(e.getIndex0() == -1 && e.getIndex1() == -1) ) {
-		isMinimumSizeDirty = true;
-		comboBox.revalidate();
-	    }
+        public void contentsChanged(ListDataEvent e) {
+            if (!(e.getIndex0() == -1 && e.getIndex1() == -1)) {
+                isMinimumSizeDirty = true;
+                comboBox.revalidate();
+            }
 
-	    // set the editor with the selected item since this
-	    // is the event handler for a selected item change.
-	    if (comboBox.isEditable() && editor != null) {
-		comboBox.configureEditor( comboBox.getEditor(), 
-					  comboBox.getSelectedItem() );
-	    }
+            // set the editor with the selected item since this
+            // is the event handler for a selected item change.
+            if (comboBox.isEditable() && editor != null) {
+                comboBox.configureEditor(comboBox.getEditor(),
+                        comboBox.getSelectedItem());
+            }
 
             isDisplaySizeDirty = true;
-	    comboBox.repaint();
-	}
-
-        public void intervalAdded( ListDataEvent e ) {
-	    contentsChanged( e );
+            comboBox.repaint();
         }
 
-        public void intervalRemoved( ListDataEvent e ) {
-            contentsChanged( e );
+        public void intervalAdded(ListDataEvent e) {
+            contentsChanged(e);
+        }
+
+        public void intervalRemoved(ListDataEvent e) {
+            contentsChanged(e);
         }
 
         //
         // LayoutManager
         //
-
         // This layout manager handles the 'standard' layout of combo boxes.
         // It puts the arrow button to the right and the editor to the left.
         // If there is no editor it still keeps the arrow button to the right.
-        public void addLayoutComponent(String name, Component comp) {}
+        public void addLayoutComponent(String name, Component comp) {
+        }
 
-        public void removeLayoutComponent(Component comp) {}
+        public void removeLayoutComponent(Component comp) {
+        }
 
         public Dimension preferredLayoutSize(Container parent) {
             return parent.getPreferredSize();
@@ -582,34 +581,33 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
             return parent.getMinimumSize();
         }
 
-        
-                //
+        //
         // ActionListener
         //
-	// Fix for 4515752: Forward the Enter pressed on the
-	// editable combo box to the default button 
-
-	// Note: This could depend on event ordering. The first ActionEvent
-	// from the editor may be handled by the JComboBox in which case, the
-	// enterPressed action will always be invoked.
-	public void actionPerformed(ActionEvent evt) {
-	    Object item = comboBox.getEditor().getItem();
-	    if (item != null) {
-             if(!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) { 
-              comboBox.setSelectedItem(comboBox.getEditor().getItem());
-             }
-             ActionMap am = comboBox.getActionMap();
-             if (am != null) {
-                Action action = am.get("enterPressed");
-                if (action != null) {
-                    action.actionPerformed(new ActionEvent(comboBox, evt.getID(), 
-                                           evt.getActionCommand(),
-                                           evt.getModifiers()));
-                }        
+        // Fix for 4515752: Forward the Enter pressed on the
+        // editable combo box to the default button 
+        // Note: This could depend on event ordering. The first ActionEvent
+        // from the editor may be handled by the JComboBox in which case, the
+        // enterPressed action will always be invoked.
+        public void actionPerformed(ActionEvent evt) {
+            Object item = comboBox.getEditor().getItem();
+            if (item != null) {
+                if (!comboBox.isPopupVisible() && !item.equals(comboBox.getSelectedItem())) {
+                    comboBox.setSelectedItem(comboBox.getEditor().getItem());
+                }
+                ActionMap am = comboBox.getActionMap();
+                if (am != null) {
+                    Action action = am.get("enterPressed");
+                    if (action != null) {
+                        action.actionPerformed(new ActionEvent(comboBox, evt.getID(),
+                                evt.getActionCommand(),
+                                evt.getModifiers()));
+                    }
+                }
             }
-       }
-   }
-           @Override
+        }
+
+        @Override
         public void layoutContainer(Container parent) {
             layoutComboBox(parent, this);
         }
@@ -644,7 +642,6 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                 editor.setBounds(cvb);
             }
         }
-           
     }
 
     /**
@@ -662,7 +659,6 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         return getHandler();
     }
 
-  
     // This is here because of a bug in the compiler.
     // When a protected-inner-class-savvy compiler comes out we
     // should move this into QuaquaComboBoxLayoutManager.
@@ -888,7 +884,15 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                     d = getSizeForComponent(c);
                     if (sameBaseline && value != null
                             && (!(value instanceof String) || !"".equals(value))) {
-                        int newBaseline = c.getBaseline(d.width, d.height);
+                        // BEGIN FIX QUAQUA-151 JComponent.getBaseline() is not available in J2SE5.
+                        int newBaseline;//=c.getBaseline(d.width, d.height);
+                        try {
+                            newBaseline = (Integer) Methods.invoke(c, "getBaseline", new Class[]{Integer.TYPE, Integer.TYPE}, new Object[]{d.width, d.height});
+                        } catch (NoSuchMethodException ex) {
+                            newBaseline = -1;
+                        }
+                        // END FIX QUAQUA-151
+
                         if (newBaseline == -1) {
                             sameBaseline = false;
                         } else if (baseline == -1) {
@@ -903,7 +907,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
             } else {
                 result = getDefaultSize();
                 if (comboBox.isEditable()) {
-                  result.width = 100;
+                    result.width = 100;
                 }
             }
         }
@@ -993,9 +997,9 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                     + buttonInsets.left + buttonInsets.right;
             size.height += insets.top + insets.bottom
                     + buttonInsets.top + buttonInsets.bottom;
-            
-            
-            size.width+=getArrowWidth();
+
+
+            size.width += getArrowWidth();
         } else {
             size = super.getMinimumSize(c);
             if (size == null) {
@@ -1017,8 +1021,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         return size;
     }
 
-
- /**
+    /**
      * Returns the shared listener.
      */
     private QuaquaComboBoxUIHandler getHandler() {
@@ -1027,6 +1030,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         }
         return handler;
     }
+
     @Override
     public int getBaseline(JComponent c, int width, int height) {
         Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
