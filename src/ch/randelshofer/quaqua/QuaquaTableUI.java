@@ -110,10 +110,12 @@ public class QuaquaTableUI extends BasicTableUI
         // FIXME - Intercell spacings different from 1,1 don't work currently
         //table.setIntercellSpacing(new Dimension(4,4));
     }
+
     @Override
     protected void uninstallDefaults() {
         super.uninstallDefaults();
     }
+
     private void updateStriped() {
         /*if (isStriped) {
         table.setIntercellSpacing(new Dimension(1, 1));
@@ -474,11 +476,18 @@ public class QuaquaTableUI extends BasicTableUI
             // Unless a background color has been explicitly set on the editor,
             // we set the background color used by the table.
             if (component.getBackground() instanceof UIResource) {
-                if (isStriped) {
-                    component.setBackground(getAlternateColor(row % 2));
+                // BEGIN FIX QUAQUA-146 Cell editor has wrong colors when
+                //                      cell is selected
+                if (table.isCellSelected(row, column)) {
+                    component.setBackground(background);
                 } else {
-                    component.setBackground(table.getBackground());
+                    if (isStriped) {
+                        component.setBackground(getAlternateColor(row % 2));
+                    } else {
+                        component.setBackground(table.getBackground());
+                    }
                 }
+                // END FIX QUAQUA-146
             }
             component.setBounds(cellRect);
             component.validate();
@@ -784,10 +793,10 @@ public class QuaquaTableUI extends BasicTableUI
             int column = table.columnAtPoint(p);
 
             if (table.isEnabled()) {
-                    // Note: Some applications depend on selection changes only occuring
-                    // on focused components. Maybe we must not do any changes to the
-                    // selection changes at all, when the compnent is not focused?
-                    table.requestFocusInWindow();
+                // Note: Some applications depend on selection changes only occuring
+                // on focused components. Maybe we must not do any changes to the
+                // selection changes at all, when the compnent is not focused?
+                table.requestFocusInWindow();
 
                 // Maybe edit cell
                 if (table.editCellAt(row, column, e)) {
@@ -798,7 +807,6 @@ public class QuaquaTableUI extends BasicTableUI
                         return;
                     }
                 } else {
-
                 }
 
                 if (row != -1 && column != -1) {
