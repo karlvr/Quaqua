@@ -14,6 +14,8 @@ import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
 /**
  * ComboBoxTest.
@@ -138,6 +140,20 @@ public class ComboBoxTest extends javax.swing.JPanel {
             // bail
         }
 
+        comboBox1.addPopupMenuListener(new PopupMenuListener() {
+
+            public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+               System.out.println("ComboBoxTest.popupMenuWillBecomeVisible "+e);
+            }
+
+            public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+               System.out.println("ComboBoxTest.popupMenuWillBecomeInvisible "+e);
+            }
+
+            public void popupMenuCanceled(PopupMenuEvent e) {
+               System.out.println("ComboBoxTest.popupMenuCanceled "+e);
+            }
+        });
     }
 
     public static void main(String args[]) {
