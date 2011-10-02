@@ -8,7 +8,6 @@
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.util.*;
@@ -28,15 +27,17 @@ import javax.swing.event.*;
  * @version $Id$
  */
 public class QuaquaViewportUI extends BasicViewportUI {
+
     private ChangeListener changeListener;
     private ContainerListener containerListener;
     private FocusListener focusListener;
     private PropertyChangeListener propertyChangeListener;
     private JViewport viewport;
-    
+
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaViewportUI();
     }
+
     public void paint(Graphics g, JComponent c) {
         if (c.isOpaque()) {
             Component view = viewport.getView();
@@ -46,26 +47,27 @@ public class QuaquaViewportUI extends BasicViewportUI {
             } else {
                 if (viewport.getView() != null) {
                     g.setColor(viewport.getView().getBackground());
-                    g.fillRect(0,0,c.getWidth(),c.getHeight());
+                    g.fillRect(0, 0, c.getWidth(), c.getHeight());
                 }
             }
         }
         Debug.paint(g, c, this);
     }
-    
+
     public void installUI(JComponent c) {
         viewport = (JViewport) c;
         super.installUI(c);
         //c.setOpaque(QuaquaManager.getBoolean("Viewport.opaque"));
-	QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Viewport.opaque"));
+        QuaquaUtilities.installProperty(c, "opaque", UIManager.get("Viewport.opaque"));
         installListeners();
     }
-    
+
     public void uninstallUI(JComponent c) {
         viewport = (JViewport) c;
         super.uninstallUI(c);
         uninstallListeners();
     }
+
     /**
      * Attaches listeners to the JTable.
      */
@@ -82,6 +84,7 @@ public class QuaquaViewportUI extends BasicViewportUI {
             viewport.getView().addFocusListener(focusListener);
         }
     }
+
     protected void uninstallListeners() {
         viewport.removeChangeListener(changeListener);
         viewport.removeContainerListener(containerListener);
@@ -89,35 +92,40 @@ public class QuaquaViewportUI extends BasicViewportUI {
         viewport.removePropertyChangeListener(propertyChangeListener);
         changeListener = null;
         containerListener = null;
-        
+
     }
+
     protected PropertyChangeListener createPropertyChangeListener() {
         return new QuaquaPropertyChangeHandler();
     }
-    
+
     private ChangeListener createChangeListener() {
         return new ChangeHandler();
     }
+
     private ContainerListener createContainerListener() {
         return new ContainerHandler();
     }
+
     private FocusListener createFocusListener() {
         return QuaquaFocusHandler.getInstance();
     }
-    
+
     /**
      * We need to repaint the viewport if the location of a striped view
      * changes.
      */
     private class ChangeHandler implements ChangeListener {
+
         private Point previousLocation = new Point();
+
         public void stateChanged(ChangeEvent e) {
 
             if (viewport.getView() != null) {
                 Component view = viewport.getView();
-                
+
                 Point newLocation = view.getLocation();
-                if (! previousLocation.equals(newLocation)) {
+                if (!previousLocation.equals(newLocation)) {
                     if (view.getHeight() < viewport.getHeight()) {
                         if (newLocation.x > previousLocation.x) {
                             viewport.repaint(0, view.getHeight(), newLocation.x - previousLocation.x, viewport.getHeight() - view.getHeight());
@@ -128,15 +136,14 @@ public class QuaquaViewportUI extends BasicViewportUI {
                     }
                     if (view.getWidth() < viewport.getWidth()) {
                         if (newLocation.y > previousLocation.y) {
-                            viewport.repaint(view.getWidth(), 0, viewport.getWidth() - view.getWidth(), Math.min(view.getHeight(),newLocation.y - previousLocation.y));
+                            viewport.repaint(view.getWidth(), 0, viewport.getWidth() - view.getWidth(), Math.min(view.getHeight(), newLocation.y - previousLocation.y));
                         }
                         if (newLocation.y < previousLocation.y) {
                             viewport.repaint(
-                            view.getWidth(),
-                            Math.min(view.getHeight(),viewport.getHeight()) - previousLocation.y + newLocation.y,
-                            viewport.getWidth() - view.getWidth(),
-                            previousLocation.y - newLocation.y
-                            );
+                                    view.getWidth(),
+                                    Math.min(view.getHeight(), viewport.getHeight()) - previousLocation.y + newLocation.y,
+                                    viewport.getWidth() - view.getWidth(),
+                                    previousLocation.y - newLocation.y);
                         }
                     }
                     previousLocation = newLocation;
@@ -144,7 +151,9 @@ public class QuaquaViewportUI extends BasicViewportUI {
             }
         }
     }
+
     private class ContainerHandler implements ContainerListener {
+
         public void componentRemoved(ContainerEvent e) {
             e.getChild().removeFocusListener(focusListener);
         }
@@ -153,13 +162,15 @@ public class QuaquaViewportUI extends BasicViewportUI {
             e.getChild().addFocusListener(focusListener);
         }
     }
+
     public class QuaquaPropertyChangeHandler implements PropertyChangeListener {
+
         public void propertyChange(PropertyChangeEvent e) {
             String name = e.getPropertyName();
-            if ("Frame.active" == name) {
+            if ("Frame.active".equals(name)) {
                 // we don't need to do anything here yet.
-       } else if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant(viewport);
+            } else if ("JComponent.sizeVariant".equals(name)) {
+                QuaquaUtilities.applySizeVariant(viewport);
             }
         }
     }
