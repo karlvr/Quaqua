@@ -460,10 +460,10 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
             sidebarTree.setUI((TreeUI) QuaquaTreeUI.createUI(sidebarTree));
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
-        
+
         // sidebarTree must use largest font used by the TreeCellRenderer
-         //   sidebarTree.setFont(UIManager.getFont("Tree.sideBar.selectionFont"));
-            
+        //   sidebarTree.setFont(UIManager.getFont("Tree.sideBar.selectionFont"));
+
         sidebarTree.setRequestFocusEnabled(false);
 
         sidebarTree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -1519,16 +1519,23 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
          * @return The icon.
          **/
         private Icon getSpecialFolderIcon(FileInfo info) {
+            // BEGIN FIX QUAQUA-148 "NPE when volume is not mounted"
+            File file = info.getFile();
+            if (file == null) {
+                return UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
+            }
+            // END FIX QUAQUA-148 
+
             // Load the icon from the UIDefaults table
-            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + info.getFile().getName());
+            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
 
             if (icon == null) {
-                if (info.getFile().getParentFile().getPath().equals("/Volumes")) {
-                icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericVolume"); 
-                }else                if (info.getFile().getParentFile().getPath().equals("/Users")) {
-                icon = UIManager.getIcon("FileChooser.sideBarIcon.Home"); 
+                if (file.getParentFile() != null && file.getParentFile().getPath().equals("/Volumes")) {
+                    icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericVolume");
+                } else if (file.getParentFile() != null && file.getParentFile().getPath().equals("/Users")) {
+                    icon = UIManager.getIcon("FileChooser.sideBarIcon.Home");
                 } else {
-                icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder"); 
+                    icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
                 }
             }
 
@@ -1547,33 +1554,33 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
             /*
             // Only allow this for Mac OS X as directory structures are different on other OSs.
             if (!QuaquaManager.isOSX()) {
-                return false;
+            return false;
             }
-
+            
             File file = info.getFile();
             // Only directories can have special icons.
             if (file == null || file.isFile()) {
-                return false;
+            return false;
             }
-
+            
             if (file.getParentFile() != null) {
-                String parentFile = file.getParentFile().getAbsolutePath();
-                if (parentFile.equals(System.getProperty("user.home"))) {
-                    // Look for user's home special folders
-                    String name = file.getName();
-                    return name.equals("Applications") || name.equals("Desktop") //
-                            || name.equals("Documents") || name.equals("Downloads")//
-                            || name.equals("Library") || name.equals("Movies") //
-                            || name.equals("Music") || name.equals("Pictures") //
-                            || name.equals("Public") || name.equals("Sites");
-                } else if (parentFile.equals(computer.getAbsolutePath())) {
-                    // Look for computer's special folders
-                    String name = file.getName();
-                    return name.equals("Applications") || name.equals("Library");
-                } else if (parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
-                    // Look for Utility folder in the /Applications folder
-                    return file.getName().equals("Utilities");
-                }
+            String parentFile = file.getParentFile().getAbsolutePath();
+            if (parentFile.equals(System.getProperty("user.home"))) {
+            // Look for user's home special folders
+            String name = file.getName();
+            return name.equals("Applications") || name.equals("Desktop") //
+            || name.equals("Documents") || name.equals("Downloads")//
+            || name.equals("Library") || name.equals("Movies") //
+            || name.equals("Music") || name.equals("Pictures") //
+            || name.equals("Public") || name.equals("Sites");
+            } else if (parentFile.equals(computer.getAbsolutePath())) {
+            // Look for computer's special folders
+            String name = file.getName();
+            return name.equals("Applications") || name.equals("Library");
+            } else if (parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
+            // Look for Utility folder in the /Applications folder
+            return file.getName().equals("Utilities");
+            }
             }
             // Nothing found - return null
             return false;*/
@@ -2234,7 +2241,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI implements Subtr
                     File file = info.lazyGetResolvedFile();
                     if (file == null) {
                         // The file became unavailable
-
                     } else {
 
                         setRootDirectory(file);

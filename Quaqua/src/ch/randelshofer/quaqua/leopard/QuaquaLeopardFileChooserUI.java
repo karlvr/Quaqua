@@ -1507,8 +1507,15 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
          * @return The icon.
          **/
         private Icon getSpecialFolderIcon(FileInfo info) {
+            // BEGIN FIX QUAQUA-148 "NPE when volume is not mounted"
+            File file = info.getFile();
+            if (file == null) {
+                return UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
+            }
+            // END FIX QUAQUA-148 
+            
             // Load the icon from the UIDefaults table
-            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + info.getFile().getName());
+            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
 
             // If we somehow fail to load the icon, fall back to standard way
             if (icon == null) {
