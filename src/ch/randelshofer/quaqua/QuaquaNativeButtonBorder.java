@@ -207,6 +207,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         private PressedCueBorder bevelBorder;
         private PressedCueBorder placardBorder;
         private PressedCueBorder toolBarBorder;
+        private PressedCueBorder toolBarTabBorder;
         private PressedCueBorder colorWellBorder;
 
         private PressedCueBorder getActualBorder(Component c) {
@@ -221,6 +222,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                     b = getColorWellBorder();
                 } else if ("toolBar".equals(s)) {
                     b = getToolBarBorder();
+                } else if ("toolBarTab".equals(s)) {
+                    b = getToolBarTabBorder();
                 } else {
                     b = getBevelBorder();
                 }
@@ -265,7 +268,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         private PressedCueBorder getToolBarBorder() {
             if (toolBarBorder == null) {
-                // The placarBorder does not have a dynamic visual margin.
+                // The placardBorder does not have a dynamic visual margin.
                 toolBarBorder =
                         new VisualMarginBorder(0, 4, 0, 4) {
 
@@ -308,6 +311,12 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
 
         public boolean hasPressedCue(JComponent c) {
             return getActualBorder(c).hasPressedCue(c);
+        }
+
+        private PressedCueBorder getToolBarTabBorder() {
+            if (toolBarTabBorder==null)
+            toolBarTabBorder = new QuaquaToolBarTabButtonBorder();
+            return toolBarTabBorder;
         }
     }
 
