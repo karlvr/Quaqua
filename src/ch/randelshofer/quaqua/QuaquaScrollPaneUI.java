@@ -59,13 +59,6 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
     }
 
     @Override
-    public void installUI(JComponent c) {
-        super.installUI(c);
-        QuaquaUtilities.installProperty(c, "opaque", UIManager.get("ScrollPane.opaque"));
-        c.setFocusable(UIManager.getBoolean("ScrollPane.focusable"));
-    }
-
-    @Override
     protected PropertyChangeListener createPropertyChangeListener() {
         return getHandler();
     }
@@ -78,6 +71,12 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             scrollpane.setLayout(layout);
             layout.syncWithScrollPane(scrollpane);
         }
+        if (QuaquaManager.getProperty("java.version").startsWith("1.5")) {
+            scrollpane.setOpaque(UIManager.getBoolean("ScrollPane.opaque"));
+        } else {
+            QuaquaUtilities.installProperty(scrollpane, "opaque", UIManager.get("ScrollPane.opaque"));
+        }
+        scrollpane.setFocusable(UIManager.getBoolean("ScrollPane.focusable"));
     }
 
     @Override
@@ -211,7 +210,8 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
         }
         return (margin == null) ? new Insets(0, 0, 0, 0) : margin;
     }
-@Override
+
+    @Override
     public void paint(Graphics g, JComponent c) {
         super.paint(g, c);
         Debug.paint(g, c, this);
@@ -379,7 +379,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) == 0
                         ? SwingConstants.VERTICAL //
                         : SwingConstants.HORIZONTAL;
-                JScrollBar toScroll = orientation==SwingConstants.VERTICAL
+                JScrollBar toScroll = orientation == SwingConstants.VERTICAL
                         ? scrollpane.getVerticalScrollBar()
                         : scrollpane.getHorizontalScrollBar();
 
@@ -389,8 +389,8 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         && scrollpane.getVerticalScrollBarPolicy() == JScrollPane.VERTICAL_SCROLLBAR_NEVER
                         || orientation == SwingConstants.HORIZONTAL
                         && scrollpane.getHorizontalScrollBarPolicy() == JScrollPane.HORIZONTAL_SCROLLBAR_NEVER) {
-                    JScrollPane parentPane=(JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, scrollpane);
-                    if (parentPane!=null) {
+                    JScrollPane parentPane = (JScrollPane) SwingUtilities.getAncestorOfClass(JScrollPane.class, scrollpane);
+                    if (parentPane != null) {
                         parentPane.dispatchEvent(e);
                     }
                     return;
@@ -615,7 +615,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             String name = e.getPropertyName();
             if ("Frame.active".equals(name)) {
                 QuaquaUtilities.repaintBorder((JComponent) e.getSource());
-            } else if (name.equals("JComponent.sizeVariant")) {
+            } else if ("JComponent.sizeVariant".equals(name)) {
                 QuaquaUtilities.applySizeVariant(scrollpane);
             }
 
@@ -630,21 +630,21 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
         private void scrollPanePropertyChange(PropertyChangeEvent e) {
             String propertyName = e.getPropertyName();
 
-            if (propertyName == "verticalScrollBarDisplayPolicy") {
+            if ("verticalScrollBarDisplayPolicy".equals(propertyName)) {
                 updateScrollBarDisplayPolicy(e);
-            } else if (propertyName == "horizontalScrollBarDisplayPolicy") {
+            } else if ("horizontalScrollBarDisplayPolicy".equals(propertyName)) {
                 updateScrollBarDisplayPolicy(e);
-            } else if (propertyName == "viewport") {
+            } else if ("viewport".equals(propertyName)) {
                 updateViewport(e);
-            } else if (propertyName == "rowHeader") {
+            } else if ("rowHeader".equals(propertyName)) {
                 updateRowHeader(e);
-            } else if (propertyName == "columnHeader") {
+            } else if ("columnHeader".equals(propertyName)) {
                 updateColumnHeader(e);
-            } else if (propertyName == "verticalScrollBar") {
+            } else if ("verticalScrollBar".equals(propertyName)) {
                 updateVerticalScrollBar(e);
-            } else if (propertyName == "horizontalScrollBar") {
+            } else if ("horizontalScrollBar".equals(propertyName)) {
                 updateHorizontalScrollBar(e);
-            } else if (propertyName == "componentOrientation") {
+            } else if ("componentOrientation".equals(propertyName)) {
                 scrollpane.revalidate();
                 scrollpane.repaint();
             }
@@ -655,7 +655,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             String propertyName = e.getPropertyName();
             Object source = e.getSource();
 
-            if ("model" == propertyName) {
+            if ("model".equals(propertyName)) {
                 JScrollBar sb = scrollpane.getVerticalScrollBar();
                 BoundedRangeModel oldModel = (BoundedRangeModel) e.getOldValue();
                 ChangeListener cl = null;
@@ -674,7 +674,7 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
                         sb.getModel().addChangeListener(cl);
                     }
                 }
-            } else if ("componentOrientation" == propertyName) {
+            } else if ("componentOrientation".equals(propertyName)) {
                 if (source == scrollpane.getHorizontalScrollBar()) {
                     JScrollBar hsb = scrollpane.getHorizontalScrollBar();
                     JViewport viewport = scrollpane.getViewport();

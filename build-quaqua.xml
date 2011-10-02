@@ -28,8 +28,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="8.0alpha10"/>
-        <property name="version" value="${versionNumber} 2011-09-02"/>
+        <property name="versionNumber" value="8.0"/>
+        <property name="version" value="${versionNumber} 2011-10-02"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>

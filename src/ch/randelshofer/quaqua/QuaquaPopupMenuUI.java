@@ -331,10 +331,11 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             if (grabbedWindow != null) {
                 if (tk instanceof sun.awt.SunToolkit) {
                     try {
-                    //((sun.awt.SunToolkit) tk).grab(grabbedWindow);
+                        //((sun.awt.SunToolkit) tk).grab(grabbedWindow);
                         Methods.invoke(tk, "grab", new Class[]{Window.class}, new Object[]{grabbedWindow});
                     } catch (NoSuchMethodException ex) {
-                        //ex.printStackTrace();
+                        grabbedWindow.addComponentListener(this);
+                        grabbedWindow.addWindowListener(this);
                     }
                 } else {
                     grabbedWindow.addComponentListener(this);
@@ -356,7 +357,13 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                     });
             if (grabbedWindow != null) {
                 if (tk instanceof sun.awt.SunToolkit) {
-                    ((sun.awt.SunToolkit) tk).ungrab(grabbedWindow);
+                    try {
+                        //((sun.awt.SunToolkit) tk).ungrab(grabbedWindow);
+                        Methods.invoke(tk, "ungrab", new Class[]{Window.class}, new Object[]{grabbedWindow});
+                    } catch (NoSuchMethodException ex) {
+                        grabbedWindow.removeComponentListener(this);
+                        grabbedWindow.removeWindowListener(this);
+                    }
                 } else {
                     grabbedWindow.removeComponentListener(this);
                     grabbedWindow.removeWindowListener(this);
@@ -381,7 +388,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
         }
 
         public void eventDispatched(AWTEvent ev) {
-            if (Methods.instanceOf(ev,"sun.awt.UngrabEvent")) {
+            if (Methods.instanceOf(ev, "sun.awt.UngrabEvent")) {
                 // Popup should be canceled in case of ungrab event
                 cancelPopupMenu();
                 return;
