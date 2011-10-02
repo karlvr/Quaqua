@@ -11,6 +11,7 @@
 
 package ch.randelshofer.quaqua;
 
+import ch.randelshofer.quaqua.border.PressedCueBorder;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -21,7 +22,7 @@ import javax.swing.border.*;
  * @author  Werner Randelshofer
  * @version 1.0  30 March 2005  Created.
  */
-public class QuaquaToolBarTabButtonBorder implements Border {
+public class QuaquaToolBarTabButtonBorder implements Border, PressedCueBorder {
     private final static Color foreground = new Color(185,185,185);
     private final static Color background = new Color(0x1e000000,true);
     
@@ -45,6 +46,10 @@ public class QuaquaToolBarTabButtonBorder implements Border {
                 g.fillRect(x + 1, y, width - 2, height);
             }
         }
+    }
+
+    public boolean hasPressedCue(JComponent c) {
+       return true;
     }
     
 }
