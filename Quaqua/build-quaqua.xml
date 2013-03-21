@@ -28,8 +28,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="8.0"/>
-        <property name="version" value="${versionNumber} 2011-10-02"/>
+        <property name="versionNumber" value="9.0"/>
+        <property name="version" value="${versionNumber} 2013-03-21"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -433,6 +433,7 @@ Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 Lion.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
+MountainLion.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
 </echo>
         <jar basedir="${builddir}" compress="true" 
             jarfile="${distdir}/quaqua-filechooser-only.jar" 
@@ -462,6 +463,7 @@ Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;
 SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
 SnowLeopard.16=ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel;
 Lion.16=ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
+MountainLion.16=ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel; 
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel; 
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;

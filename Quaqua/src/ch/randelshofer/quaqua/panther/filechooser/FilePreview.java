@@ -123,6 +123,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
         MouseListener mouseHandler = new MouseAdapter() {
 
+            @Override
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
                     FilePreview.this.fileChooser.approveSelection();
@@ -136,10 +137,15 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
         }
 
         if (OSXFile.canWorkWithAliases()) {
-
-            Preferences prefs = Preferences.userNodeForPackage(QuaquaLookAndFeel.class);
-            previewLabel.setVisible(prefs.getBoolean("FileChooser.isPreviewExpanded", false));
-            previewCheckBox.setSelected(prefs.getBoolean("FileChooser.isPreviewExpanded", false));
+            try {
+                Preferences prefs = Preferences.userNodeForPackage(QuaquaLookAndFeel.class);
+                previewLabel.setVisible(prefs.getBoolean("FileChooser.isPreviewExpanded", false));
+                previewCheckBox.setSelected(prefs.getBoolean("FileChooser.isPreviewExpanded", false));
+            } catch (UnsatisfiedLinkError err) {
+                // Work around for bug in preferences in OS X OpenJDK 1.7.0-ea-b211
+                previewLabel.setVisible(false);
+                previewCheckBox.setSelected(false);
+            }
             previewCheckBox.setIcon(UIManager.getIcon("FileChooser.disclosureButtonIcon"));
             previewCheckBox.setIcon(UIManager.getIcon("FileChooser.disclosureButtonIcon"));
         } else {
@@ -307,9 +313,14 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
     private void previewButtonPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_previewButtonPerformed
         boolean b = previewCheckBox.isSelected();
-
-        Preferences prefs = Preferences.userNodeForPackage(QuaquaLookAndFeel.class);
-        prefs.putBoolean("FileChooser.isPreviewExpanded", b);
+        try {
+            Preferences prefs = Preferences.userNodeForPackage(QuaquaLookAndFeel.class);
+            prefs.putBoolean("FileChooser.isPreviewExpanded", b);
+        } catch (UnsatisfiedLinkError err) {
+                // Work around for bug in preferences in OS X OpenJDK 1.7.0-ea-b211
+        } catch (NoClassDefFoundError err) {
+                // Work around for bug in preferences in OS X OpenJDK 1.7.0-ea-b211
+        }
         updatePreviewIcon();
     }//GEN-LAST:event_previewButtonPerformed
 
@@ -452,8 +463,8 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
                     public Image construct() {
                         Image o = null;
-                        if (UIManager.getBoolean("FileChooser.quickLookEnabled") &&
-                                System.getProperty("os.version").compareTo("10.6") >= 0) {
+                        if (UIManager.getBoolean("FileChooser.quickLookEnabled")
+                                && System.getProperty("os.version").compareTo("10.6") >= 0) {
                             o = OSXFile.getQuickLookThumbnailImage(file, 128);
                         }
                         if (o == null) {

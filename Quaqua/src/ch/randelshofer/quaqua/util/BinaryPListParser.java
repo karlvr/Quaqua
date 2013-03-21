@@ -56,7 +56,7 @@ public class BinaryPListParser {
     private static DatatypeFactory datatypeFactory;
 
     /* Description of the binary plist format derived from
-     * http://cvs.opendarwin.org/cgi-bin/cvsweb.cgi/~checkout~/src/CoreFoundation/Parsing.subproj/CFBinaryPList.c?rev=1.1.1.3&content-type=text/plain
+     * http://opensource.apple.com/source/CF/CF-635/CFBinaryPList.c
      *
      * EBNF description of the file format:
      * <pre>
@@ -81,6 +81,8 @@ public class BinaryPListParser {
      * int    ::= 0b0001 0bnnnn byte*(2^nnnn)  // 2^nnnn big-endian bytes
      * real   ::= 0b0010 0bnnnn byte*(2^nnnn)  // 2^nnnn big-endian bytes
      *
+     * unknown::= 0b0011 0b0000 byte*8       // 8 byte float big-endian bytes ?
+     * 
      * date   ::= 0b0011 0b0011 byte*8       // 8 byte float big-endian bytes
      *
      * data   ::= 0b0100 0bnnnn [int] byte*  // nnnn is number of bytes
@@ -126,11 +128,12 @@ public class BinaryPListParser {
      *            0b1110 0bxxxx | 0b1111 0bxxxx
      *
      *
-     * offsetTable ::= { int }               // list of ints, byte size of which 
+     * offsetTable ::= { int }               // List of ints, byte size of which 
      *                                       // is given in trailer
-     *                                       // these are the byte offsets into
-     *                                       // the file
-     *                                       // number of these is in the trailer
+     *                                       // These are the byte offsets into
+     *                                       // the file.
+     *                                       // The number of the ffsets is given
+     *                                       // in the trailer.
      *
      * trailer ::= refCount offsetCount objectCount topLevelOffset
      *
@@ -316,7 +319,7 @@ public class BinaryPListParser {
         DataInputStream in = null;
         try {
             in = new DataInputStream(
-                    new ByteArrayInputStream(buf));
+                    pos=new PosByteArrayInputStream(buf));
             parseObjectTable(in);
         } finally {
             if (in != null) {
@@ -331,7 +334,24 @@ public class BinaryPListParser {
         convertObjectTableToXML(root, objectTable.get(0));
         return root;
     }
+    
+    private long getPosition() {
+        return pos.getPos()+8;
+    }
+    
+    private PosByteArrayInputStream pos;
+    private static class PosByteArrayInputStream extends ByteArrayInputStream {
 
+        public PosByteArrayInputStream(byte[] buf) {
+            super(buf);
+        }
+
+        public int getPos() {
+            return pos;
+        }
+        
+    }
+    
     /**
      * Converts the object table in the binary PList into an XMLElement.
      */
@@ -413,6 +433,7 @@ public class BinaryPListParser {
     private void parseObjectTable(DataInputStream in) throws IOException {
         int marker;
         while ((marker = in.read()) != -1) {
+            //System.err.println("parseObjectTable marker=" + Integer.toBinaryString(marker)+" 0x"+Integer.toHexString(marker)+" @0x"+Long.toHexString(getPosition()));
             switch ((marker & 0xf0) >> 4) {
                 case 0: {
                     parsePrimitive(in, marker & 0xf);
@@ -429,10 +450,13 @@ public class BinaryPListParser {
                     break;
                 }
                 case 3: {
-                    if ((marker & 0xf) != 3) {
-                        throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
+                    switch (marker & 0xf) {
+                        case 3:
+                            parseDate(in);
+                            break;
+                        default:
+                            throw new IOException("parseObjectTable: illegal marker " + Integer.toBinaryString(marker));
                     }
-                    parseDate(in);
                     break;
                 }
                 case 4: {
@@ -708,6 +732,13 @@ public class BinaryPListParser {
         }
     }
 
+    /**
+     *  unknown	0011 0000	...		// 8 byte float follows, big-endian bytes
+     */
+    private void parseUnknown(DataInputStream in) throws IOException {
+        in.skipBytes(1);
+        objectTable.add("unknown");
+    }
     /**
      *  date	0011 0011	...		// 8 byte float follows, big-endian bytes
      */
