@@ -3277,7 +3277,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Wraps a BrowserCellRenderer into a ListCellRenderer for use in a JBrowser.
      *
      * @author Werner Randelshofer
-     * @version 1.0 Mar 22, 2008 Created.
+     * @version 1.0 Mar 22, 2008 Created.
      */
     private class BrowserCellRendererWrapper extends JPanel implements ListCellRenderer, Accessible {
 

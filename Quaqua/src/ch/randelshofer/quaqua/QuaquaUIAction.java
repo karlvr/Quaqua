@@ -41,7 +41,7 @@ import javax.swing.Action;
  * <code>Component</code> may be null.
  *
  * @author Werner Randelshofer
- * @version 1.0 Jan 25, 2008 Created.
+ * @version 1.0 Jan 25, 2008 Created.
  */
 public abstract class QuaquaUIAction implements Action {
     private String name;

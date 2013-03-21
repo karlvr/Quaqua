@@ -17,7 +17,7 @@ import java.awt.*;
  * Defines the requirements for an object that displays a tree node in a JBrowser.
  *
  * @author Werner Randelshofer
- * @version $Id$
+ * @version $Id$
  */
 public interface BrowserCellRenderer {
 

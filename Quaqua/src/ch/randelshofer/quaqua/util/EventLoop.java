@@ -60,17 +60,7 @@ import java.util.*;
  * </tt></pre>
  *
  * @author Werner Randelshofer
- * @version 1.4 2009-06-01 Added method dispose.
- * <br>1.3 2006-04-07 Fixed bug in processEvents method. Support for
- * FIFO sequence added. Replaced Vector by LinkedList.
- * <br>1.2AWT 2001-09-24 Support for coalescing of events added.
- * <br>1.1 2001-08-24 Reworked for JDK 1.3.
- * <br>1.0.2   2000-03-03
- *        Catch SecurityException's (To make this class work in Netscape Navigator).
- * <br>history 1.0.1  14.10.1998
- *     Versionskennung in Klassenkommentar eingef�gt.
- * <br>history  1.0  Datum ?
- *    Threads werden nicht mehr wiederverwendet.
+ * @version $Id$
  */
 public abstract class EventLoop {
     private Thread eventProcessor;

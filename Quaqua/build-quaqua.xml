@@ -432,8 +432,8 @@ Leopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 Leopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 SnowLeopard.15=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
 SnowLeopard.16=ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF;
-Lion.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
-MountainLion.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
+Lion.16=ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF;
+MountainLion.16=ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF;
 </echo>
         <jar basedir="${builddir}" compress="true" 
             jarfile="${distdir}/quaqua-filechooser-only.jar" 

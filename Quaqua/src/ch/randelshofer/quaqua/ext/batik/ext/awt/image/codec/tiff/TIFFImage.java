@@ -45,10 +45,14 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.SeekableStream;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.AbstractRed;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered.CachableRed;
 
+// Note: Removed JPEG support, because the com.sun.image.codec.jpeg package
+//       is not available in J2SE7. We need TIFFImage for transferring icon images
+//       from OS X to Java. These images are not encoded with JPEG.
+/*
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGDecodeParam;
 import com.sun.image.codec.jpeg.JPEGImageDecoder;
-
+*/
 /**
  *
  * @version $Id: TIFFImage.java 498740 2007-01-22 18:35:57Z dvholten $
@@ -105,7 +109,7 @@ public class TIFFImage extends AbstractRed {
     int predictor;
 
     // TTN2 JPEG related variables
-    JPEGDecodeParam decodeParam = null;
+    //JPEGDecodeParam decodeParam = null;
     boolean colorConvertJPEG = false;
 
     // DEFLATE variables
@@ -136,7 +140,7 @@ public class TIFFImage extends AbstractRed {
      *        case that would be limited to YCbCr-to-RGB.
      * @param minX the X position of the returned Raster.
      * @param minY the Y position of the returned Raster.
-     */
+     * /
     private static final Raster decodeJPEG(byte[] data,
                                            JPEGDecodeParam decodeParam,
                                            boolean colorConvert,
@@ -164,7 +168,7 @@ public class TIFFImage extends AbstractRed {
         // Translate the decoded Raster to the specified location and return.
         return jpegRaster.createTranslatedChild(minX, minY);
     }
-
+*/
     /**
      * Inflates <code>deflated</code> into <code>inflated</code> using the
      * <code>Inflater</code> constructed during class instantiation.
@@ -588,10 +592,12 @@ public class TIFFImage extends AbstractRed {
                     byte[] jpegTable = jpegTableField.getAsBytes();
                     ByteArrayInputStream tableStream =
                         new ByteArrayInputStream(jpegTable);
+                    /*
                     JPEGImageDecoder decoder =
                         JPEGCodec.createJPEGDecoder(tableStream);
                     decoder.decodeAsRaster();
                     decodeParam = decoder.getJPEGDecodeParam();
+                    */
                 }
 
                 break;
@@ -1115,7 +1121,8 @@ public class TIFFImage extends AbstractRed {
                             lzwDecoder.decode(data, tempData, newRect.height);
 
                         } else if (compression == COMP_JPEG_TTN2) {
-
+                            stream.skipFully(byteCount);
+                            /*
                             stream.readFully(data, 0, byteCount);
                             Raster tempTile = decodeJPEG(data,
                                                          decodeParam,
@@ -1132,7 +1139,7 @@ public class TIFFImage extends AbstractRed {
                             for(int i = 0; i < unitsBeforeLookup; i++) {
                                 tempData[i] = (byte)tempPixels[i];
                             }
-
+                            */
                         }  else if (compression == COMP_DEFLATE) {
 
                             stream.readFully(data, 0, byteCount);
@@ -1187,14 +1194,15 @@ public class TIFFImage extends AbstractRed {
                             lzwDecoder.decode(data, bdata, newRect.height);
 
                         } else if (compression == COMP_JPEG_TTN2) {
-
+                            stream.skipFully(byteCount);
+                            /*
                             stream.readFully(data, 0, byteCount);
                             tile.setRect(decodeJPEG(data,
                                                     decodeParam,
                                                     colorConvertJPEG,
                                                     tile.getMinX(),
                                                     tile.getMinY()));
-
+                                                    */
                         }  else if (compression == COMP_DEFLATE) {
 
                             stream.readFully(data, 0, byteCount);
@@ -1373,13 +1381,15 @@ public class TIFFImage extends AbstractRed {
                         decodePackbits(data, unitsInThisTile, bdata);
 
                     } else if (compression == COMP_JPEG_TTN2) {
-
+                        stream.skipFully(byteCount);
+                        /*
                         stream.readFully(data, 0, byteCount);
                         tile.setRect(decodeJPEG(data,
                                                 decodeParam,
                                                 colorConvertJPEG,
                                                 tile.getMinX(),
                                                 tile.getMinY()));
+                                                */
                     } else if (compression == COMP_DEFLATE) {
 
                         stream.readFully(data, 0, byteCount);

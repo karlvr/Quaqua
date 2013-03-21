@@ -18,7 +18,7 @@ import java.awt.*;
  * DefaultBrowserCellRenderer.
  *
  * @author Werner Randelshofer
- * @version $Id$
+ * @version $Id$
  */
 public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRenderer {
 
