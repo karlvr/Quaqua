@@ -82,7 +82,7 @@ public class OSXAquaPainter {
                             }
                             for (String libraryName : libraryNames) {
                                 try {
-                                    System.loadLibrary(libraryName);
+                                    JNILoader.loadLibrary(libraryName);
                                     success = true;
                                     break;
                                 } catch (UnsatisfiedLinkError e) {

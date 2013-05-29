@@ -47,7 +47,7 @@ public class DefaultColumnCellRenderer extends JPanel implements ListCellRendere
         if (expandedIcon == null) {
             BufferedImage iconImages[] = Images.split(
                     Toolkit.getDefaultToolkit().createImage(
-                    DefaultColumnCellRenderer.class.getResource("snow_leopard/images/Browser.disclosureIcons.png")),
+                    DefaultColumnCellRenderer.class.getResource("snowleopard/images/Browser.disclosureIcons.png")),
                     6, true);
 
             expandedIcon = new ImageIcon(iconImages[0]);

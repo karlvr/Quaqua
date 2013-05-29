@@ -75,7 +75,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         className = "ch.randelshofer.quaqua.leopard.filechooser.OSXLeopardFileSystemView";
                         break;
                     case QuaquaManager.SNOW_LEOPARD :
-                        className = "ch.randelshofer.quaqua.snow_leopard.filechooser.OSX16SnowLeopardFileSystemView";
+                        className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSX16SnowLeopardFileSystemView";
                         break;
                     case QuaquaManager.LION :
                     case QuaquaManager.MOUNTAIN_LION :
@@ -91,7 +91,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                     	className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
                     	break;
                     default :
-                        className = "ch.randelshofer.quaqua.snow_leopard.filechooser.OSXLionFileSystemView";
+                        className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSXLionFileSystemView";
                         break;
                 }
             try {

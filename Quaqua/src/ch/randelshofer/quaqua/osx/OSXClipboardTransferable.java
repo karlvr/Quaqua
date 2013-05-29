@@ -80,7 +80,7 @@ public class OSXClipboardTransferable implements Transferable {
                             for (int i=0;i<libraryNames.length;i++) {
                                 libraryName=libraryNames[i];
                                 try {
-                                    System.loadLibrary(libraryName);
+                                    JNILoader.loadLibrary(libraryName);
                                     success = true;
                                     break;
                                 } catch (UnsatisfiedLinkError e) {

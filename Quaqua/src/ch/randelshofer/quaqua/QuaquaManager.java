@@ -321,7 +321,7 @@ public class QuaquaManager {
             lafs.put("Leopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
             lafs.put("Leopard.16", "ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
             lafs.put("SnowLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
-            lafs.put("SnowLeopard.16", "ch.randelshofer.quaqua.snow_leopard.Quaqua16SnowLeopardLookAndFeel");
+            lafs.put("SnowLeopard.16", "ch.randelshofer.quaqua.snowleopard.Quaqua16SnowLeopardLookAndFeel");
             lafs.put("Lion.16", "ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel");
             lafs.put("MountainLion.16", "ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel");
             lafs.put("CrossTiger.15", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
@@ -634,7 +634,7 @@ public class QuaquaManager {
                     JLabel label = new JLabel(
                             "<html>"
                             + "<p align=center><b>Quaqua Look and Feel " + version + "</b><br><br>"
-                            + "Copyright 2003-2011 Werner Randelshofer<br>"
+                            + "Copyright 2003-2013 Werner Randelshofer<br>"
                             + "All Rights Reserved.<br>"
                             + "<br>"
                             + "This is a software library.<br>"
