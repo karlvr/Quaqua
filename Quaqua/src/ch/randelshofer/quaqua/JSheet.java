@@ -138,6 +138,8 @@ public class JSheet extends JDialog {
 
         if (getOwner() != null && isShowAsSheet()) {
             if (isNativeSheetSupported()) {
+                // J2SE 7 requires that we set undecorated to true.
+                setUndecorated(true);
                 getRootPane().putClientProperty("apple.awt.documentModalSheet", Boolean.TRUE);
             } else if (isExperimentalSheet()) {
                 setUndecorated(true);
