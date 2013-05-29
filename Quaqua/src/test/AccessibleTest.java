@@ -1,7 +1,7 @@
 /**
  * @(#)AccessibleTest.java  1.0  March 17, 2008
  *
- * Copyright (c) 2008 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2008 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

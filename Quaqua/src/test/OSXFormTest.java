@@ -1,7 +1,7 @@
 /*
  * @(#)OSXFormTest.java  1.0  June 15, 2007
  *
- * Copyright (c) 2007 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2007 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

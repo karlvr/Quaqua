@@ -1,7 +1,7 @@
 /*
  * @(#)TabbedPaneTest.java  1.0  12 February 2005
  *
- * Copyright (c) 2004 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

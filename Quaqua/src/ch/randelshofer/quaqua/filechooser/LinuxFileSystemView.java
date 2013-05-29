@@ -1,7 +1,7 @@
 /*
  * @(#)LinuxFileSystemView.java  
  *
- * Copyright (c) 2009-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.

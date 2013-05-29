@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaLeopardSideBarSelectionBorder.java 
  *
- * Copyright (c) 20011 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 20011 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

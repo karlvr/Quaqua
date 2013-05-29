@@ -1,7 +1,7 @@
 /*
  * @(#)SequentialDispatcher.java  1.0  2002-05-18
  *
- * Copyright (c) 2001-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * This software is the confidential and proprietary information of 

@@ -1,7 +1,7 @@
 /*
  * @(#)TexturedFrameTest.java  1.0  2009-09-29
  * 
- * Copyright (c) 2009 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2009 Werner Randelshofer, Switzerland.
  * All rights reserved.
  * 
  * You may not use, copy or modify this file, except in compliance with the

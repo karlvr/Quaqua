@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaResourceBundleUtil.java  1.3.3  2005-11-07
  *
- * Copyright (c) 2000-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2000-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -20,7 +20,7 @@ import java.net.URL;
 /**
  * This is a convenience wrapper for accessing resources stored in a ResourceBundle.
  *
- * @author  Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
+ * @author  Werner Randelshofer, Switzerland
  * @version 1,3.3 2005-11-07 Method getLocale added.
  * <br>1.3.2 2004-05-02 Method getLAFBundle without Locale as parameter
  * added.

@@ -1,7 +1,7 @@
 /*
  * @(#)CMYKChooser.java  
  *
- * Copyright (c) 2004-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * This software is the confidential and proprietary information of

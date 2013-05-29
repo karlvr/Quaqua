@@ -1,7 +1,7 @@
 /*
  * @(#)QQToolBarTest16.java  1.0  2009-10-03
  * 
- * Copyright (c) 2009 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2009 Werner Randelshofer, Switzerland.
  * All rights reserved.
  * 
  * You may not use, copy or modify this file, except in compliance with the

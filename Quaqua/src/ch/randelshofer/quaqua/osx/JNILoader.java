@@ -1,7 +1,7 @@
 /*
  * @(#)JNILoader.java  1.0  2013-03-21
  * 
- * Copyright (c) 2013 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  * 
  * You may not use, copy or modify this file, except in compliance with the 

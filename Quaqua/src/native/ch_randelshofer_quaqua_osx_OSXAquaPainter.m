@@ -1,8 +1,7 @@
 /*
  * @(#)ch_randelshofer_quaqua_osx_OSXAquaPainter.m
  *
- * Copyright (c) 2011 Werner Randelshofer
- * Staldenmattweg 2, Immensee, CH-6405, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer. 

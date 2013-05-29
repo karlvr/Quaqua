@@ -1,7 +1,7 @@
 /*
  * @(#)FlickerTest.java
  *
- * Copyright (c) 2009 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2009 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.

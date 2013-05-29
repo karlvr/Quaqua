@@ -1,7 +1,7 @@
 /*
  * @(#)RootPaneTest.java  1.0  June 6, 2005
  *
- * Copyright (c) 2005 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2005 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

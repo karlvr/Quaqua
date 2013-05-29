@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaLookAndFeel.java  
  *
- * Copyright (c) 2003-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -14,7 +14,7 @@ package ch.randelshofer.quaqua;
 /**
  * A J2SE5 backwards compatible version of the {@link QuaquaLookAndFeel} class.
  *
- * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Switzerland
  * @version $Id$
  */
 public class QuaquaLookAndFeel15 extends LookAndFeelProxy15 {

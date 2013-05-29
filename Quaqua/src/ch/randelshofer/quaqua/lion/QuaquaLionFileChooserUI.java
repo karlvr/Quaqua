@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaLionFileChooserUI.java  
  *
- * Copyright (c) 2011 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
  *

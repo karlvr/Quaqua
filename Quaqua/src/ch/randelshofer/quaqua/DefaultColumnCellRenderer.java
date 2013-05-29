@@ -1,7 +1,7 @@
 /*
  * @(#)DefaultColumnCellRenderer.java 
  *
- * Copyright (c) 2003-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
  * All rights reserved.
  *

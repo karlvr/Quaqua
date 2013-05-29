@@ -28,8 +28,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="9.0a1"/>
-        <property name="version" value="${versionNumber} 2013-05-27"/>
+        <property name="versionNumber" value="9.0"/>
+        <property name="version" value="${versionNumber} 2013-05-29"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -60,10 +60,14 @@
          </condition>
 
         <property name="j2se6" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6" />
+        <property name="j2se6.jvm" value="${j2se6}/Home/bin/java"/>
         <property name="j2se6.bootclasspath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
         <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
         <property name="j2se6.extdirs" value="." />
         <property name="j2se6.endorseddirs" value="." />
+        
+        <property name="j2se7" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents" />
+        <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
         
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
              In case you run this Ant task on Mac OS X 10.6, "cc" invokes gcc-4.2
@@ -627,7 +631,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto Brush Metal">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -639,7 +643,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
@@ -649,7 +653,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.7 Auto">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents/Home/bin/java"
+                jvm="${j2se7.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
@@ -659,7 +663,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 requestFocusEnabled">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-DQuaqua.requestFocusEnabled=true"/>
@@ -670,7 +674,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Exclude Button,TextField">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -684,7 +688,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Include ColorChooser">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -697,7 +701,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -710,7 +714,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard no QuickLook">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -724,7 +728,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 OS X 10.6 Snow Leopard ScreenMenuBar">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -738,7 +742,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto 32-bit">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-d32"/>
@@ -749,7 +753,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto 64-bit">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <jvmarg value="-d64"/>
@@ -760,7 +764,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto No-Quartz">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -772,7 +776,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto ScreeMenuBar with old parameter">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <!--jvmarg value="-Dapple.laf.useScreenMenuBar=false"/-->
             <jvmarg value="-Dcom.apple.macos.useScreenMenuBar=true"/>
@@ -785,7 +789,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Auto Quartz">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -798,7 +802,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 OS X 10.7 Lion">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Xdock:name=Look&amp;Feels"/>
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
@@ -811,7 +815,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 OS X 10.5 Leopard ScreenMenuBar">
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -824,7 +828,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 CrossPlatform 10.4 Tiger">
         <java classname="test.Main" classpath="${classpath}" 
         failonerror="true" fork="true" 
-        jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -837,7 +841,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 CrossPlatform 10.5 Leopard">
         <java classname="test.Main" classpath="${classpath}" 
         failonerror="true" fork="true" 
-        jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -850,7 +854,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Quaqua 1.6 Window Decorated">
         <java classname="test.Main" classpath="${classpath}" 
         failonerror="true" fork="true" 
-        jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+        jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=false"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -861,7 +865,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Aqua 1.6">
         <java classname="test.Main" classpath="${classpath}" 
                 failonerror="true" fork="true" 
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
+            <arg value="-laf"/>
+            <arg value="apple.laf.AquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Aqua 1.7">
+        <java classname="test.Main" classpath="${classpath}" 
+                failonerror="true" fork="true" 
+                jvm="${j2se7.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -873,7 +889,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Metal 1.6">
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true" 
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dswing.aatext=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -887,7 +903,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Motif 1.6">
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true" 
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dswing.aatext=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -900,7 +916,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     <target depends="init" name="run Nimbus 1.6">
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         >
             <jvmarg value="-Dswing.aatext=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -912,7 +928,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     </target>
     <target depends="init" name="run Quaqua 1.6 LeopardFileChooser">
         <java classname="test.Main" classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         failonerror="true" fork="true">
             <jvmarg value="-DQuaqua.design=jaguar"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -922,7 +938,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     </target>
     <target depends="init" name="run Quaqua 1.6 PantherFileChooser">
         <java classname="test.Main" classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         failonerror="true" fork="true">
             <jvmarg value="-DQuaqua.design=jaguar"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>
@@ -932,7 +948,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
     </target>
     <target depends="init" name="run Quaqua 1.6 LionFileChooser">
         <java classname="test.Main" classpath="${classpath}"
-                jvm="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Home/bin/java"
+                jvm="${j2se6.jvm}"
         failonerror="true" fork="true">
             <jvmarg value="-Dapple.awt.graphics.UseQuartz=true"/>
             <jvmarg value="-DQuaqua.design=lion"/>

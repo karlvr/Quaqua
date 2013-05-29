@@ -1,7 +1,7 @@
 /*
  * @(#)GrayChooser.java  1.5  2007-02-24
  *
- * Copyright (c) 2005-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * This software is the confidential and proprietary information of

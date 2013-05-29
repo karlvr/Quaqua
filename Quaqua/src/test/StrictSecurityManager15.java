@@ -1,7 +1,7 @@
 /*
  * @(#)StrictSecurityManager15.java  1.0  February 10, 2007
  *
- * Copyright (c) 2006 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2006 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

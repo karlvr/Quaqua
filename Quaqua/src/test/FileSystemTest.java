@@ -1,7 +1,7 @@
 /*
  * @(#)FileSystemTest.java  1.0  February 27, 2006
  *
- * Copyright (c) 2006 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2006 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

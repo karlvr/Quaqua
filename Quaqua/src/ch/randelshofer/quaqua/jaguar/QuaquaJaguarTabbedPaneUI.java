@@ -1,7 +1,7 @@
 /*
  * @(#)QuaquaJaguarTabbedPaneUI.java  
  *
- * Copyright (c) 2001-2010 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -40,7 +40,7 @@ import javax.swing.event.ChangeListener;
  * <code>Quaqua.TabbedPaneChild.contentInsets</code> specifies the insets 
  * to be used to lay out the child component inside the JTabbedPane.
  *
- * @author Werner Randelshofer, Hausmatt 10, CH-6405 Immensee, Switzerland
+ * @author Werner Randelshofer, Switzerland
  * @version $Id$
  */
 public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI

@@ -1,8 +1,7 @@
 /*
  * @(#)ConcurrentDispatcher.java  2.1  2009-06-01
  *
- * Copyright (c) 2002-2010 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland
+ * Copyright (c) 2002-2010 Werner Randelshofer, Switzerland
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -41,7 +40,7 @@ import javax.swing.*;
  * dispatcher.dispatch(runner);
  * </pre>
  *
- * @author  Werner Randelshofer, Hausmatt 10, Immensee, CH-6405, Switzerland
+ * @author  Werner Randelshofer, Switzerland
  * @version 2.1 2009-06-01 Added dispose method.
  * <br>2.0 2002-04-07 dispatchLIFO added.
  * <br>1.0 2002-05-18 Created.

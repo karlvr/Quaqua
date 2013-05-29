@@ -1,8 +1,7 @@
 /*
  * @(#)ArrayUtil.java  
  *
- * Copyright (c) 2003-2010 Werner Randelshofer
- * Hausmatt 10, Immensee, CH-6405, Switzerland
+ * Copyright (c) 2003-2010 Werner Randelshofer, Switzerland
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the

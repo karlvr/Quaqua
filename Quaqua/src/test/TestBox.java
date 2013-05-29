@@ -1,7 +1,7 @@
 /*
  * @(#)TestBox.java  1.0  19 March 2005
  *
- * Copyright (c) 2004 Werner Randelshofer, Immensee, Switzerland.
+ * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
