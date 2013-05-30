@@ -29,7 +29,7 @@
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
         <property name="versionNumber" value="9.0"/>
-        <property name="version" value="${versionNumber} 2013-05-29"/>
+        <property name="version" value="${versionNumber} 2013-05-30"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -130,8 +130,8 @@
              specified. -->
         <arg value="-arch"/>
         <arg value="i386"/>
-        <arg value="-arch"/>
-        <arg value="ppc"/>
+        <!--arg value="-arch"/>
+        <arg value="ppc"/-->
         
         <!-- Target SDK used for cross-development. -->
         <arg value="-isysroot"/>
@@ -231,10 +231,10 @@
         <arg value="i686"/>
         <arg value="-arch"/>
         <arg value="x86_64"/>
-        <arg value="-arch"/>
+        <!--arg value="-arch"/>
         <arg value="ppc"/>
         <arg value="-arch"/>
-        <arg value="ppc64"/>
+        <arg value="ppc64"/-->
         
         <!-- SSE needs to be enabled fro i686 architecture. -->
         <arg value="-msse3"/>
