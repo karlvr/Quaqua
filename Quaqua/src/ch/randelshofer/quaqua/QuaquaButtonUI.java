@@ -23,6 +23,8 @@ import javax.swing.plaf.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
 
+import com.xk72.swing.FilterableIcon;
+
 /**
  * QuaquaButtonUI.
  *
@@ -244,12 +246,17 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
                 // Note: This is only needed for borderless buttons, which
                 //       have no other way to provide feedback about the pressed
                 //       state.
-                tmpIcon = new ImageIcon(
-                        HalfbrightFilter.createHalfbrightImage(
-                        ((ImageIcon) icon).getImage()));
-                shadowIcon = new ImageIcon(
-                        ShadowFilter.createShadowImage(
-                        ((ImageIcon) icon).getImage()));
+            	if (icon instanceof FilterableIcon) {
+            		tmpIcon = ((FilterableIcon) icon).filter(new HalfbrightFilter());
+            		shadowIcon = ((FilterableIcon) icon).filter(new ShadowFilter());
+            	} else {
+	                tmpIcon = new ImageIcon(
+	                        HalfbrightFilter.createHalfbrightImage(
+	                        ((ImageIcon) icon).getImage()));
+	                shadowIcon = new ImageIcon(
+	                        ShadowFilter.createShadowImage(
+	                        ((ImageIcon) icon).getImage()));
+            	}
             }
         } else if (b.isRolloverEnabled() && model.isRollover()) {
             if (model.isSelected()) {
