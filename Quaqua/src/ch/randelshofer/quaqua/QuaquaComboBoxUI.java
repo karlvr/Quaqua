@@ -937,7 +937,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
      * the component to the currentValuePane and changing the font may be 
      * redundant operations.
      */
-    private Dimension getSizeForComponent(Component comp) {
+    protected Dimension getSizeForComponent(Component comp) {
         currentValuePane.add(comp);
         comp.setFont(comboBox.getFont());
         Dimension d = comp.getPreferredSize();

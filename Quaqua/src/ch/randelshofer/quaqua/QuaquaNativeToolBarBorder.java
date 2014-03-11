@@ -12,10 +12,12 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.QuaquaNativeButtonStateBorder;
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
 import ch.randelshofer.quaqua.util.InsetsUtil;
+
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -24,6 +26,7 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.plaf.basic.*;
@@ -373,7 +376,11 @@ public class QuaquaNativeToolBarBorder
                 public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
                     boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
                     Graphics2D g = (Graphics2D) gr;
-                    g.setPaint(PaintableColor.getPaint(UIManager.getColor("ToolBar.title.background"), c));
+                    Color color = UIManager.getColor("ToolBar.title.background");
+                    if (color instanceof InactivatableColorUIResource) {
+                    	((InactivatableColorUIResource)color).setActive(isActive);
+                    }
+					g.setPaint(PaintableColor.getPaint(color, c));
                     g.fillRect(x, y, width, height);
                 }
 

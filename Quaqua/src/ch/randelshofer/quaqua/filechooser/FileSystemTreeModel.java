@@ -1414,7 +1414,7 @@ public class FileSystemTreeModel implements TreeModel {
                         // This is used to let the GUI know, that we have
                         // finished with validating. We need to check for root,
                         // because the node might have been removed from the
-                        // tree while we are updating it. 
+                        // tree while we are updating it.
                         Node nodeRoot = (Node) getRoot();
                         if (nodeRoot == root) {
                             fireTreeNodeChanged(DirectoryNode.this);
@@ -1574,7 +1574,7 @@ public class FileSystemTreeModel implements TreeModel {
          * Validates this node if automatic validation is on and if it is invalid.
          */
         public void autoValidateChildren() {
-            if (isAutoValidate && childrenState == INVALID) {
+            if (isAutoValidate && childrenState == INVALID && fileChooser.isDisplayable()) {
                 validateChildren();
             }
         }

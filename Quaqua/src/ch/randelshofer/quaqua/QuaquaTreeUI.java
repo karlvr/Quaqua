@@ -405,7 +405,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
         tree.revalidate();
     }
 
-    private int getLeadSelectionRow() {
+    protected int getLeadSelectionRow() {
         return tree.getLeadSelectionRow();
 //        return leadRow;
     }
