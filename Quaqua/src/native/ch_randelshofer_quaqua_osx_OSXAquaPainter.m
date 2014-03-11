@@ -20,8 +20,8 @@
 
 #ifndef __ppc__
 #ifndef __ppc64__
-#include <JavaNativeFoundation/JavaNativeFoundation.h>
-#include <JavaRuntimeSupport/JavaRuntimeSupport.h>
+#include "JavaNativeFoundation.h"
+#include "JavaRuntimeSupport.h"
 /** Global renderer variable. */
 static JRSUIRendererRef gRenderer = NULL;
 

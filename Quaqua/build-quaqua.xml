@@ -79,6 +79,8 @@
                     else="cc">
                 <available file="/Developer-old/usr/bin/gcc-4.2"/>
          </condition>
+    	
+    	<property name="macosx.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk" /> 
     </target>
    
     <target depends="init" name="compile">
@@ -141,8 +143,8 @@
              -->
         <!--arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/-->
-        <arg value="/Developer/SDKs/MacOSX10.5.sdk"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/>
+        <arg value="${macosx.sdk}"/>
+        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.4"/>
         
         <!-- -o file
              Place output in file file. This applies regardless to whatever sort 
@@ -174,6 +176,7 @@
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
@@ -192,13 +195,13 @@
         <arg value="-framework"/>
         <arg value="JavaVM"/>
         <arg value="-framework"/>
-        <arg value="JavaRuntimeSupport"/>
-        <arg value="-framework"/>
         <arg value="Carbon"/>
         <arg value="-framework"/>
         <arg value="Cocoa"/>
 
-        <arg value="-F/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-F${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-framework"/>
+        <arg value="JavaNativeFoundation"/>
         <arg value="-framework"/>
         <arg value="JavaRuntimeSupport"/>
         
@@ -247,7 +250,7 @@
              -->
         <!--<arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/>-->
-        <arg value="/Developer/SDKs/MacOSX10.5.sdk"/>
+        <arg value="${macosx.sdk}"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.5"/>
         
         <!-- -o file
@@ -280,6 +283,7 @@
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
         <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
@@ -302,7 +306,9 @@
         <arg value="-framework"/>
         <arg value="Cocoa"/>
         
-        <arg value="-F/Developer/SDKs/MacOSX10.7.sdk/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-F${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Versions/A/Frameworks"/>
+        <arg value="-framework"/>
+        <arg value="JavaNativeFoundation"/>
         <arg value="-framework"/>
         <arg value="JavaRuntimeSupport"/>
         
