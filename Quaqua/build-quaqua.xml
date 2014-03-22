@@ -35,7 +35,6 @@
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
-        <property name="swinglayout" value="${distdir}/swing-layout.jar"/>
         <property name="classpath" value="${builddir}"/>
 
         <!-- Properties for jar signing -->
@@ -401,13 +400,20 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <manifest>
                 <attribute name="Built-By" value="${author}"/>
                 <attribute name="Main-Class" value="ch.randelshofer.quaqua.QuaquaManager"/>
-                <attribute name="Class-Path" value="swing-layout.jar"/>
                 <attribute name="Specification-Title" value="Quaqua Look and Feel"/>
                 <attribute name="Specification-Version" value="${version}"/>
                 <attribute name="Specification-Vendor" value="${author}"/>
                 <attribute name="Implementation-Title" value="Quaqua Look and Feel"/>
                 <attribute name="Implementation-Version" value="${version}"/>
                 <attribute name="Implementation-Vendor" value="${author}"/>
+                <!-- applet security -->
+                <attribute name="Application-Name" value="Quaqua"/>
+                <attribute name="Codebase" value="*"/>
+                <attribute name="Application-Library-Allowable-Codebase" value="*"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-Only" value="false"/>
+                <attribute name="Trusted-Library" value="false"/>
             </manifest>
             <exclude name="**/.*"/>
             <exclude name="**/_notes/**"/>
@@ -440,14 +446,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 <attribute name="Implementation-Title" value="Quaqua Test"/>
                 <attribute name="Implementation-Version" value="${version}"/>
                 <attribute name="Implementation-Vendor" value="${author}"/>
+                <!-- applet security -->
+                <attribute name="Application-Name" value="Quaqua Test"/>
+                <attribute name="Codebase" value="*"/>
+                <attribute name="Application-Library-Allowable-Codebase" value="*"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-Only" value="false"/>
+                <attribute name="Trusted-Library" value="false"/>
             </manifest>
             <include name="test/*.class"/>
         </jar>
         <!--delete file="${builddir}/ch/randelshofer/quaqua/laf.txt"/-->
         
-        <jar basedir="${builddir}" compress="true" jarfile="${swinglayout}">
-            <include name="org/jdesktop/layout/*.class"/>
-        </jar>
     </target>
     <target depends="init, jnilib-32, jnilib-64" name="jnilib">
     </target>
@@ -490,6 +501,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/quaqua.jar"
                 >
         </signjar>        
@@ -508,6 +520,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/quaqua-test.jar"
                 >
         </signjar>
@@ -516,24 +529,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="${distdir}/signed/quaqua-test.jar"/>
         </exec>
         
-        <!-- create signed version of the swing-layout.jar file -->
-        <copy file="${lib}/swing-layout.jar"
-            tofile="${distdir}/signed/swing-layout.jar"
-            />
-        <exec executable="pack200">
-            <arg value="-r"/>
-            <arg value="${distdir}/signed/swing-layout.jar"/>
-        </exec>
-        <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}"
-                jar="${distdir}/signed/swing-layout.jar"
-                >
-        </signjar>
-        <exec executable="pack200">
-            <arg value="${distdir}/signed/swing-layout.jar.pack.gz"/>
-            <arg value="${distdir}/signed/swing-layout.jar"/>
-        </exec>
-
         <!-- create signed version of the libquaqua.jnilib.jar file -->
         <jar basedir="${distdir}" compress="true"
              jarfile="${distdir}/signed/libquaqua.jnilib.jar" 
@@ -541,7 +536,8 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <include name="libquaqua.jnilib"/>
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}" tsaurl="${keystore.tsaurl}"
+                keystore="${keystore.file}"
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua.jnilib.jar"
                 >
         </signjar>        
@@ -553,18 +549,20 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <include name="libquaqua64.jnilib"/>
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}" tsaurl="${keystore.tsaurl}"
+                keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua64.jnilib.jar"
                 >
         </signjar>        
         <!-- create signed version of the libquaqua64.dylib.jar file -->
         <jar basedir="${distdir}" compress="true"
-             jarfile="${distdir}/signed/libquaqua64.jnilib.jar" 
+             jarfile="${distdir}/signed/libquaqua64.dylib.jar" 
         >
             <include name="libquaqua64.dylib"/>
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}" tsaurl="${keystore.tsaurl}"
+                keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua64.dylib.jar"
                 >
         </signjar>        
@@ -609,9 +607,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <sourcepath>
                 <pathelement location="${src}"/>
             </sourcepath>
-            <classpath>
-                <pathelement location="${lib}/swing-layout.jar"/>
-            </classpath>
             <excludepackage name="test"/>
             <excludepackage name="bugs"/>
             <packageset dir="${src}">
