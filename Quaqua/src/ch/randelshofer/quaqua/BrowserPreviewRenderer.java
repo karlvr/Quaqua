@@ -46,6 +46,7 @@ public interface BrowserPreviewRenderer {
      * @param browser The JBrowser we're painting.
      * @param paths The paths returned by browser.getSelectionPaths(). This
      * is granted to be a non-null array containing at least one element.
+     * @return The component.
      *
      */
       public Component getPreviewRendererComponent(

@@ -329,6 +329,7 @@ public class QuaquaLayoutStyle extends LayoutStyle {
      * The <code>type</code> parameter indicates the type
      * of gap being requested.  It can be one of the following values:
      * <table>
+     * <caption>Meaning of type values</caption>
      * <tr><td><code>RELATED</code>
      *     <td>If the two components will be contained in
      *         the same parent and are showing similar logically related

@@ -36,7 +36,9 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snowleopard/images/";
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
-    /** Creates a new instance. */
+    /** Creates a new instance.
+     * @param targetClassName Proxy target.
+     */
     public BasicQuaquaNativeLookAndFeel(String targetClassName) {
         try {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
@@ -1346,7 +1348,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * Returns the base font for which system fonts are derived.
-     * This is Lucida Grande, Plain, 13.
+     * @return Lucida Grande, Plain, 13.
      */
     protected Font getBaseSystemFont() {
         return new FontUIResource("Lucida Grande", Font.PLAIN, 13);
@@ -1530,6 +1532,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * The defaults initialized here are common to all Quaqua Look and Feels.
+     * @param table Table onto which defaults are to be appended.
      */
     protected void initGeneralDefaults(UIDefaults table) {
         String javaVersion = QuaquaManager.getProperty("java.version", "");
@@ -2184,6 +2187,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * Init design specific look and feel defaults.
+     * @param table Onto which defaults are appended.
      */
     protected void initDesignDefaults(UIDefaults table) {
     }
@@ -2332,8 +2336,8 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
      * 
-     * @param table
-     * @param keyValueList
+     * @param table Table onto which defaults are appended.
+     * @param keyValueList Key value list of the defaults.
      */
     protected void putDefaults(UIDefaults table, Object[] keyValueList) {
         Set included = QuaquaManager.getIncludedUIs();

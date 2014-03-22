@@ -40,7 +40,7 @@ public class ColorPalettesChooser extends AbstractColorChooserPanel implements U
     }
     
     /**
-     * @return Vector<PaletteListModel>.
+     * @return Vector&lt;PaletteListModel&gt;.
      */
     protected Vector loadPalettes() {
         Vector palettes = new Vector();

@@ -207,7 +207,7 @@ public class MimeType implements Externalizable, Cloneable {
     /**
      * Remove any value associated with the given name.
      *
-     * @throws IllegalArgumentExcpetion if parameter may not be deleted
+     * @throws IllegalArgumentException if parameter may not be deleted
      */
     public void removeParameter(String name) {
         parameters.remove(name);

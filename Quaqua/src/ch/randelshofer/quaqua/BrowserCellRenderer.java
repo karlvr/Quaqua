@@ -19,16 +19,23 @@ import java.awt.*;
 public interface BrowserCellRenderer {
 
     /**
-     * Sets the value of the current tree cell to <code>value</code>.
-     * If <code>selected</code> is true, the cell will be drawn as if
-     * selected. If <code>expanded</code> is true the node is currently
-     * expanded and if <code>leaf</code> is true the node represets a
-     * leaf and if <code>hasFocus</code> is true the node currently has
-     * focus. <code>tree</code> is the <code>JTree</code> the receiver is being
-     * configured for.  Returns the <code>Component</code> that the renderer
+     * Sets the value of the current tree cell to {@code value}.
+     * If {@code selected} is true, the cell will be drawn as if
+     * selected. If {@code expanded} is true the node is currently
+     * expanded and if {@code leaf} is true the node represents a
+     * leaf and if {@code hasFocus} is true the node currently has
+     * focus. {@code tree} is the {@code JTree} the receiver is being
+     * configured for.  Returns the {@code Component} that the renderer
      * uses to draw the value.
      *
-     * @return	the <code>Component</code> that the renderer uses to draw the value
+     * @param browser target
+     * @param value value to be rendered
+     * @param selected whether the cell is selected
+     * @param expanded whether the cell is expanded
+     * @param leaf whether the cell is a leaf
+     * @param row row index
+     * @param hasFocus whether the cell has focus
+     * @return	the {@code Component} that the renderer uses to draw the value
      */
     Component getBrowserCellRendererComponent(JBrowser browser, Object value,
 				   boolean selected, boolean expanded,

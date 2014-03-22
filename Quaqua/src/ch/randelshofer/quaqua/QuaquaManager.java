@@ -25,22 +25,26 @@ import java.io.*;
  * UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
  * </pre> <p> <b>System Properties for Java Applications:</b><br> You can
  * customize the Quaqua Look and Feel using the following system properties:
- * <ul> <li><code>Quaqua.design=jaguar</code> Enforces Jaguar design.</li>
- * <li><code>Quaqua.design=panther</code> Enforces Panther design.</li>
- * <li><code>Quaqua.design=tiger</code> Enforces Tiger design.</li>
+ * <ul> <li>{@code Quaqua.design=jaguar} Enforces Jaguar design.</li>
+ * <li>{@code Quaqua.design=panther} Enforces Panther design.</li>
+ * <li>{@code Quaqua.design=tiger} Enforces Tiger design.</li>
  * <li><code><b>Quaqua.design=auto</b></code> Chooses design automatically. This
- * is the default value.</li> </ul> <ul>
- * <li><code>Quaqua.TabbedPane.design=jaguar</code> Enforces Jaguar design for
- * tabbed panes.</li> <li><code>Quaqua.TabbedPane.design=panther</code> Enforces
+ * is the default value.</li> 
+ * </ul>
+ * <ul>
+ * <li>{@code Quaqua.TabbedPane.design=jaguar} Enforces Jaguar design for
+ * tabbed panes.</li> <li>{@code Quaqua.TabbedPane.design=panther} Enforces
  * Panther design for tabbed panes.</li>
  * <li><code><b>Quaqua.TabbedPane.design=auto</b></code> Chooses design
- * automatically. This is the default value.</li> </ul> <p> <ul>
- * <li><code>Quaqua.FileChooser.autovalidate=false</code> FileChoosers do not
+ * automatically. This is the default value.</li> 
+ * </ul>
+ * <ul>
+ * <li>{@code Quaqua.FileChooser.autovalidate=false} FileChoosers do not
  * refresh their contents automatically. Users have to close and reopen a file
  * chooser to see changes in the file system.</li>
  * <li><code><b>Quaqua.FileChooser.autovalidate=true</b></code> FileChoosers
  * refresh their contents periodically. This is the default value.</li> </ul>
- * <ul> <li><code>Quaqua.Debug.crossPlatform=true</code> Enforces cross platform
+ * <ul> <li>{@code Quaqua.Debug.crossPlatform=true} Enforces cross platform
  * support. This is a hack, useful only for testing an application with the
  * Quaqua Look and Feel on non-Mac OS X platforms.</li>
  * <li><code><b>Quaqua.Debug.crossPlatform=false</b></code> Chooses native
@@ -51,7 +55,7 @@ import java.io.*;
  * System.setProperty("Quaqua.FileChooser.autovalidate", "true");
  * </pre> <p> <b>System Properties for Java Applets:</b><br> In a secure
  * environment, you are not allowed to change system properties. Use
- * <code>QuaquaManager.setProperty</code> to specify (or override) system
+ * {@code QuaquaManager.setProperty} to specify (or override) system
  * properties that are used by Quaqua (that is, for all system properties listed
  * above). <p> Example:
  * <pre>
@@ -60,7 +64,7 @@ import java.io.*;
  * QuaquaManager.setProperty("Quaqua.FileChooser.autovalidate", "true");
  * </pre> <p> <b>Client Properties:</b><br> You can customize some of the
  * components by specifying client properties. <ul> <li><b>JTable</b>:
- * <code>Quaqua.Table.style=striped</code> displays rows with alternating
+ * {@code Quaqua.Table.style=striped} displays rows with alternating
  * colors.</li> </ul> <b>Specifying class loader (Java Applets):</b><br> If your
  * code runs as an Applet in a Java 1.3 VM, Swing attempts to load the UI
  * classes from the system class loader instead of from the class loader which
@@ -512,9 +516,9 @@ public class QuaquaManager {
     /**
      * This method returns a locally specified property, if it has been set
      * using method
-     * <code>setProperty</code>. If no local property has been found, a system
+     * {@code setProperty}. If no local property has been found, a system
      * property using method
-     * <code>java.lang.System.getProperty(String,String</code> is returned.<p>
+     * {@code java.lang.System.getProperty(String,String} is returned.<p>
      * This method is used to specify properties for Quaqua, when, due to
      * security reasons, system properties can not be used, e.g. in a secure
      * Applet environment.
@@ -536,9 +540,9 @@ public class QuaquaManager {
     /**
      * This method returns a locally specified property, if it has been set
      * using method
-     * <code>setProperty</code>. If no local property has been found, a system
+     * {@code setProperty}. If no local property has been found, a system
      * property using method
-     * <code>java.lang.System.getProperty(String,String</code> is returned.<p>
+     * {@code java.lang.System.getProperty(String,String} is returned.<p>
      * This method is used to specify properties for Quaqua, when, due to
      * security reasons, system properties can not be used, e.g. in a secure
      * Applet environment.
@@ -560,9 +564,9 @@ public class QuaquaManager {
     /**
      * This method returns a locally specified property, if it has been set
      * using method
-     * <code>setProperty</code>. If no local property has been found, a system
+     * {@code setProperty}. If no local property has been found, a system
      * property using method
-     * <code>java.lang.System.getProperty(String,String</code> is returned.<p>
+     * {@code java.lang.System.getProperty(String,String} is returned.<p>
      * This method is used to specify properties for Quaqua, when, due to
      * security reasons, system properties can not be used, e.g. in a secure
      * Applet environment.
@@ -599,7 +603,7 @@ public class QuaquaManager {
 
     /**
      * Locally defines a property.<p> Use method
-     * <code>clearProperty</code> to clear a local property.<p> This method is
+     * {@code clearProperty} to clear a local property.<p> This method is
      * used to specify properties for Quaqua, when, due to security reasons,
      * system properties can not be used, e.g. in a secure Applet
      * environment.<p>
@@ -681,7 +685,7 @@ public class QuaquaManager {
      * QuaquaManager.setIncludeUIs(includes);
      * </pre>
      *
-     * @param includes Set<String> Only include UI delegates, which are in this
+     * @param includes Set&lt;String&gt; Only include UI delegates, which are in this
      * list. Specify null to include all UIs.
      */
     public static void setIncludedUIs(Set includes) {
@@ -697,7 +701,7 @@ public class QuaquaManager {
      * QuaquaManager.setExcludeUIs(excludes);
      * </pre>
      *
-     * @param excludes Set<String> Exclude UI delegates, which are in this list.
+     * @param excludes Set&lt;String&gt; Exclude UI delegates, which are in this list.
      * Specify null to exclude all UIs.
      */
     public static void setExcludedUIs(Set excludes) {
@@ -708,7 +712,7 @@ public class QuaquaManager {
      * Gets the included UI delegates, or null, if all Quaqua UI delegates shall
      * be included into the QuaquaLookAndFeel.
      *
-     * @return Set<String>.
+     * @return Set&lt;String&gt;.
      */
     public static Set getIncludedUIs() {
         return includedUIs;
@@ -718,7 +722,7 @@ public class QuaquaManager {
      * Gets the excluded UI delegates, or null, if all Quaqua UI delegates shall
      * be excluded from the QuaquaLookAndFeel.
      *
-     * @return Set<String>.
+     * @return Set&lt;String&gt;.
      */
     public static Set getExcludedUIs() {
         return excludedUIs;

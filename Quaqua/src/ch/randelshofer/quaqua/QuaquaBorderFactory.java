@@ -35,7 +35,11 @@ public class QuaquaBorderFactory {
         //1.4.2_05
     }
 
-    /** Creates a new instance of an ImageBevelBorder optimized for this JVM. */
+    /** Creates a new instance of an ImageBevelBorder optimized for this JVM.
+     * @param img the image
+     * @param borderInsets the border insets
+     * @return the created border
+    */
     public static Border create(Image img, Insets borderInsets) {
         return create(img, borderInsets, borderInsets);
     }
@@ -43,6 +47,10 @@ public class QuaquaBorderFactory {
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
+     * @param img the image
+     * @param imageInsets the image insets
+     * @param borderInsets the border insets
+     * @return the created border
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets) {
         return create(img, imageInsets, borderInsets, true, null, true);
@@ -51,6 +59,11 @@ public class QuaquaBorderFactory {
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
+     * @param img the image
+     * @param borderInsets the border insets
+     * @param fillContentArea whether to fill the content area
+     * @param isCaching whether to cache the rendered border
+     * @return the created border
      */
     public static Border create(Image img, Insets borderInsets, boolean fillContentArea, boolean isCaching) {
         return create(img, borderInsets, borderInsets, fillContentArea, null, isCaching);
@@ -59,6 +72,11 @@ public class QuaquaBorderFactory {
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
+     * @param img the image
+     * @param imageInsets the image insets
+     * @param borderInsets the border insets
+     * @param fillContentArea whether to fill the content area
+     * @return the created border
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea) {
         return create(img, imageInsets, borderInsets, fillContentArea, null, true);
@@ -67,6 +85,13 @@ public class QuaquaBorderFactory {
     /**
      * Creates a new instance of an ImageBevelBorder with the given image and insets.
      * The image has different insets than the border.
+     * @param img the image
+     * @param imageInsets the image insets
+     * @param borderInsets the border insets
+     * @param fillContentArea whether to fill the content area
+     * @param fillColor the fill color
+     * @param isCaching whether to cache the rendered border
+     * @return the created border
      */
     public static Border create(Image img, Insets imageInsets, Insets borderInsets, boolean fillContentArea, Color fillColor, boolean isCaching) {
         if (isCaching) {
@@ -78,6 +103,12 @@ public class QuaquaBorderFactory {
     /**
      * Creates a new instance of NativeImageBevelBorder with the given widget and insets.
      * The image has different insets than the border.
+     * @param widget the native widget
+     * @param painterInsets the insets between the widget and the bevel
+     * @param imageBevel bevel insets
+     * @param borderInsets the border insets
+     * @param fillContentArea whether to fill the content area
+     * @return the created border
      */
     public static Border createNativeImageBevelBorder(OSXAquaPainter.Widget widget, Insets painterInsets, Insets imageBevel, Insets borderInsets, boolean fillContentArea) {
             return new QuaquaNativeImageBevelBorder.UIResource(widget, painterInsets,imageBevel, borderInsets, fillContentArea);
@@ -85,6 +116,7 @@ public class QuaquaBorderFactory {
 
     /**
      * Creates a new instance of a border for square buttons.
+     * @return the created border
      */
     public static Border createSquareButtonBorder() {
         return new QuaquaSquareButtonBorder();
@@ -92,6 +124,7 @@ public class QuaquaBorderFactory {
 
     /**
      * Creates a new instance of a border for placard buttons.
+     * @return the created border
      */
     public static Border createPlacardButtonBorder() {
         return new QuaquaPlacardButtonBorder();
@@ -155,6 +188,7 @@ public class QuaquaBorderFactory {
      * @param horizontal True, if the image is to be split horizontally to get
      * the individual image of each border. If set to false, the image is split
      * vertically.
+     * @return the created border array of type {@code Border[]}
      */
     public static Object create(String location, Insets insets, int count, boolean horizontal) {
         return create(location, insets, count, horizontal, true, true);

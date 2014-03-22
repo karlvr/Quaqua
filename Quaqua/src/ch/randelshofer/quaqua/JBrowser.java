@@ -38,8 +38,9 @@ import javax.swing.border.EmptyBorder;
  * <p>
  * JBrowser is a clean-room implementation of an Aqua column view (NSBrowser),
  * which is used by file dialogs and the finder of Mac OS X.
- *
- * <h4>Usage</h4>
+ * <p>
+ * <b>Usage</b>
+ * <p>
  * In general a JBrowser can be used whenever a JTree is suitable.
  * JBrowsers uses a TreeModel like a JTree.
  * <p>
@@ -47,7 +48,7 @@ import javax.swing.border.EmptyBorder;
  * that it does not fill the viewport with empty columns. To work around this,
  * you may want to use JBrowser together with the helper class JBrowserViewport.
  *
- * <h4>Known bugs</h4>
+ * <b>Known bugs</b>
  * <ul>
  * <li><b>XXX</b> - Instances of this class are not serializable.</li>
  * <li><b>FIXME</b> - TreeSelectionModel.CONTIGUOUS_TREE_SELECTION does not work
@@ -100,13 +101,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     protected transient TreeSelectionModel selectionModel;
     /**
      * Updates the selection models of the columns when the selection mode
-     * of the <code>selectionModel</code> changes.
+     * of the {@code selectionModel} changes.
      */
     private transient SelectionModeUpdater selectionModeUpdater = new SelectionModeUpdater();
     /**
      * Expands the columns to match the current selection in the
-     * <code>selectionModel</code>.
-     * Creates a new event and passes it off the <code>selectionListeners</code>.
+     * {@code selectionModel}.
+     * Creates a new event and passes it off the {@code selectionListeners}.
      */
     private transient TreeSelectionUpdater treeSelectionUpdater = new TreeSelectionUpdater();
     /**
@@ -137,8 +138,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      */
     private transient ColumnFocusListener columnFocusListener = new ColumnFocusListener();
     /**
-     * The cell used to draw nodes. If <code>null</code>, the UI uses a default
-     * <code>cellRenderer</code>.
+     * The cell used to draw nodes. If {@code null}, the UI uses a default
+     * {@code cellRenderer}.
      * <p>
      * <b>FIXME</b> - the default cell renderer is provided by ListUI. We should
      * have a BrowserUI which provides a better default cell renderer (one which
@@ -147,7 +148,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     private ListCellRenderer cellRenderer;
     /**
      * The cell used to draw a node in the preview column.
-     * If <code>null</code>, no preview column is drawn.
+     * If {@code null}, no preview column is drawn.
      */
     private BrowserPreviewRenderer previewRenderer;
     /**
@@ -162,11 +163,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     //
     // Bound property names
     //
-    /** Bound property name for <code>cellRenderer</code>. */
+    /** Bound property name for {@code cellRenderer}. */
     public final static String CELL_RENDERER_PROPERTY = "cellRenderer";
-    /** Bound property name for <code>cellRenderer</code>. */
+    /** Bound property name for {@code cellRenderer}. */
     public final static String PREVIEW_RENDERER_PROPERTY = "previewRenderer";
-    /** Bound property name for <code>treeModel</code>. */
+    /** Bound property name for {@code treeModel}. */
     public final static String TREE_MODEL_PROPERTY = "model";
     /** Bound property name for selectionModel. */
     public final static String SELECTION_MODEL_PROPERTY = "selectionModel";
@@ -201,7 +202,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     private static final Color TRANSPARENT_COLOR = new Color(0, true);
 
     /**
-     * Creates a <code>JBrowser</code> with a sample model.
+     * Creates a {@code JBrowser} with a sample model.
      * The default model used by the browser defines a leaf node as any node
      * without children.
      *
@@ -212,12 +213,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates a <code>JBrowser</code> with each element of the
+     * Creates a {@code JBrowser} with each element of the
      * specified array as the child of a new root node which is not displayed.
      * By default, the browser defines a leaf node as any node without
      * children.
      *
-     * @param value  an array of <code>Object</code>s
+     * @param value  an array of {@code Object}s
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Object[] value) {
@@ -226,12 +227,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates a <code>JBrowser</code> with each element of the specified
-     * <code>Vector</code> as the child of a new root node which is not
+     * Creates a {@code JBrowser} with each element of the specified
+     * {@code Vector} as the child of a new root node which is not
      * displayed. By default, the
      * tree defines a leaf node as any node without children.
      *
-     * @param value  a <code>Vector</code>
+     * @param value  a {@code Vector}
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Vector value) {
@@ -240,13 +241,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates a <code>JBrowser</code> created from a <code>Hashtable</code>
+     * Creates a {@code JBrowser} created from a {@code Hashtable}
      * which does not display with root.
-     * Each value-half of the key/value pairs in the <code>HashTable</code>
+     * Each value-half of the key/value pairs in the {@code HashTable}
      * becomes a child of the new root node. By default, the tree defines
      * a leaf node as any node without children.
      *
-     * @param value  a <code>Hashtable</code>
+     * @param value  a {@code Hashtable}
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(Hashtable value) {
@@ -255,11 +256,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates a <code>JBrowser</code> with the specified
-     * <code>TreeNode</code> as its root, which does not display the root node.
+     * Creates a {@code JBrowser} with the specified
+     * {@code TreeNode} as its root, which does not display the root node.
      * By default, the tree defines a leaf node as any node without children.
      *
-     * @param root  a <code>TreeNode</code> object
+     * @param root  a {@code TreeNode} object
      * @see DefaultTreeModel#asksAllowsChildren
      */
     public JBrowser(TreeNode root) {
@@ -267,12 +268,12 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates a <code>JBrowser</code> with the specified <code>TreeNode</code>
+     * Creates a {@code JBrowser} with the specified {@code TreeNode}
      * as its root, which does not display
      * the root node and which decides whether a node is a
      * leaf node in the specified manner.
      *
-     * @param root  a <code>TreeNode</code> object
+     * @param root  a {@code TreeNode} object
      * @param asksAllowsChildren  if false, any node without children is a
      *              leaf node; if true, only nodes that do not allow
      *              children are leaf nodes
@@ -283,10 +284,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates an instance of <code>JBrowser</code> which does not display the
+     * Creates an instance of {@code JBrowser} which does not display the
      * root node -- the tree is created using the specified data model.
      *
-     * @param newModel  the <code>TreeModel</code> to use as the data model
+     * @param newModel  the {@code TreeModel} to use as the data model
      */
     public JBrowser(TreeModel newModel) {
         super();
@@ -307,18 +308,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Returns the look and feel (L&F) object that renders this component.
+     * Returns the look and feel (L&amp;F) object that renders this component.
      *
-     * @return the <code>ListUI</code> object that renders this component
+     * @return the {@code ListUI} object that renders this component
      */
     public BrowserUI getUI() {
         return (BrowserUI) ui;
     }
 
     /**
-     * Sets the look and feel (L&F) object that renders this component.
+     * Sets the look and feel (L&amp;F) object that renders this component.
      *
-     * @param ui  the <code>BrowserUI</code> L&F object
+     * @param ui  the {@code BrowserUI} L&amp;F object
      * @see UIDefaults#getUI
      */
     public void setUI(BrowserUI ui) {
@@ -344,7 +345,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Returns the suffix used to construct the name of the look and feel
-     * (L&F) class used to render this component.
+     * (L&amp;F) class used to render this component.
      *
      * @return the string "BrowserUI"
      * @see JComponent#getUIClassID
@@ -360,15 +361,15 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Sets the <code>dragEnabled</code> property,
-     * which must be <code>true</code> to enable
+     * Sets the {@code dragEnabled} property,
+     * which must be {@code true} to enable
      * automatic drag handling (the first part of drag and drop)
      * on this component.
-     * The <code>transferHandler</code> property needs to be set
-     * to a non-<code>null</code> value for the drag to do
-     * anything.  The default value of the <code>dragEnabled</code>
+     * The {@code transferHandler} property needs to be set
+     * to a non-{@code null} value for the drag to do
+     * anything.  The default value of the {@code dragEnabled}
      * property
-     * is <code>false</code>.
+     * is {@code false}.
      *
      * <p>
      *
@@ -376,7 +377,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * most look and feels begin a drag-and-drop operation
      * whenever the user presses the mouse button over a selection
      * and then moves the mouse a few pixels. 
-     * Setting this property to <code>true</code>
+     * Setting this property to {@code true}
      * can therefore have a subtle effect on
      * how selections behave.
      *
@@ -385,14 +386,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Some look and feels might not support automatic drag and drop;
      * they will ignore this property.  You can work around such
      * look and feels by modifying the component
-     * to directly call the <code>exportAsDrag</code> method of a
-     * <code>TransferHandler</code>.
+     * to directly call the {@code exportAsDrag} method of a
+     * {@code TransferHandler}.
      *
-     * @param b the value to set the <code>dragEnabled</code> property to
+     * @param b the value to set the {@code dragEnabled} property to
      * @exception HeadlessException if
-     *            <code>b</code> is <code>true</code> and
-     *            <code>GraphicsEnvironment.isHeadless()</code>
-     *            returns <code>true</code>
+     *            {@code b} is {@code true} and
+     *            {@code GraphicsEnvironment.isHeadless()}
+     *            returns {@code true}
      * @see java.awt.GraphicsEnvironment#isHeadless
      * @see #getDragEnabled
      * @see #setTransferHandler
@@ -419,9 +420,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Gets the <code>dragEnabled</code> property.
+     * Gets the {@code dragEnabled} property.
      *
-     * @return the value of the <code>dragEnabled</code> property
+     * @return the value of the {@code dragEnabled} property
      * @see #setDragEnabled
      */
     public boolean getDragEnabled() {
@@ -429,10 +430,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Creates and returns a sample <code>TreeModel</code>.
+     * Creates and returns a sample {@code TreeModel}.
      * Used primarily for beanbuilders to show something interesting.
      *
-     * @return the default <code>TreeModel</code>
+     * @return the default {@code TreeModel}
      */
     protected static TreeModel getDefaultTreeModel() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("JBrowser");
@@ -462,18 +463,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Returns a <code>TreeModel</code> wrapping the specified object.
+     * Returns a {@code TreeModel} wrapping the specified object.
      * If the object is:<ul>
-     * <li>an array of <code>Object</code>s,
-     * <li>a <code>Hashtable</code>, or
-     * <li>a <code>Vector</code>
+     * <li>an array of {@code Object}s,
+     * <li>a {@code Hashtable}, or
+     * <li>a {@code Vector}
      * </ul>then a new root node is created with each of the incoming
      * objects as children. Otherwise, a new root is created with the
      * specified object as its value.
      *
-     * @param value  the <code>Object</code> used as the foundation for
-     *		the <code>TreeModel</code>
-     * @return a <code>TreeModel</code> wrapping the specified object
+     * @param value  the {@code Object} used as the foundation for
+     *		the {@code TreeModel}
+     * @return a {@code TreeModel} wrapping the specified object
      */
     protected static TreeModel createTreeModel(Object value) {
         DefaultMutableTreeNode root;
@@ -499,7 +500,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns the path to the node that is closest to x,y.  If
      * no nodes are currently viewable, or there is no model, returns
-     * <code>null</code>, otherwise it always returns a valid path.  To test if
+     * {@code null}, otherwise it always returns a valid path.  To test if
      * the node is exactly at x, y, get the node's bounds and
      * test x, y against that.
      *
@@ -507,7 +508,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *          the left edge of the display area, minus any left margin
      * @param y an integer giving the number of pixels vertically from
      *          the top of the display area, minus any top margin
-     * @return  the <code>TreePath</code> for the node closest to that location,
+     * @return  the {@code TreePath} for the node closest to that location,
      *
      *
      * @see #getPathForLocation
@@ -540,17 +541,17 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Returns the <code>Rectangle</code> that the specified node will be drawn
-     * into. Returns <code>null</code> if any component in the path is hidden
+     * Returns the {@code Rectangle} that the specified node will be drawn
+     * into. Returns {@code null} if any component in the path is hidden
      * (under a collapsed parent).
      * <p>
      * Note:<br>
      * This method returns a valid rectangle, even if the specified
      * node is not currently displayed.
      *
-     * @param path the <code>TreePath</code> identifying the node
-     * @return the <code>Rectangle</code> the node is drawn in,
-     *		or <code>null</code>
+     * @param path the {@code TreePath} identifying the node
+     * @return the {@code Rectangle} the node is drawn in,
+     *		or {@code null}
      */
     public Rectangle getPathBounds(TreePath path) {
         if (path.getPathCount() <= getListColumnCount()) {
@@ -579,6 +580,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * cell over which the mouse is hovering.
      * The tooltip is shown only for cells which are wider than the current
      * width of the browser column.
+     * @param newValue the value
      */
     public void setShowCellTips(boolean newValue) {
         boolean oldValue = isShowCellTips;
@@ -595,6 +597,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns true if the JBrowser shows cell tips for list cells that don't
      * fit into a column.
+     * @return the value
      */
     public boolean isShowCellTips() {
         return isShowCellTips;
@@ -603,6 +606,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets the origin of the cell tip tooltip relative to the origin of
      * the cell renderer.
+     * @param newValue the value
      */
     public void setShowCellTipOrigin(Point newValue) {
         Point oldValue = cellTipOrigin;
@@ -613,6 +617,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns the origin of the cell tip tooltip relative to the origin of
      * the cell renderer.
+     * @return the value
      */
     public Point getCellTipOrigin() {
         return (Point) cellTipOrigin.clone();
@@ -621,7 +626,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns true if the item identified by the path is currently selected.
      *
-     * @param path a <code>TreePath</code> identifying a node
+     * @param path a {@code TreePath} identifying a node
      * @return true if the node is selected
      */
     public boolean isPathSelected(TreePath path) {
@@ -635,16 +640,16 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Adds the node identified by the specified <code>TreePath</code>
+     * Adds the node identified by the specified {@code TreePath}
      * to the current selection. If any component of the path isn't
-     * viewable, and <code>getExpandsSelectedPaths</code> is true it is
+     * viewable, and {@code getExpandsSelectedPaths} is true it is
      * made viewable.
      * <p>
-     * Note that <code>JBrowser</code> does not allow duplicate nodes to
+     * Note that {@code JBrowser} does not allow duplicate nodes to
      * exist as children under the same parent -- each sibling must be
      * a unique object.
      *
-     * @param path the <code>TreePath</code> to add
+     * @param path the {@code TreePath} to add
      */
     public void addSelectionPath(TreePath path) {
         for (int i = 0; i < path.getPathCount(); i++) {
@@ -666,7 +671,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Nothing happens, if it is impossible to make the node
      * visible without changing the selection of the JBrowser.
      *
-     * @param path the <code>TreePath</code> specifying the node to make
+     * @param path the {@code TreePath} specifying the node to make
      * visible.
      */
     public void ensurePathIsVisible(TreePath path) {
@@ -701,7 +706,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Selects the node identified by the specified path.
      *
-     * @param path the <code>TreePath</code> specifying the node to select
+     * @param path the {@code TreePath} specifying the node to select
      */
     public void setSelectionPath(TreePath path) {
         selectionModel.setSelectionPath(path);
@@ -711,7 +716,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Removes the node identified by the specified path from the current
      * selection.
      *
-     * @param path  the <code>TreePath</code> identifying a node
+     * @param path  the {@code TreePath} identifying a node
      */
     public void removeSelectionPath(TreePath path) {
         if (path.getPathCount() <= getListColumnCount()) {
@@ -728,7 +733,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      *          the left edge of the display area, minus any left margin
      * @param y an integer giving the number of pixels vertically from
      *          the top of the display area, minus any top margin
-     * @return  the <code>TreePath</code> for the node at that location
+     * @return  the {@code TreePath} for the node at that location
      */
     public TreePath getPathForLocation(int x, int y) {
         // XXX - Check if closest path intersects x,y.
@@ -755,9 +760,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Sets the width of every cell in the browser.  If <code>width</code> is -1,
-     * cell widths are computed by applying <code>getPreferredSize</code>
-     * to the <code>cellRenderer</code> component for each tree node.
+     * Sets the width of every cell in the browser.  If {@code width} is -1,
+     * cell widths are computed by applying {@code getPreferredSize}
+     * to the {@code cellRenderer} component for each tree node.
      * <p>
      * The default value of this property is 175.
      * <p>
@@ -828,6 +833,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Gets the width of a column.
      * 
      * @param column Index of the column.
+     * @return the value
      */
     public int getColumnWidth(int column) {
         return getColumnList(column).getFixedCellWidth();
@@ -838,6 +844,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * of the largest cell.
      *
      * @param column Index of the column.
+     * @return the value
      */
     public int getPreferredColumnWidth(int column) {
         JList l = getColumnList(column);
@@ -866,6 +873,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Gets the width of the preview column.
+     * @return the value
      */
     public int getPreviewColumnWidth() {
         if (previewColumn == null) {
@@ -916,7 +924,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param cellRenderer the <code>ListCellRenderer</code>
+     * @param cellRenderer the {@code ListCellRenderer}
      * 				that paints browser cells
      * @see #getColumnCellRenderer
      * @see #setCellRenderer
@@ -940,7 +948,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @return The <code>ListCellRenderer</code>
+     * @return The {@code ListCellRenderer}
      * 				that paints browser cells
      */
     public ListCellRenderer getColumnCellRenderer() {
@@ -958,7 +966,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param cellRenderer the <code>ListCellRenderer</code>
+     * @param cellRenderer the {@code ListCellRenderer}
      * 				that paints browser cells
      * @see #getCellRenderer
      * @see #setColumnCellRenderer
@@ -985,7 +993,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @return The <code>BrowserCellRenderer</code>
+     * @return The {@code BrowserCellRenderer}
      * 				that paints browser cells
      */
     public BrowserCellRenderer getCellRenderer() {
@@ -1000,7 +1008,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This is a JavaBeans bound property.
      *
-     * @param newValue the <code>ListCellRenderer</code>
+     * @param newValue the {@code ListCellRenderer}
      * 				that paints the preview column.
      * @see #getColumnCellRenderer
      */
@@ -1113,7 +1121,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Sets the tree's selection model.
      *
-     * @param selectionModel the <code>TreeSelectionModel</code> to use.
+     * @param selectionModel the {@code TreeSelectionModel} to use.
      * @see TreeSelectionModel
      *
      * @exception IllegalArgumentException if the selectionModel is null.
@@ -1145,12 +1153,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Returns the model for selections. This should always return a
-     * non-<code>null</code> value. If you don't want to allow anything
+     * non-{@code null} value. If you don't want to allow anything
      * to be selected
-     * set the selection model to <code>null</code>, which forces an empty
+     * set the selection model to {@code null}, which forces an empty
      * selection model to be used.
      *
-     * @see #setSelectionModel
+     * @return the value
+     * @see #setSelectionModel the value
      */
     public TreeSelectionModel getSelectionModel() {
         return selectionModel;
@@ -1163,9 +1172,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <p>
      * This may change the selection if the current selection is not valid
      * for the new mode. For example, if three TreePaths are
-     * selected when the mode is changed to <code>SINGLE_TREE_SELECTION</code>,
+     * selected when the mode is changed to {@code SINGLE_TREE_SELECTION},
      * only one TreePath will remain selected. It is up to the particular
      * implementation to decide what TreePath remains selected.
+     * 
+     * @param selectionMode the value
      */
     public void setSelectionMode(int selectionMode) {
         selectionModel.setSelectionMode(selectionMode);
@@ -1174,8 +1185,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns the path to the first selected node.
      *
-     * @return the <code>TreePath</code> for the first selected node,
-     *		or <code>null</code> if nothing is currently selected
+     * @return the {@code TreePath} for the first selected node,
+     *		or {@code null} if nothing is currently selected
      */
     public TreePath getSelectionPath() {
         if (getListColumnCount() == 0) {
@@ -1192,8 +1203,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     /**
      * Returns the paths of all selected values.
      *
-     * @return an array of <code>TreePath</code> objects indicating the selected
-     *         nodes, or <code>null</code> if nothing is currently selected
+     * @return an array of {@code TreePath} objects indicating the selected
+     *         nodes, or {@code null} if nothing is currently selected
      */
     public TreePath[] getSelectionPaths() {
         return getSelectionModel().getSelectionPaths();
@@ -1203,7 +1214,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Selects the nodes identified by the specified array of paths.
      * All path components except the last one of the paths must be equal.
      *
-     * @param paths an array of <code>TreePath</code> objects that specifies
+     * @param paths an array of {@code TreePath} objects that specifies
      *		the nodes to select
      */
     public void setSelectionPaths(TreePath[] paths) {
@@ -1214,7 +1225,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Returns an array of all the key listeners
      * registered on this component.
      *
-     * @return all of this component's <code>KeyListener</code>s
+     * @return all of this component's {@code KeyListener}s
      *         or an empty array if no key
      *         listeners are currently registered
      */
@@ -1252,9 +1263,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Adds a listener for <code>TreeSelection</code> events.
+     * Adds a listener for {@code TreeSelection} events.
      *
-     * @param tsl the <code>TreeSelectionListener</code> that will be notified
+     * @param tsl the {@code TreeSelectionListener} that will be notified
      *            when a node is selected or deselected (a "negative
      *            selection")
      */
@@ -1263,9 +1274,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Removes a <code>TreeSelection</code> listener.
+     * Removes a {@code TreeSelection} listener.
      *
-     * @param tsl the <code>TreeSelectionListener</code> to remove
+     * @param tsl the {@code TreeSelectionListener} to remove
      */
     public void removeTreeSelectionListener(TreeSelectionListener tsl) {
         listenerList.remove(TreeSelectionListener.class, tsl);
@@ -1275,9 +1286,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Notifies all listeners that have registered interest for
      * notification on this event type.
      *
-     * @param e the <code>TreeSelectionEvent</code> to be fired;
+     * @param e the {@code TreeSelectionEvent} to be fired;
      *          generated by the
-     *		<code>TreeSelectionModel</code>
+     *		{@code TreeSelectionModel}
      *          when a node is selected or deselected
      * @see EventListenerList
      */
@@ -1298,18 +1309,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Returns the <code>TreeModel</code> that is providing the data.
+     * Returns the {@code TreeModel} that is providing the data.
      *
-     * @return the <code>TreeModel</code> that is providing the data
+     * @return the {@code TreeModel} that is providing the data
      */
     public TreeModel getModel() {
         return treeModel;
     }
 
     /**
-     * Sets the <code>TreeModel</code> that will provide the data.
+     * Sets the {@code TreeModel} that will provide the data.
      *
-     * @param newModel the <code>TreeModel</code> that is to provide the data
+     * @param newModel the {@code TreeModel} that is to provide the data
      */
     public void setModel(TreeModel newModel) {
         TreeModel oldModel = treeModel;
@@ -1340,7 +1351,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * expanded and viewable. If the last item in the path is not a
      * leaf, an additional column is shown.
      *
-     * @param path  the <code>TreePath</code> identifying a node
+     * @param path  the {@code TreePath} identifying a node
      */
     private void expandPath(TreePath path) {
         //boolean oldPathIsLeaf = expandedPath == null || treeModel.isLeaf(expandedPath.getLastPathComponent());
@@ -1413,6 +1424,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Appends a new column to the browser.
+     * @param path the value
      */
     protected void addColumn(final TreePath path) {
         JList l;
@@ -1526,6 +1538,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Removes the specified column from the browser.
+     * @param columnIndex the value
      */
     protected void removeColumn(int columnIndex) {
         JList l = getColumnList(columnIndex);
@@ -1559,11 +1572,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }//GEN-END:initComponents
 
     /**
-     * Returns the preferred display size of a <code>JBrowser</code>.
-     * The height is determined from <code>getVisibleRowCount</code> and
+     * Returns the preferred display size of a {@code JBrowser}.
+     * The height is determined from {@code getVisibleRowCount} and
      * the width is the current preferred width of two columns.
      *
-     * @return a <code>Dimension</code> object containing the preferred size
+     * @return a {@code Dimension} object containing the preferred size
      */
     public Dimension getPreferredScrollableViewportSize() {
         Dimension size = new Dimension();
@@ -1600,8 +1613,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <b>FIXME</b> - Find a better way to compute the height.
      *
      * @param visibleRect the view area visible within the viewport
-     * @param orientation either <code>SwingConstants.VERTICAL</code>
-     *		or <code>SwingConstants.HORIZONTAL</code>
+     * @param orientation either {@code SwingConstants.VERTICAL}
+     *		or {@code SwingConstants.HORIZONTAL}
      * @param direction less than zero to scroll up/left,
      *		greater than zero for down/right
      * @return the "unit" increment for scrolling in the specified direction
@@ -1685,8 +1698,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * <b>FIXME</b> - Find a better way to compute the height.
      *
      * @param visibleRect the view area visible within the viewport
-     * @param orientation either <code>SwingConstants.VERTICAL</code>
-     *		or <code>SwingConstants.HORIZONTAL</code>
+     * @param orientation either {@code SwingConstants.VERTICAL}
+     *		or {@code SwingConstants.HORIZONTAL}
      * @param direction less than zero to scroll up/left,
      *		greater than zero for down/right
      * @return the "unit" increment for scrolling in the specified direction
@@ -1738,7 +1751,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Calls the <code>configureEnclosingScrollPane</code> method.
+     * Calls the {@code configureEnclosingScrollPane} method.
      *
      * @see #configureEnclosingScrollPane
      */
@@ -1749,13 +1762,13 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * If this <code>JTable</code> is the <code>viewportView</code> of an enclosing <code>JScrollPane</code>
-     * (the usual situation), configure this <code>ScrollPane</code> by, amongst other things,
-     * installing the table's <code>tableHeader</code> as the <code>columnHeaderView</code> of the scroll pane.
-     * When a <code>JTable</code> is added to a <code>JScrollPane</code> in the usual way,
-     * using <code>new JScrollPane(myTable)</code>, <code>addNotify</code> is
-     * called in the <code>JTable</code> (when the table is added to the viewport).
-     * <code>JTable</code>'s <code>addNotify</code> method in turn calls this method,
+     * If this {@code JTable} is the {@code viewportView} of an enclosing {@code JScrollPane}
+     * (the usual situation), configure this {@code ScrollPane} by, amongst other things,
+     * installing the table's {@code tableHeader} as the {@code columnHeaderView} of the scroll pane.
+     * When a {@code JTable} is added to a {@code JScrollPane} in the usual way,
+     * using {@code new JScrollPane(myTable)}, {@code addNotify} is
+     * called in the {@code JTable} (when the table is added to the viewport).
+     * {@code JTable}'s {@code addNotify} method in turn calls this method,
      * which is protected so that this default installation procedure can
      * be overridden by a subclass.
      *
@@ -1771,7 +1784,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Calls the <code>unconfigureEnclosingScrollPane</code> method.
+     * Calls the {@code unconfigureEnclosingScrollPane} method.
      *
      * @see #unconfigureEnclosingScrollPane
      */
@@ -1782,10 +1795,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Reverses the effect of <code>configureEnclosingScrollPane</code>
-     * by replacing the <code>columnHeaderView</code> of the enclosing
-     * scroll pane with <code>null</code>. <code>JTable</code>'s
-     * <code>removeNotify</code> method calls
+     * Reverses the effect of {@code configureEnclosingScrollPane}
+     * by replacing the {@code columnHeaderView} of the enclosing
+     * scroll pane with {@code null}. {@code JTable}'s
+     * {@code removeNotify} method calls
      * this method, which is protected so that this default uninstallation
      * procedure can be overridden by a subclass.
      *
@@ -1826,18 +1839,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Called by the renderers to convert the specified value to
-     * text. This implementation returns <code>value.toString</code>, ignoring
+     * text. This implementation returns {@code value.toString}, ignoring
      * all other arguments. To control the conversion, subclass this 
      * method and use any of the arguments you need.
      * 
-     * @param value the <code>Object</code> to convert to text
+     * @param value the {@code Object} to convert to text
      * @param selected true if the node is selected
      * @param expanded true if the node is expanded
      * @param leaf  true if the node is a leaf node
      * @param row  an integer specifying the node's display row, where 0 is 
      *             the first row in the display
      * @param hasFocus true if the node has the focus
-     * @return the <code>String</code> representation of the node's value
+     * @return the {@code String} representation of the node's value
      */
     public String convertValueToText(
             Object value, boolean selected,
@@ -2059,7 +2072,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * This is the list model used to map a tree node of the <code>treeModel</code>
+     * This is the list model used to map a tree node of the {@code treeModel}
      * to a JList displaying its children.
      */
     private class ColumnListModel extends AbstractListModel implements TreeModelListener {
@@ -2240,19 +2253,19 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Expands columns of the JBrowser to ensure that selected columns
      * are visible.
      * <p>
-     * Handles creating a new <code>TreeSelectionEvent</code> with the
-     * <code>JBrowser</code> as the source and passing it off to all the
+     * Handles creating a new {@code TreeSelectionEvent} with the
+     * {@code JBrowser} as the source and passing it off to all the
      * listeners.
      */
     private class TreeSelectionUpdater
             implements java.io.Serializable, TreeSelectionListener {
 
         /**
-         * Invoked by the <code>TreeSelectionModel</code> when the
+         * Invoked by the {@code TreeSelectionModel} when the
          * selection changes.
          *
-         * @param e the <code>TreeSelectionEvent</code> generated by the
-         *		<code>TreeSelectionModel</code>
+         * @param e the {@code TreeSelectionEvent} generated by the
+         *		{@code TreeSelectionModel}
          */
         public void valueChanged(TreeSelectionEvent evt) {
             // Expand columns to match the selection
@@ -2650,7 +2663,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * <li>SINGLE_INTERVAL_SELECTION
          * <li>MULTIPLE_INTERVAL_SELECTION
          * </ul>
-         * @exception IllegalArgumentException  if <code>selectionMode</code>
+         * @exception IllegalArgumentException  if {@code selectionMode}
          *		is not one of the legal values shown above
          * @see #setSelectionMode
          */
@@ -2688,9 +2701,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         /**
          * Returns an array of all the list selection listeners
-         * registered on this <code>DefaultListSelectionModel</code>.
+         * registered on this {@code DefaultListSelectionModel}.
          *
-         * @return all of this model's <code>ListSelectionListener</code>s
+         * @return all of this model's {@code ListSelectionListener}s
          *         or an empty
          *         array if no list selection listeners are currently registered
          *
@@ -2723,9 +2736,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         /**
-         * Notifies <code>ListSelectionListeners</code> that the value
-         * of the selection, in the closed interval <code>firstIndex</code>,
-         * <code>lastIndex</code>, has changed.
+         * Notifies {@code ListSelectionListeners} that the value
+         * of the selection, in the closed interval {@code firstIndex},
+         * {@code lastIndex}, has changed.
          */
         protected void fireValueChanged(int firstIndex, int lastIndex) {
             fireValueChanged(firstIndex, lastIndex, getValueIsAdjusting());
@@ -2784,10 +2797,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * <code><em>Foo</em>Listener</code>s
          * are registered using the <code>add<em>Foo</em>Listener</code> method.
          * <p>
-         * You can specify the <code>listenerType</code> argument
+         * You can specify the {@code listenerType} argument
          * with a class literal, such as <code><em>Foo</em>Listener.class</code>.
-         * For example, you can query a <code>DefaultListSelectionModel</code>
-         * instance <code>m</code>
+         * For example, you can query a {@code DefaultListSelectionModel}
+         * instance {@code m}
          * for its list selection listeners
          * with the following code:
          *
@@ -2798,15 +2811,15 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          *
          * @param listenerType  the type of listeners requested;
          *          this parameter should specify an interface
-         *          that descends from <code>java.util.EventListener</code>
+         *          that descends from {@code java.util.EventListener}
          * @return an array of all objects registered as
          *          <code><em>Foo</em>Listener</code>s
          *          on this model,
          *          or an empty array if no such
          *          listeners have been added
-         * @exception ClassCastException if <code>listenerType</code> doesn't
+         * @exception ClassCastException if {@code listenerType} doesn't
          *          specify a class or interface that implements
-         *          <code>java.util.EventListener</code>
+         *          {@code java.util.EventListener}
          *
          * @see #getListSelectionListeners
          *
@@ -2898,15 +2911,15 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
 
         /**
-         * Returns the value of the <code>leadAnchorNotificationEnabled</code> flag.
-         * When <code>leadAnchorNotificationEnabled</code> is true the model
+         * Returns the value of the {@code leadAnchorNotificationEnabled} flag.
+         * When {@code leadAnchorNotificationEnabled} is true the model
          * generates notification events with bounds that cover all the changes to
          * the selection plus the changes to the lead and anchor indices.
          * Setting the flag to false causes a narrowing of the event's bounds to
          * include only the elements that have been selected or deselected since
          * the last change. Either way, the model continues to maintain the lead
          * and anchor variables internally. The default is true.
-         * @return 	the value of the <code>leadAnchorNotificationEnabled</code> flag
+         * @return 	the value of the {@code leadAnchorNotificationEnabled} flag
          * @see		#setLeadAnchorNotificationEnabled(boolean)
          */
         public boolean isLeadAnchorNotificationEnabled() {
@@ -3135,7 +3148,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * Returns a string that displays and identifies this
          * object's properties.
          *
-         * @return a <code>String</code> representation of this object
+         * @return a {@code String} representation of this object
          */
         @Override
         public String toString() {
@@ -3145,11 +3158,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
         /**
          * Returns a clone of this selection model with the same selection.
-         * <code>listenerLists</code> are not duplicated.
+         * {@code listenerLists} are not duplicated.
          *
          * @exception CloneNotSupportedException if the selection model does not
          *    both (a) implement the Cloneable interface and (b) define a
-         *    <code>clone</code> method.
+         *    {@code clone} method.
          */
         @Override
         public Object clone() throws CloneNotSupportedException {
@@ -3205,7 +3218,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * values would be wider, including cells that had been first cleared only
          * to later be set.
          * <p>
-         * This method can be used in the <code>mouseDragged</code> method
+         * This method can be used in the {@code mouseDragged} method
          * of a UI class to extend a selection.
          *
          * @see #getLeadSelectionIndex

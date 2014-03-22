@@ -633,7 +633,7 @@ public class QuaquaOptionPaneUI extends BasicOptionPaneUI {
     }
 
     /**
-     * Returns true, basic L&F wants all the buttons to have the same
+     * Returns true, basic L&amp;F wants all the buttons to have the same
      * width.
      */
     @Override

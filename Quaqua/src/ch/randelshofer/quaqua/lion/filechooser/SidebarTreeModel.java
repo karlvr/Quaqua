@@ -71,7 +71,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
     /**
      * This hash map is used to determine the sequence and visibility of the
      * items in the system list.
-     * HashMap<String,SystemItemInfo>
+     * HashMap&lt;String,SystemItemInfo&gt;
      */
     private HashMap systemItemsMap = new HashMap();
     /**

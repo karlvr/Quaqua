@@ -54,10 +54,10 @@ public class XMLParseException
 
     /**
      * The line number in the source code where the error occurred, or
-     * <code>NO_LINE</code> if the line number is unknown.
+     * {@code NO_LINE} if the line number is unknown.
      *
      * <dl><dt><b>Invariants:</b></dt><dd>
-     * <ul><li><code>lineNr &gt 0 || lineNr == NO_LINE</code>
+     * <ul><li>{@code lineNr &gt; 0 || lineNr == NO_LINE}
      * </ul></dd></dl>
      */
     private int lineNr;
@@ -69,13 +69,13 @@ public class XMLParseException
      * @param name    The name of the element where the error is located.
      * @param message A message describing what went wrong.
      *
-     * </dl><dl><dt><b>Preconditions:</b></dt><dd>
-     * <ul><li><code>message != null</code>
+     * <dl><dt><b>Preconditions:</b></dt><dd>
+     * <ul><li>{@code message != null}
      * </ul></dd></dl>
      *
      * <dl><dt><b>Postconditions:</b></dt><dd>
-     * <ul><li>getLineNr() => NO_LINE
-     * </ul></dd></dl><dl>
+     * <ul><li>getLineNr() =&amp; NO_LINE
+     * </ul></dd></dl>
      */
     public XMLParseException(String name,
                              String message)
@@ -95,14 +95,14 @@ public class XMLParseException
      * @param lineNr  The number of the line in the input.
      * @param message A message describing what went wrong.
      *
-     * </dl><dl><dt><b>Preconditions:</b></dt><dd>
-     * <ul><li><code>message != null</code>
-     *     <li><code>lineNr &gt; 0</code>
+     * <dl><dt><b>Preconditions:</b></dt><dd>
+     * <ul><li>{@code message != null}
+     *     <li>{@code lineNr &gt; 0}
      * </ul></dd></dl>
      *
      * <dl><dt><b>Postconditions:</b></dt><dd>
-     * <ul><li>getLineNr() => lineNr
-     * </ul></dd></dl><dl>
+     * <ul><li>getLineNr() =&amp; lineNr
+     * </ul></dd></dl>
      */
     public XMLParseException(String name,
                              int    lineNr,
@@ -117,7 +117,7 @@ public class XMLParseException
 
 
     /**
-     * Where the error occurred, or <code>NO_LINE</code> if the line number is
+     * Where the error occurred, or {@code NO_LINE} if the line number is
      * unknown.
      *
      * @see XMLParseException#NO_LINE

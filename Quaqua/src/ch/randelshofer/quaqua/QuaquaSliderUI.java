@@ -603,7 +603,7 @@ public class QuaquaSliderUI extends BasicSliderUI
      * Track mouse movements.
      *
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of {@code Foo}.
      */
     public class QuaquaTrackListener extends TrackListener {
         //protected transient int offset;

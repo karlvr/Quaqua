@@ -83,7 +83,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     }
 
     /**
-     * Returns the default icon, for the current laf, that is used to
+     * @return Returns the default icon, for the current laf, that is used to
      * represent non-leaf nodes that are expanded.
      */
     public Icon getDefaultOpenIcon() {
@@ -91,7 +91,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     }
 
     /**
-     * Returns the default icon, for the current laf, that is used to
+     * @return Returns the default icon, for the current laf, that is used to
      * represent non-leaf nodes that are not expanded.
      */
      public Icon getDefaultClosedIcon() {
@@ -99,7 +99,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     }
 
     /**
-     * Returns the default icon, for the current laf, that is used to
+     * @return Returns the default icon, for the current laf, that is used to
      * represent leaf nodes.
      */
     public Icon getDefaultLeafIcon() {
@@ -108,6 +108,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent non-leaf nodes that are expanded.
+     * @param newIcon the value. 
      */
     public void setOpenIcon(Icon newIcon) {
         openIcon = newIcon;
@@ -115,6 +116,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the icon used to represent non-leaf nodes that are expanded.
+     * @return the icon.
      */
     public Icon getOpenIcon() {
         return openIcon;
@@ -122,6 +124,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent non-leaf nodes that are not expanded.
+     * @param newIcon the value
      */
     public void setClosedIcon(Icon newIcon) {
         closedIcon = newIcon;
@@ -130,6 +133,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
     /**
      * Returns the icon used to represent non-leaf nodes that are not
      * expanded.
+     * @return the value
      */
     public Icon getClosedIcon() {
         return closedIcon;
@@ -137,6 +141,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the icon used to represent leaf nodes.
+     * @param newIcon the value
      */
     public void setLeafIcon(Icon newIcon) {
         leafIcon = newIcon;
@@ -144,6 +149,8 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the icon used to represent leaf nodes.
+     *
+     * @return the value
      */
     public Icon getLeafIcon() {
         return leafIcon;
@@ -151,6 +158,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color the text is drawn with when the node is selected.
+     * @param newColor the value
      */
     public void setTextSelectionColor(Color newColor) {
         textSelectionColor = newColor;
@@ -158,6 +166,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the text is drawn with when the node is selected.
+     * @return the value
      */
     public Color getTextSelectionColor() {
         return textSelectionColor;
@@ -165,6 +174,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color the text is drawn with when the node isn't selected.
+     * @param newColor the value
      */
     public void setTextNonSelectionColor(Color newColor) {
         textNonSelectionColor = newColor;
@@ -172,6 +182,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the text is drawn with when the node isn't selected.
+     * @return the value
      */
     public Color getTextNonSelectionColor() {
         return textNonSelectionColor;
@@ -179,6 +190,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color to use for the background if node is selected.
+     * @param newColor the value
      */
     public void setBackgroundSelectionColor(Color newColor) {
         backgroundSelectionColor = newColor;
@@ -186,6 +198,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color to use for the background if node is selected.
+     * @return the value
      */
     public Color getBackgroundSelectionColor() {
         return backgroundSelectionColor;
@@ -193,6 +206,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the background color to be used for non selected nodes.
+     * @param newColor the value
      */
     public void setBackgroundNonSelectionColor(Color newColor) {
         backgroundNonSelectionColor = newColor;
@@ -200,6 +214,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the background color to be used for non selected nodes.
+     * @return the value
      */
     public Color getBackgroundNonSelectionColor() {
         return backgroundNonSelectionColor;
@@ -207,6 +222,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Sets the color to use for the border.
+     * @param newColor the value
      */
     public void setBorderSelectionColor(Color newColor) {
         borderSelectionColor = newColor;
@@ -214,6 +230,7 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 
     /**
      * Returns the color the border is drawn.
+     * @return the valule
      */
     public Color getBorderSelectionColor() {
         return borderSelectionColor;

@@ -98,6 +98,7 @@ public class TIFFField implements Comparable, Serializable {
      * as follows:
      *
      * <table border=1>
+     * <caption>TIFF types</caption>
      * <tr>
      * <th> TIFF type </th> <th> Java type </th>
      * <tr>

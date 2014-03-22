@@ -510,7 +510,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
@@ -518,7 +518,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) {
@@ -544,7 +544,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to return specific shift values for the Quaqua L&F.
+     * Overridden to return specific shift values for the Quaqua L&amp;F.
      * FIXME We should find another way to align the labels properly.
      */
     @Override
@@ -794,7 +794,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,
