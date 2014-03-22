@@ -2,11 +2,8 @@
  * @(#)QuaquaManager.java 
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -144,6 +141,14 @@ public class QuaquaManager {
      */
     public final static int MOUNTAIN_LION = 8;
     /**
+     * Mac OS X 10.9 Maverick.
+     */
+    public final static int MAVERICKS = 9;
+    /**
+     * Mac OS X 10.x Always points to next OSX X release.
+     */
+    public final static int X = 100;
+    /**
      * Generic Linux.
      */
     public final static int LINUX = -4;
@@ -207,6 +212,10 @@ public class QuaquaManager {
                 OS = LION;
             } else if (osVersion.equals("10.8")) {
                 OS = MOUNTAIN_LION;
+            } else if (osVersion.equals("10.9")) {
+                OS = MAVERICKS;
+            } else if (osVersion.startsWith("10.")) {
+                OS = X;
             } else {
                 // Note: We must fall back to Snow Leopard here, because this
                 //       is the last OS X version for which we provide our own artwork.
@@ -243,6 +252,8 @@ public class QuaquaManager {
             design = LION;
         } else if (osDesign.equals("mountainlion")) {
             design = MOUNTAIN_LION;
+        } else if (osDesign.equals("maverick")) {
+            design = MAVERICKS;
         } else {
             if (OS <= UNKNOWN) {
                 // Note: We must fall back to Snow Leopard here, because this
@@ -413,6 +424,8 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
+                    case MAVERICKS:
+                    case X:
                         lafKey = "MountainLion.16";
                         break;
                     default:
@@ -440,6 +453,8 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
+                    case MAVERICKS:
+                    case X:
                         lafKey = "MountainLion.16";
                         break;
                     default:

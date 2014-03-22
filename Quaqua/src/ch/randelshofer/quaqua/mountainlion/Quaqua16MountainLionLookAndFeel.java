@@ -302,6 +302,11 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
             //
             "ColorChooser.unifiedTitleBar", Boolean.TRUE,
             //
+            // CheckBox icon needs to be shifted to the left
+            "CheckBox.icon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, -1,0,16,20,true),
+            "CheckBox.smallIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, -1,0,14,16,true),
+            "CheckBox.miniIcon", makeNativeButtonStateIcon(OSXAquaPainter.Widget.buttonCheckBox, 0,-1,10,15,true),
+            //
             "ComboBox.selectionBackground", new GradientColor(new ColorUIResource(0x3875d7), new ColorUIResource(0x5170f6), new ColorUIResource(0x1a43f3)),
             "ComboBox.selectionForeground", menuSelectionForeground,
             "ComboBox.popupBorder",//
@@ -572,8 +577,6 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
             "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),//
             "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),
         };
-
-
         putDefaults(table, uiDefaults);
 
         // FIXME Implement a screen menu bar by myself. We lose too many features here.

@@ -2,11 +2,8 @@
  * @(#)QuaquaTextFieldUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -135,15 +132,17 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         Object oldHints = QuaquaUtilities.beginGraphics((Graphics2D) g);
         JTextComponent editor = getComponent();
 
-        // Paint the background with the background border or the background color
+        // paint the background
+        if (editor.isOpaque()) {
+        g.setColor(editor.getBackground());
+        g.fillRect(0, 0, editor.getWidth(), editor.getHeight());
+        }
+        
+        // Paint the background with the background border
         Border border = editor.getBorder();
-        if (border != null && border instanceof BackgroundBorder) {
+        if (border instanceof BackgroundBorder) {
             Border bb = ((BackgroundBorder) border).getBackgroundBorder();
             bb.paintBorder(editor, g, 0, 0, editor.getWidth(), editor.getHeight());
-        } else {
-            if (editor.isOpaque()) {
-                super.paintBackground(g);
-            }
         }
 
         Graphics g2=g.create();
@@ -151,6 +150,15 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         g2.dispose();
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
         Debug.paint(g, editor, this);
+    }
+    /**
+     * Paints a background for the view.  This method is empty, because
+     * we already paint the background in method paintSafely.
+     *
+     * @param g the graphics context
+     */
+    protected void paintBackground(Graphics g) {
+        // must be empty!
     }
 
     @Override

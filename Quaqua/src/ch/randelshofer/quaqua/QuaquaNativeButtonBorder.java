@@ -593,8 +593,8 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             // must call super here, because visualmargin is based on style
             Insets vm = super.getVisualMargin(c, new Insets(0, 0, 0, 0));
 
-            // push buttons can only have an inner size of 21 pixels or less
-            if (c.getHeight() - vm.top - vm.bottom > 21
+            // push buttons can only have an inner size of 26 pixels or less
+            if (c.getHeight() - vm.top - vm.bottom > 26
                     || QuaquaUtilities.getSizeVariant(c) == QuaquaUtilities.SizeVariant.LARGE) {
                 s = "bevel";
             }

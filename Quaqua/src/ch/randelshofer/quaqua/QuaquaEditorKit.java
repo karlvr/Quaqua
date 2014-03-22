@@ -2,11 +2,8 @@
  * @(#)QuaquaEditorKit.java 
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  *
  * Part of this software (as marked) has been derived from software by
  * Dustin Sacks. These parts are used under license.

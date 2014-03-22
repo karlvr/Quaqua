@@ -2,11 +2,8 @@
  * @(#)BasicQuaquaNativeLookAndFeel.java
  *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -2001,12 +1998,6 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "Quaqua.Debug.componentBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
             "Quaqua.Debug.textBoundsForeground", new AlphaColorUIResource(255, 0, 0, 128),
             "ClassLoader", getClass().getClassLoader(),};
-        putDefaults(table, uiDefaults);
-
-        // Support for org.jdesktop.layout.GroupLayout
-        uiDefaults = new Object[]{
-                    "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
-                    "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
         putDefaults(table, uiDefaults);
     }
 

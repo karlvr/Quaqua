@@ -79,6 +79,9 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         break;
                     case QuaquaManager.LION :
                     case QuaquaManager.MOUNTAIN_LION :
+                    case QuaquaManager.MAVERICKS :
+                    case QuaquaManager.X :
+                    default:
                         className = "ch.randelshofer.quaqua.lion.filechooser.OSXLionFileSystemView";
                         break;
                     case QuaquaManager.TIGER :
@@ -90,9 +93,6 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                     case QuaquaManager.LINUX :
                     	className = "ch.randelshofer.quaqua.filechooser.LinuxFileSystemView";
                     	break;
-                    default :
-                        className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSXLionFileSystemView";
-                        break;
                 }
             try {
                 fileSystemView = (QuaquaFileSystemView) Class.forName(className).newInstance();

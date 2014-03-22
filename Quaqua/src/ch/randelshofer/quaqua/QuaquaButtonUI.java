@@ -2,11 +2,8 @@
  * @(#)QuaquaButtonUI.java  
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -190,7 +187,10 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     protected void paintText(Graphics g, AbstractButton b, Rectangle textRect, String text) {
         ButtonModel model = b.getModel();
         FontMetrics fm = g.getFontMetrics();
-        int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
+        
+        // Suppress mnemonic
+        //int mnemonicIndex = Methods.invokeGetter(b, "getDisplayedMnemonicIndex", -1);
+        int mnemonicIndex = -1;
         boolean borderHasPressedCue = borderHasPressedCue(b);
 
         /* Draw the Text */
