@@ -2,11 +2,8 @@
  * @(#)QuaquaJaguarTabbedPaneUI.java  
  *
  * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua.jaguar;
 
@@ -513,7 +510,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected void paintTabBackground(Graphics g, int tabPlacement,
@@ -521,7 +518,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected int getTabLabelShiftX(int tabPlacement, int tabIndex, boolean isSelected) {
@@ -547,7 +544,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to return specific shift values for the Quaqua L&F.
+     * Overridden to return specific shift values for the Quaqua L&amp;F.
      * FIXME We should find another way to align the labels properly.
      */
     @Override
@@ -797,7 +794,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
     }
 
     /**
-     * Overridden to do nothing for the Quaqua L&F.
+     * Overridden to do nothing for the Quaqua L&amp;F.
      */
     @Override
     protected void paintFocusIndicator(Graphics g, int tabPlacement,

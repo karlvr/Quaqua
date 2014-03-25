@@ -2,11 +2,8 @@
  * @(#)QuaquaSliderUI.java  
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -606,7 +603,7 @@ public class QuaquaSliderUI extends BasicSliderUI
      * Track mouse movements.
      *
      * This class should be treated as a &quot;protected&quot; inner class.
-     * Instantiate it only within subclasses of <Foo>.
+     * Instantiate it only within subclasses of {@code Foo}.
      */
     public class QuaquaTrackListener extends TrackListener {
         //protected transient int offset;

@@ -2,11 +2,8 @@
  * @(#)VisualMarginTest.java  1.0  07 April 2005
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package test;
 
@@ -39,6 +36,8 @@ public class VisualMarginTest extends javax.swing.JPanel {
         jLabel2.putClientProperty("Quaqua.Component.visualMargin", new Insets(2, 2, 2, 2));
         jLabel3.putClientProperty("Quaqua.Component.visualMargin", new Insets(1, 1, 1, 1));
         jLabel4.putClientProperty("Quaqua.Component.visualMargin", new Insets(0, 0, 0, 0));
+        
+        classItemChanged(null);
     }
 
     /** This method is called from within the constructor to

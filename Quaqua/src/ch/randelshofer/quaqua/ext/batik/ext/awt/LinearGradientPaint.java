@@ -28,7 +28,7 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.ColorModel;
 
 /**
- * The <code>LinearGradientPaint</code> class provides a way to fill
+ * The {@code LinearGradientPaint} class provides a way to fill
  * a {@link java.awt.Shape} with a linear color gradient pattern.  The user may
  * specify 2 or more gradient colors, and this paint will provide an
  * interpolation between each color.  The user also specifies start and end
@@ -42,14 +42,13 @@ import java.awt.image.ColorModel;
  * <p>
  * For example:
  * <br>
- * <code>
- * <p>
- * Point2D start = new Point2D.Float(0, 0);<br>
- * Point2D end = new Point2D.Float(100,100);<br>
- * float[] dist = {0.0, 0.2, 1.0};<br>
- * Color[] colors = {Color.red, Color.white, Color.blue};<br>
+ * <pre>
+ * Point2D start = new Point2D.Float(0, 0);
+ * Point2D end = new Point2D.Float(100,100);
+ * float[] dist = {0.0, 0.2, 1.0};
+ * Color[] colors = {Color.red, Color.white, Color.blue};
  * LinearGradientPaint p = new LinearGradientPaint(start, end, dist, colors);
- * </code>
+ * </pre>
  *<p>
  * This code will create a LinearGradientPaint which interpolates between 
  * red and white for the first 20% of the gradient and between white and blue 
@@ -68,11 +67,6 @@ import java.awt.image.ColorModel;
  * when filling color outside the start and end points. If no cycle method is
  * specified, NO_CYCLE will be chosen by default, so the endpoint colors 
  * will be used to fill the remaining area.  
- *
- * <p> The following image demonstrates the options NO_CYCLE and REFLECT.
- *
- * <p>
- * <img src = "cyclic.jpg">
  *
  * <p> The colorSpace parameter allows the user to specify in which colorspace
  *  the interpolation should be performed, default sRGB or linearized RGB.
@@ -100,7 +94,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     }
 
     /**<p>
-     * Constructs an <code>LinearGradientPaint</code> with the default 
+     * Constructs an {@code LinearGradientPaint} with the default 
      * NO_CYCLE repeating method and SRGB colorspace.
      *
      * @param startX the x coordinate of the gradient axis start point 
@@ -139,7 +133,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     }
 
     /**<p>
-     * Constructs an <code>LinearGradientPaint</code> with default SRGB 
+     * Constructs an {@code LinearGradientPaint} with default SRGB 
      * colorspace.
      *
      * @param startX the x coordinate of the gradient axis start point 
@@ -179,12 +173,12 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     }
 
     /**<p>
-     * Constructs a <code>LinearGradientPaint</code> with the default 
+     * Constructs a {@code LinearGradientPaint} with the default 
      * NO_CYCLE repeating method and SRGB colorspace.
      *
-     * @param start the gradient axis start <code>Point</code> in user space
+     * @param start the gradient axis start {@code Point} in user space
      *
-     * @param end the gradient axis end <code>Point</code> in user space
+     * @param end the gradient axis end {@code Point} in user space
      *
      * @param fractions numbers ranging from 0.0 to 1.0 specifying the 
      * distribution of colors along the gradient
@@ -205,11 +199,11 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     }
 
     /**<p>
-     * Constructs a <code>LinearGradientPaint</code>.
+     * Constructs a {@code LinearGradientPaint}.
      *
-     * @param start the gradient axis start <code>Point</code> in user space
+     * @param start the gradient axis start {@code Point} in user space
      *
-     * @param end the gradient axis end <code>Point</code> in user space
+     * @param end the gradient axis end {@code Point} in user space
      *
      * @param fractions numbers ranging from 0.0 to 1.0 specifying the 
      * distribution of colors along the gradient
@@ -239,11 +233,11 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     }
 
     /**<p>
-     * Constructs a <code>LinearGradientPaint</code>.
+     * Constructs a {@code LinearGradientPaint}.
      *
-     * @param start the gradient axis start <code>Point</code> in user space
+     * @param start the gradient axis start {@code Point} in user space
      *
-     * @param end the gradient axis end <code>Point</code> in user space
+     * @param end the gradient axis end {@code Point} in user space
      *
      * @param fractions numbers ranging from 0.0 to 1.0 specifying the 
      * distribution of colors along the gradient
@@ -297,7 +291,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      * for use by the internal rendering engine.
      *
      * @param cm {@link ColorModel} that receives
-     * the <code>Paint</code> data. This is used only as a hint.
+     * the {@code Paint} data. This is used only as a hint.
      *
      * @param deviceBounds the device space bounding box of the 
      * graphics primitive being rendered
@@ -349,7 +343,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
      * Returns a copy of the start point of the gradient axis
      * @return a {@link Point2D} object that is a copy of the point
      * that anchors the first color of this 
-     * <code>LinearGradientPaint</code>.  
+     * {@code LinearGradientPaint}.  
      */
     public Point2D getStartPoint() {
         return new Point2D.Double(start.getX(), start.getY());
@@ -358,7 +352,7 @@ public final class LinearGradientPaint extends MultipleGradientPaint {
     /** Returns a copy of the end point of the gradient axis
      * @return a {@link Point2D} object that is a copy of the point
      * that anchors the last color of this 
-     * <code>LinearGradientPaint</code>.  
+     * {@code LinearGradientPaint}.  
      */
     public Point2D getEndPoint() {
         return new Point2D.Double(end.getX(), end.getY());

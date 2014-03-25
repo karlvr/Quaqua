@@ -2,11 +2,8 @@
  * @(#)QuaquaMenuPainter.java  
  *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -250,8 +247,6 @@ public class QuaquaMenuPainter {
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
     }
 
-    /**
-     */
     protected Dimension getPreferredMenuItemSize(
             JComponent c, Icon checkIcon, Icon arrowIcon, int textIconGap, Font acceleratorFont) {
         JMenuItem menuItem = (JMenuItem) c;
@@ -357,8 +352,7 @@ public class QuaquaMenuPainter {
         }
     }
 
-    /**
-     */
+    
     public void drawString(QuaquaMenuPainterClient client,
             Graphics g, String text, int mnemonicChar, int x,
             int y, boolean isEnabled, boolean isSelected) {

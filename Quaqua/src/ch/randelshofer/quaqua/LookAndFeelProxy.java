@@ -2,11 +2,8 @@
  * @(#)LookAndFeelProxy.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 
 package ch.randelshofer.quaqua;
@@ -17,7 +14,7 @@ import javax.swing.*;
 import javax.swing.plaf.basic.*;
 /**
  * A proxy for LookAndFeel objects. This class enables us to override
- * the behaviour of LookAndFeel objects whithout subclassing them.
+ * the behavior of LookAndFeel objects without subclassing them.
  * <p>
  * <b>Note</b> this class extends BasicLookAndFeel instead of
  * LookAndFeel. This is because some UI classes derived from the Basic LAF
@@ -34,6 +31,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
     
     /**
      * Creates a new instance which proxies the supplied target.
+     * @param target the target
      */
     public LookAndFeelProxy(LookAndFeel target) {
         this.target = target;
@@ -46,6 +44,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
     
     /**
      * Sets the target of this proxy.
+     * @param target the target
      */
     protected void setTarget(LookAndFeel target) {
         this.target = target;
@@ -79,7 +78,7 @@ public class LookAndFeelProxy extends BasicLookAndFeel {
      * Distinct look and feels should have different names, e.g. 
      * a subclass of MotifLookAndFeel that changes the way a few components
      * are rendered should be called "CDE/Motif My Way"; something
-     * that would be useful to a user trying to select a L&F from a list
+     * that would be useful to a user trying to select a L&amp;F from a list
      * of names.
      */
     public String getName() {

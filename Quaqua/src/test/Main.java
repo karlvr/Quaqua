@@ -211,6 +211,7 @@ public class Main extends javax.swing.JPanel {
         root.add(n = new DefaultMutableTreeNode("BUTTONS"));
         n.add(new Item("Push Button", "test.PushButtonTest"));
         n.add(new Item("Special Buttons", "test.SpecialButtonTest"));
+        n.add(new Item("Default Button", "test.DefaultButtonTest"));
         n.add(new Item("Toggle Button", "test.ToggleButtonTest"));
         n.add(new Item("Check Box", "test.CheckBoxTest"));
         n.add(new Item("Radio Button", "test.RadioButtonTest"));
@@ -253,8 +254,7 @@ public class Main extends javax.swing.JPanel {
         n.add(new Item("Palette", "test.PaletteTest"));
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
-        n.add(new Item("Matisse J2SE5", "test.MatisseTest15"));
-        n.add(new Item("Matisse J2SE6", "test.MatisseTest16"));
+        n.add(new Item("Group Layout", "test.GroupLayoutTest"));
         n.add(new Item("Visual Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
         n.add(new Item("Drag and Drop", "test.DnDTest"));

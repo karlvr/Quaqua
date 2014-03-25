@@ -2,11 +2,8 @@
  * @(#)QuaquaLookAndFeel.java  
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -23,12 +20,12 @@ package ch.randelshofer.quaqua;
  * This class may be less compatible than the look and feel instances provided 
  * by QuaquaManager, but it can be used in a chooser for look and feel's.
  * 
- * <h4>Usage</h4>
+ * <b>Usage</b>
  * <pre>
  * import javax.swing.*;
  * 
  * UIManager.setLookAndFeel("ch.randelshofer.quaqua.QuaquaLookAndFeel");
- * <pre>
+ * </pre>
  *
  * @author Werner Randelshofer, Switzerland
  * @version $Id$

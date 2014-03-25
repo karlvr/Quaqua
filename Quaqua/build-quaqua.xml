@@ -28,21 +28,19 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="9.0"/>
-        <property name="version" value="${versionNumber} 2013-05-30"/>
+        <property name="versionNumber" value="9.1"/>
+        <property name="version" value="${versionNumber} 2014-03-22"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
-        <property name="swinglayout" value="${distdir}/swing-layout.jar"/>
-        <property name="classpath" value="${builddir}:/System/Library/Java/"/>
+        <property name="classpath" value="${builddir}"/>
 
         <!-- Properties for jar signing -->
         <!-- ========================== -->
-        <property name="keystore.file" value="../../../_Keystore/JavaKeystore"/>
-        <property name="keystore.alias" value="werner"/>
-        <property name="keystore.storepass" value="werner"/>
+        <property name="keystore.file" value="../../../_Keystore/JavaKeystore.jks"/>
+        <property file="${keystore.file}.properties"/>
 
         <!-- Compilation properties -->
         <!-- ====================== -->
@@ -53,21 +51,25 @@
              If you run on Mac OS X 10.6 this is wherever your copy of
              Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
              -->
+             <!--
          <condition property="osx10.5"
                     value="/Users/Shared/Developer/Mac OS X 10.5"
                     else="">
                 <available file="/Users/Shared/Developer/Mac OS X 10.5"/>
          </condition>
-
-        <property name="j2se6" value="/System/Library/Frameworks/JavaVM.framework/Versions/1.6" />
+-->
+        <property name="j2se6" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents" />
         <property name="j2se6.jvm" value="${j2se6}/Home/bin/java"/>
         <property name="j2se6.bootclasspath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
         <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
-        <property name="j2se6.extdirs" value="." />
-        <property name="j2se6.endorseddirs" value="." />
+        <property name="j2se6.extdirs" value="lib/ext" />
+        <property name="j2se6.endorseddirs" value="lib/endorsed" />
         
-        <property name="j2se7" value="/Library/Java/JavaVirtualMachines/1.7.0.jdk/Contents" />
+        <property name="j2se7" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents" />
         <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
+        
+        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents" />
+        <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
         
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
              In case you run this Ant task on Mac OS X 10.6, "cc" invokes gcc-4.2
@@ -79,8 +81,13 @@
                     else="cc">
                 <available file="/Developer-old/usr/bin/gcc-4.2"/>
          </condition>
-    	
-    	<property name="macosx.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk" /> 
+         
+         <property name="osx10.5.sdk" value="/Developer/SDKs/MacOSX10.5.sdk"/>
+         <property name="osx10.6.sdk" value="/Developer/SDKs/MacOSX10.6.sdk"/>
+         <property name="osx10.7.sdk" value="/Developer/SDKs/MacOSX10.7.sdk"/>
+         <property name="osx10.8.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk"/>
+         <property name="osx10.9.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk"/>
+         <property name="macosx.sdk" value="${osx10.9.sdk}" />
     </target>
    
     <target depends="init" name="compile">
@@ -141,8 +148,6 @@
              specify the minimum target system for the software.
              http://developer.apple.com/documentation/DeveloperTools/Conceptual/cross_development/Using/chapter_3_section_2.html#//apple_ref/doc/uid/20002000-1114311-BABGCAAB
              -->
-        <!--arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/-->
         <arg value="${macosx.sdk}"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.4"/>
         
@@ -175,9 +180,9 @@
              inadvertently changed. If you really need to change the search 
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
@@ -194,6 +199,8 @@
         <!-- Frameworks used by the library. -->
         <arg value="-framework"/>
         <arg value="JavaVM"/>
+        <arg value="-framework"/>
+        <arg value="JavaRuntimeSupport"/>
         <arg value="-framework"/>
         <arg value="Carbon"/>
         <arg value="-framework"/>
@@ -248,8 +255,6 @@
              specify the minimum target system for the software.
              http://developer.apple.com/documentation/DeveloperTools/Conceptual/cross_development/Using/chapter_3_section_2.html#//apple_ref/doc/uid/20002000-1114311-BABGCAAB
              -->
-        <!--<arg value="/Developer/SDKs/MacOSX10.4u.sdk"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="10.3"/>-->
         <arg value="${macosx.sdk}"/>
         <env key="MACOSX_DEPLOYMENT_TARGET" value="10.5"/>
         
@@ -282,9 +287,9 @@
              inadvertently changed. If you really need to change the search 
              order for system directories, use the -nostdinc and/or -isystem 
              options.  -->
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Headers"/>
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
-        <arg value="-I/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
+        <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
         
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
@@ -331,7 +336,7 @@
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
         
-        <javac bootclasspath="/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/classes.jar:/System/Library/Frameworks/JavaVM.framework/Versions/1.6/Classes/ui.jar"
+        <javac bootclasspath="${j2se6.bootclasspath}"
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
                 srcdir="${src}" 
@@ -373,7 +378,6 @@ Mavericks.16=ch.randelshofer.quaqua.subset.QuaquaLionFileChooserLAF;
        >
             <manifest>
                 <attribute name="Main-Class" value="ch.randelshofer.quaqua.QuaquaManager"/>
-                <attribute name="Class-Path" value="/System/Library/Java/"/>
             </manifest>
             <exclude name="**/Icon?"/>
             <exclude name="**/.*"/>
@@ -407,13 +411,20 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <manifest>
                 <attribute name="Built-By" value="${author}"/>
                 <attribute name="Main-Class" value="ch.randelshofer.quaqua.QuaquaManager"/>
-                <attribute name="Class-Path" value="swing-layout.jar /System/Library/Java/"/>
                 <attribute name="Specification-Title" value="Quaqua Look and Feel"/>
                 <attribute name="Specification-Version" value="${version}"/>
                 <attribute name="Specification-Vendor" value="${author}"/>
                 <attribute name="Implementation-Title" value="Quaqua Look and Feel"/>
                 <attribute name="Implementation-Version" value="${version}"/>
                 <attribute name="Implementation-Vendor" value="${author}"/>
+                <!-- applet security -->
+                <attribute name="Application-Name" value="Quaqua"/>
+                <attribute name="Codebase" value="*"/>
+                <attribute name="Application-Library-Allowable-Codebase" value="*"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-Only" value="false"/>
+                <attribute name="Trusted-Library" value="false"/>
             </manifest>
             <exclude name="**/.*"/>
             <exclude name="**/_notes/**"/>
@@ -446,14 +457,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
                 <attribute name="Implementation-Title" value="Quaqua Test"/>
                 <attribute name="Implementation-Version" value="${version}"/>
                 <attribute name="Implementation-Vendor" value="${author}"/>
+                <!-- applet security -->
+                <attribute name="Application-Name" value="Quaqua Test"/>
+                <attribute name="Codebase" value="*"/>
+                <attribute name="Application-Library-Allowable-Codebase" value="*"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-Only" value="false"/>
+                <attribute name="Trusted-Library" value="false"/>
             </manifest>
             <include name="test/*.class"/>
         </jar>
         <!--delete file="${builddir}/ch/randelshofer/quaqua/laf.txt"/-->
         
-        <jar basedir="${builddir}" compress="true" jarfile="${swinglayout}">
-            <include name="org/jdesktop/layout/*.class"/>
-        </jar>
     </target>
     <target depends="init, jnilib-32, jnilib-64" name="jnilib">
     </target>
@@ -496,6 +512,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/quaqua.jar"
                 >
         </signjar>        
@@ -514,6 +531,7 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/quaqua-test.jar"
                 >
         </signjar>
@@ -522,24 +540,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <arg value="${distdir}/signed/quaqua-test.jar"/>
         </exec>
         
-        <!-- create signed version of the swing-layout.jar file -->
-        <copy file="${lib}/swing-layout.jar"
-            tofile="${distdir}/signed/swing-layout.jar"
-            />
-        <exec executable="pack200">
-            <arg value="-r"/>
-            <arg value="${distdir}/signed/swing-layout.jar"/>
-        </exec>
-        <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}"
-                jar="${distdir}/signed/swing-layout.jar"
-                >
-        </signjar>
-        <exec executable="pack200">
-            <arg value="${distdir}/signed/swing-layout.jar.pack.gz"/>
-            <arg value="${distdir}/signed/swing-layout.jar"/>
-        </exec>
-
         <!-- create signed version of the libquaqua.jnilib.jar file -->
         <jar basedir="${distdir}" compress="true"
              jarfile="${distdir}/signed/libquaqua.jnilib.jar" 
@@ -547,7 +547,8 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <include name="libquaqua.jnilib"/>
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
-                keystore="${keystore.file}" 
+                keystore="${keystore.file}"
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua.jnilib.jar"
                 >
         </signjar>        
@@ -560,17 +561,19 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua64.jnilib.jar"
                 >
         </signjar>        
         <!-- create signed version of the libquaqua64.dylib.jar file -->
         <jar basedir="${distdir}" compress="true"
-             jarfile="${distdir}/signed/libquaqua64.jnilib.jar" 
+             jarfile="${distdir}/signed/libquaqua64.dylib.jar" 
         >
             <include name="libquaqua64.dylib"/>
         </jar>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}" 
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/libquaqua64.dylib.jar"
                 >
         </signjar>        
@@ -615,9 +618,6 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
             <sourcepath>
                 <pathelement location="${src}"/>
             </sourcepath>
-            <classpath>
-                <pathelement location="${lib}/swing-layout.jar"/>
-            </classpath>
             <excludepackage name="test"/>
             <excludepackage name="bugs"/>
             <packageset dir="${src}">
@@ -662,6 +662,16 @@ CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformL
         <java classname="test.Main" classpath="${classpath}"
          failonerror="true" fork="true"
                 jvm="${j2se7.jvm}"
+        >
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.QuaquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Quaqua 1.8 Auto">
+        <java classname="test.Main" classpath="${classpath}"
+         failonerror="true" fork="true"
+                jvm="${j2se8.jvm}"
         >
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>

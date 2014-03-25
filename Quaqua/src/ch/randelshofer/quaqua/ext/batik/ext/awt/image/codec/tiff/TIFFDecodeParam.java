@@ -21,55 +21,55 @@ package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff;
 import  ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.ImageDecodeParam;
 
 /**
- * An instance of <code>ImageDecodeParam</code> for decoding images in
+ * An instance of {@code ImageDecodeParam} for decoding images in
  * the TIFF format.
  *
  * <p> To determine the number of images present in a TIFF file, use
- * the <code>getNumPages()</code> method on the
- * <code>ImageDecoder</code> object that will be used to perform the
+ * the {@code getNumPages()} method on the
+ * {@code ImageDecoder} object that will be used to perform the
  * decoding.  The desired page number may be passed as an argument to
- * the <code>ImageDecoder.decodeAsRaster)()</code> or
- * <code>decodeAsRenderedImage()</code> methods.
+ * the {@code ImageDecoder.decodeAsRaster)()} or
+ * {@code decodeAsRenderedImage()} methods.
  *
  * <p> For TIFF Palette color images, the colorMap always has entries
  * of short data type, the color Black being represented by 0,0,0 and
  * White by 65536,65536,65536. In order to display these images, the
  * default behavior is to dither the short values down to 8 bits.
- * The dithering is done by calling the <code>decode16BitsTo8Bits</code>
+ * The dithering is done by calling the {@code decode16BitsTo8Bits}
  * method for each short value that needs to be dithered. The method has
  * the following implementation:
- * <code>
+ * <pre> 
  *       byte b;
  *       short s;
- *       s = s & 0xffff;
- *       b = (byte)((s >> 8) & 0xff);
- * </code>
+ *       s = s &amp; 0xffff;
+ *       b = (byte)((s &gt;&gt; 8) &amp; 0xff);
+ * </pre>
  * If a different algorithm is to be used for the dithering, this class
  * should be subclassed and an appropriate implementation should be
- * provided for the <code>decode16BitsTo8Bits</code> method in the subclass.
+ * provided for the {@code decode16BitsTo8Bits} method in the subclass.
  *
  * <p>If the palette contains image data that is signed short, as specified
  * by the SampleFormat tag, the dithering is done by calling
- * <code>decodeSigned16BitsTo8Bits</code> instead. The method has the
+ * {@code decodeSigned16BitsTo8Bits} instead. The method has the
  * following implementation:
- * <code>
+ * <pre> 
  *       byte b;
  *       short s;
- *       b = (byte)((s + Short.MIN_VALUE) >> 8);
- * </code>
+ *       b = (byte)((s + Short.MIN_VALUE) &gt;&gt; 8);
+ * </pre>
  * In order to use a different algorithm for the dithering, this class
  * should be subclassed and the method overridden.
  *
  * <p> If it is desired that the Palette be decoded such that the output
  * image is of short data type and no dithering is performed, the
- * <code>setDecodePaletteAsShorts</code> method should be used.
+ * {@code setDecodePaletteAsShorts} method should be used.
  *
  * <p><b> This class is not a committed part of the JAI API.  It may
  * be removed or changed in future releases of JAI.</b>
  *
  * @see TIFFDirectory
  *
- * @version $Id: TIFFDecodeParam.java 498740 2007-01-22 18:35:57Z dvholten $
+ * @version $Id$
  */
 public class TIFFDecodeParam implements ImageDecodeParam {
 
@@ -77,7 +77,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     private Long ifdOffset = null;
     private boolean convertJPEGYCbCrToRGB = true;
 
-    /** Constructs a default instance of <code>TIFFDecodeParam</code>. */
+    /** Constructs a default instance of {@code TIFFDecodeParam}. */
     public TIFFDecodeParam() {
     }
 
@@ -90,7 +90,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     }
 
     /**
-     * Returns <code>true</code> if palette entries will be decoded as
+     * Returns {@code true} if palette entries will be decoded as
      * shorts, resulting in an output image with short datatype.
      */
     public boolean getDecodePaletteAsShorts() {
@@ -100,10 +100,10 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     /**
      * Returns an unsigned 8 bit value computed by dithering the unsigned
      * 16 bit value. Note that the TIFF specified short datatype is an
-     * unsigned value, while Java's <code>short</code> datatype is a
-     * signed value. Therefore the Java <code>short</code> datatype cannot
+     * unsigned value, while Java's {@code short} datatype is a
+     * signed value. Therefore the Java {@code short} datatype cannot
      * be used to store the TIFF specified short value. A Java
-     * <code>int</code> is used as input instead to this method. The method
+     * {@code int} is used as input instead to this method. The method
      * deals correctly only with 16 bit unsigned values.
      */
     public byte decode16BitsTo8Bits(int s) {
@@ -122,10 +122,10 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     /**
      * Sets the offset in the stream from which to read the image.  There
      * must be an Image File Directory (IFD) at that position or an error
-     * will occur.  If <code>setIFDOffset()</code> is never invoked then
+     * will occur.  If {@code setIFDOffset()} is never invoked then
      * the decoder will assume that the TIFF stream is at the beginning of
      * the 8-byte image header.  If the directory offset is set and a page
-     * number is supplied to the TIFF <code>ImageDecoder</code> then the
+     * number is supplied to the TIFF {@code ImageDecoder} then the
      * page will be the zero-relative index of the IFD in linked list of
      * IFDs beginning at the specified offset with a page of zero indicating
      * the directory at that offset.
@@ -135,8 +135,8 @@ public class TIFFDecodeParam implements ImageDecodeParam {
     }
 
     /**
-     * Returns the value set by <code>setIFDOffset()</code> or
-     * <code>null</code> if no value has been set.
+     * Returns the value set by {@code setIFDOffset()} or
+     * {@code null} if no value has been set.
      */
     public Long getIFDOffset() {
         return ifdOffset;
@@ -144,7 +144,7 @@ public class TIFFDecodeParam implements ImageDecodeParam {
 
     /**
      * Sets a flag indicating whether to convert JPEG-compressed YCbCr data
-     * to RGB.  The default value is <code>true</code>.  This flag is
+     * to RGB.  The default value is {@code true}.  This flag is
      * ignored if the image data are not JPEG-compressed.
      */
     public void setJPEGDecompressYCbCrToRGB(boolean convertJPEGYCbCrToRGB) {

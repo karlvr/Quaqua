@@ -2,11 +2,8 @@
  * @(#)BasicQuaquaLookAndFeel.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -38,7 +35,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snowleopard/images/";
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
-    /** Creates a new instance. */
+    /** Creates a new instance.
+    * @param targetClassName Proxy target.
+    */
     public BasicQuaquaLookAndFeel(String targetClassName) {
         try {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
@@ -1348,7 +1347,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * Returns the base font for which system fonts are derived.
-     * This is Lucida Grande, Plain, 13.
+     * @return Lucida Grande, Plain, 13.
      */
     protected Font getBaseSystemFont() {
         return new FontUIResource("Lucida Grande", Font.PLAIN, 13);
@@ -1532,6 +1531,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * The defaults initialized here are common to all Quaqua Look and Feels.
+     * @param table Table to which the defaults are appended.
      */
     protected void initGeneralDefaults(UIDefaults table) {
         String javaVersion = QuaquaManager.getProperty("java.version", "");
@@ -2083,12 +2083,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ClassLoader", getClass().getClassLoader(),//
         };
         putDefaults(table, uiDefaults);
-
-        // Support for org.jdesktop.layout.GroupLayout
-        uiDefaults = new Object[]{
-            "LayoutStyle.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaLayoutStyle15"),
-            "Baseline.instance", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaBaseline"),};
-        putDefaults(table, uiDefaults);
     }
 
     protected Object makeImage(String location) {
@@ -2248,6 +2242,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
     /**
      * Init design specific look and feel defaults.
+     * @param table Table to which the defaults are appended.
      */
     protected void initDesignDefaults(UIDefaults table) {
     }
@@ -2396,8 +2391,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
      * 
-     * @param table
-     * @param keyValueList
+     * @param table Table to which the defaults are appended.
+     * @param keyValueList List with keys and values to be appended.
      */
     protected void putDefaults(UIDefaults table, Object[] keyValueList) {
         Set included = QuaquaManager.getIncludedUIs();

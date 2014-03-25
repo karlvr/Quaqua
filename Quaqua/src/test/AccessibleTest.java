@@ -2,11 +2,8 @@
  * @(#)AccessibleTest.java  1.0  March 17, 2008
  *
  * Copyright (c) 2008 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package test;
 

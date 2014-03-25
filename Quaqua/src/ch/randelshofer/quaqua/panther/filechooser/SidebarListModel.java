@@ -2,11 +2,8 @@
  * @(#)SidebarListModel.java  3.0.3  2008-04-17
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua.panther.filechooser;
 
@@ -106,7 +103,7 @@ public class SidebarListModel
     /**
      * This hash map is used to determine the sequence and visibility of the
      * items in the system list.
-     * HashMap<String,SystemItemInfo>
+     * HashMap&lt;String,SystemItemInfo&gt;
      */
     private HashMap systemItemsMap = new HashMap();
 

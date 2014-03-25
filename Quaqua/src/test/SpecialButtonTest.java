@@ -2,11 +2,8 @@
  * @(#)ButtonTest.java  1.0  
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 
 package test;
@@ -89,6 +86,8 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         recessedButton = new javax.swing.JButton();
         roundRectLabel = new javax.swing.JLabel();
         recessedLabel = new javax.swing.JLabel();
+        coloredButton = new javax.swing.JButton();
+        coloredLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         regularRadio = new javax.swing.JRadioButton();
@@ -206,6 +205,20 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(recessedLabel, gridBagConstraints);
+
+        coloredButton.setBackground(new java.awt.Color(181, 212, 107));
+        coloredButton.setText("Ångström H");
+        coloredButton.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        add(coloredButton, gridBagConstraints);
+
+        coloredLabel.setText("Colored");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
+        add(coloredLabel, gridBagConstraints);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = 2;
@@ -273,6 +286,8 @@ public class SpecialButtonTest extends javax.swing.JPanel {
     private javax.swing.JLabel bevelLabel;
     private javax.swing.JButton colorWellButton;
     private javax.swing.JLabel colorWellLabel;
+    private javax.swing.JButton coloredButton;
+    private javax.swing.JLabel coloredLabel;
     private javax.swing.JButton gradientButton;
     private javax.swing.JLabel gradientLabel;
     private javax.swing.JButton helpButton;

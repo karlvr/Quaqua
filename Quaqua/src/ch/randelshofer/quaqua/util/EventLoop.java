@@ -2,11 +2,8 @@
  * @(#)EventLoop.java  1.4  2009-06-01
  *
  * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 //package ch.randelshofer.util;
 package ch.randelshofer.quaqua.util;

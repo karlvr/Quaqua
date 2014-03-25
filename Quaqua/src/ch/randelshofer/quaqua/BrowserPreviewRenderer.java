@@ -2,11 +2,8 @@
  * @(#)BrowserPreviewRenderer.java 
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 
 package ch.randelshofer.quaqua;
@@ -49,6 +46,7 @@ public interface BrowserPreviewRenderer {
      * @param browser The JBrowser we're painting.
      * @param paths The paths returned by browser.getSelectionPaths(). This
      * is granted to be a non-null array containing at least one element.
+     * @return The component.
      *
      */
       public Component getPreviewRendererComponent(

@@ -2,11 +2,8 @@
  * @(#)QuaquaLayoutStyle.java
  *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -332,6 +329,7 @@ public class QuaquaLayoutStyle extends LayoutStyle {
      * The <code>type</code> parameter indicates the type
      * of gap being requested.  It can be one of the following values:
      * <table>
+     * <caption>Meaning of type values</caption>
      * <tr><td><code>RELATED</code>
      *     <td>If the two components will be contained in
      *         the same parent and are showing similar logically related

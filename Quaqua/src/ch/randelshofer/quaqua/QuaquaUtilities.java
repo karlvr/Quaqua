@@ -2,11 +2,8 @@
  * @(#)QuaquaUtilities.java  
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
@@ -61,12 +58,12 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     /**
-     * Draw a string with the graphics <code>g</code> at location
-     * (<code>x</code>, <code>y</code>)
-     * just like <code>g.drawString</code> would.
-     * The character at index <code>underlinedIndex</code>
-     * in text will be underlined. If <code>index</code> is beyond the
-     * bounds of <code>text</code> (including < 0), nothing will be
+     * Draw a string with the graphics {@code g} at location
+     * ({@code x}, {@code y})
+     * just like {@code g.drawString} would.
+     * The character at index {@code underlinedIndex}
+     * in text will be underlined. If {@code index} is beyond the
+     * bounds of {@code text} (including &lt; 0), nothing will be
      * underlined.
      *
      * @param g Graphics to draw with
@@ -91,8 +88,8 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     /**
-     * Returns index of the first occurrence of <code>mnemonic</code>
-     * within string <code>text</code>. Matching algorithm is not
+     * Returns index of the first occurrence of {@code mnemonic}
+     * within string {@code text}. Matching algorithm is not
      * case-sensitive.
      *
      * @param text The text to search through, may be null
@@ -342,14 +339,14 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
 
     /**
      * Invoked when the user attempts an invalid operation,
-     * such as pasting into an uneditable <code>JTextField</code>
+     * such as pasting into an uneditable {@code JTextField}
      * that has focus. The default implementation beeps. Subclasses
      * that wish different behavior should override this and provide
      * the additional feedback.
      *
      * @param component Component the error occured in, may be null
      *			indicating the error condition is not directly
-     *			associated with a <code>Component</code>.
+     *			associated with a {@code Component}.
      */
     static void provideErrorFeedback(Component component) {
         Toolkit toolkit = null;
@@ -845,7 +842,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     /**
-     * Returns the ui that is of type <code>klass</code>, or null if
+     * Returns the ui that is of type {@code klass}, or null if
      * one can not be found.
      */
     public static Object getUIOfType(ComponentUI ui, Class klass) {
@@ -1020,14 +1017,14 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
     }
 
     /**
-     * Return the child <code>Component</code> of the specified
-     * <code>Component</code> that is the focus owner, if any.
+     * Return the child {@code Component} of the specified
+     * {@code Component} that is the focus owner, if any.
      *
-     * @param c the root of the <code>Component</code> hierarchy to
+     * @param c the root of the {@code Component} hierarchy to
      *        search for the focus owner
-     * @return the focus owner, or <code>null</code> if there is no focus
-     *         owner, or if the focus owner is not <code>comp</code>, or a
-     *         descendant of <code>comp</code>
+     * @return the focus owner, or {@code null} if there is no focus
+     *         owner, or if the focus owner is not {@code comp}, or a
+     *         descendant of {@code comp}
      *
      * @see java.awt.KeyboardFocusManager#getFocusOwner
      */

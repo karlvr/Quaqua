@@ -2,11 +2,8 @@
  * @(#)Quaqua16LionFileChooserLAF.java  
  *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
- * All rights reserved.
- *
  * You may not use, copy or modify this file, except in compliance with the
- * license agreement you entered into with Werner Randelshofer.
- * For details see accompanying license terms.
+ * accompanying license terms.
  */
 package ch.randelshofer.quaqua.subset;
 
@@ -110,7 +107,7 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
      * Distinct look and feels should have different names, e.g.
      * a subclass of MotifLookAndFeel that changes the way a few components
      * are rendered should be called "CDE/Motif My Way"; something
-     * that would be useful to a user trying to select a L&F from a list
+     * that would be useful to a user trying to select a L&amp;F from a list
      * of names.
      */
     @Override

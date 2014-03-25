@@ -60,20 +60,20 @@ public final class CompositeRule implements java.io.Serializable {
 
       /**
        * Porter-Duff Source Over Destination rule. The source is
-       * composited over the destination.<pre>
-       *
+       * composited over the destination.
+       * <pre>
        *  Fs = 1 and Fd = (1-As), thus:
        *
        *        Cd = Cs + Cd*(1-As)
-       *        Ad = As + Ad*(1-As)</pre>
+       *        Ad = As + Ad*(1-As)
        * </pre>
        */
     public static final CompositeRule OVER = new CompositeRule(RULE_OVER);
 
       /**
        * Porter-Duff Source In Destination rule. The part of the
-       * source lying inside of the destination replaces the destination.<pre>
-       *
+       * source lying inside of the destination replaces the destination.
+       * <pre>
        *  Fs = Ad and Fd = 0, thus:
        *
        *        Cd = Cs*Ad
