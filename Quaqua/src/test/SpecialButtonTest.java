@@ -1,5 +1,5 @@
 /*
- * @(#)ButtonTest.java  1.0  
+ * @(#)ButtonTest.java  1.0
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,10 +11,10 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * ButtonTest.
  *
@@ -22,7 +22,7 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class SpecialButtonTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public SpecialButtonTest() {
         initComponents();
@@ -37,7 +37,7 @@ public class SpecialButtonTest extends javax.swing.JPanel {
                 texturedButton.putClientProperty("JButton.buttonType", "textured");
 
         colorWellButton.setBackground(Color.white);
-        
+
     }
     /*
     public void paint(Graphics g) {
@@ -46,10 +46,10 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         long end = System.currentTimeMillis();
         System.out.println(end - start);
     }*/
-    
+
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -60,7 +60,7 @@ public class SpecialButtonTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -259,15 +259,15 @@ public class SpecialButtonTest extends javax.swing.JPanel {
        if (regularRadio.isSelected()) sizeVariant="regular";
        else if (smallRadio.isSelected()) sizeVariant="small";
       else if (miniRadio.isSelected()) sizeVariant="mini";
-       
+
        for (Component c:getComponents()) {
            JComponent jc=(JComponent)c;
            jc.putClientProperty("JComponent.sizeVariant", sizeVariant);
        }
-       
+
     }//GEN-LAST:event_sizeVariantPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton bevelButton;
     private javax.swing.JLabel bevelLabel;
@@ -295,5 +295,5 @@ public class SpecialButtonTest extends javax.swing.JPanel {
     private javax.swing.JButton texturedButton;
     private javax.swing.JLabel texturedLabel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

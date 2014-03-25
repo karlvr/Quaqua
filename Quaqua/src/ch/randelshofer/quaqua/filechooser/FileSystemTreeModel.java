@@ -34,9 +34,7 @@ import javax.swing.filechooser.*;
  * @version $Id$
  */
 public class FileSystemTreeModel implements TreeModel {
-
-    private final static boolean DEBUG = false;
-    public final static File COMPUTER = new File("/");
+    protected final static boolean DEBUG = false;
     /**
      * This is used for keeping track of the validation state of a node.
      */
@@ -57,9 +55,9 @@ public class FileSystemTreeModel implements TreeModel {
      */
     private JFileChooser fileChooser;
     /**
-     * This node holds the root of the file system.
+     * This node holds the root of the file tree.
      */
-    private FileSystemTreeModel.RootNode root;
+    protected FileSystemTreeModel.Node root;
     /**
      * This comparator is used to compare the user name of two files.
      * The comparator is able to compare instances of java.io.File and
@@ -104,7 +102,6 @@ public class FileSystemTreeModel implements TreeModel {
      * This is set to true, when we optimize for speed rather than for quality.
      */
     private boolean doItFast;
-
     /**
      * Creates a new instance.
      *
@@ -113,7 +110,13 @@ public class FileSystemTreeModel implements TreeModel {
      */
     public FileSystemTreeModel(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
-        root = new RootNode();
+        File rootFile = new File("/");
+        FileSystemView fsv = fileChooser.getFileSystemView();
+        if (fsv instanceof QuaquaFileSystemView) {
+            QuaquaFileSystemView q = (QuaquaFileSystemView) fsv;
+            rootFile = q.getComputer();
+        }
+        root = new RootNode(rootFile);
 
         fileInfoDispatcher = new SequentialDispatcher();
         //fileInfoDispatcher.setLIFO(true);
@@ -129,6 +132,7 @@ public class FileSystemTreeModel implements TreeModel {
 
     public void dispatchFileUpdater(Runnable r) {
         fileInfoDispatcher.dispatch(r);
+        fileInfoDispatcher.start();
     }
 
     public void dispatchAliasResolution(Runnable r) {
@@ -138,7 +142,7 @@ public class FileSystemTreeModel implements TreeModel {
     /**
      * Removes all children from the root node.
      */
-    public void clear() {
+    private void clear() {
         int[] removedIndices = new int[root.getChildCount()];
         Object[] removedChildren = new Object[removedIndices.length];
         for (int i = 0; i < removedIndices.length; i++) {
@@ -172,7 +176,8 @@ public class FileSystemTreeModel implements TreeModel {
 
     private int getIndexOfChildForFile(FileSystemTreeModel.Node parent, File file) {
         for (int i = 0; i < parent.getChildCount(); i++) {
-            if (((FileSystemTreeModel.Node) parent.getChildAt(i)).getResolvedFile().equals(file)) {
+            FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) parent.getChildAt(i);
+            if (n.getFile().equals(file) || n.getResolvedFile().equals(file)) {
                 return i;
             }
         }
@@ -234,7 +239,11 @@ public class FileSystemTreeModel implements TreeModel {
         fireTreeNodesInserted(this, parent.getPath(), newIndices, new Object[]{newChild});
     }
 
-    public Object getRoot() {
+    /**
+     * Return the primary root node, corresponding to the full file system.
+     */
+
+    public Node getRoot() {
         return root;
     }
 
@@ -277,7 +286,7 @@ public class FileSystemTreeModel implements TreeModel {
         if (UIManager.getBoolean("FileChooser.speed")) {
             isTraversable = isDirectory;
         } else {
-            isTraversable = isDirectory && fileChooser.isTraversable(resolvedFile);
+            isTraversable = fileChooser.isTraversable(resolvedFile);
         }
         // Create node
         Node node;
@@ -317,14 +326,12 @@ public class FileSystemTreeModel implements TreeModel {
         File dir = file;
         boolean exists = false;
         do {
+            dir = fsv.canonicalize(dir);
             exists |= dir.exists();
             if (exists) {
                 list.addFirst(dir);
             }
             if (fsv.isRoot(dir)) {
-                if (fsv.getComputer().equals(dir)) {
-                    list.set(0, fsv.getSystemVolume());
-                }
                 break;
             }
             if (exists) {
@@ -364,12 +371,20 @@ public class FileSystemTreeModel implements TreeModel {
 
             // If the file path is not valid, we may encounter a leaf node.
             // We must not try to add a child to it, therefore we break here.
-            if (!node.getAllowsChildren() || node.isAlias()) {
+            if (!node.getAllowsChildren() /* || node.isAlias() */) {
                 break;
             }
 
             File childFile = (File) list.get(i);
             int index = getIndexOfChildForFile(node, childFile);
+
+            if (index == -1) {
+                File resolvedChildFile = OSXFile.resolve(childFile);
+                if (!resolvedChildFile.equals(childFile)) {
+                    index = getIndexOfChildForFile(node, resolvedChildFile);
+                }
+            }
+
             if (index == -1) {
                 Node newChild = createNode(childFile);
                 insertNodeInto(newChild, node, getInsertionIndexForNode(node, newChild));
@@ -408,7 +423,7 @@ public class FileSystemTreeModel implements TreeModel {
         } while (dir != null);
 
         LinkedList components = new LinkedList();
-        Node node = (Node) getRoot();
+        Node node = getRoot();
         for (int i = 0; i < list.size(); i++) {
             if (node.isLeaf() || node.isAlias()) {
                 break;
@@ -478,10 +493,6 @@ public class FileSystemTreeModel implements TreeModel {
         return isResolveFileLabels;
     }
 
-    public void invalidateCache() {
-        root.invalidateTree();
-    }
-
     /**
      * Invalidates the provided path.
      * This should be used to invalidateChildren the tree model when there are
@@ -513,7 +524,7 @@ public class FileSystemTreeModel implements TreeModel {
     }
 
     /**
-     * Stalls validation of the the provided path.
+     * Stalls validation.
      * This should be used to stop validation of the tree model when it is no
      * longer needed.
      */
@@ -556,7 +567,7 @@ public class FileSystemTreeModel implements TreeModel {
      */
     public void validatePath(TreePath path) {
         if (DEBUG) {
-            System.out.println("AliasFileSystemTreeModel.validatPath " + path);
+            System.out.println("FileSystemTreeModel.validatePath " + path);
         }
         for (int i = 0; i < path.getPathCount(); i++) {
             Node node = (Node) path.getPathComponent(i);
@@ -762,10 +773,35 @@ public class FileSystemTreeModel implements TreeModel {
     }
 
     /**
-     * Returns true, if the file is accepted for selection in the file chooser.
+     * Returns true, if the file may be selected as a valid output selection of the file chooser. (Selection of a
+     * traversable item is a separate concept.)
      */
-    private boolean accept(File f) {
-        return fileChooser.accept(f);
+    private boolean accept(FileInfo info) {
+        File f = info.getFile();
+
+        if (fileChooser.getDialogType() == JFileChooser.SAVE_DIALOG) {
+            return false;
+        }
+
+        if (!fileChooser.accept(f)) {
+            return false;
+        }
+
+        File resolvedFile = info.getResolvedFile();
+
+        if (OSXFile.isVirtualFile(resolvedFile)) {
+            return fileChooser.isFileSelectionEnabled();
+        }
+
+        int type = OSXFile.getFileType(resolvedFile);
+
+        if (type == OSXFile.FILE_TYPE_DIRECTORY) {
+            return fileChooser.isDirectorySelectionEnabled();
+        } else if (type == OSXFile.FILE_TYPE_FILE) {
+            return fileChooser.isFileSelectionEnabled();
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -793,7 +829,7 @@ public class FileSystemTreeModel implements TreeModel {
         /**
          * This is set to true, if infos for the file are not valid.
          */
-        private int infoState = INVALID;
+        protected int infoState = INVALID;
         /**
          * Contains Boolean.TRUE or Boolean.FALSE, if the file has been
          * accepted or rejected by the FileFilter of the JFileChooser.
@@ -877,14 +913,14 @@ public class FileSystemTreeModel implements TreeModel {
         }
 
         /**
-         * Returns false, if the node is not accepted by the file filter
-         * of the JFileChooser.
+         * Returns true, if the file may be selected as a valid output selection of the file chooser. (Selection of a
+         * traversable item is a separate concept.)
          */
         public boolean isAcceptable() {
             if (isAcceptable == null) {
-                isAcceptable = (accept(getFile())) ? Boolean.TRUE : Boolean.FALSE;
+                isAcceptable = (accept(this)) ? Boolean.TRUE : Boolean.FALSE;
             }
-            return isAcceptable.booleanValue();
+            return isAcceptable;
         }
 
         public boolean isHidden() {
@@ -910,19 +946,56 @@ public class FileSystemTreeModel implements TreeModel {
          * Clears cached info
          */
         public void invalidateInfo() {
-            infoState = INVALID;
+
+            if (isMonitoringInfoValidation(file) && infoState != INVALID) {
+                System.out.println("Invaliding info for " + file + (infoState == VALIDATING ? " (validation in progress)" : ""));
+            }
+
+            if (infoState == VALID) {
+                infoState = INVALID;
+            }
             userName = null;
             collationKey = null;
             isAcceptable = null;
         }
 
         /**
+         * Invoke the runnable when validation is complete, either now or later. This method does not block.
+         */
+        public void invokeWhenValid(final Runnable r) {
+            invokeWhenValid(r, 100);
+        }
+
+        protected void invokeWhenValid(final Runnable r, final int counter) {
+            if (counter > 0) {
+                if (infoState == VALID) {
+                    r.run();
+                } else {
+                    if (infoState == INVALID) {
+                        validateInfo();
+                    }
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            invokeWhenValid(r, counter-1);
+                        }
+                    });
+                }
+            }
+        }
+
+        /**
          * Updates values, that may change in a file.
          */
-        public void validateInfo() {
+        public final void validateInfo() {
             if (infoState == INVALID) {
                 infoState = VALIDATING;
-                fileInfoDispatcher.dispatch(new Worker<Boolean>() {
+
+                if (isMonitoringInfoValidation(file)) {
+                    System.out.println("Starting info validation for " + file);
+                }
+
+                dispatchFileUpdater(new Worker<Boolean>() {
 
                     public Boolean construct() {
                         if (!doItFast) {
@@ -948,12 +1021,34 @@ public class FileSystemTreeModel implements TreeModel {
                         // successful, and if we are still part of the tree
                         if (value != null && Boolean.TRUE.equals(value)
                                 && getRoot() == FileSystemTreeModel.this.getRoot()) {
+
+                            if (isMonitoringInfoValidation(file)) {
+                                System.out.println("Change event generated for " + file);
+                            }
+
                             fireTreeNodeChanged(Node.this);
+                        } else {
+
+                            if (isMonitoringInfoValidation(file)) {
+                                System.out.println("No change event generated for " + file);
+                            }
                         }
-                        infoState = VALID;
+                    }
+
+                    @Override
+                    protected void finished() {
+                        validationHasCompleted();
                     }
                 });
             }
+        }
+
+        private void validationHasCompleted() {
+            infoState = VALID;
+        }
+
+        private boolean isMonitoringInfoValidation(File f) {    // for debugging
+            return false; // f.getName().equals("Calculator.app");
         }
 
         /**
@@ -1149,7 +1244,7 @@ public class FileSystemTreeModel implements TreeModel {
         private Runnable validator;
 
         /** Whether the directory is traversable. */
-        private boolean isTraversable=true;
+        private Boolean isTraversable;
 
         private class DirectoryValidator implements Runnable {
 
@@ -1198,7 +1293,7 @@ public class FileSystemTreeModel implements TreeModel {
 
                 // Step 1.1 Fetch fresh files
                 final File[] freshFiles;
-                if (exists) {
+                if (exists && isTraversable()) {
                     freshFiles = getFiles();
                 } else {
                     freshFiles = new File[0];
@@ -1213,7 +1308,7 @@ public class FileSystemTreeModel implements TreeModel {
                 //          - If it is an alias, resolve it
                 //          - Check whether the file is wanted by the file filter
                 //          - Create a fresh node for the file
-                boolean isDirectoriesOnly = fileChooser.getFileSelectionMode() == JFileChooser.DIRECTORIES_ONLY;
+
                 ArrayList freshNodeList = new ArrayList(freshFiles.length);
                 boolean isFileHidingEnabled=fileChooser.isFileHidingEnabled();
                 QuaquaFileSystemView fsv = getFileSystemView();
@@ -1238,21 +1333,32 @@ public class FileSystemTreeModel implements TreeModel {
                             freshIsTraversable = false;
                         } else {
                             freshIsTraversable = fileChooser.isTraversable(resolvedFreshFile);
+                            freshFileType = OSXFile.getFileType(resolvedFreshFile);
+                            freshIsDirectory = freshFileType == OSXFile.FILE_TYPE_DIRECTORY;
                         }
                     } else {
                         freshIsTraversable = fileChooser.isTraversable(freshFile);
                         resolvedFreshFile = freshFile;
                     }
                     boolean freshIsHidden=fsv.isHiddenFile(freshFile);
+
+                    /*
+                      Special case: Network is visible under Computer even if it is hidden under /.
+                    */
+
+                    if (freshIsHidden && freshIsDirectory && resolvedFreshFile.getPath().equals("/Network")) {
+                        freshIsHidden = false;
+                    }
+
                     // Skip the fresh file if it is hidden
-                    if ((!isDirectoriesOnly || freshIsDirectory && freshIsTraversable) && (!isFileHidingEnabled || !freshIsHidden)) {
+                    if (!isFileHidingEnabled || !freshIsHidden) {
 
                         // Note: The following code is redundant with method
                         //       createNode().
                         //       Changes applied to this code may also have to
                         //       be done in the other method.
                         if (freshIsAlias) {
-                            if (freshIsDirectory ) {
+                            if (freshIsDirectory) {
                                 Node n=new AliasDirectoryNode(freshFile, resolvedFreshFile, freshIsHidden);
                                 n.setTraversable(freshIsTraversable);
                                 freshNodeList.add(n);
@@ -1293,7 +1399,11 @@ public class FileSystemTreeModel implements TreeModel {
 
                     public void run() {
                         // Check if we have become obsolete
-                        if (DirectoryValidator.this != validator || getRoot() != FileSystemTreeModel.this.getRoot()) {
+                        if (DirectoryValidator.this != validator) {
+                            return;
+                        }
+
+                        if (getRoot() != FileSystemTreeModel.this.getRoot()) {
                             return;
                         }
 
@@ -1416,7 +1526,7 @@ public class FileSystemTreeModel implements TreeModel {
                         // because the node might have been removed from the
                         // tree while we are updating it.
                         Node nodeRoot = (Node) getRoot();
-                        if (nodeRoot == root) {
+                        if (nodeRoot == getRoot()) {
                             fireTreeNodeChanged(DirectoryNode.this);
                         }
 
@@ -1436,7 +1546,7 @@ public class FileSystemTreeModel implements TreeModel {
                         }*/
 
                         if (DEBUG) {
-                            System.out.println("AliasFileSystemTreeModel validated " + (endTime - startTime) + " " + file);
+                            System.out.println("FileSystemTreeModel validated " + (endTime - startTime) + " " + file);
                         }
 
                         childrenState = VALID;
@@ -1485,6 +1595,12 @@ public class FileSystemTreeModel implements TreeModel {
             isTraversable=newValue;
         }
 
+        @Override
+        public void invalidateInfo() {
+            super.invalidateInfo();
+            isTraversable = null;
+        }
+
         /**
          * Marks this node as invalid.
          * If the node denotes not a directory, nothing happens.
@@ -1492,7 +1608,7 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public void invalidateChildren() {
             if (DEBUG) {
-                System.out.println("AliasFileSystemTreeModel.invalidateChildren " + lazyGetResolvedFile());
+                System.out.println("FileSystemTreeModel.invalidateChildren " + lazyGetResolvedFile());
             }
             childrenState = INVALID;
             validator = null;
@@ -1506,12 +1622,12 @@ public class FileSystemTreeModel implements TreeModel {
         public void lazyInvalidateChildren() {
             if (validator == null && bestBeforeTimeMillis < System.currentTimeMillis()) {
                 if (DEBUG) {
-                    System.out.println("AliasFileSystemTreeModel.lazyInvalidateChildren YES  validator=" + validator + " good for " + (bestBeforeTimeMillis - System.currentTimeMillis()) + " millis " + lazyGetResolvedFile());
+                    System.out.println("FileSystemTreeModel.lazyInvalidateChildren YES  validator=" + validator + " good for " + (bestBeforeTimeMillis - System.currentTimeMillis()) + " millis " + lazyGetResolvedFile());
                 }
                 childrenState = INVALID;
             } else {
                 if (DEBUG) {
-                    System.out.println("AliasFileSystemTreeModel.lazyInvalidateChildren NO  validator=" + validator + " good for " + (bestBeforeTimeMillis - System.currentTimeMillis()) + " millis " + lazyGetResolvedFile());
+                    System.out.println("FileSystemTreeModel.lazyInvalidateChildren NO  validator=" + validator + " good for " + (bestBeforeTimeMillis - System.currentTimeMillis()) + " millis " + lazyGetResolvedFile());
                 }
             }
         }
@@ -1535,10 +1651,43 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public void invalidateTree() {
             invalidateInfo();
+
             if (childrenState == VALID) {
                 invalidateChildren();
-                for (Enumeration i = children(); i.hasMoreElements();) {
-                    ((Node) i.nextElement()).invalidateTree();
+            }
+
+            // invalidateChildren does not discard the nodes, and the nodes can contain stale data
+
+            if (children != null) {
+                for (Object o : children) {
+                    ((Node) o).invalidateTree();
+                }
+            }
+        }
+
+        @Override
+        public void invokeWhenValid(final Runnable r) {
+            super.invokeWhenValid(new Runnable() {
+                public void run() {
+                    invokeWhenChildrenValid(r, 100);
+                }
+            });
+        }
+
+        private void invokeWhenChildrenValid(final Runnable r, final int counter) {
+            if (counter > 0) {
+                if (childrenState == VALID) {
+                    r.run();
+                } else {
+                    if (childrenState == INVALID) {
+                        validateChildren();
+                    }
+                    SwingUtilities.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            invokeWhenChildrenValid(r, counter - 1);
+                        }
+                    });
                 }
             }
         }
@@ -1563,7 +1712,7 @@ public class FileSystemTreeModel implements TreeModel {
                 // We must check for root, because the node might have been
                 // removed while we were updating it.
                 Node nodeRoot = (Node) getRoot();
-                if (nodeRoot == root) {
+                if (nodeRoot == getRoot()) {
                     fireTreeNodeChanged(DirectoryNode.this);
                 }
                 bestBeforeTimeMillis = System.currentTimeMillis() + getDirectoryTTL();
@@ -1647,6 +1796,11 @@ public class FileSystemTreeModel implements TreeModel {
 
         @Override
         public boolean isLeaf() {
+            if (isTraversable == null) {
+                File resolvedFile = getResolvedFile();
+                isTraversable = fileChooser.isTraversable(resolvedFile);
+            }
+
             return !isTraversable;
         }
 
@@ -1673,11 +1827,14 @@ public class FileSystemTreeModel implements TreeModel {
 
         protected File[] getFiles() {
             if (DEBUG) {
-                System.out.println("AliasFileSystemTreeModel getFiles " + lazyGetResolvedFile());
+                System.out.println("FileSystemTreeModel getFiles " + lazyGetResolvedFile());
             }
             File[] files = getFileSystemView().getFiles(
                     lazyGetResolvedFile(),
                     fileChooser.isFileHidingEnabled());
+            if (DEBUG) {
+                System.out.println("FileSystemTreeModel getFiles " + lazyGetResolvedFile() + " returns " + files.length);
+            }
             return files;
         }
 
@@ -1688,8 +1845,8 @@ public class FileSystemTreeModel implements TreeModel {
 
     private class RootNode extends DirectoryNode {
 
-        public RootNode() {
-            super(COMPUTER, false);
+        public RootNode(File rootFile) {
+            super(rootFile, false);
         }
 
         @Override
@@ -1718,7 +1875,7 @@ public class FileSystemTreeModel implements TreeModel {
             File[] files = getFileSystemView().getRoots();
             for (int i = 0; i < files.length; i++) {
                 if (DEBUG) {
-                    System.out.println("AliasFileSystemTreeModel root:" + files[i]);
+                    System.out.println("FileSystemTreeModel root:" + files[i]);
                 }
                 //if (accept(files[i])) {
                 list.add(files[i]);
@@ -1730,7 +1887,7 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public void validateChildren() {
             if (DEBUG) {
-                System.out.println("AliasFileSystemTreeModel.validateChildren of ROOT " + (childrenState == INVALID) + " " + lazyGetResolvedFile());
+                System.out.println("FileSystemTreeModel.validateChildren of ROOT " + (childrenState == INVALID) + " " + lazyGetResolvedFile());
             }
             super.validateChildren();
         }
@@ -1742,10 +1899,7 @@ public class FileSystemTreeModel implements TreeModel {
         @Override
         public Icon getIcon() {
             validateInfo();
-            if (icon == null) {
-                return UIManager.getIcon("FileView.computerIcon");
-            }
-            return icon;
+            return OSXFile.getComputerIcon();
         }
     }
 
@@ -1842,7 +1996,7 @@ public class FileSystemTreeModel implements TreeModel {
 
                     @Override
                     public void done(File value) {
-                        resolvedFile = (File) value;
+                        resolvedFile = value;
                     }
 
                     @Override

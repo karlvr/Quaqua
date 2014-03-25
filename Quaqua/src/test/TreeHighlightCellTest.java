@@ -1,5 +1,5 @@
 /*
- * @(#)TreeTest.java 
+ * @(#)TreeTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,17 +11,17 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.Color;
 import java.awt.Component;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
+
 /**
  * TreeTest.
  *
  * @author  Werner Randelshofer
- * @version $Id: TreeTest.java 94 2009-06-24 13:54:21Z wrandelshofer $
+ * @version $Id$
  */
 public class TreeHighlightCellTest extends javax.swing.JPanel {
 
@@ -35,13 +35,13 @@ public class TreeHighlightCellTest extends javax.swing.JPanel {
             c.setBackground(isSelected ? Color.RED.darker() : Color.RED);
             return c;
         }
-        
+
     }
-    
+
     /** Creates new form. */
     public TreeHighlightCellTest() {
         initComponents();
-        
+
         tree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree3.putClientProperty("Quaqua.Tree.style","striped");
 
@@ -51,7 +51,7 @@ public class TreeHighlightCellTest extends javax.swing.JPanel {
     public static void main(String args[]) {
 System.out.println(System.getProperty("java.library.path"));
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -62,7 +62,7 @@ System.out.println(System.getProperty("java.library.path"));
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -91,13 +91,13 @@ System.out.println(System.getProperty("java.library.path"));
 
         add(scrollPane3);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane scrollPane1;
     private javax.swing.JScrollPane scrollPane3;
     private javax.swing.JTree tree1;
     private javax.swing.JTree tree3;
     // End of variables declaration//GEN-END:variables
-    
+
 }

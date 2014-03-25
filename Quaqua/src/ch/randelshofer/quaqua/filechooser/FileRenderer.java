@@ -1,5 +1,5 @@
 /*
- * @(#)FileRenderer.java 
+ * @(#)FileRenderer.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -69,7 +69,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         this.selectedExpandedIcon = selectedExpandedIcon;
         this.focusedSelectedExpandingIcon = focusedSelectedExpandingIcon;
         this.focusedSelectedExpandedIcon = focusedSelectedExpandedIcon;
-        
+
         emptyIcon = new EmptyIcon(expandedIcon.getIconWidth(), expandedIcon.getIconHeight());
 
         labelForeground = UIManager.getColor("Label.foreground");
@@ -128,8 +128,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
 
         FileInfo info = (FileInfo) value;
 
-        isGrayed = info.isHidden()
-                || !info.isAcceptable();
+        isGrayed = !info.isAcceptable() && !info.isTraversable();
 
         labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
         labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
@@ -138,7 +137,7 @@ public class FileRenderer extends JPanel implements ListCellRenderer {
         if (this.isSelected) {
             if (list.hasFocus() && QuaquaUtilities.isOnActiveWindow(list)) {
                 setBackground(UIManager.getColor("Browser.selectionBackground"));
-                setForeground((isGrayed) ? labelDisabledForeground :UIManager.getColor("Browser.selectionForeground"));
+                setForeground(UIManager.getColor("Browser.selectionForeground"));
             } else {
                 setBackground(UIManager.getColor("Browser.inactiveSelectionBackground"));
                 setForeground(UIManager.getColor("Browser.inactiveSelectionForeground"));

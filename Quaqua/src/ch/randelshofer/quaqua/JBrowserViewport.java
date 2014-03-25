@@ -1,5 +1,5 @@
 /*
- * @(#)JBrowserViewport.java  
+ * @(#)JBrowserViewport.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -44,7 +44,7 @@ public class JBrowserViewport extends JViewport {
         public boolean isShowing() {
             return true;
         }
-        
+
         /** FIXME - Apparently we need to override paintChildren in order
          *          to paint the scrollbar correctly. This shouldn't be
          *          necessary.
@@ -58,10 +58,10 @@ public class JBrowserViewport extends JViewport {
             }
         }
     };
-    
+
     /** Shared cell renderer pane. */
     private static CellRendererPane cellRendererPane = new CellRendererPane();
-    
+
     @Override
     public void paintComponent(Graphics g) {
         if (getView() instanceof JBrowser) {
@@ -69,19 +69,19 @@ public class JBrowserViewport extends JViewport {
             if (browser != null) {
                 Dimension vs = getSize();
                 Dimension bs = browser.getSize();
-                
+
                 Dimension ss = scrollBarRenderer.getPreferredSize();
-                
+
                 // Paint scroll bar tracks at the right to fill the viewport
                 if (bs.width < vs.width) {
                     int fixedCellWidth = browser.getFixedCellWidth();
-                    
+
                     g.setColor(browser.getBackground());
                     g.fillRect(bs.width, 0, vs.width - bs.width, vs.height);
-                    
+
                     scrollBarRenderer.setSize(ss.width,vs.height);
                     scrollBarRenderer.doLayout();
-                    
+
                     for (int x = browser.getWidth() + fixedCellWidth; x < vs.width; x += fixedCellWidth + ss.width) {
                         cellRendererPane.paintComponent(g, scrollBarRenderer, this, x, 0, ss.width, vs.height, false);
                     }

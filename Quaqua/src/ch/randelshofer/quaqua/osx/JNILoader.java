@@ -1,20 +1,14 @@
 /*
  * @(#)JNILoader.java  1.0  2013-03-21
- * 
+ *
  * Copyright (c) 2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
- * You may not use, copy or modify this file, except in compliance with the 
- * license agreement you entered into with Werner Randelshofer. 
+ *
+ * You may not use, copy or modify this file, except in compliance with the
+ * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
 package ch.randelshofer.quaqua.osx;
-
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 
 /**
  * {@code JNILoader}.

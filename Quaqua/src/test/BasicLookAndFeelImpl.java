@@ -19,7 +19,7 @@ import javax.swing.plaf.basic.BasicLookAndFeel;
  *
  * Note: This class must be Java 1.4 compatible.
  *
- * @author Werner Randelshofer, 
+ * @author Werner Randelshofer
  * @version 1.0 2008-11-17 Created.
  */
 public class BasicLookAndFeelImpl extends BasicLookAndFeel {

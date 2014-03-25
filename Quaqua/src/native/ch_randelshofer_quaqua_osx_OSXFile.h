@@ -37,34 +37,10 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveA
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    nativeResolveAliasType
- * Signature: (Ljava/lang/String;Z)I
- */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType__Ljava_lang_String_2Z
-  (JNIEnv *, jclass, jstring, jboolean);
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    nativeToSerializedAlias
- * Signature: (Ljava/lang/String;)[B
- */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSerializedAlias
-  (JNIEnv *, jclass, jstring);
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeResolveAlias
  * Signature: ([BZ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAlias___3BZ
-  (JNIEnv *, jclass, jbyteArray, jboolean);
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    nativeResolveAliasType
- * Signature: ([BZ)I
- */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType___3BZ
   (JNIEnv *, jclass, jbyteArray, jboolean);
 
 /*
@@ -114,6 +90,22 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetBasicIte
  */
 JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDisplayName
   (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetLastUsedDate
+ * Signature: (Ljava/lang/String;)Z
+ */
+JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLastUsedDate
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeExecuteSavedSearch
+ * Signature: (Ljava/lang/String)[Ljava/lang/String
+ */
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeExecuteSavedSearch
+(JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile

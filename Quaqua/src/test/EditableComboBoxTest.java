@@ -1,5 +1,5 @@
 /*
- * @(#)EditableComboBoxTest.java 
+ * @(#)EditableComboBoxTest.java
  *
  * Copyright (c) 2005-2009 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,10 +11,10 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * EditableComboBoxTest.
  *
@@ -24,24 +24,24 @@ import javax.swing.border.*;
 public class EditableComboBoxTest extends javax.swing.JPanel {
     private static class ColorIcon implements Icon {
         private Color color = Color.white;
-        
+
         public void setColor(Color newValue) {
             color = newValue;
         }
-        
+
         public Color getColor() {
             return color;
         }
-        
-        
+
+
         public int getIconHeight() {
             return 12;
         }
-        
+
         public int getIconWidth() {
             return 24;
         }
-        
+
         public void paintIcon(Component c, Graphics g, int x, int y) {
             if (color != null) {
                 g.setColor(color);
@@ -50,9 +50,9 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
                 g.drawRect(x, y, getIconWidth() - 1, getIconHeight() - 1);
             }
         }
-        
+
     }
-    
+
     private static class ColorComboCellRenderer extends DefaultListCellRenderer {
         private ColorIcon colorIcon = new ColorIcon();
         public ColorComboCellRenderer() {
@@ -87,19 +87,19 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
              **/
         }
     }
-    
-    
-    
+
+
+
     /** Creates new form. */
     public EditableComboBoxTest() {
         initComponents();
-        
+
         String[] items = new String[100];
         for (int i=0; i < items.length; i++) {
             items[i] = "Item "+(i+1);
         }
         jComboBox14.setModel(new javax.swing.DefaultComboBoxModel(items));
-        
+
         tableCellBox.putClientProperty("JComboBox.isTableCellEditor",Boolean.TRUE);
 
         for (JComponent c:new JComponent[]{smallBox1,smallBox2,smallBox3,smallLabel}) {
@@ -122,11 +122,11 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
             }
         } catch (Exception ex) {
             // bail
-        }        
+        }
     }
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -137,7 +137,7 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -323,12 +323,12 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(0, 20, 0, 0);
         add(disabledLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void comboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxActionPerformed
         //System.out.println("EditableComboBoxTest.comboBoxActionPerformed:"+evt);
     }//GEN-LAST:event_comboBoxActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JComboBox box1;
     private javax.swing.JLabel disabledLabel;
@@ -352,5 +352,5 @@ public class EditableComboBoxTest extends javax.swing.JPanel {
     private javax.swing.JComboBox tableCellBox;
     private javax.swing.JLabel tableCellLabel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

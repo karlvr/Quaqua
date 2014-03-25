@@ -1,5 +1,5 @@
 /*
- * @(#)ToggleButtonTest.java  
+ * @(#)ToggleButtonTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -10,7 +10,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.util.LinkedList;
 import javax.swing.*;
@@ -66,7 +65,7 @@ capsuleRadio.setVisible(false);
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -366,7 +365,7 @@ capsuleRadio.setVisible(false);
 
     private void typeRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeRadioPerformed
        String type=typeGroup.getSelection().getActionCommand();
-       
+
         // Segmented properties
         LinkedList<JComponent> todo = new LinkedList<JComponent>();
         todo.add(this);

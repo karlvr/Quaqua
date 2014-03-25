@@ -1,5 +1,5 @@
 /*
- * @(#)FileTransferHandler.java 
+ * @(#)FileTransferHandler.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -149,17 +149,17 @@ public class FileTransferHandler implements DropTargetListener {
                                 && fileChooser.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
                             // The user dropped a directory on a file chooser which
                             // only selects files
-                            // -> Make the directory the root of the file chooser.
+                            // -> Make the directory the current directory of the file chooser.
 
-                            ((SubtreeFileChooserUI) fileChooser.getUI()).setRootDirectory(dir);
+                            ((SubtreeFileChooserUI) fileChooser.getUI()).selectDirectory(dir);
                         } else {
-                            // The user dropped a directory on a file chooser which
+                            // The user dropped a file or directory on a file chooser which
                             // selects files or directories (or both)
-                            // -> Make the parent directory the root of the file chooser.
+                            // -> Make the parent directory the current directory of the file chooser.
 
                             dir = dir.getParentFile();
                             if (dir != null) {
-                                ((SubtreeFileChooserUI) fileChooser.getUI()).setRootDirectory(dir);
+                                ((SubtreeFileChooserUI) fileChooser.getUI()).selectDirectory(dir);
                             }
                             fileChooser.setSelectedFiles(fileArray);
                         }

@@ -35,7 +35,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
     private MouseListener popupListener;
     //private HierarchyListener hierarchyListener;
     /**
-     * Preferred spacing between text fiels and other components.
+     * Preferred spacing between text fields and other components.
      * /
      * private final static Insets regularSpacing = new Insets(10,10,10,10);
      * private final static Insets smallSpacing = new Insets(8,8,8,8);
@@ -53,8 +53,13 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
     @Override
     public void installUI(JComponent c) {
         super.installUI(c);
-        QuaquaUtilities.installProperty(c, "opaque", UIManager.get(getPropertyPrefix() + ".opaque"));
-    // c.setOpaque(QuaquaManager.getBoolean(getPropertyPrefix()+".opaque"));
+
+        {
+            Boolean isOpaque = (Boolean) UIManager.get(getPropertyPrefix() + ".opaque");
+            if (isOpaque != null) {
+                QuaquaUtilities.installProperty(c, "opaque", isOpaque);
+            }
+        }
     }
 
     @Override
@@ -296,7 +301,7 @@ public class QuaquaTextFieldUI extends BasicTextFieldUI implements VisuallyLayou
         }
 
         // Fix: The preferred width is always two pixels too small
-        // on a Mac. 
+        // on a Mac.
         d.width += 2;
 
         return d;

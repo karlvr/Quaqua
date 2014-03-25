@@ -10,15 +10,14 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
+import ch.randelshofer.quaqua.util.Methods;
+
 import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 
 /**
  * TabbedPaneTest.
@@ -58,7 +57,7 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -295,7 +294,7 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
     private void sizeVariantChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sizeVariantChanged
         String cmd = sizeVariantGroup.getSelection().getActionCommand();
         tabbedPane1.putClientProperty("JComponent.sizeVariant", cmd);
-        // tabbedPane1.setUI(tabbedPane1.getUI()); // force ui update 
+        // tabbedPane1.setUI(tabbedPane1.getUI()); // force ui update
     }//GEN-LAST:event_sizeVariantChanged
 
     private void enabledChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_enabledChanged
@@ -335,9 +334,9 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
            btn.putClientProperty("JButton.buttonType", "square");
            btn.setOpaque(false);
             p.add(btn);
-            Methods.invokeIfExists(tabbedPane1,"setTabComponentAt",new Class[]{Integer.TYPE,Component.class},new Object[]{i,p});
+            Methods.invokeIfExists(tabbedPane1, "setTabComponentAt", new Class[]{Integer.TYPE, Component.class}, new Object[]{i, p});
             }
-            
+
         } else {
             for (int i=0,n=tabbedPane1.getTabCount();i<n;i++) {
             Methods.invokeIfExists(tabbedPane1,"setTabComponentAt",new Class[]{Integer.TYPE,Component.class},new Object[]{i,null});
@@ -351,10 +350,10 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
         int newCount=Integer.valueOf(cmd);
         tabbedPane1.removeAll();
         for (int i=0;i<newCount;i++) {
-                  
+
             JPanel p = new JPanel();
             tabbedPane1.add(p, strings[i]);
-       
+
 
         }
     }//GEN-LAST:event_tabCountChanged

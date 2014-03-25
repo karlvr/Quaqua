@@ -10,7 +10,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -73,7 +72,7 @@ public class PushButtonTest extends javax.swing.JPanel {
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

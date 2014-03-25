@@ -1,5 +1,5 @@
 /*
- * @(#)LayoutAHIG16_17Test.java  
+ * @(#)LayoutAHIG16_17Test.java
  *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,11 +11,8 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel;
 import java.awt.Dimension;
 import javax.swing.*;
-import org.jdesktop.layout.*;
 
 /**
  * LayoutAHIG16_17Test: "Grouping with White Space".
@@ -42,12 +39,13 @@ public class LayoutAHIG16_17Test extends javax.swing.JPanel {
         UIManager.put("Quaqua.Debug.showVisualBounds", true);
          */
     }
-    
+
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(new Quaqua15PantherLookAndFeel());
+            Class c = Class.forName("ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
+            UIManager.setLookAndFeel((LookAndFeel) c.newInstance());
             // UIManager.put("Quaqua.Debug.showVisualBounds", true);
-        } catch (UnsupportedLookAndFeelException ex) {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         JFrame f = new JFrame("Imagetype Changer Preferences");
@@ -56,8 +54,8 @@ public class LayoutAHIG16_17Test extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -238,8 +236,8 @@ public class LayoutAHIG16_17Test extends javax.swing.JPanel {
 
         add(jPanel1, java.awt.BorderLayout.SOUTH);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel backgroundColorsLabel;
     private javax.swing.JPanel backgroundColorsPanel;
@@ -264,5 +262,5 @@ public class LayoutAHIG16_17Test extends javax.swing.JPanel {
     private javax.swing.JButton windowColorWellButton;
     private javax.swing.JLabel windowLabel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

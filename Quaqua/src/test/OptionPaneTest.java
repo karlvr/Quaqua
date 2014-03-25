@@ -1,5 +1,5 @@
 /*
- * @(#)OptionPaneTest.java  
+ * @(#)OptionPaneTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,7 +11,6 @@
 
 package test;
 
-import ch.randelshofer.quaqua.QuaquaUtilities;
 import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -24,7 +23,7 @@ import javax.swing.table.DefaultTableModel;
  * @version $Id$
  */
 public class OptionPaneTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public OptionPaneTest() {
         initComponents();
@@ -38,7 +37,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         }
         return null;
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -225,7 +224,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
             }
         }
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void showJLabelsAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showJLabelsAlert
         JLabel l1 = new JLabel("The first JLabel is bold");
         l1.setFont(l1.getFont().deriveFont(Font.BOLD));
@@ -234,7 +233,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         JLabel[] labels = { l1, l2 };
         JOptionPane.showMessageDialog(this, labels);
     }//GEN-LAST:event_showJLabelsAlert
-    
+
     private void longMessageDialogButtonPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_longMessageDialogButtonPerformed
         JOptionPane.showMessageDialog(this,
                 "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. " +
@@ -251,19 +250,19 @@ public class OptionPaneTest extends javax.swing.JPanel {
                 "augue a diam. Fusce aliquet vulputate nisi."
                 );
     }//GEN-LAST:event_longMessageDialogButtonPerformed
-    
+
     private void messageDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_messageDialog
         JOptionPane.showMessageDialog(this, "You have got a message.");
     }//GEN-LAST:event_messageDialog
-    
+
     private void inputDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputDialog
         System.out.println("user entered "+JOptionPane.showInputDialog(this, "Enter your name."));
     }//GEN-LAST:event_inputDialog
-    
+
     private void confirmDialog(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmDialog
         analyzeOption(JOptionPane.showConfirmDialog(this, "Do you want to confirm this dialog?"));
     }//GEN-LAST:event_confirmDialog
-    
+
     private void reviewChangesAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewChangesAlert
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
@@ -287,9 +286,9 @@ public class OptionPaneTest extends javax.swing.JPanel {
         JDialog dialog = pane.createDialog(this, "On this alert, \"Review Changes\" should be the default action.");
         dialog.setVisible(true);
         analyzeValue(pane.getValue());
-        
+
     }//GEN-LAST:event_reviewChangesAlert
-    
+
     private void saveChangesAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveChangesAlert
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
@@ -314,10 +313,10 @@ public class OptionPaneTest extends javax.swing.JPanel {
         JDialog dialog = pane.createDialog(this, "On this alert, \"Save\" should be the default action.");
         dialog.setVisible(true);
         analyzeValue(pane.getValue());
-        
-        
+
+
     }//GEN-LAST:event_saveChangesAlert
-    
+
     private void questionAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_questionAlert
         // Example taken from
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#41765
@@ -344,7 +343,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
             analyzeValue(pane.getInputValue());
         }
     }//GEN-LAST:event_questionAlert
-    
+
     private void errorAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_errorAlert
         // Example taken from
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#35722
@@ -368,13 +367,13 @@ public class OptionPaneTest extends javax.swing.JPanel {
         JDialog dialog = pane.createDialog(this, "Error 87 - MetalEdit");
         dialog.setVisible(true);
         analyzeValue(pane.getValue());
-        
+
     }//GEN-LAST:event_errorAlert
-    
+
     private void warningAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_warningAlert
         // Example taken from
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#43221
-        
+
         JOptionPane pane = new JOptionPane(
                 "<html>"+
         /*
@@ -395,13 +394,13 @@ public class OptionPaneTest extends javax.swing.JPanel {
         JDialog dialog = pane.createDialog(this, "Warning without default button");
         dialog.setVisible(true);
         analyzeValue(pane.getValue());
-        
+
     }//GEN-LAST:event_warningAlert
-    
+
     private void infoAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_infoAlert
         // Example taken from
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#40758
-        
+
         JOptionPane.showMessageDialog(this,
                 "<html>"+
         /*
@@ -449,7 +448,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
     d.setVisible (true);
 
     }//GEN-LAST:event_showJTableAlert
-    
+
     private void analyzeOption(int option) {
         switch (option) {
             case JOptionPane.CANCEL_OPTION:
@@ -473,7 +472,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
     private void analyzeValue(Object value) {
         System.out.println("user chose "+value);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel ahigAlertsLabel;
     private javax.swing.JPanel ahigAlertsPanel;
@@ -496,5 +495,5 @@ public class OptionPaneTest extends javax.swing.JPanel {
     private javax.swing.JButton saveChangesAlertButton;
     private javax.swing.JButton warningAlertButton;
     // End of variables declaration//GEN-END:variables
-    
+
 }

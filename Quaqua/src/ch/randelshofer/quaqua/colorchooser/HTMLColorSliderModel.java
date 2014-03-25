@@ -11,7 +11,6 @@
 
 package ch.randelshofer.quaqua.colorchooser;
 
-import javax.swing.*;
 /**
  * ColorSliderModel for the HTML color model (red, green, blue, restricted
  * to values considered as web-save).
@@ -28,7 +27,7 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
      */
     public HTMLColorSliderModel() {
     }
-    
+
     public int getRGB() {
         return getRGB(components[0].getValue(), components[1].getValue(), components[2].getValue());
     }
@@ -50,7 +49,7 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
             return super.getRGB(r, g, b);
         }
     }
-    
+
     public void setRGB(int rgb) {
         if (isWebSaveOnly) {
             components[0].setValue((Math.round((rgb & 0xff0000) / 51f) * 51) >> 16);
@@ -60,18 +59,18 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
             super.setRGB(rgb);
         }
     }
-    
+
     public int toRGB(int[] values) {
         if (isWebSaveOnly) {
-            return 0xff000000 
-            | (Math.round(values[0] / 51f) * 51) << 16 
-            | (Math.round(values[1] / 51f) * 51) << 8 
+            return 0xff000000
+            | (Math.round(values[0] / 51f) * 51) << 16
+            | (Math.round(values[1] / 51f) * 51) << 8
             | (Math.round(values[2] / 51f) * 51);
         } else {
             return super.toRGB(values);
         }
     }
-    
+
     public void setWebSaveOnly(boolean b) {
         isWebSaveOnly = b;
         if (b) {
@@ -82,7 +81,7 @@ public class HTMLColorSliderModel extends RGBColorSliderModel {
     public boolean isWebSaveOnly() {
         return isWebSaveOnly;
     }
-    
+
     public static boolean isWebSave(int rgb) {
         return (rgb & 0xffffff) == (toWebSave(rgb) & 0xffffff);
     }

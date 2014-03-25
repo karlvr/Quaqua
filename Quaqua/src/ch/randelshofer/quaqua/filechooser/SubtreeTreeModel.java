@@ -1,5 +1,5 @@
 /*
- * @(#)SubtreeTreeModel.java 
+ * @(#)SubtreeTreeModel.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -17,7 +17,7 @@ import javax.swing.tree.*;
 
 /**
  * SubtreeTreeModel.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -36,6 +36,10 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
         this.subtreeRoot = target.getRoot();
         this.rootPath = new Object[]{subtreeRoot};
         target.addTreeModelListener(this);
+    }
+
+    public TreeModel getTargetModel() {
+        return target;
     }
 
     public void setPathToRoot(TreePath newValue) {
@@ -108,7 +112,6 @@ public class SubtreeTreeModel implements TreeModel, TreeModelListener {
     public void valueForPathChanged(TreePath path, Object newValue) {
         target.valueForPathChanged(toFullPath(path), newValue);
     }
-
     //
     //  Events
     //

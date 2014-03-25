@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserUI.java  
+ * @(#)QuaquaLeopardFileChooserUI.java
  *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
@@ -63,7 +63,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
     ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
-    private final static File computer = FileSystemTreeModel.COMPUTER;
+    private final static File unixRoot = new File("/");
     private SidebarTreeModel sidebarTreeModel;
     /**
      * This listener is used to determine whether the JFileChooser is showing.
@@ -111,7 +111,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                     file = new File(System.getProperty("user.home") + "/Desktop");
                     break;
                 case 'c':
-                    file = new File("/");
+                    file = new File("/Volumes");
                     break;
                 case 'h':
                     file = new File(System.getProperty("user.home"));
@@ -972,44 +972,51 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
     private void updateApproveButtonState() {
         JFileChooser fc = getFileChooser();
-
         if (fc.getControlButtonsAreShown()) {
-            File[] files = getSelectedFiles();
-
-            boolean isEnabled = true;
-            boolean isSaveDialog = fc.getDialogType() == JFileChooser.SAVE_DIALOG;
-            boolean isFileSelected = false;
-            boolean isDirectorySelected = false;
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].exists()) {
-                    if (files[i].isDirectory() && fc.isTraversable(files[i])) {
-                        isDirectorySelected = true;
-                    } else {
-                        isFileSelected = true;
-                    }
-                    isEnabled &= isSaveDialog || fc.accept(files[i]);
-                    if (!isEnabled) {
-                        System.err.println("ACCEPT? " + fc.accept(files[i]) + " " + files[i]);
-                    }
-                }
-            }
-
-            switch (fc.getFileSelectionMode()) {
-                case JFileChooser.FILES_ONLY:
-                    isEnabled &= isFileSelected || isFileNameFieldVisible() && isFileNameFieldValid();
-                    break;
-                case JFileChooser.DIRECTORIES_ONLY:
-                    // Note: in the following expression we must not check
-                    // whether isDirectorySelected is true, because a
-                    // the file chooser always shows a directory of some kind
-                    // in its view.
-                    isEnabled &= /*isDirectorySelected &&*/ !isFileSelected;
-                    break;
-                case JFileChooser.FILES_AND_DIRECTORIES:
-                    isEnabled &= true;
-                    break;
-            }
+            boolean isEnabled = computeApproveButtonEnabled();
             setApproveButtonEnabled(isEnabled);
+        }
+    }
+
+    private boolean computeApproveButtonEnabled() {
+
+        JFileChooser fc = getFileChooser();
+        if (fc.getDialogType() == JFileChooser.SAVE_DIALOG) {
+            File dir = fc.getCurrentDirectory();
+            return dir.isDirectory() && isFileNameFieldValid(); // could test for directory being writable
+        }
+
+        if (isFileNameFieldVisible() && isFileNameFieldValid() && fc.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
+            return true;
+        }
+
+        File[] files = getSelectedFiles();
+        if (files.length == 0) {
+            return fc.isDirectorySelectionEnabled() && isAcceptable(fc.getCurrentDirectory());
+        }
+
+        for (File f : files) {
+            if (!isAcceptable(f)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isAcceptable(File f)
+    {
+        if (f == null) {
+            return false;
+        }
+
+        TreePath path = model.toPath(f, null);
+        Object pc = path.getLastPathComponent();
+        if (pc instanceof FileInfo) {
+            FileInfo info = (FileInfo) pc;
+            return info.isAcceptable();
+        } else {
+            return false;
         }
     }
 
@@ -1107,21 +1114,22 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
         // XXX - This code occurs two times in this class - move it into a method
         if (!subtreeModel.getPathToRoot().isDescendant(dirPath)) {
-            FileInfo sidebarFileInfo = null;
+            File sidebarResolvedFile = null;
             TreePath sidebarSelectionPath = null;
             for (Enumeration i = ((DefaultMutableTreeNode) sidebarTree.getModel().getRoot()).preorderEnumeration(); i.hasMoreElements();) {
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) i.nextElement();
-                if (node instanceof FileInfo) {
-                    FileInfo info = (FileInfo) node;
-                    if (info.getResolvedFile() != null && info.getResolvedFile().equals(dir)) {
-                        sidebarFileInfo = info;
+                if (node instanceof SidebarTreeFileNode) {
+                    SidebarTreeFileNode info = (SidebarTreeFileNode) node;
+                    File f = info.getResolvedFile();
+                    if (f != null && f.equals(dir)) {
+                        sidebarResolvedFile = f;
                         sidebarSelectionPath = new TreePath(node.getPath());
                         break;
                     }
                 }
             }
-            if (sidebarFileInfo != null) {
-                TreePath sidebarPath = model.toPath(sidebarFileInfo.getResolvedFile(), selectionPath);
+            if (sidebarResolvedFile != null) {
+                TreePath sidebarPath = model.toPath(sidebarResolvedFile, selectionPath);
                 subtreeModel.setPathToRoot(sidebarPath);
                 sidebarTree.setSelectionPath(sidebarSelectionPath);
             } else {
@@ -1375,6 +1383,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         }
     }
 
+    public void selectDirectory(File file) {
+        setRootDirectory(file);
+    }
+
     /** Sets the root directory of the subtree. */
     public void setRootDirectory(File file) {
         if (file != null) {
@@ -1487,8 +1499,8 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             super.getTreeCellRendererComponent(tree, value, isSelected,
                     isExpanded, isLeaf, row, false);
 
-            if (value != null && value instanceof FileInfo) {
-                FileInfo info = (FileInfo) value;
+            if (value != null && value instanceof SidebarTreeFileNode) {
+                SidebarTreeFileNode info = (SidebarTreeFileNode) value;
                 setText(info.getUserName());
 
                 if (isSpecialFolder(info)) {
@@ -1502,18 +1514,18 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
         /**
          * Gets the special icon for the folder.
-         * 
+         *
          * @param info The {@link FileInfo}.
          * @return The icon.
          **/
-        private Icon getSpecialFolderIcon(FileInfo info) {
+        private Icon getSpecialFolderIcon(SidebarTreeFileNode info) {
             // BEGIN FIX QUAQUA-148 "NPE when volume is not mounted"
-            File file = info.getFile();
+            File file = info.getResolvedFile();
             if (file == null) {
                 return UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
             }
-            // END FIX QUAQUA-148 
-            
+            // END FIX QUAQUA-148
+
             // Load the icon from the UIDefaults table
             Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
 
@@ -1528,17 +1540,17 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         /**
          * Gets whether the the {@link FileInfo} represents a "special" folder - a folder which
          * is visually different in the side bar than in the browser view of a file chooser.
-         * 
+         *
          * @param info The {@link FileInfo}.
-         * @return <code>true</code> if the OS is Mac OS X and the 
+         * @return <code>true</code> if the OS is Mac OS X and the
          */
-        private boolean isSpecialFolder(FileInfo info) {
+        private boolean isSpecialFolder(SidebarTreeFileNode info) {
             // Only allow this for Mac OS X as directory structures are different on other OSs.
             if (!QuaquaManager.isOSX()) {
                 return false;
             }
 
-            File file = info.getFile();
+            File file = info.getResolvedFile();
             // Only directories can have special icons.
             if (file == null || file.isFile()) {
                 return false;
@@ -1554,11 +1566,11 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                             || name.equals("Library") || name.equals("Movies") //
                             || name.equals("Music") || name.equals("Pictures") //
                             || name.equals("Public") || name.equals("Sites");
-                } else if (parentFile.equals(computer.getAbsolutePath())) {
+                } else if (parentFile.equals(unixRoot)) {
                     // Look for computer's special folders
                     String name = file.getName();
                     return name.equals("Applications") || name.equals("Library");
-                } else if (parentFile.equals(new File(computer, "Applications").getAbsolutePath())) {
+                } else if (parentFile.equals(new File(unixRoot, "Applications").getAbsolutePath())) {
                     // Look for Utility folder in the /Applications folder
                     return file.getName().equals("Utilities");
                 }
@@ -2086,7 +2098,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                     sidebarTreeModel.lazyValidate();
                 }
             }
-            // We update the approve button state here, because the approve 
+            // We update the approve button state here, because the approve
             // button can only be made the default button, if it has a root pane
             // ancestor.
             updateApproveButtonState();
@@ -2217,9 +2229,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             }
 
             if (sidebarTree != null && sidebarTree.getSelectionPath() != null) {
-                if (sidebarTree.getSelectionPath().getLastPathComponent() instanceof FileInfo) {
-                    FileInfo info = (FileInfo) sidebarTree.getSelectionPath().getLastPathComponent();
-                    File file = info.lazyGetResolvedFile();
+                if (sidebarTree.getSelectionPath().getLastPathComponent() instanceof SidebarTreeFileNode) {
+                    SidebarTreeFileNode info = (SidebarTreeFileNode) sidebarTree.getSelectionPath().getLastPathComponent();
+                    File file = info.getResolvedFile();
                     if (file == null) {
                         // The file became unavailable
 

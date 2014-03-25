@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaListUI.java  
+ * @(#)QuaquaListUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -23,7 +23,7 @@ import java.lang.reflect.*;
 
 /**
  * QuaquaListUI for Java 1.4.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -199,7 +199,7 @@ public class QuaquaListUI extends BasicListUI {
     public void paint(Graphics g, JComponent c) {
         paintStripes(g, c);
 
-        boolean isFocused = QuaquaUtilities.isFocused(c);
+        boolean isFocused = isComboPopup || QuaquaUtilities.isFocused(c);
         Object value = c.getClientProperty("Quaqua.List.style");
         isComboPopup = value != null && value.equals("comboPopup");
         Color selectionBackground = UIManager.getColor(isComboPopup ? "ComboBox.selectionBackground" : "List.selectionBackground");
@@ -291,180 +291,16 @@ public class QuaquaListUI extends BasicListUI {
     /**
      * Returns a new instance of QuaquaListUI.  QuaquaListUI delegates are
      * allocated one per JList.
-     * 
+     *
      * @return A new ListUI implementation for the Windows look and feel.
      */
     public static ComponentUI createUI(JComponent list) {
         return new QuaquaListUI();
     }
 
-    /**
-     * Mouse input, and focus handling for JList.  An instance of this
-     * class is added to the appropriate java.awt.Component lists
-     * at installUI() time.  Note keyboard input is handled with JComponent
-     * KeyboardActions, see installKeyboardActions().
-     * <p>
-     * <strong>Warning:</strong>
-     * Serialized objects of this class will not be compatible with
-     * future Swing releases. The current serialization support is
-     * appropriate for short term storage or RMI between applications running
-     * the same version of Swing.  As of 1.4, support for long term storage
-     * of all JavaBeans<sup><font size="-2">TM</font></sup>
-     * has been added to the <code>java.beans</code> package.
-     * Please see {@link java.beans.XMLEncoder}.
-     *
-     * @see #createMouseInputListener
-     * @see #installKeyboardActions
-     * @see #installUI
-     */
-    public class MouseInputHandler implements MouseInputListener {
-
-        private boolean mouseReleaseDeselects;
-        private boolean mouseDragSelects;
-        private MouseEvent armedEvent;
-        private int dragThreshold;
-
-        public void mouseClicked(MouseEvent e) {
-        }
-
-        public void mouseEntered(MouseEvent e) {
-        }
-
-        public void mouseExited(MouseEvent e) {
-        }
-
-        public void mousePressed(MouseEvent e) {
-            int index = locationToIndex(list, e.getPoint());
-
-            // Don't change selection, if user selected below of a list cell
-            if (index != -1) {
-                Rectangle cellBounds = list.getCellBounds(index, index);
-                if (e.getY() > cellBounds.getY() + cellBounds.getHeight()) {
-                    index = -1;
-                }
-            }
-            armedEvent = e;
-            dragThreshold = QuaquaUtilities.getDragThreshold();
-
-            // Note: Some applications depend on selection changes only occuring
-            // on focused components. Maybe we must not do any changes to the
-            // selection changes at all, when the compnent is not focused?
-            if (list.isEnabled()&&list.isRequestFocusEnabled())
-            list.requestFocusInWindow();
-
-            mouseDragSelects = false;
-            mouseReleaseDeselects = false;
-            if (index != -1) {
-                if (!list.isEnabled() || list.isSelectedIndex(index) && e.isPopupTrigger()) {
-                    // Do not change the selection, if the list is disabled
-                    // or the item is already
-                    // selected, and the user triggers the popup menu.
-                } else {
-                    int anchorIndex = list.getAnchorSelectionIndex();
-
-                    if ((e.getModifiersEx() & (MouseEvent.META_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.META_DOWN_MASK) {
-                        if (list.isSelectedIndex(index)) {
-                            list.removeSelectionInterval(index, index);
-                        } else {
-                            list.addSelectionInterval(index, index);
-                            mouseDragSelects = true;
-                        }
-                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK)) == MouseEvent.SHIFT_DOWN_MASK
-                            && anchorIndex != -1) {
-                        list.setSelectionInterval(anchorIndex, index);
-                        mouseDragSelects = true;
-                    } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.META_DOWN_MASK)) == 0) {
-                        if (list.isSelectedIndex(index)) {
-                            mouseReleaseDeselects = list.isFocusOwner();
-                        } else {
-                            list.setSelectionInterval(index, index);
-                            mouseDragSelects = true;
-                        }
-                        list.getSelectionModel().setAnchorSelectionIndex(index);
-                    }
-                }
-            }
-            list.getSelectionModel().setValueIsAdjusting(mouseDragSelects);
-        }
-
-        public void mouseDragged(MouseEvent e) {
-            mouseReleaseDeselects = false;
-
-            // Abort if mouseDragged event is received without prior
-            // mousePressed event.
-            if (armedEvent == null) {
-                return;
-            }
-
-            int dx = Math.abs(e.getX() - armedEvent.getX());
-            int dy = Math.abs(e.getY() - armedEvent.getY());
-            if (Math.sqrt(dx * dx + dy * dy) > dragThreshold) {
-                if (mouseDragSelects) {
-                    int index = locationToIndex(list, e.getPoint());
-                    if (index != -1) {
-                        Rectangle cellBounds = getCellBounds(list, index, index);
-                        list.scrollRectToVisible(cellBounds);
-                        int anchorIndex = list.getAnchorSelectionIndex();
-                        list.setSelectionInterval(anchorIndex, index);
-                    }
-                } else {
-                    if (list.getDragEnabled()) {
-                        TransferHandler th = list.getTransferHandler();
-                        int action = QuaquaUtilities.mapDragOperationFromModifiers(e, th);
-                        if (action != TransferHandler.NONE) {
-                            /* notify the BeforeDrag instance * /
-                            if (bd != null) {
-                            bd.dragStarting(dndArmedEvent);
-                            }*/
-                            th.exportAsDrag(list, armedEvent, action);
-                            //clearState();
-                        }
-                    }
-                }
-            }
-        }
-
-        public void mouseMoved(MouseEvent e) {
-        }
-
-        public void mouseReleased(MouseEvent e) {
-            mouseDragSelects = false;
-            if (mouseReleaseDeselects) {
-                int index = locationToIndex(list, e.getPoint());
-                list.setSelectionInterval(index, index);
-            }
-            list.getSelectionModel().setValueIsAdjusting(false);
-            if (list.isEnabled()&&list.isRequestFocusEnabled()) {
-                list.requestFocus();
-            }
-        }
-    }
-
-    /**
-     * Creates a delegate that implements MouseInputListener.
-     * The delegate is added to the corresponding java.awt.Component listener
-     * lists at installUI() time. Subclasses can override this method to return
-     * a custom MouseInputListener, e.g.
-     * <pre>
-     * class MyListUI extends QuaquaListUI {
-     *    protected MouseInputListener <b>createMouseInputListener</b>() {
-     *        return new MyMouseInputHandler();
-     *    }
-     *    public class MyMouseInputHandler extends MouseInputHandler {
-     *        public void mouseMoved(MouseEvent e) {
-     *            // do some extra work when the mouse moves
-     *            super.mouseMoved(e);
-     *        }
-     *    }
-     * }
-     * </pre>
-     * 
-     * @see MouseInputHandler
-     * @see #installUI
-     */
     @Override
     protected MouseInputListener createMouseInputListener() {
-        return new MouseInputHandler();
+        return new QuaquaListMouseBehavior(list);
     }
 
     /**
@@ -475,6 +311,12 @@ public class QuaquaListUI extends BasicListUI {
     public class FocusHandler implements FocusListener {
 
         protected void repaintCellFocus() {
+            Object[] cells = list.getSelectedValues();
+            if (cells.length > 1) {
+                list.repaint();
+                return;
+            }
+
             int leadIndex = list.getLeadSelectionIndex();
             if (leadIndex != -1) {
                 Rectangle r = getCellBounds(list, leadIndex, leadIndex);
@@ -565,7 +407,7 @@ public class QuaquaListUI extends BasicListUI {
      *    }
      * }
      * </pre>
-     * 
+     *
      * @see PropertyChangeListener
      * @see #installUI
      */

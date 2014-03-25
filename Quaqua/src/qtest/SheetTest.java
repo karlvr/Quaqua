@@ -1,7 +1,7 @@
 /*
  * @(#)SheetTest.java
  *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * You may not use, copy or modify this file, except in compliance with the
@@ -9,12 +9,14 @@
  * For details see accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.*;
+
 import java.awt.event.*;
 import java.io.*;
 import javax.swing.*;
+
 /**
  * SheetTest.
  *
@@ -28,7 +30,29 @@ private JFileChooser saveFile;
     public SheetTest() {
         initComponents();
     }
-    
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                JFrame f = new JFrame("SheetTest");
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.getContentPane().add(new SheetTest());
+                f.pack();
+                f.setVisible(true);
+            }
+        });
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -153,12 +177,12 @@ private JFileChooser saveFile;
             }
         });
     }//GEN-LAST:event_saveFileSheet
-    
+
     private void messageSheet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_messageSheet
-      
+
         JSheet.showMessageSheet(this, "You have got a message.");
     }//GEN-LAST:event_messageSheet
-        
+
     private void inputSheet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_inputSheet
         JSheet.showInputSheet(this, "Enter your name.", new SheetListener() {
             public void optionSelected(SheetEvent evt) {
@@ -166,7 +190,7 @@ private JFileChooser saveFile;
             }
         });
     }//GEN-LAST:event_inputSheet
-        
+
     private void confirmSheet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_confirmSheet
         JSheet.showConfirmSheet(this, "Do you want to confirm this dialog?", new SheetListener() {
             public void optionSelected(SheetEvent evt) {
@@ -174,7 +198,7 @@ private JFileChooser saveFile;
             }
         });
     }//GEN-LAST:event_confirmSheet
-                
+
     private void saveChangesSheet(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveChangesSheet
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
@@ -201,11 +225,11 @@ private JFileChooser saveFile;
             }
         });
     }//GEN-LAST:event_saveChangesSheet
-    
+
     private void experimentalSheetChange(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_experimentalSheetChange
 //        UIManager.put("Sheet.experimentalSheet", new Boolean(experimentalSheetCheckbox.isSelected()));
     }//GEN-LAST:event_experimentalSheetChange
-                    
+
     private void analyzeOption(int option) {
         switch (option) {
             case JOptionPane.CANCEL_OPTION:
@@ -229,7 +253,7 @@ private JFileChooser saveFile;
     private void analyzeValue(Object value) {
         System.out.println("user chose "+value);
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton confirmSheetButton;
     private javax.swing.JButton inputSheetButton;
@@ -239,5 +263,5 @@ private JFileChooser saveFile;
     private javax.swing.JButton saveChangesSheetButton;
     private javax.swing.JButton saveFileSheetButton;
     // End of variables declaration//GEN-END:variables
-    
+
 }

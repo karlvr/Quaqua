@@ -14,7 +14,6 @@ package ch.randelshofer.quaqua.leopard;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.awt.geom.RoundRectangle2D;
-import javax.swing.*;
 import javax.swing.border.*;
 
 /**
