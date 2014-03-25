@@ -11,12 +11,12 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * CheckBoxTest.
  *
@@ -24,11 +24,11 @@ import javax.swing.border.*;
  * @version 1.0  13 February 2005  Created.
  */
 public class CheckBoxTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public CheckBoxTest() {
         initComponents();
-        
+
         for (JComponent c:new JComponent[]{smallCheckBox1,smallCheckBox2,smallLabel}) {
 
             c.putClientProperty("JComponent.sizeVariant","small");
@@ -37,7 +37,7 @@ public class CheckBoxTest extends javax.swing.JPanel {
 
             c.putClientProperty("JComponent.sizeVariant","mini");
         }
-        
+
         // Try to get a better layout with J2SE6
         try {
             int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
@@ -53,10 +53,10 @@ public class CheckBoxTest extends javax.swing.JPanel {
             // bail
         }
     }
-    
+
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -67,7 +67,7 @@ public class CheckBoxTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -205,8 +205,8 @@ public class CheckBoxTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox bigCheckBox;
     private javax.swing.JLabel bigLabel;
@@ -225,5 +225,5 @@ public class CheckBoxTest extends javax.swing.JPanel {
     private javax.swing.JCheckBox smallCheckBox2;
     private javax.swing.JLabel smallLabel;
     // End of variables declaration//GEN-END:variables
-    
+
 }

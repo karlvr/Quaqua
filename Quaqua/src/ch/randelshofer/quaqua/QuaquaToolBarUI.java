@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaToolBarUI.java  
+ * @(#)QuaquaToolBarUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -12,7 +12,6 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.border.BackgroundBorderUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import java.awt.event.*;
@@ -243,9 +242,9 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
     }
 
     /**
-     * Creates a rollover border for toolbar components. The 
-     * rollover border will be installed if rollover borders are 
-     * enabled. 
+     * Creates a rollover border for toolbar components. The
+     * rollover border will be installed if rollover borders are
+     * enabled.
      * <p>
      * Override this method to provide an alternate rollover border.
      *
@@ -303,9 +302,9 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
 
     /**
      * Sets the border of the component to have a rollover border which
-     * was created by <code>createRolloverBorder</code>. 
+     * was created by <code>createRolloverBorder</code>.
      *
-     * @param c component which will have a rollover border installed 
+     * @param c component which will have a rollover border installed
      * @see #createRolloverBorder
      * @since 1.4
      */
@@ -331,9 +330,9 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
 
     /**
      * Sets the border of the component to have a non-rollover border which
-     * was created by <code>createNonRolloverBorder</code>. 
+     * was created by <code>createNonRolloverBorder</code>.
      *
-     * @param c component which will have a non-rollover border installed 
+     * @param c component which will have a non-rollover border installed
      * @see #createNonRolloverBorder
      * @since 1.4
      */
@@ -365,7 +364,7 @@ public class QuaquaToolBarUI extends BasicToolBarUI {
      * A normal border is the original border that was installed on the child
      * component before it was added to the toolbar.
      *
-     * @param c component which will have a normal border re-installed 
+     * @param c component which will have a normal border re-installed
      * @see #createNonRolloverBorder
      * @since 1.4
      */

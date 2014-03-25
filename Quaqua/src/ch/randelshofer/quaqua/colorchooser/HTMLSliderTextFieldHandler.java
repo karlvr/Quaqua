@@ -13,7 +13,6 @@ package ch.randelshofer.quaqua.colorchooser;
 
 import javax.swing.*;
 import javax.swing.event.*;
-import javax.swing.text.*;
 /**
  * This handler adjusts the value of a component in the HTML color slider model,
  * when the user enters text into the text field.
@@ -25,16 +24,16 @@ public class HTMLSliderTextFieldHandler implements DocumentListener, ChangeListe
     private JTextField textField;
     private HTMLColorSliderModel ccModel;
     private int component;
-    
+
     public HTMLSliderTextFieldHandler(JTextField textField, HTMLColorSliderModel ccModel, int component) {
         this.textField = textField;
         this.ccModel = ccModel;
         this.component = component;
-        
+
         textField.getDocument().addDocumentListener(this);
         ccModel.getBoundedRangeModel(component).addChangeListener(this);
     }
-    
+
     public void changedUpdate(DocumentEvent evt) {
         docChanged();
     }

@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaMenuItemUI.java 
+ * @(#)QuaquaMenuItemUI.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -10,11 +10,9 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 

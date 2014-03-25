@@ -1,7 +1,7 @@
 /*
  * @(#)DefaultButtonTest.java
  *
- * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2005-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
@@ -12,10 +12,9 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.text.*;
 import javax.swing.*;
-import javax.swing.text.*;
+
 /**
  * DefaultButtonTest.
  *
@@ -23,7 +22,7 @@ import javax.swing.text.*;
  * @version $Id$
  */
 public class DefaultButtonTest extends javax.swing.JFrame {
-    
+
     /**
      * Creates new form DefaultButtonTest
      */
@@ -31,7 +30,7 @@ public class DefaultButtonTest extends javax.swing.JFrame {
         initComponents();
         getRootPane().setDefaultButton(button);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -125,31 +124,31 @@ public class DefaultButtonTest extends javax.swing.JFrame {
         // TODO add your handling code here:
         label.setText("TextField "+NumberFormat.getIntegerInstance().format(System.currentTimeMillis()));
     }//GEN-LAST:event_textFieldPerformed
-    
+
     /** Exit the Application */
     private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
         System.exit(0);
     }//GEN-LAST:event_exitForm
-    
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        
+
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
         new DefaultButtonTest().setVisible(true);
     }
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button;
     private javax.swing.JLabel label;
     private javax.swing.JTextField textField;
     private javax.swing.JTextField textField2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

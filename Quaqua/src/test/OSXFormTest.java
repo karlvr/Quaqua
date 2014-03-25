@@ -14,15 +14,13 @@ import org.jdesktop.layout.GroupLayout;
 
 import javax.swing.*;
 
-import ch.randelshofer.quaqua.QuaquaLookAndFeel;
-
 /**
  */
 public class OSXFormTest {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(QuaquaLookAndFeel.class.getName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
         }
 

@@ -11,6 +11,8 @@
 
 package test;
 
+import javax.swing.border.TitledBorder;
+
 /**
  * BorderTest.
  *
@@ -18,7 +20,7 @@ package test;
  * @version 1.0 September 25, 2005 Created.
  */
 public class BorderTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
@@ -26,7 +28,7 @@ public class BorderTest extends javax.swing.JPanel {
         initComponents();
         groupBoxPanel1.setOpaque(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -51,7 +53,7 @@ public class BorderTest extends javax.swing.JPanel {
 
         groupBoxPanel2.setLayout(new java.awt.BorderLayout());
 
-        groupBoxPanel2.setBorder(new javax.swing.border.TitledBorder("Outer Border"));
+        groupBoxPanel2.setBorder(new javax.swing.border.TitledBorder(null, "Outer Border above Top", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.ABOVE_TOP));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(new javax.swing.border.TitledBorder(null, "Inner Border", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Lucida Grande", 0, 11)));
@@ -77,8 +79,8 @@ public class BorderTest extends javax.swing.JPanel {
         add(groupBoxPanel4);
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel groupBoxPanel1;
     private javax.swing.JPanel groupBoxPanel2;
@@ -89,5 +91,5 @@ public class BorderTest extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     // End of variables declaration//GEN-END:variables
-    
+
 }

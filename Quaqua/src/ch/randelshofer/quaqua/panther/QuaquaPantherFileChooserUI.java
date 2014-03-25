@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaPantherFileChooserUI.java  
+ * @(#)QuaquaPantherFileChooserUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
@@ -71,7 +71,6 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
     ///private String newFolderAccessibleName = null;
     protected String chooseButtonText = null;
     private String newFolderDialogPrompt, newFolderDefaultName, newFolderErrorText, newFolderExistsErrorText, newFolderTitleText;
-    private final static File computer = FileSystemTreeModel.COMPUTER;
     private SidebarListModel sidebarListModel;
     /**
      * This listener is used to determine whether the JFileChooser is showing.
@@ -151,8 +150,8 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
                 // select the sidebar, otherwise just
                 // select the file
                 for (int i = 0, n = sidebarListModel.getSize(); i < n; i++) {
-                    FileInfo sidebarFile = (FileInfo) sidebarListModel.getElementAt(i);
-                    if (sidebarFile != null && sidebarFile.getFile().equals(file)) {
+                    SidebarTreeFileNode sidebarFile = (SidebarTreeFileNode) sidebarListModel.getElementAt(i);
+                    if (sidebarFile != null && sidebarFile.getResolvedFile().equals(file)) {
                         sidebarList.setSelectedIndex(i);
                         return;
                     }
@@ -960,41 +959,51 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
     private void updateApproveButtonState() {
         JFileChooser fc = getFileChooser();
-
         if (fc.getControlButtonsAreShown()) {
-            File[] files = getSelectedFiles();
-
-            boolean isEnabled = true;
-            boolean isSaveDialog = fc.getDialogType() == JFileChooser.SAVE_DIALOG;
-            boolean isFileSelected = false;
-            boolean isDirectorySelected = false;
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].exists()) {
-                    if (files[i].isDirectory() && fc.isTraversable(files[i])) {
-                        isDirectorySelected = true;
-                    } else {
-                        isFileSelected = true;
-                    }
-                    isEnabled &= isSaveDialog || fc.accept(files[i]);
-                }
-            }
-
-            switch (fc.getFileSelectionMode()) {
-                case JFileChooser.FILES_ONLY:
-                    isEnabled &= isFileSelected || isFileNameFieldVisible() && isFileNameFieldValid();
-                    break;
-                case JFileChooser.DIRECTORIES_ONLY:
-                    // Note: in the following expression we must not check
-                    // whether isDirectorySelected is true, because a
-                    // the file chooser always shows a directory of some kind
-                    // in its view.
-                    isEnabled &= /*isDirectorySelected &&*/ !isFileSelected;
-                    break;
-                case JFileChooser.FILES_AND_DIRECTORIES:
-                    isEnabled &= true;
-                    break;
-            }
+            boolean isEnabled = computeApproveButtonEnabled();
             setApproveButtonEnabled(isEnabled);
+        }
+    }
+
+    private boolean computeApproveButtonEnabled() {
+
+        JFileChooser fc = getFileChooser();
+        if (fc.getDialogType() == JFileChooser.SAVE_DIALOG) {
+            File dir = fc.getCurrentDirectory();
+            return dir.isDirectory() && isFileNameFieldValid(); // could test for directory being writable
+        }
+
+        if (isFileNameFieldVisible() && isFileNameFieldValid() && fc.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
+            return true;
+        }
+
+        File[] files = getSelectedFiles();
+        if (files.length == 0) {
+            return fc.isDirectorySelectionEnabled() && isAcceptable(fc.getCurrentDirectory());
+        }
+
+        for (File f : files) {
+            if (!isAcceptable(f)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private boolean isAcceptable(File f)
+    {
+        if (f == null) {
+            return false;
+        }
+
+        TreePath path = model.toPath(f, null);
+        Object pc = path.getLastPathComponent();
+        if (pc instanceof FileInfo) {
+            FileInfo info = (FileInfo) pc;
+            return info.isAcceptable();
+        } else {
+            return false;
         }
     }
 
@@ -1053,6 +1062,10 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
         return new BrowserSelectionListener();
     }
 
+    public void selectDirectory(File file) {
+        setRootDirectory(file);
+    }
+
     public void setRootDirectory(File file) {
         if (file != null) {
             JFileChooser fc = getFileChooser();
@@ -1089,7 +1102,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             if (isAdjusting != 0) {
                 return;
             }
-            
+
             TreePath path = browser.getSelectionPath();
             if (path != null) {
                 model.lazyInvalidatePath(path);
@@ -1118,21 +1131,22 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
 
         if (!subtreeModel.getPathToRoot().isDescendant(dirPath)) {
             // XXX - This code occurs two times in this class - move it into a method
-            FileInfo sidebarFileInfo = null;
+            File sidebarResolvedFile = null;
             int sidebarSelectionIndex = -1;
             for (int i = 0, n = sidebarList.getModel().getSize(); i < n; i++) {
                 Object item = sidebarList.getModel().getElementAt(i);
-                if (item instanceof FileInfo) {
-                    FileInfo info = (FileInfo) item;
-                    if (info.getResolvedFile() != null && info.getResolvedFile().equals(dir)) {
-                        sidebarFileInfo = info;
+                if (item instanceof SidebarTreeFileNode) {
+                    SidebarTreeFileNode info = (SidebarTreeFileNode) item;
+                    File f = info.getResolvedFile();
+                    if (f != null && f.equals(dir)) {
+                        sidebarResolvedFile = f;
                         sidebarSelectionIndex = i;
                         break;
                     }
                 }
             }
-            if (sidebarFileInfo != null) {
-                TreePath sidebarPath = model.toPath(sidebarFileInfo.getResolvedFile(), selectionPath);
+            if (sidebarResolvedFile != null) {
+                TreePath sidebarPath = model.toPath(sidebarResolvedFile, selectionPath);
                 subtreeModel.setPathToRoot(sidebarPath);
                 sidebarList.setSelectedIndex(sidebarSelectionIndex);
             } else {
@@ -1524,7 +1538,7 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             if (value instanceof File) {
                 return super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
             }
-            FileInfo info = (FileInfo) value;
+            SidebarTreeFileNode info = (SidebarTreeFileNode) value;
             if (info == null) {
                 return separator;
             } else {
@@ -2165,9 +2179,9 @@ public class QuaquaPantherFileChooserUI extends BasicFileChooserUI implements Su
             }
 
             if (sidebarList != null && sidebarList.getSelectedIndex() != -1) {
-                if (sidebarList.getSelectedValue() instanceof FileInfo) {
-                    FileInfo info = (FileInfo) sidebarList.getSelectedValue();
-                    File file = info.lazyGetResolvedFile();
+                if (sidebarList.getSelectedValue() instanceof SidebarTreeFileNode) {
+                    SidebarTreeFileNode info = (SidebarTreeFileNode) sidebarList.getSelectedValue();
+                    File file = info.getResolvedFile();
                     if (file==null) {
                         // the file became unavailable
                     } else {

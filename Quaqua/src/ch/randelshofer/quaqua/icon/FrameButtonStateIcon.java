@@ -11,11 +11,9 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.util.*;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 /**
  * An Icon with different visuals reflecting the state of the AbstractButton
  * on which it draws on.
@@ -36,7 +34,7 @@ public class FrameButtonStateIcon extends MultiIcon {
     private final static int DIS = 9;
     private final static int R = 10;
     private final static int RS = 11;
-    
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -65,7 +63,7 @@ public class FrameButtonStateIcon extends MultiIcon {
     public FrameButtonStateIcon(Icon[] icons) {
         super(icons);
     }
-    
+
     /**
      * Creates a new instance.
      * The icon representations are created lazily from the image.
@@ -73,20 +71,20 @@ public class FrameButtonStateIcon extends MultiIcon {
     public FrameButtonStateIcon(Image tiledImage, int tileCount, boolean isTiledHorizontally) {
         super(tiledImage, tileCount, isTiledHorizontally);
     }
-    
+
     private boolean isRollover(Component c) {
         if (c instanceof JComponent) {
             return ((JComponent) c).getClientProperty("paintRollover") == Boolean.TRUE;
         }
         return false;
     }
-    
-    
+
+
     protected Icon getIcon(Component c) {
         Icon icon;
         boolean isRollover = isRollover(c);
         boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-        
+
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();
             if (isActive) {
@@ -141,14 +139,14 @@ public class FrameButtonStateIcon extends MultiIcon {
         }
         return icon;
     }
-    
-    protected void generateMissingIcons() {        
+
+    protected void generateMissingIcons() {
         if (icons.length != 12) {
             Icon[] helper = icons;
             icons = new Icon[12];
             System.arraycopy(helper, 0, icons, 0, Math.min(helper.length, icons.length));
         }
-        
+
         if (icons[EP] == null) {
             icons[EP] = icons[E];
         }

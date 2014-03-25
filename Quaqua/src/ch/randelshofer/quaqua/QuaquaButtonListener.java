@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaButtonListener.java  
+ * @(#)QuaquaButtonListener.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -13,7 +13,6 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
 import javax.swing.plaf.basic.*;
 import java.beans.*;
 import java.util.Enumeration;

@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaFileView.java  
+ * @(#)QuaquaFileView.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,31 +11,50 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
+import ch.randelshofer.quaqua.osx.OSXFile;
+
 import java.io.*;
 import javax.swing.*;
 import javax.swing.filechooser.*;
-import java.util.*;
 /**
- * A FileView for the Quaqua Look and Feel. 
+ * A FileView for the Quaqua Look and Feel.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaFileView extends FileView {
     private QuaquaFileSystemView fsv;
-    
+    private boolean isPackageTraversable;
+    private boolean isApplicationTraversable;
+
     /**
      * Creates a new instance.
      */
     public QuaquaFileView(QuaquaFileSystemView fsv) {
         this.fsv = fsv;
     }
-    
+
+    public boolean isPackageTraversable() {
+        return isPackageTraversable;
+    }
+
+    public void setPackageTraversable(boolean b) {
+        isPackageTraversable = b;
+    }
+
+    public boolean isApplicationTraversable() {
+        return isApplicationTraversable;
+    }
+
+    public void setApplicationTraversable(boolean b) {
+        isApplicationTraversable = b;
+    }
+
     /**
      * The name of the file. Normally this would be simply f.getName()
      */
     public String getName(File f) {
-            return fsv.getSystemDisplayName(f);
+        return fsv.getSystemDisplayName(f);
     }
 
     /**
@@ -44,7 +63,7 @@ public class QuaquaFileView extends FileView {
      * "A JPEG image file of James Gosling's face"
      */
     public String getDescription(File f) {
-	return "";
+        return "";
     }
 
     /**
@@ -53,14 +72,14 @@ public class QuaquaFileView extends FileView {
      * "A JPEG Compressed Image File"
      */
     public String getTypeDescription(File f) {
-	return fsv.getSystemTypeDescription(f);
+        return fsv.getSystemTypeDescription(f);
     }
 
     /**
      * The icon that represents this file in the JFileChooser.
      */
     public Icon getIcon(File f) {
-	return fsv.getSystemIcon(f);
+        return fsv.getSystemIcon(f);
     }
 
     /**
@@ -69,6 +88,6 @@ public class QuaquaFileView extends FileView {
      * a compound document and don't want the user to descend into it.
      */
     public Boolean isTraversable(File f) {
-	return fsv.isTraversable(f);
+        return OSXFile.isTraversable(f, isPackageTraversable, isApplicationTraversable);
     }
 }

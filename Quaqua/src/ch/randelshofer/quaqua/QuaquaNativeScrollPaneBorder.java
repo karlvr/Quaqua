@@ -1,9 +1,9 @@
 /*
- * @(#)QuaquaNativeScrollPaneBorder.java  
- * 
+ * @(#)QuaquaNativeScrollPaneBorder.java
+ *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
@@ -28,7 +28,6 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
-import javax.swing.border.Border;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 

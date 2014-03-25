@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxCellRenderer.java  
+ * @(#)QuaquaComboBoxCellRenderer.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -23,7 +23,7 @@ import javax.swing.*;
 public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
     private ListCellRenderer valueRenderer;
     private JPanel panel;
-    
+
     public QuaquaComboBoxCellRenderer(ListCellRenderer valueRenderer, boolean isInTable, boolean isEditable) {
         this.valueRenderer = valueRenderer;
         panel = new JPanel();
@@ -34,7 +34,7 @@ public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
             if (isEditable) {
                 panel.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
             } else {
-                panel.setBorder(BorderFactory.createEmptyBorder(0, 7, 0, 7));
+                panel.setBorder(BorderFactory.createEmptyBorder(1, 13, 1, 7));
             }
         }
         panel.setOpaque(true);
@@ -43,14 +43,14 @@ public class QuaquaComboBoxCellRenderer implements ListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         Component valueComponent = valueRenderer.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         panel.removeAll();
-        
+
         panel.add(valueComponent);
-        panel.setBackground((isSelected) ? 
+        panel.setBackground((isSelected) ?
         valueComponent.getBackground() :
            UIManager.getColor("PopupMenu.background")
         );
 
         return panel;
-        
+
     }
 }

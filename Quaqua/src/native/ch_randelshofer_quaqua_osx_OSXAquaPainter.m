@@ -4,10 +4,10 @@
  * Copyright (c) 2011 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
- * Werner Randelshofer. For details see accompanying license terms. 
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
+ * Werner Randelshofer. For details see accompanying license terms.
  */
 
 /**
@@ -20,8 +20,8 @@
 
 #ifndef __ppc__
 #ifndef __ppc64__
-#include "JavaNativeFoundation.h"
-#include "JavaRuntimeSupport.h"
+#include <JavaNativeFoundation.h>
+#include <JavaRuntimeSupport.h>
 /** Global renderer variable. */
 static JRSUIRendererRef gRenderer = NULL;
 
@@ -66,7 +66,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeRele
  * Signature: ([IIIJDDDD)V
  */
 JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePaint
-  (JNIEnv *env, jclass javaClass, jintArray jimageData, jint jimgWidth, jint jimgHeight, 
+  (JNIEnv *env, jclass javaClass, jintArray jimageData, jint jimgWidth, jint jimgHeight,
     jlong jhandle, jdouble jx, jdouble jy, jdouble jwidth, jdouble jheight) {
 
     jboolean isCopy = JNI_FALSE;
@@ -76,7 +76,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePain
     CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
     CGContextRef cgRef = CGBitmapContextCreate(imageData, jimgWidth, jimgHeight, 8, jimgWidth * 4, colorspace, kCGImageAlphaPremultipliedFirst | kCGBitmapByteOrder32Host);
     CGColorSpaceRelease(colorspace);
-   
+
     JRSUIControlRef control = (JRSUIControlRef)jlong_to_ptr(jhandle);
     CGRect bounds = CGRectMake(jx, jy, jwidth, jheight);
 
@@ -86,9 +86,9 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativePain
     }
 
     JRSUIControlDraw(gRenderer, control, cgRef, bounds);
-    
+
     CGContextRelease(cgRef);
-    
+
     (*env)->ReleasePrimitiveArrayCritical(env, jimageData, imageData, 0);
 }
 

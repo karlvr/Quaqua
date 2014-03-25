@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaJaguarSeparatorUI.java 
+ * @(#)QuaquaJaguarSeparatorUI.java
  *
  * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -16,7 +16,6 @@ import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.color.PaintableColor;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 import javax.swing.plaf.*;
 import javax.swing.plaf.basic.*;
 /**
@@ -35,20 +34,20 @@ import javax.swing.plaf.basic.*;
  * @version $Id$
  */
 public class QuaquaJaguarSeparatorUI extends BasicSeparatorUI implements VisuallyLayoutable {
-    
+
     /** Creates a new instance of QuaquaSeparatorUI */
     public QuaquaJaguarSeparatorUI() {
     }
-    
+
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaJaguarSeparatorUI();
     }
-    
+
     protected void installDefaults( JSeparator s ) {
         super.installDefaults(s);
         LookAndFeel.installBorder( s, "Separator.border");
     }
-    
+
     public void paint(Graphics gr, JComponent c) {
         Graphics2D g = (Graphics2D) gr;
         Dimension s = c.getSize();
@@ -72,11 +71,11 @@ public class QuaquaJaguarSeparatorUI extends BasicSeparatorUI implements Visuall
             }
         }
     }
-    
+
     public Dimension getMinimumSize(JComponent c) {
         return getPreferredSize(c);
     }
-    
+
     public Dimension getPreferredSize( JComponent c ) {
         if (c.getParent() instanceof JPopupMenu) {
             if ( ((JSeparator)c).getOrientation() == JSeparator.VERTICAL )
@@ -91,13 +90,13 @@ public class QuaquaJaguarSeparatorUI extends BasicSeparatorUI implements Visuall
                 return new Dimension(insets.left + insets.right, 2 + insets.top + insets.bottom);
         }
     }
-    
+
     public Insets getVisualMargin(JSeparator tc) {
         Insets margin = (Insets) tc.getClientProperty("Quaqua.Component.visualMargin");
         if (margin == null) margin = UIManager.getInsets("Component.visualMargin");
         return (margin == null) ? new Insets(0, 0, 0 ,0) : margin;
     }
-    
+
     public int getBaseline(JComponent c, int width, int height) {
         return -1;
     }
@@ -106,9 +105,9 @@ public class QuaquaJaguarSeparatorUI extends BasicSeparatorUI implements Visuall
         if (type == VisuallyLayoutable.CLIP_BOUNDS) {
             return bounds;
         }
-        
+
         JSeparator b = (JSeparator) c;
-        
+
         InsetsUtil.subtractInto(getVisualMargin(b), bounds);
         return bounds;
     }

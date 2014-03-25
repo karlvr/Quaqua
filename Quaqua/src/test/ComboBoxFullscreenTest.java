@@ -10,7 +10,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.BorderLayout;
 import java.awt.GraphicsDevice;
 import java.awt.event.*;
@@ -26,7 +25,7 @@ public class ComboBoxFullscreenTest extends JFrame {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
             UIManager.put("PopupMenu.enableHeavyWeightPopup", Boolean.FALSE);
         } catch (Exception e) {
 

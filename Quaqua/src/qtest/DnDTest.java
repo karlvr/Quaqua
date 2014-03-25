@@ -1,7 +1,7 @@
 /*
  * @(#)DnDTest.java
  *
- * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2004-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
@@ -10,7 +10,7 @@
  * Werner Randelshofer. For details see accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import javax.swing.tree.TreeSelectionModel;
 
@@ -21,7 +21,7 @@ import javax.swing.tree.TreeSelectionModel;
  * @version $Id$
  */
 public class DnDTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates new form DnDTest
      */
@@ -29,7 +29,7 @@ public class DnDTest extends javax.swing.JPanel {
         initComponents();
         browser1.setSelectionMode(TreeSelectionModel.DISCONTIGUOUS_TREE_SELECTION);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -116,8 +116,8 @@ public class DnDTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jScrollPane4, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private ch.randelshofer.quaqua.JBrowser browser1;
     private javax.swing.JList jList1;
@@ -130,5 +130,5 @@ public class DnDTest extends javax.swing.JPanel {
     private javax.swing.JTree jTree1;
     private javax.swing.JScrollPane scrollPane5;
     // End of variables declaration//GEN-END:variables
-    
+
 }

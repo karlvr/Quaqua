@@ -11,7 +11,6 @@
 
 package test;
 
-import ch.randelshofer.quaqua.util.Fonts;
 import java.awt.*;
 import javax.swing.*;
 
@@ -22,15 +21,15 @@ import javax.swing.*;
  * @version 1.0  13 February 2005  Created.
  */
 public class SliderTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public SliderTest() {
         initComponents();
-        
+
         horizontalTickedLabeledSlider.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
         verticalLabeledSlider.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-        
-        Font smallFont = Fonts.getSmallDialogFont();
+
+        Font smallFont = TestManager.getSmallDialogFont();
         JSlider[] smallSliders = {
             smallSlider, smallLabeledSlider, smallTickedSlider
         };
@@ -39,7 +38,7 @@ public class SliderTest extends javax.swing.JPanel {
             smallSliders[i].putClientProperty("JComponent.sizeVariant", "small");
         }
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -176,8 +175,8 @@ public class SliderTest extends javax.swing.JPanel {
         gridBagConstraints.weighty = 1.0;
         add(jPanel1, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSlider horizontalLabeledSlider;
     private javax.swing.JSlider horizontalTickedLabeledSlider;
@@ -194,5 +193,5 @@ public class SliderTest extends javax.swing.JPanel {
     private javax.swing.JSlider smallTickedSlider;
     private javax.swing.JSlider verticalLabeledSlider;
     // End of variables declaration//GEN-END:variables
-    
+
 }

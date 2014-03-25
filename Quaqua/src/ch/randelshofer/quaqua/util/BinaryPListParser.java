@@ -10,6 +10,7 @@
  */
 package ch.randelshofer.quaqua.util;
 
+import ch.randelshofer.quaqua.ext.base64.Base64;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 import ch.randelshofer.quaqua.ext.base64.*;
 import java.io.*;
@@ -82,7 +83,7 @@ public class BinaryPListParser {
      * real   ::= 0b0010 0bnnnn byte*(2^nnnn)  // 2^nnnn big-endian bytes
      *
      * unknown::= 0b0011 0b0000 byte*8       // 8 byte float big-endian bytes ?
-     * 
+     *
      * date   ::= 0b0011 0b0011 byte*8       // 8 byte float big-endian bytes
      *
      * data   ::= 0b0100 0bnnnn [int] byte*  // nnnn is number of bytes
@@ -106,8 +107,8 @@ public class BinaryPListParser {
      *                                       // variable-sized object follows
      *                                       // to indicate the number of objref
      *
-     * dict ::= 0b1010 0bnnnn [int] keyref* objref* 
-     *                                       // nnnn is number of keyref and 
+     * dict ::= 0b1010 0bnnnn [int] keyref* objref*
+     *                                       // nnnn is number of keyref and
      *                                       // objref pairs
      *                                       // unless 0b1111 then a int
      *                                       // variable-sized object follows
@@ -128,7 +129,7 @@ public class BinaryPListParser {
      *            0b1110 0bxxxx | 0b1111 0bxxxx
      *
      *
-     * offsetTable ::= { int }               // List of ints, byte size of which 
+     * offsetTable ::= { int }               // List of ints, byte size of which
      *                                       // is given in trailer
      *                                       // These are the byte offsets into
      *                                       // the file.
@@ -155,8 +156,8 @@ public class BinaryPListParser {
      * Total count of objects.
      */
     private int objectCount;
-    /** 
-     * Offset in file of top level offset in offset table. 
+    /**
+     * Offset in file of top level offset in offset table.
      */
     private int topLevelOffset;
     /**
@@ -334,11 +335,11 @@ public class BinaryPListParser {
         convertObjectTableToXML(root, objectTable.get(0));
         return root;
     }
-    
+
     private long getPosition() {
         return pos.getPos()+8;
     }
-    
+
     private PosByteArrayInputStream pos;
     private static class PosByteArrayInputStream extends ByteArrayInputStream {
 
@@ -349,9 +350,9 @@ public class BinaryPListParser {
         public int getPos() {
             return pos;
         }
-        
+
     }
-    
+
     /**
      * Converts the object table in the binary PList into an XMLElement.
      */

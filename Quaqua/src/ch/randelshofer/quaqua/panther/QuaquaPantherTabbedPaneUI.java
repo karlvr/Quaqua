@@ -12,18 +12,16 @@
 package ch.randelshofer.quaqua.panther;
 
 import ch.randelshofer.quaqua.util.NavigatableTabbedPaneUI;
-import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.jaguar.*;
 import java.awt.*;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 /**
  * The QuaquaPantherTabbedPaneUI uses to the QuaquaJaguarTabbedPaneUI for
  * the WRAP_TAB_LAYOUT policy and the QuaquaPantherScrollTabbedPaneUI for
  * the SCROLL_TAB_LAYOUT policy.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -33,20 +31,20 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     private TabbedPaneUI currentUI;
     private PropertyChangeListener propertyChangeListener;
     //private FocusListener focusListener;
-    
+
     /**
      * Creates a new instance.
      */
     public QuaquaPantherTabbedPaneUI() {
     }
-    
+
     public static ComponentUI createUI(JComponent c) {
 	return new QuaquaPantherTabbedPaneUI();
     }
 
     public void installUI(JComponent c) {
         this.tabPane = (JTabbedPane) c;
-        
+
         // Tag the tabbed pane with a client property in order to prevent
         // that we are getting in an endless loop, when the layout policy
         // of the tabbed pane is changed.
@@ -54,24 +52,24 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
             tabPane.putClientProperty("Quaqua.TabbedPane.tabLayoutPolicy", UIManager.get("TabbedPane.tabLayoutPolicy"));
             tabPane.setTabLayoutPolicy(UIManager.getInt("TabbedPane.tabLayoutPolicy"));
         }
-        
-        
+
+
         if (tabPane.getTabLayoutPolicy() == JTabbedPane.WRAP_TAB_LAYOUT) {
            QuaquaJaguarTabbedPaneUI qjtpui = (QuaquaJaguarTabbedPaneUI) QuaquaJaguarTabbedPaneUI.createUI(c);
            qjtpui.setPropertyPrefix("TabbedPane.wrap.");
            currentUI = qjtpui;
-            
+
         } else {
            QuaquaPantherScrollTabbedPaneUI qptpui = (QuaquaPantherScrollTabbedPaneUI) QuaquaPantherScrollTabbedPaneUI.createUI(c);
            qptpui.setPropertyPrefix("TabbedPane.scroll.");
            currentUI = qptpui;
         }
         currentUI.installUI(c);
-        
+
         tabPane.setRequestFocusEnabled(UIManager.getBoolean("TabbedPane.requestFocusEnabled"));
-        
+
 	//installComponents();
-        //installDefaults(); 
+        //installDefaults();
         installListeners();
         //installKeyboardActions();
     }
@@ -85,15 +83,15 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
         if (currentUI != null) {
             currentUI.uninstallUI(c);
         }
-        
+
         this.tabPane = null;
     }
-    
+
     protected void installListeners() {
         if ((propertyChangeListener = createPropertyChangeListener()) != null) {
             tabPane.addPropertyChangeListener(propertyChangeListener);
         }
-      /*  
+      /*
         if ((focusListener = createFocusListener()) != null) {
             tabPane.addFocusListener(focusListener);
         }*/
@@ -118,16 +116,16 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     protected FocusListener createFocusListener() {
         return new FocusHandler();
     }*/
-    
+
 
     public Rectangle getTabBounds(JTabbedPane pane, int index) {
         return currentUI.getTabBounds(pane, index);
     }
-    
+
     public int getTabRunCount(JTabbedPane pane) {
         return currentUI.getTabRunCount(pane);
     }
-    
+
     public int tabForCoordinate(JTabbedPane pane, int x, int y) {
         return currentUI.tabForCoordinate(pane, x, y);
     }
@@ -145,12 +143,12 @@ public class QuaquaPantherTabbedPaneUI extends TabbedPaneUI
     public boolean requestFocusForVisibleComponent() {
        return ((NavigatableTabbedPaneUI) currentUI).requestFocusForVisibleComponent();
     }
-    
+
     /**
      * This inner class is marked &quot;public&quot; due to a compiler bug.
      * This class should be treated as a &quot;protected&quot; inner class.
      * Instantiate it only within subclasses of BasicTabbedPaneUI.
-     */  
+     */
     public class PropertyChangeHandler implements PropertyChangeListener {
         public void propertyChange(PropertyChangeEvent e) {
 	    JTabbedPane pane = (JTabbedPane)e.getSource();

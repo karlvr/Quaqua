@@ -11,12 +11,9 @@
 
 package test;
 
-import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.*;
-import ch.randelshofer.quaqua.*;
+
 /**
  * SplitPaneTest2.
  *
@@ -24,17 +21,17 @@ import ch.randelshofer.quaqua.*;
  * @version 1.0 November 28, 2005 Created.
  */
 public class SplitPaneTest2 extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
     public SplitPaneTest2() {
         initComponents();
-        
+
         horizontalSplitPane.putClientProperty("Quaqua.SplitPane.style","bar");
         horizontalSplitPane.setDividerSize(1);
         verticalSplitPane.putClientProperty("Quaqua.SplitPane.style","bar");
-        
+
         messageScrollPane.setBorder(new EmptyBorder(0,0,0,0));
         messagesScrollPane.setBorder(new EmptyBorder(0,0,0,0));
         foldersScrollPane.setBorder(new EmptyBorder(0,0,0,0));
@@ -44,22 +41,22 @@ public class SplitPaneTest2 extends javax.swing.JPanel {
          */
 
     }
-    
+
     public static void main(String[] args) {
         try {
-       UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+       UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
-            
+
         }
-        
+
         JFrame f = new JFrame("Inbox (1 message)");
         f.getContentPane().add(new SplitPaneTest2());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setSize(600,400);
         f.setVisible(true);
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -133,8 +130,8 @@ public class SplitPaneTest2 extends javax.swing.JPanel {
         add(horizontalSplitPane, java.awt.BorderLayout.CENTER);
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JList foldersList;
     private javax.swing.JScrollPane foldersScrollPane;
@@ -145,5 +142,5 @@ public class SplitPaneTest2 extends javax.swing.JPanel {
     private javax.swing.JTable messagesTable;
     private javax.swing.JSplitPane verticalSplitPane;
     // End of variables declaration//GEN-END:variables
-    
+
 }

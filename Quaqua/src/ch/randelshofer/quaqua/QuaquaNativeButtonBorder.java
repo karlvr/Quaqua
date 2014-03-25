@@ -1,20 +1,15 @@
 /*
- * @(#)QuaquaNativeButtonBorder.java 
- * 
+ * @(#)QuaquaNativeButtonBorder.java
+ *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
 package ch.randelshofer.quaqua;
 
-import java.util.Iterator;
-import java.util.HashSet;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-import javax.swing.Timer;
 import javax.swing.JButton;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import javax.swing.JToolBar;
@@ -63,7 +58,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
         /** Whether the button needs the trailing separator hack. */
         boolean needsTrailingSeparatorHack;
         Insets[] margin = new Insets[3];
-        /** Border insets. 
+        /** Border insets.
          * regular,small,mini
          */
         Insets[] borderInsets = new Insets[3];
@@ -71,7 +66,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
          * so that native widget's visual bounds are rendered with a fixed
          * inset of 3,3,3,3 into the image. The fixed inset allows for cast
          * shadows in the image.
-         * 
+         *
          * only regular,small,mini,
          * first regular,small,mini,
          * middle regular,small,mini,
@@ -140,14 +135,14 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
                 new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
                 new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
                 new Insets[]{new Insets(0, 1, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
-                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first 
+                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
                     new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
                     new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
             {"segmentedRoundRect", "segmentedCapsule", "segmentedTextured", true, Widget.buttonSegmentedInset,//
                 new Insets[]{new Insets(2, 13, 3, 13), new Insets(2, 8, 2, 8), new Insets(2, 7, 2, 7)},//
                 new Insets[]{new Insets(1, 4, 1, 4), new Insets(1, 2, 1, 2), new Insets(1, 2, 1, 2)},//
                 new Insets[]{new Insets(0, 1, 0, 1), new Insets(0, 1, 0, 1), new Insets(0, 2, 0, 2),//only regular,small,mini
-                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first 
+                    new Insets(0, 1, 0, 0), new Insets(1, 1, 0, 0), new Insets(0, 2, 0, 0),//first
                     new Insets(0, 0, 0, 0), new Insets(1, 0, 0, 1), new Insets(0, 0, 0, 0),//middle
                     new Insets(0, 0, 0, 1), new Insets(1, 1, 0, 1), new Insets(0, 0, 0, 2)}},//last
         };
@@ -526,7 +521,7 @@ public class QuaquaNativeButtonBorder extends VisualMarginBorder implements Bord
             img.flush();
         }
 
-        /** Returns fake insets since this is just a background border. 
+        /** Returns fake insets since this is just a background border.
          * The real insets are returned by {@link QuaquaNativeButtonBorder#getBorderInsets}.
          */
         public Insets getBorderInsets(Component c) {

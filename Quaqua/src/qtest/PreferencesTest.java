@@ -1,21 +1,20 @@
 /*
- * @(#)PreferencesTest.java 
- * 
+ * @(#)PreferencesTest.java
+ *
  * Copyright © 2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
 import javax.swing.table.DefaultTableModel;
 
 /**

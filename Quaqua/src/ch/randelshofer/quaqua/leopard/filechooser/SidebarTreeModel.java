@@ -1,5 +1,5 @@
 /*
- * @(#)SidebarTreeModel.java  
+ * @(#)SidebarTreeModel.java
  *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,6 +11,7 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
+import ch.randelshofer.quaqua.ext.base64.Base64;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
@@ -20,7 +21,6 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.base64.*;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 
 /**
@@ -416,32 +416,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             isTraversable = true;
         }
 
-        public File lazyGetResolvedFile() {
-            return file;
-        }
-
         public File getResolvedFile() {
             return file;
         }
 
         public File getFile() {
             return file;
-        }
-
-        public boolean allowsChildren() {
-            return false;
-        }
-
-        public String getFileKind() {
-            return null;
-        }
-
-        public int getFileLabel() {
-            return -1;
-        }
-
-        public long getFileLength() {
-            return -1;
         }
 
         public Icon getIcon() {
@@ -483,27 +463,15 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public boolean isTraversable() {
             return isTraversable;
         }
-
-        public boolean isAcceptable() {
-            return true;
-        }
-
-        public boolean isValidating() {
-            return false;
-        }
     }
 
     /**
      * An AliasNode is resolved as late as possible.
      */
-    private abstract class Node extends DefaultMutableTreeNode implements FileInfo {
+    private abstract class Node extends DefaultMutableTreeNode implements SidebarTreeFileNode {
 
         @Override
         public boolean getAllowsChildren() {
-            return false;
-        }
-
-        public boolean isHidden() {
             return false;
         }
     }
@@ -533,32 +501,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             isTraversable = true;
         }
 
-        public File lazyGetResolvedFile() {
-            return getResolvedFile();
-        }
-
         public File getResolvedFile() {
             if (file == null) {
                 icon = null; // clear cached icon!
                 file = OSXFile.resolveAlias(serializedAlias, false);
             }
             return file;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public String getFileKind() {
-            return null;
-        }
-
-        public int getFileLabel() {
-            return -1;
-        }
-
-        public long getFileLength() {
-            return -1;
         }
 
         public Icon getIcon() {
@@ -604,14 +552,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public boolean isTraversable() {
             return isTraversable;
         }
-
-        public boolean isAcceptable() {
-            return true;
-        }
-
-        public boolean isValidating() {
-            return false;
-        }
     }
 
     private static class SystemItemInfo {
@@ -620,8 +560,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         int sequenceNumber = 0;
         boolean isVisible = true;
     }
-
-
 
     /** Note: SidebaViewToModelNode must not implement Comparable and must
      * not override equals()/hashCode(), because this confuses the layout algorithm
@@ -635,28 +573,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             this.target = target;
         }
 
-        public File getFile() {
-            return target.getFile();
-        }
-
         public File getResolvedFile() {
             return target.getResolvedFile();
-        }
-
-        public File lazyGetResolvedFile() {
-            return target.lazyGetResolvedFile();
-        }
-
-        public boolean isTraversable() {
-            return target.isTraversable();
-        }
-
-        public boolean isAcceptable() {
-            return target.isAcceptable();
-        }
-
-        public int getFileLabel() {
-            return target.getFileLabel();
         }
 
         public String getUserName() {
@@ -665,18 +583,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
         public Icon getIcon() {
             return target.getIcon();
-        }
-
-        public long getFileLength() {
-            return target.getFileLength();
-        }
-
-        public String getFileKind() {
-            return target.getFileKind();
-        }
-
-        public boolean isValidating() {
-            return target.isValidating();
         }
 
         public FileSystemTreeModel.Node getTarget() {
