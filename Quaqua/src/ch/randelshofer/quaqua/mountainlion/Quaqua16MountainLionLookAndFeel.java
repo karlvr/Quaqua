@@ -10,20 +10,33 @@
  */
 package ch.randelshofer.quaqua.mountainlion;
 
-import ch.randelshofer.quaqua.lion.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.JTabbedPane;
+import javax.swing.LayoutStyle;
+import javax.swing.UIDefaults;
+import javax.swing.border.Border;
+import javax.swing.plaf.BorderUIResource;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.DimensionUIResource;
+import javax.swing.plaf.FontUIResource;
+import javax.swing.plaf.InsetsUIResource;
+
+import ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel;
+import ch.randelshofer.quaqua.QuaquaLayoutStyle;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.color.GradientColor;
+import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
-import ch.randelshofer.quaqua.util.*;
-
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import java.awt.*;
+import ch.randelshofer.quaqua.util.GroupBox;
 
 /**
  * {@code Quaqua16MountainLionLookAndFeel}.
@@ -246,7 +259,13 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
         Object menuBackground = new ColorUIResource(0xffffff);
         ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);
         Object toolBarBackground = table.get("control");
-        Object toolBarTitleBackground = new ColorUIResource(222,222,222);
+        Object toolBarTitleBackground;
+        final String javaVersion = QuaquaManager.getProperty("java.version", "");
+		if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
+			toolBarTitleBackground = table.get("control");
+		} else {
+			toolBarTitleBackground = new InactivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
+		}
         Object panelBackground = new ColorUIResource(0xededed);
         ColorUIResource inactiveSelectionBackground = new ColorUIResource(208, 208, 208);
         Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
@@ -281,6 +300,7 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
                 "ch.randelshofer.quaqua.lion.QuaquaLionScrollBarTrackBorder");
         
         Object[] uiDefaults = {
+        	"control", toolBarTitleBackground,
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{lionDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
             "Browser.expandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
