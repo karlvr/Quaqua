@@ -479,6 +479,14 @@
                 <attribute name="Implementation-Version" value="${version}"/>
                 <attribute name="Implementation-Vendor" value="${author}"/>
                 <!-- applet security -->
+                <attribute name="Application-Name" value="Quaqua Test"/>
+                <attribute name="Codebase" value="*"/>
+                <attribute name="Application-Library-Allowable-Codebase" value="*"/>
+                <attribute name="Caller-Allowable-Codebase" value="*"/>
+                <attribute name="Permissions" value="all-permissions"/>
+                <attribute name="Trusted-Only" value="false"/>
+                <attribute name="Trusted-Library" value="false"/>
+            </manifest>
             <include name="test/*.class"/>
             <include name="qtest/*.class"/>
         </jar>
@@ -580,6 +588,13 @@
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}"
+                jar="${distdir}/signed/swing-layout.jar"
+                >
+        </signjar>
+        <exec executable="pack200">
+            <arg value="${distdir}/signed/swing-layout.jar.pack.gz"/>
+            <arg value="${distdir}/signed/swing-layout.jar"/>
+        </exec>
         
         <!-- create signed version of the libquaqua.jnilib.jar file -->
         <jar basedir="${distdir}" compress="true"
