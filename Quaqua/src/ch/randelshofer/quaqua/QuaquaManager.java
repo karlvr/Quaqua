@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaManager.java 
+ * @(#)QuaquaManager.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -7,11 +7,25 @@
  */
 package ch.randelshofer.quaqua;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Properties;
+import java.util.Set;
+import java.util.StringTokenizer;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.EmptyBorder;
+
 import ch.randelshofer.quaqua.osx.OSXFile;
-import javax.swing.*;
-import javax.swing.border.*;
-import java.util.*;
-import java.io.*;
 
 /**
  * The QuaquaManager provides bug fixes and enhancements for the Mac Look and
@@ -177,8 +191,8 @@ public class QuaquaManager {
      */
     private static boolean isOSX;
     /**
-     * Current design. May differ from the operating system, by setting a value
-     * in the "Quaqua.design" property.
+     * Current design. May differ from the operating system, by setting a
+     * value in the "Quaqua.design" property.
      */
     private static int design;
 
@@ -215,16 +229,16 @@ public class QuaquaManager {
             } else if (osVersion.equals("10.7")) {
                 OS = LION;
             } else if (osVersion.equals("10.8")) {
-                OS = MOUNTAIN_LION;
+            	OS = MOUNTAIN_LION;
             } else if (osVersion.equals("10.9")) {
-                OS = MAVERICKS;
+            	OS = MAVERICKS;
             } else if (osVersion.startsWith("10.")) {
                 OS = X;
             } else {
                 // Note: We must fall back to Snow Leopard here, because this
                 //       is the last OS X version for which we provide our own artwork.
                 //       For later OS X versions, we retrieve the artwork from
-                //       the system using native API's. 
+                //       the system using native API's.
                 OS = SNOW_LEOPARD;
             }
         } else if (osName.startsWith("Darwin")) {
@@ -259,31 +273,64 @@ public class QuaquaManager {
         } else if (osDesign.equals("mavericks")) {
         	design = MAVERICKS;
         } else {
-            if (OS <= UNKNOWN) {
+            switch (OS) {
+                case CHEETAH:
+                    design = JAGUAR;
+                    break;
+                case PUMA:
+                    design = JAGUAR;
+                    break;
+                case JAGUAR:
+                    design = JAGUAR;
+                    break;
+                case PANTHER:
+                    design = PANTHER;
+                    break;
+                case TIGER:
+                    design = TIGER;
+                    break;
+                case LEOPARD:
+                    design = LEOPARD;
+                    break;
+                case SNOW_LEOPARD:
+                    design = SNOW_LEOPARD;
+                    break;
+                case LION:
+                    design = LION;
+                    break;
+                case MOUNTAIN_LION:
+                	design = MOUNTAIN_LION;
+                	break;
+                case MAVERICKS:
+                	design = MAVERICKS;
+                	break;
+                default:
                 // Note: We must fall back to Snow Leopard here, because this
                 //       is the last OS X version for which we provide our own artwork.
                 //       For later OS X versions, we retrieve the artwork from
-                //       the system using native API's. 
-                design = SNOW_LEOPARD;
-            } else {
-                design = OS;
+                //       the system using native API's.
+                    design = SNOW_LEOPARD;
+                    break;
             }
         }
     }
     /**
      * Map of Quaqua Look and Feels.
      *
-     * key<String> lafKey. value<String> Look and Feel class name.
+     * key<String> lafKey.
+     * value<String> Look and Feel class name.
      */
     private static HashMap lafs;
 
     /**
-     * Updates the map of available Quaqua Look and Feels. The list may vary
-     * depending on the deployment chosen for the Quaqua Look and Feel.
+     * Updates the map of available Quaqua Look and Feels.
+     * The list may vary depending on the deployment chosen for the Quaqua Look
+     * and Feel.
      *
      * The list of look and feels is contained in a file named "laf.txt" in the
-     * package "ch.randelshofer.quaqua". The file contains a semicolon separated
-     * mapping according to the following EBNF production:
+     * package "ch.randelshofer.quaqua".
+     * The file contains a semicolon separated mapping according to the following
+     * EBNF production:
      * <pre>
      * mapping ::= {design}"."{version}"="{class}";"
      * </pre>
@@ -356,8 +403,7 @@ public class QuaquaManager {
     /**
      * Returns the current operating system.
      *
-     * @return one of the OS constants: CHEETAH..SNOW_LEOPARD, DARWIN, WINDOWS
-     * or UNKNOWN.
+     * @return one of the OS constants: CHEETAH..SNOW_LEOPARD, DARWIN, WINDOWS or UNKNOWN.
      */
     public static int getOS() {
         return OS;
@@ -380,9 +426,9 @@ public class QuaquaManager {
     }
 
     /**
-     * Returns the class name of a Quaqua look and feel. The class name depends
-     * on the JVM, Quaqua is running on, and on the visual design of the
-     * operating system.
+     * Returns the class name of a Quaqua look and feel.
+     * The class name depends on the JVM, Quaqua is running on, and on the
+     * visual design of the operating system.
      */
     public static String getLookAndFeelClassName() {
         updateDesignAndOS();
@@ -429,7 +475,7 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
-                        lafKey = "MountainLion.16";
+                    	lafKey = "MountainLion.16";
                     	break;
                     case MAVERICKS:
                     case X:
@@ -460,7 +506,7 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
-                        lafKey = "MountainLion.16";
+                    	lafKey = "MountainLion.16";
                     	break;
                     case MAVERICKS:
                     case X:
@@ -502,9 +548,10 @@ public class QuaquaManager {
     }
 
     /**
-     * Returns a Quaqua look and feel, if workarounds for the system look and
-     * feel are available. Returns a UIManager.getSystemLookAndFeelClassName()
-     * instance if no workaround is available.
+     * Returns a Quaqua look and feel, if workarounds for the
+     * system look and feel are available.
+     * Returns a UIManager.getSystemLookAndFeelClassName() instance if no
+     * workaround is available.
      */
     public static LookAndFeel getLookAndFeel() {
         try {
@@ -512,7 +559,7 @@ public class QuaquaManager {
         } catch (Exception e) {
             InternalError ie = new InternalError(e.toString());
             /* FIXME - This needs JDK 1.4 to work.
-             ie.initCause(e);
+            ie.initCause(e);
              */
             throw ie;
         }
@@ -623,9 +670,10 @@ public class QuaquaManager {
     }
 
     /**
-     * Removes a locally defined property.<p> This method is used to specify
-     * properties for Quaqua, when, due to security reasons, system properties
-     * can not be used, e.g. in a secure Applet environment.
+     * Removes a locally defined property.<p>
+     * This method is used to specify properties for Quaqua, when, due to
+     * security reasons, system properties can not be used, e.g. in a secure
+     * Applet environment.
      *
      * @see #setProperty
      */
@@ -636,9 +684,10 @@ public class QuaquaManager {
     }
 
     /**
-     * Returns the version string of Quaqua. The version string is a sequence of
-     * numbers separated by full stops, followed by a blank character and a
-     * release date in ISO-format. e.g. "3.6.1 2006-03-12"
+     * Returns the version string of Quaqua.
+     * The version string is a sequence of numbers separated by full stops,
+     * followed by a blank character and a release date in ISO-format.
+     * e.g. "3.6.1 2006-03-12"
      */
     public static String getVersion() {
         return version;
@@ -651,6 +700,7 @@ public class QuaquaManager {
             // empty
         }
         SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 try {
                     JFrame f = new JFrame("Quaqua Look and Feel");
@@ -682,8 +732,11 @@ public class QuaquaManager {
     }
 
     /**
-     * Include only UI delegates with the specified names. This method must be
-     * called, before setting the QuaquaLookAndFeel to the UIManager. <p> Usage:
+     * Include only UI delegates with the specified names.
+     * This method must be called, before setting the QuaquaLookAndFeel
+     * to the UIManager.
+     * <p>
+     * Usage:
      * <pre>
      * HashSet includes = new HashSet();
      * includes.add("Button");
@@ -698,8 +751,11 @@ public class QuaquaManager {
     }
 
     /**
-     * Excludes UI delegates with the specified names. This method must be
-     * called, before setting the QuaquaLookAndFeel to the UIManager. <p> Usage:
+     * Excludes UI delegates with the specified names.
+     * This method must be called, before setting the QuaquaLookAndFeel
+     * to the UIManager.
+     * <p>
+     * Usage:
      * <pre>
      * HashSet excludes = new HashSet();
      * excludes.add("TextField");
@@ -714,8 +770,8 @@ public class QuaquaManager {
     }
 
     /**
-     * Gets the included UI delegates, or null, if all Quaqua UI delegates shall
-     * be included into the QuaquaLookAndFeel.
+     * Gets the included UI delegates, or null, if all Quaqua UI delegates
+     * shall be included into the QuaquaLookAndFeel.
      *
      * @return Set&lt;String&gt;.
      */
@@ -724,8 +780,8 @@ public class QuaquaManager {
     }
 
     /**
-     * Gets the excluded UI delegates, or null, if all Quaqua UI delegates shall
-     * be excluded from the QuaquaLookAndFeel.
+     * Gets the excluded UI delegates, or null, if all Quaqua UI delegates
+     * shall be excluded from the QuaquaLookAndFeel.
      *
      * @return Set&lt;String&gt;.
      */

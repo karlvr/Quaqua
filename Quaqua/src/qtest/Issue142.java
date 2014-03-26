@@ -1,14 +1,14 @@
 /*
  * @(#)Issue142.java  1.0  2011-07-26
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
+ *
+ * Copyright (c) 2011 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package test;
+package qtest;
 
 
 import javax.swing.JComboBox;
@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
-import ch.randelshofer.quaqua.QuaquaLookAndFeel;
 import java.awt.BorderLayout;
 import javax.swing.SwingUtilities;
 

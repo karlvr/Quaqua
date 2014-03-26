@@ -7,8 +7,8 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Methods;
+
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -29,7 +29,7 @@ public class TableHighlightCellTest extends javax.swing.JPanel {
             c.setBackground(isSelected ? Color.RED.darker() : Color.RED);
             return c;
         }
-        
+
     }
 
     /**
@@ -139,7 +139,7 @@ public class TableHighlightCellTest extends javax.swing.JPanel {
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

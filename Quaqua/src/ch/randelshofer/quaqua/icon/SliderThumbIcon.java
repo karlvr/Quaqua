@@ -8,11 +8,9 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import ch.randelshofer.quaqua.icon.MultiIcon;
 import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.plaf.*;
 /**
  * An Icon with different visuals reflecting the state of the slider
  * on which it draws on.
@@ -30,7 +28,7 @@ public class SliderThumbIcon extends MultiIcon {
     private final static int I = 3;
     private final static int DI = 4;
     private final static int FOCUS_RING = 5;
-    
+
     /**
      * Creates a new instance.
      * All icons must have the same dimensions.
@@ -66,7 +64,7 @@ public class SliderThumbIcon extends MultiIcon {
     public SliderThumbIcon(Icon[] icons) {
         super(icons);
     }
-    
+
     /**
      * Creates a new instance.
      * The icon representations are created lazily from the image.
@@ -74,7 +72,7 @@ public class SliderThumbIcon extends MultiIcon {
     public SliderThumbIcon(Image tiledImage, int tileCount, boolean isTiledHorizontaly) {
         super(tiledImage, tileCount, isTiledHorizontaly);
     }
-    
+
     protected void generateMissingIcons() {
         Icon[] oldIcons;
         if (icons.length != 6) {
@@ -96,11 +94,11 @@ public class SliderThumbIcon extends MultiIcon {
             icons[DI] = icons[D];
         }
     }
-    
+
     protected Icon getIcon(Component c) {
         Icon icon;
         boolean isActive = QuaquaUtilities.isOnActiveWindow(c);
-        
+
         if (c instanceof JSlider) {
             JSlider slider = (JSlider) c;
             if (isActive) {

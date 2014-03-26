@@ -12,7 +12,9 @@ import ch.randelshofer.quaqua.util.Images;
 import java.awt.*;
 import java.awt.image.*;
 import java.io.*;
+import java.nio.charset.Charset;
 import java.security.AccessControlException;
+import java.util.Date;
 import javax.swing.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
@@ -22,18 +24,18 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.*;
  * file aliases.
  *
  * @author Werner Randelshofer
- * @version $Id: OSXFile.java 82 2009-06-11 08:57:33Z wrandelshofer $
+ * @version $Id$
  */
 public class OSXFile {
 
     public final static int FILE_TYPE_ALIAS = 2;
     public final static int FILE_TYPE_DIRECTORY = 1;
     public final static int FILE_TYPE_FILE = 0;
-    public final static int FILE_TYPE_UNKOWN = -1;
+    public final static int FILE_TYPE_UNKNOWN = -1;
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 5;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 6;
     /**
      * This array holds the colors used for drawing the gradients of a file
      * label.
@@ -43,6 +45,26 @@ public class OSXFile {
      * This variable is set to true, if native code is available.
      */
     private static volatile Boolean isNativeCodeAvailable;
+
+    private static Icon computerIcon;
+    private static String computerModel;
+    private static boolean computerModelInitialized;
+    private static Icon computerSidebarIcon;
+
+    private static final int kLSItemInfoIsPlainFile        = 0x00000001; /* Not a directory, volume, or symlink*/
+    private static final int kLSItemInfoIsPackage          = 0x00000002; /* Packaged directory*/
+    private static final int kLSItemInfoIsApplication      = 0x00000004; /* Single-file or packaged application*/
+    private static final int kLSItemInfoIsContainer        = 0x00000008; /* Directory (includes packages) or volume*/
+    private static final int kLSItemInfoIsAliasFile        = 0x00000010; /* Alias file (includes sym links)*/
+    private static final int kLSItemInfoIsSymlink          = 0x00000020; /* UNIX sym link*/
+    private static final int kLSItemInfoIsInvisible        = 0x00000040; /* Invisible by any known mechanism*/
+    private static final int kLSItemInfoIsNativeApp        = 0x00000080; /* Carbon or Cocoa native app*/
+    private static final int kLSItemInfoIsClassicApp       = 0x00000100; /* CFM/68K Classic app*/
+    private static final int kLSItemInfoAppPrefersNative   = 0x00000200; /* Carbon app that prefers to be launched natively*/
+    private static final int kLSItemInfoAppPrefersClassic  = 0x00000400; /* Carbon app that prefers to be launched in Classic*/
+    private static final int kLSItemInfoAppIsScriptable    = 0x00000800; /* App can be scripted*/
+    private static final int kLSItemInfoIsVolume           = 0x00001000; /* Item is a volume*/
+    private static final int kLSItemInfoExtensionIsHidden  = 0x00100000; /* Item has a hidden extension*/
 
     /**
      * Returns true if native code is available.
@@ -199,75 +221,104 @@ public class OSXFile {
      */
     public static int getFileType(File f) {
         if (isNativeCodeAvailable()) {
-            return nativeGetFileType(f.getPath());
+            int flags = nativeGetBasicItemInfoFlags(f.getAbsolutePath());
 
+            if ((flags & kLSItemInfoIsAliasFile) != 0) {
 
+                /*
+                  Special case: the program wants to see volumes as directories.
+                */
+
+                if (f.getParent().equals("/Volumes")) {
+                    return FILE_TYPE_DIRECTORY;
+                }
+
+                return FILE_TYPE_ALIAS;
+            }
+
+            if ((flags & kLSItemInfoIsContainer) != 0) {
+                return FILE_TYPE_DIRECTORY;
+            }
+
+            if ((flags & kLSItemInfoIsPlainFile) != 0) {
+                return FILE_TYPE_FILE;
+            }
+
+            return FILE_TYPE_UNKNOWN;
         } else {
-            return (f.isDirectory()) ? 1 : ((f.isFile()) ? 0 : -1);
-
-
+            return (f.isDirectory()) ? FILE_TYPE_DIRECTORY : ((f.isFile()) ? FILE_TYPE_FILE : FILE_TYPE_UNKNOWN);
         }
     }
 
     /**
-     * Resolves an alias to a File object.
+     * Resolve a path that may be absolute, relative, or start with ~user.
+     */
+    public static File resolvePath(String path, File currentDirectory) {
+        if (path.startsWith("/")) {
+            return new File(path);
+        }
+
+        if (path.startsWith("~")) {
+            path = path.substring(1);
+            if (path.startsWith("/")) {
+                String home = System.getProperty("user.home");
+                return new File(home + path);
+            } else if (path.isEmpty()) {
+                String home = System.getProperty("user.home");
+                return new File(home);
+            } else {
+                return new File("/Users/" + path);
+            }
+        }
+
+        if (currentDirectory == null) {
+            String home = System.getProperty("user.home");
+            currentDirectory = new File(home);
+        }
+
+        return new File(currentDirectory, path);
+    }
+
+    /**
+     * Resolve a file by converting all valid aliases in the path.
+     */
+
+    public static File resolve(File f) {
+        return resolveAlias(f, true);
+    }
+
+    /**
+     * Resolve a file by converting all valid aliases in the path.
      *
-     * @param alias the Alias file to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
+     * @param f The file to be resolved.
+     * @param noUI Set this to true, if the alias should be resolved without user interaction.
      * @return Returns the resolved File object.
      */
-    public static File resolveAlias(File alias, boolean noUI) {
+    public static File resolveAlias(File f, boolean noUI) {
         if (isNativeCodeAvailable()) {
-            String path = nativeResolveAlias(alias.getPath(), noUI);
 
+            String path = nativeResolveAlias(f.getAbsolutePath(), noUI);
 
-            return path == null ? null : new File(path);
+            if (path == null) {
+                return null;
+            }
 
+            f = new File(path);
 
-        } else {
-            return alias;
+            /*
+              Cocoa path resolution refuses to follow certain top level links. If the result is an alias, we may have
+              one of those top level links. The JDK support for canonical files works better!
+            */
 
-
+            if (getFileType(f) != FILE_TYPE_ALIAS) {
+                return f;
+            }
         }
-    }
 
-    /**
-     * Resolves an alias to a type info.
-     * Resolves the type of the path if the provided path is not an alias.
-     *
-     * @param alias the path to the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
-     * @return Returns the resolved path.
-     * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
-     */
-    public static int resolveAliasType(File alias, boolean noUI) {
-        if (isNativeCodeAvailable()) {
-            return nativeResolveAliasType(alias.getPath(), noUI);
-
-
-        } else {
-            return (alias.isFile()) ? 0 : ((alias.isDirectory()) ? 1 : -1);
-
-
-        }
-    }
-
-    /**
-     * Creates a serialized Alias.
-     * @return A serialized alias or null, if serialization could not be
-     * done.
-     */
-    public static byte[] toSerializedAlias(File f) {
-        if (isNativeCodeAvailable()) {
-            return nativeToSerializedAlias(f.getPath());
-
-
-        } else {
-            return null;
-
-
+        try {
+            return f.getCanonicalFile();
+        } catch (IOException ex) {
+            return f;
         }
     }
 
@@ -293,27 +344,6 @@ public class OSXFile {
         }
     }
 
-    /**
-     * Resolves an alias to a type info.
-     * Resolves the type of the path if the provided path is not an alias.
-     *
-     * @param serializedAlias the path to the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
-     * @return Returns the resolved path.
-     * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
-     */
-    public static int resolveAliasType(byte[] serializedAlias, boolean noUI) {
-        if (isNativeCodeAvailable()) {
-            return nativeResolveAliasType(serializedAlias, noUI);
-
-
-        } else {
-            return -1;
-
-
-        }
-    }
 
     /**
      * Returns true if this class can work with labels.
@@ -332,7 +362,7 @@ public class OSXFile {
      */
     public static int getLabel(File f) {
         if (isNativeCodeAvailable() && f != null) {
-            return nativeGetLabel(f.getPath());
+            return nativeGetLabel(f.getAbsolutePath());
 
 
         } else {
@@ -409,7 +439,7 @@ public class OSXFile {
     public static BufferedImage getIconImage(File file, int size) {
         if (isNativeCodeAvailable() && file != null) {
             try {
-                byte[] tiffData = nativeGetIconImage(file.getPath(), size);
+                byte[] tiffData = nativeGetIconImage(file.getAbsolutePath(), size);
 
 
 
@@ -449,6 +479,7 @@ public class OSXFile {
 
 
             } catch (IOException ex) {
+                System.err.println("Image decoder failed: " + ex.getMessage());
                 return null;
 
 
@@ -471,7 +502,7 @@ public class OSXFile {
     public static BufferedImage getQuickLookThumbnailImage(File file, int size) {
         if (isNativeCodeAvailable() && file != null) {
             try {
-                byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getPath(), size);
+                byte[] tiffData = nativeGetQuickLookThumbnailImage(file.getAbsolutePath(), size);
 
 
 
@@ -524,6 +555,11 @@ public class OSXFile {
      */
     public static Icon getIcon(File file, int size) {
         Image img=getIconImage(file, size);
+
+        if (img == null) {
+            System.err.println("Unable to get system icon for " + file);
+        }
+
         return (img==null)?UIManager.getIcon("FileView.fileIcon"):new ImageIcon(img);
     }
 
@@ -544,7 +580,7 @@ public class OSXFile {
      */
     public static String getKindString(File file) {
         if (isNativeCodeAvailable() && file != null) {
-            return nativeGetKindString(file.getPath());
+            return nativeGetKindString(file.getAbsolutePath());
 
 
         } else {
@@ -554,26 +590,170 @@ public class OSXFile {
         }
     }
 
+    /**
+     * Indicate whether the specified file is a directory that is normally viewed by the user as an ordinary file,
+     * i.e., something that can be opened in an application.
+     */
+    public static boolean isVirtualFile(File file) {
+        if (isNativeCodeAvailable() && file != null) {
+            int flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
+            return (flags & kLSItemInfoIsPackage) != 0;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isInvisible(File file) {
+        if (file != null) {
+            if (isNativeCodeAvailable()) {
+                int flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
+                return (flags & kLSItemInfoIsInvisible) != 0;
+            } else {
+                return file.isHidden();
+            }
+        }
+        return false;
+    }
+
     public static boolean isTraversable(File file) {
+        return isTraversable(file, false, false);
+    }
+
+    public static boolean isTraversable(File file, boolean isPackageTraversable, boolean isApplicationTraversable) {
         if (file == null) {
             return false;
 
-
         } else if (isNativeCodeAvailable()) {
-            int flags = nativeGetBasicItemInfoFlags(file.getPath());
-            //   kLSItemInfoIsPlainFile = 0x00000001,
-            //   kLSItemInfoIsPackage = 0x00000002,
-            //   kLSItemInfoIsContainer = 0x00000008
+            int flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
 
+            if ((flags & kLSItemInfoIsAliasFile) != 0) {
+                file = resolve(file);
+                flags = nativeGetBasicItemInfoFlags(file.getAbsolutePath());
+            }
 
-            return (flags & (0x1 | 0x2 | 0x8)) == 8;
+            if ((flags & (kLSItemInfoIsPlainFile | kLSItemInfoIsContainer)) == kLSItemInfoIsContainer) {
+                // The file is a container (a volume or directory).
+                boolean isPackage = (flags & kLSItemInfoIsPackage) != 0;
+                boolean isApplication = (flags & kLSItemInfoIsApplication) != 0;
+                // All applications are packages, so the application option takes priority for applications.
+                if (isApplication) {
+                    return isApplicationTraversable;
+                }
+                if (isPackage) {
+                    return isPackageTraversable;
+                }
+                return basicIsTraversable(file);
 
+            } else if ((flags & kLSItemInfoIsPlainFile) != 0) {
+                return basicIsTraversable(file);
 
+            } else if (isVolumes(file.getParent())) {
+
+                    /*
+                      Special case: the program wants to see volumes as directories.
+                    */
+
+                    return true;
+
+            } else {
+                return false;
+            }
         } else {
-            return file.isDirectory();
-
-
+            return basicIsTraversable(file);
         }
+    }
+
+    private static boolean isVolumes(String s) {
+        return s != null && s.equals("/Volumes");
+    }
+
+    private static String[] nonTraversableDirectories = { ".Spotlight-V100", ".DocumentRevisions", ".Trashes" };
+
+    private static boolean basicIsTraversable(File f) {
+        String name = f.getName();
+
+        if (f.isDirectory()) {
+            for (String s : nonTraversableDirectories) {
+                if (s.equals(name)) {
+                    return false;
+                }
+            }
+
+            return true;
+
+        } else if (isSavedSearch(f)) {
+           return true;
+        }
+
+        return false;
+    }
+
+    public static boolean isSavedSearch(File f) {
+        return f.getName().endsWith(".savedSearch");
+    }
+
+    public static Icon getComputerIcon() {
+        if (computerIcon == null) {
+            String model = getComputerModel();
+            if (model != null) {
+                if (model.startsWith("MacBookAir")) {
+                    computerIcon = UIManager.getIcon("FileView.macbookAirIcon");
+                } else if (model.startsWith("MacBookPro")) {
+                    computerIcon = UIManager.getIcon("FileView.macbookProIcon");
+                } else if (model.startsWith("MacBook")) {
+                    computerIcon = UIManager.getIcon("FileView.macbookIcon");
+                } else if (model.startsWith("MacPro")) {
+                    computerIcon = UIManager.getIcon("FileView.macproIcon");
+                } else if (model.startsWith("Macmini")) {
+                    computerIcon = UIManager.getIcon("FileView.macminiIcon");
+                } else if (model.startsWith("iMac")) {
+                    computerIcon = UIManager.getIcon("FileView.imacIcon");
+                }
+            }
+
+            if (computerIcon == null) {
+                computerIcon = UIManager.getIcon("FileView.imacIcon");
+            }
+
+            if (computerIcon == null) {
+                computerIcon = UIManager.getIcon("FileView.computerIcon");
+            }
+        }
+        return computerIcon;
+    }
+
+    public static Icon getSidebarComputerIcon() {
+        if (computerSidebarIcon == null) {
+            String model = getComputerModel();
+            if (model != null) {
+                if (model.startsWith("MacBook")) {
+                    computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.Laptop");
+                } else if (model.startsWith("MacPro")) {
+                    computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.MacPro");
+                } else if (model.startsWith("Macmini")) {
+                    computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.MacMini");
+                }
+            }
+
+            if (computerSidebarIcon == null) {
+                computerSidebarIcon = UIManager.getIcon("FileChooser.sideBarIcon.Imac");
+            }
+        }
+        return computerSidebarIcon;
+    }
+
+    private static String getComputerModel() {
+        if (!computerModelInitialized) {
+            computerModelInitialized = true;
+            String[] cmd = { "/usr/sbin/sysctl", "hw.model" };
+            Charset cs = Charset.forName("UTF-8");
+            String result = QuaquaUtilities.exec(cmd, cs);
+            if (result != null) {
+                int pos = result.indexOf(":");
+                computerModel = result.substring(pos+1).trim();
+            }
+        }
+        return computerModel;
     }
 
     /**
@@ -593,24 +773,6 @@ public class OSXFile {
     private static native String nativeResolveAlias(String aliasPath, boolean noUI);
 
     /**
-     * Resolves an alias to a type info.
-     * Resolves the type of the path if the provided path is not an alias.
-     *
-     * @param aliasPath the path to the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
-     * @return Returns the resolved path.
-     * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
-     */
-    private static native int nativeResolveAliasType(String aliasPath, boolean noUI);
-
-    /**
-     * Converts a path into a serialized alias.
-     * Returns null if the conversion failed.
-     */
-    private static native byte[] nativeToSerializedAlias(String path);
-
-    /**
      * Resolves a serialized Alias to a path String.
      * Returns null if the resolution failed.
      *
@@ -620,17 +782,6 @@ public class OSXFile {
      * @return Returns the resolved path.
      */
     private static native String nativeResolveAlias(byte[] serializedAlias, boolean noUI);
-
-    /**
-     * Resolves a serialized Alias to a type.
-     * Returns -1 if the resolution failed.
-     *
-     * @param serializedAlias the alias to be resolved.
-     * @param noUI Set this to true, if the alias should
-     * be resolved without user interaction.
-     * @return Returns 0 for a file, 1 for a directory, -1 if the resolution failed.
-     */
-    private static native int nativeResolveAliasType(byte[] serializedAlias, boolean noUI);
 
     /**
      * Returns the label of the file specified by the given path.
@@ -651,7 +802,7 @@ public class OSXFile {
     private static native String nativeGetKindString(String path);
 
     /**
-     * Returns the icon image of a file as a byte array containing TIFF image 
+     * Returns the icon image of a file as a byte array containing TIFF image
      * data. This method may return an image of a different size, if no
      * icon in the specified size is available.
      *
@@ -662,7 +813,7 @@ public class OSXFile {
     private static native byte[] nativeGetIconImage(String path, int size);
 
     /**
-     * Returns the QuickLook thumbnail image of a file as a byte array containing TIFF image 
+     * Returns the QuickLook thumbnail image of a file as a byte array containing TIFF image
      * data.
      *
      * @param path the path to the file.
@@ -678,10 +829,10 @@ public class OSXFile {
      * that is, all except kLSItemInfoIsNativeApp through kLSItemInfoAppIsScriptable.
      * <p>
      * The item-information flags can have the following values:
-     * <pre>  
-     * 
+     * <pre>
+     *
      *  Item-Information Flags
-     * 
+     *
      *  typedef OptionBits LSItemInfoFlags;enum {
      *  kLSItemInfoIsPlainFile = 0x00000001,
      *  kLSItemInfoIsPackage = 0x00000002,
@@ -690,31 +841,47 @@ public class OSXFile {
      *  kLSItemInfoIsAliasFile = 0x00000010,
      *  kLSItemInfoIsSymlink = 0x00000020,
      *  kLSItemInfoIsInvisible = 0x00000040,
-     * 
+     *
      *  kLSItemInfoIsNativeApp = 0x00000080,
      *  kLSItemInfoIsClassicApp = 0x00000100,
      *  kLSItemInfoAppPrefersNative = 0x00000200,
      *  kLSItemInfoAppPrefersClassic = 0x00000400,
      *  kLSItemInfoAppIsScriptable = 0x00000800,
-     * 
+     *
      *  kLSItemInfoIsVolume = 0x00001000,
      *  kLSItemInfoExtensionIsHidden = 0x00100000
      *  };
-     * </pre>     
-     * 
-     * For more information see 
-     * http://developer.apple.com/documentation/Carbon/Reference/LaunchServicesReference/Reference/reference.html#//apple_ref/c/tdef/LSItemInfoFlags 
+     * </pre>
+     *
+     * For more information see
+     * http://developer.apple.com/documentation/Carbon/Reference/LaunchServicesReference/Reference/reference.html#//apple_ref/c/tdef/LSItemInfoFlags
      *
      * @param path the path to the file.
      */
     private static native int nativeGetBasicItemInfoFlags(String path);
+
+    private static String computerName;
+    private static boolean haveFetchedComputerName;
+
+    /**
+     * Returns the display name of the computer.
+     */
+    public static String getComputerName() {
+        if (!haveFetchedComputerName) {
+            haveFetchedComputerName = true;
+            String[] cmd = { "/usr/sbin/scutil", "--get", "ComputerName" };
+            Charset cs = Charset.forName("UTF-8");
+            computerName = QuaquaUtilities.exec(cmd, cs).trim();
+        }
+        return computerName;
+    }
 
     /**
      * Returns the localized display name of the specified file.
      */
     public static String getDisplayName(File f) {
         if (isNativeCodeAvailable()) {
-            return nativeGetDisplayName(f.getPath());
+            return nativeGetDisplayName(f.getAbsolutePath());
 
 
         } else {
@@ -725,13 +892,56 @@ public class OSXFile {
     }
 
     /**
+     * Return the time of last use of a file, as recorded by Launch Services. Called the "Date Last Opened" by Finder.
+     */
+    public static Date getLastUsedDate(File f) {
+        long t = nativeGetLastUsedDate(f.getAbsolutePath());
+        return t > 0 ? new Date(t) : null;
+    }
+
+    /**
+     * Perform a saved search.
+     *
+     * @param savedSearchFile The .savedSearch file that defines the query.
+     * @return an array containing the files that satisfy the query or null if the query could not be performed.
+     */
+    public static File[] executedSavedSearch(File savedSearchFile) {
+        String savedSearchPath = savedSearchFile.getAbsolutePath();
+        String[] paths = nativeExecuteSavedSearch(savedSearchPath);
+        if (paths != null) {
+            int count = paths.length;
+            File[] files = new File[count];
+            for (int i = 0; i < count; i++) {
+                files[i] = new File(paths[i]);
+            }
+            return files;
+        }
+        return null;
+    }
+
+    /**
      * Returns the name of the file or directory at a given path in a localized
      * form appropriate for presentation to the user.
-     * 
+     *
      * @param path
      * @return
      */
     private static native String nativeGetDisplayName(String path);
+
+    /**
+     * Return the time of last use, as recorded by Launch Services. Called the "Date Last Opened" by Finder.
+     */
+    private static native long nativeGetLastUsedDate(String path);
+
+    /**
+     * Perform a saved search.
+     *
+     * @param path The .savedSearch file that defines the query.
+     * @return an array containing the paths of the files that satisfy the query or null if the query could not be
+     * performed.
+     */
+    private static native String[] nativeExecuteSavedSearch(String path);
+
 
     /**
      * Returns the version of the native code library. If the version

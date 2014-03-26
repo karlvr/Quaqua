@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaButtonUI.java  
+ * @(#)QuaquaButtonUI.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -12,9 +12,6 @@ import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.border.PressedCueBorder;
 import ch.randelshofer.quaqua.util.Debug;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashSet;
 import javax.swing.*;
 import javax.swing.plaf.*;
 import javax.swing.border.*;
@@ -99,8 +96,14 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
         super.installDefaults(b);
 
         String pp = getPropertyPrefix();
-        //b.setOpaque(QuaquaManager.getBoolean(pp+"opaque"));
-        QuaquaUtilities.installProperty(b, "opaque", UIManager.get(pp + "opaque"));
+
+        {
+            Boolean isOpaque = (Boolean) UIManager.get(pp + "opaque");
+            if (isOpaque != null) {
+                QuaquaUtilities.installProperty(b, "opaque", isOpaque);
+            }
+        }
+
         b.setRequestFocusEnabled(UIManager.getBoolean(pp + "requestFocusEnabled"));
         b.setFocusable(UIManager.getBoolean(pp + "focusable"));
     }
@@ -634,7 +637,7 @@ public class QuaquaButtonUI extends BasicButtonUI implements VisuallyLayoutable 
     Timer animationTimer;
     long sleep = 1000 / 30; // 30 fps
     animationTimer = new Timer((int) sleep, new ActionListener() {
-    
+
     public void actionPerformed(ActionEvent event) {
     animatedComponents.remove(b);
     b.repaint();

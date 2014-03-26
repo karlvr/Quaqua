@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaScrollPaneUI.java  
+ * @(#)QuaquaScrollPaneUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -68,11 +68,18 @@ public class QuaquaScrollPaneUI extends BasicScrollPaneUI implements VisuallyLay
             scrollpane.setLayout(layout);
             layout.syncWithScrollPane(scrollpane);
         }
-        if (QuaquaManager.getProperty("java.version").startsWith("1.5")) {
-            scrollpane.setOpaque(UIManager.getBoolean("ScrollPane.opaque"));
-        } else {
-            QuaquaUtilities.installProperty(scrollpane, "opaque", UIManager.get("ScrollPane.opaque"));
+
+        {
+            Boolean isOpaque = (Boolean) UIManager.get("ScrollPane.opaque");
+            if (isOpaque != null) {
+                if (QuaquaManager.getProperty("java.version").startsWith("1.5")) {
+                    scrollpane.setOpaque(isOpaque);
+                } else {
+                    QuaquaUtilities.installProperty(scrollpane, "opaque", isOpaque);
+                }
+            }
         }
+
         scrollpane.setFocusable(UIManager.getBoolean("ScrollPane.focusable"));
     }
 

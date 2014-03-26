@@ -1,42 +1,21 @@
 /*
- * @(#)Quaqua16MountainLionLookAndFeel.java  
- * 
+ * @(#)Quaqua16MountainLionLookAndFeel.java
+ *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
 package ch.randelshofer.quaqua.mountainlion;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.Point;
-import java.awt.Rectangle;
-
-import javax.swing.JTabbedPane;
-import javax.swing.LayoutStyle;
 import javax.swing.UIDefaults;
-import javax.swing.border.Border;
-import javax.swing.plaf.BorderUIResource;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.DimensionUIResource;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.plaf.InsetsUIResource;
 
-import ch.randelshofer.quaqua.BasicQuaquaNativeLookAndFeel;
-import ch.randelshofer.quaqua.QuaquaLayoutStyle;
 import ch.randelshofer.quaqua.QuaquaManager;
-import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.color.AlphaColorUIResource;
-import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.osx.OSXAquaPainter;
-import ch.randelshofer.quaqua.osx.OSXPreferences;
-import ch.randelshofer.quaqua.util.GroupBox;
+import ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
 
 /**
  * {@code Quaqua16MountainLionLookAndFeel}.
@@ -44,35 +23,21 @@ import ch.randelshofer.quaqua.util.GroupBox;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
-    private LayoutStyle layoutStyle;
+public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
 
+	public Quaqua16MountainLionLookAndFeel() {
+		super();
+	}
 
-    /**
-     * Creates a new instance.
-     */
-    public Quaqua16MountainLionLookAndFeel() {
-        // Our target look and feel is Apple's AquaLookAndFeel.
-        super("apple.laf.AquaLookAndFeel");
-    }
+	protected Quaqua16MountainLionLookAndFeel(String className) {
+		super(className);
+	}
 
-    /**
-     * Creates a new instance.
-     */
-    protected Quaqua16MountainLionLookAndFeel(String className) {
-        super(className);
-    }
-
-    /**
-     * Return a one line description of this look and feel implementation,
-     * e.g. "The CDE/Motif Look and Feel".   This string is intended for
-     * the user, e.g. in the title of a window or in a ToolTip message.
-     */
     @Override
     public String getDescription() {
         return "The Quaqua Mountain Lion Look and Feel "
                 + QuaquaManager.getVersion()
-                + " for J2SE 6";
+                + " for J2SE 6 and above";
     }
 
     /**
@@ -89,186 +54,15 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
         return "Quaqua Mountain Lion";
     }
 
-    /**
-     * Initialize the uiClassID to BasicComponentUI mapping.
-     * The JComponent classes define their own uiClassID constants
-     * (see AbstractComponent.getUIClassID).  This table must
-     * map those constants to a BasicComponentUI class of the
-     * appropriate type.
-     *
-     * @see #getDefaults
-     */
-    @Override
-    protected void initClassDefaults(UIDefaults table) {
-        String basicPrefix = "javax.swing.plaf.basic.Basic";
-        String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
-        String quaquaJaguarPrefix = "ch.randelshofer.quaqua.jaguar.QuaquaJaguar";
-        String quaquaPantherPrefix = "ch.randelshofer.quaqua.panther.QuaquaPanther";
-        String quaquaLeopardPrefix = "ch.randelshofer.quaqua.leopard.QuaquaLeopard";
-        String quaquaLionPrefix = "ch.randelshofer.quaqua.lion.QuaquaLion";
+	@Override
+	protected void initDesignDefaults(UIDefaults table) {
+		super.initDesignDefaults(table);
 
-        // NOTE: Change code below, to override different
-        // UI classes of the target look and feel.
-        Object[] uiDefaults = {
-            "BrowserUI", quaquaPrefix + "BrowserUI",
-            "ButtonUI", quaquaPrefix + "ButtonUI",
-            "CheckBoxUI", quaquaPrefix + "CheckBoxUI",
-            "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
-            "FileChooserUI", quaquaLionPrefix + "FileChooserUI",
-            "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
-            "RadioButtonUI", quaquaPrefix + "RadioButtonUI",
-            "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
-            "SeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            //"MenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            //"ProgressBarUI", basicPrefix + "ProgressBarUI",
-            "ScrollBarUI", quaquaPrefix + "ScrollBarUI",
-            "ScrollPaneUI", quaquaPrefix + "ScrollPaneUI",
-            "SplitPaneUI", quaquaPrefix + "SplitPaneUI",
-            //"SliderUI", quaquaPrefix + "SliderUI",
-            //"SpinnerUI", quaquaPrefix + "SpinnerUI",
-            "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
-            //"PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
-            "TextAreaUI", quaquaPrefix + "TextAreaUI",
-            "TextFieldUI", quaquaPrefix + "TextFieldUI",
-            "PasswordFieldUI", quaquaPrefix + "PasswordFieldUI",
-            "TextPaneUI", quaquaPrefix + "TextPaneUI",
-            "EditorPaneUI", quaquaPrefix + "EditorPaneUI",
-            "TreeUI", quaquaPrefix + "TreeUI",
-            "LabelUI", quaquaPrefix + "LabelUI",
-            "ListUI", quaquaPrefix + "ListUI",
-            //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
-            "ToolBarUI", quaquaPrefix + "ToolBarUI",
-            //"ToolTipUI", basicPrefix + "ToolTipUI",
-            "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
-            "TableUI", quaquaPrefix + "TableUI",
-            //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
-            // "InternalFrameUI", basicPrefix + "InternalFrameUI",
-            //"DesktopPaneUI", quaquaPrefix + "DesktopPaneUI",
-            //"DesktopIconUI", basicPrefix + "DesktopIconUI",
-            "OptionPaneUI", quaquaPrefix + "OptionPaneUI",
-            "PanelUI", quaquaPrefix + "PanelUI",
-            "ViewportUI", quaquaPrefix + "ViewportUI",
-            // Do not create a RootPaneUI on our own, unless we also
-            // create our own ButtonUI. Aqua's RootPaneUI is responsible
-            // for updating the border of the ButtonUI, when it is the default,
-            // and for propagating window activation/dectivation events to
-            // all the child components of a window.
-            "RootPaneUI", quaquaPrefix + "RootPaneUI",};
-        putDefaults(table, uiDefaults);
-
-        /*
-        // Popup menu fix only works fully when we have all AWT event permission
-        SecurityManager security = System.getSecurityManager();
-        try {
-        if (security != null) {
-        security.checkPermission(sun.security.util.SecurityConstants.ALL_AWT_EVENTS_PERMISSION);
-        }
-        uiDefaults = new Object[] {
-        "PopupMenuUI", quaquaPrefix + "PopupMenuUI",
-        };
-        } catch (SecurityException e) {
-        // do nothing
-        }*/
-        uiDefaults = new Object[]{
-                    "PopupMenuUI", quaquaPrefix + "PopupMenuUI",};
-        putDefaults(table, uiDefaults);
-
-
-        // FIXME Menu related workarounds work only if useScreenMenuBar is off.
-        if (!isUseScreenMenuBar()) {
-            uiDefaults = new Object[]{
-                        "MenuBarUI", quaquaPrefix + "MenuBarUI",
-                        "MenuUI", quaquaPrefix + "MenuUI",
-                        "MenuItemUI", quaquaPrefix + "MenuItemUI",
-                        "CheckBoxMenuItemUI", quaquaPrefix + "MenuItemUI",
-                        "RadioButtonMenuItemUI", quaquaPrefix + "MenuItemUI"
-                    };
-            putDefaults(table, uiDefaults);
-        }
-    }
-
-    protected boolean isBrushedMetal() {
-        String property;
-        property = QuaquaManager.getProperty("apple.awt.brushMetalLook", "false");
-        return property.equals("true");
-    }
-
-    protected boolean isUseScreenMenuBar() {
-        String property;
-        property = QuaquaManager.getProperty("apple.laf.useScreenMenuBar", "false");
-        return property.equals("true");
-    }
-
-    @Override
-    protected void initFontDefaults(UIDefaults table) {
-        super.initFontDefaults(table);
-
-        Object smallSystemFont = new UIDefaults.ProxyLazyValue(
-                "javax.swing.plaf.FontUIResource",
-                null,
-                new Object[]{"Lucida Grande", Font.PLAIN, 11});
-        Object emphasizedSmallSystemFont = new UIDefaults.ProxyLazyValue(
-                "javax.swing.plaf.FontUIResource",
-                null,
-                new Object[]{"Lucida Grande", Font.BOLD, 11});
-
-        Object[] uiDefaults = {
-            "FileChooser.previewLabelFont", smallSystemFont,
-            //
-        };
-        putDefaults(table, uiDefaults);
-    }
-
-    @Override
-    protected void initSystemColorDefaults(UIDefaults table) {
-        super.initSystemColorDefaults(table);
-        /*
-        if (QuaquaManager.getDesign() != QuaquaManager.TIGER) {
-        boolean isBrushedMetal = isBrushedMetal();
-        Object controlBackground = (isBrushedMetal)
-        ? table.get("control")
-        : makeTextureColor(0xf4f4f4, pantherDir+"Panel.texture.png");
-        Object toolBarBackground = (isBrushedMetal)
-        ? table.get("ToolBar.background")
-        : makeTextureColor(0xf4f4f4, pantherDir+"ToolBar.texture.png");
-        Object menuBackground = (isBrushedMetal)
-        ? table.get("menu")
-        : makeTextureColor(0xf4f4f4, pantherDir+"MenuBar.texture.png");
-        Object menuHighlight = makeTextureColor(0x3471cf, pantherDir+"MenuBar.texture.S.png");
-
-        Object[] uiDefaults = {
-        "window", controlBackground, // Default color for the interior of windows
-        "control", controlBackground, // Default color for controls (buttons, sliders, etc)
-        "menu", menuBackground, // Default color for the interior of menus
-        "menuHighlight", menuHighlight, // Default color for the interior of menus
-
-        // Quaqua specific 'system' colors
-        "listHighlight", table.get("textHighlight"), // List background color when selected
-        "listHighlightText", table.get("textHighlightText"), // List color when selected
-        "listHighlightBorder", new ColorUIResource(0x808080), // List color when selected
-        };
-        putDefaults(table, uiDefaults);
-        }*/
-
-    }
-
-    @Override
-    protected void initDesignDefaults(UIDefaults table) {
-        boolean isBrushedMetal = isBrushedMetal();
-        ColorUIResource disabledForeground = new ColorUIResource(128, 128, 128);
-        Object menuBackground = new ColorUIResource(0xffffff);
-        ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);
-        Object toolBarBackground = table.get("control");
         Object toolBarTitleBackground;
+
         final String javaVersion = QuaquaManager.getProperty("java.version", "");
-		if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
-			toolBarTitleBackground = table.get("control");
-		} else {
-			toolBarTitleBackground = new InactivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
-		}
-        Object panelBackground = new ColorUIResource(0xededed);
-        ColorUIResource inactiveSelectionBackground = new ColorUIResource(208, 208, 208);
-        Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
+        if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
+            toolBarTitleBackground = table.get("control");
 
         BorderUIResource.CompoundBorderUIResource browserCellBorder = new BorderUIResource.CompoundBorderUIResource(
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
@@ -620,52 +414,14 @@ public class Quaqua16MountainLionLookAndFeel extends BasicQuaquaNativeLookAndFee
                         "RadioButtonMenuItem.margin", new InsetsUIResource(0, 8, 0, 8), //
                     };
         } else {
-           Border menuBorder = new BorderUIResource.EmptyBorderUIResource(1, 1, 1, 1);
-            GradientColor.UIResource menuSelectionBackground = new GradientColor.UIResource(0x3875d7, 0x5170f6, 0x1a43f3);
-            uiDefaults = new Object[]{
-                        "CheckBoxMenuItem.checkIcon", makeButtonStateIcon(commonDir + "CheckBoxMenuItem.icons.png", 6, new Point(0, 1)),
-                        "CheckBoxMenuItem.border", menuBorder,
-                        "CheckBoxMenuItem.selectionBackground", menuSelectionBackground,
-                        "Menu.checkIcon", makeIcon(getClass(), commonDir + "MenuItem.checkIcon.png"),
-                        "Menu.arrowIcon", makeButtonStateIcon(commonDir + "MenuItem.arrowIcons.png", 2, new Point(0, 1)),
-                        "Menu.margin", new InsetsUIResource(0, 5, 0, 8),
-                        "Menu.menuPopupOffsetX", 0,
-                        "Menu.menuPopupOffsetY", 0,
-                        "Menu.submenuPopupOffsetX", 0,
-                        "Menu.submenuPopupOffsetY", -4,
-                        "Menu.useMenuBarBackgroundForTopLevel", Boolean.TRUE,
-                        "Menu.border", menuBorder,
-                        "Menu.selectionBackground", menuSelectionBackground,
-                        //"MenuBar.background", new TextureColorUIResource(0xf4f4f4, getClass().getResource(pantherDir+"MenuBar.texture.png")),
-                        //"MenuBar.border", new BorderUIResource.MatteBorderUIResource(0,0,1,0,new Color(128,128,128)),
-                        "MenuBar.border", makeImageBevelBackgroundBorder(snowLeopardDir + "MenuBar.border.png", new Insets(18, 0, 2, 0), new Insets(0, 0, 0, 0), true),
-                        "MenuBar.selectedBorder", makeImageBevelBackgroundBorder(snowLeopardDir + "MenuBar.selectedBorder.png", new Insets(18, 0, 2, 0), new Insets(0, 0, 0, 0), true),
-                        "MenuBar.margin", new InsetsUIResource(1, 8, 2, 8),
-                        "MenuBar.shadow", null,
-                        "MenuItem.acceleratorSelectionForeground", menuSelectionForeground,
-                        "MenuItem.checkIcon", makeIcon(getClass(), commonDir + "MenuItem.checkIcon.png"),
-                        "MenuItem.border", menuBorder,
-                        "MenuItem.selectionBackground", menuSelectionBackground,
-                        "RadioButtonMenuItem.checkIcon", makeButtonStateIcon(commonDir + "RadioButtonMenuItem.icons.png", 6),
-                        "RadioButtonMenuItem.border", menuBorder, 
-                        "RadioButtonMenuItem.selectionBackground", menuSelectionBackground,
-                        /* */
-            };
+            toolBarTitleBackground = new InactivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
         }
+
+        Object[] uiDefaults = new Object[] {
+                "control", toolBarTitleBackground,
+                "ToolBar.title.background", toolBarTitleBackground,
+        };
+
         putDefaults(table, uiDefaults);
-
     }
-
-    @Override
-    public boolean getSupportsWindowDecorations() {
-        return true;
-    }
-    @Override
-    public LayoutStyle getLayoutStyle() {
-        if (layoutStyle == null) {
-            layoutStyle = new QuaquaLayoutStyle();
-        }
-        return layoutStyle;
-    }
-
 }

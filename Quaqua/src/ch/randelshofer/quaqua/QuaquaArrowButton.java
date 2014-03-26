@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaArrowButton.java 
+ * @(#)QuaquaArrowButton.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -20,13 +20,13 @@ import javax.swing.*;
  */
 public class QuaquaArrowButton extends JButton implements SwingConstants {
     private JScrollBar scrollbar;
-    
+
     public QuaquaArrowButton(JScrollBar scrollbar) {
         this.scrollbar = scrollbar;
         setRequestFocusEnabled(false);
         setOpaque(false);
     }
-    
+
     public void paint(Graphics g) {
         return;
     }
@@ -46,15 +46,17 @@ public class QuaquaArrowButton extends JButton implements SwingConstants {
             }
         }
     }
-    
+
     public Dimension getMinimumSize() {
         return new Dimension(5, 5);
     }
-    
+
     public Dimension getMaximumSize() {
         return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
     }*/
-    
+
+    @Override
+    @SuppressWarnings("deprecation")
     public boolean isFocusTraversable() {
         return false;
     }

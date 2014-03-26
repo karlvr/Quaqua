@@ -1,9 +1,9 @@
 /*
  * @(#)OSXClipboardTransferable.java
- * 
+ *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
@@ -41,7 +41,7 @@ import java.security.AccessControlException;
  * >NSPasteboard</a>.
  *
  * @author Werner Randelshofer
- * @version $Id: OSXClipboardTransferable.java 82 2009-06-11 08:57:33Z wrandelshofer $
+ * @version $Id$
  */
 public class OSXClipboardTransferable implements Transferable {
 

@@ -1,5 +1,5 @@
 /*
- * @(#)TableTest.java 
+ * @(#)TableTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -7,8 +7,8 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.util.Methods;
+
 import java.awt.*;
 import java.util.EventObject;
 import javax.swing.*;
@@ -87,11 +87,14 @@ public class TableTest extends javax.swing.JPanel {
     /** Creates new form. */
     public TableTest() {
         initComponents();
+
+        TransferHandler th = new TransferHandlerTest.TableTransferHandler();
+
         /*
         plainTable = new JTable() {
         public void repaint(long tm, int x, int y, int w, int h) {
         super.repaint(tm, x, y, w, h);
-        
+
         System.out.println("JTable.repaint("+tm+","+x+","+y+" "+w+" "+h);
         if (w == 192) {
         new Throwable().printStackTrace();
@@ -116,6 +119,7 @@ public class TableTest extends javax.swing.JPanel {
         cm.getColumn(4).setCellRenderer(new DefaultCellRenderer(comboBox = new JComboBox(rendererComboModel)));
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox = new JComboBox(editorComboModel)));
         plainTable.putClientProperty("Quaqua.Table.style", "plain");
+        plainTable.setTransferHandler(th);
 
         stripedTable.setModel(new MyTableModel());
         rendererComboModel = new DefaultComboBoxModel(new Object[]{"Pop", "Rock", "R&B"});
@@ -134,6 +138,7 @@ public class TableTest extends javax.swing.JPanel {
         stripedTable.putClientProperty("Quaqua.Table.style", "striped");
         stripedTable.setShowHorizontalLines(false);
         stripedTable.setShowVerticalLines(true);
+        stripedTable.setTransferHandler(th);
 
         bigFontTable.setModel(new MyTableModel());
         JCheckBox cb = new JCheckBox();
@@ -154,6 +159,7 @@ public class TableTest extends javax.swing.JPanel {
         comboBox.setEditable(true);
         cm.getColumn(4).setCellEditor(new DefaultCellEditor2(comboBox));
         bigFontTable.setRowHeight(bigFontTable.getRowHeight() + 7);
+        bigFontTable.setTransferHandler(th);
         //largeFontTable.setEnabled(false);
 
         showHorizontalLinesCheckBox.setSelected(plainTable.getShowHorizontalLines());
@@ -163,10 +169,11 @@ public class TableTest extends javax.swing.JPanel {
         installDefaultEditors(plainTable);
         installDefaultEditors(bigFontTable);
 
-        if (QuaquaManager.getProperty("java.version").startsWith("1.5")) {
+        if (TestManager.getJavaVersion().startsWith("1.5")) {
             enableSortingBox.setVisible(false);
         }
 
+        multipleSelectionCheckBoxActionPerformed(null);
     }
 
     private void installDefaultEditors(JTable t) {
@@ -185,7 +192,7 @@ public class TableTest extends javax.swing.JPanel {
     public static void main(String args[]) {
         try {
             System.setProperty("Quaqua.Table.useJ2SE5MouseHandler", "true");
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -224,6 +231,8 @@ public class TableTest extends javax.swing.JPanel {
         allowColumnSelectionCheckBox = new javax.swing.JCheckBox();
         shouldSelectCellCheckBox = new javax.swing.JCheckBox();
         enableSortingBox = new javax.swing.JCheckBox();
+        multipleSelectionCheckBox = new javax.swing.JCheckBox();
+        enabledDragCheckBox = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setPreferredSize(new java.awt.Dimension(400, 300));
@@ -294,7 +303,7 @@ public class TableTest extends javax.swing.JPanel {
         bigFontTableScrollPane.setVerticalScrollBarPolicy(javax.swing.ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         bigFontTableScrollPane.setEnabled(false);
 
-        bigFontTable.setFont(new java.awt.Font("Lucida Grande", 0, 16));
+        bigFontTable.setFont(new java.awt.Font("Lucida Grande", 0, 16)); // NOI18N
         bigFontTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         bigFontTableScrollPane.setViewportView(bigFontTable);
 
@@ -388,6 +397,31 @@ public class TableTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         add(enableSortingBox, gridBagConstraints);
+
+        multipleSelectionCheckBox.setSelected(true);
+        multipleSelectionCheckBox.setText("Multiple selection");
+        multipleSelectionCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                multipleSelectionCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(multipleSelectionCheckBox, gridBagConstraints);
+
+        enabledDragCheckBox.setText("Enable drag");
+        enabledDragCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enabledDragCheckBoxActionPerformed(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        add(enabledDragCheckBox, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
 
     private void updateShowVerticalLines(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_updateShowVerticalLines
@@ -471,18 +505,50 @@ public class TableTest extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_enableSortingPerformed
+
+    private void multipleSelectionCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_multipleSelectionCheckBoxActionPerformed
+        boolean b = multipleSelectionCheckBox.isSelected();
+        int selectionMode = b ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION;
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
+            Component c = getComponent(i);
+            if (c instanceof JScrollPane) {
+                c = ((JScrollPane) c).getViewport().getView();
+            }
+            if (c instanceof JTable) {
+                JTable table = (JTable) c;
+                table.getSelectionModel().setSelectionMode(selectionMode);
+            }
+        }
+    }//GEN-LAST:event_multipleSelectionCheckBoxActionPerformed
+
+    private void enabledDragCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enabledDragCheckBoxActionPerformed
+        boolean b = enabledDragCheckBox.isSelected();
+        for (int i = 0, n = getComponentCount(); i < n; i++) {
+            Component c = getComponent(i);
+            if (c instanceof JScrollPane) {
+                c = ((JScrollPane) c).getViewport().getView();
+            }
+            if (c instanceof JTable) {
+                JTable table = (JTable) c;
+                table.setDragEnabled(b);
+            }
+        }
+    }//GEN-LAST:event_enabledDragCheckBoxActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox allowColumnSelectionCheckBox;
     private javax.swing.JCheckBox allowRowSelectionCheckBox;
     private javax.swing.JTable bigFontTable;
     private javax.swing.JScrollPane bigFontTableScrollPane;
     private javax.swing.JCheckBox enableSortingBox;
+    private javax.swing.JCheckBox enabledDragCheckBox;
     private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.JSeparator jSeparator12;
+    private javax.swing.JCheckBox multipleSelectionCheckBox;
     private javax.swing.JTable plainTable;
     private javax.swing.JScrollPane plainTableScrollPane;
     private javax.swing.JCheckBox shouldSelectCellCheckBox;

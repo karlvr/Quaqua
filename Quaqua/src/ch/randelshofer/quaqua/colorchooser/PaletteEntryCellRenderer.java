@@ -10,7 +10,6 @@ package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.border.*;
 /**
  * PaletteEntryCellRenderer.
  *
@@ -28,26 +27,26 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
     private Color closestMarker1 = new Color(0xe6e6e6);
     private Color closestMarker2 = new Color(0xededed);
     private Color closestMarker3 = new Color(0xf0f0f0);
-    
-    
+
+
     static class ColorIcon implements Icon {
         private Color color = Color.black;
-        
+
         public void setColor(Color c) {
             this.color = c;
         }
         public Color getColor() {
             return color;
         }
-        
+
         public int getIconHeight() {
             return 15;
         }
-        
+
         public int getIconWidth() {
             return 25;
         }
-        
+
         public void paintIcon(Component c, Graphics g, int x, int y) {
             g.setColor(getColor());
             g.fillRect(x + 1, y + 1, getIconWidth() - 2, getIconHeight() - 2);
@@ -55,11 +54,11 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
             g.drawRect(x, y, getIconWidth() - 1, getIconHeight() - 1);
         }
     }
-    
-    
+
+
     private ColorIcon icon;
     private boolean isClosestColor;
-    
+
     /**
      * Creates a new instance.
      */
@@ -68,14 +67,14 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
         setIcon(icon);
         setOpaque(false);
     }
-    
+
     public Component getListCellRendererComponent(
     JList list,
     Object value,
     int index,
     boolean isSelected,
     boolean cellHasFocus) {
-        
+
         setComponentOrientation(list.getComponentOrientation());
         if (isSelected) {
             setBackground(UIManager.getColor("ColorChooser.listSelectionBackground"));
@@ -87,18 +86,18 @@ public class PaletteEntryCellRenderer extends DefaultListCellRenderer {
             PaletteListModel model = (PaletteListModel) list.getModel();
             isClosestColor = model.getClosestIndex() == index;
         }
-        
+
         setEnabled(list.isEnabled());
         setFont(list.getFont());
         //setBorder((cellHasFocus) ? UIManager.getBorder("List.focusCellHighlightBorder") : noFocusBorder);
-        
+
         PaletteEntry entry = (PaletteEntry) value;
         icon.setColor(entry.getColor());
         setText(entry.getName());
-        
+
         return this;
     }
-    
+
     public void paintComponent(Graphics g) {
         int width = getWidth();
         int height = getHeight();

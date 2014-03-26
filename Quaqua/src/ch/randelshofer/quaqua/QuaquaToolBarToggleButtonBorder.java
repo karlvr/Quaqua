@@ -11,7 +11,6 @@ package ch.randelshofer.quaqua;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.plaf.*;
 /**
  * ToolBarButtonBorder.
  *
@@ -24,18 +23,18 @@ public class QuaquaToolBarToggleButtonBorder implements Border {
     public Insets getBorderInsets(Component c) {
         return new Insets(6,10,6,10);
     }
-    
+
     public boolean isBorderOpaque() {
         return false;
     }
-    
+
     public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
         AbstractButton b = (AbstractButton) c;
         ButtonModel  model = b.getModel();
         if (model.isSelected()) {
             g.setColor(fillColor);
             g.fillRect(x, y, width, height);
-            
+
             int orientation = -1;
             if (b.getParent() instanceof JToolBar) {
                 orientation = ((JToolBar) b.getParent()).getOrientation();

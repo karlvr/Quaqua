@@ -7,7 +7,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -22,13 +21,13 @@ public class NonEDTTest {
 
     public static void main(String[] args) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
-        } catch (UnsupportedLookAndFeelException ex) {
+            UIManager.setLookAndFeel(TestManager.getQuaquaLookAndFeelClassName());
+        } catch (Exception ex) {
             Logger.getLogger(NonEDTTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 
         JFileChooser fc = new JFileChooser();
-        
+
         JFrame f = new JFrame("NonEDTest");
         f.getContentPane().add(fc);
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaJaguarTabbedPaneUI.java  
+ * @(#)QuaquaJaguarTabbedPaneUI.java
  *
  * Copyright (c) 2001-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -32,9 +32,9 @@ import javax.swing.event.ChangeListener;
  * if not enough space is available to render all tabs in a single line.
  * <p>
  * Supports the following client properties on the children of the JTabbedPane:
- * <code>Quaqua.TabbedPaneChild.contentBackground</code> specifies the background 
+ * <code>Quaqua.TabbedPaneChild.contentBackground</code> specifies the background
  * Color to be used to fill the content border.
- * <code>Quaqua.TabbedPaneChild.contentInsets</code> specifies the insets 
+ * <code>Quaqua.TabbedPaneChild.contentInsets</code> specifies the insets
  * to be used to lay out the child component inside the JTabbedPane.
  *
  * @author Werner Randelshofer, Switzerland
@@ -238,7 +238,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
         LookAndFeel.installColorsAndFont(tabPane, prefix + "background",
                 prefix + "foreground", prefix + "font");
-        // Workaround for Java 1.4: For some reason, the background color 
+        // Workaround for Java 1.4: For some reason, the background color
         // is not set by LookAndFeel.installColorsAndFont.
         tabPane.setBackground(UIManager.getColor(prefix + "background"));
 
@@ -1282,7 +1282,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
             int start = tabRuns[i];
             int next = tabRuns[i == (runCount - 1)? 0 : i + 1];
             int end = (next != 0? next - 1 : tabCount - 1);
-            
+
             maxPad = Math.max(maxPad, rects[end].x + rects[end].width - rects[start].x);
             }*/
             switch (tabPlacement) {
@@ -1601,7 +1601,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI
 
     public boolean requestFocusForVisibleComponent() {
         Component visibleComponent = getVisibleComponent();
-        if (visibleComponent != null && visibleComponent.isFocusTraversable()) {
+        if (visibleComponent != null && visibleComponent.isFocusable()) {
             QuaquaUtilities.compositeRequestFocus(visibleComponent);
             return true;
         } else if (visibleComponent instanceof JComponent) {

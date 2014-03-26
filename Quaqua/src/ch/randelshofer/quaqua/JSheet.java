@@ -1,5 +1,5 @@
 /*
- * @(#)JSheet.java 
+ * @(#)JSheet.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -151,7 +151,7 @@ public class JSheet extends JDialog {
                 Methods.invokeIfExistsWithEnum(this, "setModalityType", "java.awt.Dialog$ModalityType", "DOCUMENT_MODAL");
             }
         }
-        
+
         // We move the sheet when the user moves the owner, so that it
         // will always stay centered below the title bar of the owner.
         // If the user has moved the owner, we 'forget' the shift back location,
@@ -172,7 +172,7 @@ public class JSheet extends JDialog {
                 }
             }
         };
-        
+
         // If the sheet is experimental, we need some special handling
         // so that the JSheet is handled correctly
         windowEventHandler = new WindowAdapter() {
@@ -192,7 +192,7 @@ public class JSheet extends JDialog {
     protected boolean isShowAsSheet() {
         return UIManager.getBoolean("Sheet.showAsSheet");
     }
-    
+
     protected boolean isExperimentalSheet() {
         return isExperimentalSheet && !isNativeSheetSupported();
     }
@@ -387,6 +387,7 @@ public class JSheet extends JDialog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void hide() {
         if (isExperimentalSheet()) {
             OSXSheetSupport.hideSheet(this);
@@ -440,6 +441,7 @@ public class JSheet extends JDialog {
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public void show() {
         if (isExperimentalSheet()) {
             // Install the sheet

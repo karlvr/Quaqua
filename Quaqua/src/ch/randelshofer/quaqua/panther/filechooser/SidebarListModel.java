@@ -7,6 +7,7 @@
  */
 package ch.randelshofer.quaqua.panther.filechooser;
 
+import ch.randelshofer.quaqua.ext.base64.Base64;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
@@ -16,7 +17,6 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.base64.*;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 
 /**

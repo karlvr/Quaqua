@@ -6,13 +6,13 @@
  * accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.colorchooser.*;
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
+
 /**
  * ColorWheelTest.
  *
@@ -20,7 +20,7 @@ import javax.swing.*;
  * @version 1.0 August 27, 2005 Created.
  */
 public class ColorWheelTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
@@ -31,7 +31,7 @@ public class ColorWheelTest extends javax.swing.JPanel {
         add(cw);
         add(new JLabel("Color Wheel Test"), BorderLayout.SOUTH);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -42,18 +42,18 @@ public class ColorWheelTest extends javax.swing.JPanel {
         setLayout(new java.awt.BorderLayout());
 
     }//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         JFrame f = new JFrame("Color Wheel Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.getContentPane().add(new ColorWheelTest());

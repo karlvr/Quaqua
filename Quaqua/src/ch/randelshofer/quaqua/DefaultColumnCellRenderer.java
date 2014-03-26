@@ -1,5 +1,5 @@
 /*
- * @(#)DefaultColumnCellRenderer.java 
+ * @(#)DefaultColumnCellRenderer.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
@@ -14,8 +14,6 @@ package ch.randelshofer.quaqua;
 import ch.randelshofer.quaqua.util.*;
 import java.awt.*;
 import java.awt.image.*;
-import javax.accessibility.Accessible;
-import javax.accessibility.AccessibleContext;
 import javax.swing.*;
 import javax.swing.border.*;
 

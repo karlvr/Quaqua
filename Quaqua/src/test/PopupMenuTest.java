@@ -11,10 +11,7 @@ package test;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.MenuDragMouseEvent;
-import javax.swing.plaf.*;
-import javax.swing.border.*;
-import ch.randelshofer.quaqua.*;
+
 /**
  * PopupMenuTest.
  *
@@ -23,17 +20,17 @@ import ch.randelshofer.quaqua.*;
  */
 public class PopupMenuTest extends javax.swing.JPanel {
     private JPopupMenu popupMenu;
-    
+
     /** Creates new form. */
     public PopupMenuTest() {
         initComponents();
-        
+
         ActionListener a = new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 System.out.println(evt);
             }
         };
-        
+
         JPopupMenu pm = new JPopupMenu();
         JMenu m;
         JMenuItem mi;
@@ -48,7 +45,7 @@ public class PopupMenuTest extends javax.swing.JPanel {
         mi = new JMenuItem("Menu Item 3");
         mi.addActionListener(a);
         pm.add(mi);
-        
+
         m = new JMenu("Menu 1");
         mi = new JMenuItem("Menu Item 1.1");
         mi.addActionListener(a);
@@ -57,23 +54,23 @@ public class PopupMenuTest extends javax.swing.JPanel {
         mi.addActionListener(a);
         m.add(mi);
         pm.add(m);
-        
+
         pm.addSeparator();
         cbmi = new JCheckBoxMenuItem("Checkbox Menu Item");
         pm.add(cbmi);
-        
+
         pm.addSeparator();
         ButtonGroup group = new ButtonGroup();
         crmi = new JRadioButtonMenuItem("Radio Menu Item 1");
         crmi.setSelected(true);
         group.add(crmi);
         pm.add(crmi);
-        
+
         crmi = new JRadioButtonMenuItem("Radio Menu Item 2");
         group.add(crmi);
         pm.add(crmi);
         popupMenu = pm;
-        
+
         /*
         //setComponentPopupMenu(pm);
         //jLabel1.setComponentPopupMenu(pm);
@@ -96,12 +93,12 @@ public class PopupMenuTest extends javax.swing.JPanel {
             protected void showPopupMenu(MouseEvent evt) {
                 popupMenu.show((Component) evt.getSource(), evt.getX(), evt.getY());
             }
-            
+
         };
-        
+
         popupLabel1.addMouseListener(popper1);
         popupField.addMouseListener(popper1);
-        
+
         MouseAdapter popper2 = new MouseAdapter() {
             public void mousePressed(MouseEvent evt) {
                 if (evt.isPopupTrigger()) {
@@ -115,22 +112,22 @@ public class PopupMenuTest extends javax.swing.JPanel {
             }
             protected void showPopupMenu(MouseEvent evt) {
                 Dimension ps = popupMenu.getPreferredSize();
-                popupMenu.show(popupLabel2, 
-                        evt.getX() - ps.width / 2, 
+                popupMenu.show(popupLabel2,
+                        evt.getX() - ps.width / 2,
                         evt.getY() - ps.height / 2);
             }
-            
+
         };
-        
+
         popupLabel2.addMouseListener(popper2);
     }
-    
-    
+
+
     public static void main(String args[]) {
         //UIManager.put("PopupMenu.border", new BorderUIResource.EmptyBorderUIResource(4,0,4,0));
-        
+
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
             //   UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
@@ -141,7 +138,7 @@ public class PopupMenuTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -193,13 +190,13 @@ public class PopupMenuTest extends javax.swing.JPanel {
         gridBagConstraints.insets = new java.awt.Insets(20, 20, 20, 20);
         add(noteLabel, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel noteLabel;
     private javax.swing.JTextField popupField;
     private javax.swing.JLabel popupLabel1;
     private javax.swing.JLabel popupLabel2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

@@ -32,7 +32,7 @@ static jclass sheetSupportClass = nil;
 */
 JNIEXPORT jint JNICALL JNI_OnLoad(JavaVM *vm, void *reserved) {
 	jvm = vm;
-	
+
 	return JNI_VERSION_1_4;
 }
 
@@ -64,7 +64,7 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeSho
 
 /*
  * Hide a given Java sheet.
- * 
+ *
  * Class:     ch_randelshofer_quaqua_osx_OSXSheetSupport
  * Method:    nativeHideSheet
  * Signature: (Lch/randelshofer/quaqua/JSheet;)V
@@ -78,10 +78,10 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
 - (id)initWithSheet:(jobject)s onWindow:(jobject)p jniEnv:(JNIEnv *)env
 {
     [super init];
-    
+
     sheetWindow = GetWindowFromComponent(s, env);
     parentWindow = GetWindowFromComponent(p, env);
-    
+
     return self;
 }
 
@@ -101,27 +101,27 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
  - (void) sheetDidEnd:(NSWindow *)window returnCode:(int)returnCode contextInfo:(void *)contextInfo {
     JNIEnv *env = NULL;
 	bool shouldDetach = false;
-    
-	// Find out if we actually need to attach the current thread to obtain a JNIEnv, 
+
+	// Find out if we actually need to attach the current thread to obtain a JNIEnv,
 	// or if one is already in place
 	// This will determine whether DetachCurrentThread should be called later
 	if (GetJNIEnv(&env, &shouldDetach) != JNI_OK) {
 		NSLog(@"sheetDidEnd: could not attach to JVM");
 		return;
 	}
-	
-	// If we have file results, translate them to Java strings and tell the Java JSheetDelegate 
+
+	// If we have file results, translate them to Java strings and tell the Java JSheetDelegate
 	// class to notify our listener
     if (fireFinishedMethodID != NULL) {
 		// Callback; Java will invoke fireSheetFinished on Java sheet support
         // That's where it hang:
 		(*env)->CallStaticVoidMethod(env, sheetSupportClass, fireFinishedMethodID, sheet);
 	}
-	
+
 	// We're done with the sheet and its owner; release the global refs
 	(*env)->DeleteGlobalRef(env, sheet);
 	(*env)->DeleteGlobalRef(env, parent);
-    
+
 	// IMPORTANT: if GetJNIEnv attached for us, we need to detach when done
 	if (shouldDetach) {
         (*jvm)->DetachCurrentThread(jvm);
@@ -136,11 +136,11 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXSheetSupport_nativeHid
 
 /*
  Determines whether the current thread is already attached to the VM,
- and tells the caller if it needs to later DetachCurrentThread 
+ and tells the caller if it needs to later DetachCurrentThread
 
  CALL THIS ONCE WITHIN A FUNCTION SCOPE and use a local boolean
- for mustDetach; if you do not, the first call might attach, setting 
- mustDetach to true, but the second will misleadingly set mustDetach 
+ for mustDetach; if you do not, the first call might attach, setting
+ mustDetach to true, but the second will misleadingly set mustDetach
  to false, leaving a dangling JNIEnv
 */
 jint GetJNIEnv(JNIEnv **env, bool *mustDetach) {
@@ -166,37 +166,41 @@ NSWindow * GetWindowFromComponent(jobject parent, JNIEnv *env) {
 	JAWT_MacOSXDrawingSurfaceInfo* dsi_mac;
 	jboolean result;
 	jint lock;
-    
+
+    /*
+        JAWT_GetAWT is deprecated in JDK 7. This class should not be used in JDK 7.
+    */
+
 	// Get the AWT
 	awt.version = JAWT_VERSION_1_4;
 	result = JAWT_GetAWT(env, &awt);
 	assert(result != JNI_FALSE);
-    
+
 	// Get the drawing surface
 	ds = awt.GetDrawingSurface(env, parent);
 	assert(ds != NULL);
-    
+
 	// Lock the drawing surface
 	lock = ds->Lock(ds);
 	assert((lock & JAWT_LOCK_ERROR) == 0);
-    
+
 	// Get the drawing surface info
 	dsi = ds->GetDrawingSurfaceInfo(ds);
-    
+
 	// Get the platform-specific drawing info
 	dsi_mac = (JAWT_MacOSXDrawingSurfaceInfo*)dsi->platformInfo;
-    
+
 	// Get the NSView corresponding to the component that was passed
 	NSView *view = dsi_mac->cocoaViewRef;
-	
+
 	// Free the drawing surface info
 	ds->FreeDrawingSurfaceInfo(dsi);
 	// Unlock the drawing surface
 	ds->Unlock(ds);
-    
+
 	// Free the drawing surface
 	awt.FreeDrawingSurface(ds);
-	
+
 	// Get the view's parent window; this is what we need to show a sheet
 	return [view window];
 }

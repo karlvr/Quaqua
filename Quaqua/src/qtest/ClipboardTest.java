@@ -1,14 +1,14 @@
 /*
- * @(#)ClipboardTest.java 
- * 
+ * @(#)ClipboardTest.java
+ *
  * Copyright (c) 2009 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXClipboardTransferable;
 import ch.randelshofer.quaqua.osx.OSXImageIO;

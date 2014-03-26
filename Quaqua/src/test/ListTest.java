@@ -8,8 +8,11 @@
 
 package test;
 
-import javax.swing.JComponent;
-import javax.swing.JList;
+import ch.randelshofer.quaqua.QuaquaManager;
+
+import javax.swing.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * ListTest.
@@ -18,12 +21,12 @@ import javax.swing.JList;
  * @version 1.0  13 February 2005  Created.
  */
 public class ListTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public ListTest() {
         initComponents();
         stripedList.putClientProperty("Quaqua.List.style","striped");
-       
+
         disabledList.setEnabled(false);
         disabledList.setSelectedIndex(1);
         verticalRadio.putClientProperty("layoutOrientation", JList.VERTICAL);
@@ -33,8 +36,50 @@ public class ListTest extends javax.swing.JPanel {
         list.setVisibleRowCount(0);
         stripedList.setVisibleRowCount(0);
         disabledList.setVisibleRowCount(0);
+        updateLists();
+
+        ItemListener l = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                updateLists();
+            }
+        };
+
+        enabledDragOption.addItemListener(l);
+        multipleSelectionOption.addItemListener(l);
     }
-    
+
+    private void updateLists() {
+        list.setDragEnabled(enabledDragOption.isSelected());
+        stripedList.setDragEnabled(enabledDragOption.isSelected());
+        disabledList.setDragEnabled(enabledDragOption.isSelected());
+        list.setSelectionMode(multipleSelectionOption.isSelected() ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
+        stripedList.setSelectionMode(multipleSelectionOption.isSelected() ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
+        disabledList.setSelectionMode(multipleSelectionOption.isSelected() ? ListSelectionModel.MULTIPLE_INTERVAL_SELECTION : ListSelectionModel.SINGLE_SELECTION);
+    }
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(new Runnable() {
+
+            public void run() {
+                try {
+                    UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                JFrame f = new JFrame("ListTest");
+                f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                f.getContentPane().add(new ListTest());
+                f.pack();
+                f.setVisible(true);
+            }
+        });
+    }
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -61,6 +106,8 @@ public class ListTest extends javax.swing.JPanel {
         verticalRadio = new javax.swing.JRadioButton();
         hwrapRadio = new javax.swing.JRadioButton();
         vwrapRadio = new javax.swing.JRadioButton();
+        multipleSelectionOption = new javax.swing.JCheckBox();
+        enabledDragOption = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
         setLayout(new java.awt.GridBagLayout());
@@ -181,6 +228,13 @@ public class ListTest extends javax.swing.JPanel {
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         add(jPanel1, gridBagConstraints);
+
+        multipleSelectionOption.setSelected(true);
+        multipleSelectionOption.setLabel("Multiple Selection");
+        add(multipleSelectionOption, new java.awt.GridBagConstraints());
+
+        enabledDragOption.setLabel("Enable drag");
+        add(enabledDragOption, new java.awt.GridBagConstraints());
     }// </editor-fold>//GEN-END:initComponents
 
     private void layoutOrientationRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layoutOrientationRadioPerformed
@@ -189,11 +243,12 @@ public class ListTest extends javax.swing.JPanel {
        disabledList.setLayoutOrientation(lo);
        list.setLayoutOrientation(lo);
     }//GEN-LAST:event_layoutOrientationRadioPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel disabled;
     private javax.swing.JList disabledList;
+    private javax.swing.JCheckBox enabledDragOption;
     private javax.swing.JRadioButton hwrapRadio;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
@@ -206,9 +261,10 @@ public class ListTest extends javax.swing.JPanel {
     private javax.swing.JSeparator jSeparator11;
     private javax.swing.ButtonGroup layoutOrientationGroup;
     private javax.swing.JList list;
+    private javax.swing.JCheckBox multipleSelectionOption;
     private javax.swing.JList stripedList;
     private javax.swing.JRadioButton verticalRadio;
     private javax.swing.JRadioButton vwrapRadio;
     // End of variables declaration//GEN-END:variables
-    
+
 }

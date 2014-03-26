@@ -1,21 +1,20 @@
 /*
  * @(#)OSXPainterTest.java  1.0  2011-07-26
- * 
- * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
+ *
+ * Copyright (c) 2011 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.awt.image.ConvolveOp;
 import java.awt.image.DataBufferInt;
@@ -53,8 +52,8 @@ public class OSXPainterTest extends javax.swing.JPanel {
             float[] gaussian = new float[r * 2 + 1];
 
             // compute the gaussian
-            float h = 1f; // height of the peak 
-            float c = r; // position of the centre of the peak 
+            float h = 1f; // height of the peak
+            float c = r; // position of the centre of the peak
             //float s = radius/1.5f; // width of the 'bell'
             float invs2sq = 1f/(2f * s * s);
             for (int i = 0; i < gaussian.length; i++) {
@@ -71,8 +70,8 @@ System.out.println("g="+Arrays.toString(gaussian));
             float[] gaussian = new float[r * 2 + 1];
 
             // compute the pyramid
-            float c = r; // position of the centre of the peak 
-            
+            float c = r; // position of the centre of the peak
+
             for (int i = 0; i < gaussian.length; i++) {
                 float x = i;
                 gaussian[i] = (float) c-abs(x-c);
@@ -84,10 +83,10 @@ System.out.println("p="+Arrays.toString(gaussian));
         }
 
         /** Normalizes the kernel so that all its elements add up to the given
-         * sum. 
-         * 
+         * sum.
+         *
          * @param kernel
-         * @param sum 
+         * @param sum
          */
         static void normalizeKernel(float[] kernel, float sum) {
             float total = 0;
@@ -129,7 +128,7 @@ System.out.println("p="+Arrays.toString(gaussian));
             }
             ConvolveOp blurOp = new ConvolveOp(new Kernel(blur, blur, blurKernel));
 
-            // 
+            //
             ConvolveOp sobelTL = new ConvolveOp(new Kernel(3, 3, (new float[]{2, 1, 0, 1, 0, -1, 0, -1, -2})));
             ConvolveOp sobelBR = new ConvolveOp(new Kernel(3, 3, (new float[]{-2, -1, 0, -1, 0, 1, 0, 1, 2})));
 /*
@@ -157,12 +156,12 @@ System.out.println("p="+Arrays.toString(gaussian));
             float[] pyramid=pyramid(2.5f,0.8f);
             ConvolveOp pyramidOpV=new ConvolveOp(new Kernel(1,pyramid.length,pyramid));
             ConvolveOp pyramidOpH=new ConvolveOp(new Kernel(pyramid.length,1,pyramid));
-            
+
             // blur the prior image back into the same pixels
             Graphics2D g;
             //imgG = (Graphics2D)image.getGraphics();
 
-            // clear 
+            // clear
             BufferedImage focusImg = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB_PRE);
             g = focusImg.createGraphics();
             g.setComposite(AlphaComposite.Src);

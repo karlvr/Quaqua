@@ -1,5 +1,5 @@
 /*
- * @(#)SidebarTreeModel.java  
+ * @(#)SidebarTreeModel.java
  *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -11,6 +11,7 @@
  */
 package ch.randelshofer.quaqua.lion.filechooser;
 
+import ch.randelshofer.quaqua.ext.base64.Base64;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.util.*;
@@ -20,7 +21,6 @@ import javax.swing.tree.*;
 import java.io.*;
 import java.util.*;
 import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.base64.*;
 import ch.randelshofer.quaqua.ext.nanoxml.*;
 
 /**
@@ -37,7 +37,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private final static File sidebarFile = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.sidebarlists.plist");
     /**
-     * Holds the tree volumesPath to the /Volumes folder.
+     * Holds the path to the file system tree model node where volumes are obtained. Currently the computer node.
      */
     private TreePath volumesPath;
     /**
@@ -49,9 +49,13 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private DefaultMutableTreeNode devicesNode;
     /**
-     * Represents the "Places" node in the sidebar.
+     * Represents the "Favorites" node in the sidebar.
      */
     private DefaultMutableTreeNode favoritesNode;
+    /**
+     * The file system tree model node that represents the Computer.
+     */
+    private FileSystemTreeModel.Node computerNode;
     /**
      * Intervals between validations.
      */
@@ -80,6 +84,29 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      */
     private final static File[] defaultUserItems;
 
+    /**
+     * The name of the dictionary where favorite items are stored. OS version dependent.
+     */
+    private static String favoriteItemsDictionaryName = "favorites";
+
+    /**
+     * This is used for keeping track of the validation state of this model.
+     */
+    public final static int INVALID = 0;
+    /**
+     * This is used for keeping track of the validation state of this model.
+     */
+    public final static int VALIDATING = 1;
+    /**
+     * This is used for keeping track of the validation state of this model.
+     */
+    public final static int VALID = 2;
+
+    /**
+     * The current validation state of this model.
+     */
+    private int infoState = INVALID;
+
     static {
         if (QuaquaManager.isOSX()
                 || QuaquaManager.getOS() == QuaquaManager.DARWIN) {
@@ -88,6 +115,11 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                         new File(QuaquaManager.getProperty("user.home"), "Documents"),
                         new File(QuaquaManager.getProperty("user.home"))
                     };
+
+            int osVersion = QuaquaManager.getOS();
+            if (osVersion >= QuaquaManager.MAVERICKS) {
+                favoriteItemsDictionaryName = "favoriteitems";
+            }
         } else if (QuaquaManager.getOS() == QuaquaManager.WINDOWS) {
             defaultUserItems = new File[]{
                         new File(QuaquaManager.getProperty("user.home"), "Desktop"),
@@ -117,6 +149,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         this.fileChooser = fileChooser;
         this.volumesPath = path;
         this.model = model;
+        computerNode = (FileSystemTreeModel.Node) model.getRoot();
 
         devicesNode = new DefaultMutableTreeNode(UIManager.getString("FileChooser.devices"));
         devicesNode.setAllowsChildren(true);
@@ -138,118 +171,170 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
     }
 
     /**
+     * Invoke the runnable when validation is complete, either now or later. This method does not block.
+     */
+    public void invokeWhenValid(final Runnable r) {
+        if (infoState == VALID) {
+            r.run();
+        } else {
+            if (infoState == INVALID) {
+                validate();
+            }
+            SwingUtilities.invokeLater(new Runnable() {
+                @Override
+                public void run() {
+                    invokeWhenValid(r);
+                }
+            });
+        }
+    }
+
+    /**
      * Immediately validates the model.
      */
     private void validate() {
         // Prevent multiple invocations of this method by lazyValidate(),
         // while we are validating;
-        bestBefore = Long.MAX_VALUE;
+        if (infoState == INVALID) {
+            infoState = VALIDATING;
 
-        dispatcher.dispatch(
-                new Worker<Object[]>() {
+            bestBefore = Long.MAX_VALUE;
 
-                    public Object[] construct() throws IOException {
-                        return read();
-                    }
+            dispatcher.dispatch(
+                    new Worker<Object[]>() {
 
-                    @Override
-                    public void done(Object[] value) {
-                        ArrayList freshUserItems;
-
-                        systemItemsMap = (HashMap) value[0];
-                        freshUserItems = (ArrayList) value[1];
-                        update(freshUserItems);
-                    }
-
-                    @Override
-                    public void failed(Throwable value) {
-                        ArrayList freshUserItems;
-
-                        System.err.println("Warning: SidebarTreeModel uses default user items.");
-                        freshUserItems = new ArrayList(defaultUserItems.length);
-                        for (int i = 0; i < defaultUserItems.length; i++) {
-                            if (defaultUserItems[i] == null) {
-                                freshUserItems.add(null);
-                            } else if (defaultUserItems[i].exists()) {
-                                freshUserItems.add(new FileNode(defaultUserItems[i]));
-                            }
+                        public Object[] construct() throws IOException {
+                            return read();
                         }
-                        update(freshUserItems);
-                    }
 
-                    private void update(ArrayList freshUserItems) {
-                        int oldUserItemsSize = favoritesNode.getChildCount();
-                        if (oldUserItemsSize > 0) {
-                            int[] removedIndices = new int[oldUserItemsSize];
-                            Object[] removedChildren = new Object[oldUserItemsSize];
-                            for (int i = 0; i < oldUserItemsSize; i++) {
-                                removedIndices[i] = i;
-                                removedChildren[i] = favoritesNode.getChildAt(i);
-                            }
-                            favoritesNode.removeAllChildren();
-                            fireTreeNodesRemoved(
-                                    SidebarTreeModel.this,
-                                    favoritesNode.getPath(),
-                                    removedIndices,
-                                    removedChildren);
+                        @Override
+                        public void done(Object[] value) {
+                            ArrayList freshUserItems;
+
+                            systemItemsMap = (HashMap) value[0];
+                            freshUserItems = (ArrayList) value[1];
+                            update(freshUserItems);
                         }
-                        if (freshUserItems.size() > 0) {
-                            int[] insertedIndices = new int[freshUserItems.size()];
-                            Object[] insertedChildren = new Object[freshUserItems.size()];
-                            for (int i = 0; i < freshUserItems.size(); i++) {
-                                insertedIndices[i] = i;
-                                insertedChildren[i] = freshUserItems.get(i);
-                                if (freshUserItems.get(i) == null) {
-                                    favoritesNode.add(new DefaultMutableTreeNode("null?"));
-                                } else {
-                                    favoritesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
+
+                        @Override
+                        public void failed(Throwable value) {
+                            ArrayList freshUserItems;
+
+                            System.err.println("Warning: SidebarTreeModel uses default user items.");
+                            freshUserItems = new ArrayList(defaultUserItems.length);
+                            for (int i = 0; i < defaultUserItems.length; i++) {
+                                if (defaultUserItems[i] == null) {
+                                    freshUserItems.add(null);
+                                } else if (defaultUserItems[i].exists()) {
+                                    freshUserItems.add(new FileNode(defaultUserItems[i]));
                                 }
                             }
-                            fireTreeNodesInserted(
-                                    SidebarTreeModel.this,
-                                    favoritesNode.getPath(),
-                                    insertedIndices,
-                                    insertedChildren);
+                            update(freshUserItems);
                         }
-                        bestBefore = System.currentTimeMillis() + VALIDATION_TTL;
-                    }
-                });
+
+                        private void update(ArrayList freshUserItems) {
+                            int oldUserItemsSize = favoritesNode.getChildCount();
+                            if (oldUserItemsSize > 0) {
+                                int[] removedIndices = new int[oldUserItemsSize];
+                                Object[] removedChildren = new Object[oldUserItemsSize];
+                                for (int i = 0; i < oldUserItemsSize; i++) {
+                                    removedIndices[i] = i;
+                                    removedChildren[i] = favoritesNode.getChildAt(i);
+                                }
+                                favoritesNode.removeAllChildren();
+                                fireTreeNodesRemoved(
+                                        SidebarTreeModel.this,
+                                        favoritesNode.getPath(),
+                                        removedIndices,
+                                        removedChildren);
+                            }
+                            if (freshUserItems.size() > 0) {
+                                int[] insertedIndices = new int[freshUserItems.size()];
+                                Object[] insertedChildren = new Object[freshUserItems.size()];
+                                for (int i = 0; i < freshUserItems.size(); i++) {
+                                    insertedIndices[i] = i;
+                                    insertedChildren[i] = freshUserItems.get(i);
+                                    if (freshUserItems.get(i) == null) {
+                                        favoritesNode.add(new DefaultMutableTreeNode("null?"));
+                                    } else {
+                                        favoritesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
+                                    }
+                                }
+                                fireTreeNodesInserted(
+                                        SidebarTreeModel.this,
+                                        favoritesNode.getPath(),
+                                        insertedIndices,
+                                        insertedChildren);
+                            }
+                        }
+
+                        @Override
+                        protected void finished() {
+                            validationHasCompleted();
+                        }
+                    });
+        }
+    }
+
+    private void validationHasCompleted() {
+        bestBefore = System.currentTimeMillis() + VALIDATION_TTL;
+        infoState = VALID;
     }
 
     private void updateDevicesNode() {
         FileSystemTreeModel.Node modelDevicesNode = (FileSystemTreeModel.Node) volumesPath.getLastPathComponent();
+        FileSystemTreeModel.Node computerNode = this.computerNode;
+
+        // Determine if the computer node should be visible
+        {
+            SystemItemInfo info = (SystemItemInfo) systemItemsMap.get("Computer");
+            if (info != null && !info.isVisible) {
+                computerNode = null;
+            }
+        }
 
         // Remove nodes from the view which are not present in the model
         for (int i = devicesNode.getChildCount() - 1; i >= 0; i--) {
             SidebarViewToModelNode viewNode = (SidebarViewToModelNode) devicesNode.getChildAt(i);
-            if (viewNode.getTarget().getParent() != modelDevicesNode) {
+            FileSystemTreeModel.Node target = viewNode.getTarget();
+            if (target.getParent() != modelDevicesNode && target != computerNode) {
                 removeNodeFromParent(viewNode);
             }
         }
 
         // Add nodes to the view, wich are present in the model, but not
         // in the view. Only add non-leaf nodes
+
+        if (computerNode != null && !isInDeviceModel(computerNode)) {
+            if (!isInDeviceModel(computerNode)) {
+                addToDeviceModel(computerNode);
+            }
+        }
+
         for (int i = 0, n = modelDevicesNode.getChildCount(); i < n; i++) {
             FileSystemTreeModel.Node modelNode = (FileSystemTreeModel.Node) modelDevicesNode.getChildAt(i);
-            if (!modelNode.isLeaf()) {
-                boolean isInView = false;
-                for (int j = 0, m = devicesNode.getChildCount(); j < m; j++) {
-                    SidebarViewToModelNode viewNode = (SidebarViewToModelNode) devicesNode.getChildAt(j);
-                    if (viewNode.getTarget() == modelNode) {
-                        isInView = true;
-                        break;
-                    }
+            if (isDevice(modelNode)) {
+                if (!isInDeviceModel(modelNode)) {
+                    addToDeviceModel(modelNode);
                 }
-                if (!isInView) {
-                    SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
-                    int insertionIndex = 0;
-                   SideBarViewToModelNodeComparator comparator=new SideBarViewToModelNodeComparator();
-                    while (insertionIndex < devicesNode.getChildCount()
-                            && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
-                        insertionIndex++;
-                    }
-                    insertNodeInto(newNode, devicesNode, insertionIndex);
-                }
+            }
+        }
+
+        /*
+          We need to sort the entire collection every time because we do not know when the preferences file will be
+          read (and the preferences file determines the order).
+        */
+
+        int count = devicesNode.getChildCount();
+        if (count > 0) {
+            SidebarViewToModelNode[] children = new SidebarViewToModelNode[count];
+            for (int i = 0; i < count; i++) {
+                children[i] = (SidebarViewToModelNode) devicesNode.getChildAt(i);
+            }
+            Arrays.sort(children, new SideBarViewToModelNodeComparator());
+            devicesNode.removeAllChildren();
+            for (int i = 0; i < count; i++) {
+                devicesNode.add(children[i]);
             }
         }
 
@@ -263,6 +348,31 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             }
             fireTreeNodesChanged(this, devicesNode.getPath(), childIndices, childNodes);
         }
+    }
+
+    private boolean isDevice(FileSystemTreeModel.Node modelNode) {
+        return !modelNode.isLeaf() && !modelNode.getUserName().equals("Network");
+    }
+
+    private boolean isInDeviceModel(FileSystemTreeModel.Node modelNode) {
+        for (int j = 0, m = devicesNode.getChildCount(); j < m; j++) {
+            SidebarViewToModelNode viewNode = (SidebarViewToModelNode) devicesNode.getChildAt(j);
+            if (viewNode.getTarget() == modelNode) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void addToDeviceModel(FileSystemTreeModel.Node modelNode) {
+        SidebarViewToModelNode newNode = new SidebarViewToModelNode(modelNode);
+        int insertionIndex = 0;
+//        SideBarViewToModelNodeComparator comparator = new SideBarViewToModelNodeComparator();
+//        while (insertionIndex < devicesNode.getChildCount()
+//                && comparator.compare((SidebarViewToModelNode) devicesNode.getChildAt(insertionIndex),newNode) < 0) {
+//            insertionIndex++;
+//        }
+        insertNodeInto(newNode, devicesNode, insertionIndex);
     }
 
     /**
@@ -308,6 +418,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
                                     if (xml4.getName().equals("dict")) {
                                         SystemItemInfo info = new SystemItemInfo();
+                                        int flags = 0;
                                         for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
                                             XMLElement xml5 = (XMLElement) i4.next();
 
@@ -322,8 +433,17 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                             if (xml5.getName().equals("string") && key5.equals("Visibility")) {
                                                 info.isVisible = xml5.getContent().equals("AlwaysVisible");
                                             }
+                                            if (xml5.getName().equals("integer") && key5.equals("Flags")) {
+                                                try {
+                                                    flags = Integer.parseInt(xml5.getContent());
+                                                } catch (NumberFormatException ex) {
+                                                }
+                                            }
                                         }
                                         if (info.name != null) {
+                                            if ((flags & 01) != 0) {
+                                                info.isVisible = false; // special case for Computer ???
+                                            }
                                             sysItemsMap.put(info.name, info);
                                         }
                                     }
@@ -331,7 +451,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                             }
                         }
                     }
-                    if (xml2.getName().equals("dict") && key2.equals("favorites")) {
+                    if (xml2.getName().equals("dict") && key2.equals(favoriteItemsDictionaryName)) {
                         for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
                             XMLElement xml3 = (XMLElement) i2.next();
                             for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
@@ -365,10 +485,10 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
                                         if (xml5.getContent()!=null&&xml5.getContent().equals("NeverVisible")) {
                                             isVisible=false;
                                         }
-                                        
+
                                     }
                                 }
-                                
+
                                 if (serializedAlias != null && aliasName != null && entryType==0 && isVisible) {
                                     // Suppress the "All My Files" folder.
                                     if (aliasName.equals("All My Files")) continue;
@@ -434,7 +554,7 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public FileNode(File file) {
             this.file = file;
             // userName = fileChooser.getName(file);
-            isTraversable = true;
+            isTraversable = file.isDirectory();
         }
 
         public File lazyGetResolvedFile() {
@@ -512,19 +632,20 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public boolean isValidating() {
             return false;
         }
+
+        @Override
+        public String toString() {
+            return getUserName();
+        }
     }
 
     /**
      * An AliasNode is resolved as late as possible.
      */
-    private abstract class Node extends DefaultMutableTreeNode implements FileInfo {
+    private abstract class Node extends DefaultMutableTreeNode implements SidebarTreeFileNode {
 
         @Override
         public boolean getAllowsChildren() {
-            return false;
-        }
-
-        public boolean isHidden() {
             return false;
         }
     }
@@ -554,32 +675,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             isTraversable = true;
         }
 
-        public File lazyGetResolvedFile() {
-            return getResolvedFile();
-        }
-
         public File getResolvedFile() {
             if (file == null) {
                 icon = null; // clear cached icon!
                 file = OSXFile.resolveAlias(serializedAlias, false);
             }
             return file;
-        }
-
-        public File getFile() {
-            return file;
-        }
-
-        public String getFileKind() {
-            return null;
-        }
-
-        public int getFileLabel() {
-            return -1;
-        }
-
-        public long getFileLength() {
-            return -1;
         }
 
         public Icon getIcon() {
@@ -626,12 +727,9 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             return isTraversable;
         }
 
-        public boolean isAcceptable() {
-            return true;
-        }
-
-        public boolean isValidating() {
-            return false;
+        @Override
+        public String toString() {
+            return getUserName();
         }
     }
 
@@ -641,8 +739,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         int sequenceNumber = 0;
         boolean isVisible = true;
     }
-
-
 
     /** Note: SidebaViewToModelNode must not implement Comparable and must
      * not override equals()/hashCode(), because this confuses the layout algorithm
@@ -656,28 +752,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
             this.target = target;
         }
 
-        public File getFile() {
-            return target.getFile();
-        }
-
         public File getResolvedFile() {
             return target.getResolvedFile();
-        }
-
-        public File lazyGetResolvedFile() {
-            return target.lazyGetResolvedFile();
-        }
-
-        public boolean isTraversable() {
-            return target.isTraversable();
-        }
-
-        public boolean isAcceptable() {
-            return target.isAcceptable();
-        }
-
-        public int getFileLabel() {
-            return target.getFileLabel();
         }
 
         public String getUserName() {
@@ -686,18 +762,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 
         public Icon getIcon() {
             return target.getIcon();
-        }
-
-        public long getFileLength() {
-            return target.getFileLength();
-        }
-
-        public String getFileKind() {
-            return target.getFileKind();
-        }
-
-        public boolean isValidating() {
-            return target.isValidating();
         }
 
         public FileSystemTreeModel.Node getTarget() {
@@ -758,30 +822,15 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         public int compare(SidebarViewToModelNode n1, SidebarViewToModelNode n2) {
             FileSystemTreeModel.Node o1 = n1.getTarget();
             FileSystemTreeModel.Node o2 = n2.getTarget();
-
-            SystemItemInfo i1 = (SystemItemInfo) systemItemsMap.get(o1.getUserName());
-            if (i1 == null && o1.getResolvedFile().getName().equals("")) {
-                i1 = (SystemItemInfo) systemItemsMap.get("Computer");
-            }
-
-            SystemItemInfo i2 = (SystemItemInfo) systemItemsMap.get(o2.getUserName());
-            if (i2 == null && o2.getResolvedFile().getName().equals("")) {
-                i2 = (SystemItemInfo) systemItemsMap.get("Computer");
-            }
-
-            if (i1 != null && i2 != null) {
-                return i1.sequenceNumber - i2.sequenceNumber;
-            }
-
-            if (i1 != null) {
-                return -1;
-            }
-            if (i2 != null) {
-                return 1;
-            }
-
-            return 0;
+            return getSequenceNumber(o1) - getSequenceNumber(o2);
         }
 
+         private int getSequenceNumber(FileSystemTreeModel.Node n) {
+             if (n == computerNode) {
+                 return -1;
+             }
+             SystemItemInfo si = (SystemItemInfo) systemItemsMap.get(n.getUserName());
+             return si != null ? si.sequenceNumber : -1;
+         }
     }
 }

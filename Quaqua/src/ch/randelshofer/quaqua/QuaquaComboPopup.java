@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboPopup.java  
+ * @(#)QuaquaComboPopup.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -48,8 +48,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
      */
     @Override
     public void show() {
-        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible 
-        // is no longer being called from the firePopupMenuWillBecomeVisible 
+        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible
+        // is no longer being called from the firePopupMenuWillBecomeVisible
         // method within BasicComboPopup.
         comboBox.firePopupMenuWillBecomeVisible();
         // END FIX
@@ -80,8 +80,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
 
     @Override
     protected void firePopupMenuWillBecomeVisible() {
-        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible 
-        // is no longer being called from the firePopupMenuWillBecomeVisible 
+        // BEGIN FIX for QUAQUA-137: in J2SE6 1.6_026 firePopupMenuWillBecomeVisible
+        // is no longer being called from the firePopupMenuWillBecomeVisible
         // method within BasicComboPopup.
         Object[] listeners = listenerList.getListenerList();
         PopupMenuEvent e = null;
@@ -186,10 +186,10 @@ public class QuaquaComboPopup extends BasicComboPopup {
     }
 
     /**
-     * Sets the list selection index to the selectedIndex. This 
-     * method is used to synchronize the list selection with the 
+     * Sets the list selection index to the selectedIndex. This
+     * method is used to synchronize the list selection with the
      * combo box selection.
-     * 
+     *
      * @param selectedIndex the index to set the list
      */
     private void setListSelection(int selectedIndex) {
@@ -364,6 +364,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
     @Override
     protected void configureList() {
         super.configureList();
+        list.setUI(new QuaquaListUI()); // to support file chooser only JAR
         list.setBackground(UIManager.getColor("PopupMenu.background"));
         list.setFocusable(true);
         list.setRequestFocusEnabled(true);
@@ -642,7 +643,7 @@ public class QuaquaComboPopup extends BasicComboPopup {
                     hide();
                 }
             } else if (propertyName == "renderer") {
-                list.setCellRenderer(comboBox.getRenderer());
+                updateCellRenderer(isTableCellEditor());
                 if (isVisible()) {
                     hide();
                 }

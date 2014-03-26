@@ -1,5 +1,5 @@
 /*
- * @(#)JBrowser.java 
+ * @(#)JBrowser.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
@@ -24,6 +24,7 @@ import java.awt.image.BufferedImage;
 import java.beans.*;
 import javax.swing.*;
 import javax.swing.event.*;
+import javax.swing.plaf.ListUI;
 import javax.swing.tree.*;
 import java.util.*;
 import javax.accessibility.Accessible;
@@ -195,6 +196,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Should columns should be resizable?
      **/
     private boolean columnsResizable = true;
+    /**
+     * Should the preview column be filled?
+     **/
+    private boolean shouldFillPreviewColumn = false;
     /** This border is used when the Look and Feel does not specify a
      * "List.cellNoFocusBorder".
      */
@@ -682,15 +687,15 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 doLayout();
             }
 
-
-            JList columnList;
             for (int i = 0; i < path.getPathCount() - 1 && i < getListColumnCount(); i++) {
-                columnList = getColumnList(i);
-                int index0 = columnList.getSelectedIndex();
+                JList columnList = getColumnList(i);
+                int index0 = findListElement(columnList, path.getPathComponent(i+1));
 
                 Rectangle bounds = columnList.getCellBounds(index0, index0);
 
                 if (index0 != -1 && bounds != null) {
+                    // Enlarge the bounds in case a horizontal scroll bar appears after we do this
+                    bounds.height += 20;
                     columnList.scrollRectToVisible(bounds);
                 }
             }
@@ -701,6 +706,17 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 scrollRectToVisible(component.getBounds());
             }
         }
+    }
+
+    private int findListElement(JList list, Object value) {
+        ListModel model = list.getModel();
+        int count = model.getSize();
+        for (int i = 0; i < count; i++) {
+            if (model.getElementAt(i).equals(value)) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     /**
@@ -779,7 +795,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             getColumnList(i).setFixedCellWidth(width);
         }
         if (previewColumn != null) {
-            SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getComponent(0);
+            SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
             p.setPreferredWidth(width);
         }
         if (getParent() != null) {
@@ -794,7 +810,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Sets the minimum width of cells in the browser. 
+     * Sets the minimum width of cells in the browser.
      * This width affects the minimum width of columns, when the user
      * resizes them.
      * <p>
@@ -818,7 +834,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Sets the width of a column.
-     * 
+     *
      * @param column Index of the column.
      * @param width The width.
      */
@@ -831,7 +847,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Gets the width of a column.
-     * 
+     *
      * @param column Index of the column.
      * @return the value
      */
@@ -857,7 +873,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Sets the width of the preview column.
-     * 
+     *
      * @param width
      *            The width.
      **/
@@ -867,7 +883,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         }
         SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
         p.setPreferredWidth(width);
-
+        p.revalidate();
+        p.repaint();
         revalidate();
     }
 
@@ -882,10 +899,30 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         SizeConstrainedPanel p = (SizeConstrainedPanel) previewColumn.getViewport().getView();
         return p.getPreferredSize().width;
     }
+    /**
+     * Gets whether the preview column should expand to fill available horizontal space.
+     **/
+    public boolean isPreviewColumnFilled() {
+        return shouldFillPreviewColumn;
+    }
+    /**
+     * Sets whether the preview column should expand to fill available horizontal space.
+     *
+     * @param newValue
+     *            The new value.
+     **/
+    public void setPreviewColumnFilled(boolean newValue) {
+        boolean oldValue = shouldFillPreviewColumn;
+        shouldFillPreviewColumn = newValue;
+        if (oldValue != newValue) {
+            revalidate();
+            repaint();
+        }
+    }
 
     /**
      * Sets whether columns should be resizable.
-     * 
+     *
      * @param newValue
      *            The new value.
      **/
@@ -907,7 +944,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Returns true, if the columns are resizable by the uesr.
-     * 
+     *
      * @return The columnsResizable-property.
      **/
     public boolean isColumnsResizable() {
@@ -957,7 +994,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
     /**
      * Sets the delegate that's used to paint each cell in the browser.
-     * If you use this delegate, you don't have to render the arrows for 
+     * If you use this delegate, you don't have to render the arrows for
      * non-leaf items. If you want to render these arrows,
      * use setColumnCellRenderer instead.
      * <p>
@@ -1027,20 +1064,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             if (previewColumn == null) {
                 SizeConstrainedPanel p = new SizeConstrainedPanel();
                 p.setPreferredWidth(fixedCellWidth);
-                previewColumn = new JScrollPane(p,
-                        JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                        JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-                previewColumn.setBorder(null);
+                previewColumn = createScrollPane(p, -1);
 
-                SizeHandle sizeHandle = new SizeHandle(-1);
-                sizeHandle.setVisible(isColumnsResizable());
-                previewColumn.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER,
-                        sizeHandle);
-                previewColumn.setLayout(new BrowserScrollPaneLayout());
-
-                previewColumn.setFocusable(false);
-                previewColumn.getHorizontalScrollBar().setFocusable(false);
-                previewColumn.getVerticalScrollBar().setFocusable(false);
                 if (getDropTarget() != null) {
                     new DropTarget(previewColumn, getDropTarget().getDefaultActions(), getDropTarget());
                     new DropTarget(p, getDropTarget().getDefaultActions(), getDropTarget());
@@ -1099,14 +1124,16 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * Convenience method for accessing the list model at the specified column.
      */
     private ColumnListModel getColumnListModel(int column) {
-        return (ColumnListModel) ((JList) ((JScrollPane) getComponent(column)).getViewport().getView()).getModel();
+        JList list = getColumnList(column);
+        return (ColumnListModel) list.getModel();
     }
 
     /**
      * Convenience method for accessing the TreePath at the specified column.
      */
     private TreePath getColumnPath(int column) {
-        return ((ColumnListModel) ((JList) ((JScrollPane) getComponent(column)).getViewport().getView()).getModel()).path;
+        JList list = getColumnList(column);
+        return ((ColumnListModel) list.getModel()).path;
     }
 
     /**
@@ -1166,7 +1193,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
     }
 
     /**
-     * Sets the selection mode, which must be one of 
+     * Sets the selection mode, which must be one of
      * TreeSelectionModel.SINGLE_TREE_SELECTION,
      * CONTIGUOUS_TREE_SELECTION or DISCONTIGUOUS_TREE_SELECTION.
      * <p>
@@ -1259,6 +1286,9 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     add(previewColumn);
                     break;
             }
+
+            revalidate();
+            repaint();
         }
     }
 
@@ -1382,22 +1412,27 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     }
                 }
                 // Set path of remaining columns
-                TreePath p = null;
-                for (int i = 0, n = getListColumnCount(); i < n; i++) {
-                    p = (p == null) ? new TreePath(path.getPathComponent(0)) : p.pathByAddingChild(path.getPathComponent(i));
-                    JList l = getColumnList(i);
-                    ColumnListModel m = (ColumnListModel) l.getModel();
-                    m.setPath(p);
+                if (path != null) {
+                    TreePath p = null;
+                    for (int i = 0, n = getListColumnCount(); i < n; i++) {
+                        p = (p == null) ? new TreePath(path.getPathComponent(0)) : p.pathByAddingChild(path.getPathComponent(i));
+                        JList l = getColumnList(i);
+                        ColumnListModel m = (ColumnListModel) l.getModel();
+                        m.setPath(p);
+                    }
                 }
 
                 // Add new columns if necessary
-                java.util.List components = Arrays.asList(path.getPath());
-                for (int i = getListColumnCount(); i < newColumnCount; i++) {
-                    addColumn(new TreePath(components.subList(0, i + 1).toArray()));
+                if (path != null) {
+                    java.util.List components = Arrays.asList(path.getPath());
+                    for (int i = getListColumnCount(); i < newColumnCount; i++) {
+                        addColumn(new TreePath(components.subList(0, i + 1).toArray()));
+                    }
                 }
                 if (newColumnCount > 0) {
                     revalidate();
                 }
+                repaint();
             }
             expandedPath = path;
             expandedPathIsLeaf = newPathIsLeaf;
@@ -1407,9 +1442,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             // Note: We do not change the selection of the column from
             // getPathCount() - 1 onwards, because the selection of this column
             // must be set by the method calling us.
-            int i;
-            for (i = 0; i < path.getPathCount() - 1; i++) {
-                getColumnList(i).setSelectedIndex(treeModel.getIndexOfChild(path.getPathComponent(i), path.getPathComponent(i + 1)));
+            if (path != null) {
+                int i;
+                for (i = 0; i < path.getPathCount() - 1; i++) {
+                    getColumnList(i).setSelectedIndex(treeModel.getIndexOfChild(path.getPathComponent(i), path.getPathComponent(i + 1)));
+                }
             }
 
             /*
@@ -1427,51 +1464,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @param path the value
      */
     protected void addColumn(final TreePath path) {
-        JList l;
-        l = new JList(
-                new ColumnListModel(path, treeModel)) {
-
-            @Override
-            public String getToolTipText(
-                    MouseEvent event) {
-                Point mouseLocation = event.getPoint();
-                int index = locationToIndex(mouseLocation);
-                if (index != -1) {
-                    Rectangle cellBounds = getCellBounds(index, index);
-                    if (cellBounds.contains(mouseLocation)) {
-                        Object value = getModel().getElementAt(index);
-                        Component renderer = getCellRenderer().getListCellRendererComponent(this, value, index, false, false);
-                        if (renderer.getPreferredSize().width > getWidth()) {
-                            return convertValueToText(value, false, false, false, index, false);
-                        }
-
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            public Point getToolTipLocation(
-                    MouseEvent event) {
-                Point mouseLocation = event.getPoint();
-                int index = locationToIndex(mouseLocation);
-                if (index != -1) {
-                    Rectangle cellBounds = getCellBounds(index, index);
-                    if (cellBounds.contains(mouseLocation)) {
-                        Object value = getModel().getElementAt(index);
-                        Component renderer = getCellRenderer().getListCellRendererComponent(this, value, index, false, false);
-                        if (renderer.getPreferredSize().width > getWidth()) {
-                            Point location = cellBounds.getLocation();
-                            location.x += cellTipOrigin.x;
-                            location.y += cellTipOrigin.y;
-                            return location;
-                        }
-
-                    }
-                }
-                return null;
-            }
-        };
+        JList l = new ColumnList(new ColumnListModel(path, treeModel));
         if (isShowCellTips) {
             l.setToolTipText("cell tip");
         }
@@ -1512,21 +1505,74 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         l.setFixedCellWidth(fixedCellWidth);
         l.setDragEnabled(getDragEnabled());
         l.setTransferHandler(getTransferHandler());
-        JScrollPane sp = new JScrollPane(l,
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
-                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-        sp.setBorder(null);
-
-        SizeHandle sizeHandle = new SizeHandle(path.getPathCount() - 1);
-        sizeHandle.setVisible(isColumnsResizable());
-        sp.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, new SizeHandle(path.getPathCount() - 1));
-        sp.setLayout(new BrowserScrollPaneLayout());
-
-        sp.setFocusable(false);
-        sp.getVerticalScrollBar().setFocusable(false);
-        sp.getHorizontalScrollBar().setFocusable(false);
+        JScrollPane sp = createScrollPane(l, path.getPathCount() - 1);
 
         add(sp, getListColumnCount());
+    }
+
+    protected class ColumnList extends JList {
+
+        public ColumnList(ColumnListModel m) {
+            super(m);
+        }
+
+        @Override
+        public void updateUI() {
+            // Allow the column list UI to be customized for use in a browser
+            ListUI basicUI = (ListUI)UIManager.getUI(this);
+            setUI(getColumnListUI(basicUI));
+
+            ListCellRenderer renderer = getCellRenderer();
+            if (renderer instanceof Component) {
+                SwingUtilities.updateComponentTreeUI((Component)renderer);
+            }
+        }
+
+        @Override
+        public String getToolTipText(
+                MouseEvent event) {
+            Point mouseLocation = event.getPoint();
+            int index = locationToIndex(mouseLocation);
+            if (index != -1) {
+                Rectangle cellBounds = getCellBounds(index, index);
+                if (cellBounds.contains(mouseLocation)) {
+                    Object value = getModel().getElementAt(index);
+                    Component renderer = getCellRenderer().getListCellRendererComponent(this, value, index, false, false);
+                    if (renderer.getPreferredSize().width > getWidth()) {
+                        return convertValueToText(value, false, false, false, index, false);
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public Point getToolTipLocation(
+                MouseEvent event) {
+            Point mouseLocation = event.getPoint();
+            int index = locationToIndex(mouseLocation);
+            if (index != -1) {
+                Rectangle cellBounds = getCellBounds(index, index);
+                if (cellBounds.contains(mouseLocation)) {
+                    Object value = getModel().getElementAt(index);
+                    Component renderer = getCellRenderer().getListCellRendererComponent(this, value, index, false, false);
+                    if (renderer.getPreferredSize().width > getWidth()) {
+                        Point location = cellBounds.getLocation();
+                        location.x += cellTipOrigin.x;
+                        location.y += cellTipOrigin.y;
+                        return location;
+                    }
+
+                }
+            }
+            return null;
+        }
+
+        @Override
+        public String toString() {
+            return "ColumnList";
+        }
     }
 
     /**
@@ -1775,12 +1821,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @see #addNotify
      */
     protected void configureEnclosingScrollPane() {
-        /*
         Container p = getParent();
         if (p instanceof JViewport) {
-        JViewport viewport = (JViewport) p;
-        //viewport.setOpaque(true);
-        }*/
+            JViewport viewport = (JViewport) p;
+            //viewport.setOpaque(true);
+        }
     }
 
     /**
@@ -1806,10 +1851,10 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @see #configureEnclosingScrollPane
      */
     protected void unconfigureEnclosingScrollPane() {
-        /*
         Container p = getParent();
         if (p instanceof JViewport) {
-        }*/
+            JViewport viewport = (JViewport) p;
+        }
     }
 
     @Override
@@ -1820,7 +1865,16 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         } else {
             getColumnList(getListColumnCount() - 1).requestFocus();
         }
+    }
 
+    @Override
+    public boolean requestFocusInWindow() {
+        TreePath tp = getSelectionPath();
+        if (tp != null && tp.getPathCount() > 1) {
+            return getColumnList(tp.getPathCount() - 2).requestFocusInWindow();
+        } else {
+            return getColumnList(getListColumnCount() - 1).requestFocusInWindow();
+        }
     }
 
     private void repaintParentBorder() {
@@ -1834,7 +1888,6 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             parent.repaint(0, insets.top, insets.left, size.height - insets.top - insets.bottom);
             parent.repaint(size.width - insets.right, insets.top, insets.right, size.height - insets.top - insets.bottom);
         }
-
     }
 
     /**
@@ -1847,7 +1900,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
      * @param selected true if the node is selected
      * @param expanded true if the node is expanded
      * @param leaf  true if the node is a leaf node
-     * @param row  an integer specifying the node's display row, where 0 is 
+     * @param row  an integer specifying the node's display row, where 0 is
      *             the first row in the display
      * @param hasFocus true if the node has the focus
      * @return the {@code String} representation of the node's value
@@ -2019,7 +2072,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             sizeUnknown = false;
 
             return dim;
-        }
+            }
 
         /* Required by LayoutManager. */
         public Dimension minimumLayoutSize(Container parent) {
@@ -2032,14 +2085,14 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
          * and every time its size changes.
          */
         public void layoutContainer(Container parent) {
+
+            JBrowser b = (JBrowser) parent;
+
             Insets insets = parent.getInsets();
             ///int maxWidth = parent.getWidth() - (insets.left + insets.right);
             int maxHeight = parent.getHeight() - (insets.top + insets.bottom);
             int nComps = parent.getComponentCount();
             int previousWidth = 0, previousHeight = 0;
-
-
-
 
             int x = insets.left, y = insets.top;
             int rowh = 0, start = 0;
@@ -2060,10 +2113,18 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     d.height = maxHeight;
 
                     // Set the component's size and position.
-                    c.setBounds(x, y, d.width, d.height);
+                    int cwidth = d.width;
+                    int cheight = d.height;
 
-                    previousWidth = d.width;
-                    previousHeight = d.height;
+                    if (c == b.previewColumn && b.shouldFillPreviewColumn) {
+                        int availableWidth = parent.getWidth() - x - insets.right;
+                        cwidth = Math.max(cwidth, availableWidth);
+                    }
+
+                    c.setBounds(x, y, cwidth, cheight);
+
+                    previousWidth = cwidth;
+                    previousHeight = cheight;
                 }
             }
         }
@@ -2080,7 +2141,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         private TreePath path;
         private TreeModel model;
         /**
-         * Wee need to copy the number of children of the underlying tree node
+         * We need to copy the number of children of the underlying tree node
          * into this instance variable, because we have to generate a proper
          * interval added/interval removed even upon a change in the tree structure.
          */
@@ -2179,6 +2240,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     expandPath(expandedPath);
                 }
             }
+
+            ensureSelectionVisible();
         }
 
         public void treeNodesRemoved(TreeModelEvent e) {
@@ -2218,6 +2281,8 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                         setSelectionPaths(selectionPaths);
                     }
                 }
+
+                ensureSelectionVisible();
             }
         }
 
@@ -2247,6 +2312,22 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                 setSelectionPath(changedPath);
             }
         }
+
+        /**
+         * This is an attempt to keep the selected item visible after a wholesale change in the contents of the list,
+         * as might happen when toggling file hiding.
+         */
+        private void ensureSelectionVisible() {
+            JList list = getColumnList(path.getPathCount() - 1);
+            ListSelectionModel sm = list.getSelectionModel();
+            if (!sm.isSelectionEmpty()) {
+                int index1 = sm.getMinSelectionIndex();
+                int index2 = sm.getMaxSelectionIndex();
+                if (index1 == index2) {
+                    list.ensureIndexIsVisible(index1);
+                }
+            }
+        }
     }
 
     /**
@@ -2272,40 +2353,57 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
             switch (selectionModel.getSelectionCount()) {
                 case 0:
                     expandPath(new TreePath(treeModel.getRoot()));
-                    updatePreviewColumn();
+                    {
+                        int count = getListColumnCount();
+                        if (count > 0) {
+                            getColumnList(count - 1).clearSelection();
+                        }
+                    }
                     break;
                 case 1: {
                     TreePath selectionPath = selectionModel.getSelectionPath();
                     expandPath(selectionPath);
                     if (!treeModel.isLeaf(selectionPath.getLastPathComponent())) {
-                        getColumnList(getListColumnCount() - 1).clearSelection();
+                        int count = getListColumnCount();
+                        getColumnList(count - 1).clearSelection();
                     }
-                    updatePreviewColumn();
                     break;
                 }
                 default: {
                     TreePath leadSelectionPath = selectionModel.getLeadSelectionPath();
                     TreePath parentPath = leadSelectionPath.getParentPath();
                     expandPath(parentPath);
-                    JList list = getColumnList(parentPath.getPathCount() - 1);
+                    if (parentPath != null) {
+                        JList list = getColumnList(parentPath.getPathCount() - 1);
 
-                    TreePath[] selectionPaths = selectionModel.getSelectionPaths();
-                    int[] indices = new int[selectionPaths.length];
-                    int leadPathIndex = -1;
-                    for (int i = 0; i < selectionPaths.length; i++) {
-                        indices[i] = treeModel.getIndexOfChild(parentPath.getLastPathComponent(), selectionPaths[i].getLastPathComponent());
-                        if (selectionPaths[i].equals(leadSelectionPath)) {
-                            leadPathIndex = i;
+                        TreePath[] selectionPaths = selectionModel.getSelectionPaths();
+                        int[] indices = new int[selectionPaths.length];
+                        int leadPathIndex = -1;
+                        for (int i = 0; i < selectionPaths.length; i++) {
+                            indices[i] = treeModel.getIndexOfChild(parentPath.getLastPathComponent(), selectionPaths[i].getLastPathComponent());
+                            if (selectionPaths[i].equals(leadSelectionPath)) {
+                                leadPathIndex = i;
+                            }
+                        }
+                        int swap = indices[leadPathIndex];
+                        indices[leadPathIndex] = indices[indices.length - 1];
+                        indices[indices.length - 1] = swap;
+
+                        // Want to preserve the list anchor. The list anchor should respond to the list UI, not the tree model.
+                        int anchorIndex = list.getAnchorSelectionIndex();
+                        list.setSelectedIndices(indices);
+                        if (anchorIndex >= 0 && list.isSelectedIndex(anchorIndex)) {
+                            list.getSelectionModel().setAnchorSelectionIndex(anchorIndex);
                         }
                     }
-                    int swap = indices[leadPathIndex];
-                    indices[leadPathIndex] = indices[indices.length - 1];
-                    indices[indices.length - 1] = swap;
-                    list.setSelectedIndices(indices);
-                    updatePreviewColumn();
+
                     break;
                 }
             }
+
+            JBrowser.this.requestFocusInWindow();
+
+            updatePreviewColumn();
 
             //validate();
             if (getParent() != null) {
@@ -2565,8 +2663,11 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                             leadPathIndex = i;
                         }
                     }
-                    paths[leadPathIndex] = paths[paths.length - 1];
-                    paths[paths.length - 1] = leadPath;
+
+                    if (leadPathIndex >= 0) {
+                        paths[leadPathIndex] = paths[paths.length - 1];
+                        paths[paths.length - 1] = leadPath;
+                    }
 
                     selectionModel.setSelectionPaths(paths);
                 }
@@ -3321,57 +3422,7 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
 
             setLayout(new BorderLayout());
 
-            arrowLabel = new JLabel() {
-                // Overridden for performance reasons.
-
-                @Override
-                public void validate() {
-                }
-
-                @Override
-                public void revalidate() {
-                }
-
-                @Override
-                public void repaint(
-                        long tm, int x, int y, int width, int height) {
-                }
-
-                @Override
-                public void repaint(Rectangle r) {
-                }
-
-                @Override
-                protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
-                    if (propertyName != null && propertyName.equals("text")) {
-                        super.firePropertyChange(propertyName, oldValue, newValue);
-                    }
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, short oldValue, short newValue) {
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, int oldValue, int newValue) {
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, long oldValue, long newValue) {
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, float oldValue, float newValue) {
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, double oldValue, double newValue) {
-                }
-
-                @Override
-                public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
-                }
-            };
+            arrowLabel = new ArrowLabel();
 
             setOpaque(true);
 
@@ -3379,6 +3430,59 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
                     new Insets(0, 0, 0, 0));
 
             arrowLabel.setIcon(expandedIcon);
+        }
+
+        protected class ArrowLabel extends JLabel {
+
+            // Overridden for performance reasons.
+
+            @Override
+            public void validate() {
+            }
+
+            @Override
+            public void revalidate() {
+            }
+
+            @Override
+            public void repaint(
+                    long tm, int x, int y, int width, int height) {
+            }
+
+            @Override
+            public void repaint(Rectangle r) {
+            }
+
+            @Override
+            protected void firePropertyChange(String propertyName, Object oldValue, Object newValue) {
+                if (propertyName != null && propertyName.equals("text")) {
+                    super.firePropertyChange(propertyName, oldValue, newValue);
+                }
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, short oldValue, short newValue) {
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, int oldValue, int newValue) {
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, long oldValue, long newValue) {
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, float oldValue, float newValue) {
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, double oldValue, double newValue) {
+            }
+
+            @Override
+            public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
+            }
         }
 
         public Component getListCellRendererComponent(JList list, Object value,
@@ -3479,4 +3583,28 @@ public class JBrowser extends javax.swing.JComponent implements Scrollable {
         public void firePropertyChange(String propertyName, boolean oldValue, boolean newValue) {
         }
     }
+
+    protected ListUI getColumnListUI(ListUI basicUI)
+    {
+        return basicUI;
+    }
+
+    protected JScrollPane createScrollPane(JComponent c, int columnIndex) {
+        JScrollPane sp = new JScrollPane(c,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+                JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        sp.setBorder(null);
+
+        SizeHandle sizeHandle = new SizeHandle(columnIndex);
+        sizeHandle.setVisible(isColumnsResizable());
+        sp.setCorner(ScrollPaneConstants.LOWER_RIGHT_CORNER, sizeHandle);
+        sp.setLayout(new BrowserScrollPaneLayout());
+
+        sp.setFocusable(false);
+        sp.getVerticalScrollBar().setFocusable(false);
+        sp.getHorizontalScrollBar().setFocusable(false);
+        return sp;
+    }
+
+
 }

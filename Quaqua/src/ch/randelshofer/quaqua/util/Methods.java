@@ -1,5 +1,5 @@
 /*
- * @(#)Methods.java  
+ * @(#)Methods.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -10,8 +10,6 @@ package ch.randelshofer.quaqua.util;
 
 import java.awt.AWTEvent;
 import java.lang.reflect.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.UIDefaults;
 import javax.swing.UIManager;
 /**
@@ -28,7 +26,7 @@ public class Methods {
      */
     private Methods() {
     }
-    
+
     /**
      * Invokes the specified accessible parameterless method if it exists.
      *
@@ -73,7 +71,7 @@ public class Methods {
             throw new InternalError(e.getMessage());
         }
     }
-    
+
     /**
      * Invokes the specified method if it exists.
      *
@@ -231,7 +229,7 @@ public class Methods {
             Class type, Object value) throws NoSuchMethodException {
         return invokeStatic(clazz, methodName, new Class[] {type}, new Object[] {value});
     }
-    
+
     /**
      * Invokes the specified getter method if it exists.
      *
@@ -508,7 +506,7 @@ public class Methods {
             e.printStackTrace();
         }
     }
-    
+
     /**
      * Invokes the specified constructor if it exists.
      *
@@ -530,7 +528,7 @@ public class Methods {
 // Use UIDefaults.ProxyLazyValue to create the new instance, as
         // we are not allowd to create a new instances on our own
         // when we run as an unsigned Java WebStart application.
-        
+
         //return clazz.getConstructor(null).newInstance(null);
         return new UIDefaults.ProxyLazyValue(clazz).
                 createValue(UIManager.getDefaults());
@@ -557,5 +555,5 @@ public class Methods {
             return false;
         }
     }
-    
+
 }

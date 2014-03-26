@@ -1,10 +1,10 @@
 /*
 
  * @(#)OSXSheetSupport.java
- * 
+ *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
@@ -29,8 +29,8 @@ import ch.randelshofer.quaqua.QuaquaManager;
  * <p>
  * Please note: Sheets shown by this classed have no resize indicator and block
  * their owner window from user interaction.
- * 
- * @version $Id: OSXSheetSupport.java 106 2009-07-19 20:34:09Z fedr $
+ *
+ * @version $Id$
  * @author Felix Draxler
  */
 public class OSXSheetSupport {
@@ -48,7 +48,7 @@ public class OSXSheetSupport {
 
     /**
      * Checks if the native code was loaded and loads it if it has not been yet.
-     * 
+     *
      * @return <code>true</code>, if it has been loaded or could be loaded;
      *         <code>false</code> otherwise.
      **/
@@ -116,7 +116,7 @@ public class OSXSheetSupport {
     /**
      * Returns the version of the native code library. If the version does not
      * match with the version that we expect, we can not use it.
-     * 
+     *
      * @return The version number of the native code.
      */
     private static native int nativeGetNativeCodeVersion();
@@ -141,7 +141,7 @@ public class OSXSheetSupport {
      * <p>
      * {@link JSheet} handles all those details, but the method is enabled for
      * any {@link JDialog}.
-     * 
+     *
      * @see JDialog#setVisible(boolean)
      * @see #hideSheet(JDialog)
      * @see JDialog#setUndecorated(boolean)
@@ -170,7 +170,7 @@ public class OSXSheetSupport {
 
     /**
      * Native method to show a sheet.
-     * 
+     *
      * @param sheet
      *            The sheet.
      * @param owner
@@ -182,7 +182,7 @@ public class OSXSheetSupport {
      * Hides a sheet.
      * <p>
      * See <a href="http://developer.apple.com/documentation/Cocoa/Reference/ApplicationKit/Classes/NSApplication_Class/Reference/Reference.html#//apple_ref/occ/instm/NSApplication/endSheet:">NSApplication reference</a>
-     * 
+     *
      * @see #showAsSheet(JDialog)
      * @param sheet
      *            The sheet to hide.
@@ -195,7 +195,7 @@ public class OSXSheetSupport {
 
     /**
      * Native method to hide a sheet.
-     * 
+     *
      * @param sheet
      *            The sheet.
      */

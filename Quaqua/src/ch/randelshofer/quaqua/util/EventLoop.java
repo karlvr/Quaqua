@@ -78,9 +78,9 @@ public abstract class EventLoop {
      * of the queue.
      */
     private volatile boolean isLIFO = false;
-    
-    
-    
+
+
+
     /**
      * Creates a new EventLoop which processes events at Thread.NORM_PRORITY.
      */
@@ -114,7 +114,7 @@ public abstract class EventLoop {
             }
         }
     }
-    
+
     /**
      * Sets whether the EventLoop coalesces multiple pending events.
      * A busy application may not be able to keep up with event
@@ -158,7 +158,7 @@ public abstract class EventLoop {
     public boolean isLIFO() {
         return isLIFO;
     }
-    
+
     /**
      * Starts the event processor.
      * <br>The event processor is started by default.
@@ -169,14 +169,16 @@ public abstract class EventLoop {
             startProcessor();
         }
     }
-    
+
     /**
      * Stops the event processor.
      */
     public void stop() {
-        isAlive = false;
+        synchronized (eventQueue) {
+            isAlive = false;
+        }
     }
-    
+
     /**
      * Clears the event queue.
      */
@@ -190,7 +192,7 @@ public abstract class EventLoop {
         stop();
         clear();
     }
-    
+
     /**
      * This is the method which really starts the processor.
      */
@@ -215,14 +217,14 @@ public abstract class EventLoop {
             }
         }
     }
-    
+
     /**
      * This method processes an event on the event processor thread.
      *
      * @param event An event from the queue.
      */
     protected abstract void processEvent(Object event);
-    
+
     /**
      * This method removes events from the event queue
      * and proceses them until the queue is empty or

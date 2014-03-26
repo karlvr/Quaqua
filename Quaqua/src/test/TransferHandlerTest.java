@@ -1,7 +1,7 @@
 /*
  * @(#)TransferHandlerTest.java
  *
- * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2007-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
  *
  * The copyright of this software is owned by Werner Randelshofer.
@@ -11,7 +11,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.datatransfer.*;
 import java.awt.event.*;
 import java.io.*;
@@ -429,7 +428,7 @@ public class TransferHandlerTest extends javax.swing.JPanel {
     public static void main(String[] args) {
 
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception ex) {
             ex.printStackTrace();
