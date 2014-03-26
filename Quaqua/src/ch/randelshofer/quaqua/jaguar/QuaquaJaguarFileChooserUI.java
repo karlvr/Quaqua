@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaJaguarFileChooserUI.java  
+ * @(#)QuaquaJaguarFileChooserUI.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * http://www.randelshofer.ch
@@ -708,39 +708,57 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
 
     private void updateApproveButtonState() {
         JFileChooser fc = getFileChooser();
-
         if (fc.getControlButtonsAreShown()) {
-            File[] files = getSelectedFiles();
+            boolean isEnabled = computeApproveButtonEnabled();
+            setApproveButtonEnabled(isEnabled);
+        }
+    }
 
-            boolean isFileSelected = false;
-            boolean isDirectorySelected = false;
-            for (int i = 0; i < files.length; i++) {
-                if (files[i].isDirectory() && fc.isTraversable(files[i])) {
-                    isDirectorySelected = true;
-                } else {
-                    isFileSelected = true;
-                }
+    private boolean computeApproveButtonEnabled() {
+
+        JFileChooser fc = getFileChooser();
+        if (fc.getDialogType() == JFileChooser.SAVE_DIALOG) {
+            File dir = fc.getCurrentDirectory();
+            return dir.isDirectory() && isFileNameFieldValid(); // could test for directory being writable
+        }
+
+        if (isFileNameFieldVisible() && isFileNameFieldValid() && fc.getFileSelectionMode() == JFileChooser.FILES_ONLY) {
+            return true;
+        }
+
+        File[] files = getSelectedFiles();
+        if (files.length == 0) {
+            return fc.isDirectorySelectionEnabled() && isAcceptable(fc.getCurrentDirectory());
+        }
+
+        for (File f : files) {
+            if (!isAcceptable(f)) {
+                return false;
             }
-            boolean isEnabled = false;
-            switch (fc.getFileSelectionMode()) {
-                case JFileChooser.FILES_ONLY:
-                    isEnabled = isFileSelected || isFileNameFieldVisible() && isFileNameFieldValid();
-                    break;
-                case JFileChooser.DIRECTORIES_ONLY:
-                    /*
-                    isEnabled = ! isFileSelected
-                    && (isDirectorySelected || isFileNameFieldVisible() && isFileNameFieldValid());
-                     **/
-                    isEnabled = !isFileSelected || files.length == 1 && !files[0].exists();
-                    break;
-                case JFileChooser.FILES_AND_DIRECTORIES:
-                    /*
-                    isEnabled = isFileSelected || isDirectorySelected
-                    || isFileNameFieldVisible() && isFileNameFieldValid();
-                     */
-                    isEnabled = true;
-                    break;
-            }
+        }
+
+        return true;
+    }
+
+    private boolean isAcceptable(File f)
+    {
+        if (f == null) {
+            return false;
+        }
+
+        TreePath path = model.toPath(f, null);
+        Object pc = path.getLastPathComponent();
+        if (pc instanceof FileInfo) {
+            FileInfo info = (FileInfo) pc;
+            return info.isAcceptable();
+        } else {
+            return false;
+        }
+    }
+
+    private void setApproveButtonEnabled(boolean isEnabled) {
+        JFileChooser fc = getFileChooser();
+        if (fc.getControlButtonsAreShown()) {
             approveButton.setEnabled(isEnabled);
             if (isEnabled) {
                 JRootPane rp = approveButton.getRootPane();
@@ -750,7 +768,6 @@ public class QuaquaJaguarFileChooserUI extends BasicFileChooserUI {
             }
         }
     }
-
     private void updateApproveButtonText() {
         JFileChooser fc = getFileChooser();
 

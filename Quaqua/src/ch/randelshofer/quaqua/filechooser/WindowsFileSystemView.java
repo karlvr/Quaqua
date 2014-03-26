@@ -1,5 +1,5 @@
 /*
- * @(#)WindowsFileSystemView.java 
+ * @(#)WindowsFileSystemView.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -8,15 +8,11 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
 import java.io.*;
-import java.util.*;
 /**
  * WindowsFileSystemView provides a Aqua-style view on the windows file system.
- * 
- * 
+ *
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -26,7 +22,7 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
     private File desktop;
     private File systemVolume = new File("C:\\");
     private final static boolean DEBUG = false;
-    
+
     /**
      * Creates a new instance.
      */
@@ -34,11 +30,11 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
         volumesFolder = getParentDirectory(systemVolume);
         desktop = new File(systemVolume,"WINDOWS\\Desktop");
     }
-    
+
     public File getComputer() {
         return computer;
     }
-    
+
     public File getSystemVolume() {
         return volumesFolder;
     }
@@ -61,8 +57,8 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
         System.arraycopy(roots1, 0, roots2, 1, roots1.length);
         return roots2;*/
     }
-    
-    
+
+
     /**
      * On Windows, a file can appear in multiple folders, other than its
      * parent directory in the filesystem. Folder could for example be the
@@ -75,7 +71,7 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
     public boolean isParent(File folder, File file) {
         return target.isParent(folder, file);
     }
-    
+
     /**
      *
      * @param parent a <code>File</code> object repesenting a directory or special folder
@@ -88,8 +84,8 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
     public File getChild(File parent, String fileName) {
         return target.getChild(parent, fileName);
     }
-    
-    
+
+
     /**
      * Is dir the root of a tree in the file system, such as a drive
      * or partition. Example: Returns true for "C:\" on Windows 98.
@@ -101,16 +97,16 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
     public boolean isFileSystemRoot(File dir) {
         return target.isFileSystemRoot(dir);
     }
-    
+
     // Providing default implementations for the remaining methods
     // because most OS file systems will likely be able to use this
     // code. If a given OS can't, override these methods in its
     // implementation.
-    
+
     public File getHomeDirectory() {
         return target.getHomeDirectory();
     }
-    
+
     /**
      * Return the user's default starting directory for the file chooser.
      *
@@ -124,11 +120,11 @@ public class WindowsFileSystemView extends QuaquaFileSystemView {
 	if (f == null || !f.isAbsolute()) {
 	    return false;
 	}
-        
+
         if (f.equals(computer)) {
             return true;
         }
-        
+
 	File[] roots = getRoots();
 	for (int i = 0; i < roots.length; i++) {
 	    if (roots[i].equals(f)) {

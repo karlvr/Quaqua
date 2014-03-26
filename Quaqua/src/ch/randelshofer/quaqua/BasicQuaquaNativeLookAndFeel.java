@@ -8,6 +8,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
+import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.color.*;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
@@ -36,7 +37,8 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snowleopard/images/";
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
-    /** Creates a new instance.
+    /**
+     * Creates a new instance.
      * @param targetClassName Proxy target.
      */
     public BasicQuaquaNativeLookAndFeel(String targetClassName) {
@@ -44,7 +46,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
         } catch (Exception e) {
             throw new InternalError(
-                    "Unable to instanciate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
+                    "Unable to instantiate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
         }
     }
 
@@ -488,8 +490,6 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "TabbedPane.scroll.foreground", controlForeground,
             "Table.alternateBackground.0", listAlternateBackground,
             "Table.alternateBackground.1", listBackground,
-            "Table.focusCellBackground", listBackground,
-            "Table.focusCellForeground", listForeground,
             "Table.background", listBackground,
             "Table.foreground", listForeground,
             "Table.selectionBackground", listSelectionBackground,
@@ -636,7 +636,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     //, DefaultEditorKit.selectLineAction,
                     //, DefaultEditorKit.selectParagraphAction,
                     "meta A", DefaultEditorKit.selectAllAction,
-                    "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
+                    //"meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
@@ -727,7 +727,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     //, DefaultEditorKit.selectLineAction,
                     //, DefaultEditorKit.selectParagraphAction,
                     "meta A", DefaultEditorKit.selectAllAction,
-                    "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
+                    //"meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
@@ -822,7 +822,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     //, DefaultEditorKit.selectLineAction,
                     //, DefaultEditorKit.selectParagraphAction,
                     "meta A", DefaultEditorKit.selectAllAction,
-                    "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
+                    //"meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
@@ -915,7 +915,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     //, DefaultEditorKit.selectLineAction,
                     //, DefaultEditorKit.selectParagraphAction,
                     "meta A", DefaultEditorKit.selectAllAction,
-                    "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
+                    //"meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,});
@@ -990,7 +990,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                     //, DefaultEditorKit.selectLineAction,
                     //, DefaultEditorKit.selectParagraphAction,
                     "meta A", DefaultEditorKit.selectAllAction,
-                    "meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
+                    //"meta shift A", "unselect"/*DefaultEditorKit.unselectAction*/,
                     "controlBackground shift O", "toggle-componentOrientation", /*DefaultEditorKit.toggleComponentOrientation*/
                     "alt DELETE", QuaquaEditorKit.deleteNextWordAction,
                     "alt BACK_SPACE", QuaquaEditorKit.deletePrevWordAction,
@@ -1535,25 +1535,14 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
      * @param table Table onto which defaults are to be appended.
      */
     protected void initGeneralDefaults(UIDefaults table) {
-        String javaVersion = QuaquaManager.getProperty("java.version", "");
-
         String systemFontName = getBaseSystemFont().getName();
 
         // Focus behavior
-        Boolean isRequestFocusEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false"));
+        Boolean isRequestFocusEnabled = OSXConfiguration.isRequestFocusEnabled();
 
         // True if all controls are focusable,
         // false if only text boxes and lists are focusable.
-        // Set this value to true if requestFocus is enabled or
-        // if bit 2 of AppleKeyboardUIMode is set.
-        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "2");
-        int intValue;
-        try {
-            intValue = Integer.valueOf(prefValue);
-        } catch (NumberFormatException e) {
-            intValue = 2;
-        }
-        Boolean allControlsFocusable = isRequestFocusEnabled || ((intValue & 2) == 2);
+        Boolean allControlsFocusable = OSXConfiguration.isFullKeyboardAccess();
 
         Object dialogBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorders$DialogBorder");
@@ -1586,7 +1575,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         Object textFieldBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaNativeTextFieldBorder$UIResource",
                 new Object[]{new Insets(0,0,0,0), new Insets(6,8,6,8), true});
-        
+
         Object buttonBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaNativeButtonBorder$UIResource"
                 );
@@ -1594,11 +1583,8 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
         // True if file choosers orders by type
         boolean isOrderFilesByType = false;
         // True if file choosers shows all files by default
-        prefValue = OSXPreferences.getString(//
-                OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
-                .toLowerCase();
-        boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
-        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled","true"));
+        boolean isFileHidingEnabled = OSXConfiguration.isFileHidingEnabled();
+        boolean isQuickLookEnabled = OSXConfiguration.isIsQuickLookEnabled();
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1731,10 +1717,10 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             // color of the editor to the the foreground color of the JComboBox.
             // True is needed for rendering of combo boxes in JTables.
             "ComboBox.changeEditorForeground", Boolean.TRUE,
-            
+
             "ComboBox.focusable", allControlsFocusable,
-             
-             
+
+
             //
             // The visual margin is used to allow each component having room
             // for a cast shadow and a focus ring, and still supporting a
@@ -2066,7 +2052,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, width, height});
     }
-    protected Object makeNativeButtonStateIcon(OSXAquaPainter.Widget widget, 
+    protected Object makeNativeButtonStateIcon(OSXAquaPainter.Widget widget,
             int xoffset, int yoffset, int width, int height, boolean withFocusRing) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeButtonStateIcon",
@@ -2176,7 +2162,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
 
     }
 
-    protected Object makeNativeButtonStateBorder(OSXAquaPainter.Widget widget, 
+    protected Object makeNativeButtonStateBorder(OSXAquaPainter.Widget widget,
             Insets imageInsets, Insets borderInsets, boolean withFocusRing) {
         return new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorderFactory", "createNativeButtonStateBorder",
@@ -2305,9 +2291,9 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     }
 
     /** Use this to test if an UI is included.
-     * An UI may be implicitly or explicitly included, or may be explicitly 
-     * excluded.  
-     * 
+     * An UI may be implicitly or explicitly included, or may be explicitly
+     * excluded.
+     *
      * @param ui For example "LabelUI".
      * @return True if UI is included.
      */
@@ -2335,7 +2321,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
-     * 
+     *
      * @param table Table onto which defaults are appended.
      * @param keyValueList Key value list of the defaults.
      */

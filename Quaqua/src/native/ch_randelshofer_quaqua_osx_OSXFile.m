@@ -2,11 +2,12 @@
  * @(#)ch_randelshofer_quaqua_osx_OSXFile.m
  *
  * Copyright (c) 2004-2007 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2014 Alan Snyder.
  * All rights reserved.
  *
- * The copyright of this software is owned by Werner Randelshofer. 
- * You may not use, copy or modify this software, except in  
- * accordance with the license agreement you entered into with  
+ * The copyright of this software is owned by Werner Randelshofer.
+ * You may not use, copy or modify this software, except in
+ * accordance with the license agreement you entered into with
  * Werner Randelshofer. For details see accompanying license terms.
  */
 
@@ -42,27 +43,39 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetFileType
     // Assert arguments
     if (pathJ == NULL) return false;
 
-    // Convert Java String to C char array
-    const char* pathC;
-    pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
+    jint result = -1;
+
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    Boolean isAlias, isFolder;
-    err = FSPathMakeRef(pathC, &fileRef, NULL);
-    if (err == 0) {
-        err = FSIsAliasFile(&fileRef, &isAlias, &isFolder);
+    NSFileManager *fileManagerNS = [NSFileManager defaultManager];
+    NSDictionary* d = [fileManagerNS attributesOfItemAtPath:pathNS error:nil];
+    if (d != nil) {
+        NSString* fileType = [d fileType];
+        if (fileType != nil) {
+            if ([fileType isEqualToString:NSFileTypeRegular]) {
+                result = 0;
+            } else if ([fileType isEqualToString:NSFileTypeDirectory]) {
+                result = 1;
+            } else if ([fileType isEqualToString:NSFileTypeSymbolicLink]) {
+                result = 2;
+            }
+        }
     }
 
-    // Release the C char array
-    (*env)->ReleaseStringUTFChars(env, pathJ, pathC);
+    // Release memory pool
+    [pool release];
 
     // Return the result
-    return (err == 0) ?
-		((isAlias) ? 2 : ((isFolder) ? 1 : 0)) :
-		-1;
+    return result;
 }
+
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    resolveAlias
@@ -74,149 +87,28 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveA
     // Assert arguments
     if (aliasPathJ == NULL) return false;
 
-    // Convert Java filename to C filename
-    const char *aliasPathC;
-    aliasPathC = (*env)->GetStringUTFChars(env, aliasPathJ, 0);
-    
-    // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    OSStatus status;
-    Boolean wasAliased, targetIsFolder;
-    UInt8 resolvedPathC[2048];
+    jstring result = NULL;
 
-    int outputBufLen;
-    err = FSPathMakeRef(aliasPathC, &fileRef, NULL);
-    if (err == 0) {
-        err = FSResolveAliasFileWithMountFlags(
-                             &fileRef, 
-                             true, // resolve alias chains
-                             &targetIsFolder,
-                             &wasAliased,
-                             (noUI) ? kResolveAliasFileNoUI : 0 // mount flags
-              );
-    }
-    if (err == 0) {
-        if (wasAliased) {
-            status = FSRefMakePath(&fileRef, resolvedPathC, 2048);
-            if (status != 0) err = 1;
-        }
-    }
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
-    // Release the C filename
-    (*env)->ReleaseStringUTFChars(env, aliasPathJ, aliasPathC);
-
-
-    // Return the result
-    return (err == 0 && wasAliased) ? (*env)->NewStringUTF(env, resolvedPathC) : NULL;
-}
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    resolveAliasType
- * Signature: (Ljava/lang/String;Z)I
- */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType__Ljava_lang_String_2Z
-   (JNIEnv *env, jclass instance, jstring aliasPathJ, jboolean noUI)
-{
-    // Assert arguments
-    if (aliasPathJ == NULL) return false;
-
-    // Convert Java filename to C filename
-    const char *aliasPathC;
-    aliasPathC = (*env)->GetStringUTFChars(env, aliasPathJ, 0);
-    
-    // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    OSStatus status;
-    Boolean wasAliased, targetIsFolder;
-    UInt8 resolvedPathC[2048];
-
-    int outputBufLen;
-    err = FSPathMakeRef(aliasPathC, &fileRef, NULL);
-    if (err == 0) {
-        err = FSResolveAliasFileWithMountFlags(
-                             &fileRef, 
-                             false, // resolve alias chains
-                             &targetIsFolder,
-                             &wasAliased,
-                             (noUI) ? kResolveAliasFileNoUI : 0 // mount flags
-              );
-    }
-    if (err == 0) {
-        if (wasAliased) {
-            status = FSRefMakePath(&fileRef, resolvedPathC, 2048);
-            if (status != 0) err = 1;
-        }
-    }
-
-    // Release the C filename
-    (*env)->ReleaseStringUTFChars(env, aliasPathJ, aliasPathC);
-
-
-    // Return the result
-    return (err == 0) ? ((targetIsFolder) ? 1 : 0) : -1;
-}
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    toSerializedAlias
- * Signature: (Ljava/lang/String;)[B
- */
-JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSerializedAlias
-  (JNIEnv *env, jclass instance, jstring aliasPathJ)
-{
-    // Assert arguments
-    if (aliasPathJ == NULL) return NULL;
-
-    //
-    jbyteArray serializedAlias = NULL;
-
-    // Convert Java filename to C filename
-    const char *aliasPathC;
-    aliasPathC = (*env)->GetStringUTFChars(env, aliasPathJ, 0);
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, aliasPathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, aliasPathJ)];
+    (*env)->ReleaseStringChars(env, aliasPathJ, pathC);
 
     // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    AliasHandle aliasHdl;
-    CFDataRef dataRef = NULL;
-    const UInt8* dataBytes; // bytes of dataRef
-    int length; // length of the dataBytes array
-
-    err = FSPathMakeRef(aliasPathC, &fileRef, NULL);
-    if (err == 0) {
-        err = FSNewAlias(NULL, &fileRef, &aliasHdl);
+    NSString *resultNS = [pathNS stringByResolvingSymlinksInPath];
+    if (resultNS != nil) {
+        // Convert NSString to jstring
+        result = (*env)->NewStringUTF(env, [resultNS UTF8String]);
     }
 
-    if (err == 0) {
-        dataRef = CFDataCreate(
-                        kCFAllocatorDefault,
-                        (UInt8*) *aliasHdl,
-                        GetHandleSize((Handle) aliasHdl)
-                  );
-        err = (NULL == dataRef);
-    }
-    if (err == 0) {
-        length = CFDataGetLength(dataRef);
-        serializedAlias = (*env)->NewByteArray(env, length);
-        err = (NULL == serializedAlias);
-    }
-    if (err == 0) {
-        dataBytes = CFDataGetBytePtr(dataRef);
-        (*env)->SetByteArrayRegion(env, serializedAlias, 0, length, dataBytes);
-    }
-
-    // Release the C filename
-    (*env)->ReleaseStringUTFChars(env, aliasPathJ, aliasPathC);
-
-    // Release the other stuff
-    if (dataRef != NULL) CFRelease(dataRef);
-    if (aliasHdl != NULL) DisposeHandle((Handle) aliasHdl);
+    // Release memory pool
+    [pool release];
 
     // Return the result
-    return serializedAlias;
+    return result;
 }
 
 /*
@@ -225,122 +117,44 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeToSer
  * Signature: ([BZ)Ljava/lang/String;
  */
 JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAlias___3BZ
-  (JNIEnv *env, jclass instance, jbyteArray serializedAlias, jboolean noUI) 
+  (JNIEnv *env, jclass instance, jbyteArray serializedAlias, jboolean noUI)
 {
     // Assert arguments
     if (serializedAlias == NULL) return false;
-    
-    //
-    FSRef fileRef;
-    OSErr err;
-    AliasHandle aliasHdl;
+
     CFDataRef dataRef;
+    CFDataRef bookmarkDataRef;
     UInt8* serializedAliasBytes; // bytes of serializedAlias
     int length; // length of serializedAlias
     UInt8 resolvedPathC[2048];
-    Boolean wasChanged;
-    OSStatus status;
+    jstring result = NULL;
 
     length = (*env)->GetArrayLength(env, serializedAlias);
-    serializedAliasBytes = (*env)->GetByteArrayElements(env, serializedAlias, NULL);
-    err = (NULL == serializedAliasBytes);
-
-    if (err == 0) {
-        dataRef = CFDataCreate(kCFAllocatorDefault,
-                               (UInt8*) serializedAliasBytes, 
-                               length
-                  );
-
-        aliasHdl = (AliasHandle) NewHandle(length);
-        err = (NULL == aliasHdl);
+    serializedAliasBytes = (UInt8 *) (*env)->GetByteArrayElements(env, serializedAlias, NULL);
+    if (serializedAliasBytes != NULL) {
+        dataRef = CFDataCreate(NULL, serializedAliasBytes, length);
+        if (dataRef != NULL) {
+            bookmarkDataRef = CFURLCreateBookmarkDataFromAliasRecord(NULL, dataRef);
+            if (bookmarkDataRef != NULL) {
+                CFURLBookmarkResolutionOptions opt = (noUI) ? kCFBookmarkResolutionWithoutUIMask : 0;
+                Boolean isStale;
+                CFErrorRef error;
+                CFURLRef u = CFURLCreateByResolvingBookmarkData(NULL, bookmarkDataRef, opt, NULL, NULL, &isStale, &error);
+                if (u != NULL) {
+                    Boolean success = CFURLGetFileSystemRepresentation(u, true, resolvedPathC, 2048);
+                    if (success) {
+                        result = (*env)->NewStringUTF(env, (const char *) resolvedPathC);
+                    }
+                    CFRelease(u);
+                }
+                CFRelease(bookmarkDataRef);
+            }
+            CFRelease(dataRef);
+        }
+        (*env)->ReleaseByteArrayElements(env, serializedAlias, (jbyte *) serializedAliasBytes, JNI_ABORT);
     }
-    if (err == 0) {
-        CFDataGetBytes(dataRef,
-                       CFRangeMake(0, length),
-                       (UInt8*) *aliasHdl
-       );
-    
-        err = FSResolveAliasWithMountFlags(NULL,
-                             aliasHdl,
-                             &fileRef,
-                             &wasChanged,
-                             (noUI) ? kResolveAliasFileNoUI : 0
-              );
-    }
-    if (err == 0) {
-        status = FSRefMakePath(&fileRef, resolvedPathC, 2048);
-        if (status != 0) err = 1;
-    }
-
-    // Release allocated stuff
-    (*env)->ReleaseByteArrayElements(env, serializedAlias, serializedAliasBytes, JNI_ABORT);
-    if (aliasHdl != NULL) DisposeHandle((Handle) aliasHdl);
-
-    // Return the result
-    return (err == 0) ? (*env)->NewStringUTF(env, resolvedPathC) : NULL;
+    return result;
 }
-
-/*
- * Class:     ch_randelshofer_quaqua_osx_OSXFile
- * Method:    jniResolveAliasType
- * Signature: ([BZ)I
- */
-JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveAliasType___3BZ
-  (JNIEnv *env, jclass instance, jbyteArray serializedAlias, jboolean noUI) 
-{
-    // Assert arguments
-    if (serializedAlias == NULL) return false;
-    
-    //
-    OSErr err;
-    AliasHandle aliasHdl;
-    CFDataRef dataRef;
-    UInt8* serializedAliasBytes; // bytes of serializedAlias
-    int length; // length of serializedAlias
-    UInt8 resolvedPathC[2048];
-    OSStatus status;
-	FSAliasInfoBitmap whichInfo;
-    FSAliasInfo info;
-
-    length = (*env)->GetArrayLength(env, serializedAlias);
-    serializedAliasBytes = (*env)->GetByteArrayElements(env, serializedAlias, NULL);
-    err = (NULL == serializedAliasBytes);
-
-    if (err == 0) {
-        dataRef = CFDataCreate(kCFAllocatorDefault,
-                               (UInt8*) serializedAliasBytes, 
-                               length
-                  );
-
-        aliasHdl = (AliasHandle) NewHandle(length);
-        err = (NULL == aliasHdl);
-    }
-    if (err == 0) {
-        CFDataGetBytes(dataRef,
-                       CFRangeMake(0, length),
-                       (UInt8*) *aliasHdl
-       );
-    
-		err = FSCopyAliasInfo (
-			aliasHdl,
-			NULL, //targetName
-			NULL, //volumeName
-			NULL, //pathString
-			&whichInfo,
-			&info
-		);
-    }
-	
-    // Release allocated stuff
-    (*env)->ReleaseByteArrayElements(env, serializedAlias, serializedAliasBytes, JNI_ABORT);
-    if (aliasHdl != NULL) DisposeHandle((Handle) aliasHdl);
-
-    // Return the result
-    return (err == 0 && (whichInfo & kFSAliasInfoIsDirectory) != 0) ?
-		 ((info.isDirectory) ? 1 : 0) : 
-		 -1;
-}
-  
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
@@ -353,29 +167,32 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLabel
     // Assert arguments
     if (pathJ == NULL) return -1;
 
-    // Convert Java String to C char array
-    const char *pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    jint result = -1;
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    FSCatalogInfo catalogInfo;
-    FInfo *fileInfo;
-    int fileLabel;
-    err = FSPathMakeRef(pathC, &fileRef, NULL);
-    if (err == 0) {
-        err = FSGetCatalogInfo(&fileRef, kFSCatInfoFinderInfo, &catalogInfo, NULL, NULL, NULL);
-    }
-    if (err == 0) {
-        fileInfo = (FInfo*) &catalogInfo.finderInfo;
-        fileLabel = (fileInfo->fdFlags & 0xe) >> 1;
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        CFErrorRef error;
+        CFNumberRef fileLabel;
+        Boolean success = CFURLCopyResourcePropertyForKey((CFURLRef) u, kCFURLLabelNumberKey, &fileLabel, &error);
+        if (success) {
+            CFNumberGetValue(fileLabel, kCFNumberSInt32Type, &result);
+        }
     }
 
-    // Release the C char array
-    (*env)->ReleaseStringUTFChars(env, pathJ, pathC);
+    // Release memory pool
+    [pool release];
 
     // Return the result
-    return (err == 0) ? fileLabel : -1;
+    return result;
 }
 
 /*
@@ -389,35 +206,39 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetKindS
     // Assert arguments
     if (pathJ == NULL) return NULL;
 
-    // Convert Java String to C char array
-    const char *pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    jstring result = NULL;
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    CFStringRef outKindString;
-    err = FSPathMakeRef(pathC, &fileRef, NULL);
-    jstring kindJ;
-    if (err == 0) {
-        err = LSCopyKindStringForRef(&fileRef, &outKindString);
-    }
-    if (err == 0) {
-        CFRange range;
-        range.location = 0;
-        // Note that CFStringGetLength returns the number of UTF-16 characters,
-        // which is not necessarily the number of printed/composed characters
-        range.length = CFStringGetLength(outKindString);
-        UniChar charBuf[range.length];
-        CFStringGetCharacters(outKindString, range, charBuf);
-        kindJ = (*env)->NewString(env, (jchar *)charBuf, (jsize)range.length);
-        CFRelease(outKindString);
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        CFErrorRef error;
+        CFStringRef kind;
+        Boolean success = CFURLCopyResourcePropertyForKey((CFURLRef) u, kCFURLLocalizedTypeDescriptionKey, &kind, &error);
+        if (success) {
+            CFRange range;
+            range.location = 0;
+            // Note that CFStringGetLength returns the number of UTF-16 characters,
+            // which is not necessarily the number of printed/composed characters
+            range.length = CFStringGetLength(kind);
+            UniChar charBuf[range.length];
+            CFStringGetCharacters(kind, range, charBuf);
+            result = (*env)->NewString(env, (jchar *)charBuf, (jsize)range.length);
+        }
     }
 
-    // Release the C char array
-    (*env)->ReleaseStringUTFChars(env, pathJ, pathC);
+    // Release memory pool
+    [pool release];
 
     // Return the result
-    return (err == 0) ? kindJ : NULL;
+    return result;
 }
 
 /*
@@ -433,7 +254,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
 
     // Prepare result
     jbyteArray result = NULL;
-    
+
     // Allocate a memory pool
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
 
@@ -492,7 +313,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
 
     // Release memory pool
     [pool release];
-    
+
     return result;
 }
 
@@ -507,63 +328,64 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQu
 (JNIEnv *env, jclass javaClass, jstring pathJ, jint size) {
     // Assert arguments
     if (pathJ == NULL) return NULL;
-    
+
     // Prepare result
     jbyteArray result = NULL;
-    
+
     // Allocate a memory pool
     NSAutoreleasePool* pool = [NSAutoreleasePool new];
-    
+
     // Convert Java String to NS String
     const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
     NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
                                                length:(*env)->GetStringLength(env, pathJ)];
     (*env)->ReleaseStringChars(env, pathJ, pathC);
     NSURL *fileURL = [NSURL fileURLWithPath:pathNS];
-    
-    // Load the QuickLook bundle
-    NSURL *bundleURL = [NSURL fileURLWithPath:@"/System/Library/Frameworks/QuickLook.framework"];
-    CFBundleRef cfBundle = CFBundleCreate(kCFAllocatorDefault, (CFURLRef)bundleURL);
-    NSBitmapImageRep *image = nil;
-    // If we didn'succeed, the framework does not exist. The image is null, so null is returned 
-    if (cfBundle) {
-        NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES] 
-                                                         forKey:@"IconMode"];
-        // Get the thumbnail function pointer
-        QuickLookRequest functionRef = CFBundleGetFunctionPointerForName(cfBundle,
-                                                                         CFSTR("QLThumbnailImageCreate"));
-        // Perform the request
-        CGImageRef ref = (CGImageRef) functionRef(kCFAllocatorDefault,
-                                     (CFURLRef)fileURL, 
-                                     CGSizeMake(size, size),
-                                     (CFDictionaryRef)dict);
 
-        CFRelease(cfBundle);
-        // Use the created image to create a bitmap image representation
-        if (ref) {
-            image = [[NSBitmapImageRep alloc] initWithCGImage:ref];
-            CFRelease(ref);
+    if (fileURL != nil) {
+        // Load the QuickLook bundle
+        NSURL *bundleURL = [NSURL fileURLWithPath:@"/System/Library/Frameworks/QuickLook.framework"];
+        CFBundleRef cfBundle = CFBundleCreate(kCFAllocatorDefault, (CFURLRef)bundleURL);
+        NSBitmapImageRep *image = nil;
+        // If we didn't succeed, the framework does not exist. The image is null, so null is returned
+        if (cfBundle) {
+            NSDictionary *dict = [NSDictionary dictionaryWithObject:[NSNumber numberWithBool:YES]
+                                                             forKey:@"IconMode"];
+            // Get the thumbnail function pointer
+            QuickLookRequest functionRef = CFBundleGetFunctionPointerForName(cfBundle,
+                                                                             CFSTR("QLThumbnailImageCreate"));
+            // Perform the request
+            CGImageRef ref = (CGImageRef) functionRef(kCFAllocatorDefault,
+                                         (CFURLRef)fileURL,
+                                         CGSizeMake(size, size),
+                                         (CFDictionaryRef)dict);
+
+            CFRelease(cfBundle);
+            // Use the created image to create a bitmap image representation
+            if (ref) {
+                image = [[NSBitmapImageRep alloc] initWithCGImage:ref];
+                CFRelease(ref);
+            }
+        }
+
+        //NSLog (@"%@", image);
+        if (image != NULL) {
+            // Convert image to TIFF
+            NSData* dataNS = [image TIFFRepresentation];
+            if (dataNS != NULL) {
+                unsigned len = [dataNS length];
+                void* bytes = malloc(len);
+                [dataNS getBytes: bytes];
+                result = (*env)->NewByteArray(env, len);
+                (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
+                free(bytes);
+            }
         }
     }
-    
-    //NSLog (@"%@", image);
-    if (image != NULL) {
-        // Convert image to TIFF
-        NSData* dataNS = [image TIFFRepresentation];
-        if (dataNS != NULL) {
-            unsigned len = [dataNS length];
-            void* bytes = malloc(len);
-            [dataNS getBytes: bytes];
-            result = (*env)->NewByteArray(env, len);
-            (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
-            free(bytes);
-        }
-    }
-    
-    
+
     // Release memory pool
     [pool release];
-    
+
     return result;
 }
 
@@ -577,23 +399,32 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetBasicIte
     // Assert arguments
     if (pathJ == NULL) return -1;
 
-    // Convert Java String to C char array
-    const char *pathC = (*env)->GetStringUTFChars(env, pathJ, 0);
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    jint result = 0;
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
 
     // Do the API calls
-    FSRef fileRef;
-    OSErr err;
-    LSItemInfoRecord itemInfoRecord;
-    err = FSPathMakeRef(pathC, &fileRef, NULL);
-    if (err == 0) {
-        err = LSCopyItemInfoForRef(&fileRef, kLSRequestBasicFlagsOnly, &itemInfoRecord);
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        OSStatus err;
+        LSItemInfoRecord itemInfoRecord;
+        err = LSCopyItemInfoForURL((CFURLRef) u, kLSRequestBasicFlagsOnly, &itemInfoRecord);
+        if (err == 0) {
+            result = itemInfoRecord.flags;
+        }
     }
 
-    // Release the C char array
-    (*env)->ReleaseStringUTFChars(env, pathJ, pathC);
+    // Release memory pool
+    [pool release];
 
     // Return the result
-    return (err == 0) ? itemInfoRecord.flags : 0;
+    return result;
 }
 
 JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDisplayName
@@ -627,12 +458,121 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDispl
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetLastUsedDate
+ * Signature: (Ljava/lang/String;)Z
+ */
+JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLastUsedDate
+  (JNIEnv *env, jclass javaClass, jstring pathJ) {
+
+    // Assert arguments
+    if (pathJ == NULL) return 0;
+
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
+        length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
+
+    jlong result = 0;
+
+    // Do the API calls
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        MDItemRef item = MDItemCreateWithURL(NULL, CFBridgingRetain(u));
+        if (item != NULL) {
+            CFDateRef date = (CFDateRef) MDItemCopyAttribute(item, kMDItemLastUsedDate);
+            if (date != NULL) {
+                CFAbsoluteTime /* double */ at = CFDateGetAbsoluteTime(date);	/* seconds since Jan 1 2001 */
+                long long jtime = (long long) at;
+                jtime += (60 * 60 * 24) * (31 * 365 + 8);
+                jtime *= 1000;
+                result = (jlong) jtime;
+            }
+        }
+    }
+
+    // Release memory pool
+    [pool release];
+
+    // Return the result
+    return result;
+}
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeExecuteSavedSearch
+ * Signature: (Ljava/lang/String)[Ljava/lang/String
+ */
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeExecuteSavedSearch
+(JNIEnv *env, jclass javaClass, jstring pathJ) {
+    // Assert arguments
+    if (pathJ == NULL) return NULL;
+
+    // Prepare result
+    jobjectArray result = NULL;
+
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC
+                                               length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
+
+    // Read the saved search file and execute the query synchronously
+    NSData *data = [NSData dataWithContentsOfFile:pathNS];
+    if (data != nil) {
+        NSPropertyListReadOptions readOptions = NSPropertyListImmutable;
+        NSError *error;
+        NSDictionary *plist = (NSDictionary *)[NSPropertyListSerialization propertyListWithData:data options:readOptions format:NULL error:&error];
+        if (plist != nil) {
+            NSString *queryString = (NSString *) [plist objectForKey:@"RawQuery"];
+            NSDictionary *searchCriteria = (NSDictionary *) [plist objectForKey:@"SearchCriteria"];
+            if (queryString != nil && searchCriteria != nil) {
+                NSArray *scopeDirectories = (NSArray *) [searchCriteria objectForKey:@"FXScopeArrayOfPaths"];
+                if (scopeDirectories != nil) {
+                    MDQueryRef query = MDQueryCreate(NULL, CFBridgingRetain(queryString), NULL, NULL);
+                    if (query != NULL) {
+                        OptionBits scopeOptions = 0;
+                        MDQuerySetSearchScope(query, CFBridgingRetain(scopeDirectories), scopeOptions);
+                        CFOptionFlags optionFlags = kMDQuerySynchronous;
+                        Boolean b = MDQueryExecute(query, optionFlags);
+                        if (b) {
+                            CFIndex count = MDQueryGetResultCount(query);
+                            jclass stringClass = (*env)->FindClass(env, "java/lang/String");
+                            result = (*env)->NewObjectArray(env, count, stringClass, NULL);
+                            for (CFIndex i = 0; i < count; i++) {
+                                MDItemRef item = (MDItemRef) MDQueryGetResultAtIndex(query, i);
+                                CFStringRef path = (CFStringRef) MDItemCopyAttribute(item, kMDItemPath);
+                                NSString *pathNS = (NSString *) path;
+                                jstring pathJ = (*env)->NewStringUTF(env, [pathNS UTF8String]);
+                                (*env)->SetObjectArrayElement(env, result, i, pathJ);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Release memory pool
+    [pool release];
+
+    return result;
+}
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    getNativeCodeVersion
  * Signature: ()I
  */
 JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
-    return 5;
+    return 6;
 }
 
 

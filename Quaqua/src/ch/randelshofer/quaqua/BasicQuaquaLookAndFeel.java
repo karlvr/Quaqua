@@ -8,6 +8,7 @@
 package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
+import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.color.*;
 import javax.swing.*;
@@ -487,8 +488,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "TabbedPane.scroll.foreground", controlForeground,
             "Table.alternateBackground.0", listAlternateBackground,
             "Table.alternateBackground.1", listBackground,
-            "Table.focusCellBackground", listBackground,
-            "Table.focusCellForeground", listForeground,
             "Table.background", listBackground,
             "Table.foreground", listForeground,
             "Table.selectionBackground", listSelectionBackground,
@@ -1539,20 +1538,11 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
         String systemFontName = getBaseSystemFont().getName();
 
         // Focus behavior
-        Boolean isRequestFocusEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.requestFocusEnabled", "false"));
+        Boolean isRequestFocusEnabled = OSXConfiguration.isRequestFocusEnabled();
 
         // True if all controls are focusable,
         // false if only text boxes and lists are focusable.
-        // Set this value to true if requestFocus is enabled or
-        // if bit 2 of AppleKeyboardUIMode is set.
-        String prefValue = OSXPreferences.getString(OSXPreferences.GLOBAL_PREFERENCES, "AppleKeyboardUIMode", "2");
-        int intValue;
-        try {
-            intValue = Integer.valueOf(prefValue);
-        } catch (NumberFormatException e) {
-            intValue = 2;
-        }
-        Boolean allControlsFocusable = isRequestFocusEnabled || ((intValue & 2) == 2);
+        Boolean allControlsFocusable = OSXConfiguration.isFullKeyboardAccess();
 
         Object dialogBorder = new UIDefaults.ProxyLazyValue(
                 "ch.randelshofer.quaqua.QuaquaBorders$DialogBorder");
@@ -1597,11 +1587,8 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
 
         boolean isOrderFilesByType = false;
         // True if file choosers shows all files by default
-        prefValue = OSXPreferences.getString(//
-                OSXPreferences.FINDER_PREFERENCES, "AppleShowAllFiles", "false")//
-                .toLowerCase();
-        boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
-        boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled", "true"));
+        boolean isFileHidingEnabled = OSXConfiguration.isFileHidingEnabled();
+        boolean isQuickLookEnabled = OSXConfiguration.isIsQuickLookEnabled();
 
         // Enforce visual margin
         // Set this to true, to workaround Matisse issue #
@@ -1899,10 +1886,10 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             // Default value for "apple.awt.windowShadow"
             "RootPane.windowShadow", Boolean.TRUE,
             "ScrollBar.placeButtonsTogether",new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",            
+                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",
                 new Object[]{OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollBarVariant", "DoubleMax","DoubleMax"}),
             "ScrollBar.supportsAbsolutePositioning",new UIDefaults.ProxyLazyValue(
-                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",   
+                "ch.randelshofer.quaqua.osx.OSXPreferences","isStringEqualTo",
                 new Object[]{OSXPreferences.GLOBAL_PREFERENCES, "AppleScrollerPagingBehavior", "false","true"}),
             "ScrollBar.minimumThumbSize", new DimensionUIResource(24, 24),
             "ScrollBar.minimumThumbSize.small", new DimensionUIResource(18, 18),
@@ -1943,7 +1930,7 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
             "ScrollBar.preferredSize", new Dimension(15,15),
             "ScrollBar.preferredSize.small", new Dimension(11,11),
             "ScrollBar.preferredSize.mini", new Dimension(11,11),
-            
+
             //
             "ScrollPane.border", scrollPaneBorder,
             "ScrollPane.requesFocusEnabled", Boolean.FALSE,
@@ -2360,9 +2347,9 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     }
 
     /** Use this to test if an UI is included.
-     * An UI may be implicitly or explicitly included, or may be explicitly 
-     * excluded.  
-     * 
+     * An UI may be implicitly or explicitly included, or may be explicitly
+     * excluded.
+     *
      * @param ui For example "LabelUI".
      * @return True if UI is included.
      */

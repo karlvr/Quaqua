@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaComboBoxUI.java 
+ * @(#)QuaquaComboBoxUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -39,7 +39,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     static final StringBuffer HIDE_POPUP_KEY = new StringBuffer("HidePopupKey");
     /**
      * Optional: if specified, these insets act as padding around the cell
-     * renderer when laying out and painting the "selected" item in the 
+     * renderer when laying out and painting the "selected" item in the
      * combo box. BasicComboBoxUI uses a single combo box renderer for rendering
      * both the main combo box item and also all the items in the dropdown
      * for the combo box. padding allows you to specify addition insets in
@@ -197,7 +197,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     /* Creates a <code>KeyListener</code> which will be added to the
      * combo box. If this method returns null then it will not be added
      * to the combo box.
-     * 
+     *
      * @return an instance <code>KeyListener</code> or null
      */
 
@@ -233,7 +233,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         return getHandler();
     }
 
-    // Syncronizes the ToolTip text for the components within the combo box to be the 
+    // Syncronizes the ToolTip text for the components within the combo box to be the
     // same value as the combo box ToolTip text.
     private void updateToolTipTextForChildren() {
         Component[] children = comboBox.getComponents();
@@ -311,7 +311,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     private class QuaquaComboBoxUIHandler implements ActionListener, FocusListener,
             KeyListener, LayoutManager,
             ListDataListener, PropertyChangeListener {
-        //    
+        //
         //
         // PropertyChangeListener
         //
@@ -582,7 +582,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         // ActionListener
         //
         // Fix for 4515752: Forward the Enter pressed on the
-        // editable combo box to the default button 
+        // editable combo box to the default button
         // Note: This could depend on event ordering. The first ActionEvent
         // from the editor may be handled by the JComboBox in which case, the
         // enterPressed action will always be invoked.
@@ -829,15 +829,15 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
         return (margin == null) ? new Insets(0, 0, 0, 0) : (Insets) margin.clone();
     }
 
-    /** 
+    /**
      * Returns the calculated size of the display area. The display area is the
-     * portion of the combo box in which the selected item is displayed. This 
-     * method will use the prototype display value if it has been set. 
+     * portion of the combo box in which the selected item is displayed. This
+     * method will use the prototype display value if it has been set.
      * <p>
      * For combo boxes with a non trivial number of items, it is recommended to
-     * use a prototype display value to significantly speed up the display 
+     * use a prototype display value to significantly speed up the display
      * size calculation.
-     * 
+     *
      * @return the size of the display area calculated from the combo box items
      * @see javax.swing.JComboBox#setPrototypeDisplayValue
      */
@@ -931,7 +931,7 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
     /**
      * This has been refactored out in hopes that it may be investigated and
      * simplified for the next major release. adding/removing
-     * the component to the currentValuePane and changing the font may be 
+     * the component to the currentValuePane and changing the font may be
      * redundant operations.
      */
     protected Dimension getSizeForComponent(Component comp) {
@@ -973,6 +973,12 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
 
             Insets insets = getInsets();
             size = getDisplaySize();
+
+            /*
+              TBD: This seems wrong. How do we know that the combo box height must be increased to properly
+              contain the arrow button?
+            */
+
             size.width += insets.left + insets.right
                     + buttonInsets.left + buttonInsets.right;
             size.height += insets.top + insets.bottom

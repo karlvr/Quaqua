@@ -1,5 +1,5 @@
 /*
- * @(#)ComboBoxTest.java  
+ * @(#)ComboBoxTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -7,7 +7,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.*;
@@ -155,7 +154,7 @@ public class ComboBoxTest extends javax.swing.JPanel {
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

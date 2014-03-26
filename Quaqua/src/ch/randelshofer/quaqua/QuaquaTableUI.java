@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaTableUI.java  
+ * @(#)QuaquaTableUI.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -379,7 +379,7 @@ public class QuaquaTableUI extends BasicTableUI
         return -1;
     }
 
-    private boolean isFocused() {
+    protected boolean isFocused() {
         return table.isEditing() || QuaquaUtilities.isFocused(table);
     }
 
@@ -556,9 +556,13 @@ public class QuaquaTableUI extends BasicTableUI
      */
     private Handler getHandler() {
         if (handler == null) {
-            handler = new Handler();
+            handler = createHandler();
         }
         return handler;
+    }
+
+    protected Handler createHandler() {
+        return new Handler();
     }
 
     /**
@@ -590,9 +594,9 @@ public class QuaquaTableUI extends BasicTableUI
      */
     /**
      * PropertyChangeListener for the table. Updates the appropriate
-     * varaible, or TreeState, based on what changes.
+     * variable, or TreeState, based on what changes.
      */
-    private class Handler implements
+    protected class Handler implements
             PropertyChangeListener, ListSelectionListener,//
             TableColumnModelListener, FocusListener, MouseInputListener, //
             KeyListener {
@@ -657,7 +661,7 @@ public class QuaquaTableUI extends BasicTableUI
         public void columnMarginChanged(ChangeEvent e) {
         }
 
-        private int getAdjustedIndex(int index, boolean row) {
+        protected int getAdjustedIndex(int index, boolean row) {
             int compare = row ? table.getRowCount() : table.getColumnCount();
             return index < compare ? index : -1;
         }
@@ -705,7 +709,7 @@ public class QuaquaTableUI extends BasicTableUI
          * This is a reimplementation of the JTable.valueChanged method,
          * with the only difference, that we repaint the cells _including_ the
          * intercell spacing.
-         * 
+         *
          * @param e
          */
         public void valueChanged(ListSelectionEvent e) {
@@ -731,7 +735,7 @@ public class QuaquaTableUI extends BasicTableUI
             table.repaint(dirtyRegion);
         }
 
-        private int limit(int i, int a, int b) {
+        protected int limit(int i, int a, int b) {
             return Math.min(b, Math.max(i, a));
         }
 
@@ -739,7 +743,7 @@ public class QuaquaTableUI extends BasicTableUI
         public void mouseClicked(MouseEvent e) {
         }
 
-        private void setDispatchComponent(MouseEvent e) {
+        protected void setDispatchComponent(MouseEvent e) {
             Component editorComponent = table.getEditorComponent();
             Point p = e.getPoint();
             Point p2 = SwingUtilities.convertPoint(table, p, editorComponent);
@@ -747,7 +751,7 @@ public class QuaquaTableUI extends BasicTableUI
                     p2.x, p2.y);
         }
 
-        private boolean repostEvent(MouseEvent e) {
+        protected boolean repostEvent(MouseEvent e) {
             // Check for isEditing() in case another event has
             // caused the editor to be removed. See bug #4306499.
             if (dispatchComponent == null || !table.isEditing()) {
@@ -758,12 +762,12 @@ public class QuaquaTableUI extends BasicTableUI
             return true;
         }
 
-        private void setValueIsAdjusting(boolean flag) {
+        protected void setValueIsAdjusting(boolean flag) {
             table.getSelectionModel().setValueIsAdjusting(flag);
             table.getColumnModel().getSelectionModel().setValueIsAdjusting(flag);
         }
 
-        private boolean shouldIgnore(MouseEvent e) {
+        protected boolean shouldIgnore(MouseEvent e) {
             return e.isConsumed() || (!(SwingUtilities.isLeftMouseButton(e) && table.isEnabled())) || e.isPopupTrigger()
                     && (table.rowAtPoint(e.getPoint()) == -1
                     || table.isRowSelected(table.rowAtPoint(e.getPoint())));
@@ -821,7 +825,7 @@ public class QuaquaTableUI extends BasicTableUI
                             mouseDragAction = MOUSE_DRAG_TOGGLES_SELECTION;
                         } else if ((e.getModifiersEx() & (MouseEvent.SHIFT_DOWN_MASK | MouseEvent.BUTTON2_DOWN_MASK | MouseEvent.BUTTON3_DOWN_MASK))//
                                 == MouseEvent.SHIFT_DOWN_MASK
-                                && anchorIndex != -1) {
+                                && anchorIndex != -1 && table.getSelectionModel().getSelectionMode() != ListSelectionModel.SINGLE_SELECTION) {
                             // add all rows to the selection from the anchor to the row
                             table.changeSelection(row, column, false, true);
                             mouseDragAction = MOUSE_DRAG_SELECTS;
@@ -922,14 +926,18 @@ public class QuaquaTableUI extends BasicTableUI
 
         // BEGIN FocusListener
         public void focusGained(FocusEvent e) {
-            repaintSelection();
+            focusChanged();
         }
 
         public void focusLost(FocusEvent e) {
+            focusChanged();
+        }
+
+        protected void focusChanged() {
             repaintSelection();
         }
 
-        private void repaintSelection() {
+        protected void repaintSelection() {
             final int[] rows = table.getSelectedRows();
             if (rows.length > 0) {
                 //
@@ -946,8 +954,11 @@ public class QuaquaTableUI extends BasicTableUI
                     // 1/-1 allow for rows & cols partially in the rect
                     firstRow = table.rowAtPoint(currentPos) - 1;
                     firstCol = table.columnAtPoint(currentPos) - 1;
-                    lastRow = table.rowAtPoint(new Point(currentPos.x, currentPos.y + extentSize.height)) + 1;
-                    lastCol = table.columnAtPoint(new Point(currentPos.x + extentSize.width, currentPos.y)) + 1;
+
+                    int row = table.rowAtPoint(new Point(currentPos.x, currentPos.y + extentSize.height));
+                    lastRow = row >= 0 ? row + 1 : table.getRowCount();
+                    int col = table.columnAtPoint(new Point(currentPos.x + extentSize.width, currentPos.y));
+                    lastCol = col >= 0 ? col + 1 : table.getColumnCount();
                 }
 
                 if (rows[0] <= lastRow && rows[rows.length - 1] >= firstRow) {

@@ -1,5 +1,5 @@
 /**
- * @(#)QuaquaPopupFactory.java  
+ * @(#)QuaquaPopupFactory.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -344,7 +344,7 @@ public class QuaquaPopupFactory extends PopupFactory {
                 parent = (owner instanceof Container ? (Container) owner : owner.getParent());
             }
 
-            // Try to find a JLayeredPane and Window to add 
+            // Try to find a JLayeredPane and Window to add
             for (Container p = parent; p != null; p = p.getParent()) {
                 if (p instanceof JRootPane) {
                     if (p.getParent() instanceof JInternalFrame) {
@@ -634,6 +634,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * currently visible, this has no effect.
          */
         @Override
+        @SuppressWarnings("deprecation")
         public void show() {
             Component c = getComponent();
 
@@ -652,6 +653,7 @@ public class QuaquaPopupFactory extends PopupFactory {
          * behavior will result.
          */
         @Override
+        @SuppressWarnings("deprecation")
         public void hide() {
             Component c = getComponent();
 

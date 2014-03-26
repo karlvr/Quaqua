@@ -8,12 +8,12 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import java.awt.Component;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.*;
 import javax.swing.border.*;
+
 /**
  * RadioButtonTest.
  *
@@ -21,7 +21,7 @@ import javax.swing.border.*;
  * @version 1.0  13 February 2005  Created.
  */
 public class RadioButtonTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public RadioButtonTest() {
         initComponents();
@@ -33,8 +33,8 @@ public class RadioButtonTest extends javax.swing.JPanel {
         for (JComponent c:new JComponent[]{miniRadio1,miniRadio2,miniRadio3,miniLabel}) {
             c.putClientProperty("JComponent.sizeVariant","mini");
         }
-        
-        
+
+
         // Try to get a better layout with J2SE6
         try {
             int BASELINE_LEADING = GridBagConstraints.class.getDeclaredField("BASELINE_LEADING").getInt(null);
@@ -49,12 +49,12 @@ public class RadioButtonTest extends javax.swing.JPanel {
         } catch (Exception ex) {
             // bail
         }
-        
+
     }
-    
+
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -256,8 +256,8 @@ public class RadioButtonTest extends javax.swing.JPanel {
     private void miniRadio3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miniRadio3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_miniRadio3ActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup bigGroup;
     private javax.swing.JLabel bigLabel;
@@ -283,5 +283,5 @@ public class RadioButtonTest extends javax.swing.JPanel {
     private javax.swing.JRadioButton smallRadio2;
     private javax.swing.JRadioButton smallRadio3;
     // End of variables declaration//GEN-END:variables
-    
+
 }

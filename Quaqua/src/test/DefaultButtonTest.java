@@ -1,7 +1,10 @@
 /*
- * @(#)OkayButtonTest.java  1.0  2013-06-04
+ * @(#) DefaultButtonTest.java  1.0  2013-06-04
  * 
  * Copyright (c) 2013 Werner Randelshofer, Switzerland.
+ * @(#)DefaultButtonTest.java
+ *
+ * Copyright (c) 2005-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
  * 
  * You may not use, copy or modify this file, except in compliance with the 
@@ -13,7 +16,9 @@ package test;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
 
 /**
  * OkayButtonTest.
@@ -77,7 +82,25 @@ public class DefaultButtonTest extends javax.swing.JPanel {
 
     private void formAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_formAncestorAdded
         SwingUtilities.getRootPane(this).setDefaultButton(okayButton);
+    }//GEN-LAST:event_textFieldPerformed
+
+    /** Exit the Application */
+    private void exitForm(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_exitForm
+        System.exit(0);
     }//GEN-LAST:event_formAncestorAdded
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+
+        try {
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        new DefaultButtonTest().setVisible(true);
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

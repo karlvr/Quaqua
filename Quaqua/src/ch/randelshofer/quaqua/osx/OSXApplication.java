@@ -25,7 +25,7 @@ import java.security.AccessControlException;
  * >NSApplication</a>.
  *
  * @author Werner Randelshofer
- * @version $Id: OSXApplication.java 82 2009-06-11 08:57:33Z wrandelshofer $
+ * @version $Id$
  */
 public class OSXApplication {
 

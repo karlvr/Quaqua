@@ -1,16 +1,17 @@
 /*
  * @(#)InfiniteBrowserTest.java  1.0  2010-05-06
- * 
+ *
  * Copyright (c) 2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
-package test;
+package qtest;
 
-import ch.randelshofer.quaqua.QuaquaManager;
+import test.TestManager;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
@@ -44,7 +45,7 @@ private int counter;
 
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }

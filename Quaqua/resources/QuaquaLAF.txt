@@ -1,0 +1,16 @@
+Jaguar.15=ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel;
+Jaguar.16=ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel;
+Panther.15=ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel;
+Panther.16=ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel;
+Tiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel;
+Tiger.16=ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel;
+Leopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
+Leopard.16=ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel;
+SnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel;
+SnowLeopard.16=ch.randelshofer.quaqua.snowleopard.Quaqua16SnowLeopardLookAndFeel;
+Lion.16=ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
+MountainLion.16=ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel;
+Mavericks.16=ch.randelshofer.quaqua.mavericks.Quaqua16MavericksLookAndFeel;
+CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel;
+CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
+CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;

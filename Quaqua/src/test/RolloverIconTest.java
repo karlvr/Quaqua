@@ -8,18 +8,17 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import javax.swing.*;
 import javax.swing.border.*;
 
 /**
  * RolloverIconTest.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
 public class RolloverIconTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public RolloverIconTest() {
         initComponents();
@@ -53,11 +52,11 @@ public class RolloverIconTest extends javax.swing.JPanel {
             buttons[i].setDisabledSelectedIcon(icon);
         }
     }
-    
+
     public static void main(String args[]) {
-        
+
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
@@ -69,7 +68,7 @@ public class RolloverIconTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -127,12 +126,12 @@ public class RolloverIconTest extends javax.swing.JPanel {
             }
         }
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void button1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_button1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_button1ActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton button1;
     private javax.swing.JButton button2;
@@ -141,5 +140,5 @@ public class RolloverIconTest extends javax.swing.JPanel {
     private javax.swing.JToggleButton toggle1;
     private javax.swing.JToggleButton toggle2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

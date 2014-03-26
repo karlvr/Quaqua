@@ -1,20 +1,17 @@
 /*
  * @(#)Main.java
- * 
+ *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
  */
 package test;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import java.awt.ComponentOrientation;
 import java.awt.Container;
-import java.awt.Font;
-import java.awt.Toolkit;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,8 +20,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.*;
@@ -39,8 +34,6 @@ import javax.swing.tree.*;
  * @version $Id$
  */
 public class Main extends javax.swing.JPanel {
-
-    private boolean switchLookAndFeelDecoration = true;
 
     private static class Item extends DefaultMutableTreeNode {
 
@@ -62,6 +55,8 @@ public class Main extends javax.swing.JPanel {
             if (component == null) {
                 try {
                     component = (JComponent) Class.forName(clazz).newInstance();
+                } catch (ClassNotFoundException ex) {
+                    component = new JLabel("Test not available: " + label);
                 } catch (Throwable ex) {
                     component = new JLabel(ex.toString());
                     ex.printStackTrace();
@@ -94,9 +89,12 @@ public class Main extends javax.swing.JPanel {
         }
 
         // Add Quaqua to the lafs
-        ArrayList<LookAndFeelInfo> infos = new ArrayList<LookAndFeelInfo>(Arrays.asList(UIManager.getInstalledLookAndFeels()));
-        infos.add(new LookAndFeelInfo("Quaqua", QuaquaManager.getLookAndFeelClassName()));
-        UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size()]));
+        String name = TestManager.getQuaquaLookAndFeelClassName();
+        if (name != null) {
+            ArrayList<LookAndFeelInfo> infos = new ArrayList<LookAndFeelInfo>(Arrays.asList(UIManager.getInstalledLookAndFeels()));
+            infos.add(new LookAndFeelInfo("Quaqua", name));
+            UIManager.setInstalledLookAndFeels(infos.toArray(new LookAndFeelInfo[infos.size()]));
+        }
 
         // Turn on look and feel decoration when not running on Mac OS X or Darwin.
         // This will still not look pretty, because we haven't got cast shadows
@@ -116,6 +114,7 @@ public class Main extends javax.swing.JPanel {
 
         // Launch the test program
         SwingUtilities.invokeLater(new Runnable() {
+
             public void run() {
                 long edtEnd = System.currentTimeMillis();
                 int index;
@@ -124,21 +123,21 @@ public class Main extends javax.swing.JPanel {
                     HashSet includes = new HashSet();
                     includes.addAll(Arrays.asList(((String) argList.get(index + 1)).split(",")));
 
-                    QuaquaManager.setIncludedUIs(includes);
+                    TestManager.setIncludedUIs(includes);
                 }
                 index = argList.indexOf("-exclude");
                 if (index != -1 && index < argList.size() - 1) {
                     HashSet excludes = new HashSet();
                     excludes.addAll(Arrays.asList(((String) argList.get(index + 1)).split(",")));
 
-                    QuaquaManager.setExcludedUIs(excludes);
+                    TestManager.setExcludedUIs(excludes);
                 }
                 index = argList.indexOf("-laf");
                 String lafName;
                 if (index != -1 && index < argList.size() - 1) {
                     lafName = (String) argList.get(index + 1);
                 } else {
-                    lafName = QuaquaManager.getLookAndFeelClassName();
+                    lafName = TestManager.getLookAndFeelClassName();
                 }
                 long lafCreate = 0;
                 if (!lafName.equals("default")) {
@@ -147,6 +146,8 @@ public class Main extends javax.swing.JPanel {
                         lafName = UIManager.getSystemLookAndFeelClassName();
                     } else if (lafName.equals("crossplatform")) {
                         lafName = UIManager.getCrossPlatformLookAndFeelClassName();
+                    } else if (lafName.equals("quaqua")) {
+                        lafName = TestManager.getQuaquaLookAndFeelClassName();
                     }
 
                     try {
@@ -159,6 +160,7 @@ public class Main extends javax.swing.JPanel {
                         System.out.println("   SETTING LAF  ");
                         UIManager.setLookAndFeel(laf);
                         System.out.println("   LAF SET   ");
+                    } catch (ClassNotFoundException ex) {
                     } catch (Exception e) {
                         System.err.println("Error setting " + lafName + " in UIManager.");
                         e.printStackTrace();
@@ -168,8 +170,9 @@ public class Main extends javax.swing.JPanel {
                 long lafEnd = System.currentTimeMillis();
                 JFrame f = new JFrame();
                 f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                f.setTitle(UIManager.getLookAndFeel().getName() + " "
-                        + QuaquaManager.getVersion()
+                String quaquaVersion = TestManager.getQuaquaVersion();
+                f.setTitle(UIManager.getLookAndFeel().getName()
+                        + (quaquaVersion != null ? " " + quaquaVersion : "")
                         + " on Java " + System.getProperty("java.version")
                         + " " + System.getProperty("os.arch"));
                 Main ex = new Main();
@@ -177,7 +180,7 @@ public class Main extends javax.swing.JPanel {
                 f.setJMenuBar(ex.menuBar);
                 long createEnd = System.currentTimeMillis();
                 //f.pack();
-                f.setSize(740, 480);
+                f.setSize(740, 680);
                 ///long packEnd = System.currentTimeMillis();
                 f.setVisible(true);
                 long end = System.currentTimeMillis();
@@ -193,9 +196,7 @@ public class Main extends javax.swing.JPanel {
         });
     }
 
-    /**
-     * Creates new form Main
-     */
+    /** Creates new form Main */
     public Main() {
         initComponents();
         treeScrollPane.setBorder(new EmptyBorder(0, 0, 0, 0));
@@ -206,7 +207,7 @@ public class Main extends javax.swing.JPanel {
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         // tree.setRequestFocusEnabled(false);
 //tree.setFont(new Font("Lucida Grande",Font.PLAIN,11)); // FIXME!!!
-        final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+       final DefaultMutableTreeNode root = new DefaultMutableTreeNode();
         DefaultMutableTreeNode n;
         root.add(n = new DefaultMutableTreeNode("BUTTONS"));
         n.add(new Item("Push Button", "test.PushButtonTest"));
@@ -235,7 +236,7 @@ public class Main extends javax.swing.JPanel {
         n.add(new Item("Table", "test.TableTest"));
         n.add(new Item("Tree", "test.TreeTest"));
         n.add(new Item("Scroll Pane", "test.ScrollPaneTest"));
-        n.add(new Item("Browser", "test.BrowserTest"));
+        n.add(new Item("Browser", "qtest.BrowserTest"));
         root.add(n = new DefaultMutableTreeNode("GROUPING"));
         n.add(new Item("Tabbed Pane", "test.TabbedPaneTest"));
         n.add(new Item("Split Pane", "test.SplitPaneTest"));
@@ -250,24 +251,25 @@ public class Main extends javax.swing.JPanel {
         n.add(new Item("File Chooser", "test.FileChooserTest"));
         n.add(new Item("OptionPane", "test.OptionPaneTest"));
         n.add(new Item("Dialog", "test.DialogTest"));
-        n.add(new Item("Sheet", "test.SheetTest"));
+        n.add(new Item("Sheet", "qtest.SheetTest"));
         n.add(new Item("Palette", "test.PaletteTest"));
         root.add(n = new DefaultMutableTreeNode("LAYOUT"));
         n.add(new Item("Alignment", "test.AlignmentTest"));
         n.add(new Item("Group Layout", "test.GroupLayoutTest"));
         n.add(new Item("Visual Margin", "test.VisualMarginTest"));
         root.add(n = new DefaultMutableTreeNode("BEHAVIOR"));
-        n.add(new Item("Drag and Drop", "test.DnDTest"));
+        n.add(new Item("Drag and Drop", "qtest.DnDTest"));
         n.add(new Item("Input Verifier", "test.InputVerifierTest"));
         n.add(new Item("Radio Button Focus", "test.RadioButtonFocusTest"));
         root.add(n = new DefaultMutableTreeNode("NATIVE CODE"));
-        n.add(new Item("File System", "test.FileSystemTest"));
-        n.add(new Item("Clipboard", "test.ClipboardTest"));
-        n.add(new Item("Preferences", "test.PreferencesTest"));
+        n.add(new Item("File System", "qtest.FileSystemTest"));
+        n.add(new Item("Clipboard", "qtest.ClipboardTest"));
+        n.add(new Item("Preferences", "qtest.PreferencesTest"));
         DefaultTreeModel tm = new DefaultTreeModel(root);
         tree.setModel(tm);
 
         tree.addTreeSelectionListener(new TreeSelectionListener() {
+
             public void valueChanged(TreeSelectionEvent e) {
                 TreePath path = tree.getSelectionPath();
                 viewPane.removeAll();
@@ -294,59 +296,42 @@ public class Main extends javax.swing.JPanel {
             }
             lafMenu.add(mi);
             mi.addActionListener(new ActionListener() {
+
                 public void actionPerformed(ActionEvent e) {
-                    setLookAndFeel(info, mi, root);
+                    try {
+                        UIManager.setLookAndFeel(info.getClassName());
+                        SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(Main.this));
+                        mi.setSelected(true);
+
+                        Window w = SwingUtilities.getWindowAncestor(Main.this);
+                        if (w instanceof JFrame) {
+                            String quaquaVersion = TestManager.getQuaquaVersion();
+                            ((JFrame) w).setTitle(UIManager.getLookAndFeel().getName()
+                                    + (quaquaVersion != null ? " " + quaquaVersion : "")
+                                    + " on Java " + System.getProperty("java.version")
+                                    + " " + System.getProperty("os.arch"));
+                        }
+
+                        for (Enumeration i=root.preorderEnumeration();i.hasMoreElements();) {
+                            Object o=i.nextElement();
+                            if (o instanceof Item) {
+                                Item item=(Item)o;
+                                item.component=null;
+                            }
+                        }
+
+                    } catch (Throwable ex) {
+                        mi.setEnabled(false);
+                    }
                 }
             });
         }
     }
 
-    private void setLookAndFeel(LookAndFeelInfo info, JRadioButtonMenuItem mi, DefaultMutableTreeNode root) {
-        try {
-
-            if (switchLookAndFeelDecoration) {
-                boolean b = "Metal".equals(info.getName());
-                JFrame f = (JFrame) SwingUtilities.getWindowAncestor(Main.this);
-                if (b != f.isUndecorated()) {
-                    f.dispose();
-                    f.setUndecorated(b);
-                    f.getRootPane().setWindowDecorationStyle(b?JRootPane.FRAME:JRootPane.NONE);
-                    f.setVisible(true);
-                }
-            }
-
-
-
-            UIManager.setLookAndFeel(info.getClassName());
-            SwingUtilities.updateComponentTreeUI(SwingUtilities.getRoot(Main.this));
-            mi.setSelected(true);
-
-            Window w = SwingUtilities.getWindowAncestor(Main.this);
-            if (w instanceof JFrame) {
-                ((JFrame) w).setTitle(UIManager.getLookAndFeel().getName() + " "
-                      //  + QuaquaManager.getVersion()
-                        + " on Java " + System.getProperty("java.version")
-                        + " " + System.getProperty("os.arch"));
-            }
-
-            for (Enumeration i = root.preorderEnumeration(); i.hasMoreElements();) {
-                Object o = i.nextElement();
-                if (o instanceof Item) {
-                    Item item = (Item) o;
-                    item.component = null;
-                }
-            }
-
-        } catch (Throwable ex) {
-            ex.printStackTrace();
-            mi.setEnabled(false);
-        }
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
+    /** This method is called from within the constructor to
+     * initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is
+     * always regenerated by the Form Editor.
      */
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -355,7 +340,12 @@ public class Main extends javax.swing.JPanel {
         lafMenu = new javax.swing.JMenu();
         splitPane = new javax.swing.JSplitPane();
         treeScrollPane = new javax.swing.JScrollPane();
-        tree = new javax.swing.JTree();
+        tree = new javax.swing.JTree() {
+            @Override
+            public String toString() {
+                return "Test Selector";
+            }
+        };
         rightPane = new javax.swing.JPanel();
         viewPane = new javax.swing.JPanel();
         controlPanel = new javax.swing.JPanel();

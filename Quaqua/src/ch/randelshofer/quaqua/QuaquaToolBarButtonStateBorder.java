@@ -10,7 +10,6 @@ package ch.randelshofer.quaqua;
 
 import ch.randelshofer.quaqua.border.ButtonStateBorder;
 import java.awt.*;
-import java.awt.image.*;
 import javax.swing.*;
 import javax.swing.border.*;
 /**
@@ -22,7 +21,7 @@ import javax.swing.border.*;
  */
 public class QuaquaToolBarButtonStateBorder extends ButtonStateBorder {
     private boolean isRollover;
-    
+
     public QuaquaToolBarButtonStateBorder(Border e, Border ep, Border es, Border eps, Border d, Border ds, Border i, Border is, Border di, Border dis, boolean isRollover) {
         super(e,ep,es,eps,d,ds,i,is,di,dis);
     }
@@ -42,7 +41,7 @@ public class QuaquaToolBarButtonStateBorder extends ButtonStateBorder {
         super(images, borderInsets, imageInsets, fill);
         this.isRollover = isRollover;
     }
-    
+
     /**
      * Creates a new instance.
      * All borders must have the same dimensions.
@@ -52,12 +51,12 @@ public class QuaquaToolBarButtonStateBorder extends ButtonStateBorder {
         super(tiledImage, tileCount, isTiledHorizontaly, imageInsets, borderInsets, fill);
         this.isRollover = isRollover;
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         boolean paint = false;
         if (c instanceof AbstractButton) {
             ButtonModel model = ((AbstractButton) c).getModel();
-            
+
             if (isRollover) {
                 paint = model.isRollover() || model.isSelected();
             } else {

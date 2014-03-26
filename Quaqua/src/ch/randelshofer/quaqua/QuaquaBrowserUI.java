@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaBrowserUI.java  
+ * @(#)QuaquaBrowserUI.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -35,7 +35,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
                 public boolean isShowing() {
                     return true;
                 }
-                
+
                 /**
                  * FIXME - Apparently we have to override paintChildren to enshure that the
                  * children of the scrollbar are actually painted.
@@ -54,7 +54,7 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
         }
         return verticalBar;
     }
-    
+
     /** Shared cell renderer pane. */
     private static CellRendererPane cellRendererPane;
     private static CellRendererPane getCellRendererPane() {
@@ -63,13 +63,13 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
         }
         return cellRendererPane;
     }
-    
+
     /**
      * Creates a new instance.
      */
     public QuaquaBrowserUI() {
     }
-    
+
     /**
      * Returns an instance of the UI delegate for the specified component.
      * Each subclass must provide its own static <code>createUI</code>
@@ -83,33 +83,35 @@ public class QuaquaBrowserUI extends BasicBrowserUI implements ViewportPainter {
     public static ComponentUI createUI(JComponent c) {
         return new QuaquaBrowserUI();
     }
-    
+
     public void paintViewport(Graphics g, JViewport c) {
-        Dimension vs = c.getSize();
-        Dimension bs = browser.getSize();
-        
-        JScrollBar vb = getVerticalBar();
-        
-        g.setColor(Color.black);
-        Dimension ss = vb.getPreferredSize();
-        
-        // Paint scroll bar tracks at the right to fill the viewport
-        if (bs.width < vs.width) {
-            int fixedCellWidth = browser.getFixedCellWidth();
-            
-            // FIXME - Apparently we have to do layout manually, because
-            //         invoking cellRendererPane.paneComponent with
-            //         "shouldValidate" set to true does not appear to have
-            //         the desired effect.
-            try {
-                vb.setSize(ss.width, vs.height);
-                vb.doLayout();
-            } catch (NullPointerException e) {
-                // We get NPE here in JDK 1.3. We ignore it.
-            }
-            
-            for (int x = browser.getWidth() + fixedCellWidth; x < vs.width; x += fixedCellWidth + ss.width) {
-                getCellRendererPane().paintComponent(g, vb, c, x, 0, ss.width, vs.height, false);
+        if (!browser.isPreviewColumnFilled()) {
+            Dimension vs = c.getSize();
+            Dimension bs = browser.getSize();
+
+            JScrollBar vb = getVerticalBar();
+
+            g.setColor(Color.black);
+            Dimension ss = vb.getPreferredSize();
+
+            // Paint scroll bar tracks at the right to fill the viewport
+            if (bs.width < vs.width) {
+                int fixedCellWidth = browser.getFixedCellWidth();
+
+                // FIXME - Apparently we have to do layout manually, because
+                //         invoking cellRendererPane.paneComponent with
+                //         "shouldValidate" set to true does not appear to have
+                //         the desired effect.
+                try {
+                    vb.setSize(ss.width, vs.height);
+                    vb.doLayout();
+                } catch (NullPointerException e) {
+                    // We get NPE here in JDK 1.3. We ignore it.
+                }
+
+                for (int x = browser.getWidth() + fixedCellWidth; x < vs.width; x += fixedCellWidth + ss.width) {
+                    getCellRendererPane().paintComponent(g, vb, c, x, 0, ss.width, vs.height, false);
+                }
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * @(#)AnimatedBorder.java 
+ * @(#)AnimatedBorder.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -9,7 +9,6 @@
 package ch.randelshofer.quaqua.border;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.border.*;
 import java.util.*;
 /**
@@ -34,7 +33,7 @@ public class AnimatedBorder implements Border {
      * Delay time between borders.
      */
     private long delay;
-    
+
     /** Creates a new instance.
      * <p>
      * Note: For efficiency reasons this method stores the passed in array
@@ -45,15 +44,15 @@ public class AnimatedBorder implements Border {
         this.borders = borders;
         this.delay = delay;
     }
-    
+
     public Insets getBorderInsets(Component c) {
         return (Insets) borders[0].getBorderInsets(c).clone();
     }
-    
+
     public boolean isBorderOpaque() {
         return borders[0].isBorderOpaque();
     }
-    
+
     public void paintBorder(final Component c, Graphics g, int x, int y, int width, int height) {
         long animTime = System.currentTimeMillis() % (borders.length * delay);
         int frame = (int) (animTime / delay);

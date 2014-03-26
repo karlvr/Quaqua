@@ -5,7 +5,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.QuaquaManager;
 import javax.swing.*;
 
 /**
@@ -76,7 +75,7 @@ public class UnifiedTitleBarTest extends javax.swing.JFrame {
         System.setProperty("apple.awt.brushMetalLook", "true");
         if (args.length == 0) {
             try {
-                UIManager.setLookAndFeel(QuaquaManager.getLookAndFeel());
+                UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
             } catch (Exception ex) {
                 ex.printStackTrace();
             }

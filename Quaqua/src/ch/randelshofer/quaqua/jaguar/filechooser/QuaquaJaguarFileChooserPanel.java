@@ -12,16 +12,13 @@
 
 package ch.randelshofer.quaqua.jaguar.filechooser;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.util.*;
-
 import javax.swing.*;
 /**
  * QuaquaFileChooserPanel (This class is needed only to design the UI of the
  * QuaquaFileChooserUI in the NetBeans form editor).
  *
  * @author Werner Randelshofer
- * @version 1.0.2 2006-04-23 Labels are now directly retrieved from UIManager. 
+ * @version 1.0.2 2006-04-23 Labels are now directly retrieved from UIManager.
  * <br>1.0.1 2005-11-07 Get "Labels" resource bundle from UIManager.
  * <br>1.0 July 24, 2003  Created.
  */
@@ -30,13 +27,13 @@ public class QuaquaJaguarFileChooserPanel extends javax.swing.JPanel {
     public QuaquaJaguarFileChooserPanel() {
         initComponents();
     }
-    
+
     public static void main(String[] args) {
         JFrame f = new JFrame("Open Frame");
         f.getContentPane().add(new QuaquaJaguarFileChooserPanel());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
-        
+
         JDialog d = new JDialog(f, "Open Dialog");
         //d.getContentPane().add(new QuaquaJaguarFileChooserPanel());
         JPanel p = new JPanel();
@@ -46,7 +43,7 @@ public class QuaquaJaguarFileChooserPanel extends javax.swing.JPanel {
         d.getRootPane().setDefaultButton(fp.approveButton);
         d.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -262,8 +259,8 @@ public class QuaquaJaguarFileChooserPanel extends javax.swing.JPanel {
         add(fc, java.awt.BorderLayout.CENTER);
 
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel accessoryPanel;
     private javax.swing.JButton approveButton;
@@ -288,5 +285,5 @@ public class QuaquaJaguarFileChooserPanel extends javax.swing.JPanel {
     private javax.swing.JPanel strutPanel1;
     private javax.swing.JPanel strutPanel2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

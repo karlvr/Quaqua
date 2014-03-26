@@ -9,7 +9,6 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import java.awt.*;
-import javax.swing.*;
 import javax.swing.border.*;
 /**
  * SmallColorWellBorder.
@@ -22,15 +21,15 @@ public class SmallColorWellBorder implements Border {
     /** Creates a new instance of QuaquaSquareButtonBorder */
     public SmallColorWellBorder() {
     }
-    
+
     public Insets getBorderInsets(Component c) {
         return new Insets(1, 1, 1, 1);
     }
-    
+
     public boolean isBorderOpaque() {
         return true;
     }
-    
+
     public void paintBorder(Component c, Graphics gr, int x, int y, int width, int height) {
         gr.setColor(c.getBackground());
         gr.fillRect(x + 2, y + 2, width - 4, height - 4);
@@ -38,5 +37,5 @@ public class SmallColorWellBorder implements Border {
         gr.drawRect(x + 1, y + 1, width - 3, height - 3);
         gr.setColor(outer);
         gr.drawRect(x, y, width - 1, height - 1);
-    }    
+    }
 }

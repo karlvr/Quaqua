@@ -7,8 +7,6 @@
  */
 package test;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +15,7 @@ import java.beans.PropertyChangeListener;
 import javax.swing.*;
 import java.io.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.border.TitledBorder;
 import javax.swing.filechooser.FileSystemView;
 
@@ -54,10 +53,10 @@ public class FileChooserTest extends javax.swing.JPanel {
         }
 
         public boolean accept(File file) {
-            if (file.isDirectory()) {
-                return true;
-            }
             String name = file.getName();
+            if (file.isDirectory()) {
+                return !name.equals("Library"); // allow testing directory filtering
+            }
             int p = name.lastIndexOf(".");
             if (p != -1) {
                 return extSet.contains(name.substring(p + 1).toLowerCase());
@@ -77,7 +76,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         hiddenFilesItem.setSelected(//
                 UIManager.get("FileChooser.fileHidingEnabled") != null //
                 && !UIManager.getBoolean("FileChooser.fileHidingEnabled"));
-        setSelectedFileField.setText(QuaquaManager.getProperty("user.home"));
+        setSelectedFileField.setText(TestManager.getUserHome());
     }
 
     private void configureFileDialog() {
@@ -115,12 +114,42 @@ public class FileChooserTest extends javax.swing.JPanel {
             };
             long end = System.currentTimeMillis();
             System.out.println("FileChooserTest newFileChooser elapsed=" + (end - start));
+
+            fileChooser.setPreferredSize(new Dimension(800, 600));
+
+            fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
+                public void propertyChange(PropertyChangeEvent evt) {
+                    String prop = evt.getPropertyName();
+                    if (prop != null) {
+                        if (prop.equals(JFileChooser.SELECTED_FILE_CHANGED_PROPERTY)) {
+                            System.out.println("Selected file changed: " + display(evt.getNewValue()));
+                        } else if (prop.equals(JFileChooser.SELECTED_FILES_CHANGED_PROPERTY)) {
+                            System.out.println("Selected files changed: " + display(evt.getNewValue()));
+                        } else if (prop.equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
+                            System.out.println("Current directory changed: " + display(evt.getNewValue()));
+                        }
+                    }
+                }
+            });
+        } else {
+            fileChooser.setPreferredSize(fileChooser.getSize());
         }
+
         fileChooser.setApproveButtonText(
                 customApproveItem.isSelected() ? customApproveField.getText() : null);
 
         filter.setExtensions(filterFilesField.getText());
-        fileChooser.setFileFilter(filterFilesItem.isSelected() ? filter : null);
+
+        fileChooser.setFileFilter(null);
+        fileChooser.resetChoosableFileFilters();
+
+        if (filterFilesItem.isSelected()) {
+            if (choosableFilterCheckBox.isSelected()) {
+                fileChooser.addChoosableFileFilter(filter);
+            }
+            fileChooser.setFileFilter(filter);
+        }
+
         fileChooser.setFileSelectionMode(
                 selectFilesOnlyItem.isSelected() ? JFileChooser.FILES_ONLY : (selectDirectoriesOnlyItem.isSelected() ? JFileChooser.DIRECTORIES_ONLY : JFileChooser.FILES_AND_DIRECTORIES));
         fileChooser.setFileHidingEnabled(!hiddenFilesItem.isSelected());
@@ -130,6 +159,9 @@ public class FileChooserTest extends javax.swing.JPanel {
             if (!(fileChooser.getAccessory() instanceof Accessory)) {
                 Accessory pa = new Accessory(fileChooser);
                 fileChooser.setAccessory(pa);
+            } else {
+                Accessory a = (Accessory) fileChooser.getAccessory();
+                a.reconfigure();
             }
         } else {
             if (fileChooser.getAccessory() instanceof Accessory) {
@@ -151,13 +183,44 @@ public class FileChooserTest extends javax.swing.JPanel {
             }
         }
 
+        if (traversePackagesItem.isSelected()) {
+            fileChooser.putClientProperty("JFileChooser.packageIsTraversable", true);
+        } else {
+            fileChooser.putClientProperty("JFileChooser.packageIsTraversable", null);
+        }
+
+        if (traverseApplicationsItem.isSelected()) {
+            fileChooser.putClientProperty("JFileChooser.appBundleIsTraversable", true);
+        } else {
+            fileChooser.putClientProperty("JFileChooser.appBundleIsTraversable", null);
+        }
+
         if (customFileSystemViewItem.isSelected() != isUseCustomFileSystemView) {
             isUseCustomFileSystemView = customFileSystemViewItem.isSelected();
             if (customFileSystemViewItem.isSelected()) {
                 fileChooser.setFileSystemView(FileSystemView.getFileSystemView());
             } else {
-                fileChooser.setFileSystemView(QuaquaFileSystemView.getQuaquaFileSystemView());
+                FileSystemView v = TestManager.getQuaquaFileSystemView();
+                if (v != null) {
+                    fileChooser.setFileSystemView(v);
+                }
             }
+        }
+    }
+
+    private String display(Object o)
+    {
+        if (o instanceof Object[]) {
+            Object[] a = (Object[]) o;
+            StringBuffer sb = new StringBuffer();
+            for (Object e : a) {
+                sb.append(" " + e);
+            }
+            return sb.toString().trim();
+        } else if (o != null) {
+            return o.toString();
+        } else {
+            return "<null>";
         }
     }
 
@@ -209,7 +272,7 @@ public class FileChooserTest extends javax.swing.JPanel {
 
             public void run() {
                 try {
-                    UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+                    UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -247,6 +310,9 @@ public class FileChooserTest extends javax.swing.JPanel {
         customFileSystemViewItem = new javax.swing.JCheckBox();
         accessoryCheckBox = new javax.swing.JCheckBox();
         previewCheckBox = new javax.swing.JCheckBox();
+        traversePackagesItem = new javax.swing.JCheckBox();
+        traverseApplicationsItem = new javax.swing.JCheckBox();
+        choosableFilterCheckBox = new javax.swing.JCheckBox();
         actionPanel = new javax.swing.JPanel();
         openFileDialogButton = new javax.swing.JButton();
         saveFileDialogButton = new javax.swing.JButton();
@@ -255,11 +321,11 @@ public class FileChooserTest extends javax.swing.JPanel {
         resetPanel = new javax.swing.JPanel();
         resetButton = new javax.swing.JButton();
         setSelectedFileButton = new javax.swing.JButton();
-        createWithButton = new javax.swing.JButton();
         setSelectedFileField = new javax.swing.JTextField();
         resetPanel1 = new javax.swing.JPanel();
         setDirectoryButton = new javax.swing.JButton();
         setDirectoryField = new javax.swing.JTextField();
+        createWithButton = new javax.swing.JButton();
         outputPanel = new javax.swing.JPanel();
         outputLabel = new javax.swing.JLabel();
         outputScrollPane = new javax.swing.JScrollPane();
@@ -300,6 +366,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         multiSelectionItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
@@ -309,6 +376,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         hiddenFilesItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
         settingsPanel.add(hiddenFilesItem, gridBagConstraints);
@@ -317,6 +385,7 @@ public class FileChooserTest extends javax.swing.JPanel {
         customApproveItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 0, 0, 0);
         settingsPanel.add(customApproveItem, gridBagConstraints);
@@ -334,18 +403,19 @@ public class FileChooserTest extends javax.swing.JPanel {
         filterFilesItem.addItemListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
         settingsPanel.add(filterFilesItem, gridBagConstraints);
 
         filterFilesField.setText("gif jpg png");
         filterFilesField.setEnabled(false);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 48, 0, 0);
+        gridBagConstraints.insets = new java.awt.Insets(0, 32, 0, 0);
         settingsPanel.add(filterFilesField, gridBagConstraints);
 
         customFileSystemViewItem.setText("Use custom FileSystemView");
@@ -369,6 +439,31 @@ public class FileChooserTest extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         gridBagConstraints.insets = new java.awt.Insets(8, 16, 0, 0);
         settingsPanel.add(previewCheckBox, gridBagConstraints);
+
+        traversePackagesItem.setText("Traverse packages");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
+        settingsPanel.add(traversePackagesItem, gridBagConstraints);
+
+        traverseApplicationsItem.setText("Traverse applications");
+        traverseApplicationsItem.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 16, 0);
+        settingsPanel.add(traverseApplicationsItem, gridBagConstraints);
+
+        choosableFilterCheckBox.setText("Choosable filter");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 16, 0, 0);
+        settingsPanel.add(choosableFilterCheckBox, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -411,10 +506,6 @@ public class FileChooserTest extends javax.swing.JPanel {
         setSelectedFileButton.addActionListener(formListener);
         resetPanel.add(setSelectedFileButton, new java.awt.GridBagConstraints());
 
-        createWithButton.setText("Create With:");
-        createWithButton.addActionListener(formListener);
-        resetPanel.add(createWithButton, new java.awt.GridBagConstraints());
-
         setSelectedFileField.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
@@ -437,9 +528,18 @@ public class FileChooserTest extends javax.swing.JPanel {
         setDirectoryField.setText("/Applications");
         setDirectoryField.addActionListener(formListener);
         gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
         gridBagConstraints.weightx = 1.0;
         resetPanel1.add(setDirectoryField, gridBagConstraints);
+
+        createWithButton.setText("Create with directory:");
+        createWithButton.addActionListener(formListener);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        resetPanel1.add(createWithButton, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -486,7 +586,10 @@ public class FileChooserTest extends javax.swing.JPanel {
     private class FormListener implements java.awt.event.ActionListener, java.awt.event.ItemListener {
         FormListener() {}
         public void actionPerformed(java.awt.event.ActionEvent evt) {
-            if (evt.getSource() == openFileDialogButton) {
+            if (evt.getSource() == traverseApplicationsItem) {
+                FileChooserTest.this.traverseApplicationsItemActionPerformed(evt);
+            }
+            else if (evt.getSource() == openFileDialogButton) {
                 FileChooserTest.this.openFileDialog(evt);
             }
             else if (evt.getSource() == saveFileDialogButton) {
@@ -537,8 +640,8 @@ public class FileChooserTest extends javax.swing.JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
     private void createWith(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createWith
-        reset(evt);
-        fileChooser = new JFileChooser(setSelectedFileField.getText());
+        fileDialog = null;
+        fileChooser = new JFileChooser(setDirectoryField.getText());
 
     }//GEN-LAST:event_createWith
 
@@ -612,9 +715,15 @@ public class FileChooserTest extends javax.swing.JPanel {
         fileChooser.setCurrentDirectory(new File(setDirectoryField.getText()));
 
 }//GEN-LAST:event_setDirectoryPerformed
+
+    private void traverseApplicationsItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_traverseApplicationsItemActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_traverseApplicationsItemActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox accessoryCheckBox;
     private javax.swing.JPanel actionPanel;
+    private javax.swing.JCheckBox choosableFilterCheckBox;
     private javax.swing.JButton createWithButton;
     private javax.swing.JTextField customApproveField;
     private javax.swing.JCheckBox customApproveItem;
@@ -644,6 +753,8 @@ public class FileChooserTest extends javax.swing.JPanel {
     private javax.swing.JButton setSelectedFileButton;
     private javax.swing.JTextField setSelectedFileField;
     private javax.swing.JPanel settingsPanel;
+    private javax.swing.JCheckBox traverseApplicationsItem;
+    private javax.swing.JCheckBox traversePackagesItem;
     // End of variables declaration//GEN-END:variables
 
     private static class Preview extends JLabel implements PropertyChangeListener {
@@ -703,18 +814,21 @@ public class FileChooserTest extends javax.swing.JPanel {
 
     private static class Accessory extends JPanel implements PropertyChangeListener {
 
-        private JCheckBox togglePreviewCheckBox;
-        private JFileChooser fileChooser;
+        JCheckBox togglePreviewCheckBox;
+        JFileChooser fileChooser;
+        JButton setDirectoryButton;
+        JButton setFileButton;
+        JTextField directoryPathField;
+        JTextField filePathField;
 
         public Accessory(JFileChooser fc) {
             this.fileChooser = fc;
             setBorder(new TitledBorder(""));
+            setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
             JLabel l = new JLabel("Encoding:");
             JComboBox cb = new JComboBox();
             cb.setModel(new DefaultComboBoxModel(new String[]{"UTF-8", "UTF-16BE", "UTF-16LE", "ASCII"}));
-            add(l);
-            add(cb);
 
             togglePreviewCheckBox = new JCheckBox("Show custom preview");
             togglePreviewCheckBox.addActionListener(new ActionListener() {
@@ -735,12 +849,92 @@ public class FileChooserTest extends javax.swing.JPanel {
                     }
                 }
             });
-            add(togglePreviewCheckBox);
             togglePreviewCheckBox.setSelected(fileChooser.getClientProperty("Quaqua.FileChooser.preview") != null);
 
+            JButton testButton = new JButton("Test");   // run a custom test
+            testButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    // Custom test goes here
+                }
+            });
+
+            setDirectoryButton = new JButton("Set current directory:");
+            setDirectoryButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setDirectory();
+                }
+            });
+
+            directoryPathField = new JTextField();
+            directoryPathField.setColumns(40);
+
+            setFileButton = new JButton();
+            setFileButton.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setFile();
+                }
+            });
+
+            filePathField = new JTextField();
+            filePathField.setColumns(40);
+
+            {
+                Box b = new Box(BoxLayout.X_AXIS);
+                b.add(l);
+                b.add(cb);
+                b.add(togglePreviewCheckBox);
+                b.add(testButton);
+                add(b);
+            }
+
+            {
+                Box b = new Box(BoxLayout.X_AXIS);
+                b.add(setDirectoryButton);
+                b.add(directoryPathField);
+                add(b);
+            }
+
+            {
+                Box b = new Box(BoxLayout.X_AXIS);
+                b.add(setFileButton);
+                b.add(filePathField);
+                add(b);
+            }
+
             fc.addPropertyChangeListener(this);
+            reconfigure();
         }
 
+        public void reconfigure() {
+            setFileButton.setText(fileChooser.isMultiSelectionEnabled() ? "Set selected files:" : "Set selected file:");
+        }
+
+        private void setDirectory() {
+            String path = directoryPathField.getText();
+            File f = new File(path);
+            fileChooser.setCurrentDirectory(f);
+        }
+
+        private void setFile() {
+            if (fileChooser.isMultiSelectionEnabled()) {
+                List<File> files = new ArrayList<File>();
+                StringTokenizer st = new StringTokenizer(filePathField.getText(), ",");
+                while (st.hasMoreTokens()) {
+                    String path = st.nextToken().trim();
+                    File f = new File(path);
+                    files.add(f);
+                }
+                File[] fs = files.toArray(new File[files.size()]);
+                fileChooser.setSelectedFiles(fs);
+            } else {
+                String path = filePathField.getText();
+                File f = new File(path);
+                fileChooser.setSelectedFile(f);
+            }
+        }
         public void dispose() {
             fileChooser.removePropertyChangeListener(this);
         }

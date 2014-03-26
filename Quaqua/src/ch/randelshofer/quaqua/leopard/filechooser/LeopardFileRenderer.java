@@ -1,6 +1,6 @@
 /*
  * @(#)LeopardFileRenderer.java
- * 
+ *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
  * accompanying license terms.
@@ -9,20 +9,14 @@ package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 import javax.swing.*;
+
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.ext.batik.ext.awt.LinearGradientPaint;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.icon.EmptyIcon;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Insets;
-import java.awt.Rectangle;
-import java.awt.RenderingHints;
+
+import java.awt.*;
+import java.awt.geom.Ellipse2D;
 
 /**
  * The FileRenderer is used to render a file in the JBrowser of one of the
@@ -31,7 +25,7 @@ import java.awt.RenderingHints;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
+public class LeopardFileRenderer extends JLabel implements ListCellRenderer, CellRenderer {
 
     private Color labelForeground, labelDisabledForeground;
     private Icon selectedExpandingIcon;
@@ -41,6 +35,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
     private Icon expandingIcon;
     private Icon expandedIcon;
     private Icon emptyIcon;
+    private Icon aliasBadgeIcon;
     private JFileChooser fileChooser;
     private int textIconGap;
     private int textArrowIconGap;
@@ -49,7 +44,12 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
     private Icon arrowIcon;
     private Color labelColor, labelBrightColor;
     private boolean isSelected;
+    private boolean isActive;
     private boolean isGrayed;
+    private boolean isAlias;
+    private boolean isListView;
+    private int design;
+    private double labelRadius = 4.8;
 
     public LeopardFileRenderer(JFileChooser fileChooser,
             Icon expandingIcon, Icon expandedIcon,
@@ -66,9 +66,12 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         this.textArrowIconGap = UIManager.getInt("FileChooser.browserCellTextArrowIconGap");
 
         emptyIcon = new EmptyIcon(expandedIcon.getIconWidth(), expandedIcon.getIconHeight());
+        aliasBadgeIcon = UIManager.getIcon("FileView.aliasBadgeIcon");
 
         labelForeground = UIManager.getColor("Label.foreground");
         labelDisabledForeground = UIManager.getColor("Label.disabledForeground");
+
+        design = QuaquaManager.getDesign();
         setOpaque(true);
     }
 
@@ -120,53 +123,86 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
     public Component getListCellRendererComponent(JList list, Object value,
             int index, boolean isSelected,
             boolean cellHasFocus) {
+        return getCellRendererComponent(list, value, isSelected, cellHasFocus, false);
+    }
+
+    @Override
+    public Component getCellRendererComponent(JComponent container, Object value, boolean isSelected, boolean cellHasFocus) {
+        return getCellRendererComponent(container, value, isSelected, cellHasFocus, true);
+    }
+
+    protected Component getCellRendererComponent(JComponent container,
+        Object value,
+        boolean isSelected,
+        boolean cellHasFocus,
+        boolean isListView) {
+
+        this.isListView = isListView;
+
+        if (!(value instanceof FileInfo)) {
+            return this;
+        }
 
         FileInfo info = (FileInfo) value;
 
-        isGrayed = info.isHidden()
-                || !info.isAcceptable();
-
+        isGrayed = !info.isAcceptable() && !info.isTraversable();
 
         labelColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 2 : 0);
         labelBrightColor = OSXFile.getLabelColor(info.getFileLabel(), (isGrayed) ? 3 : 1);
 
         this.isSelected = isSelected;
+        this.isActive = container.isEnabled() && QuaquaUtilities.isFocused(container);
+
         if (this.isSelected) {
-            if (list.hasFocus() && QuaquaUtilities.isOnActiveWindow(list)) {
+            if (isActive) {
                 setBackground(UIManager.getColor("Browser.selectionBackground"));
-                setForeground((isGrayed) ? labelDisabledForeground :UIManager.getColor("Browser.selectionForeground"));
+                setForeground(UIManager.getColor("Browser.selectionForeground"));
             } else {
                 setBackground(UIManager.getColor("Browser.inactiveSelectionBackground"));
                 setForeground(UIManager.getColor("Browser.inactiveSelectionForeground"));
             }
         } else {
-            //setBackground((labelColor == null) ? list.getBackground() : labelColor);
-            setBackground(list.getBackground());
+            //setBackground((labelColor == null) ? container.getBackground() : labelColor);
+            setBackground(container.getBackground());
             setForeground((isGrayed) ? labelDisabledForeground : labelForeground);
         }
-        boolean useUnselectedArrow = UIManager.getBoolean("FileChooser.browserUseUnselectedExpandIconForLabeledFile");
-        if (this.isSelected && (!useUnselectedArrow || labelColor == null)) {
-            if (QuaquaUtilities.isFocused(list)) {
-                arrowIcon = (info.isValidating()) ? focusedSelectedExpandingIcon : focusedSelectedExpandedIcon;
+
+        if (!isListView) {
+            boolean useUnselectedArrow = UIManager.getBoolean("FileChooser.browserUseUnselectedExpandIconForLabeledFile");
+            if (this.isSelected && (!useUnselectedArrow || labelColor == null)) {
+                if (QuaquaUtilities.isFocused(container)) {
+                    arrowIcon = (info.isValidating()) ? focusedSelectedExpandingIcon : focusedSelectedExpandedIcon;
+                } else {
+                    arrowIcon = (info.isValidating()) ? selectedExpandingIcon : selectedExpandedIcon;
+                }
             } else {
-                arrowIcon = (info.isValidating()) ? selectedExpandingIcon : selectedExpandedIcon;
+                arrowIcon = (info.isValidating()) ? expandingIcon : expandedIcon;
+            }
+
+            /*
+              Special case: no arrow is displayed for a package even if the package is traversable (an option).
+            */
+
+            if (!info.isTraversable() || OSXFile.isVirtualFile(info.lazyGetResolvedFile())) {
+                arrowIcon = (labelColor == null) ? null : emptyIcon;
             }
         } else {
-            arrowIcon = (info.isValidating()) ? expandingIcon : expandedIcon;
+            arrowIcon = null;
         }
 
         text = info.getUserName();
         icon = info.getIcon();
 
-        if (!info.isTraversable()) {
-            arrowIcon = (labelColor == null) ? null : emptyIcon;
+        isAlias = false;
+        if (info instanceof FileSystemTreeModel.Node) {
+            FileSystemTreeModel.Node n = (FileSystemTreeModel.Node) info;
+            isAlias = n.isAlias();
         }
 
-        setEnabled(list.isEnabled());
-        setFont(list.getFont());
-
-        setBorder((cellHasFocus) ? UIManager.getBorder(isGrayed ? "FileChooser.browserCellFocusBorderGrayed" : "FileChooser.browserCellFocusBorder") : UIManager.getBorder("FileChooser.browserCellBorder"));
-
+        setOpaque(!isListView);
+        setEnabled(container.isEnabled());
+        setFont(container.getFont());
+        setBorder(isListView ? null : (cellHasFocus) ? UIManager.getBorder(isGrayed ? "FileChooser.browserCellFocusBorderGrayed" : "FileChooser.browserCellFocusBorder") : UIManager.getBorder("FileChooser.browserCellBorder"));
         return this;
     }
 
@@ -178,7 +214,6 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
 
         int height = getHeight();
         Insets insets = getInsets();
-        boolean isUseArrow = arrowIcon != null;
 
         resetRects();
 
@@ -199,42 +234,54 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         String clippedText = layoutRenderer(
                 textFM, text,
                 icon, arrowIcon,
-                viewRect, iconRect, textRect, arrowIconRect,
+                viewRect, iconRect, textRect, arrowIconRect, labelRect,
                 text == null ? 0 : textIconGap, textArrowIconGap);
 
         if (labelColor != null) {
-            if (isSelected) {
-                Insets i = UIManager.getInsets("FileChooser.browserCellSelectedColorLabelInsets");
-                if (i == null) {
-                    i = new Insets(0, 0, 0, 0);
-                }
-                r.y = viewRect.y + i.top;
-                r.width = r.height = viewRect.height - 1;
-                r.x = arrowIconRect.x - (arrowIconRect.width - r.width) / 2 + i.left;
-                //r.x = viewRect.width - r.width;
-                //g.fillOval(r.x, r.y, r.width, r.height);
-            } else {
-                Insets i = UIManager.getInsets("FileChooser.browserCellColorLabelInsets");
-                if (i == null) {
-                    i = new Insets(0, 0, 0, 0);
-                }
-                r.x = textRect.x - textIconGap + i.left;
-                r.y = viewRect.y + i.top;
-                r.width = viewRect.width - r.x + viewRect.x - i.right;
-                r.height = viewRect.height - r.y + viewRect.y - i.bottom;
-            }
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setPaint(new LinearGradientPaint(r.x, r.y, labelBrightColor, r.x, r.y + r.height, labelColor));
-            //g.setColor(labelColor);
-            g.fillRoundRect(r.x, r.y, r.width, r.height, r.height, r.height);
-        }
 
+            if (design >= QuaquaManager.MAVERICKS) {
+                // Paint the label as a filled circle with an outline
+                double r = labelRadius;
+                Shape s = new Ellipse2D.Double(labelRect.x, labelRect.y, r * 2, r * 2);
+                g.setPaint(labelColor);
+                g.fill(s);
+                g.setPaint(isSelected && isActive ? Color.WHITE : Color.LIGHT_GRAY);
+                g.draw(s);
+            } else {
+                if (isSelected) {
+                    Insets i = UIManager.getInsets("FileChooser.browserCellSelectedColorLabelInsets");
+                    if (i == null) {
+                        i = new Insets(0, 0, 0, 0);
+                    }
+                    r.y = viewRect.y + i.top;
+                    r.width = r.height = viewRect.height - 1;
+                    r.x = arrowIconRect.x - (arrowIconRect.width - r.width) / 2 + i.left;
+                    //r.x = viewRect.width - r.width;
+                    //g.fillOval(r.x, r.y, r.width, r.height);
+                } else {
+                    Insets i = UIManager.getInsets("FileChooser.browserCellColorLabelInsets");
+                    if (i == null) {
+                        i = new Insets(0, 0, 0, 0);
+                    }
+                    r.x = textRect.x - textIconGap + i.left;
+                    r.y = viewRect.y + i.top;
+                    r.width = viewRect.width - r.x + viewRect.x - i.right;
+                    r.height = viewRect.height - r.y + viewRect.y - i.bottom;
+                }
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                g.setPaint(new LinearGradientPaint(r.x, r.y, labelBrightColor, r.x, r.y + r.height, labelColor));
+                //g.setColor(labelColor);
+                g.fillRoundRect(r.x, r.y, r.width, r.height, r.height, r.height);
+            }
+        }
 
         if (icon != null) {
             icon.paintIcon(this, g, iconRect.x, iconRect.y);
         }
 
-
+        if (isAlias && aliasBadgeIcon != null) {
+            aliasBadgeIcon.paintIcon(this, g, iconRect.x, iconRect.y);
+        }
 
         if (clippedText != null && !clippedText.equals("")) {
             g.setColor(getForeground());
@@ -248,17 +295,18 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         QuaquaUtilities.endGraphics((Graphics2D) g, oldHints);
     }
     /**
-     * The following variables are used for layouting the renderer.
+     * The following variables are used for laying out the renderer.
      * This variables are static, because FileRenderer is always called
      * from the EventDispatcherThread, and because we do not use them in a
      * reentrant context, where a FileRenderer instance enters a method of
-     * anonther FileRenderer instance.
+     * another FileRenderer instance.
      */
     private static final Rectangle zeroRect = new Rectangle(0, 0, 0, 0);
     private static Rectangle iconRect = new Rectangle();
     private static Rectangle textRect = new Rectangle();
     private static Rectangle arrowIconRect = new Rectangle();
     private static Rectangle viewRect = new Rectangle();
+    private static Rectangle labelRect = new Rectangle();
     /** r is used in getPreferredSize and in paintComponent. It must not be
      * used in any method called by one of these.
      */
@@ -268,6 +316,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         iconRect.setBounds(zeroRect);
         textRect.setBounds(zeroRect);
         arrowIconRect.setBounds(zeroRect);
+        labelRect.setBounds(zeroRect);
         viewRect.setBounds(0, 0, 32767, 32767);
         r.setBounds(zeroRect);
     }
@@ -283,8 +332,11 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
                 textFM, text,
                 icon, arrowIcon,
                 viewRect,
-                iconRect, textRect,
-                arrowIconRect, text == null ? 0 : textIconGap, textArrowIconGap);
+                iconRect,
+                textRect,
+                arrowIconRect,
+                labelRect,
+                text == null ? 0 : textIconGap, textArrowIconGap);
 
         r.setBounds(textRect);
         r = SwingUtilities.computeUnion(iconRect.x, iconRect.y, iconRect.width,
@@ -293,6 +345,10 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
         boolean isUseArrow = arrowIcon != null;
         if (isUseArrow) {
             r.width += arrowIconRect.width + textArrowIconGap;
+        }
+
+        if (labelColor != null && design >= QuaquaManager.MAVERICKS) {
+            r.width += labelRect.width + textArrowIconGap;
         }
 
         Insets insets = getInsets();
@@ -313,6 +369,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
             Rectangle viewRect, Rectangle iconRect,
             Rectangle textRect,
             Rectangle arrowIconRect,
+            Rectangle labelRect,
             int textIconGap, int textArrowIconGap) {
 
         boolean isUseArrow = arrowIcon != null;
@@ -324,22 +381,37 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
             viewRect.width -= arrowIconRect.width + textArrowIconGap;
         }
 
+        if (labelColor != null && design >= QuaquaManager.MAVERICKS) {
+            int d = (int) Math.ceil(2 * labelRadius);
+            labelRect.width = d;
+            labelRect.height = d;
+            labelRect.x = viewRect.x + viewRect.width - labelRect.width;
+            viewRect.width -= labelRect.width + textArrowIconGap;
+        }
+
         text = QuaquaUtilities.layoutCompoundLabel(
                 this, textFM, text,
-                icon, SwingConstants.TOP, SwingConstants.LEFT,
+                icon, SwingConstants.CENTER, SwingConstants.LEFT,
                 SwingConstants.CENTER, SwingConstants.RIGHT,
                 viewRect, iconRect, textRect,
                 textIconGap);
-
 
         if (isUseArrow) {
             viewRect.width += arrowIconRect.width + textArrowIconGap;
         }
 
-        Rectangle labelRect = iconRect.union(textRect);
+        if (labelColor != null && design >= QuaquaManager.MAVERICKS) {
+            viewRect.width += labelRect.width + textArrowIconGap;
+        }
+
+        Rectangle jLabelRect = iconRect.union(textRect);
 
         if (isUseArrow) {
-            arrowIconRect.y = (viewRect.y + labelRect.height / 2 - arrowIconRect.height / 2);
+            arrowIconRect.y = (viewRect.y + jLabelRect.height / 2 - arrowIconRect.height / 2);
+        }
+
+        if (labelColor != null && design >= QuaquaManager.MAVERICKS) {
+            labelRect.y = (viewRect.y + jLabelRect.height / 2 - labelRect.height / 2);
         }
 
         if (!QuaquaUtilities.isLeftToRight(this)) {
@@ -347,6 +419,7 @@ public class LeopardFileRenderer extends JPanel implements ListCellRenderer {
             iconRect.x = width - (iconRect.x + iconRect.width);
             textRect.x = width - (textRect.x + textRect.width);
             arrowIconRect.x = width - (arrowIconRect.x + arrowIconRect.width);
+            labelRect.x = width - (labelRect.x + labelRect.width);
         }
 
         return text;

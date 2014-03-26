@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaFileSystemView.java 
+ * @(#)QuaquaFileSystemView.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -12,11 +12,16 @@
 
 package ch.randelshofer.quaqua.filechooser;
 
-import ch.randelshofer.quaqua.osx.OSXFile;
+import java.io.File;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.filechooser.FileView;
+
 import ch.randelshofer.quaqua.QuaquaManager;
-import java.io.*;
-import javax.swing.*;
-import javax.swing.filechooser.*;
+import ch.randelshofer.quaqua.osx.OSXFile;
+
 /**
  * QuaquaFileSystemView is an enhanced FileSystemView, which provides additional
  * information about a file system required for Aqua file choosers.
@@ -32,6 +37,13 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
      * Creates a new instance.
      */
     public QuaquaFileSystemView() {
+    }
+
+    /**
+     * Convert a file (path) to canonical form.
+     */
+    public File canonicalize(File f) {
+        return f;
     }
 
     /**
@@ -78,8 +90,8 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                         className = "ch.randelshofer.quaqua.snowleopard.filechooser.OSX16SnowLeopardFileSystemView";
                         break;
                     case QuaquaManager.LION :
-                    case QuaquaManager.MOUNTAIN_LION :
-                    case QuaquaManager.MAVERICKS :
+                    case QuaquaManager.MOUNTAIN_LION:
+                    case QuaquaManager.MAVERICKS:
                     case QuaquaManager.X :
                     default:
                         className = "ch.randelshofer.quaqua.lion.filechooser.OSXLionFileSystemView";
@@ -196,9 +208,9 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
      * @see JFileChooser#getName
      */
     public String getSystemDisplayName(File f) {
-        // FIXME - Determine display name
         if (f.equals(getComputer())) {
-            return getSystemVolume().getName();
+            String name = OSXFile.getComputerName();
+            return name != null ? name : getSystemVolume().getName();
         } else {
             if (OSXFile.canWorkWithAliases()) {
                 return OSXFile.getDisplayName(f);

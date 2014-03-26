@@ -1,9 +1,9 @@
 /*
  * @(#)OSXImageIO.java
- * 
+ *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
- * 
+ *
  * You may not use, copy or modify this file, except in compliance with the
  * license agreement you entered into with Werner Randelshofer.
  * For details see accompanying license terms.
@@ -141,7 +141,7 @@ public class OSXImageIO {
      * If JNI fails to load the image (e.g. the native code could not be
      * loaded), <code>null</code> is returned.
      *
-     * @param file
+     * @param path
      *            The file containing the image.
      * @param width
      *            The preferred width.
@@ -150,7 +150,7 @@ public class OSXImageIO {
      * @return The image loaded. <code>null</code>, if no image could be loaded
      *         by JNI.
      */
-    private native static byte[] nativeRead(String path, int widht, int height);
+    private native static byte[] nativeRead(String path, int width, int height);
 
     /**
      * Reads an image from the specified byte array, and returns it in a TIFF

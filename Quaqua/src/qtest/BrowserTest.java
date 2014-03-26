@@ -6,7 +6,7 @@
  * accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.DefaultBrowserCellRenderer;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -20,7 +20,7 @@ import javax.swing.tree.TreeModel;
  * @version 1.0  13 February 2005  Created.
  */
 public class BrowserTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public BrowserTest() {
         initComponents();
@@ -101,13 +101,13 @@ protected static TreeModel createDefaultTreeModel() {
         gridBagConstraints.insets = new java.awt.Insets(14, 0, 0, 0);
         add(scrollPane2, gridBagConstraints);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private ch.randelshofer.quaqua.JBrowser browser1;
     private ch.randelshofer.quaqua.JBrowser browser2;
     private javax.swing.JScrollPane scrollPane1;
     private javax.swing.JScrollPane scrollPane2;
     // End of variables declaration//GEN-END:variables
-    
+
 }

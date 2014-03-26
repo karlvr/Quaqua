@@ -1,5 +1,5 @@
 /*
- * @(#)CMYKChooser.java  
+ * @(#)CMYKChooser.java
  *
  * Copyright (c) 2004-2013 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -13,7 +13,6 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import java.io.*;
 import javax.swing.*;

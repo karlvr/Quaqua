@@ -8,15 +8,8 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import java.awt.image.*;
-import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.plaf.*;
-import javax.swing.border.*;
-import javax.swing.plaf.basic.*;
-import java.io.Serializable;
-import java.beans.*;
 
 /**
  * QuaquaButtonUI.
@@ -27,15 +20,15 @@ import java.beans.*;
 public class QuaquaToggleButtonUI extends QuaquaButtonUI {
     // Shared UI object
     private final static QuaquaToggleButtonUI buttonUI = new QuaquaToggleButtonUI();
-    
-    
+
+
     // ********************************
     //          Create PLAF
     // ********************************
     public static ComponentUI createUI(JComponent c) {
         return buttonUI;
     }
-    
+
     protected String getPropertyPrefix() {
         return "ToggleButton.";
     }

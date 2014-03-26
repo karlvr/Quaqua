@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaUtilities.java  
+ * @(#)QuaquaUtilities.java
  *
  * Copyright (c) 2003-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -13,8 +13,10 @@ import java.awt.dnd.DnDConstants;
 import java.awt.dnd.DragSource;
 import java.awt.event.*;
 import java.awt.image.*;
+import java.io.*;
 import java.lang.reflect.Method;
 import java.net.*;
+import java.nio.charset.Charset;
 import javax.swing.*;
 import javax.swing.text.*;
 import javax.swing.border.*;
@@ -288,22 +290,14 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             }
         }
 
-        //---
-        try {
-            boolean isFocusOwner = ((Boolean) Methods.invoke(component, "isFocusOwner")).booleanValue();
-
+        KeyboardFocusManager m = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        Component c = m.getPermanentFocusOwner();
+        if (c == component) {
             Window ancestor = SwingUtilities.getWindowAncestor(component);
-            Object kfm = Methods.invokeStatic("java.awt.KeyboardFocusManager", "getCurrentKeyboardFocusManager");
-
-            return isFocusOwner
-                    || component == Methods.invoke(kfm, "getPermanentFocusOwner")
-                    && ancestor != null
-                    && Methods.invokeGetter(ancestor, "isFocused", false);
-        } catch (NoSuchMethodException e) {
-            return component.hasFocus();
+            return ancestor != null && ancestor.isFocused();
+        } else {
+            return false;
         }
-
-
     }
 
     static boolean isHeadless() {
@@ -725,61 +719,6 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
     }
 
-    static void setWindowAlphaOld(Window w, int value) {
-        if (w == null) {
-            return;
-        }
-
-        if (QuaquaManager.isOSX()) {
-            // Try Mac API
-            /*
-            // Platform neutral API
-            w.setBackground(new Color(0, 0, 0, value));
-             */
-
-            // Java 1.4.2_05 does not support window alpha.
-            // Setting window alpha only sets the background color of the window
-            // to white.
-
-            if (w.getPeer() == null) {
-                w.pack();
-            }
-            java.awt.peer.ComponentPeer peer = w.getPeer();
-            try {
-                // Alpha API for Apple's Java 1.4 + 1.5 on Mac OS X 10.4 Tiger.
-                Methods.invoke(peer, "setAlpha", (float) (value / 255f));
-                // Platform neutral API
-                w.setBackground(new Color(255, 255, 255, value));
-                if (w instanceof RootPaneContainer) {
-                    ((RootPaneContainer) w).getContentPane().setBackground(new Color(255, 255, 255, 0));
-                }
-            } catch (Throwable e) {
-                // Alpha API for Apple's Java 1.3.
-                if (QuaquaManager.getProperty("java.version").startsWith("1.3")) {
-                    try {
-                        Methods.invoke(peer, "_setAlpha", value);
-                    } catch (Throwable e2) {
-                        // Platform neutral API
-                        w.setBackground(new Color(255, 255, 255, value));
-                        if (w instanceof RootPaneContainer) {
-                            ((RootPaneContainer) w).getContentPane().setBackground(new Color(255, 255, 255, 0));
-                        }
-                    }
-                }
-            }
-        } else {
-            // Try J2SE 6 Update 10 API on Windows
-            try {
-                Class clazz = Class.forName("com.sun.awt.AWTUtilities");
-                Method method =
-                        clazz.getMethod("setWindowOpaque", new Class[]{java.awt.Window.class, Boolean.TYPE});
-                method.invoke(clazz, new Object[]{w, Boolean.FALSE});
-            } catch (Throwable e2) {
-                // silently ignore this exception.
-            }
-        }
-    }
-
     /** Copied from BasicLookAndFeel.
      */
     public static Component compositeRequestFocus(Component component) {
@@ -878,7 +817,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * <p>
      * The default size variant is "regular".
      * If a component is a cell renderer, the default size variant is "small".
-     * 
+     *
      * @param c
      * @return size variant.
      */
@@ -903,12 +842,12 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             }
         }
         if (sv==null) {
-            
+
               if ((c instanceof TableCellRenderer)
                 || (c instanceof TableCellEditor)
                 || (c.getParent() instanceof JTable)) sv=SizeVariant.SMALL;
         }
-        
+
         if (sv == null) {
             Font f = c.getFont();
             if (f != null) {
@@ -982,6 +921,11 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         int dropAction = DnDConstants.ACTION_NONE;
 
         /*
+          Issue: Shift-Drag means Link in Motif, but not in Aqua. Probably preserving this behavior because it is
+          assumed by some Java applications. Perhaps should be configurable.
+        */
+
+        /*
          * Fix for 4285634.
          * Calculate the drop action to match Motif DnD behavior.
          * If the user selects an operation (by pressing a modifier key),
@@ -1052,10 +996,10 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
         }
         return isTextured;
     }
-    
+
     /** Returns the visual bounds of the component given in the local
      * coordinate system of the component.
-     * 
+     *
      * @param c The component.
      * @param type A type from {@link VisuallyLayoutable}.
      * @return The visual bounds. Returns null if the given type is not applicable.
@@ -1067,9 +1011,83 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
             if (ui instanceof VisuallyLayoutable) {
                 VisuallyLayoutable vl=(VisuallyLayoutable)ui;
                 return vl.getVisualBounds(jc,type,jc.getWidth(),jc.getHeight());
-                
+
             }
         }
             return type==VisuallyLayoutable.CLIP_BOUNDS?new Rectangle(0,0,c.getWidth(),c.getHeight()):null;
     }
+
+    /**
+   	  Execute a system command and collect the standard output.
+   	*/
+
+    public static String exec(String[] cmd, Charset cs) {
+        try {
+            Process p = Runtime.getRuntime().exec(cmd);
+            InputStream stdout = p.getInputStream();
+            InputStreamReader standardOutputReader = new InputStreamReader(stdout, cs);
+            StreamCollector standardOutputCollector = new StreamCollector(standardOutputReader);
+            standardOutputCollector.start();
+            int rc = p.waitFor();
+            standardOutputCollector.join();
+            return standardOutputCollector.getContents();
+        } catch (IOException ex) {
+        } catch (InterruptedException ex) {
+        }
+        return null;
+    }
+
+    /**
+   	  Collect the contents of a string using a worker thread. Notify when done.
+   	*/
+
+   	private static class StreamCollector
+   		extends Thread
+   	{
+   		private BufferedReader br;
+   		private String result;
+
+   		public StreamCollector(Reader r)
+   		{
+   			br = new BufferedReader(r);
+   		}
+
+   		/**
+   		  Return the collected contents, or null if not ready yet.
+   		*/
+
+   		public synchronized String getContents()
+   		{
+   			return result;
+   		}
+
+   		private synchronized void setContents(String s)
+   		{
+   			result = s;
+   			notifyAll();
+   		}
+
+   		public void run()
+   		{
+   			StringBuilder sb = new StringBuilder();
+   			char[] buffer = new char[1000];
+   			try {
+   				for (;;) {
+   					int count = br.read(buffer, 0, buffer.length);
+   					if (count < 0) break;
+   					if (count > 0) {
+   						sb.append(buffer, 0, count);
+   					} else {
+   						try {
+   							Thread.sleep(200);
+   						} catch (InterruptedException ex) {
+   						}
+   					}
+   				}
+   			} catch (IOException ex) {
+   			}
+   			String s = sb.toString();
+   			setContents(s);
+   		}
+   	}
 }

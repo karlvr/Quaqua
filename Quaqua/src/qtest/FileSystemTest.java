@@ -6,14 +6,13 @@
  * accompanying license terms.
  */
 
-package test;
+package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
-import java.awt.Color;
 import java.io.*;
 import javax.swing.*;
-import ch.randelshofer.quaqua.filechooser.*;
 import javax.swing.text.*;
+
 /**
  * FileSystemTest.
  *
@@ -21,16 +20,16 @@ import javax.swing.text.*;
  * @version 1.0 February 27, 2006 Created.
  */
 public class FileSystemTest extends javax.swing.JPanel {
-    
+
     /**
      * Creates a new instance.
      */
     public FileSystemTest() {
         initComponents();
-        
+
         test();
     }
-    
+
     private void test() {
         // StringBuffer buf = new StringBuffer();
         DefaultStyledDocument buf = new DefaultStyledDocument();
@@ -65,11 +64,11 @@ public class FileSystemTest extends javax.swing.JPanel {
                         } else {
                             buf.insertString(buf.getLength(),", resolved=",null);
                             buf.insertString(buf.getLength(),resolved.toString(),null);
-                            buf.insertString(buf.getLength(),", type=",null);
-                            buf.insertString(buf.getLength(),Integer.toString(OSXFile.resolveAliasType(f, true)),null);
+                            //buf.insertString(buf.getLength(),", type=",null);
+                            //buf.insertString(buf.getLength(),Integer.toString(OSXFile.resolveAliasType(f, true)),null);
                         }
                     }
-                    
+
                     buf.insertString(buf.getLength(),"\n\tkind=",null);
                     buf.insertString(buf.getLength(),OSXFile.getKindString(f),null);
                 }
@@ -85,12 +84,12 @@ public class FileSystemTest extends javax.swing.JPanel {
                 ex.printStackTrace();
             }
         }
-        
+
         textField.setDocument(buf);
     }
-    
+
     public static void main(String[] args) {
-        
+
         JFrame f = new JFrame("Native Test");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         FileSystemTest nt = new FileSystemTest();
@@ -99,8 +98,8 @@ public class FileSystemTest extends javax.swing.JPanel {
         f.setVisible(true);
         nt.test();
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -118,11 +117,11 @@ public class FileSystemTest extends javax.swing.JPanel {
 
         add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextPane textField;
     // End of variables declaration//GEN-END:variables
-    
+
 }

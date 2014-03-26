@@ -1,5 +1,5 @@
 /*
- * @(#)TreeTest.java 
+ * @(#)TreeTest.java
  *
  * Copyright (c) 2004 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -8,10 +8,10 @@
 
 package test;
 
-import ch.randelshofer.quaqua.*;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
+
 /**
  * TreeTest.
  *
@@ -19,11 +19,11 @@ import javax.swing.tree.*;
  * @version $Id$
  */
 public class TreeTest extends javax.swing.JPanel {
-    
+
     /** Creates new form. */
     public TreeTest() {
         initComponents();
-        
+
         tree1.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
         tree2.putClientProperty("Quaqua.Tree.style","striped");
         tree3.putClientProperty("Quaqua.Tree.style","sideBar");
@@ -32,7 +32,7 @@ public class TreeTest extends javax.swing.JPanel {
     }
     public static void main(String args[]) {
         try {
-            UIManager.setLookAndFeel(QuaquaManager.getLookAndFeelClassName());
+            UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public class TreeTest extends javax.swing.JPanel {
         f.pack();
         f.setVisible(true);
     }
-    
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -106,8 +106,8 @@ public class TreeTest extends javax.swing.JPanel {
     private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_textFieldActionPerformed
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
@@ -120,5 +120,5 @@ public class TreeTest extends javax.swing.JPanel {
     private javax.swing.JTree tree3;
     private javax.swing.JTree tree4;
     // End of variables declaration//GEN-END:variables
-    
+
 }

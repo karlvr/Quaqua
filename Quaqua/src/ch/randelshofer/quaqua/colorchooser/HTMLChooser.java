@@ -1,5 +1,5 @@
 /*
- * @(#)HTMLChooser.java  
+ * @(#)HTMLChooser.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -9,7 +9,6 @@
 package ch.randelshofer.quaqua.colorchooser;
 
 import ch.randelshofer.quaqua.border.VisualMarginBorder;
-import ch.randelshofer.quaqua.*;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -25,18 +24,18 @@ import java.util.*;
 public class HTMLChooser extends AbstractColorChooserPanel implements UIResource {
     private HTMLColorSliderModel ccModel = new HTMLColorSliderModel();
     private ChangeListener htmlListener;
-    
+
     /**
      * This is used to remember the last selection state of the "webSaveCheckBox".
      */
     private static boolean lastWebSaveSelectionState = false;
-    
+
     /**
      * We have to prevent us from constantly updating the color model, because
      * the gray chooser is not able to preserve all color components.
      */
     private int updateRecursion;
-    
+
     /**
      * W3C HTML 4.1 well known color names.
      */
@@ -64,8 +63,8 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             nameToColorMap.put(((String) colorNames[i][0]).toLowerCase(), colorNames[i][1]);
         }
     }
-    
-    
+
+
     /** Creates new form. */
     public HTMLChooser() {
     }
@@ -156,19 +155,19 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         greenLabel.setBorder(bm);
         blueLabel.setBorder(bm);
     }
-    
+
     public String getDisplayName() {
         return UIManager.getString("ColorChooser.htmlSliders");
     }
-    
+
     public Icon getLargeDisplayIcon() {
         return UIManager.getIcon("ColorChooser.colorSlidersIcon");
     }
-    
+
     public Icon getSmallDisplayIcon() {
         return getLargeDisplayIcon();
     }
-    
+
     public void updateChooser() {
         if (updateRecursion == 0) {
             updateRecursion++;
@@ -179,11 +178,11 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
                 }
             }
             ccModel.setColor(getColorFromModel());
-            
+
             updateRecursion--;
         }
     }
-    
+
     public void setColorToModel(Color color) {
         if (updateRecursion == 0) {
             updateRecursion++;
@@ -191,8 +190,8 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             updateRecursion--;
         }
     }
-    
-    
+
+
     /** This method is called from within the constructor to
      * initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is
@@ -382,25 +381,25 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
     private void fieldFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_fieldFocusGained
 ((JTextField) evt.getSource()).selectAll();
     }//GEN-LAST:event_fieldFocusGained
-    
+
     private void blueFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_blueFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(2).getValue()).toUpperCase();
         blueField.setText((hex.length() == 1) ? "0"+hex : hex);
     }//GEN-LAST:event_blueFieldFocusLost
-    
+
     private void greenFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_greenFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(1).getValue()).toUpperCase();
         greenField.setText((hex.length() == 1) ? "0"+hex : hex);
     }//GEN-LAST:event_greenFieldFocusLost
-    
+
     private void redFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_redFieldFocusLost
         String hex = Integer.toHexString(ccModel.getBoundedRangeModel(0).getValue()).toUpperCase();
         redField.setText((hex.length() == 1) ? "0"+hex : hex);
     }//GEN-LAST:event_redFieldFocusLost
-    
+
     private void htmlFieldFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_htmlFieldFocusLost
         Color mc = ccModel.getColor();
-        
+
         Color fc = (Color) nameToColorMap.get(htmlField.getText().toLowerCase());
         if (fc == null || ! fc.equals(mc)) {
             String hex = Integer.toHexString(0xffffff & mc.getRGB());
@@ -413,10 +412,10 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
             htmlField.setText(buf.toString());
         }
     }//GEN-LAST:event_htmlFieldFocusLost
-    
+
     private void webSaveChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_webSaveChanged
-      
-        
+
+
         // TODO add your handling code here:
         boolean b = webSaveCheckBox.isSelected();
         redSlider.setSnapToTicks(b);
@@ -429,10 +428,10 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
         blueSlider.repaint();
          */
         ccModel.setWebSaveOnly(b);
-        
+
     }//GEN-LAST:event_webSaveChanged
-    
-    
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField blueField;
     private javax.swing.JLabel blueLabel;
@@ -449,5 +448,5 @@ public class HTMLChooser extends AbstractColorChooserPanel implements UIResource
     private javax.swing.JPanel springPanel;
     private javax.swing.JCheckBox webSaveCheckBox;
     // End of variables declaration//GEN-END:variables
-    
+
 }

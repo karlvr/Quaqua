@@ -1,5 +1,5 @@
 /*
- * @(#)Quaqua16LionFileChooserLAF.java  
+ * @(#)Quaqua16LionFileChooserLAF.java
  *
  * Copyright (c) 2011-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -7,19 +7,28 @@
  */
 package ch.randelshofer.quaqua.subset;
 
-import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.LookAndFeelProxy;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.osx.OSXAquaPainter;
+import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
-import ch.randelshofer.quaqua.util.*;
+import ch.randelshofer.quaqua.util.Images;
+
 import javax.swing.*;
 import javax.swing.plaf.*;
 import java.awt.*;
-import java.awt.image.*;
-import java.util.*;
-import java.net.*;
-import java.security.*;
+import java.awt.image.BufferedImage;
+import java.net.URL;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
+import java.util.Enumeration;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 /**
  * The Quaqua16LionFileChooserLAF is an extension for Apple's Aqua Look and Feel
@@ -37,7 +46,7 @@ import java.security.*;
  *
  * <h4>FileChooserUI</h4>
  * <ul>
- * <li>FileChooserUI uses a column view similar to the native file dialog of
+ * <li>FileChooserUI supports a list view and a column view similar to the native file dialog of
  * Mac OS X 10.7 Lion.</li>
  * <li>The FileChooserUI resolves aliases to files and folders.</li>
  * </ul>
@@ -48,16 +57,14 @@ import java.security.*;
  * are designed to automatically detect the appropriate Quaqua Look and Feel
  * implementation for current Java VM.
  *
- * @see QuaquaManager
- * @see QuaquaLookAndFeel
+ * @see ch.randelshofer.quaqua.QuaquaManager
+ * @see ch.randelshofer.quaqua.QuaquaLookAndFeel
  *
  * @author Werner Randelshofer
- * @version $Id$
  */
 public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
-    protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snowleopard/images/";
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
@@ -68,15 +75,6 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
      * @see #getDefaults
      */
     private UIDefaults myDefaults;
-    /**
-     * The small system font (Lucida Grande Regular 11 pt) is used for
-     * informative text in alerts. It is also the default font for column
-     * headings in lists, for help tags, and for small controls. You can also
-     * use it to provide additional information about settings in various
-     * windows, such as the QuickTime pane in System Preferences.
-     */
-    protected static final FontUIResource SMALL_SYSTEM_FONT =
-            new FontUIResource("Lucida Grande", Font.PLAIN, 11);
 
     /**
      * Creates a new instance.
@@ -87,7 +85,7 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
         } catch (Exception e) {
             throw new InternalError(
-                    "Unable to instanciate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
+                    "Unable to instantiate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
         }
     }
 
@@ -124,7 +122,7 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
      * returns false.
      *
      * @see #uninitialize
-     * @see UIManager#setLookAndFeel
+     * @see javax.swing.UIManager#setLookAndFeel
      */
     @Override
     public void initialize() {
@@ -155,7 +153,7 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
      *
      * @see #initialize
      * @see #uninitialize
-     * @see UIManager#setLookAndFeel
+     * @see javax.swing.UIManager#setLookAndFeel
      */
     @Override
     public UIDefaults getDefaults() {
@@ -188,13 +186,9 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
      */
     @Override
     protected void initClassDefaults(UIDefaults table) {
-        String basicPrefix = "javax.swing.plaf.basic.Basic";
         String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
-        String quaquaLeopardPrefix = "ch.randelshofer.quaqua.leopard.QuaquaLeopard";
         String quaquaLionPrefix = "ch.randelshofer.quaqua.lion.QuaquaLion";
 
-        // NOTE: Uncomment parts of the code below, to override additional
-        // UI classes of the target look and feel.
         Object[] uiDefaults = {
             "BrowserUI", quaquaPrefix + "BrowserUI",
             "FileChooserUI", quaquaLionPrefix + "FileChooserUI",};
@@ -339,17 +333,34 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
         boolean isFileHidingEnabled = prefValue.equals("false") || prefValue.equals("no");
         boolean isQuickLookEnabled = Boolean.valueOf(QuaquaManager.getProperty("Quaqua.FileChooser.quickLookEnabled", "true"));
 
-        Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
+        Color grayedFocusCellBorderColor = new Color(0xff4077d4);
+        ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);
+        ColorUIResource listAlternateBackground = new ColorUIResource(0xf3f6fa);
+        Object listSelectionBackground = new InactivatableColorUIResource(0x4077d4, 0xd0d0d0);
 
-        String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Toolbar";
-        String sideBarIconsEnd = "FolderIcon.icns";
+        String sideBarIconsPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
+        ColorUIResource sideBarIconColor = new ColorUIResource(125,134,147);
+        ColorUIResource sideBarIconSelectionColor = new ColorUIResource(0xffffff);
 
         BorderUIResource.CompoundBorderUIResource browserCellBorder = new BorderUIResource.CompoundBorderUIResource(
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
                 new BorderUIResource.EmptyBorderUIResource(0, 4, 1, 0));
 
+        String iconPrefix = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/";
+
+        // Focus behavior
+        Boolean isRequestFocusEnabled = OSXConfiguration.isRequestFocusEnabled();
+
+        // True if all controls are focusable,
+        // false if only text boxes and lists are focusable.
+        Boolean allControlsFocusable = OSXConfiguration.isFullKeyboardAccess();
+
+        Object textFieldFocusHandler = new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaTextFieldFocusHandler");
 
         Object[] uiDefaults = {
+            "Component.visualMargin", new InsetsUIResource(3, 3, 3, 3),
+            //
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{lionDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
             "Browser.expandingIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
@@ -368,6 +379,24 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             "Browser.inactiveSelectionBackground", new ColorUIResource(208, 208, 208),
             "Browser.inactiveSelectionForeground", new ColorUIResource(0, 0, 0),
             "Browser.sizeHandleIcon", makeIcon(getClass(), lionDir + "Browser.sizeHandleIcon.png"),
+            //
+            "Button.focusable", allControlsFocusable,
+            //
+            "ComboBox.buttonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonComboBox, new Insets(0, -10, 0, -2), new Insets(0, 0, 0, 0), true),
+            "ComboBox.cellAndButtonBorder", makeNativeButtonStateBorder(OSXAquaPainter.Widget.buttonPopUp, new Insets(1, 1, 0, 0), new Insets(3, 3, 3, 3), true),
+            "ComboBox.buttonInsets", new Insets(-3, -3, -3, -3),
+            //"ComboBox.border", new VisualMarginBorder(2, 0, 2, 0),
+            "ComboBox.dropDownIcon", null,
+            "ComboBox.dropDownWidth",18,
+            "ComboBox.selectionBackground", new GradientColor(new ColorUIResource(0x3875d7), new ColorUIResource(0x5170f6), new ColorUIResource(0x1a43f3)),
+            "ComboBox.selectionForeground", menuSelectionForeground,
+            "ComboBox.popupBorder",//
+            new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
+            "ComboBox.maximumRowCount",10,
+            "ComboBox.arrowButtonInsets",new InsetsUIResource(4, 8,3,5),
+            "ComboBox.smallArrowButtonInsets",new InsetsUIResource(4, 6,3,5),
+            "ComboBox.miniArrowButtonInsets",new InsetsUIResource(4, 3,3,5),
+            "ComboBox.focusable", allControlsFocusable,
             //
             "FileChooser.autovalidate", Boolean.TRUE,
             "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,
@@ -391,23 +420,49 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             "FileChooser.browserCellTextIconGap", 6,
             "FileChooser.browserCellTextArrowIconGap", 5,
             "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
-            "FileChooser.sideBarIcon.Applications", makeNativeIcon(sideBarIconsStart + "Apps" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Desktop", makeNativeIcon(sideBarIconsStart + "Desktop" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Documents", makeNativeIcon(sideBarIconsStart + "Documents" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Downloads", makeNativeIcon(sideBarIconsStart + "Downloads" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Library", makeNativeIcon(sideBarIconsStart + "Library" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Movies", makeNativeIcon(sideBarIconsStart + "Movie" + sideBarIconsEnd, 16), // Note: no "s" in "Movie"
-            "FileChooser.sideBarIcon.Music", makeNativeIcon(sideBarIconsStart + "Music" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Pictures", makeNativeIcon(sideBarIconsStart + "Pictures" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Public", makeNativeIcon(sideBarIconsStart + "Public" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Sites", makeNativeIcon(sideBarIconsStart + "Sites" + sideBarIconsEnd, 16),
-            "FileChooser.sideBarIcon.Utilities", makeNativeIcon(sideBarIconsStart + "Utilities" + sideBarIconsEnd, 16),
+            "FileChooser.sheetErrorFont", new FontUIResource("Lucida Grande", Font.PLAIN, 10),
+            "FileChooser.sideBarIcon.Applications", makeNativeSidebarIcon(sideBarIconsPrefix + "ApplicationsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Desktop", makeNativeSidebarIcon(sideBarIconsPrefix + "DesktopFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Documents", makeNativeSidebarIcon(sideBarIconsPrefix + "DocumentsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Downloads", makeNativeSidebarIcon(sideBarIconsPrefix + "DownloadsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Dropbox", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Home", makeNativeSidebarIcon(sideBarIconsPrefix + "HomeFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Library", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Movies", makeNativeSidebarIcon(sideBarIconsPrefix + "MoviesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor), // Note: no "s" in "Movie"
+            "FileChooser.sideBarIcon.Music", makeNativeSidebarIcon(sideBarIconsPrefix + "MusicFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Network", makeNativeSidebarIcon(sideBarIconsPrefix + "Network.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Pictures", makeNativeSidebarIcon(sideBarIconsPrefix + "PicturesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Public", makeNativeSidebarIcon(sideBarIconsPrefix + "DropBoxFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Shared", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Sites", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Utilities", makeNativeSidebarIcon(sideBarIconsPrefix + "UtilitiesFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericFile", makeNativeSidebarIcon(sideBarIconsPrefix + "GenericFile.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.GenericVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "InternalDisk.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.SmartFolder", makeNativeSidebarIcon(sideBarIconsPrefix + "SmartFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.TimeMachineVolume", makeNativeSidebarIcon(sideBarIconsPrefix + "TimeMachine.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            //
+            "FileChooser.sideBarIcon.Imac", makeNativeSidebarIcon(sideBarIconsPrefix + "iMac.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.MacPro", makeNativeSidebarIcon(sideBarIconsPrefix + "MacPro.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.MacMini", makeNativeSidebarIcon(sideBarIconsPrefix + "MacMini.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            "FileChooser.sideBarIcon.Laptop", makeNativeSidebarIcon(sideBarIconsPrefix + "Laptop.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
+            //
+            "FileChooser.sideBarRowHeight", 24,
             //
             "FileView.computerIcon", makeIcon(getClass(), snowLeopardDir + "FileView.computerIcon.png"),
-            "FileView.fileIcon", makeIcon(getClass(), snowLeopardDir + "FileView.fileIcon.png"),
-            "FileView.directoryIcon", makeIcon(getClass(), snowLeopardDir + "FileView.directoryIcon.png"),
+            "FileView.fileIcon", makeNativeIcon(iconPrefix + "GenericDocumentIcon.icns", 16),
+            "FileView.directoryIcon", makeNativeIcon(iconPrefix + "GenericFolderIcon.icns", 16),
             "FileView.hardDriveIcon", makeIcon(getClass(), snowLeopardDir + "FileView.hardDriveIcon.png"),
             "FileView.floppyDriveIcon", makeIcon(getClass(), snowLeopardDir + "FileView.floppyDriveIcon.png"),
+            "FileView.aliasBadgeIcon", makeNativeIcon(iconPrefix + "AliasBadgeIcon.icns", 16),
+            "FileView.networkIcon", makeNativeIcon(iconPrefix + "GenericNetworkIcon.icns", 16),
+            //
+            "FileView.macbookIcon", makeNativeIcon(iconPrefix + "com.apple.macbook-white.icns", 16),
+            "FileView.macbookAirIcon", makeNativeIcon(iconPrefix + "com.apple.macbookair-13-unibody.icns", 16),
+            "FileView.macbookProIcon", makeNativeIcon(iconPrefix + "com.apple.macbookpro-13-unibody.icns", 16),
+            "FileView.macproIcon", makeNativeIcon(iconPrefix + "com.apple.macpro.icns", 16),
+            "FileView.macminiIcon", makeNativeIcon(iconPrefix + "com.apple.macmini-unibody-no-optical.icns", 16),
+            "FileView.imacIcon", makeNativeIcon(iconPrefix + "com.apple.imac-unibody-21.icns", 16),
             //
             "FileChooser.browserFocusCellHighlightBorder",
             new UIDefaults.ProxyLazyValue(
@@ -421,9 +476,22 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             "Label.embossForeground", new AlphaColorUIResource(0x7effffff),
             "Label.shadowForeground", new AlphaColorUIResource(0x7e000000),
             //
-            "Tree.collapsedIcon", makeIcon(getClass(), leopardDir + "Tree.collapsedIcon.png"),
-            "Tree.expandedIcon", makeIcon(getClass(), leopardDir + "Tree.expandedIcon.png"),
-            "Tree.leafIcon", makeIcon(getClass(), leopardDir + "Tree.leafIcon.png"),
+            "List.alternateBackground.0", listAlternateBackground,
+            //
+            "Sheet.showAsSheet", Boolean.TRUE,
+            //
+            "Table.alternateBackground.0", listAlternateBackground,
+            "Table.selectionBackground", listSelectionBackground,
+            //
+            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+            "TextField.focusHandler", textFieldFocusHandler,
+            //
+            "ToggleButton.focusable", allControlsFocusable,
+            //
+            //"Tree.collapsedIcon", makeIcon(getClass(), leopardDir + "Tree.collapsedIcon.png"),
+            //"Tree.expandedIcon", makeIcon(getClass(), leopardDir + "Tree.expandedIcon.png"),
+            //"Tree.leafIcon", makeIcon(getClass(), leopardDir + "Tree.leafIcon.png"),
+            "Tree.alternateBackground.0", listAlternateBackground,
             "Tree.openIcon", makeIcon(getClass(), leopardDir + "Tree.openIcon.png"),
             "Tree.closedIcon", makeIcon(getClass(), leopardDir + "Tree.closedIcon.png"),
             "Tree.sideBar.background", new InactivatableColorUIResource(//
@@ -434,19 +502,16 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             "Tree.rightChildIndent", 12, // 13
             "Tree.icons", makeIcons(lionDir + "Tree.icons.png", 15, true),
             "Tree.sideBar.icons", makeIcons(lionDir + "Tree.sideBar.icons.png", 15, true),
-            // CHANGE The new properties for the "sideBar" Tree style
             "Tree.sideBarCategory.foreground", new InactivatableColorUIResource(0x707e8b, 0x868b92),
             "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
             "Tree.sideBarCategory.font", new FontUIResource("Lucida Grande", Font.BOLD, 11),
             "Tree.sideBarCategory.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
             "Tree.sideBar.foreground", new InactivatableColorUIResource(0x000000, 0x000000),
             "Tree.sideBar.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
-            "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 11),
-            "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
-            "Tree.sideBarCategory.selectionForeground",
-            new InactivatableColorUIResource(0xffffff, 0xffffff),
-            //
-            "Sheet.showAsSheet", Boolean.TRUE,//
+            "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 13),
+            "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 13),
+            "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),//
+            "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),
         };
         table.putDefaults(uiDefaults);
     }
@@ -476,10 +541,23 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
         return icons;
     }
 
+    public static Object makeNativeSidebarIcon(String path, int size, Color color, Color selectionColor) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeSidebarIcon",
+                new Object[]{path, size, size, color, selectionColor});
+    }
+
+    protected Object makeNativeButtonStateBorder(OSXAquaPainter.Widget widget,
+            Insets imageInsets, Insets borderInsets, boolean withFocusRing) {
+        return new UIDefaults.ProxyLazyValue(
+                "ch.randelshofer.quaqua.QuaquaBorderFactory", "createNativeButtonStateBorder",
+                new Object[]{widget, imageInsets, borderInsets, withFocusRing});
+    }
+
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
-     * 
+     *
      * @param table
      * @param keyValueList
      */
