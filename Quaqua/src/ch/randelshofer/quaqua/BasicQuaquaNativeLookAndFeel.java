@@ -37,7 +37,8 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     protected final static String snowLeopardDir = "/ch/randelshofer/quaqua/snowleopard/images/";
     protected final static String lionDir = "/ch/randelshofer/quaqua/lion/images/";
 
-    /** Creates a new instance.
+    /**
+     * Creates a new instance.
      * @param targetClassName Proxy target.
      */
     public BasicQuaquaNativeLookAndFeel(String targetClassName) {
@@ -2320,7 +2321,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
-     * 
+     *
      * @param table Table onto which defaults are appended.
      * @param keyValueList Key value list of the defaults.
      */
