@@ -75,7 +75,6 @@
         <!-- Properties for jar signing -->
         <!-- ========================== -->
         <property name="keystore.file" value="../../../_Keystore/JavaKeystore.jks"/>
-        <property file="${keystore.file}.properties"/>
 
         <!-- Compilation properties -->
         <!-- ====================== -->
@@ -99,13 +98,13 @@
         <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
         <property name="j2se6.extdirs" value="lib/ext" />
         <property name="j2se6.endorseddirs" value="lib/endorsed" />
-        
+
         <property name="j2se7" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents" />
         <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
-        
+
         <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents" />
         <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
-        
+
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
              In case you run this Ant task on Mac OS X 10.6, "cc" invokes gcc-4.2
              for you. On OS X 10.7, you must have an old installation of XCode 3
@@ -116,7 +115,7 @@
                     else="cc">
                 <available file="/Developer-old/usr/bin/gcc-4.2"/>
          </condition>
-         
+
          <property name="osx10.5.sdk" value="/Developer/SDKs/MacOSX10.5.sdk"/>
          <property name="osx10.6.sdk" value="/Developer/SDKs/MacOSX10.6.sdk"/>
          <property name="osx10.7.sdk" value="/Developer/SDKs/MacOSX10.7.sdk"/>
@@ -215,7 +214,7 @@
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Headers"/>
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
-        
+
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
              of an executable when linking, using the Darwin libtool command.
@@ -318,7 +317,7 @@
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Headers"/>
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaNativeFoundation.framework/Headers"/>
         <arg value="-I${macosx.sdk}/System/Library/Frameworks/JavaVM.framework/Frameworks/JavaRuntimeSupport.framework/Headers"/>
-        
+
         <!-- Machine Dependent Options: Darwin Options. -->
         <!-- When passed this option, GCC will produce a dynamic library instead
              of an executable when linking, using the Darwin libtool command.
@@ -363,7 +362,7 @@
         <!-- Both srcdir and builddir should be package roots. -->
         <!-- They could be different of course; in that case NetBeans can also be set -->
         <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
-        
+
         <javac bootclasspath="${j2se6.bootclasspath}"
                 debug="${debug}" deprecation="true"
                 destdir="${builddir}" optimize="true"
@@ -494,7 +493,8 @@
             >
             <manifest>
                 <attribute name="Built-By" value="${author}"/>
-                <attribute name="Application-Name" value="Quaqua Test"/>
+                <attribute name="Application-Name" value="Quaqua Pure Test"/>
+                <attribute name="Main-Class" value="test.Main"/>
                 <attribute name="Codebase" value="*"/>
                 <attribute name="Application-Library-Allowable-Codebase" value="*"/>
                 <attribute name="Caller-Allowable-Codebase" value="*"/>
@@ -506,8 +506,7 @@
             <include name="ch/randelshofer/quaqua/util/Methods.class"/>
             <include name="org/jdesktop/**"/>
         </jar>
-        <!--delete file="${builddir}/ch/randelshofer/quaqua/laf.txt"/-->
-        
+
     </target>
     <target depends="init, jnilib-32, jnilib-64" name="jnilib">
     </target>
@@ -588,6 +587,7 @@
         </exec>
         <signjar alias="${keystore.alias}" storepass="${keystore.storepass}"
                 keystore="${keystore.file}"
+                tsaurl="${keystore.tsaurl}"
                 jar="${distdir}/signed/swing-layout.jar"
                 >
         </signjar>
@@ -595,7 +595,7 @@
             <arg value="${distdir}/signed/swing-layout.jar.pack.gz"/>
             <arg value="${distdir}/signed/swing-layout.jar"/>
         </exec>
-        
+
         <!-- create signed version of the libquaqua.jnilib.jar file -->
         <jar basedir="${distdir}" compress="true"
              jarfile="${distdir}/signed/libquaqua.jnilib.jar"
@@ -623,7 +623,7 @@
         </signjar>
         <!-- create signed version of the libquaqua64.dylib.jar file -->
         <jar basedir="${distdir}" compress="true"
-             jarfile="${distdir}/signed/libquaqua64.dylib.jar" 
+             jarfile="${distdir}/signed/libquaqua64.dylib.jar"
         >
             <include name="libquaqua64.dylib"/>
         </jar>
