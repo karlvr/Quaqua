@@ -31,6 +31,7 @@ public abstract class ColumnView extends JPanel implements FileChooserView {
             case QuaquaManager.MOUNTAIN_LION:
                 return new ch.randelshofer.quaqua.lion.filechooser.ColumnView(fc);
             case QuaquaManager.MAVERICKS:
+            case QuaquaManager.YOSEMITE:
                 return new ch.randelshofer.quaqua.mavericks.filechooser.ColumnView(fc);
             default:
                 return null;
