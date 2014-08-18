@@ -11,6 +11,7 @@ SnowLeopard.16=ch.randelshofer.quaqua.snowleopard.Quaqua16SnowLeopardLookAndFeel
 Lion.16=ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel;
 MountainLion.16=ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel;
 Mavericks.16=ch.randelshofer.quaqua.mavericks.Quaqua16MavericksLookAndFeel;
+Yosemite.16=ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel;
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;

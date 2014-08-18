@@ -92,6 +92,7 @@ public abstract class QuaquaFileSystemView extends FileSystemViewFilter {
                     case QuaquaManager.LION :
                     case QuaquaManager.MOUNTAIN_LION:
                     case QuaquaManager.MAVERICKS:
+                    case QuaquaManager.YOSEMITE:
                     case QuaquaManager.X :
                     default:
                         className = "ch.randelshofer.quaqua.lion.filechooser.OSXLionFileSystemView";
