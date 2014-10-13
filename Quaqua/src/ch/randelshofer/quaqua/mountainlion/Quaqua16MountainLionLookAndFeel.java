@@ -49,14 +49,7 @@ public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
 	protected void initDesignDefaults(UIDefaults table) {
 		super.initDesignDefaults(table);
 
-        Object toolBarTitleBackground;
-
-        final String javaVersion = QuaquaManager.getProperty("java.version", "");
-        if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
-            toolBarTitleBackground = table.get("control");
-        } else {
-            toolBarTitleBackground = new InactivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
-        }
+        Object toolBarTitleBackground = toolBarTitleBackground(table);
 
         Object[] uiDefaults = new Object[] {
                 "control", toolBarTitleBackground,
@@ -65,4 +58,13 @@ public class Quaqua16MountainLionLookAndFeel extends Quaqua16LionLookAndFeel {
 
         putDefaults(table, uiDefaults);
     }
+
+	protected Object toolBarTitleBackground(UIDefaults table) {
+        final String javaVersion = QuaquaManager.getProperty("java.version", "");
+        if (javaVersion.startsWith("1.5") || javaVersion.startsWith("1.6")) {
+            return table.get("control");
+        } else {
+            return new InactivatableColorUIResource(new ColorUIResource(222, 222, 222), new ColorUIResource(246, 246, 246));
+        }
+	}
 }
