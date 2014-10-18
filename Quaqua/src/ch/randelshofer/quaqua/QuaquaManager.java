@@ -163,6 +163,10 @@ public class QuaquaManager {
      */
     public final static int MAVERICKS = 9;
     /**
+     * Mac OS X 10.10 Yosemite.
+     */
+    public final static int YOSEMITE = 10;
+    /**
      * Mac OS X 10.x Always points to next OSX X release.
      */
     public final static int X = 100;
@@ -232,6 +236,8 @@ public class QuaquaManager {
             	OS = MOUNTAIN_LION;
             } else if (osVersion.equals("10.9")) {
             	OS = MAVERICKS;
+            } else if (osVersion.equals("10.10")) {
+            	OS = YOSEMITE;
             } else if (osVersion.startsWith("10.")) {
                 OS = X;
             } else {
@@ -272,6 +278,8 @@ public class QuaquaManager {
         	design = MOUNTAIN_LION;
         } else if (osDesign.equals("mavericks")) {
         	design = MAVERICKS;
+        } else if (osDesign.equals("yosemite")) {
+        	design = YOSEMITE;
         } else {
             switch (OS) {
                 case CHEETAH:
@@ -303,6 +311,9 @@ public class QuaquaManager {
                 	break;
                 case MAVERICKS:
                 	design = MAVERICKS;
+                	break;
+                case YOSEMITE:
+                	design = YOSEMITE;
                 	break;
                 default:
                 // Note: We must fall back to Snow Leopard here, because this
@@ -478,8 +489,11 @@ public class QuaquaManager {
                     	lafKey = "MountainLion.16";
                     	break;
                     case MAVERICKS:
-                    case X:
                     	lafKey = "Mavericks.16";
+                    	break;
+                    case YOSEMITE:
+                    case X:
+                    	lafKey = "Yosemite.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
@@ -509,8 +523,11 @@ public class QuaquaManager {
                     	lafKey = "MountainLion.16";
                     	break;
                     case MAVERICKS:
-                    case X:
                     	lafKey = "Mavericks.16";
+                    	break;
+                    case YOSEMITE:
+                    case X:
+                    	lafKey = "Yosemite.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
