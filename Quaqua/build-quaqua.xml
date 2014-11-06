@@ -37,7 +37,7 @@
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
-        <property name="SDKversion" value="10.8"/>
+        <property name="SDKversion" value="10.10"/>
 		<property name="SDKpath" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SDKversion}.sdk" />
 
 		<!-- Java platform properties -->
