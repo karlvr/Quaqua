@@ -554,13 +554,22 @@ public class OSXFile {
      * If the file does not exist, a generic icon is returned.
      */
     public static Icon getIcon(File file, int size) {
-        Image img=getIconImage(file, size);
+        Image im = QuaquaIconFactory.createImage(size, size, new MyImageProvider(file));
+        return new ImageIcon(im);
+    }
 
-        if (img == null) {
-            System.err.println("Unable to get system icon for " + file);
+    private static class MyImageProvider implements ImageProvider {
+
+        private File file;
+
+        public MyImageProvider(File file) {
+            this.file = file;
         }
 
-        return (img==null)?UIManager.getIcon("FileView.fileIcon"):new ImageIcon(img);
+        @Override
+        public Image getImage(int width, int height) {
+            return getIconImage(file, width);
+        }
     }
 
     /**
