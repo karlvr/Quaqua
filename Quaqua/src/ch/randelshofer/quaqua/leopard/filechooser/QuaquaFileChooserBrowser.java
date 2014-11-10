@@ -8,7 +8,7 @@
 package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.JBrowser;
-import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserBrowserListUI;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserListMouseBehavior;
 
@@ -41,7 +41,7 @@ public class QuaquaFileChooserBrowser extends JBrowser {
     @Override
     protected JScrollPane createScrollPane(JComponent c, int columnIndex) {
         JScrollPane sp = super.createScrollPane(c, columnIndex);
-        sp.setUI(new QuaquaScrollPaneUI());
+        QuaquaManager.updateNestedComponentUI(sp);
         sp.setBorder(null);
         sp.setFocusable(false);
         sp.getVerticalScrollBar().setFocusable(false);

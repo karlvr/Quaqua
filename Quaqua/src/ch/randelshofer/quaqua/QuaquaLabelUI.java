@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLabelUI.java  
+ * @(#)QuaquaLabelUI.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -64,7 +64,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
         if (b.getClass().getName().endsWith("LabelUIResource")) {
             b.setFont(UIManager.getFont("Slider.labelFont"));
         }
-        
+
         QuaquaUtilities.applySizeVariant(b);
     }
 
@@ -110,10 +110,16 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
             if (style.startsWith("category")) {
 
-                s = s.toUpperCase();
                 font = UIManager.getFont("Tree.sideBarCategory.font");
-                style = (selected) ? "shadow" : "emboss";
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
+
+                int design = QuaquaManager.getDesign();
+                if (design < QuaquaManager.MAVERICKS) {
+                    s = s.toUpperCase();
+                    style = (selected) ? "shadow" : "emboss";
+                } else {
+                    style = null;
+                }
 
             } else if (style.startsWith("row")) {
 
@@ -127,7 +133,12 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                     font = font.deriveFont(l.getFont().getStyle());
                 }
 
-                style = selected ? "shadow" : null;
+                int design = QuaquaManager.getDesign();
+                if (design < QuaquaManager.MAVERICKS) {
+                    style = selected ? "shadow" : null;
+                } else {
+                    style = null;
+                }
             }
 
             if (style != null && style.equals("emboss")) {
@@ -163,13 +174,19 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
             if (style.startsWith("category")) {
 
-                s = s.toUpperCase();
                 font = UIManager.getFont(selected ? "Tree.sideBarCategory.selectionFont" : "Tree.sideBarCategory.font");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
                 }
-                style = (selected) ? "shadow" : "emboss";
+
+                int design = QuaquaManager.getDesign();
+                if (design < QuaquaManager.MAVERICKS) {
+                    s = s.toUpperCase();
+                    style = (selected) ? "shadow" : "emboss";
+                } else {
+                    style = null;
+                }
 
             } else if (style.startsWith("row")) {
                 font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
@@ -190,7 +207,13 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
                 }
-                style = (selected) ? "shadow" : null;
+
+                int design = QuaquaManager.getDesign();
+                if (design < QuaquaManager.MAVERICKS) {
+                    style = selected ? "shadow" : null;
+                } else {
+                    style = null;
+                }
             }
             if (style != null && style.equals("emboss")) {
                 g.setFont(font);

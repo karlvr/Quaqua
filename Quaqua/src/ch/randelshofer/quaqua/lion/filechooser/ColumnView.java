@@ -9,7 +9,7 @@ package ch.randelshofer.quaqua.lion.filechooser;
 
 import ch.randelshofer.quaqua.BrowserPreviewRenderer;
 import ch.randelshofer.quaqua.JBrowser;
-import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.filechooser.CellRenderer;
 import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
@@ -70,7 +70,9 @@ public class ColumnView extends ch.randelshofer.quaqua.filechooser.ColumnView {
         browser.setPreviewColumnFilled(true);
 
         browserScrollPane = new JScrollPane();
-        browserScrollPane.setUI(new QuaquaScrollPaneUI());  // for file chooser only JAR
+
+        QuaquaManager.updateNestedComponentUI(browserScrollPane);
+
         browserScrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
         browserScrollPane.setViewportView(browser);
         browserScrollPane.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 2, 3, 2));

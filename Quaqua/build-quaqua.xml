@@ -104,6 +104,7 @@
 
         <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents" />
         <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
+        <property name="j2se8.bootclasspath" value="${j2se8}/Home/jre/lib/rt.jar" />
 
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
              In case you run this Ant task on Mac OS X 10.6, "cc" invokes gcc-4.2
@@ -124,6 +125,11 @@
          <property name="macosx.sdk" value="${osx10.9.sdk}" />
     </target>
 
+    <!-- Sources that refer to symbols in the 1.8 JDK -->
+    <patternset id="sources.1.8.dependent">
+        <include name="**/QuaquaIconSupport18.java"/>
+    </patternset>
+
     <target depends="init" name="compile">
         <mkdir dir="${builddir}"/>
         <!-- Both srcdir and builddir should be package roots. -->
@@ -141,7 +147,27 @@
                 includeantruntime="false"
                 >
             <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
+            <patternset>
+                <invert>
+                    <patternset refid="sources.1.8.dependent"/>
+                </invert>
+            </patternset>
         </javac>
+
+        <!-- Special case compilation, requires the 1.8 classpath -->
+        <javac bootclasspath="${j2se8.bootclasspath}"
+                fork="true"
+                source="1.6" target="1.6" encoding="UTF-8"
+                srcdir="${src}" destdir="${builddir}"
+                debug="${debug}" optimize="true"
+                deprecation="true"
+                extdirs="${j2se6.extdirs}"
+                includeantruntime="false"
+                >
+            <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
+            <patternset refid="sources.1.8.dependent"/>
+        </javac>
+
 
         <!-- copy resources to the builddir -->
         <copy todir="${builddir}">
@@ -1094,6 +1120,16 @@
             <jvmarg value="-Djava.library.path=${distdir}"/>
             <arg value="-laf"/>
             <arg value="quaqua"/>
+        </java>
+    </target>
+    <target depends="init" name="1.8x">
+        <java classname="test.Main" classpath="${distdir}/quaqua-test.jar:${distdir}/quaqua.jar"
+                fork="true"
+                jvm="${java1.8cmd}"
+        >
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <arg value="-laf"/>
+            <arg value="ch.randelshofer.quaqua.quaqua18.Quaqua18LookAndFeel"/>
         </java>
     </target>
     <target depends="init" name="pure 1.6">

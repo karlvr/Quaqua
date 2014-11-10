@@ -13,6 +13,7 @@ import ch.randelshofer.quaqua.border.VisualMarginBorder;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.color.GradientColor;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.filechooser.FileChooserLAF;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
 import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
@@ -62,7 +63,7 @@ import java.util.Set;
  *
  * @author Werner Randelshofer
  */
-public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
+public class Quaqua16LionFileChooserLAF extends FileChooserLAF {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String leopardDir = "/ch/randelshofer/quaqua/leopard/images/";

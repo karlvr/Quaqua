@@ -7,8 +7,7 @@
  */
 package ch.randelshofer.quaqua.lion.filechooser;
 
-import ch.randelshofer.quaqua.QuaquaNativeButtonBorder;
-import ch.randelshofer.quaqua.QuaquaToggleButtonUI;
+import ch.randelshofer.quaqua.QuaquaManager;
 import ch.randelshofer.quaqua.osx.OSXConfiguration;
 
 import javax.swing.*;
@@ -94,20 +93,8 @@ public class ViewModeControl extends ch.randelshofer.quaqua.filechooser.ViewMode
         JToggleButton b = new JToggleButton(ic);
         b.putClientProperty("JButton.buttonType", "segmented");
         b.putClientProperty("JButton.segmentPosition", position);
-        // The following explicit assignments support the file chooser only JAR
-        b.setUI(new QuaquaToggleButtonUI());
-        b.setOpaque(true);
-        b.setBorder(new QuaquaNativeButtonBorder());
         b.setFocusable(OSXConfiguration.isFullKeyboardAccess());
-
-        Insets s;
-        if (position.equals("first")) {
-            s = new Insets(7, 12, 7, 8);
-        } else {
-            s = new Insets(7, 7, 7, 12);
-        }
-
-        b.putClientProperty("Quaqua.Border.insets", s);
+        QuaquaManager.updateNestedComponentUI(b);   // must following installation of JButton.segmentPosition
 
         b.addActionListener(new ActionListener() {
             @Override
