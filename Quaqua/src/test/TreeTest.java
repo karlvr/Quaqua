@@ -11,6 +11,8 @@ package test;
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.tree.*;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 /**
  * TreeTest.
@@ -29,7 +31,17 @@ public class TreeTest extends javax.swing.JPanel {
         tree3.putClientProperty("Quaqua.Tree.style","sideBar");
         tree4.setSelectionRow(3);
         tree4.setEnabled(false);
+
+        ItemListener l = new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                updateTrees();
+            }
+        };
+
+        jCheckBox1.addItemListener(l);
     }
+
     public static void main(String args[]) {
         try {
             UIManager.setLookAndFeel(TestManager.getLookAndFeelClassName());
@@ -42,6 +54,18 @@ public class TreeTest extends javax.swing.JPanel {
         ((JComponent) f.getContentPane()).setBorder(new EmptyBorder(9,17,17,17));
         f.pack();
         f.setVisible(true);
+    }
+
+    private void updateTrees() {
+        updateTree(tree1);
+        updateTree(tree2);
+        updateTree(tree3);
+        updateTree(tree4);
+    }
+
+    private void updateTree(JTree tree) {
+        boolean b = jCheckBox1.isSelected();
+        tree.putClientProperty("Quaqua.Tree.isCellFilled", b);
     }
 
     /** This method is called from within the constructor to
@@ -62,9 +86,11 @@ public class TreeTest extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tree4 = new javax.swing.JTree();
         textField = new javax.swing.JTextField();
+        jPanel2 = new javax.swing.JPanel();
+        jCheckBox1 = new javax.swing.JCheckBox();
 
         setBorder(javax.swing.BorderFactory.createEmptyBorder(16, 17, 17, 17));
-        setLayout(new java.awt.GridLayout(2, 2));
+        setLayout(new java.awt.GridLayout(3, 2));
 
         tree1.setEditable(true);
         tree1.setRootVisible(false);
@@ -101,6 +127,26 @@ public class TreeTest extends javax.swing.JPanel {
         jPanel1.add(textField);
 
         add(jPanel1);
+
+        jCheckBox1.setText("Fill cells");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addComponent(jCheckBox1)
+                                .addGap(0, 99, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jCheckBox1)
+                                .addContainerGap(60, Short.MAX_VALUE))
+        );
+
+        add(jPanel2);
     }// </editor-fold>//GEN-END:initComponents
 
     private void textFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textFieldActionPerformed
@@ -109,7 +155,9 @@ public class TreeTest extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane scrollPane1;
     private javax.swing.JScrollPane scrollPane2;

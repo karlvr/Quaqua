@@ -18,13 +18,10 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.LookAndFeel;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
+import ch.randelshofer.quaqua.filechooser.FileChooserLAF;
 import ch.randelshofer.quaqua.osx.OSXFile;
 
 /**
@@ -43,14 +40,14 @@ import ch.randelshofer.quaqua.osx.OSXFile;
  * <li>{@code Quaqua.design=panther} Enforces Panther design.</li>
  * <li>{@code Quaqua.design=tiger} Enforces Tiger design.</li>
  * <li><code><b>Quaqua.design=auto</b></code> Chooses design automatically. This
- * is the default value.</li> 
+ * is the default value.</li>
  * </ul>
  * <ul>
  * <li>{@code Quaqua.TabbedPane.design=jaguar} Enforces Jaguar design for
  * tabbed panes.</li> <li>{@code Quaqua.TabbedPane.design=panther} Enforces
  * Panther design for tabbed panes.</li>
  * <li><code><b>Quaqua.TabbedPane.design=auto</b></code> Chooses design
- * automatically. This is the default value.</li> 
+ * automatically. This is the default value.</li>
  * </ul>
  * <ul>
  * <li>{@code Quaqua.FileChooser.autovalidate=false} FileChoosers do not
@@ -402,6 +399,7 @@ public class QuaquaManager {
             lafs.put("CrossTiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.16", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
+            lafs.put("Yosemite.18", "ch.randelshofer.quaqua.quaqua18.Quaqua18LookAndFeel");
         }
     }
 
@@ -486,15 +484,15 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
+                        lafKey = "MountainLion.16";
+                        break;
                     case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
+                        lafKey = "Mavericks.16";
+                        break;
                     case YOSEMITE:
                     case X:
-                    	lafKey = "Yosemite.16";
-                    	break;
+                        lafKey = "Yosemite.16";
+                        break;
                     default:
                         lafKey = "SnowLeopard.16";
                         break;
@@ -520,15 +518,15 @@ public class QuaquaManager {
                         lafKey = "Lion.16";
                         break;
                     case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
+                        lafKey = "MountainLion.16";
+                        break;
                     case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
+                        lafKey = "Mavericks.16";
+                        break;
                     case YOSEMITE:
                     case X:
-                    	lafKey = "Yosemite.16";
-                    	break;
+                        lafKey = "Yosemite.16";
+                        break;
                     default:
                         lafKey = "SnowLeopard.16";
                         break;
@@ -558,6 +556,13 @@ public class QuaquaManager {
             }
         }
 
+        {
+            String key = System.getProperty("Quaqua.LAF");
+            if (key != null && lafs.containsKey(key)) {
+                return (String) lafs.get(key);
+            }
+        }
+
         if (lafs.containsKey(lafKey)) {
             className = (String) lafs.get(lafKey);
         }
@@ -580,6 +585,35 @@ public class QuaquaManager {
              */
             throw ie;
         }
+    }
+
+
+    /**
+     * Install a custom UI in a nested component of the file chooser, if appropriate. The goal of this method is to
+     * support the File Chooser Only library. In the file chooser only library, the full Quaqua look and feel is not
+     * installed, so that by default nested components will get pure Aqua UIs. However, in most cases, we actually want
+     * the Quaqua component UI. This method figures out what to do.
+     */
+    public static void updateNestedComponentUI(JComponent c) {
+
+        // If the installed look and feel is not a Quaqua file chooser look and feel, then the desired component UI has
+        // already been installed.
+
+        LookAndFeel laf = UIManager.getLookAndFeel();
+        String name = laf.getClass().getName();
+        if (!name.startsWith("ch.randelshofer.quaqua") || !name.contains("FileChooser")) {
+            return;
+        }
+
+        // Otherwise, install the appropriate Quaqua component UI.
+
+        if (!(laf instanceof FileChooserLAF)) {
+            System.err.println("Internal error in Quaqua: " + laf.getClass().getName() + " does not support FileChooserLAF");
+            return;
+        }
+
+        FileChooserLAF fclaf = (FileChooserLAF) laf;
+        fclaf.updateNestedComponentUI(c);
     }
 
     /**

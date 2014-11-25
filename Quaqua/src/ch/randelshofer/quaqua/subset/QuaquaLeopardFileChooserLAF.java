@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaLeopardFileChooserLAF.java  
+ * @(#)QuaquaLeopardFileChooserLAF.java
  *
  * Copyright (c) 2009-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -10,6 +10,7 @@ package ch.randelshofer.quaqua.subset;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.color.AlphaColorUIResource;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
+import ch.randelshofer.quaqua.filechooser.FileChooserLAF;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
@@ -53,7 +54,7 @@ import java.security.*;
  * @author Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
+public class QuaquaLeopardFileChooserLAF extends FileChooserLAF {
 
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
@@ -266,7 +267,7 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
         ///        "javax.swing.plaf.FontUIResource",
         ///        null,
         ///        new Object[]{baseSystemFont.deriveFont(fontBold, nine)});
-        
+
         // If your application creates text documents, use the application font
         // (Lucida Grande Regular 13 pt) as the default font for user-created
         // content.
@@ -343,8 +344,8 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
         BorderUIResource.CompoundBorderUIResource browserCellBorder = new BorderUIResource.CompoundBorderUIResource(
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
                 new BorderUIResource.EmptyBorderUIResource(0, 4, 1, 0));
-        
-        
+
+
         Object[] uiDefaults = {
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
@@ -472,7 +473,7 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
     /**
      * Puts defaults into the specified UIDefaults table.
      * Honors QuaquaManager.getIncludedUIs() and QuaquaManager.getExcludedUIs().
-     * 
+     *
      * @param table
      * @param keyValueList
      */
@@ -523,7 +524,7 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
                 "ch.randelshofer.quaqua.QuaquaIconFactory", "createNativeIcon",
                 new Object[]{path, size});
     }
-    
+
     @Override
     public String getID() {
         return "Aqua";

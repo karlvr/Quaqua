@@ -968,7 +968,8 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                     buttonInsets = UIManager.getInsets("ComboBox.miniArrowButtonInsets");
                     break;
             }
-            buttonInsets = (Insets) buttonInsets.clone();
+
+            buttonInsets = buttonInsets != null ? (Insets) buttonInsets.clone() : new Insets(0, 0, 0, 0);
             buttonInsets.right += getArrowWidth();
 
             Insets insets = getInsets();

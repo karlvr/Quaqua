@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaDragRecognitionSupport.java  
+ * @(#)QuaquaDragRecognitionSupport.java
  *
  * Copyright (c) 2007-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -27,12 +27,12 @@ import javax.swing.*;
  */
 
 
-class QuaquaDragRecognitionSupport {
+public class QuaquaDragRecognitionSupport {
     private int motionThreshold;
     private MouseEvent dndArmedEvent;
     private JComponent component;
     private static QuaquaDragRecognitionSupport instance;
-    
+
     /**
      * This interface allows us to pass in a handler to mouseDragged,
      * so that we can be notified immediately before a drag begins.
@@ -40,7 +40,7 @@ class QuaquaDragRecognitionSupport {
     public static interface BeforeDrag {
         public void dragStarting(MouseEvent me);
     }
-    
+
     /**
      * Returns the QuaquaDragRecognitionSupport for the caller's AppContext.
      */
@@ -50,7 +50,7 @@ class QuaquaDragRecognitionSupport {
         }
         return instance;
     }
-    
+
     /**
      * Returns whether or not the event is potentially part of a drag sequence.
      */
@@ -58,7 +58,7 @@ class QuaquaDragRecognitionSupport {
         return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
                 mousePressedImpl(me);
     }
-    
+
     /**
      * If a dnd recognition has been going on, return the MouseEvent
      * that started the recognition. Otherwise, return null.
@@ -67,7 +67,7 @@ class QuaquaDragRecognitionSupport {
         return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
                 mouseReleasedImpl(me);
     }
-    
+
     /**
      * Returns whether or not a drag gesture recognition is ongoing.
      */
@@ -75,30 +75,30 @@ class QuaquaDragRecognitionSupport {
         return ((QuaquaDragRecognitionSupport)getDragRecognitionSupport()).
                 mouseDraggedImpl(me, bd);
     }
-    
+
     private void clearState() {
         dndArmedEvent = null;
         component = null;
     }
-    
+
     private int mapDragOperationFromModifiers(MouseEvent me,
             TransferHandler th) {
-        
+
         if (th == null || !SwingUtilities.isLeftMouseButton(me)) {
             return TransferHandler.NONE;
         }
-        
+
         return convertModifiersToDropAction(me.getModifiersEx(),
                 th.getSourceActions(component));
     }
-    
-    
+
+
     /**
      * Returns whether or not the event is potentially part of a drag sequence.
      */
     private boolean mousePressedImpl(MouseEvent me) {
         component = (JComponent)me.getSource();
-        
+
         if (mapDragOperationFromModifiers(me, component.getTransferHandler())
         != TransferHandler.NONE) {
             try {
@@ -114,11 +114,11 @@ class QuaquaDragRecognitionSupport {
             dndArmedEvent = me;
             return true;
         }
-        
+
         clearState();
         return false;
     }
-    
+
     /**
      * If a dnd recognition has been going on, return the MouseEvent
      * that started the recognition. Otherwise, return null.
@@ -128,17 +128,17 @@ class QuaquaDragRecognitionSupport {
         if (dndArmedEvent == null) {
             return null;
         }
-        
+
         MouseEvent retEvent = null;
-        
+
         if (me.getSource() == component) {
             retEvent = dndArmedEvent;
         } // else component has changed unexpectedly, so return null
-        
+
         clearState();
         return retEvent;
     }
-    
+
     /**
      * Returns whether or not a drag gesture recognition is ongoing.
      */
@@ -147,13 +147,13 @@ class QuaquaDragRecognitionSupport {
         if (dndArmedEvent == null) {
             return false;
         }
-        
+
         /* component has changed unexpectedly, so bail */
         if (me.getSource() != component) {
             clearState();
             return false;
         }
-        
+
         int dx = Math.abs(me.getX() - dndArmedEvent.getX());
         int dy = Math.abs(me.getY() - dndArmedEvent.getY());
         if (Math.sqrt(dx*dx+dy*dy) > motionThreshold) {
@@ -168,10 +168,10 @@ class QuaquaDragRecognitionSupport {
                 clearState();
             }
         }
-        
+
         return true;
     }
-    
+
     private int convertModifiersToDropAction(int modifiersEx, int sourceActions) {
         int dropAction = DnDConstants.ACTION_NONE;
         if ( 0 != (modifiersEx & (InputEvent.ALT_DOWN_MASK | InputEvent.ALT_GRAPH_DOWN_MASK)))  {

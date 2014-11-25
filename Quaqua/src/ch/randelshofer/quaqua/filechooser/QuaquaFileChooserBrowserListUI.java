@@ -25,7 +25,7 @@ import java.io.File;
     by a Shift-click.
 */
 
-public class QuaquaFileChooserBrowserListUI extends QuaquaListUI {
+public class QuaquaFileChooserBrowserListUI extends QuaquaListUI implements AbstractFileChooserBrowserListUI {
 
     private JFileChooser fc;
     private QuaquaFileChooserListMouseBehavior.FileSelectionHandler fileSelectionHandler;

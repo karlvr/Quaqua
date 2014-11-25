@@ -8,13 +8,15 @@
 package ch.randelshofer.quaqua.leopard.filechooser;
 
 import ch.randelshofer.quaqua.JBrowser;
-import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.filechooser.AbstractFileChooserBrowserListUI;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserBrowserListUI;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserListMouseBehavior;
 
 import javax.swing.*;
 import javax.swing.plaf.ListUI;
 import java.io.File;
+import java.lang.reflect.Constructor;
 
 /**
  * The browser in a file chooser. Implements special behavior for clicking on an ordinary file in a Save panel.
@@ -28,20 +30,38 @@ public class QuaquaFileChooserBrowser extends JBrowser {
 
     @Override
     protected ListUI getColumnListUI(ListUI basicUI) {
-        QuaquaFileChooserBrowserListUI ui = new QuaquaFileChooserBrowserListUI(fc);
+
+        AbstractFileChooserBrowserListUI ui = null;
+
+        Object uiClassName = UIManager.get("FileChooser.browserListUIClass");
+        if (uiClassName instanceof String) {
+            try {
+                Class c = Class.forName((String) uiClassName);
+                Constructor cons = c.getConstructor(JFileChooser.class);
+                ui = (AbstractFileChooserBrowserListUI) cons.newInstance(fc);
+            } catch (Exception ex) {
+                System.err.println("Unable to instantiate " + uiClassName);
+            }
+        }
+
+        if (ui == null) {
+            ui = new QuaquaFileChooserBrowserListUI(fc);
+        }
+
         ui.setFileSelectionHandler(new QuaquaFileChooserListMouseBehavior.FileSelectionHandler() {
             @Override
             public void fileSelected(File f) {
                 QuaquaFileChooserBrowser.this.fileSelectedInSavePanel(f);
             }
         });
-        return ui;
+
+        return (ListUI) ui;
     }
 
     @Override
     protected JScrollPane createScrollPane(JComponent c, int columnIndex) {
         JScrollPane sp = super.createScrollPane(c, columnIndex);
-        sp.setUI(new QuaquaScrollPaneUI());
+        QuaquaManager.updateNestedComponentUI(sp);
         sp.setBorder(null);
         sp.setFocusable(false);
         sp.getVerticalScrollBar().setFocusable(false);

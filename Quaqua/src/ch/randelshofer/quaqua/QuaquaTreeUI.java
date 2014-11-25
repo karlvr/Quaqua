@@ -32,7 +32,7 @@ import javax.swing.text.*;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class QuaquaTreeUI extends BasicTreeUI {
+public class QuaquaTreeUI extends BasicTreeUI implements SelectionRepaintable {
     // Old actions forward to an instance of this. ??
 
     static private final Actions SHARED_ACTION = new Actions();
@@ -937,7 +937,7 @@ public class QuaquaTreeUI extends BasicTreeUI {
     }
 
     protected boolean shouldPaintSelectionBackground(Component c) {
-        return true;
+        return !Boolean.FALSE.equals(UIManager.get("Tree.paintSelectionBackground"));
     }
 
     protected Rectangle getCellBoundsForPainting(TreePath path, Rectangle output) {
@@ -1105,27 +1105,33 @@ public class QuaquaTreeUI extends BasicTreeUI {
             setAnchorSelectionPath(aPath);
             setLeadSelectionPath(newLead);
         }
-
-
-
     }
 
-    protected void repaintSelection() {
-        if (tree != null) {
-            Rectangle pBounds = null;
+    public void repaintSelection() {
+        if (tree == null) {
+            return;
+        }
 
-            TreePath[] selectionPaths = tree.getSelectionPaths();
-            if (selectionPaths != null) {
-                for (int i = 0; i < selectionPaths.length; i++) {
-                    if (i == 0) {
-                        pBounds = getPathBounds(tree, selectionPaths[i]);
-                    } else {
-                        pBounds.add(getPathBounds(tree, selectionPaths[i]));
-                    }
+        Object o = tree.getClientProperty("Tree.selectionRepainter");
+        if (o instanceof SelectionRepaintable) {
+            SelectionRepaintable sp = (SelectionRepaintable) o;
+            sp.repaintSelection();
+            return;
+        }
+
+        Rectangle pBounds = null;
+
+        TreePath[] selectionPaths = tree.getSelectionPaths();
+        if (selectionPaths != null) {
+            for (int i = 0; i < selectionPaths.length; i++) {
+                if (i == 0) {
+                    pBounds = getPathBounds(tree, selectionPaths[i]);
+                } else {
+                    pBounds.add(getPathBounds(tree, selectionPaths[i]));
                 }
-                if (pBounds != null) {
-                    tree.repaint(0, pBounds.y, tree.getWidth(), pBounds.height);
-                }
+            }
+            if (pBounds != null) {
+                tree.repaint(0, pBounds.y, tree.getWidth(), pBounds.height);
             }
         }
     }

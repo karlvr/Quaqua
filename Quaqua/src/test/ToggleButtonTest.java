@@ -118,6 +118,7 @@ capsuleRadio.setVisible(false);
         roundRectRadio = new javax.swing.JRadioButton();
         capsuleRadio = new javax.swing.JRadioButton();
         gradientButton = new javax.swing.JRadioButton();
+        defaultRadio = new javax.swing.JRadioButton();
         stretcherPanel = new javax.swing.JPanel();
 
         FormListener formListener = new FormListener();
@@ -321,6 +322,12 @@ capsuleRadio.setVisible(false);
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel3.add(gradientButton, gridBagConstraints);
 
+        typeGroup.add(defaultRadio);
+        defaultRadio.setText("Default");
+        defaultRadio.setActionCommand("default");
+        defaultRadio.addActionListener(formListener);
+        jPanel3.add(defaultRadio, new java.awt.GridBagConstraints());
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridwidth = java.awt.GridBagConstraints.REMAINDER;
@@ -357,11 +364,18 @@ capsuleRadio.setVisible(false);
             else if (evt.getSource() == gradientButton) {
                 ToggleButtonTest.this.typeRadioPerformed(evt);
             }
+            else if (evt.getSource() == defaultRadio) {
+                ToggleButtonTest.this.typeRadioPerformed(evt);
+            }
         }
     }// </editor-fold>//GEN-END:initComponents
 
     private void typeRadioPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_typeRadioPerformed
        String type=typeGroup.getSelection().getActionCommand();
+
+        if (type.equals("default")) {
+            type = null;
+        }
 
         // Segmented properties
         LinkedList<JComponent> todo = new LinkedList<JComponent>();
@@ -384,6 +398,7 @@ capsuleRadio.setVisible(false);
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JRadioButton capsuleRadio;
+    private javax.swing.JRadioButton defaultRadio;
     private javax.swing.JRadioButton gradientButton;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

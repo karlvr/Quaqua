@@ -380,7 +380,7 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
      * Loads the image, returning only when the image is loaded.
      * @param image the image
      */
-    private static void loadImage(Image image) {
+    public static void loadImage(Image image) {
         Component component = new Component() {
         };
         MediaTracker tracker = new MediaTracker(component);

@@ -1,5 +1,5 @@
 /*
- * @(#)Images.java  
+ * @(#)Images.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -36,6 +36,13 @@ public class Images {
             graphiteFilter = new GraphiteFilter();
         }
         return graphiteFilter;
+    }
+
+    public static Image getImage(Class baseClass, String location) {
+        // As of Java 1.8, only getImage() supports multiresolution images
+        URL resource=baseClass.getResource(location);
+        if (resource==null) throw new IllegalArgumentException("no resource found for location:"+location);
+        return Toolkit.getDefaultToolkit().getImage(resource);
     }
 
     public static Image createImage(Class baseClass, String location) {

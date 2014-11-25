@@ -13,14 +13,14 @@ import ch.randelshofer.quaqua.util.ViewportPainter;
 import de.sciss.treetable.j.TreeTable;
 
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
+import javax.swing.plaf.TableUI;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.io.File;
 
 /**
- *
+ * Customize the tree table UI for use in the file chooser.
  */
 
 public abstract class QuaquaFileChooserTreeTableUI extends QuaquaTreeTableUI implements ViewportPainter {
@@ -56,7 +56,11 @@ public abstract class QuaquaFileChooserTreeTableUI extends QuaquaTreeTableUI imp
 
     @Override
     public void paintViewport(Graphics g, JViewport c) {
-        tableUI.paintViewport(g, c);
+        TableUI tableUI = getTable().getUI();
+        if (tableUI instanceof ViewportPainter) {
+            ViewportPainter vp = (ViewportPainter) tableUI;
+            vp.paintViewport(g, c);
+        }
     }
 
     @Override
@@ -114,7 +118,8 @@ public abstract class QuaquaFileChooserTreeTableUI extends QuaquaTreeTableUI imp
             JTable table = getTable();
             if (c == table) {
                 mouseBehavior.processMouseEvent(e);
-                e.consume();
+                // Consuming the event will prevent mouse dragged events from being dispatched here.
+                // e.consume();
                 return;
             }
 

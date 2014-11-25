@@ -42,6 +42,13 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
 
         super.initDesignDefaults(table);
 
+        Object[] uiDefaults = getConfiguredDesignDefaults();
+
+        putDefaults(table, uiDefaults);
+    }
+
+    public static Object[] getConfiguredDesignDefaults() {
+
         Object[] uiDefaults = {
             "FileChooser.listView.extraColumnTextColor", new ColorUIResource(80, 80, 80),
             "FileChooser.listView.headerColor", new ColorUIResource(100, 100, 120),
@@ -49,6 +56,6 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
             //
         };
 
-        putDefaults(table, uiDefaults);
+        return uiDefaults;
     }
 }
