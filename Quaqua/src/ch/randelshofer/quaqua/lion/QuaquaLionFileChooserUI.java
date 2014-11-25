@@ -526,6 +526,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         directoryComboBox = createComboBox();
         splitPane = new javax.swing.JSplitPane();
         sidebarScrollPane = new javax.swing.JScrollPane();
+        QuaquaManager.updateNestedComponentUI(sidebarScrollPane);
         int design = QuaquaManager.getDesign();
         viewsPanel = new javax.swing.JPanel();
         columnView = ColumnView.create(design, fc);
@@ -533,6 +534,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         listView = ListView.create(design, fc);
         controlsPanel = new javax.swing.JPanel();
         accessoryViewPanel = new javax.swing.JPanel();
+        QuaquaManager.updateNestedComponentUI(accessoryViewPanel);
         accessoryPanel = new javax.swing.JPanel();
         formatPanel = new javax.swing.JPanel();
         filesOfTypeLabel = new javax.swing.JLabel();
@@ -643,8 +645,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             splitPane.setBackground(UIManager.getColor("FileChooser.splitPaneBackground"));
         }
         splitPane.setContinuousLayout(true);
-
-        sidebarScrollPane.setUI(new QuaquaScrollPaneUI());  // for file chooser only JAR
         sidebarScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         sidebarScrollPane.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         sidebarTree.setRootVisible(false);
@@ -668,7 +668,6 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
             b.setInsets(new Insets(15, 13, 0, 13));
             accessoryViewPanel.setBorder(b);
             accessoryViewPanel.setOpaque(false);
-            accessoryViewPanel.setUI(new QuaquaPanelUI());
         }
         controlsPanel.add(accessoryViewPanel);
 
@@ -731,8 +730,10 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         }
         splitPane.putClientProperty("Quaqua.SplitPane.style", "bar");
         separator.putClientProperty("Quaqua.Component.visualMargin", new Insets(3, 0, 3, 0));
+
         if (UIManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
-            sidebarTree.setUI(new SidebarTreeUI());
+            TreeUI ui = createSidebarTreeUI();
+            sidebarTree.setUI(ui);
         }
         sidebarTree.putClientProperty("Quaqua.Tree.style", "sideBar");
 
@@ -948,6 +949,18 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         fc.doLayout();
     }
 
+    protected TreeUI createSidebarTreeUI() {
+        String uiClassName = UIManager.getString("FileChooser.sideBarTreeUIClass");
+        if (uiClassName != null) {
+            try {
+                Class uiClass = Class.forName(uiClassName);
+                return (TreeUI) uiClass.newInstance();
+            } catch (Exception ex) {
+            }
+        }
+        return new SidebarTreeUI();
+    }
+
     /**
      * Create a Quaqua text field. This method configures the text field without contaminating ordinary text fields with
      * UIDefaults when the file chooser only JAR is used.
@@ -959,7 +972,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
                 return theName;
             }
         };
-        t.setUI(new QuaquaTextFieldUI());
+        QuaquaManager.updateNestedComponentUI(t);
         t.setBorder(textFieldBorder);
         t.setOpaque(false);
         return t;
@@ -979,7 +992,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
      */
     protected JButton createButton(String text) {
         JButton b = new JButton(text);
-        b.setUI(new QuaquaButtonUI());
+        QuaquaManager.updateNestedComponentUI(b);
         b.setBorder(buttonBorder);
         b.setFocusable(OSXConfiguration.isFullKeyboardAccess());
         return b;
@@ -987,7 +1000,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
     protected JComboBox createComboBox() {
         JComboBox b = new JComboBox();
-        b.setUI(new QuaquaComboBoxUI());
+        QuaquaManager.updateNestedComponentUI(b);
         b.setFocusable(OSXConfiguration.isFullKeyboardAccess());
         return b;
     }
@@ -2479,7 +2492,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
 
         public SidebarRenderer() {
             if (UIManager.getBoolean("FileChooser.enforceQuaquaTreeUI")) {
-                setUI((LabelUI) QuaquaLabelUI.createUI(this));
+                QuaquaManager.updateNestedComponentUI(this);
             }
         }
 
@@ -2591,7 +2604,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         }
     }
 
-    protected class SidebarTreeUI extends QuaquaTreeUI {
+    public static class SidebarTreeUI extends QuaquaTreeUI {
 
         @Override
         protected void installKeyboardActions() {

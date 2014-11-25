@@ -471,7 +471,7 @@ public class TableTest extends javax.swing.JPanel {
             }
             if (c instanceof JTable) {
                 JTable table = (JTable) c;
-                table.getColumnModel().setColumnSelectionAllowed(allowColumnSelectionCheckBox.isSelected());
+                table.setColumnSelectionAllowed(allowColumnSelectionCheckBox.isSelected());
             }
         }
     }//GEN-LAST:event_updateColumnSelection

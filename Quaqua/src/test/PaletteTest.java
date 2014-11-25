@@ -1,5 +1,5 @@
 /*
- * @(#)PaletteTest.java  
+ * @(#)PaletteTest.java
  *
  * Copyright (c) 2006-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -12,7 +12,7 @@ import javax.swing.*;
 
 /**
  * PaletteTest.
- * 
+ *
  * @author Werner Randelshofer
  * @version $Id$
  */
@@ -113,18 +113,29 @@ public class PaletteTest extends javax.swing.JPanel {
         }
     }// </editor-fold>//GEN-END:initComponents
 
+    /*
+     * setAlwaysOnTop(true) causes bizarre behavior in Java 1.8, when the application loses focus, its main window
+     * disappears and can only be gotten back via the dock icon menu. Seems to work fine without using setAlwaysOnTop().
+     */
+
+    private void setupPalette(JDialog d) {
+        JRootPane p = d.getRootPane();
+        if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
+            d.setUndecorated(true);
+        }
+        p.setWindowDecorationStyle(JRootPane.FRAME);
+        p.putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
+        p.putClientProperty("Window.style", "small");
+        p.putClientProperty("Window.zoomable", false);
+        //d.setAlwaysOnTop(true);
+        FloatingPaletteHandler.getInstance().addPalette(d);
+    }
+
     private void miniHorizontalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miniHorizontalPalette
         if (miniHPalette == null) {
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("MiniSystemFont"));
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(miniWidth, miniWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX() + w.getWidth(), w.getY() + regularWidth + smallWidth);
@@ -137,18 +148,10 @@ public class PaletteTest extends javax.swing.JPanel {
 
     private void smallVerticalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallVerticalPalette
         if (smallVPalette == null) {
-
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("SmallSystemFont"));
             d.getRootPane().putClientProperty("Quaqua.RootPane.isVertical", Boolean.TRUE);
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(smallWidth, smallWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX() + regularWidth, w.getY() + w.getHeight());
@@ -162,16 +165,9 @@ public class PaletteTest extends javax.swing.JPanel {
     private void smallHorizontalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_smallHorizontalPalette
         if (smallHPalette == null) {
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("SmallSystemFont"));
             d.getRootPane().putClientProperty("Quaqua.RootPane.isVertical", Boolean.FALSE);
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(smallWidth, smallWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX() + w.getWidth(), w.getY() + regularWidth);
@@ -184,16 +180,9 @@ public class PaletteTest extends javax.swing.JPanel {
     private void regularVerticalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regularVerticalPalette
         if (regularVPalette == null) {
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("SystemFont"));
             d.getRootPane().putClientProperty("Quaqua.RootPane.isVertical", Boolean.TRUE);
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(regularWidth, regularWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX(), w.getY() + w.getHeight());
@@ -207,16 +196,9 @@ public class PaletteTest extends javax.swing.JPanel {
     private void regularHorizontalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_regularHorizontalPalette
         if (regularHPalette == null) {
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("SystemFont"));
             d.getRootPane().putClientProperty("Quaqua.RootPane.isVertical", Boolean.FALSE);
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(regularWidth, regularWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX() + w.getWidth(), w.getY());
@@ -230,16 +212,9 @@ public class PaletteTest extends javax.swing.JPanel {
     private void miniVerticalPalette(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miniVerticalPalette
         if (miniVPalette == null) {
             JDialog d = new JDialog((Frame) SwingUtilities.getWindowAncestor(this));
-            if (UIManager.getLookAndFeel().getSupportsWindowDecorations()) {
-                d.setUndecorated(true);
-            }
-            d.getRootPane().setWindowDecorationStyle(JRootPane.FRAME);
             d.getRootPane().setFont(UIManager.getFont("MiniSystemFont"));
             d.getRootPane().putClientProperty("Quaqua.RootPane.isVertical", Boolean.TRUE);
-            d.getRootPane().putClientProperty("Quaqua.RootPane.isPalette", Boolean.TRUE);
-            //d.getRootPane().putClientProperty("Window.style", "small");
-            d.setAlwaysOnTop(true);
-            FloatingPaletteHandler.getInstance().addPalette(d);
+            setupPalette(d);
             d.setSize(miniWidth, miniWidth);
             Window w = SwingUtilities.getWindowAncestor(this);
             d.setLocation(w.getX() + regularWidth + smallWidth, w.getY() + w.getHeight());

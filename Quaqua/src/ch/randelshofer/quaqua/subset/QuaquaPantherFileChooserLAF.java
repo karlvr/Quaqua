@@ -8,6 +8,7 @@
 package ch.randelshofer.quaqua.subset;
 
 import ch.randelshofer.quaqua.*;
+import ch.randelshofer.quaqua.filechooser.FileChooserLAF;
 import ch.randelshofer.quaqua.osx.OSXPreferences;
 import ch.randelshofer.quaqua.util.*;
 import javax.swing.*;
@@ -67,7 +68,7 @@ import java.security.*;
  * @author Werner Randelshofer
  * @version  $Id$
  */
-public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
+public class QuaquaPantherFileChooserLAF extends FileChooserLAF {
     protected final static String commonDir = "/ch/randelshofer/quaqua/images/";
     protected final static String jaguarDir = "/ch/randelshofer/quaqua/jaguar/images/";
     protected final static String pantherDir = "/ch/randelshofer/quaqua/panther/images/";
@@ -87,7 +88,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
      */
     protected static final FontUIResource SMALL_SYSTEM_FONT =
     new FontUIResource("Lucida Grande", Font.PLAIN, 11);
-    
+
     /**
      * Creates a new instance.
      */
@@ -103,7 +104,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
             );
         }
     }
-    
+
     /**
      * Return a one line description of this look and feel implementation,
      * e.g. "The CDE/Motif Look and Feel".   This string is intended for
@@ -113,7 +114,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     public String getDescription() {
         return "The Quaqua Panther FileChooser Look and Feel";
     }
-    
+
     /**
      * Return a short string that identifies this look and feel, e.g.
      * "CDE/Motif".  This string should be appropriate for a menu item.
@@ -127,7 +128,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
     public String getName() {
         return "Quaqua FileChooser-only LAF";
     }
-    
+
     /**
      * UIManager.setLookAndFeel calls this method before the first
      * call (and typically the only call) to getDefaults().  Subclasses
@@ -200,7 +201,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
         String basicPrefix = "javax.swing.plaf.basic.Basic";
         String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
         String quaquaPantherPrefix = "ch.randelshofer.quaqua.panther.QuaquaPanther";
-        
+
         // NOTE: Uncomment parts of the code below, to override additional
         // UI classes of the target look and feel.
         Object[] uiDefaults = {
@@ -230,7 +231,7 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
 
         Font smallSystemFont = SMALL_SYSTEM_FONT;
         Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
-        
+
         Object[] uiDefaults = {
             "Browser.expandedIcon", new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.QuaquaIconFactory", "createIcon",
             new Object[]{jaguarDir + "Browser.disclosureIcons.png", 6, Boolean.TRUE, 0}),
@@ -282,9 +283,9 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
                     new Object[] { new Insets(1,1,1,1) }
             ),
             "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
-            
+
             "Sheet.showAsSheet", Boolean.TRUE,
-            
+
         };
         table.putDefaults(uiDefaults);
     }
@@ -295,18 +296,18 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
         }
         return url;
     }
-    
+
     protected Image createImage(String location) {
         return Toolkit.getDefaultToolkit().createImage(getResource(location));
     }
     protected Icon[] makeIcons(String location, int count, boolean horizontal) {
         Icon[] icons = new Icon[count];
-        
+
         BufferedImage[] images = Images.split(
         createImage(location),
         count, horizontal
         );
-        
+
         for (int i=0; i < count; i++) {
             icons[i] = new IconUIResource(new ImageIcon(images[i]));
         }

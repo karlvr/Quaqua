@@ -30,8 +30,13 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
         initComponents();
         tabbedPane1.setTabLayoutPolicy(JTabbedPane.WRAP_TAB_LAYOUT);
 
+        /*
+            Aqua tabbed panes look best when the tabs are not opaque.
+        */
+
         for (String s : strings) {
             JPanel p = new JPanel();
+            p.setOpaque(false);
             tabbedPane1.add(p, s);
         }
 
@@ -349,6 +354,7 @@ private final static        String[] strings = {"Apple", "Banana", "Cantaloupe",
         for (int i=0;i<newCount;i++) {
 
             JPanel p = new JPanel();
+            p.setOpaque(false);
             tabbedPane1.add(p, strings[i]);
 
 

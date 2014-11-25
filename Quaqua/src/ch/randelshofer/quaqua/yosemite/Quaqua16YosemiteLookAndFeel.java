@@ -29,5 +29,16 @@ public class Quaqua16YosemiteLookAndFeel extends Quaqua16MavericksLookAndFeel {
             return new InactivatableColorUIResource(new ColorUIResource(211, 211, 211), new ColorUIResource(246, 246, 246));
         }
 	}
-    
+
+    public static Object[] getConfiguredDesignDefaults() {
+
+        Object toolBarTitleBackground = new InactivatableColorUIResource(new ColorUIResource(211, 211, 211), new ColorUIResource(246, 246, 246));
+
+        Object[] uiDefaults = new Object[] {
+                "control", toolBarTitleBackground,
+                "ToolBar.title.background", toolBarTitleBackground,
+        };
+
+        return uiDefaults;
+    }
 }

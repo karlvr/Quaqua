@@ -12,27 +12,25 @@ import de.sciss.treetable.j.TreeTableCellRenderer;
 import de.sciss.treetable.j.ui.BasicTreeTableUI;
 
 import javax.swing.*;
+import javax.swing.plaf.TableUI;
 import javax.swing.tree.TreePath;
-import java.awt.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
-
-*/
+ * Customize the tree table UI. The internal tree and table components should not be focusable themselves, but they
+ * should use inactive colors based on the focus state of the tree table. The table (not the tree) is fully responsible
+ * for painting the selection background. The selection background must be repainted when the focus state changes.
+ */
 
 public class QuaquaTreeTableUI extends BasicTreeTableUI {
 
     protected MyHandler handler;
-    protected MyTableUI tableUI;
-    protected MyTreeUI treeUI;
 
     public QuaquaTreeTableUI() {
         handler = new MyHandler();
-        tableUI = new MyTableUI();
-        treeUI = new MyTreeUI();
     }
 
     @Override
@@ -44,7 +42,10 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
     protected JTree createAndConfigureTree() {
         JTree tree = super.createAndConfigureTree();
         tree.setFocusable(false);
-        tree.setUI(treeUI);
+        // Let the focus state of the tree table determine when to use inactive colors in the tree.
+        tree.putClientProperty("Quaqua.Component.cellRendererFor", treeTable);
+        // Prevent the tree from painting selection backgrounds.
+        tree.putClientProperty("Tree.paintSelectionBackground", false);
         return tree;
     }
 
@@ -52,8 +53,17 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
     protected JTable createAndConfigureTable() {
         JTable table = super.createAndConfigureTable();
         table.setFocusable(false);
-        table.setUI(tableUI);
+        // Let the focus state of the tree table determine when to use inactive colors in the tree.
+        table.putClientProperty("Quaqua.Component.cellRendererFor", treeTable);
         return table;
+    }
+
+    @Override
+    protected void finishConfiguration(JTree tree, JTable table) {
+        // The tree does not paint the selection background, the table does.
+        // If the tree is asked to repaint the selection, it should delegate to the table.
+        // This is not actually needed at present, but who knows about the future?
+        tree.putClientProperty("Tree.selectionRepainter", table);
     }
 
     @Override
@@ -78,20 +88,7 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
    	}
 
     protected class MyPropertyChangeListener implements PropertyChangeListener {
-
-        /*
-          The background of the selected row depends upon the window active state.
-          It shouldn't - focus should be enough.
-        */
-
         public void propertyChange(PropertyChangeEvent event) {
-//            String name = event.getPropertyName();
-//            if (event.getSource() == treeTable) {
-//                if (name != null && name.equals("Frame.active")) {
-//                    System.err.println("Repainting list view on Frame.active change");  // debug
-//                    treeTable.repaint();
-//                }
-//            }
             handler.propertyChange(event);
         }
     }
@@ -100,55 +97,25 @@ public class QuaquaTreeTableUI extends BasicTreeTableUI {
 
         @Override
         protected void focusChanged() {
-            treeUI.repaintSelection();
-            tableUI.repaintSelection();
+            repaintSelection();
+        }
+
+        @Override
+      	public void propertyChange(PropertyChangeEvent evt) {
+            super.propertyChange(evt);
+            if ("Frame.active".equals(evt.getPropertyName())) {
+                // Need to propagate manually because the tree and table are not child components
+                getTree().putClientProperty("Frame.active", evt.getNewValue());
+                getTable().putClientProperty("Frame.active", evt.getNewValue());
+            }
         }
     }
 
-    protected class MyTreeUI extends QuaquaTreeUI {
-        protected MyHandler handler;
-
-        @Override
-        protected QuaquaTreeUI.Handler createHandler() {
-            return handler = new MyHandler();
-        }
-
-        @Override
-        protected boolean shouldDisplayAsFocused(Component c) {
-            return QuaquaUtilities.isFocused(treeTable);
-        }
-
-        @Override
-        protected boolean shouldPaintSelectionBackground(Component c) {
-            return false;
-        }
-
-        public void repaintSelection() {
-            tableUI.repaintSelection();
-        }
-
-        protected class MyHandler extends QuaquaTreeUI.Handler {
-        }
-    }
-
-    protected class MyTableUI extends QuaquaTableUI {
-        protected MyHandler handler;
-
-        @Override
-        protected Handler createHandler() {
-            return handler = new MyHandler();
-        }
-
-        public void repaintSelection() {
-            handler.repaintSelection();
-        }
-
-        @Override
-        protected boolean isFocused() {
-            return table.isEditing() || QuaquaUtilities.isFocused(treeTable);
-        }
-
-        protected class MyHandler extends Handler {
+    public void repaintSelection() {
+        TableUI tableUI = getTable().getUI();
+        if (tableUI instanceof SelectionRepaintable) {
+            SelectionRepaintable sp = (SelectionRepaintable) tableUI;
+            sp.repaintSelection();
         }
     }
 

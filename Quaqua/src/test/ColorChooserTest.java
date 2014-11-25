@@ -114,6 +114,7 @@ public class ColorChooserTest extends javax.swing.JPanel {
             }
             color = chooser.showDialog(this, "Color Chooser", color);
             dialogButton.setBackground(color);
+            ColorChooserTest.this.setBackground(color); // in case colorwell style is not implemented
         } catch (Throwable t) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);

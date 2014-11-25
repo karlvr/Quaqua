@@ -151,6 +151,7 @@ public class BasicTreeTableUI extends TreeTableUI {
 			treeTable.setFocusRenderer(createFocusRenderer());
 		tree = createAndConfigureTree();
 		table = createAndConfigureTable();
+        finishConfiguration(tree, table);
 		treeTableCellRenderer = createCellRenderer();
 		treeTableCellEditor = createCellEditor();
 
@@ -364,6 +365,12 @@ public class BasicTreeTableUI extends TreeTableUI {
 		table.setColumnModel(new ColumnModelAdapter(cm));
 		return table;
 	}
+
+    /**
+     * Called after the tree and the table have both been created and configured.
+     */
+    protected void finishConfiguration(JTree tree, JTable table) {
+    }
 
 	protected JTable createTable(TableModel tm,
 			TableColumnModel cm, ListSelectionModel sm) {

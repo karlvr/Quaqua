@@ -15,3 +15,4 @@ Yosemite.16=ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel;
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
+Yosemite.18=ch.randelshofer.quaqua.quaqua18.Quaqua18LookAndFeel;

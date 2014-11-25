@@ -7,16 +7,12 @@
  */
 package ch.randelshofer.quaqua.lion.filechooser;
 
-import ch.randelshofer.quaqua.QuaquaLabelUI;
-import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
-import ch.randelshofer.quaqua.QuaquaTableHeaderUI;
-import ch.randelshofer.quaqua.QuaquaViewportUI;
+import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.CellRenderer;
 import ch.randelshofer.quaqua.filechooser.FileInfo;
 import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserTreeTableUI;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import com.apple.laf.AquaTableHeaderBorder;
 import com.apple.laf.AquaTableHeaderUI;
 import de.sciss.treetable.j.AbstractTreeColumnModel;
 import de.sciss.treetable.j.DefaultTreeTableCellRenderer;
@@ -74,7 +70,6 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
         labelFont = UIManager.getFont("ViewFont");  // TBD
         headerFont = UIManager.getFont("EmphasizedSmallSystemFont");    // TBD
         treeSelectionListener = new MyTreeSelectionListener();
-        Color selectionForeground = Color.WHITE;
 
         setFocusable(false);
 
@@ -104,13 +99,14 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
         */
 
         tree.getTableHeader().setUI(new AquaTableHeaderUI());
-        tree.setSelectionForeground(selectionForeground);
         tree.setOpaque(false);
 
         listViewScrollPane = new JScrollPane();
-        listViewScrollPane.setUI(new QuaquaScrollPaneUI());  // for file chooser only JAR
+        QuaquaManager.updateNestedComponentUI(listViewScrollPane);
+
         JViewport vp = listViewScrollPane.getViewport();
-        vp.setUI(new QuaquaViewportUI());   // provides extra stripes to fill the viewport
+        QuaquaManager.updateNestedComponentUI(vp);
+
         listViewScrollPane.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         listViewScrollPane.setViewportView(tree);
         listViewScrollPane.setColumnHeaderView(tree.getTableHeader());
@@ -290,9 +286,9 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
 
         public MyCellRenderer(Color fg, int alignment) {
             this.fg = fg;
+            QuaquaManager.updateNestedComponentUI(this);
             setHorizontalAlignment(alignment);
             setFont(labelFont);
-            setUI(new QuaquaLabelUI());
         }
 
         @Override

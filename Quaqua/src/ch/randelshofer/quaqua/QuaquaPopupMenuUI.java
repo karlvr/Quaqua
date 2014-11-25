@@ -56,9 +56,9 @@ import sun.swing.UIAction;
 public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPainterClient {
 
     public final static String WINDOW_ALPHA_PROPERTY = "Quaqua.PopupMenu.windowAlpha";
-    static final StringBuilder MOUSE_GRABBER_KEY = new StringBuilder(
+    public static final StringBuilder MOUSE_GRABBER_KEY = new StringBuilder(
             "javax.swing.plaf.basic.BasicPopupMenuUI.MouseGrabber");
-    static final StringBuilder MENU_KEYBOARD_HELPER_KEY = new StringBuilder(
+    public static final StringBuilder MENU_KEYBOARD_HELPER_KEY = new StringBuilder(
             "javax.swing.plaf.basic.BasicPopupMenuUI.MenuKeyboardHelper");
     private transient PopupMenuListener popupMenuListener = null;
     private MenuKeyListener menuKeyListener = null;
@@ -279,7 +279,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
     return popupFactory.getPopup(popup.getInvoker(), popup, x, y);
     }*/
 
-    static class MouseGrabber implements ChangeListener,
+    public static class MouseGrabber implements ChangeListener,
             AWTEventListener, ComponentListener, WindowListener {
 
         Window grabbedWindow;
@@ -459,7 +459,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
                         }
                         return;
                     }
-                    //cancelPopupMenu(); don't cancel the popup 
+                    //cancelPopupMenu(); don't cancel the popup
                     break;
             }
         }
@@ -683,7 +683,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
      * is active. It forwards key events to MenuSelectionManager for mnemonic
      * keys handling.
      */
-    static class MenuKeyboardHelper
+    public static class MenuKeyboardHelper
             implements ChangeListener, KeyListener {
 
         private Component lastFocused = null;
@@ -927,7 +927,7 @@ public class QuaquaPopupMenuUI extends BasicPopupMenuUI implements QuaquaMenuPai
             }
         }
 
-        void uninstall() {
+        public void uninstall() {
             synchronized (MENU_KEYBOARD_HELPER_KEY) {
                 MenuSelectionManager.defaultManager().removeChangeListener(this);
                 AppContext.getAppContext().remove(MENU_KEYBOARD_HELPER_KEY);

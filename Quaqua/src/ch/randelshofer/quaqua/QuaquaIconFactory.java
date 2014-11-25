@@ -1,5 +1,5 @@
 /*
- * @(#)QuaquaIconFactory.java 
+ * @(#)QuaquaIconFactory.java
  *
  * Copyright (c) 2005-2013 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
@@ -7,26 +7,23 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.icon.QuaquaNativeButtonStateIcon;
-import ch.randelshofer.quaqua.icon.ShiftedIcon;
+import ch.randelshofer.quaqua.icon.*;
 import ch.randelshofer.quaqua.osx.OSXApplication;
-import ch.randelshofer.quaqua.util.*;
-import ch.randelshofer.quaqua.icon.ButtonFocusIcon;
-import ch.randelshofer.quaqua.icon.ButtonStateIcon;
-import ch.randelshofer.quaqua.icon.FocusedIcon;
-import ch.randelshofer.quaqua.icon.FrameButtonStateIcon;
-import ch.randelshofer.quaqua.icon.ListStateIcon;
-import ch.randelshofer.quaqua.icon.OverlayIcon;
-import ch.randelshofer.quaqua.icon.SliderThumbIcon;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter;
-import java.net.*;
-import java.awt.*;
-import java.awt.image.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import java.io.*;
 import ch.randelshofer.quaqua.osx.OSXImageIO;
-import java.util.*;
+import ch.randelshofer.quaqua.util.Images;
+import ch.randelshofer.quaqua.util.Worker;
+
+import javax.swing.*;
+import javax.swing.plaf.IconUIResource;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.RescaleOp;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.HashSet;
+import java.util.Iterator;
 
 /**
  * QuaquaIconFactory.
@@ -38,6 +35,20 @@ public class QuaquaIconFactory {
 
     private static BufferedImage applicationImage64;
     private static BufferedImage applicationImage32;
+
+    private static QuaquaIconSupport iconSupport = findQuaquaIconSupport();
+
+    private static QuaquaIconSupport findQuaquaIconSupport()
+    {
+        try {
+            Class.forName("sun.awt.image.MultiResolutionImage");
+            Class c = Class.forName("ch.randelshofer.quaqua.quaqua18.QuaquaIconSupport18");
+            return (QuaquaIconSupport) c.newInstance();
+
+        } catch (Exception ex) {
+            return null;
+        }
+    }
 
     /**
      * Lazy option pane icon.
@@ -116,6 +127,14 @@ public class QuaquaIconFactory {
             throw new InternalError("image resource missing: " + location);
         }
         return url;
+    }
+
+    public static Image getImage(String location) {
+        return Images.getImage(QuaquaIconFactory.class, location);
+    }
+
+    public static Image getImage(Class baseClass, String location) {
+        return Images.getImage(baseClass, location);
     }
 
     public static Image createImage(String location) {
@@ -216,6 +235,10 @@ public class QuaquaIconFactory {
         return new SliderThumbIcon(createImage(location), 6, true);
     }
 
+    public static Icon getIcon(String location) {
+        return new ImageIcon(getImage(location));
+    }
+
     public static Icon createIcon(Class baseClass, String location) {
         return new ImageIcon(createImage(baseClass, location));
     }
@@ -233,6 +256,11 @@ public class QuaquaIconFactory {
     }
 
     public static Icon createNativeIcon(String path, int size) {
+
+        if (iconSupport != null) {
+            return iconSupport.createNativeIcon(path, size, size);
+        }
+
         try {
             Image img;
             img = OSXImageIO.read(new File(path), size, size);
@@ -246,6 +274,11 @@ public class QuaquaIconFactory {
     }
 
     public static Icon createNativeIcon(String path, int width, int height) {
+
+        if (iconSupport != null) {
+            return iconSupport.createNativeIcon(path, width, height);
+        }
+
         try {
             Image img;
             img = OSXImageIO.read(new File(path), width, height);
@@ -258,7 +291,50 @@ public class QuaquaIconFactory {
         }
     }
 
+    public static Image createBasicSidebarImage(Image source, Color color) {
+        BufferedImage img = Images.toBufferedImage(source);
+        int width = img.getWidth();
+        int height = img.getHeight();
+        BufferedImage iconImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+        Graphics2D g = iconImg.createGraphics();
+        g.setComposite(AlphaComposite.Src);
+        RescaleOp rop=new RescaleOp(new float[]{1f,1f,1f,0.9f}, new float[]{0f,0f,0f,0f}, null);
+        g.drawImage(img, rop, 0, 0);
+        g.setComposite(AlphaComposite.SrcIn);
+        g.setColor(color);
+        g.fillRect(0, 0, width, height);
+        g.dispose();
+        return iconImg;
+    }
+
+    public static Image createSelectedSidebarImage(Image source, Image basic, Color selectedColor) {
+        BufferedImage img = Images.toBufferedImage(source);
+        int width = img.getWidth();
+        int height = img.getHeight();
+        BufferedImage whiteImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB_PRE);
+        Graphics2D g = whiteImg.createGraphics();
+        g.setComposite(AlphaComposite.Src);
+        RescaleOp rop=new RescaleOp(new float[]{1f,1f,1f,0.9f}, new float[]{0f,0f,0f,0f}, null);
+        g.drawImage(img, rop, 0, 0);
+        g.setComposite(AlphaComposite.SrcIn);
+        g.setColor(selectedColor);
+        g.fillRect(0, 0, width, height);
+        g.dispose();
+        BufferedImage selectedImg = new BufferedImage(width, height+1, BufferedImage.TYPE_INT_ARGB_PRE);
+        g = selectedImg.createGraphics();
+        g.drawImage(basic, 0, 1, null);
+        g.drawImage(whiteImg, 0, 0, null);
+        g.dispose();
+        whiteImg.flush();
+        return selectedImg;
+    }
+
     public static Icon createNativeSidebarIcon(String path, int width, int height, Color color, Color selectedColor) {
+
+        if (iconSupport != null) {
+            return iconSupport.createNativeSidebarIcon(path, width, height, color, selectedColor);
+        }
+
         try {
             BufferedImage img;
             img = Images.toBufferedImage((Image)OSXImageIO.read(new File(path), width, height));
@@ -306,6 +382,10 @@ public class QuaquaIconFactory {
             icon = new FocusedIcon(icon);
         }
         return icon;
+    }
+
+    public static Image createImage(int width, int height, ImageProvider provider) {
+        return iconSupport != null ? iconSupport.createImage(width, height, provider) : provider.getImage(width, height);
     }
 
     public static Icon createOptionPaneIcon(int messageType) {
