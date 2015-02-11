@@ -76,7 +76,7 @@ public class QuaquaMavericksFileChooserLAF extends Quaqua16LionFileChooserLAF {
      * Distinct look and feels should have different names, e.g.
      * a subclass of MotifLookAndFeel that changes the way a few components
      * are rendered should be called "CDE/Motif My Way"; something
-     * that would be useful to a user trying to select a L&F from a list
+     * that would be useful to a user trying to select a L&amp;F from a list
      * of names.
      */
     @Override

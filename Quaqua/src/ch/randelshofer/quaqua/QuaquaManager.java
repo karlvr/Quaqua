@@ -402,6 +402,7 @@ public class QuaquaManager {
             lafs.put("CrossTiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.16", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
+            lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
         }
     }
 
