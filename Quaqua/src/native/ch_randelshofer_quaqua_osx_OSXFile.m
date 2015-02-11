@@ -300,7 +300,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetIc
             unsigned len = [dataNS length];
             void* bytes = malloc(len);
             if (bytes != NULL) {
-                [dataNS getBytes: bytes];
+                [dataNS getBytes: bytes length:len];
                 result = (*env)->NewByteArray(env, len);
                 if (result != NULL) {
                     (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
@@ -375,7 +375,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetQu
             if (dataNS != NULL) {
                 unsigned len = [dataNS length];
                 void* bytes = malloc(len);
-                [dataNS getBytes: bytes];
+                [dataNS getBytes: bytes length:len];
                 result = (*env)->NewByteArray(env, len);
                 (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
                 free(bytes);
