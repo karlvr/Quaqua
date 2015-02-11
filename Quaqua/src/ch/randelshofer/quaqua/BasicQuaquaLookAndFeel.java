@@ -1351,7 +1351,6 @@ public class BasicQuaquaLookAndFeel extends LookAndFeelProxy15 {
     protected Font getBaseSystemFont() {
         return new FontUIResource("Lucida Grande", Font.PLAIN, 13);
     }
-
     protected void initFontDefaults(UIDefaults table) {
         Font baseSystemFont = getBaseSystemFont();
 

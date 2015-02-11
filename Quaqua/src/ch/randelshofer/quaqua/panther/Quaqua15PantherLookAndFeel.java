@@ -343,6 +343,10 @@ public class Quaqua15PantherLookAndFeel extends BasicQuaquaLookAndFeel {
             "Tree.sideBar.selectionForeground", new ColorUIResource(0xffffff),
             "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 11),
             "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11), //
+            "Tree.sideBarCategory.style",  "emboss",
+            "Tree.sideBarCategory.selectionStyle",  "shadow",
+            "Tree.sideBar.style",  "plain",
+            "Tree.sideBar.selectionStyle",  "shadow",
         };
         putDefaults(table, uiDefaults);
         

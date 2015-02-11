@@ -512,6 +512,10 @@ public class Quaqua16LionFileChooserLAF extends LookAndFeelProxy {
             "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 13),
             "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),//
             "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),
+            "Tree.sideBarCategory.style",  "emboss",
+            "Tree.sideBarCategory.selectionStyle",  "shadow",
+            "Tree.sideBar.style",  "plain",
+            "Tree.sideBar.selectionStyle",  "shadow",
         };
         table.putDefaults(uiDefaults);
     }

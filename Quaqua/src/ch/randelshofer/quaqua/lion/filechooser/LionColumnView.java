@@ -11,6 +11,7 @@ import ch.randelshofer.quaqua.BrowserPreviewRenderer;
 import ch.randelshofer.quaqua.JBrowser;
 import ch.randelshofer.quaqua.QuaquaScrollPaneUI;
 import ch.randelshofer.quaqua.filechooser.CellRenderer;
+import ch.randelshofer.quaqua.filechooser.ColumnView;
 import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
 import ch.randelshofer.quaqua.leopard.filechooser.QuaquaFileChooserBrowser;
@@ -35,7 +36,7 @@ import java.util.List;
  * The file chooser column view for Lion (and other releases by subclassing).
  */
 
-public class ColumnView extends ch.randelshofer.quaqua.filechooser.ColumnView {
+public class LionColumnView extends ColumnView {
 
     protected final JFileChooser fc;
     protected final QuaquaFileChooserBrowser browser;
@@ -44,7 +45,7 @@ public class ColumnView extends ch.randelshofer.quaqua.filechooser.ColumnView {
     private final TreeSelectionListener treeSelectionListener;
     private boolean isActive;
 
-    public ColumnView(JFileChooser fc) {
+    public LionColumnView(JFileChooser fc) {
         this.fc = fc;
 
         mouseListener = createDoubleClickListener();
@@ -208,7 +209,7 @@ public class ColumnView extends ch.randelshofer.quaqua.filechooser.ColumnView {
                             return;
                         }
                     }
-                    ColumnView.this.select(path);
+                    LionColumnView.this.select(path);
                 }
             }
         }
@@ -222,7 +223,7 @@ public class ColumnView extends ch.randelshofer.quaqua.filechooser.ColumnView {
     }
 
     protected BrowserPreviewRenderer createFilePreview(JFileChooser fc) {
-        return new FilePreview(fc);
+        return new LionFilePreview(fc);
     }
 
     private class FillingViewportLayout extends javax.swing.ViewportLayout {

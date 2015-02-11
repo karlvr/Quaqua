@@ -7,7 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXAquaPainter_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXAquaPainter_EXPECTED_NATIVE_CODE_VERSION 1L
 /*
@@ -84,18 +83,18 @@ JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetO
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXAquaPainter
- * Method:    nativeSetAlignmentHorizontal
+ * Method:    nativeSetHorizontalAlignment
  * Signature: (JI)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetAlignmentHorizontal
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetHorizontalAlignment
   (JNIEnv *, jclass, jlong, jint);
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXAquaPainter
- * Method:    nativeSetAlignmentVertical
+ * Method:    nativeSetVerticalAlignment
  * Signature: (JI)V
  */
-JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetAlignmentVertical
+JNIEXPORT void JNICALL Java_ch_randelshofer_quaqua_osx_OSXAquaPainter_nativeSetVerticalAlignment
   (JNIEnv *, jclass, jlong, jint);
 
 /*

@@ -7,7 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXSheetSupport_EXPECTED_NATIVE_CODE_VERSION 0L
 /*

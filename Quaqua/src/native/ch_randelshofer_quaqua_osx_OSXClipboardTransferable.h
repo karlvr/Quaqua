@@ -7,8 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Inaccessible static: isNativeCodeAvailable */
-/* Inaccessible static: EXPECTED_NATIVE_CODE_VERSION */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXClipboardTransferable
  * Method:    nativeGetTypes

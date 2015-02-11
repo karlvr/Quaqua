@@ -14,6 +14,7 @@ package ch.randelshofer.quaqua.lion;
 import ch.randelshofer.quaqua.*;
 import ch.randelshofer.quaqua.filechooser.*;
 import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
+import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
 import ch.randelshofer.quaqua.lion.filechooser.SidebarTreeModel;
 import ch.randelshofer.quaqua.osx.OSXConfiguration;
 import ch.randelshofer.quaqua.osx.OSXFile;
@@ -157,6 +158,21 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         KeyStroke.getKeyStroke(KeyEvent.VK_U, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
         KeyStroke.getKeyStroke(KeyEvent.VK_PERIOD, InputEvent.META_MASK | InputEvent.SHIFT_MASK),
     };
+
+    protected CellRenderer createFileRenderer(JFileChooser fc) {
+        return new LeopardFileRenderer(
+                fc,
+                UIManager.getIcon("Browser.expandingIcon"),
+                UIManager.getIcon("Browser.expandedIcon"),
+                UIManager.getIcon("Browser.selectedExpandingIcon"),
+                UIManager.getIcon("Browser.selectedExpandedIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandedIcon"));
+    }
+
+    protected ColumnView createColumnView(JFileChooser fc) {
+        return new LionColumnView(fc);
+    }
 
     private class KeyListenerAction extends AbstractAction {
         // XXX - This should be rewritten using an ActionMap
@@ -528,7 +544,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         sidebarScrollPane = new javax.swing.JScrollPane();
         int design = QuaquaManager.getDesign();
         viewsPanel = new javax.swing.JPanel();
-        columnView = ColumnView.create(design, fc);
+        columnView = createColumnView(fc);
         viewModeControl = ViewModeControl.create(design);
         listView = ListView.create(design, fc);
         controlsPanel = new javax.swing.JPanel();
@@ -782,14 +798,7 @@ public class QuaquaLionFileChooserUI extends BasicFileChooserUI {
         filterComboBox.setMaximumSize(new Dimension(32767, h));
 
         //Configure views
-        LeopardFileRenderer fileRenderer = new LeopardFileRenderer(
-                fc,
-                UIManager.getIcon("Browser.expandingIcon"),
-                UIManager.getIcon("Browser.expandedIcon"),
-                UIManager.getIcon("Browser.selectedExpandingIcon"),
-                UIManager.getIcon("Browser.selectedExpandedIcon"),
-                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
-                UIManager.getIcon("Browser.focusedSelectedExpandedIcon"));
+        CellRenderer fileRenderer = createFileRenderer(fc);
         columnView.setFileRenderer(fileRenderer);
         columnView.setMultipleSelection(isMultipleSelection());
 

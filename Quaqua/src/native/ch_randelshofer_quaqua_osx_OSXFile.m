@@ -194,6 +194,51 @@ JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLabel
     // Return the result
     return result;
 }
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetTagNames
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetTagNames
+  (JNIEnv *env, jclass instance, jstring pathJ) {
+
+    // Assert arguments
+    if (pathJ == NULL) return NULL;
+
+    // Allocate a memory pool
+    NSAutoreleasePool* pool = [NSAutoreleasePool new];
+
+    // Prepare result
+    jobjectArray result = NULL;
+
+    // Convert Java String to NS String
+    const jchar *pathC = (*env)->GetStringChars(env, pathJ, NULL);
+    NSString *pathNS = [NSString stringWithCharacters:(UniChar *)pathC length:(*env)->GetStringLength(env, pathJ)];
+    (*env)->ReleaseStringChars(env, pathJ, pathC);
+
+    // Do the API calls
+    NSURL *u = [NSURL fileURLWithPath:pathNS];
+    if (u != nil) {
+        NSError *error;
+        NSArray *tagNames;
+        Boolean success = [u getResourceValue: &tagNames forKey:NSURLTagNamesKey error:&error];
+        if (success && tagNames != NULL) {
+            int count = [tagNames count];
+            jclass stringClass = (*env)->FindClass(env, "java/lang/String");
+            result = (*env)->NewObjectArray(env, count, stringClass, NULL);
+            for (int i=0; i< count; i++) {
+                jstring tagNameJ = (*env)->NewStringUTF(env, [tagNames[i] UTF8String]);
+                (*env)->SetObjectArrayElement(env, result, i, tagNameJ);
+            }
+        }
+    }
+
+    // Release memory pool
+    [pool release];
+
+    // Return the result
+    return result;
+}
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile

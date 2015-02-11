@@ -371,21 +371,28 @@ public class OSXFile {
 
         }
     }
+    /**
+     * Returns the tag names of the specified file.
+     * R
+     */
+    public static String[] getTagNames(File f) {
+        String[] result=null;
+        if (isNativeCodeAvailable() && f != null) {
+            result=nativeGetTagNames(f.getAbsolutePath());
+        }
+        return result==null?new String[0]:result;
+    }
 
     /**
      * Returns the color of the specified label. Returns null, if the label
      * does not have a color.
      *
      * @param label value from 0 through 7
-     * @param type 0=dark enabled,1=bright enabld,2=dark disabled,3=bright enabled
+     * @param type 0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
      */
     public static Color getLabelColor(int label, int type) {
         if (labelColors == null) {
             synchronized (OSXFile.class) {
-
-
-
-
                 if (labelColors
                         == null) {
                     /* We use constants here, because the color values returned by the Carbon
@@ -423,12 +430,31 @@ public class OSXFile {
 
         }
 
-
-
         return (label == -1) ? null : labelColors[label][type];
-
-
     }
+    
+    /**
+     * Returns the color of the specified tag name. Returns null, if the tag
+     * does not have a color.
+     *
+     * @param tagName a tag name
+     * @param type 0=dark enabled,1=bright enabled,2=dark disabled,3=bright enabled
+     * @return 
+     */
+    public static Color getTagColor(String tagName, int type) {
+        int label = 0;
+        switch (tagName) {
+            case "Gray":label=1; break;
+            case "Green":label=2; break;
+            case "Purple":label=3; break;
+            case "Blue":label=4; break;
+            case "Yellow":label=5; break;
+            case "Red":label=6; break;
+            case "Orange":label=7; break;
+        }
+        return getLabelColor(label, type);
+    }
+    
 
     /**
      * Returns the icon image for the specified file.
@@ -792,6 +818,13 @@ public class OSXFile {
      * @param path the path to the file.
      */
     private static native int nativeGetLabel(String path);
+
+    /**
+     * Returns the tag names of the file specified by the given path.
+     *
+     * @param path the path to the file.
+     */
+    private static native String[] nativeGetTagNames(String path);
 
     /**
      * Returns the kind of the file specified by the given path.

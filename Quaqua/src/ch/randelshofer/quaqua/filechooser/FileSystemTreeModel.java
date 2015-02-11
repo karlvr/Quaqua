@@ -840,6 +840,12 @@ public class FileSystemTreeModel implements TreeModel {
          * Contains the hidden state of the file
          */
         protected boolean isHidden;
+        
+        /** Holds the tag names for the file represented by this node. 
+         * The value null is used, if the tag names have not (yet) been retrieved, or
+         * if it couldn't be determined due to the lack of native support.
+        */
+        protected String[] tagNames;
 
         public Node(File f, boolean isHidden) {
             //this(f, fileChooser.getName(f));
@@ -882,6 +888,10 @@ public class FileSystemTreeModel implements TreeModel {
         public int getFileLabel() {
             validateInfo();
             return fileLabel;
+        }
+        public String[] getTagNames() {
+            validateInfo();
+            return tagNames;
         }
 
         public Icon getIcon() {
@@ -1008,6 +1018,7 @@ public class FileSystemTreeModel implements TreeModel {
 
                             if (isResolveFileLabels) {
                                 fileLabel = OSXFile.getLabel(file);
+                                tagNames = OSXFile.getTagNames(file);
                             }
 
                             return (oldIcon != icon || oldFileLabel != fileLabel) ? Boolean.TRUE : Boolean.FALSE;

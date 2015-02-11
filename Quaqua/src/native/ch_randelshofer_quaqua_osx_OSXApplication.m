@@ -105,5 +105,5 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nati
  */
 JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXApplication_nativeGetNativeCodeVersion
   (JNIEnv *env, jclass javaClass) {
-    return 2;
+    return 7;
 }

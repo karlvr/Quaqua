@@ -7,7 +7,11 @@
  */
 package ch.randelshofer.quaqua.mavericks;
 
+import ch.randelshofer.quaqua.filechooser.CellRenderer;
+import ch.randelshofer.quaqua.filechooser.ColumnView;
 import ch.randelshofer.quaqua.lion.QuaquaLionFileChooserUI;
+import ch.randelshofer.quaqua.mavericks.filechooser.MavericksColumnView;
+import ch.randelshofer.quaqua.mavericks.filechooser.MavericksFileRenderer;
 
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
@@ -26,5 +30,22 @@ public class QuaquaMavericksFileChooserUI extends QuaquaLionFileChooserUI {
 
     public QuaquaMavericksFileChooserUI(JFileChooser filechooser) {
         super(filechooser);
+    }
+    
+    @Override
+    protected CellRenderer createFileRenderer(JFileChooser fc) {
+        return new MavericksFileRenderer(
+                fc,
+                UIManager.getIcon("Browser.expandingIcon"),
+                UIManager.getIcon("Browser.expandedIcon"),
+                UIManager.getIcon("Browser.selectedExpandingIcon"),
+                UIManager.getIcon("Browser.selectedExpandedIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandingIcon"),
+                UIManager.getIcon("Browser.focusedSelectedExpandedIcon"));
+    }
+    
+    @Override
+    protected ColumnView createColumnView(JFileChooser fc) {
+        return new MavericksColumnView(fc);
     }
 }

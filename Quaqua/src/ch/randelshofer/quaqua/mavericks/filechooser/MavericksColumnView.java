@@ -7,15 +7,16 @@
  */
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
+import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
 import javax.swing.*;
 
 /**
   * The file chooser column view for Mavericks.
 */
 
-public class ColumnView extends ch.randelshofer.quaqua.lion.filechooser.ColumnView {
+public class MavericksColumnView extends LionColumnView {
 
-    public ColumnView(JFileChooser fc) {
+    public MavericksColumnView(JFileChooser fc) {
         super(fc);
 
         browser.setFixedCellWidth(207);

@@ -5,8 +5,9 @@
  * You may not use, copy or modify this file, except in compliance with the
  * accompanying license terms.
  */
-package ch.randelshofer.quaqua.leopard.filechooser;
+package ch.randelshofer.quaqua.mavericks.filechooser;
 
+import ch.randelshofer.quaqua.leopard.filechooser.*;
 import ch.randelshofer.quaqua.osx.OSXFile;
 import javax.swing.*;
 
@@ -25,7 +26,7 @@ import java.awt.geom.Ellipse2D;
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class LeopardFileRenderer extends JLabel implements ListCellRenderer, CellRenderer {
+public class MavericksFileRenderer extends JLabel implements ListCellRenderer, CellRenderer {
 
     private Color labelForeground, labelDisabledForeground;
     private Icon selectedExpandingIcon;
@@ -48,8 +49,9 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
     private boolean isGrayed;
     private boolean isAlias;
     private boolean isListView;
+    private double labelRadius = 4.8;
 
-    public LeopardFileRenderer(JFileChooser fileChooser,
+    public MavericksFileRenderer(JFileChooser fileChooser,
             Icon expandingIcon, Icon expandedIcon,
             Icon selectedExpandingIcon, Icon selectedExpandedIcon,
             Icon focusedSelectedExpandingIcon, Icon focusedSelectedExpandedIcon) {
@@ -235,30 +237,16 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
                 text == null ? 0 : textIconGap, textArrowIconGap);
 
         if (labelColor != null) {
-            if (isSelected) {
-                Insets i = UIManager.getInsets("FileChooser.browserCellSelectedColorLabelInsets");
-                if (i == null) {
-                    i = new Insets(0, 0, 0, 0);
-                }
-                r.y = viewRect.y + i.top;
-                r.width = r.height = viewRect.height - 1;
-                r.x = arrowIconRect.x - (arrowIconRect.width - r.width) / 2 + i.left;
-                //r.x = viewRect.width - r.width;
-                //g.fillOval(r.x, r.y, r.width, r.height);
-            } else {
-                Insets i = UIManager.getInsets("FileChooser.browserCellColorLabelInsets");
-                if (i == null) {
-                    i = new Insets(0, 0, 0, 0);
-                }
-                r.x = textRect.x - textIconGap + i.left;
-                r.y = viewRect.y + i.top;
-                r.width = viewRect.width - r.x + viewRect.x - i.right;
-                r.height = viewRect.height - r.y + viewRect.y - i.bottom;
-            }
-            g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-            g.setPaint(new LinearGradientPaint(r.x, r.y, labelBrightColor, r.x, r.y + r.height, labelColor));
-            //g.setColor(labelColor);
-            g.fillRoundRect(r.x, r.y, r.width, r.height, r.height, r.height);
+
+                // Paint the label as a filled circle with an outline
+                double r = labelRadius;
+                Shape s = new Ellipse2D.Double(labelRect.x, labelRect.y, r * 2, r * 2);
+                g.setPaint(labelColor);
+                g.fill(s);
+                g.setPaint(isSelected && isActive ? Color.WHITE : Color.LIGHT_GRAY);
+                g.draw(s);
+            
+            
         }
 
         if (icon != null) {
@@ -333,6 +321,10 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
             r.width += arrowIconRect.width + textArrowIconGap;
         }
 
+        if (labelColor != null) {
+            r.width += labelRect.width + textArrowIconGap;
+        }
+
         Insets insets = getInsets();
         if (insets != null) {
             r.width += insets.left + insets.right;
@@ -363,6 +355,14 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
             viewRect.width -= arrowIconRect.width + textArrowIconGap;
         }
 
+        if (labelColor != null) {
+            int d = (int) Math.ceil(2 * labelRadius);
+            labelRect.width = d;
+            labelRect.height = d;
+            labelRect.x = viewRect.x + viewRect.width - labelRect.width;
+            viewRect.width -= labelRect.width + textArrowIconGap;
+        }
+
         text = QuaquaUtilities.layoutCompoundLabel(
                 this, textFM, text,
                 icon, SwingConstants.CENTER, SwingConstants.LEFT,
@@ -374,10 +374,18 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
             viewRect.width += arrowIconRect.width + textArrowIconGap;
         }
 
+        if (labelColor != null) {
+            viewRect.width += labelRect.width + textArrowIconGap;
+        }
+
         Rectangle jLabelRect = iconRect.union(textRect);
 
         if (isUseArrow) {
             arrowIconRect.y = (viewRect.y + jLabelRect.height / 2 - arrowIconRect.height / 2);
+        }
+
+        if (labelColor != null) {
+            labelRect.y = (viewRect.y + jLabelRect.height / 2 - labelRect.height / 2);
         }
 
         if (!QuaquaUtilities.isLeftToRight(this)) {
@@ -390,4 +398,6 @@ public class LeopardFileRenderer extends JLabel implements ListCellRenderer, Cel
 
         return text;
     }
+
+    
 }

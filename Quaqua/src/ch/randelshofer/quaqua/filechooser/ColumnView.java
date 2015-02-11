@@ -25,19 +25,6 @@ public abstract class ColumnView extends JPanel implements FileChooserView {
     private ChangeEvent changeEvent = new ChangeEvent(this);
     private SelectListener selectListener;
 
-    public static ColumnView create(int design, JFileChooser fc) {
-        switch (design) {
-            case QuaquaManager.LION:
-            case QuaquaManager.MOUNTAIN_LION:
-                return new ch.randelshofer.quaqua.lion.filechooser.ColumnView(fc);
-            case QuaquaManager.MAVERICKS:
-            case QuaquaManager.YOSEMITE:
-                return new ch.randelshofer.quaqua.mavericks.filechooser.ColumnView(fc);
-            default:
-                return null;
-        }
-    }
-
     @Override
     public final void addSelectionChangeListener(ChangeListener l) {
         changeListener = l;
