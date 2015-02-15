@@ -66,7 +66,7 @@ public class Quaqua16YosemiteLookAndFeel extends Quaqua16MavericksLookAndFeel {
         ColorUIResource disabledForeground = new ColorUIResource(128, 128, 128);
         Object menuBackground = new ColorUIResource(0xffffff);
         ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);
-        Object toolBarBackground = table.get("control");
+        Object toolBarBackground = toolBarTitleBackground(table);
         Object panelBackground = new ColorUIResource(0xededed);
         ColorUIResource listAlternateBackground = new ColorUIResource(0xf3f6fa);
 
