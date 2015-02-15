@@ -10,6 +10,7 @@ package qtest;
 
 import ch.randelshofer.quaqua.osx.OSXFile;
 import java.io.*;
+import java.util.Arrays;
 import javax.swing.*;
 import javax.swing.text.*;
 
@@ -53,6 +54,8 @@ public class FileSystemTest extends javax.swing.JPanel {
                     buf.insertString(buf.getLength(),"\t"+f.toString(),a);
                     buf.insertString(buf.getLength(),"\n\tlabel=",null);
                     buf.insertString(buf.getLength(),Integer.toString(OSXFile.getLabel(f)),null);
+                    buf.insertString(buf.getLength(),"\n\ttags=",null);
+                    buf.insertString(buf.getLength(),Arrays.toString(OSXFile.getTagNames(f)),null);
                     buf.insertString(buf.getLength(),", is alias=",null);
                     int fileType = OSXFile.getFileType(f);
                     boolean isAlias = fileType == OSXFile.FILE_TYPE_ALIAS;

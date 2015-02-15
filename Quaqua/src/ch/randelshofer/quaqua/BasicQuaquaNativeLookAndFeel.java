@@ -1469,6 +1469,7 @@ public class BasicQuaquaNativeLookAndFeel extends LookAndFeelProxy15 {
             "ComboBox.font", systemFont,
             "EditorPane.font", applicationFont,
             "FormattedTextField.font", applicationFont,
+            "FileChooser.previewFilenameFont", smallSystemFont,
             "FileChooser.previewLabelFont", smallSystemFont,
             "FileChooser.previewValueFont", smallSystemFont,
             "IconButton.font", smallSystemFont, // ??

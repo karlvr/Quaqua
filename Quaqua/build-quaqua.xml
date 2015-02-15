@@ -960,6 +960,18 @@
             <arg value="apple.laf.AquaLookAndFeel"/>
         </java>
     </target>
+    <target depends="init" name="run Aqua 1.8">
+        <java classname="test.Main" classpath="${classpath}"
+                failonerror="true" fork="true"
+                jvm="${j2se8.jvm}"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
+            <arg value="-laf"/>
+            <arg value="apple.laf.AquaLookAndFeel"/>
+        </java>
+    </target>
     <target depends="init" name="run Metal 1.6">
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true"

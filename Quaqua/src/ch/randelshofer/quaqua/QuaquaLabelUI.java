@@ -112,7 +112,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
                 s = s.toUpperCase();
                 font = UIManager.getFont("Tree.sideBarCategory.font");
-                style = (selected) ? "shadow" : "emboss";
+                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
                 foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
 
             } else if (style.startsWith("row")) {
@@ -127,7 +127,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                     font = font.deriveFont(l.getFont().getStyle());
                 }
 
-                style = selected ? "shadow" : null;
+                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
             }
 
             if (style != null && style.equals("emboss")) {
@@ -169,7 +169,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
                 }
-                style = (selected) ? "shadow" : "emboss";
+                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
 
             } else if (style.startsWith("row")) {
                 font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
@@ -190,7 +190,7 @@ public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
                 if (foreground instanceof InactivatableColorUIResource) {
                     ((InactivatableColorUIResource) foreground).setActive(active);
                 }
-                style = (selected) ? "shadow" : null;
+                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
             }
             if (style != null && style.equals("emboss")) {
                 g.setFont(font);

@@ -16,8 +16,6 @@ import ch.randelshofer.quaqua.filechooser.FileInfo;
 import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
 import ch.randelshofer.quaqua.filechooser.QuaquaFileChooserTreeTableUI;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import com.apple.laf.AquaTableHeaderBorder;
-import com.apple.laf.AquaTableHeaderUI;
 import de.sciss.treetable.j.AbstractTreeColumnModel;
 import de.sciss.treetable.j.DefaultTreeTableCellRenderer;
 import de.sciss.treetable.j.TreeColumnModel;
@@ -103,7 +101,7 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
           inhibits the Aqua table header background.
         */
 
-        tree.getTableHeader().setUI(new AquaTableHeaderUI());
+        tree.getTableHeader().setUI(new QuaquaTableHeaderUI());
         tree.setSelectionForeground(selectionForeground);
         tree.setOpaque(false);
 

@@ -9,10 +9,8 @@ extern "C" {
 #endif
 #undef ch_randelshofer_quaqua_osx_OSXApplication_DEBUG
 #define ch_randelshofer_quaqua_osx_OSXApplication_DEBUG 1L
-/* Inaccessible static: isNativeCodeAvailable */
 #undef ch_randelshofer_quaqua_osx_OSXApplication_EXPECTED_NATIVE_CODE_VERSION
 #define ch_randelshofer_quaqua_osx_OSXApplication_EXPECTED_NATIVE_CODE_VERSION 2L
-/* Inaccessible static: ICON_IMAGE_LOCK */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXApplication
  * Method:    nativeRequestUserAttention
