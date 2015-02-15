@@ -36,8 +36,9 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
     public String getName() {
         return "Quaqua Mavericks";
     }
-        @Override
- protected void initClassDefaults(UIDefaults table) {
+    
+    @Override
+    protected void initClassDefaults(UIDefaults table) {
         String basicPrefix = "javax.swing.plaf.basic.Basic";
         String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
         String quaquaJaguarPrefix = "ch.randelshofer.quaqua.jaguar.QuaquaJaguar";
