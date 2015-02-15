@@ -443,14 +443,20 @@ public class OSXFile {
      */
     public static Color getTagColor(String tagName, int type) {
         int label = 0;
-        switch (tagName) {
-            case "Gray":label=1; break;
-            case "Green":label=2; break;
-            case "Purple":label=3; break;
-            case "Blue":label=4; break;
-            case "Yellow":label=5; break;
-            case "Red":label=6; break;
-            case "Orange":label=7; break;
+        if ("Gray".equals(tagName)) {
+            label = 1;
+        } else if ("Green".equals(tagName)) {
+            label = 2;
+        } else if ("Purple".equals(tagName)) {
+            label = 3;
+        } else if ("Blue".equals(tagName)) {
+            label = 4;
+        } else if ("Yellow".equals(tagName)) {
+            label = 5;
+        } else if ("Red".equals(tagName)) {
+            label = 6;
+        } else if ("Orange".equals(tagName)) {
+            label = 7;
         }
         return getLabelColor(label, type);
     }
