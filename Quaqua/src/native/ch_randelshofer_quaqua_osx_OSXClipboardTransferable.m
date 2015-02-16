@@ -106,7 +106,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXClipboardTransfe
             // Copy data into Java byte array
             int len = [dataNS length];
             void* dataC = malloc(len);
-            [dataNS getBytes:dataC];
+            [dataNS getBytes:dataC length:len];
             dataJ = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, dataJ, 0, len, (jbyte*)dataC);
             free(dataC);

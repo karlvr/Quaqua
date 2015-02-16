@@ -7,8 +7,6 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
-/* Inaccessible static: EXPECTED_NATIVE_CODE_VERSION */
-/* Inaccessible static: isNativeCodeAvailable */
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXImageIO
  * Method:    nativeRead

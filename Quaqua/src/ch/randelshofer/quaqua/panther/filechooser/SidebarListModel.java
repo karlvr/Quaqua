@@ -239,10 +239,10 @@ public class SidebarListModel
 
     private class FileItem implements FileInfo {
 
-        private File file;
+        private final File file;
         private Icon icon;
-        private String userName;
-        private boolean isTraversable;
+        private final String userName;
+        private final boolean isTraversable;
         /**
          * Holds a Finder label for the file represented by this node.
          * The label is a value in the interval from 0 through 7.
@@ -258,30 +258,42 @@ public class SidebarListModel
             //isTraversable = file.isDirectory();
         }
 
+        @Override
         public File lazyGetResolvedFile() {
             return file;
         }
 
+        @Override
         public File getResolvedFile() {
             return file;
         }
 
+        @Override
         public File getFile() {
             return file;
         }
 
+        @Override
         public String getFileKind() {
             return null;
         }
 
+        @Override
         public int getFileLabel() {
             return -1;
         }
 
+        @Override
+        public String[] getTagNames() {
+            return null;
+        }
+
+        @Override
         public long getFileLength() {
             return -1;
         }
 
+        @Override
         public Icon getIcon() {
             if (icon == null) {
                 icon = (isTraversable())
@@ -306,6 +318,7 @@ public class SidebarListModel
             return icon;
         }
 
+        @Override
         public String getUserName() {
             /*
             if (userName == null) {
@@ -314,18 +327,22 @@ public class SidebarListModel
             return userName;
         }
 
+        @Override
         public boolean isTraversable() {
             return isTraversable;
         }
 
+        @Override
         public boolean isAcceptable() {
             return true;
         }
 
+        @Override
         public boolean isValidating() {
             return false;
         }
 
+        @Override
         public boolean isHidden() {
             return false;
         }
@@ -340,8 +357,8 @@ public class SidebarListModel
         private File file;
         private Icon icon;
         private String userName;
-        private String aliasName;
-        private boolean isTraversable;
+        private final String aliasName;
+        private final boolean isTraversable;
         /**
          * Holds a Finder label for the file represented by this node.
          * The label is a value in the interval from 0 through 7.
@@ -368,22 +385,32 @@ public class SidebarListModel
             return file;
         }
 
+        @Override
         public File getFile() {
             return file;
         }
 
+        @Override
         public String getFileKind() {
             return null;
         }
 
+        @Override
         public int getFileLabel() {
             return -1;
         }
 
+        @Override
+        public String[] getTagNames() {
+            return null;
+        }
+
+        @Override
         public long getFileLength() {
             return -1;
         }
 
+        @Override
         public Icon getIcon() {
             if (icon == null) {
                 icon = (isTraversable())
@@ -408,6 +435,7 @@ public class SidebarListModel
             return icon;
         }
 
+        @Override
         public String getUserName() {
             if (userName == null) {
                 if (file != null) {
@@ -417,18 +445,22 @@ public class SidebarListModel
             return (userName == null) ? aliasName : userName;
         }
 
+        @Override
         public boolean isTraversable() {
             return isTraversable;
         }
 
+        @Override
         public boolean isAcceptable() {
             return true;
         }
 
+        @Override
         public boolean isValidating() {
             return false;
         }
 
+        @Override
         public boolean isHidden() {
             return false;
         }

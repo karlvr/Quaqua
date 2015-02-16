@@ -50,7 +50,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         if (dataNS != NULL) {
             unsigned len = [dataNS length];
             void* bytes = malloc(len);
-            [dataNS getBytes:bytes];
+            [dataNS getBytes:bytes length:len];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
@@ -118,7 +118,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         if (dataNS != NULL) {
             unsigned len = [dataNS length];
             void* bytes = malloc(len);
-            [dataNS getBytes:bytes];
+            [dataNS getBytes:bytes length:len];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);
@@ -170,7 +170,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         if (tiffNS != NULL) {
             unsigned len = [tiffNS length];
             void* tiffC = malloc(len);
-            [tiffNS getBytes: tiffC];
+            [tiffNS getBytes: tiffC length:len];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)tiffC);
@@ -207,7 +207,7 @@ JNIEXPORT jbyteArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXImageIO_nativeRe
         if (data != NULL) {
             unsigned len = [data length];
             void* bytes = malloc(len);
-            [data getBytes:bytes];
+            [data getBytes:bytes length:len];
 
             result = (*env)->NewByteArray(env, len);
             (*env)->SetByteArrayRegion(env, result, 0, len, (jbyte*)bytes);

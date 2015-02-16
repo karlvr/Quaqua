@@ -1090,4 +1090,11 @@ public class QuaquaUtilities extends BasicGraphicsUtils implements SwingConstant
    			setContents(s);
    		}
    	}
+        
+        public static Color darker(Color c, double factor) {
+        return new Color(Math.max((int)(c.getRed()  *factor), 0),
+                         Math.max((int)(c.getGreen()*factor), 0),
+                         Math.max((int)(c.getBlue() *factor), 0),
+                         c.getAlpha());
+    }
 }

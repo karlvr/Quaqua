@@ -261,14 +261,16 @@ public class OptionPaneTest extends javax.swing.JPanel {
     }//GEN-LAST:event_confirmDialog
 
     private void reviewChangesAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reviewChangesAlert
+        final String optionPaneFont = UIManager.getLookAndFeel().getDefaults().getFont("OptionPane.font").getName();
+        
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
         JOptionPane pane = new JOptionPane(
                 "<html>"+
                 "<head>"+
                 "<style type=\"text/css\">"+
-                "b { font: 13pt \"Lucida Grande\" }"+
-                "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
+                "b { font: 13pt \""+optionPaneFont+"\" }"+
+                "p { font: 11pt \""+optionPaneFont+"\"; margin-top: 8px }"+
                 "</style>"+
                 "</head>"+
                 "<b>You have 4 documents with unsaved changes. Do you want to "+
@@ -287,15 +289,16 @@ public class OptionPaneTest extends javax.swing.JPanel {
     }//GEN-LAST:event_reviewChangesAlert
 
     private void saveChangesAlert(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_saveChangesAlert
+        final String optionPaneFont = UIManager.getLookAndFeel().getDefaults().getFont("OptionPane.font").getName();
         // Example taken from
         // http://developer.apple.com/documentation/UserExperience/Conceptual/OSXHIGuidelines/XHIGWindows/chapter_17_section_6.html#//apple_ref/doc/uid/20000961-TPXREF11
         JOptionPane pane = new JOptionPane(
                 "<html>"+
                 "<head>"+
                 "<style type=\"text/css\">"+
-                "body { font: 11pt \"Lucida Grande\" }"+
-                "b { font: 13pt \"Lucida Grande\" }"+
-                "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
+                "body { font: 11pt \""+optionPaneFont+"\" }"+
+                "b { font: 13pt \""+optionPaneFont+"\" }"+
+                "p { font: 11pt \""+optionPaneFont+"\"; margin-top: 8px }"+
                 "</style>"+
                 "</head>"+
                 "<b>Do you want to save the changes you made "+
@@ -319,14 +322,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#41765
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-        /*
-        "<head>"+
-        "<style type=\"text/css\">"+
-        "b { font: 13pt \"Lucida Grande\" }"+
-        "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
-        "</style>"+
-        "</head>"+
-         */
+       
                 "<b>Enter your name.</b>",
                 JOptionPane.QUESTION_MESSAGE
                 );
@@ -346,13 +342,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
         // http://java.sun.com/products/jlf/ed2/book/HIG.Dialogs5.html#35722
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-        /*
-        "<head>"+
-        "<style type=\"text/css\">"+
-        "b { font: 13pt \"Lucida Grande\" }"+
-        "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
-        "</style>"+
-        "</head>"+*/
+        
                 "<b>Out of Paper</b><p>"+
                 "To continue printing, add more paper to the printer "
                 +"and press Continue.",
@@ -373,13 +363,7 @@ public class OptionPaneTest extends javax.swing.JPanel {
 
         JOptionPane pane = new JOptionPane(
                 "<html>"+
-        /*
-        "<head>"+
-        "<style type=\"text/css\">"+
-        "b { font: 13pt \"Lucida Grande\" }"+
-        "p { font: 11pt \"Lucida Grande\"; margin-top: 8px }"+
-        "</style>"+
-        "</head>"+*/
+        
                 "<b>File Exists</b><p>"+
                 "A file named \"patience.gif\" already exists.<br>"+
                 "Replace existing file?",

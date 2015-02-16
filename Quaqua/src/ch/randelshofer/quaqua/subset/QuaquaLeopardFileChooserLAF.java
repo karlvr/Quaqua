@@ -439,6 +439,10 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
             "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
             "Tree.sideBarCategory.selectionForeground",
             new InactivatableColorUIResource(0xffffff, 0xffffff),
+            "Tree.sideBarCategory.style",  "emboss",
+            "Tree.sideBarCategory.selectionStyle",  "shadow",
+            "Tree.sideBar.style",  "plain",
+            "Tree.sideBar.selectionStyle",  "shadow",
             "Sheet.showAsSheet", Boolean.TRUE,//
         };
         table.putDefaults(uiDefaults);

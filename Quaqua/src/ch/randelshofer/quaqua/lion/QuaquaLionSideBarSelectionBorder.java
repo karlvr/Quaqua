@@ -1,7 +1,7 @@
 /*
- * @(#)QuaquaLeopardSideBarSelectionBorder.java 
+ * @(#)QuaquaLionSideBarSelectionBorder.java 
  *
- * Copyright (c) 20011 Werner Randelshofer, Switzerland.
+ * Copyright (c) 2011 Werner Randelshofer, Switzerland.
  * You may not use, copy or modify this file, except in compliance with the
  * accompanying license terms.
  */
@@ -18,7 +18,7 @@ import javax.swing.border.*;
 import javax.swing.plaf.UIResource;
 
 /**
- * QuaquaLeopardSideBarSelectionBorder.
+ * QuaquaLionSideBarSelectionBorder.
  *
  * @author Werner Randelshofer
  * @version $Id$

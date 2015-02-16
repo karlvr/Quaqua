@@ -36,7 +36,96 @@ public class Quaqua16MavericksLookAndFeel extends Quaqua16MountainLionLookAndFee
     public String getName() {
         return "Quaqua Mavericks";
     }
+    
+    @Override
+    protected void initClassDefaults(UIDefaults table) {
+        String basicPrefix = "javax.swing.plaf.basic.Basic";
+        String quaquaPrefix = "ch.randelshofer.quaqua.Quaqua";
+        String quaquaJaguarPrefix = "ch.randelshofer.quaqua.jaguar.QuaquaJaguar";
+        String quaquaPantherPrefix = "ch.randelshofer.quaqua.panther.QuaquaPanther";
+        String quaquaLeopardPrefix = "ch.randelshofer.quaqua.leopard.QuaquaLeopard";
+        String quaquaLionPrefix = "ch.randelshofer.quaqua.lion.QuaquaLion";
+        String quaquaMavericksPrefix = "ch.randelshofer.quaqua.mavericks.QuaquaMavericks";
 
+        // NOTE: Change code below, to override different
+        // UI classes of the target look and feel.
+        Object[] uiDefaults = {
+            "BrowserUI", quaquaPrefix + "BrowserUI",
+            "ButtonUI", quaquaPrefix + "ButtonUI",
+            "CheckBoxUI", quaquaPrefix + "CheckBoxUI",
+            "ColorChooserUI", quaquaPrefix + "ColorChooserUI",
+            "FileChooserUI", quaquaMavericksPrefix + "FileChooserUI",
+            "FormattedTextFieldUI", quaquaPrefix + "FormattedTextFieldUI",
+            "RadioButtonUI", quaquaPrefix + "RadioButtonUI",
+            "ToggleButtonUI", quaquaPrefix + "ToggleButtonUI",
+            "SeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+            //"MenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+            //"ProgressBarUI", basicPrefix + "ProgressBarUI",
+            "ScrollBarUI", quaquaPrefix + "ScrollBarUI",
+            "ScrollPaneUI", quaquaPrefix + "ScrollPaneUI",
+            "SplitPaneUI", quaquaPrefix + "SplitPaneUI",
+            //"SliderUI", quaquaPrefix + "SliderUI",
+            //"SpinnerUI", quaquaPrefix + "SpinnerUI",
+            "ToolBarSeparatorUI", quaquaPrefix + "ToolBarSeparatorUI",
+            //"PopupMenuSeparatorUI", quaquaPantherPrefix + "SeparatorUI",
+            "TextAreaUI", quaquaPrefix + "TextAreaUI",
+            "TextFieldUI", quaquaPrefix + "TextFieldUI",
+            "PasswordFieldUI", quaquaPrefix + "PasswordFieldUI",
+            "TextPaneUI", quaquaPrefix + "TextPaneUI",
+            "EditorPaneUI", quaquaPrefix + "EditorPaneUI",
+            "TreeUI", quaquaPrefix + "TreeUI",
+            "LabelUI", quaquaPrefix + "LabelUI",
+            "ListUI", quaquaPrefix + "ListUI",
+            //"TabbedPaneUI", quaquaPantherPrefix + "TabbedPaneUI",
+            "ToolBarUI", quaquaPrefix + "ToolBarUI",
+            //"ToolTipUI", basicPrefix + "ToolTipUI",
+            "ComboBoxUI", quaquaPrefix + "ComboBoxUI",
+            "TableUI", quaquaPrefix + "TableUI",
+            //"TableHeaderUI", quaquaPrefix + "TableHeaderUI",
+            // "InternalFrameUI", basicPrefix + "InternalFrameUI",
+            //"DesktopPaneUI", quaquaPrefix + "DesktopPaneUI",
+            //"DesktopIconUI", basicPrefix + "DesktopIconUI",
+            "OptionPaneUI", quaquaPrefix + "OptionPaneUI",
+            "PanelUI", quaquaPrefix + "PanelUI",
+            "ViewportUI", quaquaPrefix + "ViewportUI",
+            // Do not create a RootPaneUI on our own, unless we also
+            // create our own ButtonUI. Aqua's RootPaneUI is responsible
+            // for updating the border of the ButtonUI, when it is the default,
+            // and for propagating window activation/dectivation events to
+            // all the child components of a window.
+            "RootPaneUI", quaquaPrefix + "RootPaneUI",};
+        putDefaults(table, uiDefaults);
+
+        /*
+        // Popup menu fix only works fully when we have all AWT event permission
+        SecurityManager security = System.getSecurityManager();
+        try {
+        if (security != null) {
+        security.checkPermission(sun.security.util.SecurityConstants.ALL_AWT_EVENTS_PERMISSION);
+        }
+        uiDefaults = new Object[] {
+        "PopupMenuUI", quaquaPrefix + "PopupMenuUI",
+        };
+        } catch (SecurityException e) {
+        // do nothing
+        }*/
+        uiDefaults = new Object[]{
+                    "PopupMenuUI", quaquaPrefix + "PopupMenuUI",};
+        putDefaults(table, uiDefaults);
+
+
+        // FIXME Menu related workarounds work only if useScreenMenuBar is off.
+        if (!isUseScreenMenuBar()) {
+            uiDefaults = new Object[]{
+                        "MenuBarUI", quaquaPrefix + "MenuBarUI",
+                        "MenuUI", quaquaPrefix + "MenuUI",
+                        "MenuItemUI", quaquaPrefix + "MenuItemUI",
+                        "CheckBoxMenuItemUI", quaquaPrefix + "MenuItemUI",
+                        "RadioButtonMenuItemUI", quaquaPrefix + "MenuItemUI"
+                    };
+            putDefaults(table, uiDefaults);
+        }
+    }
     @Override
     protected void initDesignDefaults(UIDefaults table) {
 

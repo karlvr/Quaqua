@@ -52,6 +52,11 @@ public interface FileInfo {
      * Returns -1 if the label has not (yet) been determined.
      */
     public int getFileLabel();
+    /**
+     * Returns the tag names f the file.
+     * Returns null if the tag names have not (yet) been determined.
+     */
+    public String[] getTagNames();
     
     /**
      * Returns the user name of the file.

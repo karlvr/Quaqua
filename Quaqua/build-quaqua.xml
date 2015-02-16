@@ -37,7 +37,7 @@
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
-        <property name="SDKversion" value="10.8"/>
+        <property name="SDKversion" value="10.10"/>
 		<property name="SDKpath" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SDKversion}.sdk" />
 
 		<!-- Java platform properties -->
@@ -121,7 +121,8 @@
          <property name="osx10.7.sdk" value="/Developer/SDKs/MacOSX10.7.sdk"/>
          <property name="osx10.8.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.8.sdk"/>
          <property name="osx10.9.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk"/>
-         <property name="macosx.sdk" value="${osx10.9.sdk}" />
+         <property name="osx10.10.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk"/>
+         <property name="macosx.sdk" value="${osx10.10.sdk}" />
     </target>
 
     <target depends="init" name="compile">
@@ -951,6 +952,18 @@
         <java classname="test.Main" classpath="${classpath}"
                 failonerror="true" fork="true"
                 jvm="${j2se7.jvm}"
+        >
+            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
+            <jvmarg value="-Djava.library.path=${distdir}"/>
+            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
+            <arg value="-laf"/>
+            <arg value="apple.laf.AquaLookAndFeel"/>
+        </java>
+    </target>
+    <target depends="init" name="run Aqua 1.8">
+        <java classname="test.Main" classpath="${classpath}"
+                failonerror="true" fork="true"
+                jvm="${j2se8.jvm}"
         >
             <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
             <jvmarg value="-Djava.library.path=${distdir}"/>

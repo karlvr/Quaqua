@@ -242,6 +242,8 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
 
     @Override
     protected void initDesignDefaults(UIDefaults table) {
+        final String baseSystemFontName = getBaseSystemFont().getName();
+        
         ColorUIResource disabledForeground = new ColorUIResource(128, 128, 128);
         Object menuBackground = new ColorUIResource(0xffffff);
         ColorUIResource menuSelectionForeground = new ColorUIResource(0xffffff);
@@ -312,7 +314,7 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "FileChooser.browserCellTextIconGap", 6,
             "FileChooser.browserCellTextArrowIconGap", 5,
             "FileChooser.browserUseUnselectedExpandIconForLabeledFile", Boolean.TRUE,
-            "FileChooser.sheetErrorFont", new FontUIResource("Lucida Grande", Font.PLAIN, 10),
+            "FileChooser.sheetErrorFont", new FontUIResource(baseSystemFontName, Font.PLAIN, 10),
             "FileChooser.sideBarIcon.Applications", makeNativeSidebarIcon(sideBarIconsPrefix + "ApplicationsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
             "FileChooser.sideBarIcon.Desktop", makeNativeSidebarIcon(sideBarIconsPrefix + "DesktopFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
             "FileChooser.sideBarIcon.Documents", makeNativeSidebarIcon(sideBarIconsPrefix + "DocumentsFolder.icns", 18, sideBarIconColor, sideBarIconSelectionColor),
@@ -558,14 +560,17 @@ public class Quaqua16LionLookAndFeel extends BasicQuaquaNativeLookAndFeel {
             "Tree.sideBar.icons", makeIcons(lionDir + "Tree.sideBar.icons.png", 15, true),
             "Tree.sideBarCategory.foreground", new InactivatableColorUIResource(0x707e8b, 0x868b92),
             "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
-            "Tree.sideBarCategory.font", new FontUIResource("Lucida Grande", Font.BOLD, 11),
-            "Tree.sideBarCategory.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 11),
+            "Tree.sideBarCategory.font", new FontUIResource(baseSystemFontName, Font.BOLD, 11),
+            "Tree.sideBarCategory.selectionFont", new FontUIResource(baseSystemFontName, Font.BOLD, 11),
             "Tree.sideBar.foreground", new InactivatableColorUIResource(0x000000, 0x000000),
             "Tree.sideBar.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),
-            "Tree.sideBar.font", new FontUIResource("Lucida Grande", Font.PLAIN, 13),
-            "Tree.sideBar.selectionFont", new FontUIResource("Lucida Grande", Font.BOLD, 13),
-            "Tree.sideBarCategory.selectionForeground", new InactivatableColorUIResource(0xffffff, 0xffffff),//
+            "Tree.sideBar.font", new FontUIResource(baseSystemFontName, Font.PLAIN, 13),
+            "Tree.sideBar.selectionFont", new FontUIResource(baseSystemFontName, Font.BOLD, 13),
             "Tree.rendererMargins", new InsetsUIResource(0,0,0,0),
+            "Tree.sideBarCategory.style",  "emboss",
+            "Tree.sideBarCategory.selectionStyle",  "shadow",
+            "Tree.sideBar.style",  "plain",
+            "Tree.sideBar.selectionStyle",  "shadow",
         };
 
 

@@ -13,12 +13,38 @@ extern "C" {
 #define ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_DIRECTORY 1L
 #undef ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_FILE
 #define ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_FILE 0L
-#undef ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKOWN
-#define ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKOWN -1L
+#undef ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKNOWN
+#define ch_randelshofer_quaqua_osx_OSXFile_FILE_TYPE_UNKNOWN -1L
 #undef ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION
-#define ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION 5L
-/* Inaccessible static: labelColors */
-/* Inaccessible static: isNativeCodeAvailable */
+#define ch_randelshofer_quaqua_osx_OSXFile_EXPECTED_NATIVE_CODE_VERSION 6L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsPlainFile
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsPlainFile 1L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsPackage
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsPackage 2L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsApplication
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsApplication 4L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsContainer
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsContainer 8L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsAliasFile
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsAliasFile 16L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsSymlink
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsSymlink 32L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsInvisible
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsInvisible 64L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsNativeApp
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsNativeApp 128L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsClassicApp
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsClassicApp 256L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppPrefersNative
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppPrefersNative 512L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppPrefersClassic
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppPrefersClassic 1024L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppIsScriptable
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoAppIsScriptable 2048L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsVolume
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoIsVolume 4096L
+#undef ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoExtensionIsHidden
+#define ch_randelshofer_quaqua_osx_OSXFile_kLSItemInfoExtensionIsHidden 1048576L
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeGetFileType
@@ -49,6 +75,14 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeResolveA
  * Signature: (Ljava/lang/String;)I
  */
 JNIEXPORT jint JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLabel
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     ch_randelshofer_quaqua_osx_OSXFile
+ * Method:    nativeGetTagNames
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
+ */
+JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetTagNames
   (JNIEnv *, jclass, jstring);
 
 /*
@@ -94,7 +128,7 @@ JNIEXPORT jstring JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetDispl
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeGetLastUsedDate
- * Signature: (Ljava/lang/String;)Z
+ * Signature: (Ljava/lang/String;)J
  */
 JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLastUsedDate
   (JNIEnv *, jclass, jstring);
@@ -102,10 +136,10 @@ JNIEXPORT jlong JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeGetLastUse
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile
  * Method:    nativeExecuteSavedSearch
- * Signature: (Ljava/lang/String)[Ljava/lang/String
+ * Signature: (Ljava/lang/String;)[Ljava/lang/String;
  */
 JNIEXPORT jobjectArray JNICALL Java_ch_randelshofer_quaqua_osx_OSXFile_nativeExecuteSavedSearch
-(JNIEnv *, jclass, jstring);
+  (JNIEnv *, jclass, jstring);
 
 /*
  * Class:     ch_randelshofer_quaqua_osx_OSXFile

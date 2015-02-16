@@ -1,5 +1,5 @@
 /*
- * @(#)FilePreview.java
+ * @(#)LionFilePreview.java
  *
  * Copyright (c) 2009-2010 Werner Randelshofer, Switzerland.
  * All rights reserved.
@@ -33,13 +33,13 @@ import java.util.*;
 import java.util.List;
 
 /**
- * The FilePreview is used to render the preview column in the JBrowser in
- * Quaqua's FileChooserUI's.
+ * The LionFilePreview is used to render the preview column in the JBrowser in
+ Quaqua's FileChooserUI's.
  *
  * @author  Werner Randelshofer
  * @version $Id$
  */
-public class FilePreview extends JPanel implements BrowserPreviewRenderer {
+public class LionFilePreview extends JPanel implements BrowserPreviewRenderer {
 
     private JFileChooser fileChooser;
     private boolean isFileIconAvailable = true;
@@ -51,7 +51,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
     private String labelDelimiter;
     private ScaledImageView previewImageView;
 
-    public FilePreview(JFileChooser fileChooser) {
+    public LionFilePreview(JFileChooser fileChooser) {
         this.fileChooser = fileChooser;
 
         previewImageView = new ScaledImageView();
@@ -139,7 +139,7 @@ public class FilePreview extends JPanel implements BrowserPreviewRenderer {
 
             public void mouseClicked(MouseEvent evt) {
                 if (evt.getClickCount() == 2) {
-                    FilePreview.this.fileChooser.approveSelection();
+                    LionFilePreview.this.fileChooser.approveSelection();
                 }
             }
         };
