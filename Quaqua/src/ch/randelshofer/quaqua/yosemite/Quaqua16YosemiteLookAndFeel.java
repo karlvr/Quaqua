@@ -286,7 +286,7 @@ public class Quaqua16YosemiteLookAndFeel extends Quaqua16MavericksLookAndFeel {
             "Separator.border", new VisualMarginBorder(),
             //
             "TabbedPane.disabledForeground", disabledForeground,
-            "TabbedPane.tabInsets", new InsetsUIResource(1, 10, 4, 9),
+            "TabbedPane.tabInsets", new InsetsUIResource(1, 10, 6, 9),
             "TabbedPane.selectedTabPadInsets", new InsetsUIResource(2, 2, 2, 1),
             "TabbedPane.tabAreaInsets", new InsetsUIResource(4, 16, 0, 16),
             "TabbedPane.contentBorderInsets", new InsetsUIResource(5, 6, 6, 6),
