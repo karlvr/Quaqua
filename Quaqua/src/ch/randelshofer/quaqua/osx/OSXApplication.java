@@ -37,7 +37,7 @@ public class OSXApplication {
     /**
      * Version of the native code library.
      */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 2;
+    private final static int EXPECTED_NATIVE_CODE_VERSION = 7;
     /** This lock is used for synchronizing calls to nativeGetIconImage. */
     private final static Object ICON_IMAGE_LOCK = new Object();
 

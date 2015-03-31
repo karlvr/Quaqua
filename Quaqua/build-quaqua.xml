@@ -28,8 +28,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="9.2"/>
-        <property name="version" value="${versionNumber} 2014-08-18"/>
+        <property name="versionNumber" value="9.3"/>
+        <property name="version" value="${versionNumber} 2015-02-16"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="resources" value="resources"/>
@@ -37,6 +37,7 @@
         <property name="distdir" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
+        <property name="SDKminversion" value="10.5"/>
         <property name="SDKversion" value="10.10"/>
 		<property name="SDKpath" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SDKversion}.sdk" />
 
@@ -181,7 +182,7 @@
              http://developer.apple.com/documentation/DeveloperTools/Conceptual/cross_development/Using/chapter_3_section_2.html#//apple_ref/doc/uid/20002000-1114311-BABGCAAB
              -->
         <arg value="${SDKpath}"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="${SDKversion}"/>
+        <env key="MACOSX_DEPLOYMENT_TARGET" value="${SDKminversion}"/>
 
         <!-- -o file
              Place output in file file. This applies regardless to whatever sort
@@ -284,7 +285,7 @@
              http://developer.apple.com/documentation/DeveloperTools/Conceptual/cross_development/Using/chapter_3_section_2.html#//apple_ref/doc/uid/20002000-1114311-BABGCAAB
              -->
         <arg value="${SDKpath}"/>
-        <env key="MACOSX_DEPLOYMENT_TARGET" value="${SDKversion}"/>
+        <env key="MACOSX_DEPLOYMENT_TARGET" value="${SDKminversion}"/>
 
         <!-- -o file
              Place output in file file. This applies regardless to whatever sort
