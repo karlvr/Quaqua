@@ -392,10 +392,17 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
 
         if (isDocumentModifiedSupported) {
             Object value = rootpane.getClientProperty("Window.documentModified");
-            if (value == null || rootpane.getClientProperty("QuaquaInternal.usingWindowModified") != null) {
-                value = rootpane.getClientProperty("windowModified");
-                rootpane.putClientProperty("Window.documentModified", value);
+            boolean shouldTransfer = false;
+            if (Boolean.TRUE.equals(rootpane.getClientProperty("QuaquaInternal.usingWindowModified"))) {
+                shouldTransfer = true;
+            } else if (value == null && rootpane.getClientProperty("windowModified") != null) {
                 rootpane.putClientProperty("QuaquaInternal.usingWindowModified", true);
+                shouldTransfer = true;
+            }
+
+            if (shouldTransfer) {
+                Object newValue = rootpane.getClientProperty("windowModified");
+                rootpane.putClientProperty("Window.documentModified", newValue);
             }
         }
     }
