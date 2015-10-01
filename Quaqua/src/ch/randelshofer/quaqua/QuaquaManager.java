@@ -167,6 +167,10 @@ public class QuaquaManager {
      */
     public final static int YOSEMITE = 10;
     /**
+     * Mac OS X 10.10 El Capitan.
+     */
+    public final static int EL_CAPITAN = 11;
+    /**
      * Mac OS X 10.x Always points to next OSX X release.
      */
     public final static int X = 100;
@@ -238,6 +242,8 @@ public class QuaquaManager {
             	OS = MAVERICKS;
             } else if (osVersion.equals("10.10")) {
             	OS = YOSEMITE;
+            } else if (osVersion.equals("10.11")) {
+            	OS = EL_CAPITAN;
             } else if (osVersion.startsWith("10.")) {
                 OS = X;
             } else {
@@ -280,6 +286,8 @@ public class QuaquaManager {
         	design = MAVERICKS;
         } else if (osDesign.equals("yosemite")) {
         	design = YOSEMITE;
+        } else if (osDesign.equals("elcapitan")) {
+        	design = EL_CAPITAN;
         } else {
             switch (OS) {
                 case CHEETAH:
@@ -314,6 +322,9 @@ public class QuaquaManager {
                 	break;
                 case YOSEMITE:
                 	design = YOSEMITE;
+                	break;
+                case EL_CAPITAN:
+                	design = EL_CAPITAN;
                 	break;
                 default:
                 // Note: We must fall back to Snow Leopard here, because this
@@ -403,6 +414,7 @@ public class QuaquaManager {
             lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
             lafs.put("CrossLeopard.16", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
             lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
+            lafs.put("ElCapitan.16", "ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel");
         }
     }
 
@@ -493,8 +505,11 @@ public class QuaquaManager {
                     	lafKey = "Mavericks.16";
                     	break;
                     case YOSEMITE:
-                    case X:
                     	lafKey = "Yosemite.16";
+                    	break;
+                    case EL_CAPITAN:
+                    case X:
+                    	lafKey = "ElCapitan.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
@@ -527,8 +542,11 @@ public class QuaquaManager {
                     	lafKey = "Mavericks.16";
                     	break;
                     case YOSEMITE:
-                    case X:
                     	lafKey = "Yosemite.16";
+                    	break;
+                    case EL_CAPITAN:
+                    case X:
+                    	lafKey = "ElCapitan.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
