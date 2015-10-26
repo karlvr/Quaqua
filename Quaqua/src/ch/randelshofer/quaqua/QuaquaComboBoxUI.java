@@ -623,12 +623,20 @@ public class QuaquaComboBoxUI extends BasicComboBoxUI implements VisuallyLayouta
                     // FIXME - This should be 6 minus 2, whereas two needs to be
                     // derived from the TextFieldUI
                     //int plusHeight = (isSmallSizeVariant()) ? 4 : 4;
-                    int plusHeight = (isSmall()) ? - 2 : - 2;
+                    
+                    Insets buttonInsets = UIManager.getInsets("ComboBox.button.insets." + QuaquaUtilities.getSizeVariant(comboBox));
+                    if (buttonInsets == null) {
+                        buttonInsets = UIManager.getInsets("ComboBox.button.insets");
+                        if (buttonInsets == null) {
+                            buttonInsets = new Insets(0, 0, 2, 0);
+                        }
+                    }
+                    
                     arrowButton.setBounds(
                             width - getArrowWidth() - insets.right,
-                            insets.top /*+ margin.top - 3*/,
+                            insets.top + buttonInsets.top /*+ margin.top - 3*/,
                             getArrowWidth(),
-                            buttonSize /*- margin.top - margin.bottom*/ + plusHeight);
+                            buttonSize /*- margin.top - margin.bottom*/ - (buttonInsets.top + buttonInsets.bottom));
                 } else {
                     arrowButton.setBounds(insets.left, insets.top,
                             getArrowWidth(), buttonSize);
