@@ -103,7 +103,7 @@
         <property name="j2se7" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_45.jdk/Contents" />
         <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
 
-        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_20.jdk/Contents" />
+        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_60.jdk/Contents" />
         <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
 
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
