@@ -279,6 +279,7 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
             "ScrollBar.thumbInsets.mini", new Insets(2,3,2,2),
             //
             "ScrollPane.border", scrollPaneBorder,
+            "ScrollPane.border.imageInsets", new InsetsUIResource(-3, 0, 3, 0),
             //
             "Separator.highlight", new ColorUIResource(0xe3e3e3),
             "Separator.foreground", new ColorUIResource(0xd4d4d4),
