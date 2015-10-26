@@ -336,7 +336,8 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
             //
 //            "TextField.border", textFieldBorder,
             "Table.alternateBackground.0", listAlternateBackground,
-            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+//            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+            "TextField.borderInsets", new InsetsUIResource(6,6,1,6),
             "TextField.smallBorderInsets", new InsetsUIResource(3, 5, 2, 5),
             "TextField.miniBorderInsets", new InsetsUIResource(3, 5, 2, 5),
             "TextField.searchBorderInsets", new InsetsUIResource(6,12,5,12),
