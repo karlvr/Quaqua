@@ -14,6 +14,7 @@ import javax.swing.text.JTextComponent;
 import ch.randelshofer.quaqua.QuaquaManager;
 import javax.swing.UIManager;
 import java.awt.AlphaComposite;
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.Kernel;
@@ -96,6 +97,10 @@ public abstract class AbstractFocusedPainter {
             Graphics2D cg = (Graphics2D) cgx;
             Graphics2D fg = focusImg.createGraphics();
 
+            /* Must clear the focusImg as we reuse the focusImg for performance */
+            fg.setBackground(new Color(0, 0, 0, 0));
+            fg.clearRect(0, 0, borderImg.getWidth(), borderImg.getHeight());
+            
             // generate the focusImg from the borderImg
             fg.setComposite(AlphaComposite.SrcOver);
             fg.drawImage(borderImg, edgeLeftOp, 0, 0);

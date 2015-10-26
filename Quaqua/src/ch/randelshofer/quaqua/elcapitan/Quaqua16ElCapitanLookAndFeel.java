@@ -113,6 +113,8 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
             "ComboBox.popupBorder",//
             new UIDefaults.ProxyLazyValue("ch.randelshofer.quaqua.leopard.QuaquaLeopardComboBoxPopupBorder"),
             "ComboBox.maximumRowCount",10,
+            "ComboBox.button.insets", new InsetsUIResource(4, 0, -2, 0),
+            "ComboBox.button.insets.MINI", new InsetsUIResource(1, 0, -3, 0),
             //
             "FileChooser.autovalidate", Boolean.TRUE,
             "FileChooser.enforceQuaquaTreeUI", Boolean.TRUE,
@@ -279,6 +281,7 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
             "ScrollBar.thumbInsets.mini", new Insets(2,3,2,2),
             //
             "ScrollPane.border", scrollPaneBorder,
+            "ScrollPane.border.imageInsets", new InsetsUIResource(-3, 0, 3, 0),
             //
             "Separator.highlight", new ColorUIResource(0xe3e3e3),
             "Separator.foreground", new ColorUIResource(0xd4d4d4),
@@ -333,7 +336,8 @@ public class Quaqua16ElCapitanLookAndFeel extends Quaqua16MavericksLookAndFeel {
             //
 //            "TextField.border", textFieldBorder,
             "Table.alternateBackground.0", listAlternateBackground,
-            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+//            "TextField.borderInsets", new InsetsUIResource(3,6,3,6),
+            "TextField.borderInsets", new InsetsUIResource(6,6,1,6),
             "TextField.smallBorderInsets", new InsetsUIResource(3, 5, 2, 5),
             "TextField.miniBorderInsets", new InsetsUIResource(3, 5, 2, 5),
             "TextField.searchBorderInsets", new InsetsUIResource(6,12,5,12),

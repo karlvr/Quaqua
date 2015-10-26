@@ -28,6 +28,7 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
 import javax.swing.plaf.UIResource;
 import javax.swing.text.JTextComponent;
 
@@ -52,7 +53,10 @@ public class QuaquaNativeScrollPaneBorder extends VisualMarginBorder implements 
 
     public QuaquaNativeScrollPaneBorder() {
         painter = new OSXAquaPainter();
-        imageInsets = new Insets(0, 0, 0, 0);
+        imageInsets = UIManager.getInsets("ScrollPane.border.imageInsets");
+        if (imageInsets == null) {
+            imageInsets = new Insets(0, 0, 0, 0);
+        }
         borderInsets = new Insets(1,1,1,1);
     }
 
