@@ -33,6 +33,7 @@ public abstract class ViewModeControl extends JPanel {
             case QuaquaManager.MAVERICKS:
             case QuaquaManager.YOSEMITE:
             case QuaquaManager.EL_CAPITAN:
+            case QuaquaManager.SIERRA:
                 return new ch.randelshofer.quaqua.lion.filechooser.ViewModeControl();
             default:
                 return null;

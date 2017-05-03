@@ -16,3 +16,4 @@ ElCapitan.16=ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel;
 CrossTiger.15=ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel;
 CrossLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
 CrossSnowLeopard.15=ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel;
+Sierra.16=ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel;
