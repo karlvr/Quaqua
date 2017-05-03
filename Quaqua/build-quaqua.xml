@@ -38,7 +38,7 @@
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
         <property name="SDKminversion" value="10.5"/>
-        <property name="SDKversion" value="10.11"/>
+        <property name="SDKversion" value="10.12"/>
 		<property name="SDKpath" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SDKversion}.sdk" />
 
 		<!-- Java platform properties -->
@@ -124,7 +124,8 @@
          <property name="osx10.9.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk"/>
          <property name="osx10.10.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk"/>
          <property name="osx10.11.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"/>
-         <property name="macosx.sdk" value="${osx10.11.sdk}" />
+         <property name="osx10.12.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk"/>
+         <property name="macosx.sdk" value="${osx10.12.sdk}" />
     </target>
 
     <target depends="init" name="compile">
