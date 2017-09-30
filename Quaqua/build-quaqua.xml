@@ -28,8 +28,8 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="9.4.2"/>
-        <property name="version" value="${versionNumber} 2016-07-01"/>
+        <property name="versionNumber" value="9.4.3"/>
+        <property name="version" value="${versionNumber} 2017-09-30"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="resources" value="resources"/>
@@ -38,7 +38,7 @@
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
         <property name="SDKminversion" value="10.5"/>
-        <property name="SDKversion" value="10.11"/>
+        <property name="SDKversion" value="10.13"/>
 		<property name="SDKpath" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX${SDKversion}.sdk" />
 
 		<!-- Java platform properties -->
@@ -103,7 +103,7 @@
         <property name="j2se7" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents" />
         <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
 
-        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_92.jdk/Contents" />
+        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents" />
         <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
 
         <!-- Set the "cc" command to where your gcc-4.2 command resides.
@@ -124,7 +124,8 @@
          <property name="osx10.9.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.9.sdk"/>
          <property name="osx10.10.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.10.sdk"/>
          <property name="osx10.11.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk"/>
-         <property name="macosx.sdk" value="${osx10.11.sdk}" />
+         <property name="osx10.13.sdk" value="/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.13.sdk"/>
+         <property name="macosx.sdk" value="${osx10.13.sdk}" />
     </target>
 
     <target depends="init" name="compile">

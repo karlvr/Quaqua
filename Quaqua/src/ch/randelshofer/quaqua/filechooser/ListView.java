@@ -36,6 +36,7 @@ public abstract class ListView extends JPanel implements FileChooserView {
             case QuaquaManager.YOSEMITE:
             case QuaquaManager.EL_CAPITAN:
             case QuaquaManager.SIERRA:
+            case QuaquaManager.HIGH_SIERRA:
                 return new ch.randelshofer.quaqua.mavericks.filechooser.ListView(fc);
             default:
                 return null;

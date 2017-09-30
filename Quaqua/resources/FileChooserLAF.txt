@@ -14,3 +14,4 @@ Mavericks.16=ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF;
 Yosemite.16=ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF;
 ElCapitan.16=ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF;
 Sierra.16=ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF;
+HighSierra.16=ch.randelshofer.quaqua.subset.QuaquaMavericksFileChooserLAF;

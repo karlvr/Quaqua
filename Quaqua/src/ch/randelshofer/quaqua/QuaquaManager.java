@@ -175,6 +175,10 @@ public class QuaquaManager {
      */
     public final static int SIERRA = 12;
     /**
+     * Mac OS X 10.13 High Sierra.
+     */
+    public final static int HIGH_SIERRA = 13;
+    /**
      * Mac OS X 10.x Always points to next OSX X release.
      */
     public final static int X = 100;
@@ -250,6 +254,8 @@ public class QuaquaManager {
             	OS = EL_CAPITAN;
             } else if (osVersion.equals("10.12")) {
                 OS = SIERRA;
+            } else if (osVersion.equals("10.13")) {
+                OS = HIGH_SIERRA;
             } else if (osVersion.startsWith("10.")) {
                 OS = X;
             } else {
@@ -296,6 +302,8 @@ public class QuaquaManager {
         	design = EL_CAPITAN;
         } else if (osDesign.equals("sierra")) {
             design = SIERRA;
+        } else if (osDesign.equals("highsierra")) {
+            design = HIGH_SIERRA;
         } else {
             switch (OS) {
                 case CHEETAH:
@@ -336,6 +344,9 @@ public class QuaquaManager {
                 	break;
                 case SIERRA:
                     design = SIERRA;
+                    break;
+                case HIGH_SIERRA:
+                    design = HIGH_SIERRA;
                     break;
                 default:
                 // Note: We must fall back to Snow Leopard here, because this
@@ -427,6 +438,7 @@ public class QuaquaManager {
             lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
             lafs.put("ElCapitan.16", "ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel");
             lafs.put("Sierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
+            lafs.put("HighSierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
         }
     }
 
@@ -523,8 +535,11 @@ public class QuaquaManager {
                         lafKey = "ElCapitan.16";
                         break;
                     case SIERRA:
+                        lafKey = "Sierra.16";
+                        break;
+                    case HIGH_SIERRA:
                     case X:
-                    	lafKey = "Sierra.16";
+                    	lafKey = "HighSierra.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
@@ -563,8 +578,11 @@ public class QuaquaManager {
                         lafKey = "ElCapitan.16";
                         break;
                     case SIERRA:
+                        lafKey = "Sierra.16";
+                        break;
+                    case HIGH_SIERRA:
                     case X:
-                    	lafKey = "Sierra.16";
+                    	lafKey = "HighSierra.16";
                     	break;
                     default:
                         lafKey = "SnowLeopard.16";
