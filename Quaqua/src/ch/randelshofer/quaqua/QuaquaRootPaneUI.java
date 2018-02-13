@@ -78,6 +78,10 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
      */
     private static boolean isWindowModifiedSupported = true;
     /**
+     * This variable is set to true if we determine that the platform supports the Window.documentModified property.
+     */
+    private static boolean isDocumentModifiedSupported = false;
+    /**
      * This method is used to access the non-API peer methods of Apple's
      * Window peers. The method is different for the different MRJ versions.
      */
@@ -331,47 +335,74 @@ public class QuaquaRootPaneUI extends BasicRootPaneUI {
         if (isWindowModifiedSupported) {
             Container parent = rootpane.getParent();
             if (parent != null && (parent instanceof Window)) {
-                ComponentPeer peer = parent.getPeer();
-                if (peer != null) {
-                    if (setWindowModifiedMethod == null) {
-                        try {
-                            setWindowModifiedMethod = peer.getClass().getMethod("setDocumentEdited", new Class[]{Boolean.TYPE});
-                        } catch (NoSuchMethodException ex1) {
+                try {
+                    ComponentPeer peer = parent.getPeer();
+                    if (peer != null) {
+                        if (setWindowModifiedMethod == null) {
                             try {
-                                setWindowModifiedMethod = peer.getClass().getMethod("setModified", new Class[]{Boolean.TYPE});
-                            } catch (NoSuchMethodException ex2) {
+                                setWindowModifiedMethod = peer.getClass().getMethod("setDocumentEdited", new Class[]{Boolean.TYPE});
+                            } catch (NoSuchMethodException ex1) {
+                                try {
+                                    setWindowModifiedMethod = peer.getClass().getMethod("setModified", new Class[]{Boolean.TYPE});
+                                } catch (NoSuchMethodException ex2) {
+                                    isWindowModifiedSupported = false;
+                                    //ex2.printStackTrace();
+                                }
+
+                            } catch (AccessControlException ex1) {
                                 isWindowModifiedSupported = false;
-                                //ex2.printStackTrace();
+                                //System.err.println("Sorry. QuaquaRootPaneUI can not access the native window modified API");
                             }
 
-                        } catch (AccessControlException ex1) {
-                            isWindowModifiedSupported = false;
-                            //System.err.println("Sorry. QuaquaRootPaneUI can not access the native window modified API");
                         }
+                        if (setWindowModifiedMethod != null) {
+                            try {
+                                Object value = rootpane.getClientProperty("Window.documentModified");
+                                if (value == null) {
+                                    value = rootpane.getClientProperty("windowModified");
+                                }
 
-                    }
-                    if (setWindowModifiedMethod != null) {
-                        try {
-                            Object value = rootpane.getClientProperty("Window.documentModified");
-                            if (value == null) {
-                                value = rootpane.getClientProperty("windowModified");
+                                if (value == null) {
+                                    value = Boolean.FALSE;
+                                }
+
+                                setWindowModifiedMethod.invoke(peer, new Object[]{value});
+                            } catch (IllegalAccessException ex) {
+                                isWindowModifiedSupported = false;
+                                //ex.printStackTrace();
+                            } catch (InvocationTargetException ex) {
+                                isWindowModifiedSupported = false;
+                                //ex.printStackTrace();
                             }
 
-                            if (value == null) {
-                                value = Boolean.FALSE;
-                            }
-
-                            setWindowModifiedMethod.invoke(peer, new Object[]{value});
-                        } catch (IllegalAccessException ex) {
-                            isWindowModifiedSupported = false;
-                            //ex.printStackTrace();
-                        } catch (InvocationTargetException ex) {
-                            isWindowModifiedSupported = false;
-                            //ex.printStackTrace();
+                        } else if (QuaquaManager.getProperty("java.version").startsWith("1.8.")) {
+                            // In JDK 8, the above methods are not available.
+                            // However, the Window.documentModified property is supported.
+                            isDocumentModifiedSupported = true;
                         }
-
                     }
+                } catch (NoSuchMethodError ex) {
+                    // In JDK 9, the getPeer() method is not available.
+                    // However, the Window.documentModified property is supported.
+                    isWindowModifiedSupported = false;
+                    isDocumentModifiedSupported = true;
                 }
+            }
+        }
+
+        if (isDocumentModifiedSupported) {
+            Object value = rootpane.getClientProperty("Window.documentModified");
+            boolean shouldTransfer = false;
+            if (Boolean.TRUE.equals(rootpane.getClientProperty("QuaquaInternal.usingWindowModified"))) {
+                shouldTransfer = true;
+            } else if (value == null && rootpane.getClientProperty("windowModified") != null) {
+                rootpane.putClientProperty("QuaquaInternal.usingWindowModified", true);
+                shouldTransfer = true;
+            }
+
+            if (shouldTransfer) {
+                Object newValue = rootpane.getClientProperty("windowModified");
+                rootpane.putClientProperty("Window.documentModified", newValue);
             }
         }
     }
